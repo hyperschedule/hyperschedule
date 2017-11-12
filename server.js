@@ -34,18 +34,23 @@ async function parseAndSlurpOnce()
 
 async function parseAndSlurpRepeatedly()
 {
+  let originalDelay = 500;
+  let delay = originalDelay;
+  const backoffFactor = 2;
   while (true)
   {
     try
     {
       await parseAndSlurpOnce();
       console.log('Fetch script completed successfully');
+      delay = originalDelay;
     }
     catch (err)
     {
-      // network error? try again
+      // network error? try again, with exponential backoff
+      delay *= backoffFactor;
     }
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, delay));
   }
 }
 
@@ -62,6 +67,7 @@ async function runWebserver()
       res.status(500).send('Server could not fetch Portal data');
     }
   });
+  server.use(express.static('static'));
   server.use((req, res, next) => {
     res.status(404).send('Not found');
   });
