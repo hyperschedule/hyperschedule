@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 from dateutil.parser import parse as parse_date
 import datetime as dt
 import re
+import json
+import os
 
 browser = webdriver.Chrome()
 
@@ -85,8 +87,8 @@ for raw_course in raw_courses:
         schedule.append({
             'days': days,
             'location': location,
-            'start_time': start,
-            'end_time': end,
+            'start_time': start.strftime('%H:%M'),
+            'end_time': end.strftime('%H:%M'),
         })
     quarter_credits = round(float(raw_course['credits']) / 0.25)
     begin_date = parse_date(raw_course['begin_date']).date()
@@ -112,3 +114,8 @@ for raw_course in raw_courses:
         'first_half_semester': first_half,
         'second_half_semester': second_half,
     })
+
+with open('courses.json.tmp', 'w') as f:
+    json.dump(courses, f)
+
+os.rename('courses.json.tmp', 'courses.json')
