@@ -39,6 +39,7 @@ async function parseAndSlurpRepeatedly()
     try
     {
       await parseAndSlurpOnce();
+      console.log('Fetch script completed successfully');
     }
     catch (err)
     {
