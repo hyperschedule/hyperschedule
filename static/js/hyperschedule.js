@@ -3,6 +3,12 @@ const courseSearchList = document.getElementById('list-search-courses');
 
 let courseData = null;
 
+// https://stackoverflow.com/a/2593661
+function quoteRegexp(str)
+{
+  return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+}
+
 function hideEntity(entity)
 {
   entity.style.display = 'none';
@@ -27,7 +33,12 @@ function setEntityVisibility(entity, visible)
 
 function courseToString(course)
 {
-  return course.course_name;
+  return course.department + ' ' +
+    course.courseNumber.toString().padStart(3, '0') +
+    course.courseCodeSuffix + ' ' +
+    course.school + '-' +
+    course.section.toString().padStart(2, '0') + ' ' +
+    course.courseName;
 }
 
 function createCourseEntity(course)
@@ -35,6 +46,7 @@ function createCourseEntity(course)
   const listItem = document.createElement('li');
   const textNode = document.createTextNode(courseToString(course));
   listItem.appendChild(textNode);
+  listItem.classList.add('course');
   return listItem;
 }
 
@@ -53,14 +65,21 @@ function updateCourseSearchList()
 
 function courseMatchesSearchQuery(course, query)
 {
+  return course.courseName.match(query);
+}
+
+function getSearchQuery()
+{
+  const userQuery = courseSearchInput.value;
+  const escapedUserQuery = quoteRegexp(userQuery);
   // Case insensitive, with fuzzy whitespace.
-  const regexp = new RegExp(query.replace(/\s+/, '.*'), 'i');
-  return course.course_name.match(regexp);
+  const regexp = new RegExp(escapedUserQuery.replace(/\s+/, '.*'), 'i');
+  return regexp;
 }
 
 function updateCourseSearchResults()
 {
-  const query = courseSearchInput.value;
+  const query = getSearchQuery();
   const courses = courseData.courses;
   const entities = courseSearchList.children;
   for (let idx = 0; idx < courses.length; ++idx)
@@ -87,7 +106,7 @@ async function retrieveCourseData()
 async function retrieveCourseDataUntilSuccessful()
 {
   let delay = 500;
-  const backoffFactor = 2;
+  const backoffFactor = 1.5;
   while (true)
   {
     console.log('Attempting to fetch course data...');

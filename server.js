@@ -36,7 +36,7 @@ async function parseAndSlurpRepeatedly()
 {
   let originalDelay = 500;
   let delay = originalDelay;
-  const backoffFactor = 2;
+  const backoffFactor = 1.5;
   while (true)
   {
     try

@@ -91,11 +91,12 @@ for raw_course in raw_courses:
         start = parse_date(start).time()
         end = parse_date(end).time()
         location = ' '.join(location.strip().split())
+        # API uses camelCase since the rest is in JavaScript
         schedule.append({
             'days': days,
             'location': location,
-            'start_time': start.strftime('%H:%M'),
-            'end_time': end.strftime('%H:%M'),
+            'startTime': start.strftime('%H:%M'),
+            'endTime': end.strftime('%H:%M'),
         })
     quarter_credits = round(float(raw_course['credits']) / 0.25)
     begin_date = parse_date(raw_course['begin_date']).date()
@@ -107,20 +108,31 @@ for raw_course in raw_courses:
     assert first_half or second_half
     courses.append({
         'department': department,
-        'course_number': course_number,
-        'course_code_suffix': num_suffix,
+        'courseNumber': course_number,
+        'courseCodeSuffix': num_suffix,
         'school': school,
         'section': section,
-        'course_name': course_name,
+        'courseName': course_name,
         'faculty': faculty,
-        'open_seats': open_seats,
-        'total_seats': total_seats,
-        'course_status': course_status,
+        'openSeats': open_seats,
+        'totalSeats': total_seats,
+        'courseStatus': course_status,
         'schedule': schedule,
-        'quarter_credits': quarter_credits,
-        'first_half_semester': first_half,
-        'second_half_semester': second_half,
+        'quarterCredits': quarter_credits,
+        'firstHalfSemester': first_half,
+        'secondHalfSemester': second_half,
     })
+
+def course_sort_key(course):
+    return (
+        course['department'],
+        course['courseNumber'],
+        course['courseCodeSuffix'],
+        course['school'],
+        course['section'],
+    )
+
+courses.sort(key=course_sort_key)
 
 with open('courses.json.tmp', 'w') as f:
     json.dump(courses, f)
