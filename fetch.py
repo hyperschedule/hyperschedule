@@ -7,6 +7,9 @@ import datetime as dt
 import re
 import json
 import os
+import site
+
+site.addsitedir('./node_modules/.bin')
 
 browser = webdriver.PhantomJS()
 
