@@ -1,1 +1,1 @@
-web: ./server.js
+web: yarn babel && ./server.js --production

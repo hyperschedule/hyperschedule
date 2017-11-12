@@ -7,6 +7,7 @@ const moment = require('moment');
 const process = require('process');
 
 let courseData = null;
+let production = false;
 
 async function parseAndSlurpOnce()
 {
@@ -67,7 +68,8 @@ async function runWebserver()
       res.status(500).send('Server could not fetch Portal data');
     }
   });
-  server.use(express.static('static'));
+  const staticDir = production ? 'static/production' : 'static/src';
+  server.use(express.static(staticDir));
   server.use((req, res, next) => {
     res.status(404).send('Not found');
   });
@@ -76,7 +78,7 @@ async function runWebserver()
     console.error(err);
     res.status(500).send('Internal server error');
   });
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 5000;
   await new Promise((resolve, reject) => server.listen(port, err => {
     if (err)
     {
@@ -84,7 +86,9 @@ async function runWebserver()
     }
     else
     {
-      console.log(`Hyperschedule webserver listening on port ${port}`);
+      const mode = production ? 'production' : 'dev';
+      console.log(
+        `Hyperschedule webserver (${mode}) listening on port ${port}`);
       resolve();
     }
   }));
@@ -96,6 +100,28 @@ async function start()
   await runWebserver();
 }
 
+function handleCommandLineArguments()
+{
+  // First two arguments are the node binary and the script name.
+  for (let arg of process.argv.slice(2))
+  {
+    console.log(arg);
+    if (arg == '--production')
+    {
+      production = true;
+    }
+    else if (arg == '--dev')
+    {
+      production = false;
+    }
+    else
+    {
+      console.error(`Unexpected argument '${arg}', ignoring`);
+    }
+  }
+}
+
+handleCommandLineArguments();
 start()
   .catch(err => {
     console.error('Hyperschedule webserver terminated unexpectedly');
