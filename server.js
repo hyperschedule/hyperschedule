@@ -10,7 +10,17 @@ let courseData = null;
 
 async function parseAndSlurpOnce()
 {
-  await child_process.execFile('./fetch.py');
+  let result;
+  try
+  {
+    result = await child_process.execFile('./fetch.py');
+  }
+  catch (err)
+  {
+    console.error('Fetch script terminated unexpectedly');
+    console.error(err);
+    throw err;
+  }
   const jsonString = await fs.readFile('courses.json');
   const courses = JSON.parse(jsonString);
   const mtime = moment((await fs.stat('courses.json')).mtime);

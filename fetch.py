@@ -8,23 +8,25 @@ import re
 import json
 import os
 
-browser = webdriver.Chrome()
+browser = webdriver.PhantomJS()
 
-url = 'https://portal.hmc.edu/ICS/Portal_Homepage.jnz?portlet=Course_Schedules&screen=Advanced+Course+Search&screenType=next'
-browser.get(url)
+try:
+    url = 'https://portal.hmc.edu/ICS/Portal_Homepage.jnz?portlet=Course_Schedules&screen=Advanced+Course+Search&screenType=next'
+    browser.get(url)
 
-title = browser.find_element_by_id('pg0_V_txtTitleRestrictor')
-title.clear()
-title.send_keys('*')
+    title = browser.find_element_by_id('pg0_V_txtTitleRestrictor')
+    title.clear()
+    title.send_keys('*')
 
-search = browser.find_element_by_id('pg0_V_btnSearch')
-search.click()
+    search = browser.find_element_by_id('pg0_V_btnSearch')
+    search.click()
 
-show_all = browser.find_element_by_id('pg0_V_lnkShowAll')
-show_all.click()
+    show_all = browser.find_element_by_id('pg0_V_lnkShowAll')
+    show_all.click()
 
-html = browser.page_source
-browser.quit()
+    html = browser.page_source
+finally:
+    browser.quit()
 
 soup = BeautifulSoup(html, 'lxml')
 
