@@ -105,7 +105,6 @@ function handleCommandLineArguments()
   // First two arguments are the node binary and the script name.
   for (let arg of process.argv.slice(2))
   {
-    console.log(arg);
     if (arg == '--production')
     {
       production = true;
