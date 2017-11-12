@@ -24,6 +24,8 @@ show_all = browser.find_element_by_id('pg0_V_lnkShowAll')
 show_all.click()
 
 html = browser.page_source
+browser.quit()
+
 soup = BeautifulSoup(html, 'lxml')
 
 table = soup.find(id='pg0_V_dgCourses')
