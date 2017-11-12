@@ -1,0 +1,4 @@
+[flake8]
+
+ignore = E, W
+select = F
