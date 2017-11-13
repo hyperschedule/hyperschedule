@@ -217,6 +217,20 @@ function createCourseEntity(course, idx)
   listItemContent.classList.add('course-box-content');
   listItem.appendChild(listItemContent);
 
+  const selectToggle = document.createElement('input');
+  selectToggle.setAttribute('type', 'checkbox');
+  selectToggle.classList.add('course-box-button');
+  selectToggle.classList.add('course-box-toggle');
+  selectToggle.classList.add('course-box-select-toggle');
+  listItemContent.appendChild(selectToggle);
+
+  const starToggle = document.createElement('input');
+  starToggle.setAttribute('type', 'checkbox');
+  starToggle.classList.add('course-box-button');
+  starToggle.classList.add('course-box-toggle');
+  starToggle.classList.add('course-box-star-toggle');
+  listItemContent.appendChild(starToggle);
+
   const textBox = document.createElement('p');
   textBox.classList.add('course-box-text');
   listItemContent.appendChild(textBox);

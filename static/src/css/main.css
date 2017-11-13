@@ -92,6 +92,7 @@ body {
     border-radius: 5px;
     display: table-cell;
     font-size: small;
+    padding: 5px 5px;
     position: absolute;
     vertical-align: middle;
     width: 16.6667%;
@@ -128,7 +129,6 @@ body {
     margin: 0;
     padding-top: 5px;
     padding-bottom: 5px;
-    padding-left: 5px;
 }
 
 .course-box-button {
@@ -151,6 +151,7 @@ body {
 }
 
 #course-search-column .course-box-text {
+    padding-left: 5px;
     padding-right: 30px;
 }
 
@@ -188,7 +189,42 @@ body {
     margin: 0 auto;
 }
 
+#selected-courses-column .course-box-select-toggle {
+    display: block;
+    height: 25px;
+    margin-top: -12.5px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 25px;
+}
+
+#selected-courses-column .course-box-star-toggle {
+    cursor: pointer;
+    display: block;
+    height: 25px;
+    left: 25px;
+    margin-top: -12.5px;
+    position: absolute;
+    top: 50%;
+    visibility: hidden;
+    width: 25px;
+}
+
+#selected-courses-column .course-box-star-toggle:after {
+    content: "☆";
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    visibility: visible;
+}
+
+#selected-courses-column .course-box-star-toggle:checked:after {
+    content: "★";
+}
+
 #selected-courses-column .course-box-text {
+    padding-left: 55px;
     padding-right: 30px;
 }
 
