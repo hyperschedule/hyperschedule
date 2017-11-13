@@ -20,13 +20,26 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
 
-    <div id="course-search-column" class="two-column-left">
+    <div id="course-search-schedule-column" class="two-column-left">
       <div class="toolbar">
-        <input type="text" id="course-search-course-name-input" class="form-control" placeholder="Search by name, course code, etc." value="seminar">
+        <div id="course-search-toggle-wrapper">
+          <button type="button" id="course-search-toggle" class="btn btn-light">Course Search</button>
+        </div>
+        <div id="schedule-toggle-wrapper">
+          <button type="button" id="schedule-toggle" class="btn btn-light">Schedule</button>
+        </div>
       </div>
+      <div id="course-search-column">
+        <div class="toolbar">
+          <input type="text" id="course-search-course-name-input" class="form-control" placeholder="Search by name, course code, etc." value="seminar">
+        </div>
 
-      <ul id="course-search-results-list" class="courses-list">
-      </ul>
+        <ul id="course-search-results-list" class="courses-list">
+        </ul>
+      </div>
+      <div id="schedule-column">
+        Hello!
+      </div>
     </div>
 
     <div id="selected-courses-column" class="two-column-right">
