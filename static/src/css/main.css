@@ -63,14 +63,14 @@ body {
 #course-search-column .course-box-text {
     display: inline-block;
     margin: 0;
-    padding-right: 5px;
+    padding-right: 35px;
 }
 
 #course-search-column .course-box-add-button {
     height: 25px;
     margin-top: -12.5px;
     position: absolute;
-    right: 0;
+    right: 5px;
     top: 50%;
     width: 25px;
 }
@@ -82,7 +82,7 @@ body {
 }
 
 #selected-courses-column .course-box-text {
-    padding-right: 0;
+    padding-right: 5px;
 }
 
 #selected-courses-column .course-box-add-button {
