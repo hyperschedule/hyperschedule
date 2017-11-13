@@ -19,6 +19,7 @@ const scheduleTableBody = document.getElementById('schedule-table-body');
 
 let courseData = null;
 let selectedCourses = null;
+let scheduleTabSelected = false;
 
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
@@ -55,6 +56,7 @@ function parseTime(timeString)
 function writeStateToLocalStorage()
 {
   localStorage.setItem('selectedCourses', JSON.stringify(selectedCourses));
+  localStorage.setItem('scheduleTabSelected', scheduleTabSelected);
 }
 
 function readStateFromLocalStorage()
@@ -76,6 +78,7 @@ function readStateFromLocalStorage()
       // nothing to do here
     }
   }
+  scheduleTabSelected = localStorage.getItem('scheduleTabSelected') === 'true';
 }
 
 function hideEntity(entity)
@@ -523,35 +526,47 @@ function importExportData()
   {
     return;
   }
+  let obj;
   try
   {
-    const obj = JSON.parse(response);
-    if (Array.isArray(obj))
+    console.log(response);
+    obj = JSON.parse(response);
+    console.log('parsed');
+    if (!Array.isArray(obj))
     {
-      selectedCourses = obj;
-      updateSelectedCoursesList();
-      updateSchedule();
-      writeStateToLocalStorage();
-      return;
+      console.log('not valid array');
+      throw Error();
     }
   }
   catch (err)
   {
-    // nothing to do here
+    alert('That was not a valid JSON array! Refusing to save.');
+    return;
   }
-  alert('That was not a valid JSON array! Refusing to save.');
+  selectedCourses = obj;
+  updateSelectedCoursesList();
+  updateSchedule();
+  writeStateToLocalStorage();
+}
+
+function updateTabToggle()
+{
+  setEntityVisibility(scheduleColumn, scheduleTabSelected);
+  setEntityVisibility(courseSearchColumn, !scheduleTabSelected);
 }
 
 function displayCourseSearchColumn()
 {
-  hideEntity(scheduleColumn);
-  showEntity(courseSearchColumn);
+  scheduleTabSelected = false;
+  updateTabToggle();
+  writeStateToLocalStorage();
 }
 
 function displayScheduleColumn()
 {
-  hideEntity(courseSearchColumn);
-  showEntity(scheduleColumn);
+  scheduleTabSelected = true;
+  updateTabToggle();
+  writeStateToLocalStorage();
 }
 
 function toggleCourseSelected(course)
@@ -583,15 +598,18 @@ function attachListeners()
 
 attachListeners();
 readStateFromLocalStorage();
+updateTabToggle();
 updateSelectedCoursesList();
 updateSchedule();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
 
-// DEBUG
-displayScheduleColumn();
-
-// FIXME: Make the toggle highlight which side is active
-// FIXME: Save which side of the toggle we're on
-// FIXME: Center course text
-// FIXME: Add detail view/selection
+// 1. Save which tab we're on
+// 2. Add a detail view
+// 3. Add credit counter
+// 4. Fix I/O
+// 5. Add colors
+// 6. Make the toggle highlight.
+// 7. Fix word-wrapping on course blocks.
+// 8. Fix the centering of the checkboxes.
+// 9. Fix the centering of the course blocks.
