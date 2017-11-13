@@ -101,9 +101,9 @@ body {
     /* nothing to do here */
 }
 
-#toolbar {
+.toolbar {
     display: table;
-    height: 30px;
+    min-height: 60px;
     margin: 0 auto;
     padding: 0;
     width: 95%;
