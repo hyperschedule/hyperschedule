@@ -171,7 +171,7 @@ function courseToString(course)
     course.courseName;
 }
 
-function createCourseEntity(course)
+function createCourseEntity(course, idx)
 {
   const listItem = document.createElement('li');
   listItem.classList.add('course-box');
@@ -217,6 +217,11 @@ function createCourseEntity(course)
   if (course === 'placeholder')
   {
     listItem.classList.add('placeholder');
+  }
+
+  if (idx !== undefined)
+  {
+    listItem.setAttribute('data-course-index', idx);
   }
 
   return listItem;
@@ -275,16 +280,32 @@ function updateSelectedCoursesList()
   {
     selectedCoursesList.removeChild(selectedCoursesList.lastChild);
   }
-  for (let course of selectedCourses)
+  for (let idx = 0; idx < selectedCourses.length; ++idx)
   {
-    selectedCoursesList.appendChild(createCourseEntity(course));
+    const course = selectedCourses[idx];
+    selectedCoursesList.appendChild(createCourseEntity(course, idx));
   }
   updateSortableLists();
 }
 
-function updateSelectedCourses()
+function readSelectedCoursesList()
 {
-  updateSelectedCoursesList();
+  const newSelectedCourses = [];
+  for (let entity of selectedCoursesList.children)
+  {
+    const idx = parseInt(entity.getAttribute('data-course-index'));
+    if (!isNaN(idx) && idx >= 0 && idx < selectedCourses.length)
+    {
+      newSelectedCourses.push(selectedCourses[idx]);
+    }
+    else
+    {
+      alert('An internal error occurred. This is bad.');
+      updateSelectedCoursesList();
+      return;
+    }
+  }
+  selectedCourses = newSelectedCourses;
   writeStateToCookies();
 }
 
@@ -305,7 +326,8 @@ function addCourse(course)
   {
     selectedCourses.push(course);
   }
-  updateSelectedCourses();
+  updateSelectedCoursesList();
+  writeStateToCookies();
 }
 
 function removeCourse(course)
@@ -313,7 +335,8 @@ function removeCourse(course)
   selectedCourses = selectedCourses.filter(selectedCourse => {
     return !coursesEquivalent(course, selectedCourse);
   });
-  updateSelectedCourses();
+  updateSelectedCoursesList();
+  writeStateToCookies();
 }
 
 async function retrieveCourseData()
@@ -366,7 +389,8 @@ function importExportData()
     if (Array.isArray(obj))
     {
       selectedCourses = obj;
-      updateSelectedCourses();
+      updateSelectedCoursesList();
+      writeStateToCookies();
       return;
     }
   }
@@ -398,12 +422,14 @@ function attachListeners()
   sortable('.sortable-list', {
     forcePlaceholderSize: true,
     placeholder: createCourseEntity('placeholder').outerHTML,
-  }).addEventListener('sortstart', updateSelectedCourses);
+  });
+  selectedCoursesList.addEventListener('sortupdate', readSelectedCoursesList);
 }
 
 attachListeners();
 readStateFromCookies();
-updateSelectedCourses();
+updateSelectedCoursesList();
+writeStateToCookies();
 retrieveCourseDataUntilSuccessful();
 
 // DEBUG
