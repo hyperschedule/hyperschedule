@@ -48,6 +48,7 @@ body {
 
 .course-box-content {
     background-color: #f9edd4;
+    border-radius: 5px;
     display: block;
     margin: 0 auto;
     position: relative;
