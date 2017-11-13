@@ -4,6 +4,14 @@
     font-family: sans-serif;
 }
 
+.hidden {
+    display: none;
+}
+
+.placeholder {
+    visibility: hidden;
+}
+
 /* Page layout */
 
 body {
@@ -29,15 +37,29 @@ body {
 
 /* Course search and selected courses */
 
+.courses-list {
+    list-style-type: none;
+    margin: 1px 0;
+    padding: 0;
+}
+
 .course-box {
-    background-color: #f9edd4;
-    display: block;
-    margin: 10px auto;
+    margin: 0 auto;
+    padding: 10px 0;
     position: relative;
     width: 90%;
 }
 
+.course-box-content {
+    background-color: #f9edd4;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+}
+
 .course-box-text {
+    display: inline-block;
+    margin: 0;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 5px;
@@ -55,14 +77,7 @@ body {
     width: 50%;
 }
 
-#course-search-results-list {
-    margin: 0;
-    padding: 0;
-}
-
 #course-search-column .course-box-text {
-    display: inline-block;
-    margin: 0;
     padding-right: 35px;
 }
 

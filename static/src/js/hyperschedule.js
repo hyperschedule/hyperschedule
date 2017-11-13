@@ -29,12 +29,12 @@ function arraysEqual(arr1, arr2, test)
 
 function hideEntity(entity)
 {
-  entity.style.display = 'none';
+  entity.classList.add('hidden');
 }
 
 function showEntity(entity)
 {
-  entity.style.display = 'block';
+  entity.classList.remove('hidden');
 }
 
 function setEntityVisibility(entity, visible)
@@ -99,16 +99,29 @@ function courseToString(course)
     course.courseName;
 }
 
-function createCourseEntity(course, added)
+function createCourseEntity(course)
 {
   const listItem = document.createElement('li');
   listItem.classList.add('course-box');
 
+  const listItemContent = document.createElement('div');
+  listItemContent.classList.add('course-box-content');
+  listItem.appendChild(listItemContent);
+
   const textBox = document.createElement('p');
   textBox.classList.add('course-box-text');
-  listItem.appendChild(textBox);
+  listItemContent.appendChild(textBox);
 
-  const textNode = document.createTextNode(courseToString(course));
+  let text;
+  if (course === 'placeholder')
+  {
+    text = 'placeholder';
+  }
+  else
+  {
+    text = courseToString(course);
+  }
+  const textNode = document.createTextNode(text);
   textBox.appendChild(textNode);
 
   const addButton = document.createElement('button');
@@ -117,7 +130,12 @@ function createCourseEntity(course, added)
   addButton.addEventListener('click', () => {
     addCourse(course);
   });
-  listItem.appendChild(addButton);
+  listItemContent.appendChild(addButton);
+
+  if (course === 'placeholder')
+  {
+    listItem.classList.add('placeholder');
+  }
 
   return listItem;
 }
@@ -240,6 +258,10 @@ async function retrieveCourseDataUntilSuccessful()
 function attachListeners()
 {
   courseSearchInput.addEventListener('keyup', updateCourseSearchResults);
+  sortable('.sortable-list', {
+    forcePlaceholderSize: true,
+    placeholder: createCourseEntity('placeholder').outerHTML,
+  });
 }
 
 attachListeners();
