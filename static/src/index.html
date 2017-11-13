@@ -19,15 +19,21 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
 
-    <form>
-      <label for="input-search-course-name">Course name</label>
-      <input type="text" id="input-search-course-name">
-    </form>
+    <div id="column-search" class="two-column">
+      <form>
+        <label for="input-search-course-name">Course name</label>
+        <input type="text" id="input-search-course-name">
+      </form>
 
-    <ul id="list-search-courses">
-    </ul>
+      <ul id="list-search-courses">
+      </ul>
+    </div>
+
+    <div id="column-courses" class="two-column">
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.6.3/html.sortable.min.js"></script>
     <script src="js/hyperschedule.js"></script>
   </body>
 </html>
