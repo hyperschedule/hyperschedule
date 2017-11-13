@@ -416,8 +416,9 @@ function createSlotEntity(course, day, startTime, endTime)
 function updateSchedule()
 {
   const schedule = computeSchedule(selectedCourses);
-  for (let element of scheduleTable.getElementsByClassName('schedule-slot'))
+  while (scheduleTable.getElementsByClassName('schedule-slot').length > 0)
   {
+    const element = scheduleTable.getElementsByClassName('schedule-slot')[0];
     element.parentNode.removeChild(element);
   }
   for (let course of schedule)
@@ -537,3 +538,5 @@ displayScheduleColumn();
 
 // FIXME: Make the toggle highlight which side is active
 // FIXME: Save which side of the toggle we're on
+// FIXME: Center course text
+// FIXME: Add detail view/selection
