@@ -125,12 +125,22 @@ function createCourseEntity(course)
   textBox.appendChild(textNode);
 
   const addButton = document.createElement('button');
+  addButton.classList.add('course-box-button');
   addButton.classList.add('course-box-add-button');
   addButton.innerHTML = '+';
   addButton.addEventListener('click', () => {
     addCourse(course);
   });
   listItemContent.appendChild(addButton);
+
+  const removeButton = document.createElement('button');
+  removeButton.classList.add('course-box-button');
+  removeButton.classList.add('course-box-remove-button');
+  removeButton.innerHTML = '⨉';
+  removeButton.addEventListener('click', () => {
+    removeCourse(course);
+  });
+  listItemContent.appendChild(removeButton);
 
   if (course === 'placeholder')
   {
@@ -217,6 +227,14 @@ function addCourse(course)
   {
     selectedCourses.push(course);
   }
+  updateSelectedCoursesList();
+}
+
+function removeCourse(course)
+{
+  selectedCourses = selectedCourses.filter(selectedCourse => {
+    return !coursesEquivalent(course, selectedCourse);
+  });
   updateSelectedCoursesList();
 }
 
