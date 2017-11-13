@@ -1,6 +1,14 @@
+const courseSearchToggle = document.getElementById('course-search-toggle');
+const scheduleToggle = document.getElementById('schedule-toggle');
+
+const courseSearchColumn = document.getElementById('course-search-column');
+const scheduleColumn = document.getElementById('schedule-column');
+
 const courseSearchInput = document.getElementById('course-search-course-name-input');
 const courseSearchResultsList = document.getElementById('course-search-results-list');
+
 const importExportDataButton = document.getElementById('import-export-data-button');
+
 const selectedCoursesList = document.getElementById('selected-courses-list');
 
 let courseData = null;
@@ -366,8 +374,22 @@ function importExportData()
   alert('That was not a valid JSON array! Refusing to save.');
 }
 
+function displayCourseSearchColumn()
+{
+  hideEntity(scheduleColumn);
+  showEntity(courseSearchColumn);
+}
+
+function displayScheduleColumn()
+{
+  hideEntity(courseSearchColumn);
+  showEntity(scheduleColumn);
+}
+
 function attachListeners()
 {
+  courseSearchToggle.addEventListener('click', displayCourseSearchColumn);
+  scheduleToggle.addEventListener('click', displayScheduleColumn);
   courseSearchInput.addEventListener('keyup', updateCourseSearchResults);
   importExportDataButton.addEventListener('click', importExportData);
   sortable('.sortable-list', {
