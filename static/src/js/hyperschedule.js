@@ -140,6 +140,12 @@ function coursesEquivalent(course1, course2)
   return true;
 }
 
+function coursesMutuallyExclusive(course1, course2)
+{
+  return (course1.department === course2.department &&
+          course1.courseNumber === course2.courseNumber);
+}
+
 function courseToString(course)
 {
   return course.department + ' ' +
@@ -203,7 +209,8 @@ function computeSchedule(courses)
     let conflicts = false;
     for (let existingCourse of schedule)
     {
-      if (coursesConflict(course, existingCourse))
+      if (coursesMutuallyExclusive(course, existingCourse) ||
+          coursesConflict(course, existingCourse))
       {
         conflicts = true;
         break;
