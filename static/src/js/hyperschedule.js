@@ -1,13 +1,30 @@
-const courseSearchInput = document.getElementById('input-search-course-name');
-const courseSearchList = document.getElementById('list-search-courses');
-const coursesList = document.getElementById('list-courses-courses');
+const courseSearchInput = document.getElementById('course-search-course-name-input');
+const courseSearchResultsList = document.getElementById('course-search-results-list');
+const selectedCoursesList = document.getElementById('selected-courses-list');
 
 let courseData = null;
+let selectedCourses = [];
 
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
 {
   return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+}
+
+function arraysEqual(arr1, arr2, test)
+{
+  if (arr1.length !== arr2.length)
+  {
+    return false;
+  }
+  for (let idx = 0; idx < arr1.length; ++idx)
+  {
+    if (test ? !test(arr1[idx], arr2[idx]) : (arr1[idx] !== arr2[idx]))
+    {
+      return false;
+    }
+  }
+  return true;
 }
 
 function hideEntity(entity)
@@ -34,7 +51,42 @@ function setEntityVisibility(entity, visible)
 
 function updateSortableLists()
 {
-  sortable('.sortable');
+  sortable('.sortable-list');
+}
+
+function scheduleSlotsEqual(slot1, slot2)
+{
+  for (let attr of [
+    'days', 'location', 'startTime', 'endTime',
+  ]) {
+    if (slot1[attr] !== slot2[attr])
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+function coursesEquivalent(course1, course2)
+{
+  for (let attr of [
+    'department', 'courseNumber', 'courseCodeSuffix', 'school', 'section',
+    'courseName', 'quarterCredits', 'firstHalfSemester', 'secondHalfSemester',
+  ]) {
+    if (course1[attr] !== course2[attr])
+    {
+      return false;
+    }
+  }
+  if (!arraysEqual(course1.faculty, course2.faculty))
+  {
+    return false;
+  }
+  if (!arraysEqual(course1.schedule, course2.schedule, scheduleSlotsEqual))
+  {
+    return false;
+  }
+  return true;
 }
 
 function courseToString(course)
@@ -47,12 +99,26 @@ function courseToString(course)
     course.courseName;
 }
 
-function createCourseEntity(course)
+function createCourseEntity(course, added)
 {
   const listItem = document.createElement('li');
+  listItem.classList.add('course-box');
+
+  const textBox = document.createElement('p');
+  textBox.classList.add('course-box-text');
+  listItem.appendChild(textBox);
+
   const textNode = document.createTextNode(courseToString(course));
-  listItem.appendChild(textNode);
-  listItem.classList.add('course');
+  textBox.appendChild(textNode);
+
+  const addButton = document.createElement('button');
+  addButton.classList.add('course-box-add-button');
+  addButton.innerHTML = '+';
+  addButton.addEventListener('click', () => {
+    addCourse(course);
+  });
+  listItem.appendChild(addButton);
+
   return listItem;
 }
 
@@ -80,7 +146,7 @@ function updateCourseSearchResults()
 {
   const query = getSearchQuery();
   const courses = courseData.courses;
-  const entities = courseSearchList.children;
+  const entities = courseSearchResultsList.children;
   for (let idx = 0; idx < courses.length; ++idx)
   {
     const course = courses[idx];
@@ -90,18 +156,50 @@ function updateCourseSearchResults()
   }
 }
 
-function updateCourseSearchList()
+function updateCourseSearchResultsList()
 {
-  while (courseSearchList.hasChildNodes())
+  while (courseSearchResultsList.hasChildNodes())
   {
-    courseSearchList.removeChild(courseSearchList.lastChild);
+    courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
   for (let course of courseData.courses)
   {
-    courseSearchList.appendChild(createCourseEntity(course));
+    courseSearchResultsList.appendChild(createCourseEntity(course));
+  }
+  updateCourseSearchResults();
+}
+
+function updateSelectedCoursesList()
+{
+  while (selectedCoursesList.hasChildNodes())
+  {
+    selectedCoursesList.removeChild(selectedCoursesList.lastChild);
+  }
+  for (let course of selectedCourses)
+  {
+    selectedCoursesList.appendChild(createCourseEntity(course));
   }
   updateSortableLists();
-  updateCourseSearchResults();
+}
+
+function addCourse(course)
+{
+  let alreadyAdded = false;
+  for (let idx = 0; idx < selectedCourses.length; ++idx)
+  {
+    if (coursesEquivalent(course, selectedCourses[idx]))
+    {
+      // Maybe some minor information (number of seats available) was
+      // updated in the Portal. Let's update the existing class.
+      selectedCourses[idx] = course;
+      alreadyAdded = true;
+    }
+  }
+  if (!alreadyAdded)
+  {
+    selectedCourses.push(course);
+  }
+  updateSelectedCoursesList();
 }
 
 async function retrieveCourseData()
@@ -113,7 +211,7 @@ async function retrieveCourseData()
                 response.status + ' ' + response.statusText);
   }
   courseData = await response.json();
-  setTimeout(updateCourseSearchList, 0);
+  setTimeout(updateCourseSearchResultsList, 0);
 }
 
 async function retrieveCourseDataUntilSuccessful()
@@ -139,15 +237,9 @@ async function retrieveCourseDataUntilSuccessful()
   }
 }
 
-function makeCourseListSortable()
-{
-  sortable('.sortable');
-}
-
 function attachListeners()
 {
   courseSearchInput.addEventListener('keyup', updateCourseSearchResults);
-  makeCourseListSortable();
 }
 
 attachListeners();

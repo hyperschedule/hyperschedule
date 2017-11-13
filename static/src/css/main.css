@@ -1,46 +1,90 @@
+/* General styling */
+
 * {
     font-family: sans-serif;
 }
 
-/* Shared */
+/* Page layout */
 
-.course {
-    background-color: #f9edd4;
-    border: black;
-    margin: 0.5em;
-    padding: 0.5em;
+body {
+    margin-top: 1.25%;
+    margin-bottom: 1.25%;
 }
 
-.two-column {
+/* Column layout */
+
+.two-column-left {
     float: left;
-    margin: 1.25%;
+    margin-left: 1.25%;
+    margin-right: 1.25%;
     width: 45%;
+}
+
+.two-column-right {
+    float: right;
+    margin-left: 1.25%;
+    margin-right: 1.25%;
+    width: 45%;
+}
+
+/* Course search and selected courses */
+
+.course-box {
+    background-color: #f9edd4;
+    display: block;
+    margin: 10px auto;
+    position: relative;
+    width: 90%;
+}
+
+.course-box-text {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
 }
 
 /* Course search */
 
-#column-search {
+#course-search-column {
     border-style: solid;
 }
 
-#input-search-course-name {
+#course-search-course-name-input {
     display: block;
-    height: 25px;
-    margin: auto;
-    margin-top: 0.5in;
+    margin: 10px auto;
     width: 50%;
 }
 
-#list-search-courses {
-    padding: 0.5in;
+#course-search-results-list {
+    margin: 0;
+    padding: 0;
 }
 
-/* Course list */
+#course-search-column .course-box-text {
+    display: inline-block;
+    margin: 0;
+    padding-right: 5px;
+}
 
-#column-courses {
+#course-search-column .course-box-add-button {
+    height: 25px;
+    margin-top: -12.5px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 25px;
+}
+
+/* Selected courses */
+
+#selected-courses-column {
     border-style: solid;
 }
 
-#list-courses-courses {
-    padding: 0.5in;
+#selected-courses-column .course-box-text {
+    padding-right: 0;
+}
+
+#selected-courses-column .course-box-add-button {
+    display: none;
 }

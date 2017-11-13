@@ -58,6 +58,12 @@ for row in rows:
 
 courses = []
 
+def schedule_sort_key(slot):
+    return slot['days'], slot['startTime'], slot['endTime'], slot['days']
+
+def days_sort_key(day):
+    return 'MTWRFSU'.index(day)
+
 for raw_course in raw_courses:
     course_code = raw_course['course_code'].strip()
     course_regex = r'([A-Z]+) *?([0-9]+) *([A-Z]*[0-9]?) *([A-Z]{2})-([0-9]+)'
@@ -67,6 +73,8 @@ for raw_course in raw_courses:
     section = int(section)
     course_name = raw_course['course_name'].strip()
     faculty = re.split(r'\s*\n\s*', raw_course['faculty'].strip())
+    faculty = list(set(faculty))
+    faculty.sort()
     open_seats, total_seats = map(
         int, re.match(r'([0-9]+)/([0-9]+)', raw_course['seats']).groups())
     course_status = raw_course['status'].lower()
@@ -84,6 +92,8 @@ for raw_course in raw_courses:
             assert days
             for day in days:
                 assert day in 'MTWRFSU'
+            days.sort(key=days_sort_key)
+            days = ''.join(days)
         else:
             days = []
         if not start.endswith('AM') or start.endswith('PM'):
@@ -98,6 +108,7 @@ for raw_course in raw_courses:
             'startTime': start.strftime('%H:%M'),
             'endTime': end.strftime('%H:%M'),
         })
+    schedule.sort(key=schedule_sort_key)
     quarter_credits = round(float(raw_course['credits']) / 0.25)
     begin_date = parse_date(raw_course['begin_date']).date()
     end_date = parse_date(raw_course['end_date']).date()

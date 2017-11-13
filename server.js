@@ -37,7 +37,8 @@ async function parseAndSlurpRepeatedly()
 {
   let originalDelay = 500;
   let delay = originalDelay;
-  const backoffFactor = 1.5;
+  // No exponential backoff during development.
+  const backoffFactor = production ? 1.5 : 1;
   while (true)
   {
     try
