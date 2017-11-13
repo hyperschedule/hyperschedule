@@ -376,7 +376,7 @@ function attachListeners()
   });
 }
 
+attachListeners();
 readStateFromCookies();
 updateSelectedCoursesList();
-attachListeners();
 retrieveCourseDataUntilSuccessful();
