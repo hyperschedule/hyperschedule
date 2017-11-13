@@ -42,6 +42,11 @@ function arraysEqual(arr1, arr2, test)
   return true;
 }
 
+function deepCopy(obj)
+{
+  return JSON.parse(JSON.stringify(obj));
+}
+
 function parseTime(timeString)
 {
   return parseInt(timeString.substring(0, 2)) + parseInt(timeString.substring(3, 5)) / 60;
@@ -147,7 +152,7 @@ function courseToString(course)
 
 function coursesConflict(course1, course2)
 {
-  if (!(course1.firstHalfSemester && course2.firstHalfSemester) ||
+  if (!(course1.firstHalfSemester && course2.firstHalfSemester) &&
       !(course1.secondHalfSemester && course2.secondHalfSemester))
   {
     return false;
@@ -191,6 +196,10 @@ function computeSchedule(courses)
   const schedule = [];
   for (let course of courses)
   {
+    if (!course.selected)
+    {
+      continue;
+    }
     let conflicts = false;
     for (let existingCourse of schedule)
     {
@@ -222,6 +231,10 @@ function createCourseEntity(course, idx)
   selectToggle.classList.add('course-box-button');
   selectToggle.classList.add('course-box-toggle');
   selectToggle.classList.add('course-box-select-toggle');
+  selectToggle.checked = course.selected;
+  selectToggle.addEventListener('change', () => {
+    toggleCourseSelected(course);
+  });
   listItemContent.appendChild(selectToggle);
 
   const starToggle = document.createElement('input');
@@ -229,6 +242,10 @@ function createCourseEntity(course, idx)
   starToggle.classList.add('course-box-button');
   starToggle.classList.add('course-box-toggle');
   starToggle.classList.add('course-box-star-toggle');
+  starToggle.checked = course.starred;
+  starToggle.addEventListener('onchange', () => {
+    toggleCourseStarred(course);
+  });
   listItemContent.appendChild(starToggle);
 
   const textBox = document.createElement('p');
@@ -364,6 +381,9 @@ function readSelectedCoursesList()
 
 function addCourse(course)
 {
+  course = deepCopy(course);
+  course.selected = true;
+  course.starred = false;
   let alreadyAdded = false;
   for (let idx = 0; idx < selectedCourses.length; ++idx)
   {
@@ -371,7 +391,7 @@ function addCourse(course)
     {
       // Maybe some minor information (number of seats available) was
       // updated in the Portal. Let's update the existing class.
-      selectedCourses[idx] = course;
+      selectedCourses[idx] = deepCopy(course);
       alreadyAdded = true;
     }
   }
@@ -525,6 +545,20 @@ function displayScheduleColumn()
 {
   hideEntity(courseSearchColumn);
   showEntity(scheduleColumn);
+}
+
+function toggleCourseSelected(course)
+{
+  course.selected = !course.selected;
+  updateSchedule();
+  writeStateToLocalStorage();
+}
+
+function toggleCourseStarred(course)
+{
+  course.starred = !course.starred;
+  updateSchedule();
+  writeStateToLocalStorage();
 }
 
 function attachListeners()
