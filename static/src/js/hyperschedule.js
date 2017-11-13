@@ -65,16 +65,22 @@ function updateCourseSearchList()
 
 function courseMatchesSearchQuery(course, query)
 {
-  return course.courseName.match(query);
+  const str = courseToString(course);
+  for (let subquery of query)
+  {
+    if (!str.match(subquery))
+    {
+      return false;
+    }
+  }
+  return true;
 }
 
 function getSearchQuery()
 {
-  const userQuery = courseSearchInput.value;
-  const escapedUserQuery = quoteRegexp(userQuery);
-  // Case insensitive, with fuzzy whitespace.
-  const regexp = new RegExp(escapedUserQuery.replace(/\s+/, '.*'), 'i');
-  return regexp;
+  return courseSearchInput.value.trim().split(/\s+/).map(subquery => {
+    return new RegExp(quoteRegexp(subquery), 'i');
+  });
 }
 
 function updateCourseSearchResults()
