@@ -71,14 +71,32 @@ body {
 #schedule-table {
     border: 1px solid #cccccc;
     margin: 0 auto;
-    width: 95%;
+    position: relative;
     table-layout: fixed;
     text-align: center;
+    width: 95%;
+}
+
+#schedule-table th {
+    height: 60px;
 }
 
 #schedule-table td {
     border: 1px solid #cccccc;
     height: 60px;
+}
+
+.schedule-slot {
+    background-color: red;
+    border-radius: 5px;
+    display: table-cell;
+    font-size: small;
+    position: absolute;
+    vertical-align: middle;
+    width: 16.6667%;
+}
+
+.schedule-slot-text-wrapper {
 }
 
 /* Course search and selected courses */

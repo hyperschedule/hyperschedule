@@ -1,3 +1,6 @@
+const millisecondsPerHour = 3600 * 1000;
+const scheduleHeightHeightPixels = 60;
+
 const courseSearchToggle = document.getElementById('course-search-toggle');
 const scheduleToggle = document.getElementById('schedule-toggle');
 
@@ -10,6 +13,9 @@ const courseSearchResultsList = document.getElementById('course-search-results-l
 const importExportDataButton = document.getElementById('import-export-data-button');
 
 const selectedCoursesList = document.getElementById('selected-courses-list');
+
+const scheduleTable = document.getElementById('schedule-table');
+const scheduleTableBody = document.getElementById('schedule-table-body');
 
 let courseData = null;
 let selectedCourses = null;
@@ -36,52 +42,20 @@ function arraysEqual(arr1, arr2, test)
   return true;
 }
 
-// https://www.quirksmode.org/js/cookies.html
-function writeCookie(name, value, days) {
-  let expires;
-  if (days)
-  {
-    const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    expires = '; expires=' + date.toGMTString();
-  }
-  else
-  {
-    expires = "";
-  }
-  document.cookie = `${name}=${value}${expires}; path=/`;
-}
-
-function readCookie(name) {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
-  for(let idx = 0; idx < ca.length; ++idx) {
-    let c = ca[idx];
-    while (c.charAt(0) == ' ')
-    {
-      c = c.substring(1, c.length);
-    }
-    if (c.indexOf(nameEQ) == 0)
-    {
-      return c.substring(nameEQ.length, c.length);
-    }
-  }
-  return null;
-}
-
-function deleteCookie(name) {
-  writeCookie(name, '', -1);
-}
-
-function writeStateToCookies()
+function parseTime(timeString)
 {
-  writeCookie('selectedCourses', JSON.stringify(selectedCourses));
+  return parseInt(timeString.substring(0, 2)) + parseInt(timeString.substring(3, 5)) / 60;
 }
 
-function readStateFromCookies()
+function writeStateToLocalStorage()
+{
+  localStorage.setItem('selectedCourses', JSON.stringify(selectedCourses));
+}
+
+function readStateFromLocalStorage()
 {
   selectedCourses = [];
-  const jsonString = readCookie('selectedCourses');
+  const jsonString = localStorage.getItem('selectedCourses');
   if (jsonString)
   {
     try
@@ -169,6 +143,69 @@ function courseToString(course)
     course.school + '-' +
     course.section.toString().padStart(2, '0') + ' ' +
     course.courseName;
+}
+
+function coursesConflict(course1, course2)
+{
+  if (!(course1.firstHalfSemester && course2.firstHalfSemester) ||
+      !(course1.secondHalfSemester && course2.secondHalfSemester))
+  {
+    return false;
+  }
+  for (let slot1 of course1.schedule)
+  {
+    for (let slot2 of course2.schedule)
+    {
+      let daysOverlap = false;
+      for (let day1 of slot1.days)
+      {
+        if (slot2.days.indexOf(day1) !== -1)
+        {
+          daysOverlap = true;
+          break;
+        }
+      }
+      if (!daysOverlap)
+      {
+        continue;
+      }
+      const start1 = parseTime(slot1.startTime);
+      const end1 = parseTime(slot1.endTime);
+      const start2 = parseTime(slot2.startTime);
+      const end2 = parseTime(slot2.endTime);
+      if (end1 <= start2 || start1 >= end2)
+      {
+        continue;
+      }
+      else
+      {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function computeSchedule(courses)
+{
+  const schedule = [];
+  for (let course of courses)
+  {
+    let conflicts = false;
+    for (let existingCourse of schedule)
+    {
+      if (coursesConflict(course, existingCourse))
+      {
+        conflicts = true;
+        break;
+      }
+    }
+    if (!conflicts)
+    {
+      schedule.push(course);
+    }
+  }
+  return schedule;
 }
 
 function createCourseEntity(course, idx)
@@ -306,7 +343,9 @@ function readSelectedCoursesList()
     }
   }
   selectedCourses = newSelectedCourses;
-  writeStateToCookies();
+  updateSelectedCoursesList();
+  updateSchedule();
+  writeStateToLocalStorage();
 }
 
 function addCourse(course)
@@ -327,7 +366,8 @@ function addCourse(course)
     selectedCourses.push(course);
   }
   updateSelectedCoursesList();
-  writeStateToCookies();
+  updateSchedule();
+  writeStateToLocalStorage();
 }
 
 function removeCourse(course)
@@ -336,7 +376,65 @@ function removeCourse(course)
     return !coursesEquivalent(course, selectedCourse);
   });
   updateSelectedCoursesList();
-  writeStateToCookies();
+  updateSchedule();
+  writeStateToLocalStorage();
+}
+
+function createSlotEntity(course, day, startTime, endTime)
+{
+  startTime = parseTime(startTime);
+  endTime = parseTime(endTime);
+  const timeSince8am = (startTime - 8);
+  const duration = endTime - startTime;
+  const text = course.courseName;
+  const verticalOffsetPercentage = (timeSince8am + 1) / 16 * 100;
+  const heightPercentage = duration / 16 * 100;
+  const dayIndex = 'MTWRF'.indexOf(day);
+  if (dayIndex === -1)
+  {
+    return null;
+  }
+  const horizontalOffsetPercentage = (dayIndex + 1) / 6 * 100;
+  const style =
+        `top: ${verticalOffsetPercentage}%; ` +
+        `height: ${heightPercentage}%; ` +
+        `left: ${horizontalOffsetPercentage}%;`;
+  const div = document.createElement('div');
+  div.setAttribute('style', style);
+  div.classList.add('schedule-slot');
+
+  const textContainer = document.createElement('p');
+  textContainer.classList.add('schedule-slot-text-wrapper');
+  div.appendChild(textContainer);
+
+  const textNode = document.createTextNode(courseToString(course));
+  textContainer.appendChild(textNode);
+
+  return div;
+}
+
+function updateSchedule()
+{
+  const schedule = computeSchedule(selectedCourses);
+  for (let element of scheduleTable.getElementsByClassName('schedule-slot'))
+  {
+    element.parentNode.removeChild(element);
+  }
+  for (let course of schedule)
+  {
+    for (let slot of course.schedule)
+    {
+      for (let day of slot.days)
+      {
+        const entity = createSlotEntity(
+          course, day, slot.startTime, slot.endTime);
+        if (entity)
+        {
+          scheduleTable.appendChild(entity);
+        }
+      }
+    }
+  }
 }
 
 async function retrieveCourseData()
@@ -390,7 +488,8 @@ function importExportData()
     {
       selectedCourses = obj;
       updateSelectedCoursesList();
-      writeStateToCookies();
+      updateSchedule();
+      writeStateToLocalStorage();
       return;
     }
   }
@@ -427,9 +526,10 @@ function attachListeners()
 }
 
 attachListeners();
-readStateFromCookies();
+readStateFromLocalStorage();
 updateSelectedCoursesList();
-writeStateToCookies();
+updateSchedule();
+writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
 
 // DEBUG
