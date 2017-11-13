@@ -1,5 +1,6 @@
 const courseSearchInput = document.getElementById('course-search-course-name-input');
 const courseSearchResultsList = document.getElementById('course-search-results-list');
+const importExportDataButton = document.getElementById('import-export-data-button');
 const selectedCoursesList = document.getElementById('selected-courses-list');
 
 let courseData = null;
@@ -338,9 +339,37 @@ async function retrieveCourseDataUntilSuccessful()
   }
 }
 
+function importExportData()
+{
+  const response = prompt(
+    'You may edit your selected courses using an external tool:',
+    JSON.stringify(selectedCourses));
+  if (response === null)
+  {
+    return;
+  }
+  try
+  {
+    const obj = JSON.parse(response);
+    if (Array.isArray(obj))
+    {
+      selectedCourses = obj;
+      updateSelectedCoursesList();
+      writeStateToCookies();
+      return;
+    }
+  }
+  catch (err)
+  {
+    // nothing to do here
+  }
+  alert('That was not a valid JSON array! Refusing to save.');
+}
+
 function attachListeners()
 {
   courseSearchInput.addEventListener('keyup', updateCourseSearchResults);
+  importExportDataButton.addEventListener('click', importExportData);
   sortable('.sortable-list', {
     forcePlaceholderSize: true,
     placeholder: createCourseEntity('placeholder').outerHTML,

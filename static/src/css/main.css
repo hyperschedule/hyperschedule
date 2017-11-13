@@ -23,16 +23,12 @@ body {
 
 .two-column-left {
     float: left;
-    margin-left: 1.25%;
-    margin-right: 1.25%;
-    width: 45%;
+    width: 50%;
 }
 
 .two-column-right {
     float: right;
-    margin-left: 1.25%;
-    margin-right: 1.25%;
-    width: 45%;
+    width: 50%;
 }
 
 /* Course search and selected courses */
@@ -47,7 +43,7 @@ body {
     margin: 0 auto;
     padding: 10px 0;
     position: relative;
-    width: 90%;
+    width: 95%;
 }
 
 .course-box-content {
@@ -66,13 +62,16 @@ body {
 }
 
 .course-box-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
     display: none;
 }
 
 /* Course search */
 
 #course-search-column {
-    border-style: solid;
+    /* nothing to do here */
 }
 
 #course-search-course-name-input {
@@ -82,7 +81,7 @@ body {
 }
 
 #course-search-column .course-box-text {
-    padding-right: 35px;
+    padding-right: 30px;
 }
 
 #course-search-column .course-box-add-button {
@@ -90,7 +89,7 @@ body {
     height: 25px;
     margin-top: -12.5px;
     position: absolute;
-    right: 5px;
+    right: 0;
     top: 50%;
     width: 25px;
 }
@@ -98,11 +97,37 @@ body {
 /* Selected courses */
 
 #selected-courses-column {
-    border-style: solid;
+    /* nothing to do here */
+}
+
+#toolbar {
+    display: table;
+    height: 30px;
+    margin: 0 auto;
+    padding: 0;
+    width: 95%;
+}
+
+#github-link {
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#import-export-data-button-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#import-export-data-button {
+    cursor: pointer;
+    display: block;
+    float: right;
+    margin: 0 auto;
 }
 
 #selected-courses-column .course-box-text {
-    padding-right: 35px;
+    padding-right: 30px;
 }
 
 #selected-courses-column .course-box-remove-button {
@@ -110,7 +135,7 @@ body {
     height: 25px;
     margin-top: -12.5px;
     position: absolute;
-    right: 5px;
+    right: 0;
     top: 50%;
     width: 25px;
 }
