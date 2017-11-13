@@ -87,7 +87,7 @@ body {
 }
 
 .schedule-slot {
-    background-color: red;
+    background-color: #f9edd4;
     border-radius: 5px;
     display: table-cell;
     font-size: small;
