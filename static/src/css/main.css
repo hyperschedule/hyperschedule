@@ -23,12 +23,12 @@ body {
 
 .two-column-left {
     float: left;
-    width: 50%;
+    width: 70%;
 }
 
 .two-column-right {
     float: right;
-    width: 50%;
+    width: 30%;
 }
 
 .toolbar {
@@ -64,6 +64,21 @@ body {
     display: block;
     margin: 0 auto;
     width: 100%;
+}
+
+/* Schedule */
+
+#schedule-table {
+    border: 1px solid #cccccc;
+    margin: 0 auto;
+    width: 95%;
+    table-layout: fixed;
+    text-align: center;
+}
+
+#schedule-table td {
+    border: 1px solid #cccccc;
+    height: 60px;
 }
 
 /* Course search and selected courses */

@@ -282,6 +282,12 @@ function updateSelectedCoursesList()
   updateSortableLists();
 }
 
+function updateSelectedCourses()
+{
+  updateSelectedCoursesList();
+  writeStateToCookies();
+}
+
 function addCourse(course)
 {
   let alreadyAdded = false;
@@ -299,8 +305,7 @@ function addCourse(course)
   {
     selectedCourses.push(course);
   }
-  updateSelectedCoursesList();
-  writeStateToCookies();
+  updateSelectedCourses();
 }
 
 function removeCourse(course)
@@ -308,8 +313,7 @@ function removeCourse(course)
   selectedCourses = selectedCourses.filter(selectedCourse => {
     return !coursesEquivalent(course, selectedCourse);
   });
-  updateSelectedCoursesList();
-  writeStateToCookies();
+  updateSelectedCourses();
 }
 
 async function retrieveCourseData()
@@ -362,8 +366,7 @@ function importExportData()
     if (Array.isArray(obj))
     {
       selectedCourses = obj;
-      updateSelectedCoursesList();
-      writeStateToCookies();
+      updateSelectedCourses();
       return;
     }
   }
@@ -395,10 +398,16 @@ function attachListeners()
   sortable('.sortable-list', {
     forcePlaceholderSize: true,
     placeholder: createCourseEntity('placeholder').outerHTML,
-  });
+  }).addEventListener('sortstart', updateSelectedCourses);
 }
 
 attachListeners();
 readStateFromCookies();
-updateSelectedCoursesList();
+updateSelectedCourses();
 retrieveCourseDataUntilSuccessful();
+
+// DEBUG
+displayScheduleColumn();
+
+// FIXME: Make the toggle highlight which side is active
+// FIXME: Save which side of the toggle we're on
