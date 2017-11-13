@@ -1,19 +1,46 @@
-li.course {
+* {
+    font-family: sans-serif;
+}
+
+/* Shared */
+
+.course {
     background-color: #f9edd4;
     border: black;
-    font-family: sans-serif;
     margin: 0.5em;
     padding: 0.5em;
 }
 
-div.two-column {
+.two-column {
     float: left;
-    margin: 2.5%;
+    margin: 1.25%;
     width: 45%;
 }
 
-div.two-column {
-    float: left;
-    margin: 2.5%;
-    width: 45%;
+/* Course search */
+
+#column-search {
+    border-style: solid;
+}
+
+#input-search-course-name {
+    display: block;
+    height: 25px;
+    margin: auto;
+    margin-top: 0.5in;
+    width: 50%;
+}
+
+#list-search-courses {
+    padding: 0.5in;
+}
+
+/* Course list */
+
+#column-courses {
+    border-style: solid;
+}
+
+#list-courses-courses {
+    padding: 0.5in;
 }

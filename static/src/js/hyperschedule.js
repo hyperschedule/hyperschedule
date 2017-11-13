@@ -1,5 +1,6 @@
 const courseSearchInput = document.getElementById('input-search-course-name');
 const courseSearchList = document.getElementById('list-search-courses');
+const coursesList = document.getElementById('list-courses-courses');
 
 let courseData = null;
 
@@ -31,6 +32,11 @@ function setEntityVisibility(entity, visible)
   }
 }
 
+function updateSortableLists()
+{
+  sortable('.sortable');
+}
+
 function courseToString(course)
 {
   return course.department + ' ' +
@@ -48,19 +54,6 @@ function createCourseEntity(course)
   listItem.appendChild(textNode);
   listItem.classList.add('course');
   return listItem;
-}
-
-function updateCourseSearchList()
-{
-  while (courseSearchList.hasChildNodes())
-  {
-    courseSearchList.removeChild(courseSearchList.lastChild);
-  }
-  for (let course of courseData.courses)
-  {
-    courseSearchList.appendChild(createCourseEntity(course));
-  }
-  updateCourseSearchResults();
 }
 
 function courseMatchesSearchQuery(course, query)
@@ -95,6 +88,20 @@ function updateCourseSearchResults()
     const visible = courseMatchesSearchQuery(course, query);
     setEntityVisibility(entity, visible);
   }
+}
+
+function updateCourseSearchList()
+{
+  while (courseSearchList.hasChildNodes())
+  {
+    courseSearchList.removeChild(courseSearchList.lastChild);
+  }
+  for (let course of courseData.courses)
+  {
+    courseSearchList.appendChild(createCourseEntity(course));
+  }
+  updateSortableLists();
+  updateCourseSearchResults();
 }
 
 async function retrieveCourseData()
@@ -132,9 +139,15 @@ async function retrieveCourseDataUntilSuccessful()
   }
 }
 
+function makeCourseListSortable()
+{
+  sortable('.sortable');
+}
+
 function attachListeners()
 {
   courseSearchInput.addEventListener('keyup', updateCourseSearchResults);
+  makeCourseListSortable();
 }
 
 attachListeners();
