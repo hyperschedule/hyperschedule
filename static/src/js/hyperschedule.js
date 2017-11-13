@@ -549,14 +549,26 @@ function importExportData()
   writeStateToLocalStorage();
 }
 
+function setButtonSelected(button, selected)
+{
+  const classAdded = selected ? 'btn-secondary' : 'btn-light';
+  const classRemoved = selected ? 'btn-light' : 'btn-secondary';
+  button.classList.add(classAdded);
+  button.classList.remove(classRemoved);
+}
+
 function updateTabToggle()
 {
   setEntityVisibility(scheduleColumn, scheduleTabSelected);
+  setButtonSelected(scheduleToggle, scheduleTabSelected);
+
   setEntityVisibility(courseSearchColumn, !scheduleTabSelected);
+  setButtonSelected(courseSearchToggle, !scheduleTabSelected);
 }
 
 function displayCourseSearchColumn()
 {
+  this.blur();
   scheduleTabSelected = false;
   updateTabToggle();
   writeStateToLocalStorage();
@@ -564,6 +576,7 @@ function displayCourseSearchColumn()
 
 function displayScheduleColumn()
 {
+  this.blur();
   scheduleTabSelected = true;
   updateTabToggle();
   writeStateToLocalStorage();
@@ -604,12 +617,11 @@ updateSchedule();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
 
-// 1. Save which tab we're on
-// 2. Add a detail view
-// 3. Add credit counter
-// 4. Fix I/O
-// 5. Add colors
-// 6. Make the toggle highlight.
-// 7. Fix word-wrapping on course blocks.
-// 8. Fix the centering of the checkboxes.
-// 9. Fix the centering of the course blocks.
+// 1. Add a detail view
+// 2. Add credit counter
+// 3. Fix I/O
+// 4. Add colors
+// 5. Make the toggle highlight.
+// 6. Fix word-wrapping on course blocks.
+// 7. Fix the centering of the checkboxes.
+// 8. Fix the centering of the course blocks.
