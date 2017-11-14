@@ -253,7 +253,16 @@ function computeSchedule(courses)
   const schedule = [];
   for (let course of courses)
   {
-    if (!course.selected)
+    if (course.starred)
+    {
+      console.log('starred course: ' + courseToString(course));
+      schedule.push(course);
+    }
+  }
+  for (let course of courses)
+  {
+    // We already took care of the starred courses up earlier.
+    if (!course.selected || course.starred)
     {
       continue;
     }
@@ -269,6 +278,7 @@ function computeSchedule(courses)
     }
     if (!conflicts)
     {
+      console.log('normal course: ' + courseToString(course));
       schedule.push(course);
     }
   }
@@ -798,8 +808,6 @@ updateCreditCount();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
 
-// 1. Add credit counter
-// 2. Make starring work
-// 3. Fix I/O
-// 4. Add colors
-// 5. Fix the centering of the checkboxes.
+// 1. Fix I/O
+// 2. Add colors
+// 3. Fix the centering of the checkboxes.
