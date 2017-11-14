@@ -562,8 +562,8 @@ function createSlotEntity(course, day, startTime, endTime)
   const timeSince8am = (startTime - 8);
   const duration = endTime - startTime;
   const text = course.courseName;
-  const verticalOffsetPercentage = (timeSince8am + 1) / 16 * 100;
-  const heightPercentage = duration / 16 * 100;
+  const verticalOffsetPercentage = (timeSince8am + 1) / 15 * 100;
+  const heightPercentage = duration / 15 * 100;
   const dayIndex = 'MTWRF'.indexOf(day);
   if (dayIndex === -1)
   {
