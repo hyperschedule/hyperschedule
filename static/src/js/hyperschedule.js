@@ -20,6 +20,9 @@ const scheduleTable = document.getElementById('schedule-table');
 const scheduleTableBody = document.getElementById('schedule-table-body');
 const creditCountText = document.getElementById('credit-count');
 
+const importExportTextArea = document.getElementById('import-export-text-area');
+const importExportSaveChangesButton = document.getElementById('import-export-save-changes-button');
+
 let courseData = null;
 let selectedCourses = null;
 let scheduleTabSelected = false;
@@ -604,19 +607,18 @@ async function retrieveCourseDataUntilSuccessful()
   }
 }
 
-function importExportData()
+function showImportExportModal()
 {
-  const response = prompt(
-    'You may edit your selected courses using an external tool:',
-    JSON.stringify(selectedCourses));
-  if (response === null)
-  {
-    return;
-  }
+  importExportTextArea.value = JSON.stringify(selectedCourses, 2);
+  $('#import-export-modal').modal('show');
+}
+
+function saveImportExportModalChanges()
+{
   let obj;
   try
   {
-    obj = JSON.parse(response);
+    obj = JSON.parse(importExportTextArea.value);
     if (!Array.isArray(obj))
     {
       throw Error();
@@ -624,13 +626,14 @@ function importExportData()
   }
   catch (err)
   {
-    alert('That was not a valid JSON array! Refusing to save.');
+    alert('Malformed JSON. Refusing to save.');
     return;
   }
   selectedCourses = obj;
   updateSelectedCoursesList();
   updateSchedule();
   writeStateToLocalStorage();
+  $('#import-export-modal').modal('hide');
 }
 
 function generateScheduleSlotDescription(slot)
@@ -784,7 +787,9 @@ function attachListeners()
   courseSearchToggle.addEventListener('click', displayCourseSearchColumn);
   scheduleToggle.addEventListener('click', displayScheduleColumn);
   courseSearchInput.addEventListener('keyup', updateCourseSearchResults);
-  importExportDataButton.addEventListener('click', importExportData);
+  importExportDataButton.addEventListener('click', showImportExportModal);
+  importExportSaveChangesButton.addEventListener(
+    'click', saveImportExportModalChanges);
   sortable('.sortable-list', {
     forcePlaceholderSize: true,
     placeholder: createCourseEntity('placeholder').outerHTML,
@@ -803,4 +808,3 @@ retrieveCourseDataUntilSuccessful();
 
 // 1. Fix I/O
 // 2. Add colors
-// 3. Fix the centering of the checkboxes.

@@ -266,3 +266,10 @@ body {
     top: 50%;
     width: 25px;
 }
+
+/* Modals */
+
+#import-export-text-area {
+    font-family: monospace;
+    min-height: 100px;
+}
