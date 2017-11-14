@@ -132,6 +132,8 @@ for raw_course in raw_courses:
         'quarterCredits': quarter_credits,
         'firstHalfSemester': first_half,
         'secondHalfSemester': second_half,
+        'startDate': begin_date.strftime('%Y-%m-%d'),
+        'endDate': end_date.strftime('%Y-%m-%d'),
     })
 
 def course_sort_key(course):
