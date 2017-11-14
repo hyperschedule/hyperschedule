@@ -99,6 +99,7 @@ body {
 }
 
 .schedule-slot-text-wrapper {
+    /* nothing to do here */
 }
 
 /* Course search and selected courses */
@@ -191,6 +192,7 @@ body {
 }
 
 #course-description-box {
+    border: 1px solid #cccccc;
     min-height: 280px;
     text-align: center;
 }
@@ -198,7 +200,13 @@ body {
 #course-description-box p {
     font-size: small;
     line-height: 100%;
-    margin: 0 0 10px 0;
+    margin: 10px 10px;
+}
+
+#course-description-box hr {
+    font-size: small;
+    line-height: 100%;
+    margin: 0;
 }
 
 #selected-courses-column .course-box-select-toggle {

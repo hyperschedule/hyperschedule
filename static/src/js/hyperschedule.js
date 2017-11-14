@@ -496,11 +496,28 @@ function createSlotEntity(course, day, startTime, endTime)
   {
     return null;
   }
-  const horizontalOffsetPercentage = (dayIndex + 1) / 6 * 100;
+  let halfSemesterHorizontalOffset = 0;
+  let halfSemesterWidthOffset = 0;
+  if (!course.firstHalfSemester && !course.secondHalfSemester)
+  {
+    return null;
+  }
+  if (!course.firstHalfSemester || !course.secondHalfSemester)
+  {
+    halfSemesterWidthOffset = -0.5;
+  }
+  if (!course.firstHalfSemester)
+  {
+    halfSemesterHorizontalOffset = 0.5;
+  }
+  const horizontalOffsetPercentage =
+        (dayIndex + 1 + halfSemesterHorizontalOffset) / 6 * 100;
+  const widthPercentage = (1 + halfSemesterWidthOffset) / 6 * 100;
   const style =
         `top: ${verticalOffsetPercentage}%; ` +
-        `height: ${heightPercentage}%; ` +
-        `left: ${horizontalOffsetPercentage}%;`;
+        `left: ${horizontalOffsetPercentage}%; ` +
+        `width: ${widthPercentage}%; ` +
+        `height: ${heightPercentage}%; `;
   const div = document.createElement('div');
   div.setAttribute('style', style);
   div.classList.add('schedule-slot');
@@ -661,14 +678,18 @@ function setCourseDescriptionBox(course)
   {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
-  courseDescriptionBox.appendChild(document.createElement('hr'));
-  for (let line of generateCourseDescription(course))
+  const description = generateCourseDescription(course);
+  for (let idx = 0; idx < description.length; ++idx)
   {
+    const line = description[idx];
+    if (idx !== 0)
+    {
+      courseDescriptionBox.appendChild(document.createElement('hr'));
+    }
     const paragraph = document.createElement('p');
     const text = document.createTextNode(line);
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
-    courseDescriptionBox.appendChild(document.createElement('hr'));
   }
 }
 
