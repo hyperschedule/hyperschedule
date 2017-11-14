@@ -358,6 +358,7 @@ function createCourseEntity(course, idx)
     toggleCourseStarred(course);
   });
   starToggle.addEventListener('click', catchEvent);
+  starLabel.addEventListener('click', catchEvent);
 
   starLabel.appendChild(starToggle);
   listItemContent.appendChild(starLabel);
