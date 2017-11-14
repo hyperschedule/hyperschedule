@@ -90,6 +90,7 @@ body {
     background-color: #f9edd4;
     border: 1px solid black;
     border-radius: 5px;
+    cursor: pointer;
     display: table-cell;
     overflow: hidden;
     position: absolute;

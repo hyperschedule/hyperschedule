@@ -521,6 +521,9 @@ function createSlotEntity(course, day, startTime, endTime)
   const div = document.createElement('div');
   div.setAttribute('style', style);
   div.classList.add('schedule-slot');
+  div.addEventListener('click', () => {
+    setCourseDescriptionBox(course);
+  });
 
   const textContainer = document.createElement('p');
   textContainer.classList.add('schedule-slot-text-wrapper');
@@ -766,11 +769,10 @@ updateSchedule();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
 
-// 1. Fix half-semestser rendering.
-// 2. Add credit counter
-// 3. Fix I/O
-// 4. Add colors
-// 5. Make the toggle highlight.
-// 6. Fix word-wrapping on course blocks.
-// 7. Fix the centering of the checkboxes.
-// 8. Fix the centering of the course blocks.
+// 1. Add credit counter
+// 2. Fix I/O
+// 3. Add colors
+// 4. Make the toggle highlight.
+// 5. Fix word-wrapping on course blocks.
+// 6. Fix the centering of the checkboxes.
+// 7. Fix the centering of the course blocks.
