@@ -255,7 +255,6 @@ function computeSchedule(courses)
   {
     if (course.starred)
     {
-      console.log('starred course: ' + courseToString(course));
       schedule.push(course);
     }
   }
@@ -278,7 +277,6 @@ function computeSchedule(courses)
     }
     if (!conflicts)
     {
-      console.log('normal course: ' + courseToString(course));
       schedule.push(course);
     }
   }
@@ -618,12 +616,9 @@ function importExportData()
   let obj;
   try
   {
-    console.log(response);
     obj = JSON.parse(response);
-    console.log('parsed');
     if (!Array.isArray(obj))
     {
-      console.log('not valid array');
       throw Error();
     }
   }
@@ -766,7 +761,6 @@ function displayScheduleColumn()
 
 function toggleCourseSelected(course)
 {
-  console.log('toggle selected');
   course.selected = !course.selected;
   updateSchedule();
   writeStateToLocalStorage();
@@ -774,7 +768,6 @@ function toggleCourseSelected(course)
 
 function toggleCourseStarred(course)
 {
-  console.log('toggle starred');
   course.starred = !course.starred;
   updateSchedule();
   updateCreditCount();
