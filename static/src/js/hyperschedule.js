@@ -197,7 +197,8 @@ function coursesEquivalent(course1, course2)
 function coursesMutuallyExclusive(course1, course2)
 {
   return (course1.department === course2.department &&
-          course1.courseNumber === course2.courseNumber);
+          course1.courseNumber === course2.courseNumber &&
+          course1.courseCodeSuffix === course2.courseCodeSuffix);
 }
 
 function courseToString(course)
