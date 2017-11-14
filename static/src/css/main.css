@@ -91,7 +91,6 @@ body {
 }
 
 .schedule-slot {
-    border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
     display: table-cell;
