@@ -339,7 +339,7 @@ function createCourseEntity(course, idx)
   starToggle.classList.add('course-box-star-toggle');
   if (course !== 'placeholder')
   {
-    starToggle.classList.add('star-visible');
+    starLabel.classList.add('star-visible');
   }
   starToggle.checked = !!course.starred;
   if (!!course.starred) {

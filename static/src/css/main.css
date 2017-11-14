@@ -255,7 +255,7 @@ body {
 }
 
 #selected-courses-column .course-box-star-label {
-    visibility: visible;
+    visibility: hidden;
     display: block;
     width: 25px;
     height: 25px;
@@ -264,6 +264,10 @@ body {
     position: absolute;
     top: 50%;
     text-align: center;
+}
+
+#selected-courses-column .course-box-star-label.star-visible {
+    visibility: visible;
 }
 
 #selected-courses-column .course-box-star-label::after {
