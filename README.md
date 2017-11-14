@@ -12,6 +12,13 @@ We have one! Hit up
 
 You'll find it more enjoyable than Portal.
 
+## Why?
+
+This scheduler takes a different approach to the various versions of
+**hmc-scheduler**, and this approach makes it much faster to amend
+your schedule on the fly during registration. Also, half-semester
+courses finally work :)
+
 ## Local development
 
     $ yarn
