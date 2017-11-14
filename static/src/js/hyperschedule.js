@@ -393,7 +393,8 @@ function courseMatchesSearchQuery(course, query)
         course.section.toString().padStart(2, '0');
   for (let subquery of query)
   {
-    if (code.match(subquery) || section.match(subquery))
+    if (code.match(subquery) || section.match(subquery) ||
+        course.courseName.match(subquery))
     {
       continue;
     }
