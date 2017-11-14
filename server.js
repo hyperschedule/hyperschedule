@@ -6,7 +6,7 @@ const fs = require('mz/fs');
 const moment = require('moment');
 const process = require('process');
 
-let courseData = null;
+let courses = null;
 let production = false;
 
 async function parseAndSlurpOnce()
@@ -23,14 +23,7 @@ async function parseAndSlurpOnce()
     throw err;
   }
   const jsonString = await fs.readFile('courses.json');
-  const courses = JSON.parse(jsonString);
-  const mtime = moment((await fs.stat('courses.json')).mtime);
-  const now = moment();
-  const staleness = mtime.from(now);
-  courseData = {
-    courses: courses,
-    last_update: staleness,
-  };
+  courses = JSON.parse(jsonString);
 }
 
 async function parseAndSlurpRepeatedly()
@@ -60,9 +53,15 @@ async function runWebserver()
 {
   const server = express();
   server.get('/api/v1/all-courses', (req, res, next) => {
-    if (courseData)
+    if (courses)
     {
-      res.json(courseData);
+      const mtime = moment(fs.statSync('courses.json').mtime);
+      const now = moment();
+      const staleness = mtime.from(now);
+      res.json({
+        courses: courses,
+        lastUpdate: staleness,
+      });
     }
     else
     {
