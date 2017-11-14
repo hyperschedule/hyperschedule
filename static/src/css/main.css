@@ -311,3 +311,7 @@ body {
     font-family: monospace;
     min-height: 100px;
 }
+
+.modal-footer button.btn {
+    cursor: pointer;
+}
