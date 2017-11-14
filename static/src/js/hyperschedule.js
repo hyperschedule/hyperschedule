@@ -210,6 +210,14 @@ function courseToString(course)
     course.courseName;
 }
 
+function getCourseColor(course)
+{
+  return randomColor({
+    luminosity: 'light',
+    seed: JSON.stringify(course),
+  });
+}
+
 function coursesConflict(course1, course2)
 {
   if (!(course1.firstHalfSemester && course2.firstHalfSemester) &&
@@ -293,6 +301,7 @@ function createCourseEntity(course, idx)
 
   const listItemContent = document.createElement('div');
   listItemContent.classList.add('course-box-content');
+  listItemContent.style['background-color'] = getCourseColor(course);
   listItemContent.addEventListener('click', () => {
     setCourseDescriptionBox(course);
   });
@@ -533,6 +542,7 @@ function createSlotEntity(course, day, startTime, endTime)
   const div = document.createElement('div');
   div.setAttribute('style', style);
   div.classList.add('schedule-slot');
+  div.style['background-color'] = getCourseColor(course);
   div.addEventListener('click', () => {
     setCourseDescriptionBox(course);
   });

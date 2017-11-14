@@ -91,7 +91,6 @@ body {
 }
 
 .schedule-slot {
-    background-color: #f9edd4;
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
@@ -132,7 +131,6 @@ body {
 }
 
 .course-box-content {
-    background-color: #f9edd4;
     border-radius: 5px;
     display: block;
     margin: 0 auto;
