@@ -101,12 +101,13 @@ body {
 }
 
 .schedule-slot {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     border-radius: 5px;
     cursor: pointer;
-    display: table-cell;
     overflow: hidden;
     position: absolute;
-    vertical-align: middle;
     width: 16.6667%;
 }
 
