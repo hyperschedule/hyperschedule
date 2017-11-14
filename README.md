@@ -35,6 +35,7 @@ courses finally work :)
 * Make the checkboxes and stars look less terrible
 * Have some way of grouping sections from the same course together in
   the listings.
+* Make it possible to see which sections conflict with a given one.
 
 ## Contributing
 
