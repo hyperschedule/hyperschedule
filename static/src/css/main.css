@@ -105,6 +105,12 @@ body {
     padding: 5px 5px;
 }
 
+#credit-count {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
 /* Course search and selected courses */
 
 .courses-list {

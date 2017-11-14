@@ -18,6 +18,7 @@ const selectedCoursesList = document.getElementById('selected-courses-list');
 
 const scheduleTable = document.getElementById('schedule-table');
 const scheduleTableBody = document.getElementById('schedule-table-body');
+const creditCountText = document.getElementById('credit-count');
 
 let courseData = null;
 let selectedCourses = null;
@@ -308,7 +309,7 @@ function createCourseEntity(course, idx)
     starToggle.classList.add('star-visible');
   }
   starToggle.checked = course.starred;
-  starToggle.addEventListener('onchange', () => {
+  starToggle.addEventListener('change', () => {
     toggleCourseStarred(course);
   });
   starToggle.addEventListener('click', catchEvent);
@@ -713,6 +714,30 @@ function updateTabToggle()
   setButtonSelected(courseSearchToggle, !scheduleTabSelected);
 }
 
+function updateCreditCount()
+{
+  let onCampusCredits = 0;
+  let offCampusCredits = 0;
+  for (let course of selectedCourses)
+  {
+    if (course.starred)
+    {
+      if (course.school === 'HM')
+      {
+        onCampusCredits += course.quarterCredits / 4;
+      }
+      else
+      {
+        offCampusCredits += course.quarterCredits / 4;
+      }
+    }
+  }
+  const text = 'Starred courses: ' + onCampusCredits + ' on-campus credit' +
+        (onCampusCredits !== 1 ? 's' : '') + ', ' + offCampusCredits +
+        ' off-campus credit' + (offCampusCredits !== 1 ? 's' : '');
+  creditCountText.textContent = text;
+}
+
 function displayCourseSearchColumn()
 {
   this.blur();
@@ -731,6 +756,7 @@ function displayScheduleColumn()
 
 function toggleCourseSelected(course)
 {
+  console.log('toggle selected');
   course.selected = !course.selected;
   updateSchedule();
   writeStateToLocalStorage();
@@ -738,8 +764,10 @@ function toggleCourseSelected(course)
 
 function toggleCourseStarred(course)
 {
+  console.log('toggle starred');
   course.starred = !course.starred;
   updateSchedule();
+  updateCreditCount();
   writeStateToLocalStorage();
 }
 
@@ -766,13 +794,12 @@ readStateFromLocalStorage();
 updateTabToggle();
 updateSelectedCoursesList();
 updateSchedule();
+updateCreditCount();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
 
 // 1. Add credit counter
-// 2. Fix I/O
-// 3. Add colors
-// 4. Make the toggle highlight.
-// 5. Fix word-wrapping on course blocks.
-// 6. Fix the centering of the checkboxes.
-// 7. Fix the centering of the course blocks.
+// 2. Make starring work
+// 3. Fix I/O
+// 4. Add colors
+// 5. Fix the centering of the checkboxes.
