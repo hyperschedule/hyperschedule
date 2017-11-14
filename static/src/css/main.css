@@ -200,8 +200,9 @@ body {
 
 #course-search-column .course-box-add-button {
     display: block;
-    height: 25px;
-    margin-top: -12.5px;
+    height: 50px;
+    margin-top: -25px;
+    line-height: 50px;
     position: absolute;
     right: 0;
     top: 50%;
@@ -297,8 +298,9 @@ body {
 
 #selected-courses-column .course-box-remove-button {
     display: block;
-    height: 25px;
-    margin-top: -12.5px;
+    height: 50px;
+    margin-top: -25px;
+    line-height: 50px;
     position: absolute;
     right: 0;
     top: 50%;
