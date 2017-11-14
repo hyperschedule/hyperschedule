@@ -322,16 +322,16 @@ function createCourseEntity(course, idx)
   selectToggle.classList.add('course-box-button');
   selectToggle.classList.add('course-box-toggle');
   selectToggle.classList.add('course-box-select-toggle');
-  selectToggle.checked = course.selected;
+  selectToggle.checked = !!course.selected;
   selectToggle.addEventListener('change', () => {
     toggleCourseSelected(course);
   });
   selectToggle.addEventListener('click', catchEvent);
   listItemContent.appendChild(selectToggle);
-  
+
   const starLabel = document.createElement('label');
   starLabel.classList.add('course-box-star-label');
-    
+
   const starToggle = document.createElement('input');
   starToggle.setAttribute('type', 'checkbox');
   starToggle.classList.add('course-box-button');
@@ -341,7 +341,7 @@ function createCourseEntity(course, idx)
   {
     starToggle.classList.add('star-visible');
   }
-  starToggle.checked = course.starred;
+  starToggle.checked = !!course.starred;
   starToggle.addEventListener('change', () => {
     if (starLabel.classList.contains('star-checked'))
     {
@@ -523,7 +523,7 @@ function addCourse(course)
     {
       // Maybe some minor information (number of seats available) was
       // updated in the Portal. Let's update the existing class.
-      selectedCourses[idx] = deepCopy(course);
+      Object.assign(selectedCourses[idx], course);
       alreadyAdded = true;
     }
   }
@@ -585,6 +585,10 @@ function createSlotEntity(course, day, startTime, endTime)
   const div = document.createElement('div');
   div.setAttribute('style', style);
   div.classList.add('schedule-slot');
+  if (course.starred)
+  {
+    div.classList.add('schedule-slot-starred');
+  }
   div.style['background-color'] = getCourseColor(course);
   div.addEventListener('click', () => {
     setCourseDescriptionBox(course);
@@ -642,11 +646,16 @@ async function retrieveCourseData()
     {
       if (coursesEquivalent(course, selectedCourse))
       {
-        selectedCourses[idx] = course;
+        Object.assign(selectedCourses[idx], course);
+        break;
       }
     }
   }
-  setTimeout(updateCourseSearchResultsList, 0);
+  setTimeout(() => {
+    updateCourseSearchResultsList();
+    updateSelectedCoursesList();
+    updateSchedule();
+  }, 0);
 }
 
 async function retrieveCourseDataUntilSuccessful()

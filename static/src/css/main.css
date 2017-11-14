@@ -100,6 +100,10 @@ body {
     width: 16.6667%;
 }
 
+.schedule-slot-starred {
+    border: 1px solid black;
+}
+
 .schedule-slot-text-wrapper {
     font-size: 75%;
     line-height: 125%;
