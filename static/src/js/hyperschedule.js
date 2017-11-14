@@ -806,7 +806,7 @@ function toggleCourseStarred(course)
   writeStateToLocalStorage();
 }
 
-function catchEvent()
+function catchEvent(event)
 {
   event.stopPropagation();
 }
