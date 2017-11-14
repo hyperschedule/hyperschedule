@@ -14,20 +14,30 @@
 
 /* Page layout */
 
+html {
+    height: 100%;
+}
+
 body {
-    margin-top: 1.25%;
-    margin-bottom: 1.25%;
+    height: 100%;
+    margin: 0;
+    padding: 1.25% 0;
+    overflow: hidden;
 }
 
 /* Column layout */
 
 .two-column-left {
     float: left;
+    height: 100%;
+    overflow-y: auto;
     width: 70%;
 }
 
 .two-column-right {
     float: right;
+    height: 100%;
+    overflow-y: auto;
     width: 30%;
 }
 
