@@ -380,20 +380,24 @@ function createCourseEntity(course, idx)
   const textNode = document.createTextNode(text);
   textBox.appendChild(textNode);
 
-  const addButton = document.createElement('button');
+  const addButton = document.createElement('i');
   addButton.classList.add('course-box-button');
   addButton.classList.add('course-box-add-button');
-  addButton.innerHTML = '+';
+  addButton.classList.add('icon');
+  addButton.classList.add('ion-plus');
+
   addButton.addEventListener('click', () => {
     addCourse(course);
   });
   addButton.addEventListener('click', catchEvent);
   listItemContent.appendChild(addButton);
 
-  const removeButton = document.createElement('button');
+  const removeButton = document.createElement('i');
   removeButton.classList.add('course-box-button');
   removeButton.classList.add('course-box-remove-button');
-  removeButton.innerHTML = '⨉';
+  removeButton.classList.add('icon');
+  removeButton.classList.add('ion-close');
+  // removeButton.innerHTML = '⨉';
   removeButton.addEventListener('click', () => {
     removeCourse(course);
   });
