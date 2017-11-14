@@ -207,14 +207,21 @@ function courseToString(course)
     course.courseCodeSuffix + ' ' +
     course.school + '-' +
     course.section.toString().padStart(2, '0') + ' ' +
-    course.courseName;
+    course.courseName + ' (' +
+    course.courseStatus + ', ' +
+    course.openSeats + '/' +
+    course.totalSeats + ' seats filled)';
 }
 
 function getCourseColor(course)
 {
   return randomColor({
     luminosity: 'light',
-    seed: JSON.stringify(course),
+    seed: course.department + ' ' +
+      course.courseNumber.toString().padStart(3, '0') +
+      course.courseCodeSuffix + ' ' +
+      course.school + '-' +
+      course.section.toString().padStart(2, '0'),
   });
 }
 
@@ -301,7 +308,10 @@ function createCourseEntity(course, idx)
 
   const listItemContent = document.createElement('div');
   listItemContent.classList.add('course-box-content');
-  listItemContent.style['background-color'] = getCourseColor(course);
+  if (course !== 'placeholder')
+  {
+    listItemContent.style['background-color'] = getCourseColor(course);
+  }
   listItemContent.addEventListener('click', () => {
     setCourseDescriptionBox(course);
   });
@@ -610,6 +620,18 @@ async function retrieveCourseData()
                 response.status + ' ' + response.statusText);
   }
   courseData = await response.json();
+  // Update things like seats open with data from Portal.
+  for (let idx = 0; idx < selectedCourses.length; ++idx)
+  {
+    const selectedCourse = selectedCourses[idx];
+    for (let course of courseData.courses)
+    {
+      if (coursesEquivalent(course, selectedCourse))
+      {
+        selectedCourses[idx] = course;
+      }
+    }
+  }
   setTimeout(updateCourseSearchResultsList, 0);
 }
 
@@ -617,6 +639,7 @@ async function retrieveCourseDataUntilSuccessful()
 {
   let delay = 500;
   const backoffFactor = 1.5;
+  const pollInterval = 5 * 1000;
   while (true)
   {
     console.log('Attempting to fetch course data...');
@@ -624,6 +647,8 @@ async function retrieveCourseDataUntilSuccessful()
     {
       await retrieveCourseData();
       console.log('Successfully fetched course data.');
+      console.log(`Polling again in ${pollInterval}ms.`);
+      setTimeout(retrieveCourseDataUntilSuccessful, pollInterval);
       break;
     }
     catch (err)
