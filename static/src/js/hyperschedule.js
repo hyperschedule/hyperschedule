@@ -805,6 +805,3 @@ updateSchedule();
 updateCreditCount();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
-
-// 1. Fix I/O
-// 2. Add colors
