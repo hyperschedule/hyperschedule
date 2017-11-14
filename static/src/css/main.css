@@ -110,6 +110,7 @@ body {
 }
 
 .course-box {
+    cursor: pointer;
     margin: 0 auto;
     padding: 10px 0;
     position: relative;
@@ -189,6 +190,17 @@ body {
     margin: 0 auto;
 }
 
+#course-description-box {
+    min-height: 280px;
+    text-align: center;
+}
+
+#course-description-box p {
+    font-size: small;
+    line-height: 100%;
+    margin: 0 0 10px 0;
+}
+
 #selected-courses-column .course-box-select-toggle {
     display: block;
     height: 25px;
@@ -211,7 +223,7 @@ body {
     width: 25px;
 }
 
-#selected-courses-column .course-box-star-toggle:after {
+#selected-courses-column .course-box-star-toggle.star-visible:after {
     content: "☆";
     cursor: pointer;
     font-weight: 600;
@@ -219,7 +231,7 @@ body {
     visibility: visible;
 }
 
-#selected-courses-column .course-box-star-toggle:checked:after {
+#selected-courses-column .course-box-star-toggle.star-visible:checked:after {
     content: "★";
 }
 

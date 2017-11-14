@@ -12,6 +12,8 @@ const courseSearchResultsList = document.getElementById('course-search-results-l
 
 const importExportDataButton = document.getElementById('import-export-data-button');
 
+const courseDescriptionBox = document.getElementById('course-description-box');
+
 const selectedCoursesList = document.getElementById('selected-courses-list');
 
 const scheduleTable = document.getElementById('schedule-table');
@@ -43,14 +45,59 @@ function arraysEqual(arr1, arr2, test)
   return true;
 }
 
+function formatList(list, none)
+{
+  if (list.length === 0)
+  {
+    if (none === undefined)
+    {
+      return '(none)';
+    }
+    else
+    {
+      return none || '(none)';
+    }
+  }
+  else if (list.length === 1)
+  {
+    return list[0];
+  }
+  else if (list.length === 2)
+  {
+    return list[0] + ' and ' + list[1];
+  }
+  else {
+    return list.slice(0, list.length - 1).join(', ') +
+      ', and ' + list[list.length - 1];
+  }
+}
+
 function deepCopy(obj)
 {
   return JSON.parse(JSON.stringify(obj));
 }
 
+function parseTimeSeparately(timeString)
+{
+  return [parseInt(timeString.substring(0, 2)),
+          parseInt(timeString.substring(3, 5))];
+}
+
 function parseTime(timeString)
 {
-  return parseInt(timeString.substring(0, 2)) + parseInt(timeString.substring(3, 5)) / 60;
+  const [hours, minutes] = parseTimeSeparately(timeString);
+  return hours + minutes / 60;
+}
+
+function convertTimeTo12Hour(timeString)
+{
+  let [hours, minutes] = parseTimeSeparately(timeString);
+  const pm = hours >= 12;
+  hours -= 1;
+  hours %= 12;
+  hours += 1;
+  return hours.toString().padStart(2, '0') + ':' +
+    minutes.toString().padStart(2, '0') + ' ' + (pm ? 'PM' : 'AM');
 }
 
 function writeStateToLocalStorage()
@@ -234,6 +281,9 @@ function createCourseEntity(course, idx)
 
   const listItemContent = document.createElement('div');
   listItemContent.classList.add('course-box-content');
+  listItemContent.addEventListener('click', () => {
+    setCourseDescriptionBox(course);
+  });
   listItem.appendChild(listItemContent);
 
   const selectToggle = document.createElement('input');
@@ -245,6 +295,7 @@ function createCourseEntity(course, idx)
   selectToggle.addEventListener('change', () => {
     toggleCourseSelected(course);
   });
+  selectToggle.addEventListener('click', catchEvent);
   listItemContent.appendChild(selectToggle);
 
   const starToggle = document.createElement('input');
@@ -252,10 +303,15 @@ function createCourseEntity(course, idx)
   starToggle.classList.add('course-box-button');
   starToggle.classList.add('course-box-toggle');
   starToggle.classList.add('course-box-star-toggle');
+  if (course !== 'placeholder')
+  {
+    starToggle.classList.add('star-visible');
+  }
   starToggle.checked = course.starred;
   starToggle.addEventListener('onchange', () => {
     toggleCourseStarred(course);
   });
+  starToggle.addEventListener('click', catchEvent);
   listItemContent.appendChild(starToggle);
 
   const textBox = document.createElement('p');
@@ -281,6 +337,7 @@ function createCourseEntity(course, idx)
   addButton.addEventListener('click', () => {
     addCourse(course);
   });
+  addButton.addEventListener('click', catchEvent);
   listItemContent.appendChild(addButton);
 
   const removeButton = document.createElement('button');
@@ -290,6 +347,7 @@ function createCourseEntity(course, idx)
   removeButton.addEventListener('click', () => {
     removeCourse(course);
   });
+  removeButton.addEventListener('click', catchEvent);
   listItemContent.appendChild(removeButton);
 
   if (course === 'placeholder')
@@ -549,6 +607,71 @@ function importExportData()
   writeStateToLocalStorage();
 }
 
+function generateScheduleSlotDescription(slot)
+{
+  return slot.days + ' ' + convertTimeTo12Hour(slot.startTime) + ' - ' +
+    convertTimeTo12Hour(slot.endTime) + ' at ' + slot.location;
+}
+
+function generateCourseDescription(course)
+{
+  const description = [];
+
+  const summaryLine =
+        course.department + ' ' +
+        course.courseNumber.toString().padStart(3, '0') +
+        course.courseCodeSuffix + ' ' +
+        course.school + '-' +
+        course.section.toString().padStart(2, '0') + ' ' +
+        course.courseName;
+  description.push(summaryLine);
+
+  const times = course.schedule.map(generateScheduleSlotDescription);
+  for (const time of times)
+  {
+    description.push(time);
+  }
+
+  const instructors = formatList(course.faculty);
+  description.push(instructors);
+
+  let partOfYear = '(malformed schedule)';
+  if (course.firstHalfSemester && course.secondHalfSemester)
+  {
+    partOfYear = 'Full-semester course';
+  }
+  else if (course.firstHalfSemester && !course.secondHalfSemester)
+  {
+    partOfYear = 'First half-semester course';
+  }
+  else if (!course.firstHalfSemester && course.secondHalfSemester)
+  {
+    partOfYear = 'Second half-semester course';
+  }
+  let credits = (course.quarterCredits / 4) + ' credit' +
+      (course.quarterCredits != 4 ? 's' : '');
+  description.push(`${partOfYear}, ${credits}`);
+
+  return description;
+}
+
+function setCourseDescriptionBox(course)
+{
+  while (courseDescriptionBox.hasChildNodes())
+  {
+    courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
+  }
+  courseDescriptionBox.appendChild(document.createElement('hr'));
+  for (let line of generateCourseDescription(course))
+  {
+    const paragraph = document.createElement('p');
+    const text = document.createTextNode(line);
+    paragraph.appendChild(text);
+    courseDescriptionBox.appendChild(paragraph);
+    courseDescriptionBox.appendChild(document.createElement('hr'));
+  }
+}
+
 function setButtonSelected(button, selected)
 {
   const classAdded = selected ? 'btn-secondary' : 'btn-light';
@@ -596,6 +719,11 @@ function toggleCourseStarred(course)
   writeStateToLocalStorage();
 }
 
+function catchEvent()
+{
+  event.stopPropagation();
+}
+
 function attachListeners()
 {
   courseSearchToggle.addEventListener('click', displayCourseSearchColumn);
@@ -617,7 +745,7 @@ updateSchedule();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
 
-// 1. Add a detail view
+// 1. Fix half-semestser rendering.
 // 2. Add credit counter
 // 3. Fix I/O
 // 4. Add colors
