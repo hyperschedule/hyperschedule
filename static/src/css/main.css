@@ -53,6 +53,8 @@ body {
 }
 
 #course-search-toggle {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
     cursor: pointer;
     display: block;
     margin: 0 auto;
@@ -60,6 +62,8 @@ body {
 }
 
 #schedule-toggle {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
     cursor: pointer;
     display: block;
     margin: 0 auto;
