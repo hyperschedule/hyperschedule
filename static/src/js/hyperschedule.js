@@ -386,13 +386,31 @@ function createCourseEntity(course, idx)
 
 function courseMatchesSearchQuery(course, query)
 {
-  const str = courseToString(course);
+  const code = course.department +
+        course.courseNumber.toString().padStart(3, '0') +
+        course.courseCodeSuffix;
+  const section = course.school + '-' +
+        course.section.toString().padStart(2, '0');
   for (let subquery of query)
   {
-    if (!str.match(subquery))
+    if (code.match(subquery) || section.match(subquery))
     {
-      return false;
+      continue;
     }
+    let foundMatch = false;
+    for (let instructor of course.faculty)
+    {
+      if (instructor.match(subquery))
+      {
+        foundMatch = true;
+        break;
+      }
+    }
+    if (foundMatch)
+    {
+      continue;
+    }
+    return false;
   }
   return true;
 }
@@ -717,8 +735,8 @@ function setCourseDescriptionBox(course)
 
 function setButtonSelected(button, selected)
 {
-  const classAdded = selected ? 'btn-secondary' : 'btn-light';
-  const classRemoved = selected ? 'btn-light' : 'btn-secondary';
+  const classAdded = selected ? 'btn-primary' : 'btn-light';
+  const classRemoved = selected ? 'btn-light' : 'btn-primary';
   button.classList.add(classAdded);
   button.classList.remove(classRemoved);
 }

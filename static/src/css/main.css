@@ -157,9 +157,21 @@ body {
 }
 
 #course-search-course-name-input {
-    display: block;
+    display: table-cell;
     margin: 10px auto;
-    width: 50%;
+    width: 100%;
+}
+
+#help-button-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#help-button {
+    cursor: pointer;
+    display: block;
+    float: right;
+    margin: 0 auto;
 }
 
 #course-search-column .course-box-text {
