@@ -318,7 +318,10 @@ function createCourseEntity(course, idx)
   });
   selectToggle.addEventListener('click', catchEvent);
   listItemContent.appendChild(selectToggle);
-
+  
+  const starLabel = document.createElement('label');
+  starLabel.classList.add('course-box-star-label');
+    
   const starToggle = document.createElement('input');
   starToggle.setAttribute('type', 'checkbox');
   starToggle.classList.add('course-box-button');
@@ -330,10 +333,21 @@ function createCourseEntity(course, idx)
   }
   starToggle.checked = course.starred;
   starToggle.addEventListener('change', () => {
+    if (starLabel.classList.contains('star-checked'))
+    {
+      starLabel.classList.remove('star-checked');
+    }
+    else
+    {
+      starLabel.classList.add('star-checked');
+    }
+
     toggleCourseStarred(course);
   });
   starToggle.addEventListener('click', catchEvent);
-  listItemContent.appendChild(starToggle);
+
+  starLabel.appendChild(starToggle);
+  listItemContent.appendChild(starLabel);
 
   const textBox = document.createElement('p');
   textBox.classList.add('course-box-text');
