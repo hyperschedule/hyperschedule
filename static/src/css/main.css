@@ -247,26 +247,28 @@ body {
 }
 
 #selected-courses-column .course-box-star-toggle {
-    cursor: pointer;
+    visibility: hidden;
+}
+
+#selected-courses-column .course-box-star-label {
+    visibility: visible;
     display: block;
+    width: 25px;
     height: 25px;
     left: 25px;
     margin-top: -12.5px;
     position: absolute;
     top: 50%;
-    visibility: hidden;
-    width: 25px;
-}
-
-#selected-courses-column .course-box-star-toggle.star-visible:after {
-    content: "☆";
-    cursor: pointer;
-    font-weight: 600;
     text-align: center;
-    visibility: visible;
 }
 
-#selected-courses-column .course-box-star-toggle.star-visible:checked:after {
+#selected-courses-column .course-box-star-label::after {
+    content: "☆";
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#selected-courses-column .course-box-star-label.star-checked::after {
     content: "★";
 }
 

@@ -207,14 +207,21 @@ function courseToString(course)
     course.courseCodeSuffix + ' ' +
     course.school + '-' +
     course.section.toString().padStart(2, '0') + ' ' +
-    course.courseName;
+    course.courseName + ' (' +
+    course.courseStatus + ', ' +
+    course.openSeats + '/' +
+    course.totalSeats + ' seats filled)';
 }
 
 function getCourseColor(course)
 {
   return randomColor({
     luminosity: 'light',
-    seed: JSON.stringify(course),
+    seed: course.department + ' ' +
+      course.courseNumber.toString().padStart(3, '0') +
+      course.courseCodeSuffix + ' ' +
+      course.school + '-' +
+      course.section.toString().padStart(2, '0'),
   });
 }
 
@@ -301,7 +308,10 @@ function createCourseEntity(course, idx)
 
   const listItemContent = document.createElement('div');
   listItemContent.classList.add('course-box-content');
-  listItemContent.style['background-color'] = getCourseColor(course);
+  if (course !== 'placeholder')
+  {
+    listItemContent.style['background-color'] = getCourseColor(course);
+  }
   listItemContent.addEventListener('click', () => {
     setCourseDescriptionBox(course);
   });
@@ -318,7 +328,10 @@ function createCourseEntity(course, idx)
   });
   selectToggle.addEventListener('click', catchEvent);
   listItemContent.appendChild(selectToggle);
-
+  
+  const starLabel = document.createElement('label');
+  starLabel.classList.add('course-box-star-label');
+    
   const starToggle = document.createElement('input');
   starToggle.setAttribute('type', 'checkbox');
   starToggle.classList.add('course-box-button');
@@ -330,10 +343,21 @@ function createCourseEntity(course, idx)
   }
   starToggle.checked = course.starred;
   starToggle.addEventListener('change', () => {
+    if (starLabel.classList.contains('star-checked'))
+    {
+      starLabel.classList.remove('star-checked');
+    }
+    else
+    {
+      starLabel.classList.add('star-checked');
+    }
+
     toggleCourseStarred(course);
   });
   starToggle.addEventListener('click', catchEvent);
-  listItemContent.appendChild(starToggle);
+
+  starLabel.appendChild(starToggle);
+  listItemContent.appendChild(starLabel);
 
   const textBox = document.createElement('p');
   textBox.classList.add('course-box-text');
@@ -610,6 +634,18 @@ async function retrieveCourseData()
                 response.status + ' ' + response.statusText);
   }
   courseData = await response.json();
+  // Update things like seats open with data from Portal.
+  for (let idx = 0; idx < selectedCourses.length; ++idx)
+  {
+    const selectedCourse = selectedCourses[idx];
+    for (let course of courseData.courses)
+    {
+      if (coursesEquivalent(course, selectedCourse))
+      {
+        selectedCourses[idx] = course;
+      }
+    }
+  }
   setTimeout(updateCourseSearchResultsList, 0);
 }
 
@@ -617,6 +653,7 @@ async function retrieveCourseDataUntilSuccessful()
 {
   let delay = 500;
   const backoffFactor = 1.5;
+  const pollInterval = 5 * 1000;
   while (true)
   {
     console.log('Attempting to fetch course data...');
@@ -624,6 +661,8 @@ async function retrieveCourseDataUntilSuccessful()
     {
       await retrieveCourseData();
       console.log('Successfully fetched course data.');
+      console.log(`Polling again in ${pollInterval}ms.`);
+      setTimeout(retrieveCourseDataUntilSuccessful, pollInterval);
       break;
     }
     catch (err)
