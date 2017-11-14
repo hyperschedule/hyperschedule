@@ -23,10 +23,6 @@ You'll find it more enjoyable than Portal.
     $ yarn babel
     $ ./server.js --production
 
-## FIXME
-
-* Make courses different colors
-
 ## Planned features
 
 * Make the checkboxes and stars look less terrible
