@@ -132,6 +132,10 @@ body {
     padding: 5px 5px;
 }
 
+#credit-count-box {
+    margin-bottom: 10px !important;
+}
+
 #credit-count {
     display: table-cell;
     text-align: center;
