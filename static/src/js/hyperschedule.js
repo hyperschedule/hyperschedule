@@ -26,6 +26,7 @@ const importExportSaveChangesButton = document.getElementById('import-export-sav
 
 let courseData = null;
 let selectedCourses = null;
+let schedule = null;
 let scheduleTabSelected = false;
 
 // https://stackoverflow.com/a/2593661
@@ -273,7 +274,7 @@ function computeSchedule(courses)
   const schedule = [];
   for (let course of courses)
   {
-    if (course.starred)
+    if (course.selected && course.starred)
     {
       schedule.push(course);
     }
@@ -616,7 +617,7 @@ function createSlotEntity(course, day, startTime, endTime)
 
 function updateSchedule()
 {
-  const schedule = computeSchedule(selectedCourses);
+  schedule = computeSchedule(selectedCourses);
   while (scheduleTable.getElementsByClassName('schedule-slot').length > 0)
   {
     const element = scheduleTable.getElementsByClassName('schedule-slot')[0];
@@ -628,12 +629,12 @@ function updateSchedule()
     {
       for (let day of slot.days)
       {
-        const entity = createSlotEntity(
-          course, day, slot.startTime, slot.endTime);
-        if (entity)
-        {
-          scheduleTable.appendChild(entity);
-        }
+	const entity = createSlotEntity(
+	  course, day, slot.startTime, slot.endTime);
+	if (entity)
+	{
+	  scheduleTable.appendChild(entity);
+	}
       }
     }
   }
@@ -830,7 +831,7 @@ function updateCreditCount()
   let offCampusStarredCredits = 0;
   let onCampusCredits = 0;
   let offCampusCredits = 0;
-  for (let course of selectedCourses)
+  for (let course of schedule)
   {
     let credits = course.quarterCredits / 4;
 
