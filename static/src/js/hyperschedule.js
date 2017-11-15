@@ -638,6 +638,7 @@ function updateSchedule()
       }
     }
   }
+  updateCreditCount();
 }
 
 async function retrieveCourseData()
@@ -892,7 +893,6 @@ function toggleCourseStarred(course)
 {
   course.starred = !course.starred;
   updateSchedule();
-  updateCreditCount();
   writeStateToLocalStorage();
 }
 
@@ -922,6 +922,5 @@ readStateFromLocalStorage();
 updateTabToggle();
 updateSelectedCoursesList();
 updateSchedule();
-updateCreditCount();
 writeStateToLocalStorage();
 retrieveCourseDataUntilSuccessful();
