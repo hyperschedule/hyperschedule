@@ -89,8 +89,7 @@ body {
 /* Schedule */
 
 #schedule-table {
-    border: 1px solid #cccccc;
-    border-bottom: none;
+    border: none;
     margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -99,7 +98,6 @@ body {
     table-layout: fixed;
     text-align: center;
     width: 95%;
-    border: none;
 }
 
 #schedule-table th {
