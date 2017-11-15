@@ -418,99 +418,99 @@ function createCourseEntity(course, idx)
   return listItem;
 }
 
-  function courseMatchesSearchQuery(course, query)
+function courseMatchesSearchQuery(course, query)
+{
+  const code = course.department +
+        course.courseNumber.toString().padStart(3, '0') +
+        course.courseCodeSuffix;
+  const section = course.school + '-' +
+        course.section.toString().padStart(2, '0');
+  for (let subquery of query)
   {
-    const code = course.department +
-          course.courseNumber.toString().padStart(3, '0') +
-          course.courseCodeSuffix;
-    const section = course.school + '-' +
-          course.section.toString().padStart(2, '0');
-    for (let subquery of query)
+    if (code.match(subquery) || section.match(subquery) ||
+        course.courseName.match(subquery))
     {
-      if (code.match(subquery) || section.match(subquery) ||
-          course.courseName.match(subquery))
+      continue;
+    }
+    let foundMatch = false;
+    for (let instructor of course.faculty)
+    {
+      if (instructor.match(subquery))
       {
-	continue;
+        foundMatch = true;
+        break;
       }
-      let foundMatch = false;
-      for (let instructor of course.faculty)
-      {
-	if (instructor.match(subquery))
-	{
-          foundMatch = true;
-          break;
-	}
-      }
-      if (foundMatch)
-      {
-	continue;
-      }
-      return false;
     }
-    return true;
+    if (foundMatch)
+    {
+      continue;
+    }
+    return false;
   }
+  return true;
+}
 
-  function getSearchQuery()
+function getSearchQuery()
+{
+  return courseSearchInput.value.trim().split(/\s+/).map(subquery => {
+    return new RegExp(quoteRegexp(subquery), 'i');
+  });
+}
+
+function updateCourseSearchResults()
+{
+  const query = getSearchQuery();
+  const courses = courseData.courses;
+  const entities = courseSearchResultsList.children;
+  for (let idx = 0; idx < courses.length; ++idx)
   {
-    return courseSearchInput.value.trim().split(/\s+/).map(subquery => {
-      return new RegExp(quoteRegexp(subquery), 'i');
-    });
+    const course = courses[idx];
+    const entity = entities[idx];
+    const visible = courseMatchesSearchQuery(course, query);
+    setEntityVisibility(entity, visible);
   }
+}
 
-  function updateCourseSearchResults()
+function updateCourseSearchResultsList()
+{
+  while (courseSearchResultsList.hasChildNodes())
   {
-    const query = getSearchQuery();
-    const courses = courseData.courses;
-    const entities = courseSearchResultsList.children;
-    for (let idx = 0; idx < courses.length; ++idx)
-    {
-      const course = courses[idx];
-      const entity = entities[idx];
-      const visible = courseMatchesSearchQuery(course, query);
-      setEntityVisibility(entity, visible);
-    }
+    courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
-
-  function updateCourseSearchResultsList()
+  for (let course of courseData.courses)
   {
-    while (courseSearchResultsList.hasChildNodes())
-    {
-      courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
-    }
-    for (let course of courseData.courses)
-    {
-      courseSearchResultsList.appendChild(createCourseEntity(course));
-    }
-    updateCourseSearchResults();
+    courseSearchResultsList.appendChild(createCourseEntity(course));
   }
+  updateCourseSearchResults();
+}
 
-  function updateSelectedCoursesList()
+function updateSelectedCoursesList()
+{
+  while (selectedCoursesList.hasChildNodes())
   {
-    while (selectedCoursesList.hasChildNodes())
-    {
-      selectedCoursesList.removeChild(selectedCoursesList.lastChild);
-    }
-    for (let idx = 0; idx < selectedCourses.length; ++idx)
-    {
-      const course = selectedCourses[idx];
-      selectedCoursesList.appendChild(createCourseEntity(course, idx));
-    }
-    updateSortableLists();
+    selectedCoursesList.removeChild(selectedCoursesList.lastChild);
   }
-
-  function readSelectedCoursesList()
+  for (let idx = 0; idx < selectedCourses.length; ++idx)
   {
-    const newSelectedCourses = [];
-    for (let entity of selectedCoursesList.children)
+    const course = selectedCourses[idx];
+    selectedCoursesList.appendChild(createCourseEntity(course, idx));
+  }
+  updateSortableLists();
+}
+
+function readSelectedCoursesList()
+{
+  const newSelectedCourses = [];
+  for (let entity of selectedCoursesList.children)
+  {
+    const idx = parseInt(entity.getAttribute('data-course-index'));
+    if (!isNaN(idx) && idx >= 0 && idx < selectedCourses.length)
     {
-      const idx = parseInt(entity.getAttribute('data-course-index'));
-      if (!isNaN(idx) && idx >= 0 && idx < selectedCourses.length)
-      {
-	newSelectedCourses.push(selectedCourses[idx]);
-      }
-      else
-      {
-	alert('An internal error occurred. This is bad.');
+      newSelectedCourses.push(selectedCourses[idx]);
+    }
+    else
+    {
+      alert('An internal error occurred. This is bad.');
       updateSelectedCoursesList();
       return;
     }
@@ -826,25 +826,41 @@ function updateTabToggle()
 
 function updateCreditCount()
 {
+  let onCampusStarredCredits = 0;
+  let offCampusStarredCredits = 0;
   let onCampusCredits = 0;
   let offCampusCredits = 0;
   for (let course of selectedCourses)
   {
-    if (course.starred)
+    let credits = course.quarterCredits / 4;
+
+    if (course.school === 'HM')
     {
-      if (course.school === 'HM')
+      onCampusCredits += credits;
+      if (course.starred)
       {
-	onCampusCredits += course.quarterCredits / 4;
+	onCampusStarredCredits += credits;
       }
-      else
+    }
+    else
+    {
+      offCampusCredits += credits;
+      if (course.starred)
       {
-	offCampusCredits += course.quarterCredits / 4;
+	offCampusStarredCredits += credits;
       }
     }
   }
-  const text = 'Starred courses: ' + onCampusCredits + ' on-campus credit' +
-	(onCampusCredits !== 1 ? 's' : '') + ', ' + offCampusCredits +
-	' off-campus credit' + (offCampusCredits !== 1 ? 's' : '');
+  let totalCredits = onCampusCredits + 3 * offCampusCredits;
+  let totalStarredCredits = onCampusStarredCredits + 3 * offCampusStarredCredits;
+  
+  const text = 'Scheduled credits: ' +
+	onCampusCredits + ' on-campus credit' + (onCampusCredits !== 1 ? 's' : '') +
+	' (' + onCampusStarredCredits + ' starred), ' +
+	offCampusCredits + ' off-campus credit' + (offCampusCredits !== 1 ? 's' : '') +
+	' (' + offCampusStarredCredits + ' starred), ' +
+	totalCredits + ' total credit' + (totalCredits !== 1 ? 's' : '') +
+	' (' + totalStarredCredits + ' starred)';
   creditCountText.textContent = text;
 }
 
