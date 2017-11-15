@@ -208,6 +208,17 @@ body {
     width: 100%;
 }
 
+#closed-courses-toggle-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+    white-space: nowrap;
+}
+
+#closed-courses-toggle-wrapper label {
+    margin-bottom: 0 !important;
+}
+
 #help-button-wrapper {
     display: table-cell;
     vertical-align: middle;
