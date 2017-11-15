@@ -13,6 +13,7 @@ const courseSearchResultsList = document.getElementById('course-search-results-l
 const importExportDataButton = document.getElementById('import-export-data-button');
 
 const courseDescriptionBox = document.getElementById('course-description-box');
+const courseDescriptionBoxOuter = document.getElementById('course-description-box-outer');
 
 const selectedCoursesList = document.getElementById('selected-courses-list');
 
@@ -84,7 +85,7 @@ function deepCopy(obj)
 function parseTimeSeparately(timeString)
 {
   return [parseInt(timeString.substring(0, 2)),
-          parseInt(timeString.substring(3, 5))];
+	  parseInt(timeString.substring(3, 5))];
 }
 
 function parseTime(timeString)
@@ -121,7 +122,7 @@ function readStateFromLocalStorage()
       const obj = JSON.parse(jsonString);
       if (Array.isArray(obj))
       {
-        selectedCourses = obj;
+	selectedCourses = obj;
       }
     }
     catch (err)
@@ -197,8 +198,8 @@ function coursesEquivalent(course1, course2)
 function coursesMutuallyExclusive(course1, course2)
 {
   return (course1.department === course2.department &&
-          course1.courseNumber === course2.courseNumber &&
-          course1.courseCodeSuffix === course2.courseCodeSuffix);
+	  course1.courseNumber === course2.courseNumber &&
+	  course1.courseCodeSuffix === course2.courseCodeSuffix);
 }
 
 function courseToString(course)
@@ -240,15 +241,15 @@ function coursesConflict(course1, course2)
       let daysOverlap = false;
       for (let day1 of slot1.days)
       {
-        if (slot2.days.indexOf(day1) !== -1)
-        {
-          daysOverlap = true;
-          break;
-        }
+	if (slot2.days.indexOf(day1) !== -1)
+	{
+	  daysOverlap = true;
+	  break;
+	}
       }
       if (!daysOverlap)
       {
-        continue;
+	continue;
       }
       const start1 = parseTime(slot1.startTime);
       const end1 = parseTime(slot1.endTime);
@@ -256,11 +257,11 @@ function coursesConflict(course1, course2)
       const end2 = parseTime(slot2.endTime);
       if (end1 <= start2 || start1 >= end2)
       {
-        continue;
+	continue;
       }
       else
       {
-        return true;
+	return true;
       }
     }
   }
@@ -288,10 +289,10 @@ function computeSchedule(courses)
     for (let existingCourse of schedule)
     {
       if (coursesMutuallyExclusive(course, existingCourse) ||
-          coursesConflict(course, existingCourse))
+	  coursesConflict(course, existingCourse))
       {
-        conflicts = true;
-        break;
+	conflicts = true;
+	break;
       }
     }
     if (!conflicts)
@@ -417,99 +418,99 @@ function createCourseEntity(course, idx)
   return listItem;
 }
 
-function courseMatchesSearchQuery(course, query)
-{
-  const code = course.department +
-        course.courseNumber.toString().padStart(3, '0') +
-        course.courseCodeSuffix;
-  const section = course.school + '-' +
-        course.section.toString().padStart(2, '0');
-  for (let subquery of query)
+  function courseMatchesSearchQuery(course, query)
   {
-    if (code.match(subquery) || section.match(subquery) ||
-        course.courseName.match(subquery))
+    const code = course.department +
+          course.courseNumber.toString().padStart(3, '0') +
+          course.courseCodeSuffix;
+    const section = course.school + '-' +
+          course.section.toString().padStart(2, '0');
+    for (let subquery of query)
     {
-      continue;
-    }
-    let foundMatch = false;
-    for (let instructor of course.faculty)
-    {
-      if (instructor.match(subquery))
+      if (code.match(subquery) || section.match(subquery) ||
+          course.courseName.match(subquery))
       {
-        foundMatch = true;
-        break;
+	continue;
       }
+      let foundMatch = false;
+      for (let instructor of course.faculty)
+      {
+	if (instructor.match(subquery))
+	{
+          foundMatch = true;
+          break;
+	}
+      }
+      if (foundMatch)
+      {
+	continue;
+      }
+      return false;
     }
-    if (foundMatch)
+    return true;
+  }
+
+  function getSearchQuery()
+  {
+    return courseSearchInput.value.trim().split(/\s+/).map(subquery => {
+      return new RegExp(quoteRegexp(subquery), 'i');
+    });
+  }
+
+  function updateCourseSearchResults()
+  {
+    const query = getSearchQuery();
+    const courses = courseData.courses;
+    const entities = courseSearchResultsList.children;
+    for (let idx = 0; idx < courses.length; ++idx)
     {
-      continue;
+      const course = courses[idx];
+      const entity = entities[idx];
+      const visible = courseMatchesSearchQuery(course, query);
+      setEntityVisibility(entity, visible);
     }
-    return false;
   }
-  return true;
-}
 
-function getSearchQuery()
-{
-  return courseSearchInput.value.trim().split(/\s+/).map(subquery => {
-    return new RegExp(quoteRegexp(subquery), 'i');
-  });
-}
-
-function updateCourseSearchResults()
-{
-  const query = getSearchQuery();
-  const courses = courseData.courses;
-  const entities = courseSearchResultsList.children;
-  for (let idx = 0; idx < courses.length; ++idx)
+  function updateCourseSearchResultsList()
   {
-    const course = courses[idx];
-    const entity = entities[idx];
-    const visible = courseMatchesSearchQuery(course, query);
-    setEntityVisibility(entity, visible);
-  }
-}
-
-function updateCourseSearchResultsList()
-{
-  while (courseSearchResultsList.hasChildNodes())
-  {
-    courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
-  }
-  for (let course of courseData.courses)
-  {
-    courseSearchResultsList.appendChild(createCourseEntity(course));
-  }
-  updateCourseSearchResults();
-}
-
-function updateSelectedCoursesList()
-{
-  while (selectedCoursesList.hasChildNodes())
-  {
-    selectedCoursesList.removeChild(selectedCoursesList.lastChild);
-  }
-  for (let idx = 0; idx < selectedCourses.length; ++idx)
-  {
-    const course = selectedCourses[idx];
-    selectedCoursesList.appendChild(createCourseEntity(course, idx));
-  }
-  updateSortableLists();
-}
-
-function readSelectedCoursesList()
-{
-  const newSelectedCourses = [];
-  for (let entity of selectedCoursesList.children)
-  {
-    const idx = parseInt(entity.getAttribute('data-course-index'));
-    if (!isNaN(idx) && idx >= 0 && idx < selectedCourses.length)
+    while (courseSearchResultsList.hasChildNodes())
     {
-      newSelectedCourses.push(selectedCourses[idx]);
+      courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
     }
-    else
+    for (let course of courseData.courses)
     {
-      alert('An internal error occurred. This is bad.');
+      courseSearchResultsList.appendChild(createCourseEntity(course));
+    }
+    updateCourseSearchResults();
+  }
+
+  function updateSelectedCoursesList()
+  {
+    while (selectedCoursesList.hasChildNodes())
+    {
+      selectedCoursesList.removeChild(selectedCoursesList.lastChild);
+    }
+    for (let idx = 0; idx < selectedCourses.length; ++idx)
+    {
+      const course = selectedCourses[idx];
+      selectedCoursesList.appendChild(createCourseEntity(course, idx));
+    }
+    updateSortableLists();
+  }
+
+  function readSelectedCoursesList()
+  {
+    const newSelectedCourses = [];
+    for (let entity of selectedCoursesList.children)
+    {
+      const idx = parseInt(entity.getAttribute('data-course-index'));
+      if (!isNaN(idx) && idx >= 0 && idx < selectedCourses.length)
+      {
+	newSelectedCourses.push(selectedCourses[idx]);
+      }
+      else
+      {
+	alert('An internal error occurred. This is bad.');
       updateSelectedCoursesList();
       return;
     }
@@ -770,8 +771,16 @@ function generateCourseDescription(course)
   return description;
 }
 
+function updateCourseDescriptionBoxHeight() {
+  if (!courseDescriptionBoxOuter.classList.contains('course-description-box-visible')) {
+    return;
+  }
+  courseDescriptionBoxOuter.style.height = '' + courseDescriptionBox.scrollHeight + 'px';
+}
+
 function setCourseDescriptionBox(course)
 {
+  
   while (courseDescriptionBox.hasChildNodes())
   {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
@@ -789,6 +798,13 @@ function setCourseDescriptionBox(course)
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
+  
+  if (!courseDescriptionBoxOuter.classList.contains('course-description-box-visible')) {
+    courseDescriptionBoxOuter.classList.add('course-description-box-visible');
+  }
+
+  updateCourseDescriptionBoxHeight();
+  
 }
 
 function setButtonSelected(button, selected)
@@ -818,17 +834,17 @@ function updateCreditCount()
     {
       if (course.school === 'HM')
       {
-        onCampusCredits += course.quarterCredits / 4;
+	onCampusCredits += course.quarterCredits / 4;
       }
       else
       {
-        offCampusCredits += course.quarterCredits / 4;
+	offCampusCredits += course.quarterCredits / 4;
       }
     }
   }
   const text = 'Starred courses: ' + onCampusCredits + ' on-campus credit' +
-        (onCampusCredits !== 1 ? 's' : '') + ', ' + offCampusCredits +
-        ' off-campus credit' + (offCampusCredits !== 1 ? 's' : '');
+	(onCampusCredits !== 1 ? 's' : '') + ', ' + offCampusCredits +
+	' off-campus credit' + (offCampusCredits !== 1 ? 's' : '');
   creditCountText.textContent = text;
 }
 
@@ -881,6 +897,7 @@ function attachListeners()
     placeholder: createCourseEntity('placeholder').outerHTML,
   });
   selectedCoursesList.addEventListener('sortupdate', readSelectedCoursesList);
+  window.addEventListener('resize', updateCourseDescriptionBoxHeight);
 }
 
 attachListeners();

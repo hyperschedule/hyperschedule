@@ -31,8 +31,10 @@
         </div>
       </div>
       <div id="course-search-column">
-        <div class="toolbar">
-          <input type="text" id="course-search-course-name-input" class="form-control" placeholder="Search by name, course code, etc.">
+        <div id="course-search-bar" class="toolbar">
+	  <div id="course-search-course-name-input-wrapper">
+            <input type="text" id="course-search-course-name-input" class="form-control" placeholder="Search by name, course code, etc.">
+	  </div>
           <div id="help-button-wrapper">
             <button type="button" id="help-button" class="btn btn-primary" data-toggle="modal" data-target="#help-modal">How does it work?</button>
           </div>
@@ -83,7 +85,9 @@
         </div>
       </div>
 
-      <div id="course-description-box" class="toolbar">
+      <div id="course-description-box-outer" class="toolbar">
+	<div id="course-description-box">
+	</div>
       </div>
 
       <ul id="selected-courses-list" class="sortable-list courses-list">
