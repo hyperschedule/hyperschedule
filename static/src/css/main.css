@@ -55,6 +55,7 @@ body {
 
 #course-search-schedule-column {
     padding-top: 20px;
+    overflow-y: scroll;
 }
 
 #course-search-toggle-wrapper {
