@@ -4,6 +4,8 @@ const scheduleHeightHeightPixels = 60;
 const courseSearchToggle = document.getElementById('course-search-toggle');
 const scheduleToggle = document.getElementById('schedule-toggle');
 
+const closedCoursesToggle = document.getElementById('closed-courses-toggle');
+
 const courseSearchColumn = document.getElementById('course-search-column');
 const scheduleColumn = document.getElementById('schedule-column');
 
@@ -31,6 +33,7 @@ let courseData = null;
 let selectedCourses = null;
 let schedule = null;
 let scheduleTabSelected = false;
+let showClosedCourses = true;
 
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
@@ -461,6 +464,11 @@ function getSearchQuery()
   });
 }
 
+function isCourseClosed(course)
+{
+  return course.courseStatus == 'closed';
+}
+
 function updateCourseSearchResults()
 {
   const query = getSearchQuery();
@@ -470,7 +478,8 @@ function updateCourseSearchResults()
   {
     const course = courses[idx];
     const entity = entities[idx];
-    const visible = courseMatchesSearchQuery(course, query);
+    const matchesQuery = courseMatchesSearchQuery(course, query);
+    const visible = matchesQuery && (showClosedCourses || !isCourseClosed(course));
     setEntityVisibility(entity, visible);
   }
 }
@@ -804,7 +813,7 @@ function updateCourseDescriptionBoxHeight() {
 
 function setCourseDescriptionBox(course)
 {
-  
+
   while (courseDescriptionBox.hasChildNodes())
   {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
@@ -822,13 +831,13 @@ function setCourseDescriptionBox(course)
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
-  
+
   if (!courseDescriptionBoxOuter.classList.contains('course-description-box-visible')) {
     courseDescriptionBoxOuter.classList.add('course-description-box-visible');
   }
 
   updateCourseDescriptionBoxHeight();
-  
+
 }
 
 function setButtonSelected(button, selected)
@@ -877,7 +886,7 @@ function updateCreditCount()
   }
   let totalCredits = onCampusCredits + 3 * offCampusCredits;
   let totalStarredCredits = onCampusStarredCredits + 3 * offCampusStarredCredits;
-  
+
   const text = 'Scheduled credits: ' +
 	onCampusCredits + ' on-campus credit' + (onCampusCredits !== 1 ? 's' : '') +
 	' (' + onCampusStarredCredits + ' starred), ' +
@@ -904,6 +913,20 @@ function displayScheduleColumn()
   writeStateToLocalStorage();
 }
 
+function toggleClosedCourses()
+{
+  if (showClosedCourses)
+  {
+    showClosedCourses = false;
+    // set text
+  }
+  else
+  {
+    showClosedCourses = true;
+  }
+  updateCourseSearchResultsList();
+}
+
 function toggleCourseSelected(course)
 {
   course.selected = !course.selected;
@@ -927,6 +950,7 @@ function attachListeners()
 {
   courseSearchToggle.addEventListener('click', displayCourseSearchColumn);
   scheduleToggle.addEventListener('click', displayScheduleColumn);
+  closedCoursesToggle.addEventListener('click', toggleClosedCourses);
   courseSearchInput.addEventListener('keyup', updateCourseSearchResults);
   importExportDataButton.addEventListener('click', showImportExportModal);
   importExportSaveChangesButton.addEventListener(
