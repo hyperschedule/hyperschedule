@@ -116,6 +116,7 @@ function writeStateToLocalStorage()
 {
   localStorage.setItem('selectedCourses', JSON.stringify(selectedCourses));
   localStorage.setItem('scheduleTabSelected', scheduleTabSelected);
+  localStorage.setItem('showClosedCourses', showClosedCourses);
 }
 
 function readStateFromLocalStorage()
@@ -138,6 +139,7 @@ function readStateFromLocalStorage()
     }
   }
   scheduleTabSelected = localStorage.getItem('scheduleTabSelected') === 'true';
+  showClosedCourses = localStorage.getItem('showClosedCourses') === 'true';
 }
 
 function hideEntity(entity)
@@ -857,6 +859,11 @@ function updateTabToggle()
   setButtonSelected(courseSearchToggle, !scheduleTabSelected);
 }
 
+function updateShowClosedCourses()
+{
+  closedCoursesToggle.checked = showClosedCourses;
+}
+
 function updateCreditCount()
 {
   let onCampusStarredCredits = 0;
@@ -915,16 +922,9 @@ function displayScheduleColumn()
 
 function toggleClosedCourses()
 {
-  if (showClosedCourses)
-  {
-    showClosedCourses = false;
-    // set text
-  }
-  else
-  {
-    showClosedCourses = true;
-  }
+  showClosedCourses = !showClosedCourses;
   updateCourseSearchResultsList();
+  writeStateToLocalStorage();
 }
 
 function toggleCourseSelected(course)
@@ -970,6 +970,7 @@ function attachListeners()
 attachListeners();
 readStateFromLocalStorage();
 updateTabToggle();
+updateShowClosedCourses();
 updateSelectedCoursesList();
 updateSchedule();
 writeStateToLocalStorage();
