@@ -113,7 +113,6 @@ body {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    border-radius: 0.25em;
     cursor: pointer;
     overflow: hidden;
     position: absolute;
@@ -121,7 +120,7 @@ body {
 }
 
 .schedule-slot-starred {
-  border-radius: 0em 0.25em 0.25em 0.25em;
+    /* nothing to do here */
 }
 
 .schedule-slot-starred::before {
