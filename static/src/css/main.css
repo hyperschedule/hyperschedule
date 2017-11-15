@@ -101,12 +101,13 @@ body {
 }
 
 .schedule-slot {
-    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 0.25em;
     cursor: pointer;
-    display: table-cell;
     overflow: hidden;
     position: absolute;
-    vertical-align: middle;
     width: 16.6667%;
 }
 
@@ -138,13 +139,14 @@ body {
 .course-box {
     cursor: pointer;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 0.3em 0;
     position: relative;
     width: 95%;
+    font-size: 0.8em;
 }
 
 .course-box-content {
-    border-radius: 5px;
+    border-radius: 0.25em;
     display: block;
     margin: 0 auto;
     position: relative;
