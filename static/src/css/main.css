@@ -381,6 +381,18 @@ body {
     min-height: 100px;
 }
 
+#import-export-copy-button::after {
+    content: 'Copy to clipboard';
+}
+
+#import-export-copy-button.copy-button-copied::after {
+    content: 'Copied!';
+}
+
+#import-export-copy-button.copy-button-error::after {
+    content: 'Press ctrl+C to copy';
+}
+
 .modal-footer button.btn {
     cursor: pointer;
 }

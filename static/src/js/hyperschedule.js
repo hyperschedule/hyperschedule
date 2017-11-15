@@ -25,6 +25,7 @@ const creditCountText = document.getElementById('credit-count');
 
 const importExportTextArea = document.getElementById('import-export-text-area');
 const importExportSaveChangesButton = document.getElementById('import-export-save-changes-button');
+const importExportCopyButton = document.getElementById('import-export-copy-button');
 
 let courseData = null;
 let selectedCourses = null;
@@ -34,423 +35,423 @@ let scheduleTabSelected = false;
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
 {
-    return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+  return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 }
 
 function arraysEqual(arr1, arr2, test)
 {
-    if (arr1.length !== arr2.length)
+  if (arr1.length !== arr2.length)
+  {
+    return false;
+  }
+  for (let idx = 0; idx < arr1.length; ++idx)
+  {
+    if (test ? !test(arr1[idx], arr2[idx]) : (arr1[idx] !== arr2[idx]))
     {
-	return false;
+      return false;
     }
-    for (let idx = 0; idx < arr1.length; ++idx)
-    {
-	if (test ? !test(arr1[idx], arr2[idx]) : (arr1[idx] !== arr2[idx]))
-	{
-	    return false;
-	}
-    }
-    return true;
+  }
+  return true;
 }
 
 function formatList(list, none)
 {
-    if (list.length === 0)
+  if (list.length === 0)
+  {
+    if (none === undefined)
     {
-	if (none === undefined)
-	{
-	    return '(none)';
-	}
-	else
-	{
-	    return none || '(none)';
-	}
+      return '(none)';
     }
-    else if (list.length === 1)
+    else
     {
-	return list[0];
+      return none || '(none)';
     }
-    else if (list.length === 2)
-    {
-	return list[0] + ' and ' + list[1];
-    }
-    else {
-	return list.slice(0, list.length - 1).join(', ') +
-	    ', and ' + list[list.length - 1];
-    }
+  }
+  else if (list.length === 1)
+  {
+    return list[0];
+  }
+  else if (list.length === 2)
+  {
+    return list[0] + ' and ' + list[1];
+  }
+  else {
+    return list.slice(0, list.length - 1).join(', ') +
+      ', and ' + list[list.length - 1];
+  }
 }
 
 function deepCopy(obj)
 {
-    return JSON.parse(JSON.stringify(obj));
+  return JSON.parse(JSON.stringify(obj));
 }
 
 function parseTimeSeparately(timeString)
 {
-    return [parseInt(timeString.substring(0, 2)),
-	    parseInt(timeString.substring(3, 5))];
+  return [parseInt(timeString.substring(0, 2)),
+	  parseInt(timeString.substring(3, 5))];
 }
 
 function parseTime(timeString)
 {
-    const [hours, minutes] = parseTimeSeparately(timeString);
-    return hours + minutes / 60;
+  const [hours, minutes] = parseTimeSeparately(timeString);
+  return hours + minutes / 60;
 }
 
 function convertTimeTo12Hour(timeString)
 {
-    let [hours, minutes] = parseTimeSeparately(timeString);
-    const pm = hours >= 12;
-    hours -= 1;
-    hours %= 12;
-    hours += 1;
-    return hours.toString().padStart(2, '0') + ':' +
-	minutes.toString().padStart(2, '0') + ' ' + (pm ? 'PM' : 'AM');
+  let [hours, minutes] = parseTimeSeparately(timeString);
+  const pm = hours >= 12;
+  hours -= 1;
+  hours %= 12;
+  hours += 1;
+  return hours.toString().padStart(2, '0') + ':' +
+    minutes.toString().padStart(2, '0') + ' ' + (pm ? 'PM' : 'AM');
 }
 
 function writeStateToLocalStorage()
 {
-    localStorage.setItem('selectedCourses', JSON.stringify(selectedCourses));
-    localStorage.setItem('scheduleTabSelected', scheduleTabSelected);
+  localStorage.setItem('selectedCourses', JSON.stringify(selectedCourses));
+  localStorage.setItem('scheduleTabSelected', scheduleTabSelected);
 }
 
 function readStateFromLocalStorage()
 {
-    selectedCourses = [];
-    const jsonString = localStorage.getItem('selectedCourses');
-    if (jsonString)
+  selectedCourses = [];
+  const jsonString = localStorage.getItem('selectedCourses');
+  if (jsonString)
+  {
+    try
     {
-	try
-	{
-	    const obj = JSON.parse(jsonString);
-	    if (Array.isArray(obj))
-	    {
-		selectedCourses = obj;
-	    }
-	}
-	catch (err)
-	{
-	    // nothing to do here
-	}
+      const obj = JSON.parse(jsonString);
+      if (Array.isArray(obj))
+      {
+	selectedCourses = obj;
+      }
     }
-    scheduleTabSelected = localStorage.getItem('scheduleTabSelected') === 'true';
+    catch (err)
+    {
+      // nothing to do here
+    }
+  }
+  scheduleTabSelected = localStorage.getItem('scheduleTabSelected') === 'true';
 }
 
 function hideEntity(entity)
 {
-    entity.classList.add('hidden');
+  entity.classList.add('hidden');
 }
 
 function showEntity(entity)
 {
-    entity.classList.remove('hidden');
+  entity.classList.remove('hidden');
 }
 
 function setEntityVisibility(entity, visible)
 {
-    if (visible)
-    {
-	showEntity(entity);
-    }
-    else
-    {
-	hideEntity(entity);
-    }
+  if (visible)
+  {
+    showEntity(entity);
+  }
+  else
+  {
+    hideEntity(entity);
+  }
 }
 
 function updateSortableLists()
 {
-    sortable('.sortable-list');
+  sortable('.sortable-list');
 }
 
 function scheduleSlotsEqual(slot1, slot2)
 {
-    for (let attr of [
-	'days', 'location', 'startTime', 'endTime',
-    ]) {
-	if (slot1[attr] !== slot2[attr])
-	{
-	    return false;
-	}
+  for (let attr of [
+    'days', 'location', 'startTime', 'endTime',
+  ]) {
+    if (slot1[attr] !== slot2[attr])
+    {
+      return false;
     }
-    return true;
+  }
+  return true;
 }
 
 function coursesEquivalent(course1, course2)
 {
-    for (let attr of [
-	'department', 'courseNumber', 'courseCodeSuffix', 'school', 'section',
-	'courseName', 'quarterCredits', 'firstHalfSemester', 'secondHalfSemester',
-    ]) {
-	if (course1[attr] !== course2[attr])
-	{
-	    return false;
-	}
-    }
-    if (!arraysEqual(course1.faculty, course2.faculty))
+  for (let attr of [
+    'department', 'courseNumber', 'courseCodeSuffix', 'school', 'section',
+    'courseName', 'quarterCredits', 'firstHalfSemester', 'secondHalfSemester',
+  ]) {
+    if (course1[attr] !== course2[attr])
     {
-	return false;
+      return false;
     }
-    if (!arraysEqual(course1.schedule, course2.schedule, scheduleSlotsEqual))
-    {
-	return false;
-    }
-    return true;
+  }
+  if (!arraysEqual(course1.faculty, course2.faculty))
+  {
+    return false;
+  }
+  if (!arraysEqual(course1.schedule, course2.schedule, scheduleSlotsEqual))
+  {
+    return false;
+  }
+  return true;
 }
 
 function coursesMutuallyExclusive(course1, course2)
 {
-    return (course1.department === course2.department &&
-	    course1.courseNumber === course2.courseNumber &&
-	    course1.courseCodeSuffix === course2.courseCodeSuffix);
+  return (course1.department === course2.department &&
+	  course1.courseNumber === course2.courseNumber &&
+	  course1.courseCodeSuffix === course2.courseCodeSuffix);
 }
 
 function courseToString(course)
 {
-    return course.department + ' ' +
-	course.courseNumber.toString().padStart(3, '0') +
-	course.courseCodeSuffix + ' ' +
-	course.school + '-' +
-	course.section.toString().padStart(2, '0') + ' ' +
-	course.courseName + ' (' +
-	course.courseStatus + ', ' +
-	course.openSeats + '/' +
-	course.totalSeats + ' seats filled)';
+  return course.department + ' ' +
+    course.courseNumber.toString().padStart(3, '0') +
+    course.courseCodeSuffix + ' ' +
+    course.school + '-' +
+    course.section.toString().padStart(2, '0') + ' ' +
+    course.courseName + ' (' +
+    course.courseStatus + ', ' +
+    course.openSeats + '/' +
+    course.totalSeats + ' seats filled)';
 }
 
 function getCourseColor(course)
 {
-    return randomColor({
-	luminosity: 'light',
-	seed: course.department + ' ' +
-	    course.courseNumber.toString().padStart(3, '0') +
-	    course.courseCodeSuffix + ' ' +
-	    course.school + '-' +
-	    course.section.toString().padStart(2, '0'),
-    });
+  return randomColor({
+    luminosity: 'light',
+    seed: course.department + ' ' +
+      course.courseNumber.toString().padStart(3, '0') +
+      course.courseCodeSuffix + ' ' +
+      course.school + '-' +
+      course.section.toString().padStart(2, '0'),
+  });
 }
 
 function coursesConflict(course1, course2)
 {
-    if (!(course1.firstHalfSemester && course2.firstHalfSemester) &&
-	!(course1.secondHalfSemester && course2.secondHalfSemester))
-    {
-	return false;
-    }
-    for (let slot1 of course1.schedule)
-    {
-	for (let slot2 of course2.schedule)
-	{
-	    let daysOverlap = false;
-	    for (let day1 of slot1.days)
-	    {
-		if (slot2.days.indexOf(day1) !== -1)
-		{
-		    daysOverlap = true;
-		    break;
-		}
-	    }
-	    if (!daysOverlap)
-	    {
-		continue;
-	    }
-	    const start1 = parseTime(slot1.startTime);
-	    const end1 = parseTime(slot1.endTime);
-	    const start2 = parseTime(slot2.startTime);
-	    const end2 = parseTime(slot2.endTime);
-	    if (end1 <= start2 || start1 >= end2)
-	    {
-		continue;
-	    }
-	    else
-	    {
-		return true;
-	    }
-	}
-    }
+  if (!(course1.firstHalfSemester && course2.firstHalfSemester) &&
+      !(course1.secondHalfSemester && course2.secondHalfSemester))
+  {
     return false;
+  }
+  for (let slot1 of course1.schedule)
+  {
+    for (let slot2 of course2.schedule)
+    {
+      let daysOverlap = false;
+      for (let day1 of slot1.days)
+      {
+	if (slot2.days.indexOf(day1) !== -1)
+	{
+	  daysOverlap = true;
+	  break;
+	}
+      }
+      if (!daysOverlap)
+      {
+	continue;
+      }
+      const start1 = parseTime(slot1.startTime);
+      const end1 = parseTime(slot1.endTime);
+      const start2 = parseTime(slot2.startTime);
+      const end2 = parseTime(slot2.endTime);
+      if (end1 <= start2 || start1 >= end2)
+      {
+	continue;
+      }
+      else
+      {
+	return true;
+      }
+    }
+  }
+  return false;
 }
 
 function computeSchedule(courses)
 {
-    const schedule = [];
-    for (let course of courses)
+  const schedule = [];
+  for (let course of courses)
+  {
+    if (course.selected && course.starred)
     {
-	if (course.selected && course.starred)
-	{
-	    schedule.push(course);
-	}
+      schedule.push(course);
     }
-    for (let course of courses)
+  }
+  for (let course of courses)
+  {
+    // We already took care of the starred courses up earlier.
+    if (!course.selected || course.starred)
     {
-	// We already took care of the starred courses up earlier.
-	if (!course.selected || course.starred)
-	{
-	    continue;
-	}
-	let conflicts = false;
-	for (let existingCourse of schedule)
-	{
-	    if (coursesMutuallyExclusive(course, existingCourse) ||
-		coursesConflict(course, existingCourse))
-	    {
-		conflicts = true;
-		break;
-	    }
-	}
-	if (!conflicts)
-	{
-	    schedule.push(course);
-	}
+      continue;
     }
-    return schedule;
+    let conflicts = false;
+    for (let existingCourse of schedule)
+    {
+      if (coursesMutuallyExclusive(course, existingCourse) ||
+	  coursesConflict(course, existingCourse))
+      {
+	conflicts = true;
+	break;
+      }
+    }
+    if (!conflicts)
+    {
+      schedule.push(course);
+    }
+  }
+  return schedule;
 }
 
 function createCourseEntity(course, idx)
 {
-    const listItem = document.createElement('li');
-    listItem.classList.add('course-box');
+  const listItem = document.createElement('li');
+  listItem.classList.add('course-box');
 
-    const listItemContent = document.createElement('div');
-    listItemContent.classList.add('course-box-content');
-    if (course !== 'placeholder')
+  const listItemContent = document.createElement('div');
+  listItemContent.classList.add('course-box-content');
+  if (course !== 'placeholder')
+  {
+    listItemContent.style['background-color'] = getCourseColor(course);
+  }
+  listItemContent.addEventListener('click', () => {
+    setCourseDescriptionBox(course);
+  });
+  listItem.appendChild(listItemContent);
+
+  const selectToggle = document.createElement('input');
+  selectToggle.setAttribute('type', 'checkbox');
+  selectToggle.classList.add('course-box-button');
+  selectToggle.classList.add('course-box-toggle');
+  selectToggle.classList.add('course-box-select-toggle');
+  selectToggle.checked = !!course.selected;
+  selectToggle.addEventListener('change', () => {
+    toggleCourseSelected(course);
+  });
+  selectToggle.addEventListener('click', catchEvent);
+  listItemContent.appendChild(selectToggle);
+
+  const starLabel = document.createElement('label');
+  starLabel.classList.add('course-box-star-label');
+
+  const starToggle = document.createElement('input');
+  starToggle.setAttribute('type', 'checkbox');
+  starToggle.classList.add('course-box-button');
+  starToggle.classList.add('course-box-toggle');
+  starToggle.classList.add('course-box-star-toggle');
+  if (course !== 'placeholder')
+  {
+    starLabel.classList.add('star-visible');
+  }
+  starToggle.checked = !!course.starred;
+  if (!!course.starred) {
+    starLabel.classList.add('star-checked');
+  }
+  starToggle.addEventListener('change', () => {
+    if (starLabel.classList.contains('star-checked'))
     {
-	listItemContent.style['background-color'] = getCourseColor(course);
-    }
-    listItemContent.addEventListener('click', () => {
-	setCourseDescriptionBox(course);
-    });
-    listItem.appendChild(listItemContent);
-
-    const selectToggle = document.createElement('input');
-    selectToggle.setAttribute('type', 'checkbox');
-    selectToggle.classList.add('course-box-button');
-    selectToggle.classList.add('course-box-toggle');
-    selectToggle.classList.add('course-box-select-toggle');
-    selectToggle.checked = !!course.selected;
-    selectToggle.addEventListener('change', () => {
-	toggleCourseSelected(course);
-    });
-    selectToggle.addEventListener('click', catchEvent);
-    listItemContent.appendChild(selectToggle);
-
-    const starLabel = document.createElement('label');
-    starLabel.classList.add('course-box-star-label');
-
-    const starToggle = document.createElement('input');
-    starToggle.setAttribute('type', 'checkbox');
-    starToggle.classList.add('course-box-button');
-    starToggle.classList.add('course-box-toggle');
-    starToggle.classList.add('course-box-star-toggle');
-    if (course !== 'placeholder')
-    {
-	starLabel.classList.add('star-visible');
-    }
-    starToggle.checked = !!course.starred;
-    if (!!course.starred) {
-	starLabel.classList.add('star-checked');
-    }
-    starToggle.addEventListener('change', () => {
-	if (starLabel.classList.contains('star-checked'))
-	{
-	    starLabel.classList.remove('star-checked');
-	}
-	else
-	{
-	    starLabel.classList.add('star-checked');
-	}
-
-	toggleCourseStarred(course);
-    });
-    starToggle.addEventListener('click', catchEvent);
-    starLabel.addEventListener('click', catchEvent);
-
-    starLabel.appendChild(starToggle);
-    listItemContent.appendChild(starLabel);
-
-    const textBox = document.createElement('p');
-    textBox.classList.add('course-box-text');
-    listItemContent.appendChild(textBox);
-
-    let text;
-    if (course === 'placeholder')
-    {
-	text = 'placeholder';
+      starLabel.classList.remove('star-checked');
     }
     else
     {
-	text = courseToString(course);
-    }
-    const textNode = document.createTextNode(text);
-    textBox.appendChild(textNode);
-
-    const addButton = document.createElement('i');
-    addButton.classList.add('course-box-button');
-    addButton.classList.add('course-box-add-button');
-    addButton.classList.add('icon');
-    addButton.classList.add('ion-plus');
-
-    addButton.addEventListener('click', () => {
-	addCourse(course);
-    });
-    addButton.addEventListener('click', catchEvent);
-    listItemContent.appendChild(addButton);
-
-    const removeButton = document.createElement('i');
-    removeButton.classList.add('course-box-button');
-    removeButton.classList.add('course-box-remove-button');
-    removeButton.classList.add('icon');
-    removeButton.classList.add('ion-close');
-    // removeButton.innerHTML = '⨉';
-    removeButton.addEventListener('click', () => {
-	removeCourse(course);
-    });
-    removeButton.addEventListener('click', catchEvent);
-    listItemContent.appendChild(removeButton);
-
-    if (course === 'placeholder')
-    {
-	listItem.classList.add('placeholder');
+      starLabel.classList.add('star-checked');
     }
 
-    if (idx !== undefined)
-    {
-	listItem.setAttribute('data-course-index', idx);
-    }
+    toggleCourseStarred(course);
+  });
+  starToggle.addEventListener('click', catchEvent);
+  starLabel.addEventListener('click', catchEvent);
 
-    return listItem;
+  starLabel.appendChild(starToggle);
+  listItemContent.appendChild(starLabel);
+
+  const textBox = document.createElement('p');
+  textBox.classList.add('course-box-text');
+  listItemContent.appendChild(textBox);
+
+  let text;
+  if (course === 'placeholder')
+  {
+    text = 'placeholder';
+  }
+  else
+  {
+    text = courseToString(course);
+  }
+  const textNode = document.createTextNode(text);
+  textBox.appendChild(textNode);
+
+  const addButton = document.createElement('i');
+  addButton.classList.add('course-box-button');
+  addButton.classList.add('course-box-add-button');
+  addButton.classList.add('icon');
+  addButton.classList.add('ion-plus');
+
+  addButton.addEventListener('click', () => {
+    addCourse(course);
+  });
+  addButton.addEventListener('click', catchEvent);
+  listItemContent.appendChild(addButton);
+
+  const removeButton = document.createElement('i');
+  removeButton.classList.add('course-box-button');
+  removeButton.classList.add('course-box-remove-button');
+  removeButton.classList.add('icon');
+  removeButton.classList.add('ion-close');
+  // removeButton.innerHTML = '⨉';
+  removeButton.addEventListener('click', () => {
+    removeCourse(course);
+  });
+  removeButton.addEventListener('click', catchEvent);
+  listItemContent.appendChild(removeButton);
+
+  if (course === 'placeholder')
+  {
+    listItem.classList.add('placeholder');
+  }
+
+  if (idx !== undefined)
+  {
+    listItem.setAttribute('data-course-index', idx);
+  }
+
+  return listItem;
 }
 
 function courseMatchesSearchQuery(course, query)
 {
-    const code = course.department +
-	  course.courseNumber.toString().padStart(3, '0') +
-	  course.courseCodeSuffix;
-    const section = course.school + '-' +
-	  course.section.toString().padStart(2, '0');
-    for (let subquery of query)
+  const code = course.department +
+	course.courseNumber.toString().padStart(3, '0') +
+	course.courseCodeSuffix;
+  const section = course.school + '-' +
+	course.section.toString().padStart(2, '0');
+  for (let subquery of query)
+  {
+    if (code.match(subquery) || section.match(subquery) ||
+	course.courseName.match(subquery))
     {
-	if (code.match(subquery) || section.match(subquery) ||
-	    course.courseName.match(subquery))
-	{
-	    continue;
-	}
-	let foundMatch = false;
-	for (let instructor of course.faculty)
-	{
-	    if (instructor.match(subquery))
-	    {
-		foundMatch = true;
-		break;
-	    }
-	}
-	if (foundMatch)
-	{
-	    continue;
-	}
-	return false;
+      continue;
     }
-    return true;
+    let foundMatch = false;
+    for (let instructor of course.faculty)
+    {
+      if (instructor.match(subquery))
+      {
+	foundMatch = true;
+	break;
+      }
+    }
+    if (foundMatch)
+    {
+      continue;
+    }
+    return false;
+  }
+  return true;
 }
 
 function getSearchQuery()
@@ -588,13 +589,13 @@ function createSlotEntity(course, day, startTime, endTime)
     halfSemesterHorizontalOffset = 0.5;
   }
   const horizontalOffsetPercentage =
-        (dayIndex + 1 + halfSemesterHorizontalOffset) / 6 * 100;
+	(dayIndex + 1 + halfSemesterHorizontalOffset) / 6 * 100;
   const widthPercentage = (1 + halfSemesterWidthOffset) / 6 * 100;
   const style =
-        `top: ${verticalOffsetPercentage}%; ` +
-        `left: ${horizontalOffsetPercentage}%; ` +
-        `width: ${widthPercentage}%; ` +
-        `height: ${heightPercentage}%; `;
+	`top: ${verticalOffsetPercentage}%; ` +
+	`left: ${horizontalOffsetPercentage}%; ` +
+	`width: ${widthPercentage}%; ` +
+	`height: ${heightPercentage}%; `;
   const div = document.createElement('div');
   div.setAttribute('style', style);
   div.classList.add('schedule-slot');
@@ -649,7 +650,7 @@ async function retrieveCourseData()
   if (!response.ok)
   {
     throw Error('Received API error while fetching course data: ' +
-                response.status + ' ' + response.statusText);
+		response.status + ' ' + response.statusText);
   }
   courseData = await response.json();
   // Update things like seats open with data from Portal.
@@ -660,8 +661,8 @@ async function retrieveCourseData()
     {
       if (coursesEquivalent(course, selectedCourse))
       {
-        Object.assign(selectedCourses[idx], course);
-        break;
+	Object.assign(selectedCourses[idx], course);
+	break;
       }
     }
   }
@@ -727,6 +728,25 @@ function saveImportExportModalChanges()
   $('#import-export-modal').modal('hide');
 }
 
+function attachImportExportCopyButton()
+{
+  let clipboard = new Clipboard('#import-export-copy-button');
+  clipboard.on('success', (e) => {
+    if (!importExportCopyButton.classList.contains('copy-button-copied'))
+    {
+      importExportCopyButton.classList.add('copy-button-copied');
+    }
+  });
+  clipboard.on('error', (e) => {
+    importExportCopyButton.classList.add('copy-button-error');
+  });
+
+  $('#import-export-modal').on('hidden.bs.modal', () => {
+    importExportCopyButton.classList.remove('copy-button-copied');
+    importExportCopyButton.classList.remove('copy-button-error');
+  });
+}
+
 function generateScheduleSlotDescription(slot)
 {
   return slot.days + ' ' + convertTimeTo12Hour(slot.startTime) + ' - ' +
@@ -738,12 +758,12 @@ function generateCourseDescription(course)
   const description = [];
 
   const summaryLine =
-        course.department + ' ' +
-        course.courseNumber.toString().padStart(3, '0') +
-        course.courseCodeSuffix + ' ' +
-        course.school + '-' +
-        course.section.toString().padStart(2, '0') + ' ' +
-        course.courseName;
+	course.department + ' ' +
+	course.courseNumber.toString().padStart(3, '0') +
+	course.courseCodeSuffix + ' ' +
+	course.school + '-' +
+	course.section.toString().padStart(2, '0') + ' ' +
+	course.courseName;
   description.push(summaryLine);
 
   const times = course.schedule.map(generateScheduleSlotDescription);
@@ -920,6 +940,7 @@ function attachListeners()
   });
   selectedCoursesList.addEventListener('sortupdate', readSelectedCoursesList);
   window.addEventListener('resize', updateCourseDescriptionBoxHeight);
+  attachImportExportCopyButton();
 }
 
 attachListeners();
