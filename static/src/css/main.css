@@ -250,18 +250,37 @@ body {
     padding-top: 10px;
 }
 
+#selected-courses-bar {
+    table-layout: auto;
+}
+
 #github-link {
     display: table-cell;
     text-align: left;
     vertical-align: middle;
+    width: 100%;
 }
 
 #import-export-data-button-wrapper {
     display: table-cell;
     vertical-align: middle;
+    padding-left: 10px;
 }
 
 #import-export-data-button {
+    cursor: pointer;
+    display: block;
+    float: right;
+    margin: 0 auto;
+}
+
+#print-button-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+#print-button {
     cursor: pointer;
     display: block;
     float: right;
@@ -289,7 +308,7 @@ body {
 
 #course-description-box p {
     font-size: small;
-    line-height: 100%;
+    lpine-height: 100%;
     margin: 0px 10px;
 }
 
