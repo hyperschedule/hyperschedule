@@ -138,8 +138,16 @@ function readStateFromLocalStorage()
       // nothing to do here
     }
   }
-  scheduleTabSelected = localStorage.getItem('scheduleTabSelected') === 'true';
-  showClosedCourses = localStorage.getItem('showClosedCourses') === 'true';
+  if (localStorage.getItem('scheduleTabSelected') === 'true' ||
+      localStorage.getItem('scheduleTabSelected') === 'false')
+  {
+    scheduleTabSelected = localStorage.getItem('scheduleTabSelected') === 'true';
+  }
+  if (localStorage.getItem('showClosedCourses') === 'true' ||
+      localStorage.getItem('showClosedCourses') === 'false')
+  {
+    showClosedCourses = localStorage.getItem('showClosedCourses') === 'true';
+  }
 }
 
 function hideEntity(entity)
