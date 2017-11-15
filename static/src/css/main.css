@@ -3,6 +3,7 @@
 
 * {
     font-family: 'Roboto', sans-serif !important;
+    border-radius: 0 !important;
 }
 
 .hidden {
@@ -163,14 +164,13 @@ body {
 .course-box {
     cursor: pointer;
     margin: 0 auto;
-    padding: 5px 0;
+    padding: 6px 0;
     position: relative;
     width: 95%;
     font-size: 0.8em;
 }
 
 .course-box-content {
-    border-radius: 0.25em;
     display: block;
     margin: 0 auto;
     position: relative;

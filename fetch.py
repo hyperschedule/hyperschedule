@@ -8,8 +8,9 @@ import re
 import json
 import os
 import site
+import sys
 
-site.addsitedir('./node_modules/.bin')
+os.environ['PATH'] = './node_modules/.bin:' + os.environ.get('PATH', '')
 
 browser = webdriver.PhantomJS()
 
