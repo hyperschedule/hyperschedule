@@ -139,7 +139,7 @@ body {
 .course-box {
     cursor: pointer;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 0.3em 0;
     position: relative;
     width: 95%;
 }
