@@ -89,6 +89,7 @@ body {
     table-layout: fixed;
     text-align: center;
     width: 95%;
+    border: none;
 }
 
 #schedule-table th {
