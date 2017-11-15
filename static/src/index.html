@@ -14,7 +14,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
+    <!--
+    <link rel="stylesheet" href="css/main.css" media="screen">
+    <link rel="stylesheet" href="css/print.css" media="print">
+    -->
+    <link rel="stylesheet" href="css/print.css">
+    
   </head>
   <body>
     <!--[if lte IE 9]>
@@ -22,7 +27,7 @@
     <![endif]-->
 
     <div id="course-search-schedule-column" class="two-column-left">
-      <div class="toolbar">
+      <div id="course-search-schedule-toggle-bar" class="toolbar">
         <div id="course-search-toggle-wrapper">
           <button type="button" id="course-search-toggle" class="btn">Course Search</button>
         </div>
@@ -47,7 +52,7 @@
       <div id="schedule-column" class="hidden">
         <table id="schedule-table">
           <thead>
-            <th></th>
+            <th class="schedule-hour"></th>
             <th>Monday</th>
             <th>Tuesday</th>
             <th>Wednesday</th>
@@ -55,21 +60,21 @@
             <th>Friday</th>
           </thead>
           <tbody id="schedule-table-body">
-            <tr><td>8am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>9am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>10am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>11am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>12pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>1pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>2pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>3pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>4pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>5pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>6pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>7pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>8pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>9pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>10pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">8am</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">9am</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">10am</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">11am</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">12pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">1pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">2pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">3pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">4pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">5pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">6pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">7pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">8pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">9pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td class="schedule-hour">10pm</td><td></td><td></td><td></td><td></td><td></td></tr>
           </tbody>
         </table>
         <div id="credit-count-box" class="toolbar">
