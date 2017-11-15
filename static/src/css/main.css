@@ -104,7 +104,7 @@ body {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    border-radius: 5px;
+    border-radius: 0.25em;
     cursor: pointer;
     overflow: hidden;
     position: absolute;
@@ -145,7 +145,7 @@ body {
 }
 
 .course-box-content {
-    border-radius: 5px;
+    border-radius: 0.25em;
     display: block;
     margin: 0 auto;
     position: relative;
