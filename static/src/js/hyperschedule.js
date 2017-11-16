@@ -34,6 +34,7 @@ let selectedCourses = null;
 let schedule = null;
 let scheduleTabSelected = false;
 let showClosedCourses = true;
+let currentlySorting = false;
 
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
@@ -509,6 +510,13 @@ function updateCourseSearchResultsList()
 
 function updateSelectedCoursesList()
 {
+  if (currentlySorting)
+  {
+    // Defer to after the user has finished sorting, otherwise we mess
+    // up the drag and drop.
+    setTimeout(updateSelectedCoursesList, 100);
+    return;
+  }
   while (selectedCoursesList.hasChildNodes())
   {
     selectedCoursesList.removeChild(selectedCoursesList.lastChild);
@@ -971,6 +979,12 @@ function attachListeners()
     window.print()
   });
   selectedCoursesList.addEventListener('sortupdate', readSelectedCoursesList);
+  selectedCoursesList.addEventListener('sortstart', () => {
+    currentlySorting = true;
+  });
+  selectedCoursesList.addEventListener('sortstop', () => {
+    currentlySorting = false;
+  });
   window.addEventListener('resize', updateCourseDescriptionBoxHeight);
   attachImportExportCopyButton();
 }
