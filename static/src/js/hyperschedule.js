@@ -711,7 +711,8 @@ function createSlotEntity(course, day, startTime, endTime)
   const courseCodeContainer = document.createElement('p');
   const courseNameContainer = document.createElement('p');
   const courseCodeNode = document.createTextNode(courseCodeToString(course));
-  const courseNameNode = document.createTextNode(course.courseName);
+  const courseNameNode = document.createTextNode(
+    course.courseName + ' (' + course.openSeats + '/' + course.totalSeats + ')');
   courseCodeContainer.classList.add('schedule-slot-course-code');
   courseNameContainer.classList.add('schedule-slot-course-name');
   courseCodeContainer.appendChild(courseCodeNode);
