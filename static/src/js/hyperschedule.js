@@ -341,6 +341,21 @@ function createCourseEntity(course, idx)
   });
   listItem.appendChild(listItemContent);
 
+  const selectLabel = document.createElement('label');
+  selectLabel.classList.add('course-box-select-label');
+
+  const selectIcon = document.createElement('i');
+  selectIcon.classList.add('course-box-select-icon');
+  selectIcon.classList.add('icon');
+  if (!!course.selected) {
+    selectLabel.classList.add('course-selected');
+    selectIcon.classList.add('ion-android-checkbox');
+  }
+  else
+  {
+    selectIcon.classList.add('ion-android-checkbox-outline-blank');
+  }
+
   const selectToggle = document.createElement('input');
   selectToggle.setAttribute('type', 'checkbox');
   selectToggle.classList.add('course-box-button');
@@ -348,10 +363,25 @@ function createCourseEntity(course, idx)
   selectToggle.classList.add('course-box-select-toggle');
   selectToggle.checked = !!course.selected;
   selectToggle.addEventListener('change', () => {
+    if (selectLabel.classList.contains('course-selected')) {
+      selectLabel.classList.remove('course-selected');
+      selectIcon.classList.remove('ion-android-checkbox');
+      selectIcon.classList.add('ion-android-checkbox-outline-blank');
+    }
+    else
+    {
+      selectLabel.classList.add('course-selected');
+      selectIcon.classList.remove('ion-android-checkbox-outline-blank');
+      selectIcon.classList.add('ion-android-checkbox');
+    }
+
     toggleCourseSelected(course);
   });
   selectToggle.addEventListener('click', catchEvent);
-  listItemContent.appendChild(selectToggle);
+  selectLabel.addEventListener('click', catchEvent);
+  selectLabel.appendChild(selectToggle);
+  selectLabel.appendChild(selectIcon);
+  listItemContent.appendChild(selectLabel);
 
   const starLabel = document.createElement('label');
   starLabel.classList.add('course-box-star-label');
@@ -374,7 +404,9 @@ function createCourseEntity(course, idx)
   if (!!course.starred) {
     starLabel.classList.add('star-checked');
     starIcon.classList.add('ion-android-star');
-  } else {
+  }
+  else
+  {
     starIcon.classList.add('ion-android-star-outline');
   }
   starToggle.addEventListener('change', () => {

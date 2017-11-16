@@ -353,14 +353,25 @@ body {
     margin: 10px 0;
 }
 
-#selected-courses-column .course-box-select-toggle {
+#selected-courses-column .course-box-select-label {
     display: block;
-    height: 25px;
-    margin-top: -12.5px;
+    height: 50px;
+    margin-top: -25px;
     position: absolute;
+    line-height: 50px;
     left: 5px;
     top: 50%;
     width: 25px;
+    text-align: center;
+}
+
+#selected-courses-column .course-box-select-icon {
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+#selected-courses-column .course-box-select-toggle {
+    visibility: hidden;
 }
 
 #selected-courses-column .course-box-star-toggle {
@@ -375,7 +386,6 @@ body {
     left: 30px;
     margin-top: -25px;
     line-height: 50px;
-    font-size: 1.3em;
     position: absolute;
     top: 50%;
     text-align: center;
@@ -386,6 +396,7 @@ body {
 }
 
 #selected-courses-column .course-box-star-icon {
+    font-size: 1.3em;
     cursor: pointer;
 }
 
