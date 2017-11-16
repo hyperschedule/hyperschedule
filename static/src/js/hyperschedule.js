@@ -93,7 +93,7 @@ function deepCopy(obj)
 function parseTimeSeparately(timeString)
 {
   return [parseInt(timeString.substring(0, 2)),
-	  parseInt(timeString.substring(3, 5))];
+    parseInt(timeString.substring(3, 5))];
 }
 
 function parseTime(timeString)
@@ -131,7 +131,7 @@ function readStateFromLocalStorage()
       const obj = JSON.parse(jsonString);
       if (Array.isArray(obj))
       {
-	selectedCourses = obj;
+        selectedCourses = obj;
       }
     }
     catch (err)
@@ -140,12 +140,12 @@ function readStateFromLocalStorage()
     }
   }
   if (localStorage.getItem('scheduleTabSelected') === 'true' ||
-      localStorage.getItem('scheduleTabSelected') === 'false')
+    localStorage.getItem('scheduleTabSelected') === 'false')
   {
     scheduleTabSelected = localStorage.getItem('scheduleTabSelected') === 'true';
   }
   if (localStorage.getItem('showClosedCourses') === 'true' ||
-      localStorage.getItem('showClosedCourses') === 'false')
+    localStorage.getItem('showClosedCourses') === 'false')
   {
     showClosedCourses = localStorage.getItem('showClosedCourses') === 'true';
   }
@@ -216,8 +216,8 @@ function coursesEquivalent(course1, course2)
 function coursesMutuallyExclusive(course1, course2)
 {
   return (course1.department === course2.department &&
-	  course1.courseNumber === course2.courseNumber &&
-	  course1.courseCodeSuffix === course2.courseCodeSuffix);
+    course1.courseNumber === course2.courseNumber &&
+    course1.courseCodeSuffix === course2.courseCodeSuffix);
 }
 
 function courseCodeToString(course)
@@ -242,17 +242,17 @@ function getCourseColor(course)
   return randomColor({
     luminosity: 'light',
     seed: course.department + ' ' +
-      course.courseNumber.toString().padStart(3, '0') +
-      course.courseCodeSuffix + ' ' +
-      course.school + '-' +
-      course.section.toString().padStart(2, '0'),
+    course.courseNumber.toString().padStart(3, '0') +
+    course.courseCodeSuffix + ' ' +
+    course.school + '-' +
+    course.section.toString().padStart(2, '0'),
   });
 }
 
 function coursesConflict(course1, course2)
 {
   if (!(course1.firstHalfSemester && course2.firstHalfSemester) &&
-      !(course1.secondHalfSemester && course2.secondHalfSemester))
+    !(course1.secondHalfSemester && course2.secondHalfSemester))
   {
     return false;
   }
@@ -263,15 +263,15 @@ function coursesConflict(course1, course2)
       let daysOverlap = false;
       for (let day1 of slot1.days)
       {
-	if (slot2.days.indexOf(day1) !== -1)
-	{
-	  daysOverlap = true;
-	  break;
-	}
+        if (slot2.days.indexOf(day1) !== -1)
+        {
+          daysOverlap = true;
+          break;
+        }
       }
       if (!daysOverlap)
       {
-	continue;
+        continue;
       }
       const start1 = parseTime(slot1.startTime);
       const end1 = parseTime(slot1.endTime);
@@ -279,11 +279,11 @@ function coursesConflict(course1, course2)
       const end2 = parseTime(slot2.endTime);
       if (end1 <= start2 || start1 >= end2)
       {
-	continue;
+        continue;
       }
       else
       {
-	return true;
+        return true;
       }
     }
   }
@@ -311,10 +311,10 @@ function computeSchedule(courses)
     for (let existingCourse of schedule)
     {
       if (coursesMutuallyExclusive(course, existingCourse) ||
-	  coursesConflict(course, existingCourse))
+        coursesConflict(course, existingCourse))
       {
-	conflicts = true;
-	break;
+        conflicts = true;
+        break;
       }
     }
     if (!conflicts)
@@ -493,20 +493,20 @@ function createCourseEntity(course, idx)
     listItem.setAttribute('data-course-index', idx);
   }
 
-    return listItem;
+  return listItem;
 }
 
 function courseMatchesSearchQuery(course, query)
 {
   const code = course.department +
-	course.courseNumber.toString().padStart(3, '0') +
-	course.courseCodeSuffix;
+    course.courseNumber.toString().padStart(3, '0') +
+    course.courseCodeSuffix;
   const section = course.school + '-' +
-	course.section.toString().padStart(2, '0');
+    course.section.toString().padStart(2, '0');
   for (let subquery of query)
   {
     if (code.match(subquery) || section.match(subquery) ||
-	course.courseName.match(subquery))
+      course.courseName.match(subquery))
     {
       continue;
     }
@@ -515,8 +515,8 @@ function courseMatchesSearchQuery(course, query)
     {
       if (instructor.match(subquery))
       {
-	foundMatch = true;
-	break;
+        foundMatch = true;
+        break;
       }
     }
     if (foundMatch)
@@ -676,16 +676,16 @@ function createSlotEntity(course, day, startTime, endTime)
     halfSemesterHorizontalOffset = 0.5;
   }
   const horizontalOffsetPercentage =
-	(dayIndex + 1 + halfSemesterHorizontalOffset) / 6 * 100;
+    (dayIndex + 1 + halfSemesterHorizontalOffset) / 6 * 100;
   const widthPercentage = (1 + halfSemesterWidthOffset) / 6 * 100;
   const style =
-	`top: ${verticalOffsetPercentage}%; ` +
-	`left: ${horizontalOffsetPercentage}%; ` +
-	`width: ${widthPercentage}%; ` +
-	`height: ${heightPercentage}%; `;
+    `top: ${verticalOffsetPercentage}%; ` +
+    `left: ${horizontalOffsetPercentage}%; ` +
+    `width: ${widthPercentage}%; ` +
+    `height: ${heightPercentage}%; `;
 
   console.log(course);
-  
+
   const wrapper = document.createElement('div');
   wrapper.setAttribute('style', style);
   wrapper.classList.add('schedule-slot-wrapper');
@@ -701,9 +701,9 @@ function createSlotEntity(course, day, startTime, endTime)
   {
     div.classList.add('schedule-slot-starred');
   }
-  
+
   div.style['background-color'] = getCourseColor(course);
-  
+
   wrapper.addEventListener('click', () => {
     setCourseDescriptionBox(course);
   });
@@ -716,13 +716,13 @@ function createSlotEntity(course, day, startTime, endTime)
   courseNameContainer.classList.add('schedule-slot-course-name');
   courseCodeContainer.appendChild(courseCodeNode);
   courseNameContainer.appendChild(courseNameNode);
-  
+
   const textContainer = document.createElement('p');
   textContainer.classList.add('schedule-slot-text-wrapper');
 
   textContainer.appendChild(courseCodeContainer);
   textContainer.appendChild(courseNameContainer);
-  
+
   div.appendChild(textContainer);
 
 
@@ -743,12 +743,12 @@ function updateSchedule()
     {
       for (let day of slot.days)
       {
-	const entity = createSlotEntity(
-	  course, day, slot.startTime, slot.endTime);
-	if (entity)
-	{
-	  scheduleTable.appendChild(entity);
-	}
+        const entity = createSlotEntity(
+          course, day, slot.startTime, slot.endTime);
+        if (entity)
+        {
+          scheduleTable.appendChild(entity);
+        }
       }
     }
   }
@@ -761,7 +761,7 @@ async function retrieveCourseData()
   if (!response.ok)
   {
     throw Error('Received API error while fetching course data: ' +
-		response.status + ' ' + response.statusText);
+      response.status + ' ' + response.statusText);
   }
   courseData = await response.json();
   // Update things like seats open with data from Portal.
@@ -772,8 +772,8 @@ async function retrieveCourseData()
     {
       if (coursesEquivalent(course, selectedCourse))
       {
-	Object.assign(selectedCourses[idx], course);
-	break;
+        Object.assign(selectedCourses[idx], course);
+        break;
       }
     }
   }
@@ -869,12 +869,12 @@ function generateCourseDescription(course)
   const description = [];
 
   const summaryLine =
-	course.department + ' ' +
-	course.courseNumber.toString().padStart(3, '0') +
-	course.courseCodeSuffix + ' ' +
-	course.school + '-' +
-	course.section.toString().padStart(2, '0') + ' ' +
-	course.courseName;
+    course.department + ' ' +
+    course.courseNumber.toString().padStart(3, '0') +
+    course.courseCodeSuffix + ' ' +
+    course.school + '-' +
+    course.section.toString().padStart(2, '0') + ' ' +
+    course.courseName;
   description.push(summaryLine);
 
   const times = course.schedule.map(generateScheduleSlotDescription);
@@ -900,7 +900,7 @@ function generateCourseDescription(course)
     partOfYear = 'Second half-semester course';
   }
   let credits = (course.quarterCredits / 4) + ' credit' +
-      (course.quarterCredits != 4 ? 's' : '');
+    (course.quarterCredits != 4 ? 's' : '');
   description.push(`${partOfYear}, ${credits}`);
 
   return description;
@@ -979,7 +979,7 @@ function updateCreditCount()
       onCampusCredits += credits;
       if (course.starred)
       {
-	onCampusStarredCredits += credits;
+        onCampusStarredCredits += credits;
       }
     }
     else
@@ -987,7 +987,7 @@ function updateCreditCount()
       offCampusCredits += credits;
       if (course.starred)
       {
-	offCampusStarredCredits += credits;
+        offCampusStarredCredits += credits;
       }
     }
   }
@@ -995,12 +995,12 @@ function updateCreditCount()
   let totalStarredCredits = onCampusStarredCredits + 3 * offCampusStarredCredits;
 
   const text = 'Scheduled credits: ' +
-	onCampusCredits + ' on-campus credit' + (onCampusCredits !== 1 ? 's' : '') +
-	' (' + onCampusStarredCredits + ' starred), ' +
-	offCampusCredits + ' off-campus credit' + (offCampusCredits !== 1 ? 's' : '') +
-	' (' + offCampusStarredCredits + ' starred), ' +
-	totalCredits + ' total credit' + (totalCredits !== 1 ? 's' : '') +
-	' (' + totalStarredCredits + ' starred)';
+    onCampusCredits + ' on-campus credit' + (onCampusCredits !== 1 ? 's' : '') +
+    ' (' + onCampusStarredCredits + ' starred), ' +
+    offCampusCredits + ' off-campus credit' + (offCampusCredits !== 1 ? 's' : '') +
+    ' (' + offCampusStarredCredits + ' starred), ' +
+    totalCredits + ' total credit' + (totalCredits !== 1 ? 's' : '') +
+    ' (' + totalStarredCredits + ' starred)';
   creditCountText.textContent = text;
 }
 
