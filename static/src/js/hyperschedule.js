@@ -361,6 +361,11 @@ function createCourseEntity(course, idx)
   starToggle.classList.add('course-box-button');
   starToggle.classList.add('course-box-toggle');
   starToggle.classList.add('course-box-star-toggle');
+
+  const starIcon = document.createElement('i');
+  starIcon.classList.add('course-box-star-icon');
+  starIcon.classList.add('icon');
+
   if (course !== 'placeholder')
   {
     starLabel.classList.add('star-visible');
@@ -368,15 +373,22 @@ function createCourseEntity(course, idx)
   starToggle.checked = !!course.starred;
   if (!!course.starred) {
     starLabel.classList.add('star-checked');
+    starIcon.classList.add('ion-android-star');
+  } else {
+    starIcon.classList.add('ion-android-star-outline');
   }
   starToggle.addEventListener('change', () => {
     if (starLabel.classList.contains('star-checked'))
     {
       starLabel.classList.remove('star-checked');
+      starIcon.classList.remove('ion-android-star');
+      starIcon.classList.add('ion-android-star-outline');
     }
     else
     {
       starLabel.classList.add('star-checked');
+      starIcon.classList.remove('ion-android-star-outline');
+      starIcon.classList.add('ion-android-star');
     }
 
     toggleCourseStarred(course);
@@ -385,6 +397,7 @@ function createCourseEntity(course, idx)
   starLabel.addEventListener('click', catchEvent);
 
   starLabel.appendChild(starToggle);
+  starLabel.appendChild(starIcon);
   listItemContent.appendChild(starLabel);
 
   const textBox = document.createElement('p');

@@ -371,9 +371,11 @@ body {
     visibility: hidden;
     display: block;
     width: 25px;
-    height: 25px;
+    height: 50px;
     left: 30px;
-    margin-top: -12.5px;
+    margin-top: -25px;
+    line-height: 50px;
+    font-size: 1.3em;
     position: absolute;
     top: 50%;
     text-align: center;
@@ -383,14 +385,8 @@ body {
     visibility: visible;
 }
 
-#selected-courses-column .course-box-star-label::after {
-    content: "☆";
-    font-weight: 600;
+#selected-courses-column .course-box-star-icon {
     cursor: pointer;
-}
-
-#selected-courses-column .course-box-star-label.star-checked::after {
-    content: "★";
 }
 
 #selected-courses-column .course-box-text {
