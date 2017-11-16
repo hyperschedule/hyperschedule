@@ -151,6 +151,14 @@ body {
     padding: 5px 5px;
 }
 
+.schedule-slot-text-wrapper p {
+    margin: 0 auto;
+}
+
+.schedule-slot-text-wrapper .schedule-slot-course-code {
+    font-weight: bold;
+}
+
 #credit-count-box {
     margin-bottom: 10px !important;
 }
@@ -190,6 +198,15 @@ body {
     margin: 0;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+.course-box-text .course-box-course-code {
+    font-weight: bold;
+
+}
+
+.course-box-text .course-box-course-code::after {
+    content: ' ';
 }
 
 .course-box-button {

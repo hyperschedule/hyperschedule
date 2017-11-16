@@ -220,14 +220,18 @@ function coursesMutuallyExclusive(course1, course2)
 	  course1.courseCodeSuffix === course2.courseCodeSuffix);
 }
 
-function courseToString(course)
+function courseCodeToString(course)
 {
   return course.department + ' ' +
     course.courseNumber.toString().padStart(3, '0') +
     course.courseCodeSuffix + ' ' +
     course.school + '-' +
-    course.section.toString().padStart(2, '0') + ' ' +
-    course.courseName + ' (' +
+    course.section.toString().padStart(2, '0');
+}
+
+function courseToString(course)
+{
+  return course.courseName + ' (' +
     course.courseStatus + ', ' +
     course.openSeats + '/' +
     course.totalSeats + ' seats filled)';
@@ -387,17 +391,28 @@ function createCourseEntity(course, idx)
   textBox.classList.add('course-box-text');
   listItemContent.appendChild(textBox);
 
+  let courseCode;
   let text;
   if (course === 'placeholder')
   {
+    courseCode = 'placeholder';
     text = 'placeholder';
   }
   else
   {
+    courseCode = courseCodeToString(course);
     text = courseToString(course);
   }
-  const textNode = document.createTextNode(text);
-  textBox.appendChild(textNode);
+
+  const courseCodeContainer = document.createElement('span');
+  const courseCodeNode = document.createTextNode(courseCode);
+  courseCodeContainer.classList.add('course-box-course-code');
+  courseCodeContainer.appendChild(courseCodeNode);
+
+  const courseNameNode = document.createTextNode(text);
+
+  textBox.appendChild(courseCodeContainer);
+  textBox.appendChild(courseNameNode);
 
   const addButton = document.createElement('i');
   addButton.classList.add('course-box-button');
@@ -433,7 +448,7 @@ function createCourseEntity(course, idx)
     listItem.setAttribute('data-course-index', idx);
   }
 
-  return listItem;
+    return listItem;
 }
 
 function courseMatchesSearchQuery(course, query)
@@ -648,13 +663,23 @@ function createSlotEntity(course, day, startTime, endTime)
     setCourseDescriptionBox(course);
   });
 
+  const courseCodeContainer = document.createElement('p');
+  const courseNameContainer = document.createElement('p');
+  const courseCodeNode = document.createTextNode(courseCodeToString(course));
+  const courseNameNode = document.createTextNode(course.courseName);
+  courseCodeContainer.classList.add('schedule-slot-course-code');
+  courseNameContainer.classList.add('schedule-slot-course-name');
+  courseCodeContainer.appendChild(courseCodeNode);
+  courseNameContainer.appendChild(courseNameNode);
+  
   const textContainer = document.createElement('p');
   textContainer.classList.add('schedule-slot-text-wrapper');
+
+  textContainer.appendChild(courseCodeContainer);
+  textContainer.appendChild(courseNameContainer);
+  
   div.appendChild(textContainer);
 
-  const textNode = document.createTextNode(courseToString(course));
-  textContainer.appendChild(textNode);
-  
 
   return wrapper;
 }
