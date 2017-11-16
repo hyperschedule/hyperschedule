@@ -623,15 +623,28 @@ function createSlotEntity(course, day, startTime, endTime)
 	`left: ${horizontalOffsetPercentage}%; ` +
 	`width: ${widthPercentage}%; ` +
 	`height: ${heightPercentage}%; `;
+
+  console.log(course);
+  
+  const wrapper = document.createElement('div');
+  wrapper.setAttribute('style', style);
+  wrapper.classList.add('schedule-slot-wrapper');
+
   const div = document.createElement('div');
-  div.setAttribute('style', style);
+  wrapper.appendChild(div);
+
+  console.log(wrapper);
+  console.log(wrapper.childNodes.length);
+
   div.classList.add('schedule-slot');
   if (course.starred)
   {
     div.classList.add('schedule-slot-starred');
   }
+  
   div.style['background-color'] = getCourseColor(course);
-  div.addEventListener('click', () => {
+  
+  wrapper.addEventListener('click', () => {
     setCourseDescriptionBox(course);
   });
 
@@ -641,8 +654,9 @@ function createSlotEntity(course, day, startTime, endTime)
 
   const textNode = document.createTextNode(courseToString(course));
   textContainer.appendChild(textNode);
+  
 
-  return div;
+  return wrapper;
 }
 
 function updateSchedule()
@@ -650,7 +664,7 @@ function updateSchedule()
   schedule = computeSchedule(selectedCourses);
   while (scheduleTable.getElementsByClassName('schedule-slot').length > 0)
   {
-    const element = scheduleTable.getElementsByClassName('schedule-slot')[0];
+    const element = scheduleTable.getElementsByClassName('schedule-slot-wrapper')[0];
     element.parentNode.removeChild(element);
   }
   for (let course of schedule)
