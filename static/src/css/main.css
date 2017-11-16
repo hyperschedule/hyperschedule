@@ -98,6 +98,7 @@ body {
     table-layout: fixed;
     text-align: center;
     width: 95%;
+    border-collapse: collapse;
 }
 
 #schedule-table th {
@@ -105,18 +106,25 @@ body {
 }
 
 #schedule-table td {
-    border: 1px solid #cccccc;
+    border: 1px solid #bbbbbb;
     height: 60px;
 }
 
-.schedule-slot {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+.schedule-slot-wrapper {
     cursor: pointer;
     overflow: hidden;
     position: absolute;
     width: 16.6667%;
+    padding-right: 1px;
+    padding-bottom: 1px;
+}
+
+.schedule-slot {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
 }
 
 .schedule-slot-starred {
@@ -124,15 +132,15 @@ body {
 }
 
 .schedule-slot-starred::before {
-  content: "";
-	position: absolute;
-	top: 0%;
-	left: 0%;
-	width: 0;
-	height: 0;
-  border-top: solid #bbbbbb 1em;
-  border-right: solid transparent 1em;
-  mix-blend-mode: multiply;
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 0;
+    height: 0;
+    border-top: solid #bbbbbb 1em;
+    border-right: solid transparent 1em;
+    mix-blend-mode: multiply;
 }
 
 .schedule-slot-text-wrapper {
