@@ -222,6 +222,11 @@ body {
     /* nothing to do here */
 }
 
+#course-search-column .course-box-select-label {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 #course-search-bar {
     table-layout: auto !important;
     margin-top: 10px !important;
