@@ -3,6 +3,7 @@
 
 * {
     font-family: 'Roboto', sans-serif !important;
+    font-size: 10px;
 }
 
 /* Page layout */
@@ -62,25 +63,35 @@ body {
 }
 
 #schedule-table th {
-    height: 60px;
+    height: 40px;
 }
 
 #schedule-table td {
     border: 1px solid #cccccc;
-    height: 60px;
+    height: 40px;
 }
 
-.schedule-slot {
-    display: flex;
+.schedule-slot-wrapper {
     justify-content: center;
-    flex-direction: column;
-    border-radius: 0;
+    
     cursor: pointer;
     overflow: hidden;
     position: absolute;
     width: 16.6667%;
 
-    border: 1px solid #bbb;
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    margin-right: 1px;
+    margin-bottom: 1px;
+}
+
+.schedule-slot {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
 }
 
 .schedule-slot-starred {
@@ -99,10 +110,19 @@ body {
 }
 
 .schedule-slot-text-wrapper {
-    font-size: 75%;
+    font-size: 8px;
     line-height: 125%;
     margin: 0;
     padding: 5px 5px;
+}
+
+.schedule-slot-text-wrapper p {
+    margin: 0 auto;
+}
+
+.schedule-slot-text-wrapper .schedule-slot-course-code {
+    font-weight: bold;
+
 }
 
 #credit-count-box {
