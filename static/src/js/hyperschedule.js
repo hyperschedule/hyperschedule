@@ -684,7 +684,7 @@ function createSlotEntity(course, day, startTime, endTime)
     `width: ${widthPercentage}%; ` +
     `height: ${heightPercentage}%; `;
 
-  console.log(course);
+  //console.log(course);
 
   const wrapper = document.createElement('div');
   wrapper.setAttribute('style', style);
@@ -693,8 +693,8 @@ function createSlotEntity(course, day, startTime, endTime)
   const div = document.createElement('div');
   wrapper.appendChild(div);
 
-  console.log(wrapper);
-  console.log(wrapper.childNodes.length);
+  //console.log(wrapper);
+  //console.log(wrapper.childNodes.length);
 
   div.classList.add('schedule-slot');
   if (course.starred)

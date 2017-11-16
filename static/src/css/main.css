@@ -225,6 +225,11 @@ body {
 #course-search-column .course-box-select-label {
     margin-left: 5px;
     margin-right: 5px;
+    display: none;
+}
+
+#course-search-column .course-box-star-label {
+    display: none;
 }
 
 #course-search-bar {
