@@ -242,10 +242,10 @@ function getCourseColor(course)
   return randomColor({
     luminosity: 'light',
     seed: course.department + ' ' +
-    course.courseNumber.toString().padStart(3, '0') +
-    course.courseCodeSuffix + ' ' +
-    course.school + '-' +
-    course.section.toString().padStart(2, '0'),
+      course.courseNumber.toString().padStart(3, '0') +
+      course.courseCodeSuffix + ' ' +
+      course.school + '-' +
+      course.section.toString().padStart(2, '0'),
   });
 }
 
