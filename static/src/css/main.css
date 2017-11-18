@@ -116,8 +116,8 @@ body {
     overflow: hidden;
     position: absolute;
     width: 16.6667%;
-    padding-right: 1px;
-    padding-bottom: 1px;
+/*padding-right: 1px;
+    padding-bottom: 1px;*/
 }
 
 .schedule-slot {
