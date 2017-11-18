@@ -476,7 +476,6 @@ function createCourseEntity(course, idx)
   removeButton.classList.add('course-box-remove-button');
   removeButton.classList.add('icon');
   removeButton.classList.add('ion-close');
-  // removeButton.innerHTML = '⨉';
   removeButton.addEventListener('click', () => {
     removeCourse(course);
   });
@@ -684,17 +683,12 @@ function createSlotEntity(course, day, startTime, endTime)
     `width: ${widthPercentage}%; ` +
     `height: ${heightPercentage}%; `;
 
-  //console.log(course);
-
   const wrapper = document.createElement('div');
   wrapper.setAttribute('style', style);
   wrapper.classList.add('schedule-slot-wrapper');
 
   const div = document.createElement('div');
   wrapper.appendChild(div);
-
-  //console.log(wrapper);
-  //console.log(wrapper.childNodes.length);
 
   div.classList.add('schedule-slot');
   if (course.starred)

@@ -1,4 +1,5 @@
 /* General styling */
+
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
 * {
@@ -45,7 +46,6 @@ body {
 
 .toolbar {
     display: table;
-    /*min-height: 60px;*/
     margin: 0 auto;
     padding: 0;
     table-layout: fixed;
@@ -263,8 +263,6 @@ body {
 #help-button {
     display: table-cell;
     cursor: pointer;
-    /*display: block;*/
-    /*float: right;*/
     margin: 0 auto;
 }
 
