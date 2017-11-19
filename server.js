@@ -49,9 +49,25 @@ async function parseAndSlurpRepeatedly()
   }
 }
 
+// https://stackoverflow.com/q/11001817/3538165
+function allowCrossDomain(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  }
+  else {
+    next();
+  }
+};
+
 async function runWebserver()
 {
   const server = express();
+  server.use(allowCrossDomain);
   server.get('/api/v1/all-courses', (req, res, next) => {
     if (courses)
     {
