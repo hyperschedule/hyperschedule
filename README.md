@@ -2,7 +2,7 @@
 
 ## Live demo
 
-Check out https://hyperschedule.netlify.com!
+Check out https://hyperschedule.io!
 
 ## See also
 
