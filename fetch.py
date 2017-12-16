@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 from bs4 import BeautifulSoup
 from dateutil.parser import parse as parse_date
 import datetime as dt
@@ -17,6 +18,9 @@ browser = webdriver.PhantomJS()
 try:
     url = 'https://portal.hmc.edu/ICS/Portal_Homepage.jnz?portlet=Course_Schedules&screen=Advanced+Course+Search&screenType=next'
     browser.get(url)
+
+    term = Select(browser.find_element_by_id('pg0_V_ddlTerm'))
+    term.select_by_visible_text('SP 2018')
 
     title = browser.find_element_by_id('pg0_V_txtTitleRestrictor')
     title.clear()
