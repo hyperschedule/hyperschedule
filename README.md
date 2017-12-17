@@ -2,36 +2,57 @@
 
 ## Live demo
 
-Check out https://hyperschedule.herokuapp.com!
+Check out https://hyperschedule.io!
 
-## API
+## See also
 
-We have one! Hit up
+As we all know, microservices [are the future][its-the-future]. We
+have three of 'em: the front-end webapp (this repository),
+the [course catalog API][api], and the [Portal scraper][scraper].
 
-    https://hyperschedule.herokuapp.com/api/v1/all-courses
-
-You'll find it more enjoyable than Portal.
-
-## Why?
-
-This scheduler takes a different approach to the various versions of
-**hmc-scheduler**, and this approach makes it much faster to amend
-your schedule on the fly during registration. Also, half-semester
-courses finally work :)
+(Well, technically the course catalog and the Portal scraper are still
+one service. They will be separated once the [new API][new-api] is up
+and running.)
 
 ## Local development
+### Install dependencies
+#### macOS
+
+Install [Homebrew]:
+
+    $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+Install [Yarn]:
+
+    $ brew install yarn
+
+### Set up project
+
+Install Node.js dependencies:
 
     $ yarn
-    $ pip3 install -r requirements.txt
-    $ ./server.js
 
-## Run in production mode
+### Run locally
 
-    $ yarn babel
-    $ ./server.js --production
+Build the static files and serve them to `localhost:5000` (use a
+different port by exporting `PORT`):
 
-## Contributing
+    $ yarn dev
 
-This is essentially a hackathon project so coding standards are not
-high. I will merge pull requests readily. Or, you can open an issue
-for a bug or feature request.
+By default, the webapp expects the API to be running at
+`https://hyperschedule.herokuapp.com`. If you're doing development on
+the API locally, you'll want to override this by exporting `API_URL`
+to `http://localhost:3000` (or similar). If exporting to `localhost`,
+don't forget the `http`, since otherwise Chrome's CORS policy will
+block the request.
+
+### Deploy
+
+Deployment happens automatically when a commit is merged to `master`.
+
+[api]: https://github.com/MuddCreates/hyperschedule-scraper
+[homebrew]: https://brew.sh/
+[its-the-future]: https://circleci.com/blog/its-the-future/
+[new-api]: https://github.com/MuddCreates/hyperschedule-api
+[scraper]: https://github.com/MuddCreates/hyperschedule-scraper
+[yarn]: https://yarnpkg.com/en/

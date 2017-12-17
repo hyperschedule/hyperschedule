@@ -1,20 +1,40 @@
 {
-  "name": "hyperschedule",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "babel": {
+    "plugins": [
+      "./babel-plugin.js"
+    ],
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "> 1%"
+            ]
+          }
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "babel-cli": "6.26.0",
-    "babel-preset-env": "1.6.1",
+    "babel-preset-env": "1.6.1"
+  },
+  "devDependencies": {
     "express": "4.16.2",
-    "moment": "2.19.2",
-    "mz": "2.7.0",
-    "phantomjs-prebuilt": "2.1.16"
+    "npm-run-all": "4.1.2"
   },
   "engines": {
     "node": ">=8.8.1"
   },
+  "license": "MIT",
+  "name": "hyperschedule",
   "scripts": {
-    "babel": "rm -rf static/production && babel static/src -d static/production --copy-files"
-  }
+    "build": "rm -rf out && babel src -d out -D",
+    "clean": "rm -rf out",
+    "dev": "run-p server watch",
+    "server": "./server.js",
+    "watch": "rm -rf out && babel src -d out -D -w -q"
+  },
+  "version": "1.0.0"
 }

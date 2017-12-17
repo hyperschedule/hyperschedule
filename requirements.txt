@@ -1,8 +1,0 @@
-beautifulsoup4==4.6.0
-bs4==0.0.1
-dateutils==0.6.6
-lxml==4.1.1
-python-dateutil==2.6.1
-pytz==2017.3
-selenium==3.7.0
-six==1.11.0

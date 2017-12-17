@@ -752,7 +752,9 @@ function updateSchedule()
 
 async function retrieveCourseData()
 {
-  const response = await fetch('/api/v1/all-courses');
+  // The API_URL is replaced by Babel with the actual value specified
+  // in configuration.
+  const response = await fetch(API_URL + '/api/v1/all-courses');
   if (!response.ok)
   {
     throw Error('Received API error while fetching course data: ' +
