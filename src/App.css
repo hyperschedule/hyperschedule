@@ -1,0 +1,102 @@
+#course-search-schedule-column {
+  padding-top: 20px;
+  overflow-y: scroll;
+}
+
+#course-search-toggle-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#schedule-toggle-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#course-search-toggle {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#schedule-toggle {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Schedule */
+
+#schedule-table {
+  border: none;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+  position: relative;
+  table-layout: fixed;
+  text-align: center;
+  width: 95%;
+  border-collapse: collapse;
+}
+
+#schedule-table th {
+  height: 60px;
+}
+
+#schedule-table td {
+  border: 1px solid #bbbbbb;
+  height: 60px;
+}
+
+.schedule-slot-wrapper {
+  cursor: pointer;
+  overflow: hidden;
+  position: absolute;
+  width: 16.6667%;
+}
+
+.schedule-slot {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.schedule-slot-starred {
+  /* nothing to do here */
+}
+
+.schedule-slot-starred::before {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 0;
+  height: 0;
+  border-top: solid #bbbbbb 1em;
+  border-right: solid transparent 1em;
+  mix-blend-mode: multiply;
+}
+
+.schedule-slot-text-wrapper {
+  font-size: 75%;
+  line-height: 125%;
+  margin: 0;
+  padding: 5px 5px;
+}
+
+.schedule-slot-text-wrapper p {
+  margin: 0 auto;
+}
+
+.schedule-slot-text-wrapper .schedule-slot-course-code {
+  font-weight: bold;
+}

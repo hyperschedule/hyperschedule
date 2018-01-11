@@ -1,0 +1,26 @@
+import { call, put } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { HyperscheduleApi, computeCourseKey } from './api';
+import { updateCourses } from './actions';
+import { OrderedMap, fromJS } from 'immutable';
+
+const API_UPDATE_PERIOD_MS = 1000 * 30;
+
+
+function* periodicApiUpdate(getState) {
+  while(true) {
+    // Fetch the response from the API and emit an action to update the state
+    let response = yield call(HyperscheduleApi.fetch_courses);
+    let courses = OrderedMap();
+    for (let course of response.courses) {
+      courses = courses.set(computeCourseKey(course), fromJS(course));
+    }
+    yield put(updateCourses(courses));
+
+    // Wait for API_UPDATE_PERIOD_MS before next API fetch
+    yield call(delay, API_UPDATE_PERIOD_MS);
+  }
+}
+
+
+export default periodicApiUpdate;
