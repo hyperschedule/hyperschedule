@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Button, Icon } from 'semantic-ui-react';
+import { Segment, Button } from 'semantic-ui-react';
 
 const CourseSearchItem = ({course, courseId, onClick}) => {
   return (
-      <Segment>
+    <Segment>
       {course.courseName}
       <Button floated='right' icon='minus' onClick={onClick} courseid={courseId}/>
-      </Segment>
+    </Segment>
   );
 };
 

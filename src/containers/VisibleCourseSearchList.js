@@ -4,14 +4,12 @@ import CourseSearchList from '../components/CourseSearchList';
 
 
 const mapStateToProps = (state) => {
-  let courses = state
-      .get('courses')
+  return {
+    course_ids: state.get('courses')
       .filter((course) => course
               .get('courseName')
-              .includes(state.get('searchString')));
-  return {
-    courses: courses.valueSeq(),
-    course_ids: courses.keySeq()
+              .includes(state.get('searchString')))
+      .keySeq()
   };
 };
 

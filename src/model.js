@@ -142,24 +142,22 @@ export function createSlotEntity(course, day, startTime, endTime)
         `height: ${heightPercentage}%; `;
 
   const wrapper = (
-      <div
-    style={{top: `${verticalOffsetPercentage}%`,
-            left: `${horizontalOffsetPercentage}%`,
-            width: `${widthPercentage}%`,
-            height: `${heightPercentage}%`}}
-    className='schedule-slot-wrapper'
-      >
+    <div style={{top: `${verticalOffsetPercentage}%`,
+                 left: `${horizontalOffsetPercentage}%`,
+                 width: `${widthPercentage}%`,
+         height: `${heightPercentage}%`}}
+         className='schedule-slot-wrapper'>
       <div className='schedule-slot'>
-      <p className='schedule-slot-text-wrapper'>
-      <p className='schedule-slot-course-code'>
-      {courseCodeToString(course)}
-      </p>
-      <p className='schedule-slot-course-name'>
-      {course.courseName + ' (' + course.openSeats + '/' + course.totalSeats + ')'}
-      </p>
-      </p>
+        <p className='schedule-slot-text-wrapper'>
+          <p className='schedule-slot-course-code'>
+            {courseCodeToString(course)}
+          </p>
+          <p className='schedule-slot-course-name'>
+            {course.courseName + ' (' + course.openSeats + '/' + course.totalSeats + ')'}
+          </p>
+        </p>
       </div>
-      </div>
+    </div>
   );
 
   return wrapper;

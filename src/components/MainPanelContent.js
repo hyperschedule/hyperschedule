@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { MainPanelMode } from '../actions';
 
 import VisibleCourseSearchInput from '../containers/VisibleCourseSearchInput';
@@ -10,10 +9,10 @@ const MainPanelContent = ({currentMode}) => {
   switch (currentMode) {
   case MainPanelMode.COURSE_SEARCH:
     return (
-        <React.Fragment>
+      <React.Fragment>
         <VisibleCourseSearchInput />
         <VisibleCourseSearchList />
-        </React.Fragment>
+      </React.Fragment>
     );
   case MainPanelMode.SCHEDULE:
     return <VisibleMainPanelSchedule />;

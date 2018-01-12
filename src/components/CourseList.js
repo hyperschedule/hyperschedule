@@ -1,22 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import VisibleCourseListItem from '../containers/VisibleCourseListItem';
 
-const SortableItem = SortableElement(({value}) =>
-                                     <VisibleCourseListItem courseId={value}/>
-                                    );
+const SortableItem = SortableElement(
+  ({value}) =>
+    <VisibleCourseListItem courseId={value}/>
+);
 
-const SortableList = SortableContainer(({items}) => {
-  return (
+const SortableList = SortableContainer(
+  ({items}) => {
+    return (
       <ul>
-      {items.map((value, index) => (
+        {items.map((value, index) => (
           <SortableItem key={`item-${index}`} index={index} value={value} />
-      ))}
-    </ul>
-  );
-});
+        ))}
+      </ul>
+    );
+  }
+);
 
 const CourseSearchList = ({courseList, onSortEnd}) => {
   return <SortableList items={courseList} onSortEnd={onSortEnd} />;

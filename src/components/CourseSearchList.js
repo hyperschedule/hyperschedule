@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
-import { Segment, Button, Icon } from 'semantic-ui-react';
 import VisibleCourseSearchItem from '../containers/VisibleCourseSearchItem';
 import 'react-virtualized/styles.css';
 
 class CourseSearchList extends React.PureComponent {
   static propTypes = {
-    courses: PropTypes.array.isRequired,
     course_ids: PropTypes.array.isRequired
   };
 
@@ -30,21 +28,19 @@ class CourseSearchList extends React.PureComponent {
 
   
   _rowRenderer({index, key, style, parent}) {
-    const course = this.props.courses[index];
     const courseId = this.props.course_ids[index];
 
     return (
-        <CellMeasurer
-      cache={this._cache}
-      columnIndex={0}
-      key={key}
-      parent={parent}
-      rowIndex={index}
-        >
+      <CellMeasurer
+        cache={this._cache}
+        columnIndex={0}
+        key={key}
+        parent={parent}
+        rowIndex={index}>
         <div style={style}>
-        <VisibleCourseSearchItem courseId={courseId}/>
+          <VisibleCourseSearchItem courseId={courseId}/>
         </div>
-        </CellMeasurer>
+      </CellMeasurer>
     );
   };
 
@@ -54,20 +50,18 @@ class CourseSearchList extends React.PureComponent {
 
   render() {
     return (
-        <div style={{height:'500px'}}>
+      <div style={{height:'500px'}}>
         <AutoSizer>
-        {({ height, width }) => {
-          return ( <List
-      ref={this._setListRef}
-      height={height}
-      width={width}
-      deferredMeasurementCache={this._cache}
-      rowCount={this.props.courses.length}
-      rowHeight={this._cache.rowHeight}
-      rowRenderer={this._rowRenderer}
-                   />
-                 );
-        }}
+          {({ height, width }) => {
+            return ( <List ref={this._setListRef}
+                             height={height}
+                             width={width}
+                             deferredMeasurementCache={this._cache}
+                             rowCount={this.props.course_ids.length}
+                             rowHeight={this._cache.rowHeight}
+                             rowRenderer={this._rowRenderer} />
+                   );
+          }}
       </AutoSizer>
         </div>
     );

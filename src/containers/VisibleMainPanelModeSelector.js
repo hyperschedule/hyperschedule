@@ -1,5 +1,5 @@
 import { connect  } from 'react-redux';
-import { switchMainPanelMode, MainPanelMode } from '../actions.js';
+import { switchMainPanelMode } from '../actions.js';
 import toJS from '../toJS';
 import MainPanelModeSelector from '../components/MainPanelModeSelector';
 

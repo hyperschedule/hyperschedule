@@ -1,28 +1,21 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import 'normalize-css/normalize.css';
-import 'semantic-ui-css/semantic.min.css';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import Immutable from 'immutable';
+import { createLogger } from 'redux-logger';
+
 import hyperschedule from './reducers';
 
-import VisibleCourseSearchInput from './containers/VisibleCourseSearchInput';
-import VisibleCourseSearchList from './containers/VisibleCourseSearchList';
 import VisibleMainPanelModeSelector from './containers/VisibleMainPanelModeSelector';
 import VisibleMainPanelContents from './containers/VisibleMainPanelContent';
 import VisibleCourseList from './containers/VisibleCourseList';
 
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import periodicApiUpdate from './sagas';
 
+import 'normalize-css/normalize.css';
+import 'semantic-ui-css/semantic.min.css';
 import 'react-virtualized/styles.css';
-import { createLogger } from 'redux-logger';
-
-import { Button, Icon } from 'semantic-ui-react';
-
+import './App.css';
 
 const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger({
@@ -31,6 +24,7 @@ const logger = createLogger({
   stateTransformer: (state) => state.toJS()
 });
 
+
 let store = createStore(
   hyperschedule,
   applyMiddleware(sagaMiddleware, logger)
@@ -38,14 +32,6 @@ let store = createStore(
 
 sagaMiddleware.run(periodicApiUpdate);
 
-
-// playground starts here
-
-const SortableItem = SortableElement(({value}) =>
-                                     <li>{value}</li>
-                                    );
-
-// playground ends here
 class App extends Component {
   render() {
     return (
