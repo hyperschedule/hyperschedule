@@ -2,8 +2,8 @@ import React from 'react';
 
 function parseTimeSeparately(timeString)
 {
-  return [parseInt(timeString.substring(0, 2)),
-          parseInt(timeString.substring(3, 5))];
+  return [parseInt(timeString.substring(0, 2), 10),
+          parseInt(timeString.substring(3, 5), 10)];
 }
 
 function parseTime(timeString)
@@ -110,7 +110,6 @@ export function createSlotEntity(course, day, startTime, endTime)
   endTime = parseTime(endTime);
   const timeSince8am = (startTime - 8);
   const duration = endTime - startTime;
-  const text = course.courseName;
   const verticalOffsetPercentage = (timeSince8am + 1) / 16 * 100;
   const heightPercentage = duration / 16 * 100;
   const dayIndex = 'MTWRF'.indexOf(day);
@@ -135,11 +134,6 @@ export function createSlotEntity(course, day, startTime, endTime)
   const horizontalOffsetPercentage =
         (dayIndex + 1 + halfSemesterHorizontalOffset) / 6 * 100;
   const widthPercentage = (1 + halfSemesterWidthOffset) / 6 * 100;
-  const style =
-        `top: ${verticalOffsetPercentage}%; ` +
-        `left: ${horizontalOffsetPercentage}%; ` +
-        `width: ${widthPercentage}%; ` +
-        `height: ${heightPercentage}%; `;
 
   const wrapper = (
     <div style={{top: `${verticalOffsetPercentage}%`,
