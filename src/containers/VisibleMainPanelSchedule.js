@@ -11,8 +11,6 @@ const mapStateToProps = (state, ownProps) => {
     courses.push(course);
   }
   const schedule = computeSchedule(courses);
-  console.log(courses);
-  console.log(schedule);
   return {
     schedule
   };
