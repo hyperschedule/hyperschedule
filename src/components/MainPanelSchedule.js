@@ -22,12 +22,14 @@ const MainPanelSchedule = ({schedule}) => {
     <div>
       <table id="schedule-table">
         <thead>
-          <th className="schedule-hour schedule-hour-0"></th>
-          <th className="schedule-day schedule-day-1">M</th>
-          <th className="schedule-day schedule-day-2">T</th>
-          <th className="schedule-day schedule-day-3">W</th>
-          <th className="schedule-day schedule-day-4">T</th>
-          <th className="schedule-day schedule-day-5">F</th>
+          <tr>
+            <th className="schedule-hour schedule-hour-0"></th>
+            <th className="schedule-day schedule-day-1">M</th>
+            <th className="schedule-day schedule-day-2">T</th>
+            <th className="schedule-day schedule-day-3">W</th>
+            <th className="schedule-day schedule-day-4">T</th>
+            <th className="schedule-day schedule-day-5">F</th>
+          </tr>
         </thead>
         <tbody id="schedule-table-body">
           <tr><td className="schedule-hour-1 schedule-hour">8am</td><td></td><td></td><td></td><td></td><td></td></tr>
