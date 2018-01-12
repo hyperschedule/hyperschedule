@@ -22,7 +22,7 @@ function httpStatusHelper (response) {
 
 const courseKeyFields = ['school', 'department', 'courseNumber', 'courseCodeSuffix', 'section'];
 export function computeCourseKey (course) {
-  var key = [];
+  let key = [];
   for (let field of courseKeyFields) {
     key.push(course[field]);
   }

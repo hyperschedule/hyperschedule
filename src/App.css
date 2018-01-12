@@ -63,6 +63,7 @@
 }
 
 .schedule-slot {
+  background: grey;
   display: flex;
   flex-direction: column;
   width: 100%;

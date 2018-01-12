@@ -10,7 +10,7 @@ const API_UPDATE_PERIOD_MS = 1000 * 30;
 function* periodicApiUpdate(getState) {
   while(true) {
     // Fetch the response from the API and emit an action to update the state
-    let response = yield call(HyperscheduleApi.fetch_courses);
+    const response = yield call(HyperscheduleApi.fetch_courses);
     let courses = OrderedMap();
     for (let course of response.courses) {
       courses = courses.set(computeCourseKey(course), fromJS(course));

@@ -47,7 +47,7 @@ function updateCourseList(state = List(), action) {
   case REMOVE_COURSE:
     return state.filterNot((item) => item === action.courseId);
   case REORDER_COURSE:
-    let value = state.get(action.oldIndex);
+    const value = state.get(action.oldIndex);
     return state
       .delete(action.oldIndex)
       .insert(action.newIndex, value);

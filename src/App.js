@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import 'normalize-css/normalize.css';
 import 'semantic-ui-css/semantic.min.css';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -43,7 +44,6 @@ sagaMiddleware.run(periodicApiUpdate);
 const SortableItem = SortableElement(({value}) =>
                                      <li>{value}</li>
                                     );
-
 
 // playground ends here
 class App extends Component {
