@@ -36,5 +36,5 @@
     "server": "./server.js",
     "watch": "rm -rf out && babel src -d out -D -w -q"
   },
-  "version": "1.0.0"
+  "version": "0.0.0"
 }
