@@ -36,10 +36,11 @@ the built files with the `clean` task.
 
 ### Deploy
 
-Deployment happens automatically when a commit is merged to `master`.
-If you have permission to manage the deployment pipeline, the
-administrator dashboard is [here][heroku].
+Deployment to Netlify happens automatically when a commit is merged to
+`master`. If you have permission to manage the deployment pipeline,
+the administrator dashboard is [here][netlify].
 
 [heroku]: https://dashboard.heroku.com/apps/hyperschedule
+[netlify]: https://app.netlify.com/sites/hyperschedule/overview
 [scraper]: https://github.com/MuddCreates/hyperschedule-scraper
 [yarn]: https://yarnpkg.com/en/
