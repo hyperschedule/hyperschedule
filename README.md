@@ -1,4 +1,4 @@
-**Hyperschedule**: Webapp for scheduling 5C courses quickly.
+**Hyperschedule**: webapp for scheduling 5C courses quickly.
 
 ## Live demo
 
