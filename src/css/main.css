@@ -1,9 +1,9 @@
 /* General styling */
 
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 
 * {
-    font-family: 'Roboto', sans-serif !important;
+    font-family: "Roboto", sans-serif !important;
     border-radius: 0 !important;
 }
 
@@ -204,7 +204,7 @@ body {
 }
 
 .course-box-text .course-box-course-code::after {
-    content: ' ';
+    content: " ";
 }
 
 .course-box-button {
@@ -430,15 +430,15 @@ body {
 }
 
 #import-export-copy-button::after {
-    content: 'Copy to clipboard';
+    content: "To clipboard";
 }
 
 #import-export-copy-button.copy-button-copied::after {
-    content: 'Copied!';
+    content: "Copied!";
 }
 
 #import-export-copy-button.copy-button-error::after {
-    content: 'Press ctrl+C to copy';
+    content: "Couldn't copy";
 }
 
 .modal-footer button.btn {
