@@ -130,9 +130,12 @@
           <div class="modal-body">
             <p>You can edit the JSON in another application. Be warned that your changes are <b>not</b> validated!</p>
             <textarea id="import-export-text-area" class="form-control"></textarea>
+            <br>
+            <p>Alternatively, use the button below to export an iCal file with your starred courses.</p>
           </div>
           <div class="modal-footer">
             <button type="button" id="import-export-copy-button" class="btn btn-info" data-clipboard-target="#import-export-text-area"></button>
+            <button type="button" id="import-export-ical-button" class="btn btn-info">To iCal</button>
             <button type="button" id="import-export-save-changes-button" class="btn btn-primary">Save changes</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
@@ -169,6 +172,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"     integrity="sha384-/fwzB6+UmLHGu4Y0cOi5r8tRXd36OVkdBgohrKfMQOAhnH6LrAX6aEOFmqebDSk8" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"                                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="js/vendor/ics-0.2.0.min.js"></script>
     <script src="js/hyperschedule.js"></script>
   </body>
 </html>

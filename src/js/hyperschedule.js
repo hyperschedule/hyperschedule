@@ -36,6 +36,7 @@ const scheduleTableBody = document.getElementById("schedule-table-body");
 const creditCountText = document.getElementById("credit-count");
 
 const importExportTextArea = document.getElementById("import-export-text-area");
+const importExportICalButton = document.getElementById('import-export-ical-button');
 const importExportSaveChangesButton = document.getElementById("import-export-save-changes-button");
 const importExportCopyButton = document.getElementById("import-export-copy-button");
 
@@ -103,6 +104,16 @@ function formatList(list, none)
 function deepCopy(obj)
 {
   return JSON.parse(JSON.stringify(obj));
+}
+
+function weekdayCharToInteger(weekday)
+{
+  const index = "UMTWRFS".indexOf(weekday);
+  if (index < 0)
+  {
+    throw Error("Invalid weekday: " + weekday);
+  }
+  return index;
 }
 
 function catchEvent(event)
@@ -427,6 +438,7 @@ function attachListeners()
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   courseSearchInput.addEventListener("keyup", updateCourseSearchResults);
   importExportDataButton.addEventListener("click", showImportExportModal);
+  importExportICalButton.addEventListener("click", downloadICalFile);
   importExportSaveChangesButton.addEventListener(
     "click", saveImportExportModalChanges);
   sortable(".sortable-list", {
@@ -1120,6 +1132,93 @@ function readStateFromLocalStorage()
   {
     showClosedCourses = localStorage.getItem("showClosedCourses") === "true";
   }
+}
+
+/// iCal download
+
+function convertDayToICal(weekday)
+{
+  switch (weekday)
+  {
+    case "U": return "SU";
+    case "M": return "MO";
+    case "T": return "TU";
+    case "W": return "WE";
+    case "R": return "TH";
+    case "F": return "FR";
+    case "S": return "SA";
+  }
+  throw Error("Invalid weekday: " + weekday);
+}
+
+// See https://github.com/nwcell/ics.js/issues/26.
+function uglyHack(input)
+{
+  return input.replace(/\n/g, "\\n").replace(/,/g, "\\,");
+}
+
+function downloadICalFile()
+{
+  const cal = ics();
+  for (let course of selectedCourses)
+  {
+    if (course.starred)
+    {
+      const subject = course.courseName;
+      // Why use a literal \n in the description? Bug in ics.js, see
+      // .
+      const description = uglyHack(
+        courseCodeToString(course) + " " +
+          course.courseName + "\n" +
+          formatList(course.faculty));
+      const listedStartDay = new Date(course.startDate);
+      const listedStartWeekday = listedStartDay.getDay();
+      const listedEndDay = new Date(course.endDate);
+      // The range is inclusive, but ics.js interprets it exclusively.
+      listedEndDay.setDate(listedEndDay.getDate() + 1);
+      for (let slot of course.schedule)
+      {
+        const location = uglyHack(slot.location);
+        // Determine the first day of class. We want to pick the
+        // weekday that occurs the soonest after (possibly on the same
+        // day as) the listed start date.
+        let startWeekday = null;
+        let weekdayDifference = 7;
+        for (let weekday of slot.days)
+        {
+          const possibleStartWeekday = weekdayCharToInteger(weekday);
+          const possibleWeekdayDifference =
+                (possibleStartWeekday - listedStartWeekday) % 7;
+          if (possibleWeekdayDifference < weekdayDifference)
+          {
+            startWeekday = possibleStartWeekday;
+            weekdayDifference = possibleWeekdayDifference;
+          }
+        }
+        // See https://stackoverflow.com/a/563442/3538165.
+        const start = new Date(listedStartDay.valueOf());
+        start.setDate(start.getDate() + weekdayDifference);
+        const [startHours, startMinutes] =
+              timeStringToHoursAndMinutes(slot.startTime);
+        start.setHours(startHours);
+        start.setMinutes(startMinutes);
+        const end = new Date(start.valueOf());
+        const [endHours, endMinutes] =
+              timeStringToHoursAndMinutes(slot.endTime);
+        end.setHours(endHours);
+        end.setMinutes(endMinutes);
+        const freq = "WEEKLY";
+        const until = listedEndDay;
+        const interval = 1;
+        const byday = slot.days.split("").map(convertDayToICal);
+        const rrule = {
+          freq, until, interval, byday,
+        };
+        cal.addEvent(subject, description, location, start, end, rrule);
+      }
+    }
+  }
+  cal.download("hyperschedule-export");
 }
 
 /// Startup actions

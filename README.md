@@ -40,6 +40,16 @@ Deployment to Netlify happens automatically when a commit is merged to
 `master`. If you have permission to manage the deployment pipeline,
 the administrator dashboard is [here][netlify].
 
+## Vendored code
+
+The file `src/js/vendor/ics-0.2.0.min.js` was obtained by copying [the
+file `ics.deps.min.js` from the repository
+https://github.com/nwcell/ics.js at tag
+0.2.0](https://github.com/nwcell/ics.js/blob/0.2.0/ics.deps.min.js)
+and replacing the string `rrule` with `RRULE` in one place to work
+around [an issue](https://github.com/nwcell/ics.js/issues/51). Is it
+horrifying? Yes. But does it work? Yes.
+
 [heroku]: https://dashboard.heroku.com/apps/hyperschedule
 [netlify]: https://app.netlify.com/sites/hyperschedule/overview
 [scraper]: https://github.com/MuddCreates/hyperschedule-scraper
