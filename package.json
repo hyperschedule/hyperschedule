@@ -28,7 +28,7 @@
     "node": ">=8.8.1"
   },
   "license": "MIT",
-  "name": "hyperschedule",
+  "name": "hyperschedule-frontend",
   "scripts": {
     "build": "rm -rf out && babel src -d out -D",
     "clean": "rm -rf out",
