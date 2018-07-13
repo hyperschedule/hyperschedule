@@ -2,7 +2,7 @@
 
 ## Live demo
 
-Check out https://hyperschedule.io!
+Check out <https://hyperschedule.io>!
 
 ## See also
 

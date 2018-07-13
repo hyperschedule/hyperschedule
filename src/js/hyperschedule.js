@@ -7,7 +7,10 @@
 //// Data constants
 
 const millisecondsPerHour = 3600 * 1000;
-const scheduleHeightHeightPixels = 60;
+
+const courseSearchPageSize = 20;
+
+const apiURL = API_URL; // replaced by Babel with a string literal
 
 //// DOM elements
 
@@ -21,6 +24,11 @@ const scheduleColumn = document.getElementById("schedule-column");
 
 const courseSearchInput = document.getElementById("course-search-course-name-input");
 const courseSearchResultsList = document.getElementById("course-search-results-list");
+
+const courseSearchFewerPagesButton = document.getElementById("course-search-fewer-pages-button");
+const courseSearchMorePagesButton = document.getElementById("course-search-more-pages-button");
+const courseSearchOnePageButton = document.getElementById("course-search-one-page-button");
+const courseSearchAllPagesButton = document.getElementById("course-search-all-pages-button");
 
 const importExportDataButton = document.getElementById("import-export-data-button");
 
@@ -42,12 +50,18 @@ const importExportCopyButton = document.getElementById("import-export-copy-butto
 
 //// Global state
 
-let courseData = null;
-let selectedCourses = null;
-let schedule = null;
-let scheduleTabSelected = false;
-let showClosedCourses = true;
-let currentlySorting = false;
+// Persistent data.
+let gCourseList = [];
+let gCourseDataTimestamp = null;
+let gSelectedCourses = [];
+let gScheduleTabSelected = false;
+let gShowClosedCourses = true;
+
+// Transient data.
+let gCourseIndex = {};
+let gSelectedCoursesIndex = {};
+let gCurrentlySorting = false;
+let gCourseSearchPagesShown = 1;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -72,6 +86,58 @@ function arraysEqual(arr1, arr2, test)
     }
   }
   return true;
+}
+
+function compareArrays(arr1, arr2)
+{
+  let idx1 = 0;
+  let idx2 = 0;
+  while (idx1 < arr1.length && idx2 < arr2.length)
+  {
+    if (arr1[idx1] < arr2[idx2])
+    {
+      return -1;
+    }
+    else if (arr1[idx1] > arr2[idx2])
+    {
+      return 1;
+    }
+    else
+    {
+      ++idx1;
+      ++idx2;
+    }
+  }
+  if (arr1.length < arr2.length)
+  {
+    return -1;
+  }
+  else if (arr1.length > arr2.length)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+// https://stackoverflow.com/a/29018745/3538165
+function binarySearch(ar, el, compare_fn) {
+  var m = 0;
+  var n = ar.length - 1;
+  while (m <= n) {
+    var k = (n + m) >> 1;
+    var cmp = compare_fn(el, ar[k]);
+    if (cmp > 0) {
+      m = k + 1;
+    } else if(cmp < 0) {
+      n = k - 1;
+    } else {
+      return k;
+    }
+  }
+  return -m - 1;
 }
 
 function formatList(list, none)
@@ -116,6 +182,31 @@ function weekdayCharToInteger(weekday)
   return index;
 }
 
+function readArrayFromLocalStorage(key)
+{
+  const jsonString = localStorage.getItem(key);
+  if (!key)
+  {
+    return [];
+  }
+  try
+  {
+    const obj = JSON.parse(jsonString);
+    if (Array.isArray(obj))
+    {
+      return obj;
+    }
+    else
+    {
+      return [];
+    }
+  }
+  catch (err)
+  {
+    return [];
+  }
+}
+
 function catchEvent(event)
 {
   event.stopPropagation();
@@ -125,8 +216,8 @@ function catchEvent(event)
 
 function timeStringToHoursAndMinutes(timeString)
 {
-  return [parseInt(timeString.substring(0, 2)),
-          parseInt(timeString.substring(3, 5))];
+  return [parseInt(timeString.substring(0, 2), 10),
+          parseInt(timeString.substring(3, 5), 10)];
 }
 
 function timeStringToHours(timeString)
@@ -170,8 +261,37 @@ function setEntityVisibility(entity, visible)
   }
 }
 
+function setButtonSelected(button, selected)
+{
+  const classAdded = selected ? "btn-primary" : "btn-light";
+  const classRemoved = selected ? "btn-light" : "btn-primary";
+  button.classList.add(classAdded);
+  button.classList.remove(classRemoved);
+}
+
 //// Course and schedule utility functions
 ///// Course property queries
+
+function courseToSortKey(course)
+{
+  return [
+    course.department,
+    course.courseNumber,
+    course.courseCodeSuffix,
+    course.school,
+    course.section,
+  ];
+}
+
+function compareCourses(course1, course2)
+{
+  return compareArrays(courseToSortKey(course1), courseToSortKey(course2));
+}
+
+function courseToIndexKey(course)
+{
+  return courseToSortKey(course).join("/");
+}
 
 function isCourseClosed(course)
 {
@@ -195,29 +315,11 @@ function courseToString(course)
     course.totalSeats + " seats filled)";
 }
 
-function getCourseColor(course)
-{
-  return randomColor({
-    luminosity: "light",
-    seed: course.department + " " +
-      course.courseNumber.toString().padStart(3, "0") +
-      course.courseCodeSuffix + " " +
-      course.school + "-" +
-      course.section.toString().padStart(2, "0"),
-  });
-}
-
 function generateCourseDescription(course)
 {
   const description = [];
 
-  const summaryLine =
-        course.department + " " +
-        course.courseNumber.toString().padStart(3, "0") +
-        course.courseCodeSuffix + " " +
-        course.school + "-" +
-        course.section.toString().padStart(2, "0") + " " +
-        course.courseName;
+  const summaryLine = courseCodeToString(course) + " " + course.courseName;
   description.push(summaryLine);
 
   const times = course.schedule.map(generateScheduleSlotDescription);
@@ -247,6 +349,14 @@ function generateCourseDescription(course)
   description.push(`${partOfYear}, ${credits}`);
 
   return description;
+}
+
+function getCourseColor(course)
+{
+  return randomColor({
+    luminosity: "light",
+    seed: courseCodeToString(course),
+  });
 }
 
 ///// Course search
@@ -281,6 +391,11 @@ function courseMatchesSearchQuery(course, query)
     return false;
   }
   return true;
+}
+
+function maxCourseSearchPages(courseList)
+{
+  return Math.ceil(courseList.length / courseSearchPageSize);
 }
 
 ///// Course scheduling
@@ -409,11 +524,85 @@ function computeSchedule(courses)
   return schedule;
 }
 
+///// Course schedule queries
+
+function computeCreditCountDescription(schedule) {
+  let onCampusStarredCredits = 0;
+  let offCampusStarredCredits = 0;
+  let onCampusCredits = 0;
+  let offCampusCredits = 0;
+  for (let course of schedule)
+  {
+    let credits = course.quarterCredits / 4;
+
+    if (course.school === "HM")
+    {
+      onCampusCredits += credits;
+      if (course.starred)
+      {
+        onCampusStarredCredits += credits;
+      }
+    }
+    else
+    {
+      offCampusCredits += credits;
+      if (course.starred)
+      {
+        offCampusStarredCredits += credits;
+      }
+    }
+  }
+  let totalCredits = onCampusCredits + 3 * offCampusCredits;
+  let totalStarredCredits = onCampusStarredCredits + 3 * offCampusStarredCredits;
+
+  const text = "Scheduled credits: " +
+        onCampusCredits + " on-campus credit" + (onCampusCredits !== 1 ? "s" : "") +
+        " (" + onCampusStarredCredits + " starred), " +
+        offCampusCredits + " off-campus credit" + (offCampusCredits !== 1 ? "s" : "") +
+        " (" + offCampusStarredCredits + " starred), " +
+        totalCredits + " total credit" + (totalCredits !== 1 ? "s" : "") +
+        " (" + totalStarredCredits + " starred)";
+  return text;
+}
+
 /// DOM manipulation
 //// DOM setup
 
-function attachImportExportCopyButton()
+function attachListeners()
 {
+  courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
+  scheduleToggle.addEventListener("click", displayScheduleColumn);
+  closedCoursesToggle.addEventListener("click", toggleClosedCourses);
+  courseSearchInput.addEventListener("keyup", handleCourseSearchInputUpdate);
+  courseSearchFewerPagesButton.addEventListener(
+    "click", () => setCourseSearchPagesDisplayed("fewer"));
+  courseSearchMorePagesButton.addEventListener(
+    "click", () => setCourseSearchPagesDisplayed("more"));
+  courseSearchOnePageButton.addEventListener(
+    "click", () => setCourseSearchPagesDisplayed("one"));
+  courseSearchAllPagesButton.addEventListener(
+    "click", () => setCourseSearchPagesDisplayed("all"));
+  importExportDataButton.addEventListener("click", showImportExportModal);
+  importExportICalButton.addEventListener("click", downloadICalFile);
+  importExportSaveChangesButton.addEventListener(
+    "click", saveImportExportModalChanges);
+  sortable(".sortable-list", {
+    forcePlaceholderSize: true,
+    placeholder: createCourseEntity("placeholder").outerHTML,
+  });
+  printButton.addEventListener("click", () => {
+    window.print();
+  });
+  selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
+  selectedCoursesList.addEventListener("sortstart", () => {
+    gCurrentlySorting = true;
+  });
+  selectedCoursesList.addEventListener("sortstop", () => {
+    gCurrentlySorting = false;
+  });
+  window.addEventListener("resize", updateCourseDescriptionBoxHeight);
+
+  // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
   clipboard.on("success", (e) => {
     if (!importExportCopyButton.classList.contains("copy-button-copied"))
@@ -431,38 +620,24 @@ function attachImportExportCopyButton()
   });
 }
 
-function attachListeners()
-{
-  courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
-  scheduleToggle.addEventListener("click", displayScheduleColumn);
-  closedCoursesToggle.addEventListener("click", toggleClosedCourses);
-  courseSearchInput.addEventListener("keyup", updateCourseSearchResults);
-  importExportDataButton.addEventListener("click", showImportExportModal);
-  importExportICalButton.addEventListener("click", downloadICalFile);
-  importExportSaveChangesButton.addEventListener(
-    "click", saveImportExportModalChanges);
-  sortable(".sortable-list", {
-    forcePlaceholderSize: true,
-    placeholder: createCourseEntity("placeholder").outerHTML,
-  });
-  printButton.addEventListener("click", () => {
-    window.print();
-  });
-  selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
-  selectedCoursesList.addEventListener("sortstart", () => {
-    currentlySorting = true;
-  });
-  selectedCoursesList.addEventListener("sortstop", () => {
-    currentlySorting = false;
-  });
-  window.addEventListener("resize", updateCourseDescriptionBoxHeight);
-  attachImportExportCopyButton();
-}
-
 //// DOM element creation
 
-function createCourseEntity(course, idx)
+function createCourseLoadingMessage()
 {
+  const listItem = document.createElement("li");
+  listItem.id = "course-search-placeholder";
+  listItem.setAttribute("data-placeholder", "true");
+  const text = document.createTextNode("Loading courses...");
+  listItem.appendChild(text);
+  return listItem;
+}
+
+function createCourseEntity(course, attrs)
+{
+  attrs = attrs || {};
+  const idx = attrs.idx;
+  const alreadyAdded = attrs.alreadyAdded;
+
   const listItem = document.createElement("li");
   listItem.classList.add("course-box");
 
@@ -595,17 +770,20 @@ function createCourseEntity(course, idx)
   textBox.appendChild(courseCodeContainer);
   textBox.appendChild(courseNameNode);
 
-  const addButton = document.createElement("i");
-  addButton.classList.add("course-box-button");
-  addButton.classList.add("course-box-add-button");
-  addButton.classList.add("icon");
-  addButton.classList.add("ion-plus");
+  if (!alreadyAdded)
+  {
+    const addButton = document.createElement("i");
+    addButton.classList.add("course-box-button");
+    addButton.classList.add("course-box-add-button");
+    addButton.classList.add("icon");
+    addButton.classList.add("ion-plus");
 
-  addButton.addEventListener("click", () => {
-    addCourse(course);
-  });
-  addButton.addEventListener("click", catchEvent);
-  listItemContent.appendChild(addButton);
+    addButton.addEventListener("click", () => {
+      addCourse(course);
+    });
+    addButton.addEventListener("click", catchEvent);
+    listItemContent.appendChild(addButton);
+  }
 
   const removeButton = document.createElement("i");
   removeButton.classList.add("course-box-button");
@@ -719,43 +897,95 @@ function getSearchQuery()
 }
 
 //// DOM updates
+///// DOM updates due to global state change
 
-function updateSortableLists()
+function updateTabToggle()
 {
-  sortable(".sortable-list");
+  setEntityVisibility(scheduleColumn, gScheduleTabSelected);
+  setButtonSelected(scheduleToggle, gScheduleTabSelected);
+
+  setEntityVisibility(courseSearchColumn, !gScheduleTabSelected);
+  setButtonSelected(courseSearchToggle, !gScheduleTabSelected);
 }
 
-function updateCourseSearchResults()
+function updateShowClosedCoursesCheckbox()
 {
-  const query = getSearchQuery();
-  const courses = courseData.courses;
-  const entities = courseSearchResultsList.children;
-  for (let idx = 0; idx < courses.length; ++idx)
+  closedCoursesToggle.checked = gShowClosedCourses;
+}
+
+function updateCourseSearchResults(attrs)
+{
+  attrs = attrs || {};
+  const incremental = attrs.incremental;
+
+  if (gCourseList.length === 0)
   {
-    const course = courses[idx];
-    const entity = entities[idx];
-    const matchesQuery = courseMatchesSearchQuery(course, query);
-    const visible = matchesQuery && (showClosedCourses || !isCourseClosed(course));
-    setEntityVisibility(entity, visible);
+    let child;
+    while ((child = courseSearchResultsList.lastChild))
+    {
+      courseSearchResultsList.removeChild(child);
+    }
+    courseSearchResultsList.appendChild(createCourseLoadingMessage());
+    return;
   }
-}
 
-function updateCourseSearchResultsList()
-{
-  while (courseSearchResultsList.hasChildNodes())
+  let numToShow = gCourseSearchPagesShown * courseSearchPageSize;
+
+  // Remove courses that should no longer be shown (or all courses, if
+  // updating non-incrementally).
+  while (courseSearchResultsList.childElementCount >
+         (incremental ? numToShow : 0))
   {
+    // Make sure to remove from the end.
     courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
-  for (let course of courseData.courses)
+
+  let numAlreadyShown = courseSearchResultsList.childElementCount;
+  const query = getSearchQuery();
+  let numAdded = 0;
+  for (const course of gCourseList)
   {
-    courseSearchResultsList.appendChild(createCourseEntity(course));
+    const matchesQuery = courseMatchesSearchQuery(course, query);
+    if (matchesQuery && (gShowClosedCourses || !isCourseClosed(course)))
+    {
+      if (numAdded >= numToShow)
+      {
+        // If we've already added all the courses we were supposed to,
+        // abort.
+        break;
+      }
+      ++numAdded;
+      if (numAdded <= numAlreadyShown)
+      {
+        // Skip displaying courses that were already shown. (In a
+        // non-incremental update, no courses are already displayed
+        // since we removed all of them above.)
+        continue;
+      }
+      const key = courseToIndexKey(course);
+      const alreadyAdded = gSelectedCoursesIndex.hasOwnProperty(key);
+      courseSearchResultsList.appendChild(
+        createCourseEntity(course, { alreadyAdded }));
+    }
   }
-  updateCourseSearchResults();
+}
+
+function updateCourseSearchPaginationButtons()
+{
+  const disableFewer = gCourseSearchPagesShown <= 1;
+  const disableMore =
+        gCourseSearchPagesShown >= maxCourseSearchPages(gCourseList);
+
+  courseSearchFewerPagesButton.disabled = disableFewer;
+  courseSearchOnePageButton.disabled = disableFewer;
+
+  courseSearchMorePagesButton.disabled = disableMore;
+  courseSearchAllPagesButton.disabled = disableMore;
 }
 
 function updateSelectedCoursesList()
 {
-  if (currentlySorting)
+  if (gCurrentlySorting)
   {
     // Defer to after the user has finished sorting, otherwise we mess
     // up the drag and drop.
@@ -766,20 +996,21 @@ function updateSelectedCoursesList()
   {
     selectedCoursesList.removeChild(selectedCoursesList.lastChild);
   }
-  for (let idx = 0; idx < selectedCourses.length; ++idx)
+  for (let idx = 0; idx < gSelectedCourses.length; ++idx)
   {
-    const course = selectedCourses[idx];
-    selectedCoursesList.appendChild(createCourseEntity(course, idx));
+    const course = gSelectedCourses[idx];
+    selectedCoursesList.appendChild(createCourseEntity(course, { idx }));
   }
-  updateSortableLists();
+  sortable(".sortable-list");
 }
 
 function updateSchedule()
 {
-  schedule = computeSchedule(selectedCourses);
+  const schedule = computeSchedule(gSelectedCourses);
   while (scheduleTable.getElementsByClassName("schedule-slot").length > 0)
   {
-    const element = scheduleTable.getElementsByClassName("schedule-slot-wrapper")[0];
+    const element =
+          scheduleTable.getElementsByClassName("schedule-slot-wrapper")[0];
     element.parentNode.removeChild(element);
   }
   for (let course of schedule)
@@ -797,76 +1028,26 @@ function updateSchedule()
       }
     }
   }
-  updateCreditCount();
+  creditCountText.textContent = computeCreditCountDescription(schedule);
 }
+
+///// DOM updates due to display changes
 
 function updateCourseDescriptionBoxHeight() {
-  if (!courseDescriptionBoxOuter.classList.contains("course-description-box-visible")) {
+  if (!courseDescriptionBoxOuter.classList
+      .contains("course-description-box-visible")) {
     return;
   }
-  courseDescriptionBoxOuter.style.height = "" + courseDescriptionBox.scrollHeight + "px";
+  courseDescriptionBoxOuter.style.height =
+    "" + courseDescriptionBox.scrollHeight + "px";
 }
 
-function setButtonSelected(button, selected)
+///// DOM updates miscellaneous
+
+function showImportExportModal()
 {
-  const classAdded = selected ? "btn-primary" : "btn-light";
-  const classRemoved = selected ? "btn-light" : "btn-primary";
-  button.classList.add(classAdded);
-  button.classList.remove(classRemoved);
-}
-
-function updateTabToggle()
-{
-  setEntityVisibility(scheduleColumn, scheduleTabSelected);
-  setButtonSelected(scheduleToggle, scheduleTabSelected);
-
-  setEntityVisibility(courseSearchColumn, !scheduleTabSelected);
-  setButtonSelected(courseSearchToggle, !scheduleTabSelected);
-}
-
-function updateShowClosedCourses()
-{
-  closedCoursesToggle.checked = showClosedCourses;
-}
-
-function updateCreditCount()
-{
-  let onCampusStarredCredits = 0;
-  let offCampusStarredCredits = 0;
-  let onCampusCredits = 0;
-  let offCampusCredits = 0;
-  for (let course of schedule)
-  {
-    let credits = course.quarterCredits / 4;
-
-    if (course.school === "HM")
-    {
-      onCampusCredits += credits;
-      if (course.starred)
-      {
-        onCampusStarredCredits += credits;
-      }
-    }
-    else
-    {
-      offCampusCredits += credits;
-      if (course.starred)
-      {
-        offCampusStarredCredits += credits;
-      }
-    }
-  }
-  let totalCredits = onCampusCredits + 3 * offCampusCredits;
-  let totalStarredCredits = onCampusStarredCredits + 3 * offCampusStarredCredits;
-
-  const text = "Scheduled credits: " +
-        onCampusCredits + " on-campus credit" + (onCampusCredits !== 1 ? "s" : "") +
-        " (" + onCampusStarredCredits + " starred), " +
-        offCampusCredits + " off-campus credit" + (offCampusCredits !== 1 ? "s" : "") +
-        " (" + offCampusStarredCredits + " starred), " +
-        totalCredits + " total credit" + (totalCredits !== 1 ? "s" : "") +
-        " (" + totalStarredCredits + " starred)";
-  creditCountText.textContent = text;
+  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  $("#import-export-modal").modal("show");
 }
 
 function setCourseDescriptionBox(course)
@@ -896,50 +1077,69 @@ function setCourseDescriptionBox(course)
   updateCourseDescriptionBoxHeight();
 }
 
-//// DOM state changes
+/// Global state handling
+//// Combined update functions
 
-function showImportExportModal()
+function handleCourseSearchInputUpdate()
 {
-  importExportTextArea.value = JSON.stringify(selectedCourses, 2);
-  $("#import-export-modal").modal("show");
+  gCourseSearchPagesShown = 1;
+  updateCourseSearchResults();
 }
 
-/// Global state handling
+function handleSelectedCoursesUpdate()
+{
+  // We need to add/remove the "+" buttons.
+  updateCourseSearchResults();
+
+  // Obviously the selected courses list needs to be rebuilt.
+  updateSelectedCoursesList();
+
+  // New courses might be placed on the schedule.
+  updateSchedule();
+
+  // Also save changes.
+  writeStateToLocalStorage();
+}
+
+function handleGlobalStateUpdate()
+{
+  // Update UI elements.
+  updateTabToggle();
+  updateShowClosedCoursesCheckbox();
+  updateCourseSearchPaginationButtons();
+
+  // Update course displays.
+  updateCourseSearchResults();
+  updateSelectedCoursesList();
+  updateSchedule();
+
+  // Canonicalize the state of local storage.
+  writeStateToLocalStorage();
+}
+
 //// Global state mutation
 
 function addCourse(course)
 {
+  const key = courseToIndexKey(course);
+  if (gSelectedCoursesIndex.hasOwnProperty(key))
+  {
+    // Course already added.
+    return;
+  }
   course = deepCopy(course);
   course.selected = true;
   course.starred = false;
-  let alreadyAdded = false;
-  for (let idx = 0; idx < selectedCourses.length; ++idx)
-  {
-    if (coursesEquivalent(course, selectedCourses[idx]))
-    {
-      // Maybe some minor information (number of seats available) was
-      // updated in the Portal. Let's update the existing class.
-      Object.assign(selectedCourses[idx], course);
-      alreadyAdded = true;
-    }
-  }
-  if (!alreadyAdded)
-  {
-    selectedCourses.push(course);
-  }
-  updateSelectedCoursesList();
-  updateSchedule();
-  writeStateToLocalStorage();
+  gSelectedCourses.push(course);
+  handleSelectedCoursesUpdate();
 }
 
 function removeCourse(course)
 {
-  selectedCourses = selectedCourses.filter(selectedCourse => {
-    return !coursesEquivalent(course, selectedCourse);
-  });
-  updateSelectedCoursesList();
-  updateSchedule();
-  writeStateToLocalStorage();
+  const key = courseToIndexKey(course);
+  gSelectedCourses.splice(gSelectedCourses.indexOf(course));
+  delete gSelectedCoursesIndex[key];
+  handleSelectedCoursesUpdate();
 }
 
 function readSelectedCoursesList()
@@ -947,10 +1147,10 @@ function readSelectedCoursesList()
   const newSelectedCourses = [];
   for (let entity of selectedCoursesList.children)
   {
-    const idx = parseInt(entity.getAttribute("data-course-index"));
-    if (!isNaN(idx) && idx >= 0 && idx < selectedCourses.length)
+    const idx = parseInt(entity.getAttribute("data-course-index"), 10);
+    if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length)
     {
-      newSelectedCourses.push(selectedCourses[idx]);
+      newSelectedCourses.push(gSelectedCourses[idx]);
     }
     else
     {
@@ -959,10 +1159,9 @@ function readSelectedCoursesList()
       return;
     }
   }
-  selectedCourses = newSelectedCourses;
-  updateSelectedCoursesList();
-  updateSchedule();
-  writeStateToLocalStorage();
+  gSelectedCourses = newSelectedCourses;
+  gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
+  handleSelectedCoursesUpdate();
 }
 
 function saveImportExportModalChanges()
@@ -981,17 +1180,16 @@ function saveImportExportModalChanges()
     alert("Malformed JSON. Refusing to save.");
     return;
   }
-  selectedCourses = obj;
-  updateSelectedCoursesList();
-  updateSchedule();
-  writeStateToLocalStorage();
+  gSelectedCourses = obj;
+  gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
+  handleSelectedCoursesUpdate();
   $("#import-export-modal").modal("hide");
 }
 
 function toggleClosedCourses()
 {
-  showClosedCourses = !showClosedCourses;
-  updateCourseSearchResultsList();
+  gShowClosedCourses = !gShowClosedCourses;
+  updateCourseSearchResults();
   writeStateToLocalStorage();
 }
 
@@ -1012,7 +1210,7 @@ function toggleCourseStarred(course)
 function displayCourseSearchColumn()
 {
   this.blur();
-  scheduleTabSelected = false;
+  gScheduleTabSelected = false;
   updateTabToggle();
   writeStateToLocalStorage();
 }
@@ -1020,41 +1218,157 @@ function displayCourseSearchColumn()
 function displayScheduleColumn()
 {
   this.blur();
-  scheduleTabSelected = true;
+  gScheduleTabSelected = true;
   updateTabToggle();
   writeStateToLocalStorage();
 }
 
+function setCourseSearchPagesDisplayed(action)
+{
+  let numPages = gCourseSearchPagesShown;
+  if (action === "one")
+  {
+    numPages = 1;
+  }
+  else if (action === "fewer")
+  {
+    --numPages;
+  }
+  else if (action === "more")
+  {
+    ++numPages;
+  }
+  else if (action === "all")
+  {
+    numPages = maxCourseSearchPages(gCourseList);
+  }
+  if (numPages !== null)
+  {
+    numPages = Math.max(numPages, 1);
+    numPages = Math.min(numPages, maxCourseSearchPages(gCourseList));
+  }
+  if (numPages !== gCourseSearchPagesShown)
+  {
+    gCourseSearchPagesShown = numPages;
+    updateCourseSearchResults({ incremental: true });
+    updateCourseSearchPaginationButtons();
+  }
+}
+
 //// Course retrieval
+
+function buildCourseIndex(courseList)
+{
+  const index = {};
+  for (let course of courseList)
+  {
+    const key = courseToIndexKey(course);
+    index[key] = course;
+  }
+  return index;
+}
 
 async function retrieveCourseData()
 {
-  // The API_URL is replaced by Babel with the actual value specified
-  // in configuration.
-  const response = await fetch(API_URL + "/api/v1/all-courses");
-  if (!response.ok)
+  let apiEndpoint;
+  let apiResponse;
+  let maybeIncremental = false;
+  // We shouldn't need the second case here (about the empty
+  // gCourseList), but why not? Added robustness hopefully.
+  if (gCourseDataTimestamp === null || gCourseList.length === 0)
+  {
+    apiEndpoint = "/api/v2/all-courses";
+  }
+  else
+  {
+    apiEndpoint = "/api/v2/courses-since/" + gCourseDataTimestamp;
+    maybeIncremental = true;
+  }
+  const httpResponse = await fetch(apiURL + apiEndpoint);
+  if (!httpResponse.ok)
   {
     throw Error("Received API error while fetching course data: " +
-                response.status + " " + response.statusText);
+                httpResponse.status + " " + httpResponse.statusText);
   }
-  courseData = await response.json();
-  // Update things like seats open with data from Portal.
-  for (let idx = 0; idx < selectedCourses.length; ++idx)
+  apiResponse = await httpResponse.json();
+  // Just in case there is an unexpected error while executing the
+  // following code, make sure to fetch a whole new copy of the
+  // courses list next time, since the incremental update would be
+  // messed up.
+  gCourseDataTimestamp = null;
+  let maybeCourseListChanged = true;
+  const incremental = maybeIncremental && apiResponse.incremental;
+  if (incremental)
   {
-    const selectedCourse = selectedCourses[idx];
-    for (let course of courseData.courses)
+    const diff = apiResponse.diff;
+    maybeCourseListChanged =
+      Object.keys(diff.modified).length !== 0 ||
+      Object.keys(diff.removed ).length !== 0 ||
+      Object.keys(diff.added   ).length !== 0;
+    for (const modified of diff.modified)
     {
-      if (coursesEquivalent(course, selectedCourse))
+      const key = courseToIndexKey(modified);
+      if (gCourseIndex.hasOwnProperty(key))
       {
-        Object.assign(selectedCourses[idx], course);
-        break;
+        // This updates both the index and the course list, since they
+        // share a reference to the same object.
+        Object.assign(gCourseIndex[key], modified);
+      }
+      maybeCourseListChanged = true;
+    }
+    for (const removed of diff.removed)
+    {
+      const key = courseToIndexKey(removed);
+      if (gCourseIndex.hasOwnProperty(key))
+      {
+        const course = gCourseIndex[key];
+        // The reference is shared, so we can remove by identity.
+        gCourseList.splice(gCourseList.indexOf(course), 1);
+      }
+      delete gCourseIndex[key];
+    }
+    for (const added of diff.added)
+    {
+      const key = courseToIndexKey(added);
+      const idx = binarySearch(gCourseList, added, compareCourses);
+      if (idx >= 0)
+      {
+        // Shouldn't happen but we account for it anyway.
+        Object.assign(courseList[idx], added);
+      }
+      else
+      {
+        const insertBeforeIndex = -idx - 1;
+        gCourseList.splice(insertBeforeIndex, 0, added);
+        gCourseIndex[key] = added;
       }
     }
   }
+  else
+  {
+    gCourseList = apiResponse.courses;
+    gCourseList.sort(compareCourses);
+    gCourseIndex = buildCourseIndex(gCourseList);
+    gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
+  }
+  for (const key of Object.keys(gSelectedCoursesIndex))
+  {
+    if (gCourseIndex.hasOwnProperty(key))
+    {
+      Object.assign(gSelectedCoursesIndex[key], gCourseIndex[key]);
+    }
+  }
+  gCourseDataTimestamp = apiResponse.timestamp;
   setTimeout(() => {
-    updateCourseSearchResultsList();
-    updateSelectedCoursesList();
-    updateSchedule();
+    if (maybeCourseListChanged)
+    {
+      updateCourseSearchPaginationButtons();
+      updateCourseSearchResults();
+      updateSelectedCoursesList();
+      updateSchedule();
+    }
+    // Timestamp may have been updated regardless.
+    writeStateToLocalStorage();
   }, 0);
 }
 
@@ -1098,40 +1412,24 @@ async function retrieveCourseDataUntilSuccessful()
 
 function writeStateToLocalStorage()
 {
-  localStorage.setItem("selectedCourses", JSON.stringify(selectedCourses));
-  localStorage.setItem("scheduleTabSelected", scheduleTabSelected);
-  localStorage.setItem("showClosedCourses", showClosedCourses);
+  localStorage.setItem("courseList", JSON.stringify(gCourseList));
+  localStorage.setItem("courseDataTimestamp", gCourseDataTimestamp);
+  localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
+  localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
+  localStorage.setItem("showClosedCourses", gShowClosedCourses);
 }
 
 function readStateFromLocalStorage()
 {
-  selectedCourses = [];
-  const jsonString = localStorage.getItem("selectedCourses");
-  if (jsonString)
-  {
-    try
-    {
-      const obj = JSON.parse(jsonString);
-      if (Array.isArray(obj))
-      {
-        selectedCourses = obj;
-      }
-    }
-    catch (err)
-    {
-      // nothing to do here
-    }
-  }
-  if (localStorage.getItem("scheduleTabSelected") === "true" ||
-      localStorage.getItem("scheduleTabSelected") === "false")
-  {
-    scheduleTabSelected = localStorage.getItem("scheduleTabSelected") === "true";
-  }
-  if (localStorage.getItem("showClosedCourses") === "true" ||
-      localStorage.getItem("showClosedCourses") === "false")
-  {
-    showClosedCourses = localStorage.getItem("showClosedCourses") === "true";
-  }
+  gCourseList = readArrayFromLocalStorage("courseList");
+  gCourseList.sort(compareCourses);
+  gCourseIndex = buildCourseIndex(gCourseList);
+  gSelectedCourses = readArrayFromLocalStorage("selectedCourses");
+  gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
+  gCourseDataTimestamp =
+    parseInt(localStorage.getItem("courseDataTimestamp"), 10) || null;
+  gScheduleTabSelected = localStorage.getItem("scheduleTabSelected") === "true";
+  gShowClosedCourses = localStorage.getItem("showClosedCourses") !== "false";
 }
 
 /// iCal download
@@ -1160,7 +1458,7 @@ function uglyHack(input)
 function downloadICalFile()
 {
   const cal = ics();
-  for (let course of selectedCourses)
+  for (let course of gSelectedCourses)
   {
     if (course.starred)
     {
@@ -1225,13 +1523,11 @@ function downloadICalFile()
 
 attachListeners();
 readStateFromLocalStorage();
-updateTabToggle();
-updateShowClosedCourses();
-updateSelectedCoursesList();
-updateSchedule();
-writeStateToLocalStorage();
+handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
 
+/// Closing remarks
+
 // Local Variables:
-// outline-regexp: "^///+"
+// outline-regexp: "///+"
 // End:

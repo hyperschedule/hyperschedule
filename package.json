@@ -30,11 +30,12 @@
   "license": "MIT",
   "name": "hyperschedule-frontend",
   "scripts": {
-    "build": "rm -rf out && babel src -d out -D",
+    "build": "rm -rf out && babel src -d out -D -s true",
+    "build-prod": "rm -rf out && babel src -d out -D",
     "clean": "rm -rf out",
     "dev": "run-p server watch",
     "server": "./server.js",
-    "watch": "rm -rf out && babel src -d out -D -w -q"
+    "watch": "rm -rf out && babel src -d out -D -w -q -s true"
   },
   "version": "0.0.0"
 }
