@@ -1376,17 +1376,7 @@ async function retrieveCourseDataUntilSuccessful()
 {
   let delay = 500;
   const backoffFactor = 1.5;
-  let pollInterval;
-  // https://stackoverflow.com/a/24600597/3538165
-  if (/Mobi/.test(navigator.userAgent))
-  {
-    // Refresh is slow on mobile, so only do it every minute.
-    pollInterval = 60 * 1000;
-  }
-  else
-  {
-    pollInterval = 5 * 1000;
-  }
+  const pollInterval = 5 * 1000;
   while (true)
   {
     console.log("Attempting to fetch course data...");
