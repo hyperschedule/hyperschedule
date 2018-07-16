@@ -1131,6 +1131,7 @@ function addCourse(course)
   course.selected = true;
   course.starred = false;
   gSelectedCourses.push(course);
+  gSelectedCoursesIndex[key] = course;
   handleSelectedCoursesUpdate();
 }
 
