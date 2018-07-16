@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "file-loader": "^1.1.11",
+    "html-loader": "^0.5.5",
     "immutable": "^3.8.2",
     "normalize-css": "^2.3.1",
     "react": "^16.2.0",
@@ -16,12 +24,18 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
     "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.77.1"
+    "semantic-ui-react": "^0.77.1",
+    "webpack": "^4.16.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "webpack": "webpack",
+    "babel": "babel"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.0.8"
   }
 }
