@@ -610,12 +610,9 @@ function attachListeners()
 
 function updateNumCourseSearchPagesDisplayed()
 {
-  // Load one more page if we can see past the last item of
-  // the prior to second to last page (that is, we can see the top of 
-  // the first item in the second to last page)
   let currentScrollingPosition = courseSearchScheduleColumn.scrollTop;
   let indexLastItemSecondToLastPage = (gCourseSearchPagesShown-2) * courseSearchPageSize;
-  const pixelHeightPerItem = 41 // <- I got it from inspecting element
+  const pixelHeightPerItem = 41 // <- got it from inspecting element
   let thresholdPosition = indexLastItemSecondToLastPage * pixelHeightPerItem;
   if (currentScrollingPosition > thresholdPosition)
   {
