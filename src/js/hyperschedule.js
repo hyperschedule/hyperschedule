@@ -19,16 +19,12 @@ const scheduleToggle = document.getElementById("schedule-toggle");
 
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 
+const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchColumn = document.getElementById("course-search-column");
 const scheduleColumn = document.getElementById("schedule-column");
 
 const courseSearchInput = document.getElementById("course-search-course-name-input");
 const courseSearchResultsList = document.getElementById("course-search-results-list");
-
-const courseSearchFewerPagesButton = document.getElementById("course-search-fewer-pages-button");
-const courseSearchMorePagesButton = document.getElementById("course-search-more-pages-button");
-const courseSearchOnePageButton = document.getElementById("course-search-one-page-button");
-const courseSearchAllPagesButton = document.getElementById("course-search-all-pages-button");
 
 const importExportDataButton = document.getElementById("import-export-data-button");
 
@@ -61,7 +57,7 @@ let gShowClosedCourses = true;
 let gCourseIndex = {};
 let gSelectedCoursesIndex = {};
 let gCurrentlySorting = false;
-let gCourseSearchPagesShown = 1;
+let gCourseSearchPagesShown = 3;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -574,14 +570,6 @@ function attachListeners()
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   courseSearchInput.addEventListener("keyup", handleCourseSearchInputUpdate);
-  courseSearchFewerPagesButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("fewer"));
-  courseSearchMorePagesButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("more"));
-  courseSearchOnePageButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("one"));
-  courseSearchAllPagesButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("all"));
   importExportDataButton.addEventListener("click", showImportExportModal);
   importExportICalButton.addEventListener("click", downloadICalFile);
   importExportSaveChangesButton.addEventListener(
@@ -618,6 +606,27 @@ function attachListeners()
     importExportCopyButton.classList.remove("copy-button-copied");
     importExportCopyButton.classList.remove("copy-button-error");
   });
+}
+
+function updateNumCourseSearchPagesDisplayed()
+{
+  // Load one more page if we can see past the last item of
+  // the prior to second to last page (that is, we can see the top of 
+  // the first item in the second to last page)
+  let currentScrollingPosition = courseSearchScheduleColumn.scrollTop;
+  let indexLastItemSecondToLastPage = (gCourseSearchPagesShown-2) * courseSearchPageSize;
+  const pixelHeightPerItem = 41 // <- I got it from inspecting element
+  let thresholdPosition = indexLastItemSecondToLastPage * pixelHeightPerItem;
+  if (currentScrollingPosition > thresholdPosition)
+  {
+    setCourseSearchPagesDisplayed("more");
+  }
+}
+
+function autoUpdateNumCourseSearchPagesDisplayed()
+{
+  updateNumCourseSearchPagesDisplayed();
+  setTimeout(autoUpdateNumCourseSearchPagesDisplayed, 300);
 }
 
 //// DOM element creation
@@ -970,19 +979,6 @@ function updateCourseSearchResults(attrs)
   }
 }
 
-function updateCourseSearchPaginationButtons()
-{
-  const disableFewer = gCourseSearchPagesShown <= 1;
-  const disableMore =
-        gCourseSearchPagesShown >= maxCourseSearchPages(gCourseList);
-
-  courseSearchFewerPagesButton.disabled = disableFewer;
-  courseSearchOnePageButton.disabled = disableFewer;
-
-  courseSearchMorePagesButton.disabled = disableMore;
-  courseSearchAllPagesButton.disabled = disableMore;
-}
-
 function updateSelectedCoursesList()
 {
   if (gCurrentlySorting)
@@ -1106,7 +1102,6 @@ function handleGlobalStateUpdate()
   // Update UI elements.
   updateTabToggle();
   updateShowClosedCoursesCheckbox();
-  updateCourseSearchPaginationButtons();
 
   // Update course displays.
   updateCourseSearchResults();
@@ -1251,7 +1246,6 @@ function setCourseSearchPagesDisplayed(action)
   {
     gCourseSearchPagesShown = numPages;
     updateCourseSearchResults({ incremental: true });
-    updateCourseSearchPaginationButtons();
   }
 }
 
@@ -1362,7 +1356,6 @@ async function retrieveCourseData()
   setTimeout(() => {
     if (maybeCourseListChanged)
     {
-      updateCourseSearchPaginationButtons();
       updateCourseSearchResults();
       updateSelectedCoursesList();
       updateSchedule();
@@ -1515,6 +1508,8 @@ attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
+autoUpdateNumCourseSearchPagesDisplayed();
+
 
 /// Closing remarks
 

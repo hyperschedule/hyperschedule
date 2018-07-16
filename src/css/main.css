@@ -146,33 +146,6 @@ body {
     text-align: center;
 }
 
-/*** Course search pagination bar ***/
-
-#course-search-pagination-bar {
-    padding-top: 15px;
-    padding-bottom: 20px;
-}
-
-#course-search-fewer-pages-button-wrapper {
-    display: inline-block;
-    padding-right: 10px;
-}
-
-#course-search-more-pages-button-wrapper {
-    display: inline-block;
-}
-
-#course-search-one-page-button-wrapper {
-    display: inline-block;
-    float: right;
-}
-
-#course-search-all-pages-button-wrapper {
-    display: inline-block;
-    float: right;
-    padding-left: 10px;
-}
-
 /** Selected courses **/
 
 #selected-courses-column {
