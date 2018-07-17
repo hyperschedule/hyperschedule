@@ -1138,7 +1138,7 @@ function addCourse(course)
 function removeCourse(course)
 {
   const key = courseToIndexKey(course);
-  gSelectedCourses.splice(gSelectedCourses.indexOf(course));
+  gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
   delete gSelectedCoursesIndex[key];
   handleSelectedCoursesUpdate();
 }
