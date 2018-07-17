@@ -8,7 +8,7 @@ import { createLogger } from 'redux-logger';
 import hyperschedule from './reducers';
 
 import ModeSelector from './components/ModeSelector/wrapper';
-//import MainPanelContents from './containers/MainPanelContent';
+import ModeContent from './components/ModeContent/wrapper';
 //import CourseList from './containers/CourseList';
 
 import periodicApiUpdate from './sagas';
@@ -35,6 +35,7 @@ const App = () => {
         <Provider store={store}>
           <div>
             <ModeSelector/>
+            <ModeContent/>
           </div>
         </Provider>
     );
