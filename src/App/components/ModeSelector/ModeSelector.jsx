@@ -1,34 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, Icon } from 'semantic-ui-react';
-import { MainPanelMode } from '../actions.js';
+import {Mode} from './actions';
+import './ModeSelector.css';
 
-const MainPanelModeSelector = ({onClick, currentMode}) => {
-  return (
-    <Button.Group widths='2' attached='top'>
-      <Button icon
-              labelPosition='left'
-              onClick={onClick}
-              mode={MainPanelMode.COURSE_SEARCH}
-              primary={currentMode === MainPanelMode.COURSE_SEARCH}>
-        <Icon name='add to calendar' />
+const ModeSelector = ({mode, setMode}) => (
+    <div id="mode-selector">
+      <button
+        className={mode == Mode.COURSE_SEARCH ? 'active' : ''}
+        onClick={() => setMode(Mode.COURSE_SEARCH)}>
         Course Search
-      </Button>
-      <Button icon
-              labelPosition='right'
-              onClick={onClick}
-              mode={MainPanelMode.SCHEDULE}
-              primary={currentMode === MainPanelMode.SCHEDULE}>
+      </button>
+      <button
+        className={mode == Mode.SCHEDULE ? 'active' : ''}
+        onClick={() => setMode(Mode.SCHEDULE)}>
         Schedule
-        <Icon name='calendar' />
-      </Button>
-    </Button.Group>
-  );
-};
+      </button>
+    </div>
+);
 
-MainPanelModeSelector.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  currentMode: PropTypes.string.isRequired
-};
-
-export default MainPanelModeSelector;
+export default ModeSelector;

@@ -16,13 +16,6 @@ export function updateCourses(courses) {
   };
 }
 
-export const SWITCH_MAIN_PANEL_MODE = 'SWITCH_MAIN_PANEL_MODE';
-export function switchMainPanelMode(mode) {
-  return {
-    type: SWITCH_MAIN_PANEL_MODE,
-    mode
-  };
-}
 
 export const ADD_COURSE = 'ADD_COURSE';
 export function addCourse(courseId) {
@@ -48,8 +41,3 @@ export function reorderCourse(oldIndex, newIndex) {
     newIndex
   };
 }
-
-export const MainPanelMode = {
-  COURSE_SEARCH: 'COURSE_SEARCH',
-  SCHEDULE: 'SCHEDULE'
-};
