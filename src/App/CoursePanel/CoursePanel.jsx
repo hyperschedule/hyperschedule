@@ -24,31 +24,73 @@ import './CoursePanel.css';
 //);
 
 const CoursePanel = ({focusCourse}) => {
-
-    const SummaryField = ({field, format = s => s}) => (
-        <span className={field}>
-          {format(focusCourse.get(field))}
-        </span>
-    );
-
-    const SummaryRow = ({children}) => {
-        return children;
-    };
-
-    const focusSummary = focusCourse.size == 0 ? (
-        null
-    ) : (
-        <SummaryRow>
-          <SummaryField field="department"/>
-          <SummaryField field="courseNumber"/>
-          <SummaryField field="school"/>
-          <SummaryField field="section" format={n => n.toString().padStart(2, '0')}/>
-        </SummaryRow>
-    );
+    let focusSummary = null;
+    if (focusCourse !== null) {
+        const schedule = focusCourse.get('schedule');
+        const faculty = focusCourse.get('faculty');
+        
+        const scheduleBlocks = schedule.map((block, index) => (
+            <div key={index} className="block">
+              <span className="days">
+                {block.get('days')}
+              </span>
+              <span className="start-time">
+                {block.get('startTime')}
+              </span>
+              <span className="end-time">
+                {block.get('endTime')}
+              </span>
+              <span className="location">
+                {block.get('location')}
+              </span>
+            </div>
+        ));
+        
+        focusSummary = (
+            <div className="focus-summary">
+              <div className="row description">
+                <span className="department">
+                  {focusCourse.get('department')}
+                </span>
+                <span className="course-number">
+                  {focusCourse.get('courseNumber')}
+                </span>
+                <span className="course-code-suffix">
+                  {focusCourse.get('courseCodeSuffix')}
+                </span>
+                <span className="school">
+                  {focusCourse.get('school')}
+                </span>
+                <span className="section">
+                  {focusCourse.get('section').toString().padStart(2, '0')}
+                </span>
+                <span className="course-name">
+                  {focusCourse.get('courseName')}
+                </span>
+              </div>
+              {schedule.size === 0 ? null : (
+                  <div className="row schedule">
+                    {scheduleBlocks}
+                  </div>
+              )}
+              <div className="row faculty">
+                {
+                    faculty.size === 1 ? (
+                        faculty.get(0)
+                    ) : faculty.size === 2 ? (
+                        faculty.join(' and ')
+                    ) : faculty.size === 3 ? (
+                        faculty.slice(0, -1).join(', ') + ', and ' + faculty.get(-1)
+                    ) : null
+                }
+                      </div>
+            </div>
+        );
+    }
 
     return (
         <div id="course-panel">
-          <div className="focus-summary">
+          <div className="focus-summary-container">
             {focusSummary}
           </div>
         </div>

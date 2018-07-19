@@ -1,6 +1,65 @@
 #course-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
 
+    padding: 1rem;
 }
 
-#course-panel {
+#course-panel .focus-summary {
+    border: 1px solid lightgray;
+    background: whitesmoke;
+    text-align: center;
+    font-size: .8rem;
+}
+
+#course-panel .focus-summary .row {
+    padding: 1em;
+    border-bottom: 1px solid lightgray;
+}
+
+#course-panel .focus-summary .row:last-child {
+    border-bottom: none;
+}
+
+
+#course-panel .focus-summary .row.description .department {
+}
+#course-panel .focus-summary .row.description .department::after {
+    content: ' ';
+}
+#course-panel .focus-summary .row.description .course-number {
+}
+#course-panel .focus-summary .row.description .course-code-suffix {
+}
+#course-panel .focus-summary .row.description .school::before {
+    content: ' ';
+}
+#course-panel .focus-summary .row.description .school {
+}
+#course-panel .focus-summary .row.description .section {
+}
+#course-panel .focus-summary .row.description .section::before {
+    content: '-';
+}
+#course-panel .focus-summary .row.description .course-name::before {
+    content: ': ';
+}
+#course-panel .focus-summary .row.description .course-name {
+}
+
+#course-panel .focus-summary .row.schedule .block {
+    margin: .25em;
+}
+
+#course-panel .focus-summary .row.schedule .days::after {
+    content: ' ';
+}
+#course-panel .focus-summary .row.schedule .start-time::after {
+    content: '-';
+}
+#course-panel .focus-summary .row.schedule .end-time::after {
+    content: ' ';
 }
