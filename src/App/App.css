@@ -16,7 +16,8 @@
 #root .columns > .course.column {
     width: 30%;
     
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 #root .columns > .mode.column {
     flex-grow: 1;

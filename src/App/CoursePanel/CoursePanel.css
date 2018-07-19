@@ -1,16 +1,15 @@
 #course-panel {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-
     padding: 1rem;
+}
+
+#course-panel .focus-summary-container {
+    overflow: hidden;
+    transition: height .2s;
 }
 
 #course-panel .focus-summary {
     border: 1px solid lightgray;
-    background: whitesmoke;
+    
     text-align: center;
     font-size: .8rem;
 }
