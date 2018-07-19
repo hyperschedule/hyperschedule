@@ -8,19 +8,19 @@
 #focus-summary .overflow {
     overflow: hidden;
     transition: height .2s;
+    
+    border-top: 1px solid lightgray;
 }
 
 #focus-summary .summary {
     border: 1px solid lightgray;
+    border-top: none;
+    border-bottom: none;
 }
 
 #focus-summary .summary .row {
     padding: 1em;
     border-bottom: 1px solid lightgray;
-}
-
-#focus-summary .summary .row:last-child {
-    border-bottom: none;
 }
 
 
