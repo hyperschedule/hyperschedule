@@ -17,6 +17,7 @@ module.exports = {
                 ],
                 loader: 'babel-loader',
                 options: {
+                    retainLines: true,
                     presets: [
                         'env',
                         'react',
