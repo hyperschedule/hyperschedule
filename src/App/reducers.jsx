@@ -1,7 +1,8 @@
-import { combineReducers } from 'redux-immutable';
-import { List, OrderedMap } from 'immutable';
+import {combineReducers} from 'redux-immutable';
+import {List, OrderedMap, Map} from 'immutable';
 
-import * as ModeSelector from './components/ModeSelector/reducers';
+import search from './ModeContent/CourseSearch/reducers';
+import * as actions from './actions';
 
 import {
     TYPE_COURSE_SEARCH,
@@ -10,6 +11,28 @@ import {
     REMOVE_COURSE,
     REORDER_COURSE,
 } from './actions';
+
+
+const mode = (
+    state = actions.Mode.COURSE_SEARCH,
+    action
+) => (
+    action.type === actions.modeSelector.SET_MODE ? (
+        action.mode
+    ) : (
+        state
+    )
+);
+
+const focusCourse = (state = Map(), action) => (
+    //    (action.type === actions.modeContent.courseSearch.FOCUS_COURSE ||
+    //     action.type === actions.modeContent.schedule.FOCUS_COURSE) ? (
+    action.type === actions.modeContent.courseSearch.FOCUS_COURSE ? (
+        action.course
+    ) : (
+        state
+    )
+);
 
 
 function updateCourses(state = OrderedMap(), action) {
@@ -47,9 +70,10 @@ function updateCourseList(state = List(), action) {
 }
 
 const hyperschedule = combineReducers({
-    mode: ModeSelector.mode,
+    mode,
+    search,
+    focusCourse,
     courses: updateCourses,
-    searchString: typeCourseSearch,
     courseList: updateCourseList
 });
 

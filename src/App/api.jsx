@@ -1,12 +1,12 @@
 export const HyperscheduleApi = {
   fetch_courses () {
-    return fetch("https://hyperschedule.herokuapp.com/api/v1/all-courses")
-      .then(httpStatusHelper)
-      .then(response => response.json())
-      .catch(error => error)
-      .then(data => {
-        return data;
-      });
+      return fetch("https://hyperschedule.herokuapp.com/api/v2/all-courses")
+          .then(httpStatusHelper)
+          .then(response => response.json())
+          .catch(error => error)
+          .then(data => {
+              return data;
+          });
   }
 };
 
@@ -26,7 +26,7 @@ export function computeCourseKey (course) {
   for (let field of courseKeyFields) {
     key.push(course[field]);
   }
-  return key.join(String.fromCharCode(31));
+    return key.join(':');
 }
 
 

@@ -5,13 +5,14 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { createLogger } from 'redux-logger';
 
+import periodicApiUpdate from './sagas';
 import hyperschedule from './reducers';
 
-import ModeSelector from './components/ModeSelector/wrapper';
-import ModeContent from './components/ModeContent/wrapper';
-//import CourseList from './containers/CourseList';
+import ModeSelector from './ModeSelector/ModeSelector';
+import ModeContent from './ModeContent/ModeContent';
+import CoursePanel from './CoursePanel/CoursePanel';
 
-import periodicApiUpdate from './sagas';
+
 
 import './App.css';
 
@@ -19,7 +20,7 @@ const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger({
     duration: true,
     collapsed: (getState, action, logEntry) => !logEntry.error,
-    stateTransformer: (state) => state.toJS()
+    stateTransformer: (state) => state.delete('courses').toJS()
 });
 
 
@@ -33,9 +34,18 @@ sagaMiddleware.run(periodicApiUpdate);
 const App = () => {
     return (
         <Provider store={store}>
-          <div>
-            <ModeSelector/>
-            <ModeContent/>
+          <div className="columns">
+            <div className="mode column">
+              <div className="selector container">
+                <ModeSelector/>
+              </div>
+              <div className="content container">
+                <ModeContent/>
+              </div>
+            </div>
+            <div className="course column">
+              <CoursePanel/>
+            </div>
           </div>
         </Provider>
     );

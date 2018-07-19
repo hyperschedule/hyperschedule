@@ -1,0 +1,40 @@
+#mode-selector {
+    flex-grow: 1;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: row;
+}
+
+#mode-selector button {
+    padding: .5em 1em;
+
+    border: none;
+    outline: none;
+
+    font: inherit;
+    cursor: pointer;
+
+    flex-grow: 1;
+
+    transition: background .1s;
+}
+
+#mode-selector button::-moz-focus-inner {
+    border: 0;
+}
+
+#mode-selector button {
+    background: whitesmoke;
+}
+#mode-selector button:hover {
+    background: gainsboro;
+}
+#mode-selector button:active, #mode-selector button.active:active {
+    background: dodgerblue;
+    color: white;
+}
+#mode-selector button.active {
+    background: deepskyblue;
+    color: white;
+}

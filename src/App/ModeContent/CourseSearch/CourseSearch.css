@@ -1,0 +1,107 @@
+#course-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+#course-search .search {
+    display: flex;
+    
+    padding: 1rem;
+    padding-top: 0;
+
+
+}
+
+#course-search .search input {
+    flex-grow: 1;
+
+    padding: .5em 1em;
+    
+    font: inherit;
+    border-radius: 0;
+    border: 1px solid lightgray;
+    outline: .25em solid transparent;
+
+    transition: border-color .1s;
+    transition: outline-color .1s;
+}
+#course-search .search input:focus {
+    border-color: deepskyblue;
+    outline-color: lightskyblue;
+}
+
+#course-search .entries {
+    flex-grow: 1;
+
+    font-size: .75rem;
+}
+
+#course-search .entries .ReactVirtualized__Grid {
+    outline: none;
+}
+
+#course-search .entries .entry {
+    margin: .75rem 1rem;
+    margin-top: 0;
+    padding: .5em 1em;
+
+    cursor: pointer;
+    
+}
+
+#course-search .entries .entry {
+    background: aliceblue;
+}
+#course-search .entries .entry.school-PO {
+    background: skyblue;
+}
+#course-search .entries .entry.school-HM {
+    background: khaki;
+}
+#course-search .entries .entry.school-PZ {
+    background: bisque;
+}
+#course-search .entries .entry.school-CM {
+    background: pink;
+}
+#course-search .entries .entry.school-SC {
+    background: lightgreen;
+}
+
+#course-search .entries .entry .department {
+    white-space: pre;
+    
+    font-weight: bold;
+}
+#course-search .entries .entry .course-number {
+    font-weight: bold;
+}
+#course-search .entries .entry .suffix {
+    font-weight: bold;
+}
+#course-search .entries .entry .school::before {
+    content: ' ';
+}
+#course-search .entries .entry .school {
+    font-weight: bold;
+}
+#course-search .entries .entry .section {
+    font-weight: bold;
+}
+#course-search .entries .entry .section::before {
+    font-weight: bold;
+    content: '-';
+}
+#course-search .entries .entry .name::before {
+    margin-left: .5em;
+    content: ' ';
+}
+#course-search .entries .entry .name {
+}
+
