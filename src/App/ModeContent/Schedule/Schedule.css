@@ -4,6 +4,19 @@
     left: 0;
     right: 0;
     bottom: 0;
+
+    overflow-y: scroll;
+}
+
+#schedule .margin-container {
+    margin: 1rem;
+}
+
+#schedule .size-container {
+    position: relative;
+
+    width: 100%;
+    padding-top: 80%;
 }
 
 #schedule .layer {
@@ -16,7 +29,7 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-auto-rows: 1fr;
-    grid-gap: .5em;
+    grid-gap: 1px;
 }
 
 #schedule .background .cell {

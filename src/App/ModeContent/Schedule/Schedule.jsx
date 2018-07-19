@@ -35,11 +35,15 @@ import { createSlotEntity } from '../../model';
         
         return (
             <div id="schedule">
-              <div className="background layer">
-                {backgroundCells}
-              </div>
-              <div className="courses layer">
-                {entities}
+              <div className="margin-container">
+                <div className="size-container">
+                  <div className="background layer">
+                    {backgroundCells}
+                  </div>
+                  <div className="courses layer">
+                    {entities}
+                  </div>
+                </div>
               </div>
             </div>
         );
