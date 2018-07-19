@@ -24,7 +24,7 @@ const mode = (
     )
 );
 
-const focusCourse = (state = Map(), action) => (
+const focusCourse = (state = null, action) => (
     //    (action.type === actions.modeContent.courseSearch.FOCUS_COURSE ||
     //     action.type === actions.modeContent.schedule.FOCUS_COURSE) ? (
     action.type === actions.modeContent.courseSearch.FOCUS_COURSE ? (
