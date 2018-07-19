@@ -15,9 +15,6 @@
 
 #root .columns > .course.column {
     width: 30%;
-
-    display: flex;
-    flex-direction: column;
     
     position: relative;
 }
