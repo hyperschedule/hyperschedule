@@ -13,9 +13,9 @@ const cache = new CellMeasurerCache({
     fixedWidth: true,    
 });
 
-const classFields = ['department', 'school'];
+    const classFields = ['department', 'school'];
 
-const CourseSearch = ({courses, searchString, setSearch, focusCourse}) => {
+    const CourseSearch = ({courses, searchString, setSearch, focusCourse}) => {
 
     const rowRenderer = ({key, index, parent, style}) => {
         const courseKey = courses.keySeq().get(index);
@@ -37,22 +37,22 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse}) => {
                 <div
                   className={classList.join(' ')}
                   onClick={event => focusCourse(course)}>
-                  <span className='department'>
-                    {course.get('department').padEnd(4)}
+                  <span className="department">
+                    {course.get('department')}
                   </span>
-                               <span className='course-number'>
+                  <span className="course-number">
                     {course.get('courseNumber')}
                   </span>
-                  <span className='suffix'>
-                    {course.get('suffix')}
+                  <span className="course-code-suffix">
+                    {course.get('courseCodeSuffix')}
                   </span>
-                  <span className='school'>
+                  <span className="school">
                     {course.get('school')}
                   </span>
-                  <span className='section'>
-                    {course.get('section')}
+                  <span className="section">
+                    {course.get('section').toString().padStart(2, '0')}
                   </span>
-                  <span className='name'>
+                  <span className="course-name">
                     {course.get('courseName')}
                   </span>
                 </div>

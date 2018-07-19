@@ -39,7 +39,7 @@
 #course-search .entries {
     flex-grow: 1;
 
-    font-size: .75rem;
+    font-size: .8rem;
 }
 
 #course-search .entries .ReactVirtualized__Grid {
@@ -47,7 +47,7 @@
 }
 
 #course-search .entries .entry {
-    margin: .75rem 1rem;
+    margin: 1rem;
     margin-top: 0;
     padding: .5em 1em;
 
@@ -75,14 +75,15 @@
 }
 
 #course-search .entries .entry .department {
-    white-space: pre;
-    
     font-weight: bold;
+}
+#course-search .entries .entry .department::after {
+    content: ' ';
 }
 #course-search .entries .entry .course-number {
     font-weight: bold;
 }
-#course-search .entries .entry .suffix {
+#course-search .entries .entry .course-code-suffix {
     font-weight: bold;
 }
 #course-search .entries .entry .school::before {
@@ -98,10 +99,10 @@
     font-weight: bold;
     content: '-';
 }
-#course-search .entries .entry .name::before {
-    margin-left: .5em;
-    content: ' ';
+#course-search .entries .entry .course-name::before {
+    font-weight: bold;
+    content: ': ';
 }
-#course-search .entries .entry .name {
+#course-search .entries .entry .course-name {
 }
 
