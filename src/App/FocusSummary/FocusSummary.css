@@ -1,0 +1,64 @@
+#focus-summary {
+    padding: 1rem;
+    
+    text-align: center;
+    font-size: .8rem;
+}
+
+#focus-summary .overflow {
+    overflow: hidden;
+    transition: height .2s;
+}
+
+#focus-summary .summary {
+    border: 1px solid lightgray;
+}
+
+#focus-summary .summary .row {
+    padding: 1em;
+    border-bottom: 1px solid lightgray;
+}
+
+#focus-summary .summary .row:last-child {
+    border-bottom: none;
+}
+
+
+#focus-summary .summary .row.description .department {
+}
+#focus-summary .summary .row.description .department::after {
+    content: ' ';
+}
+#focus-summary .summary .row.description .course-number {
+}
+#focus-summary .summary .row.description .course-code-suffix {
+}
+#focus-summary .summary .row.description .school::before {
+    content: ' ';
+}
+#focus-summary .summary .row.description .school {
+}
+#focus-summary .summary .row.description .section {
+}
+#focus-summary .summary .row.description .section::before {
+    content: '-';
+}
+#focus-summary .summary .row.description .course-name::before {
+    content: ': ';
+}
+#focus-summary .summary .row.description .course-name {
+}
+
+#focus-summary .summary .row.schedule .block {
+    margin: .25em;
+}
+
+#focus-summary .summary .row.schedule .days::after {
+    content: ' ';
+}
+#focus-summary .summary .row.schedule .start-time::after {
+    content: '-';
+}
+#focus-summary .summary .row.schedule .end-time::after {
+    content: ' ';
+}

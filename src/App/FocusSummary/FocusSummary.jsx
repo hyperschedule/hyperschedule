@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import Measure from 'react-measure';
 
-import './CoursePanel.css';
+import './FocusSummary.css';
 
 //import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 //import VisibleCourseListItem from '../containers/VisibleCourseListItem';
@@ -37,7 +37,7 @@ class CoursePanel extends React.PureComponent {
     render() {
         const {focusCourse} = this.props;
         
-        let focusSummary = null;
+        let summary = null;
         if (focusCourse !== null) {
             const schedule = focusCourse.get('schedule');
             const faculty = focusCourse.get('faculty');
@@ -58,9 +58,15 @@ class CoursePanel extends React.PureComponent {
                   </span>
                 </div>
             ));
+
+            const scheduleRow = schedule.size === 0 ? null : (
+                <div className="row schedule">
+                  {scheduleBlocks}
+                </div>
+            );
             
-            focusSummary = (
-                <div className="focus-summary">
+            summary = (
+                <div className="summary">
                   <div className="row description">
                     <span className="department">
                       {focusCourse.get('department')}
@@ -81,12 +87,8 @@ class CoursePanel extends React.PureComponent {
                       {focusCourse.get('courseName')}
                     </span>
                   </div>
-                  {schedule.size === 0 ? null : (
-                      <div className="row schedule">
-                        {scheduleBlocks}
-                      </div>
-                  )}
-                    <div className="row faculty">
+                  {scheduleRow}
+                  <div className="row faculty">
                     {
                         faculty.size === 1 ? (
                             faculty.get(0)
@@ -96,8 +98,8 @@ class CoursePanel extends React.PureComponent {
                             faculty.slice(0, -1).join(', ') + ', and ' + faculty.get(-1)
                         ) : null
                     }
+                  </div>
                 </div>
-                    </div>
             );
         }
 
@@ -106,14 +108,14 @@ class CoursePanel extends React.PureComponent {
         });
         
         const focusSummaryMeasure = ({measureRef}) => (
-            <div ref={measureRef} className="focus-summary-measure">
-              {focusSummary}
+            <div ref={measureRef} className="measure">
+              {summary}
             </div>
         );
         
         return (
-            <div id="course-panel">
-              <div className="focus-summary-container" style={{
+            <div id="focus-summary">
+              <div className="overflow" style={{
                        height: this.state.focusSummaryHeight + 'px',
                    }}>
                 <Measure offset onResize={updateHeight}>

@@ -10,7 +10,7 @@ import hyperschedule from './reducers';
 
 import ModeSelector from './ModeSelector/ModeSelector';
 import ModeContent from './ModeContent/ModeContent';
-import CoursePanel from './CoursePanel/CoursePanel';
+import FocusSummary from './FocusSummary/FocusSummary';
 
 
 
@@ -44,7 +44,7 @@ const App = () => {
               </div>
             </div>
             <div className="course column">
-              <CoursePanel/>
+              <FocusSummary/>
             </div>
           </div>
         </Provider>
