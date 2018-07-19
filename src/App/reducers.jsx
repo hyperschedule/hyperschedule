@@ -2,6 +2,8 @@ import {combineReducers} from 'redux-immutable';
 import {List, OrderedMap, Map} from 'immutable';
 
 import search from './ModeContent/CourseSearch/reducers';
+import focusSummary from './FocusSummary/reducers';
+
 import * as actions from './actions';
 
 import {
@@ -73,6 +75,7 @@ const hyperschedule = combineReducers({
     mode,
     search,
     focusCourse,
+    focusSummary,
     courses: updateCourses,
     courseList: updateCourseList
 });
