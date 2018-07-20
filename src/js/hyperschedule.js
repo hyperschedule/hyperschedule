@@ -10,6 +10,9 @@ const millisecondsPerHour = 3600 * 1000;
 
 const courseSearchPageSize = 20;
 
+const courseSearchPagesShownStart = 3;
+const extraPagesToLoad = 2;
+
 const apiURL = API_URL; // replaced by Babel with a string literal
 
 //// DOM elements
@@ -22,13 +25,9 @@ const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 const courseSearchColumn = document.getElementById("course-search-column");
 const scheduleColumn = document.getElementById("schedule-column");
 
+const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchInput = document.getElementById("course-search-course-name-input");
 const courseSearchResultsList = document.getElementById("course-search-results-list");
-
-const courseSearchFewerPagesButton = document.getElementById("course-search-fewer-pages-button");
-const courseSearchMorePagesButton = document.getElementById("course-search-more-pages-button");
-const courseSearchOnePageButton = document.getElementById("course-search-one-page-button");
-const courseSearchAllPagesButton = document.getElementById("course-search-all-pages-button");
 
 const importExportDataButton = document.getElementById("import-export-data-button");
 
@@ -61,7 +60,11 @@ let gShowClosedCourses = true;
 let gCourseIndex = {};
 let gSelectedCoursesIndex = {};
 let gCurrentlySorting = false;
-let gCourseSearchPagesShown = 1;
+let gCourseSearchPagesShown = courseSearchPagesShownStart;
+// gMaxCourseSearchPage starts as Infinity and stays infinity until we
+// exhaust the search result, at which point, it is calculated and set.
+let gMaxCourseSearchPage = Infinity;
+let gNextIncrementalCourseSearchIndex = null;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -393,11 +396,6 @@ function courseMatchesSearchQuery(course, query)
   return true;
 }
 
-function maxCourseSearchPages(courseList)
-{
-  return Math.ceil(courseList.length / courseSearchPageSize);
-}
-
 ///// Course scheduling
 
 function generateScheduleSlotDescription(slot)
@@ -574,14 +572,6 @@ function attachListeners()
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   courseSearchInput.addEventListener("keyup", handleCourseSearchInputUpdate);
-  courseSearchFewerPagesButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("fewer"));
-  courseSearchMorePagesButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("more"));
-  courseSearchOnePageButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("one"));
-  courseSearchAllPagesButton.addEventListener(
-    "click", () => setCourseSearchPagesDisplayed("all"));
   importExportDataButton.addEventListener("click", showImportExportModal);
   importExportICalButton.addEventListener("click", downloadICalFile);
   importExportSaveChangesButton.addEventListener(
@@ -620,6 +610,25 @@ function attachListeners()
   });
 }
 
+function updateNumCourseSearchPagesDisplayed()
+{
+  let currentScrollingPosition = courseSearchScheduleColumn.scrollTop;
+  let indexLastItemSecondToLastPage = (gCourseSearchPagesShown - extraPagesToLoad) *
+                                      courseSearchPageSize;
+  const pixelHeightPerItem = 41; // <- got it from inspecting element
+  let thresholdPosition = indexLastItemSecondToLastPage * pixelHeightPerItem;
+  if (currentScrollingPosition > thresholdPosition)
+  {
+    setCourseSearchPagesDisplayed("more");
+  }
+}
+
+function autoUpdateNumCourseSearchPagesDisplayed()
+{
+  updateNumCourseSearchPagesDisplayed();
+  setTimeout(autoUpdateNumCourseSearchPagesDisplayed, 100);
+}
+
 //// DOM element creation
 
 function createCourseLoadingMessage()
@@ -628,6 +637,25 @@ function createCourseLoadingMessage()
   listItem.id = "course-search-placeholder";
   listItem.setAttribute("data-placeholder", "true");
   const text = document.createTextNode("Loading courses...");
+  listItem.appendChild(text);
+  return listItem;
+}
+
+function createCourseSearchEndOfResult(hasResult = true)
+{
+  const listItem = document.createElement("li");
+  listItem.id = "course-search-placeholder";
+  listItem.setAttribute("data-placeholder", "true");
+  let text;
+  if (hasResult)
+  {
+    text = document.createTextNode("End of results");
+  }
+  else
+  {
+    text = document.createTextNode("No results");
+  }
+  listItem.setAttribute("style", "color: grey");
   listItem.appendChild(text);
   return listItem;
 }
@@ -918,6 +946,12 @@ function updateCourseSearchResults(attrs)
   attrs = attrs || {};
   const incremental = attrs.incremental;
 
+  if (!incremental)
+  {
+    gMaxCourseSearchPage = Infinity;
+    gNextIncrementalCourseSearchIndex = null;
+  }
+
   if (gCourseList.length === 0)
   {
     let child;
@@ -942,9 +976,13 @@ function updateCourseSearchResults(attrs)
 
   let numAlreadyShown = courseSearchResultsList.childElementCount;
   const query = getSearchQuery();
-  let numAdded = 0;
-  for (const course of gCourseList)
+  let allCoursesDisplayed = true;
+  // 0 in case on non-incremental update
+  let numAdded = numAlreadyShown;
+  let courseListIndex = gNextIncrementalCourseSearchIndex || 0;
+  for (; courseListIndex < gCourseList.length; ++courseListIndex)
   {
+    const course = gCourseList[courseListIndex];
     const matchesQuery = courseMatchesSearchQuery(course, query);
     if (matchesQuery && (gShowClosedCourses || !isCourseClosed(course)))
     {
@@ -952,35 +990,23 @@ function updateCourseSearchResults(attrs)
       {
         // If we've already added all the courses we were supposed to,
         // abort.
+        gNextIncrementalCourseSearchIndex = courseListIndex;
+        allCoursesDisplayed = false;
         break;
       }
       ++numAdded;
-      if (numAdded <= numAlreadyShown)
-      {
-        // Skip displaying courses that were already shown. (In a
-        // non-incremental update, no courses are already displayed
-        // since we removed all of them above.)
-        continue;
-      }
       const key = courseToIndexKey(course);
       const alreadyAdded = gSelectedCoursesIndex.hasOwnProperty(key);
       courseSearchResultsList.appendChild(
         createCourseEntity(course, { alreadyAdded }));
     }
   }
-}
-
-function updateCourseSearchPaginationButtons()
-{
-  const disableFewer = gCourseSearchPagesShown <= 1;
-  const disableMore =
-        gCourseSearchPagesShown >= maxCourseSearchPages(gCourseList);
-
-  courseSearchFewerPagesButton.disabled = disableFewer;
-  courseSearchOnePageButton.disabled = disableFewer;
-
-  courseSearchMorePagesButton.disabled = disableMore;
-  courseSearchAllPagesButton.disabled = disableMore;
+  if (allCoursesDisplayed)
+  {
+    let hasResult = numAdded != 0;
+    courseSearchResultsList.appendChild(createCourseSearchEndOfResult(hasResult));
+    gMaxCourseSearchPage = Math.ceil(numAdded / courseSearchPageSize);
+  }
 }
 
 function updateSelectedCoursesList()
@@ -1082,7 +1108,7 @@ function setCourseDescriptionBox(course)
 
 function handleCourseSearchInputUpdate()
 {
-  gCourseSearchPagesShown = 1;
+  gCourseSearchPagesShown = courseSearchPagesShownStart;
   updateCourseSearchResults();
 }
 
@@ -1106,7 +1132,6 @@ function handleGlobalStateUpdate()
   // Update UI elements.
   updateTabToggle();
   updateShowClosedCoursesCheckbox();
-  updateCourseSearchPaginationButtons();
 
   // Update course displays.
   updateCourseSearchResults();
@@ -1241,18 +1266,17 @@ function setCourseSearchPagesDisplayed(action)
   }
   else if (action === "all")
   {
-    numPages = maxCourseSearchPages(gCourseList);
+    numPages = gMaxCourseSearchPage;
   }
   if (numPages !== null)
   {
     numPages = Math.max(numPages, 1);
-    numPages = Math.min(numPages, maxCourseSearchPages(gCourseList));
+    numPages = Math.min(numPages, gMaxCourseSearchPage);
   }
   if (numPages !== gCourseSearchPagesShown)
   {
     gCourseSearchPagesShown = numPages;
     updateCourseSearchResults({ incremental: true });
-    updateCourseSearchPaginationButtons();
   }
 }
 
@@ -1363,7 +1387,6 @@ async function retrieveCourseData()
   setTimeout(() => {
     if (maybeCourseListChanged)
     {
-      updateCourseSearchPaginationButtons();
       updateCourseSearchResults();
       updateSelectedCoursesList();
       updateSchedule();
@@ -1516,6 +1539,8 @@ attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
+autoUpdateNumCourseSearchPagesDisplayed();
+
 
 /// Closing remarks
 
