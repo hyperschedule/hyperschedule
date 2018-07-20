@@ -1,6 +1,7 @@
 import React from 'react';
 
 
+
 export const computeCourseKey = (course) => (
     [
         'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section'
@@ -37,3 +38,4 @@ export const computeCourseStyleClasses = course => (
         field + '-' + course.get(field)
     ))
 );
+
