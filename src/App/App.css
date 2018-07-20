@@ -1,4 +1,4 @@
-#root {
+body {
     font-family: 'Roboto';
 }
 
@@ -13,8 +13,10 @@
     flex-direction: row;
 }
 
-#root .columns > .course.column {
+#root .columns > .sidebar.column {
     width: 30%;
+
+    border-left: 1px solid whitesmoke;
     
     display: flex;
     flex-direction: column;
@@ -35,3 +37,70 @@
     position: relative;
 }
 
+.course {
+    font-size: .8rem;
+    cursor: pointer;
+
+    display: flex;
+}
+
+.course.item {
+    margin: .5rem 1rem;
+}
+
+.course .fields {
+    padding: .5em 1em;
+}
+
+.course .fields .department {
+    font-weight: bold;
+}
+.course .fields .department::after {
+    content: ' ';
+}
+.course .fields .course-number {
+    font-weight: bold;
+}
+.course .fields .course-code-suffix {
+    font-weight: bold;
+}
+.course .fields .school::before {
+    content: ' ';
+}
+.course .fields .school {
+    font-weight: bold;
+}
+.course .fields .section {
+    font-weight: bold;
+}
+.course .fields .section::before {
+    font-weight: bold;
+    content: '-';
+}
+.course .fields .course-name::before {
+    font-weight: bold;
+    content: ': ';
+}
+.course .fields .course-name {
+}
+
+
+
+.course {
+    background: aliceblue;
+}
+.course.school-PO {
+    background: skyblue;
+}
+.course.school-HM {
+    background: khaki;
+}
+.course.school-PZ {
+    background: bisque;
+}
+.course.school-CM {
+    background: pink;
+}
+.course.school-SC {
+    background: lightgreen;
+}

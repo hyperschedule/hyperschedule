@@ -1,0 +1,24 @@
+#selected-courses {
+    position: relative;
+
+    flex-grow: 1;
+    
+    user-select: none;
+    -moz-user-select: none;
+}
+
+#selected-courses .sortable.list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding: .5rem 0;
+
+    overflow-y: scroll;
+
+    display: flex;
+    flex-direction: column;
+}
+

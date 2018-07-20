@@ -1,13 +1,14 @@
 import {combineReducers} from 'redux-immutable';
-import {List, OrderedMap, Map} from 'immutable';
+import {List, OrderedMap, Map, OrderedSet} from 'immutable';
+
+import {computeCourseKey} from './util';
 
 import search from './ModeContent/CourseSearch/reducers';
-import focusSummary from './FocusSummary/reducers';
+import focus from './FocusSummary/reducers';
 
 import * as actions from './actions';
 
 import {
-    TYPE_COURSE_SEARCH,
     UPDATE_COURSES,
     ADD_COURSE,
     REMOVE_COURSE,
@@ -26,15 +27,56 @@ const mode = (
     )
 );
 
-const focusCourse = (state = null, action) => (
-    //    (action.type === actions.modeContent.courseSearch.FOCUS_COURSE ||
-    //     action.type === actions.modeContent.schedule.FOCUS_COURSE) ? (
-    action.type === actions.modeContent.courseSearch.FOCUS_COURSE ? (
-        action.course
-    ) : (
-        state
-    )
-);
+const schedule = (state = Map({courses: Map(), order: List()}), action) => {
+    const courses = state.get('courses');
+    const order = state.get('order');
+
+    let key;
+    
+    switch (action.type) {
+    case actions.courseSearch.ADD_COURSE:
+        key = computeCourseKey(action.course);
+        if (courses.has(key)) {
+            return state;
+        }
+
+        return state.set(
+            'courses', courses.set(key, action.course)
+        ).set(
+            'order', order.push(key)
+        );
+
+    case actions.selectedCourses.REORDER:
+        key = order.get(action.from);
+        return state.set(
+            'order',
+            order.delete(action.from).insert(action.to, key),
+        );
+
+    case actions.selectedCourses.REMOVE_COURSE:
+        return state;
+
+    default:
+        return state;
+    }
+};
+
+      
+//      courses: (state = Map(), action) => {
+//        switch (action.type) {
+//        case actions.courseSearch.ADD_COURSE:
+//            return state.set(computeCourseKey(action.course), action.course);
+//        default:
+//            return state;
+//        }
+//    },
+//    order: (state = List(), action) => {
+//        switch (action.type) {
+//        case actions.courseSearch.ADD_COURSE:
+//            return 
+//        }
+//    },
+//});
 
 
 function updateCourses(state = OrderedMap(), action) {
@@ -46,14 +88,7 @@ function updateCourses(state = OrderedMap(), action) {
     }
 }
 
-function typeCourseSearch(state = '', action) {
-    switch (action.type) {
-    case TYPE_COURSE_SEARCH:
-        return action.text;
-    default:
-        return state;
-    }
-}
+
 
 function updateCourseList(state = List(), action) {
     switch (action.type) {
@@ -74,10 +109,9 @@ function updateCourseList(state = List(), action) {
 const hyperschedule = combineReducers({
     mode,
     search,
-    focusCourse,
-    focusSummary,
+    focus,
     courses: updateCourses,
-    courseList: updateCourseList
+    schedule,
 });
 
 export default hyperschedule;
