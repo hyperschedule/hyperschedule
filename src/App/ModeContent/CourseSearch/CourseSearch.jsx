@@ -1,11 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {createCourseTitleElement} from '../../util';
+
 import * as actions from './actions';
 
 //import SearchList from './SearchList';
 import CourseSearchInput from './CourseSearchInput';
+
 import {List, CellMeasurer, CellMeasurerCache, AutoSizer} from 'react-virtualized';
+import 'react-virtualized/styles.css';
 
 import './CourseSearch.css';
 
@@ -13,15 +17,15 @@ const cache = new CellMeasurerCache({
     fixedWidth: true,    
 });
 
-    const classFields = ['department', 'school'];
+const classFields = ['department', 'school'];
 
-    const CourseSearch = ({courses, searchString, setSearch, focusCourse}) => {
+const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}) => {
 
     const rowRenderer = ({key, index, parent, style}) => {
         const courseKey = courses.keySeq().get(index);
         const course = courses.get(courseKey);
 
-        const classList = ['entry'];
+        const classList = ['entry', 'course'];
         for (const field of classFields) {
             classList.push(field + '-' + course.get(field));
         }
@@ -37,24 +41,13 @@ const cache = new CellMeasurerCache({
                 <div
                   className={classList.join(' ')}
                   onClick={event => focusCourse(course)}>
-                  <span className="department">
-                    {course.get('department')}
-                  </span>
-                  <span className="course-number">
-                    {course.get('courseNumber')}
-                  </span>
-                  <span className="course-code-suffix">
-                    {course.get('courseCodeSuffix')}
-                  </span>
-                  <span className="school">
-                    {course.get('school')}
-                  </span>
-                  <span className="section">
-                    {course.get('section').toString().padStart(2, '0')}
-                  </span>
-                  <span className="course-name">
-                    {course.get('courseName')}
-                  </span>
+                  {createCourseTitleElement(course)}
+                  <button className="add" onClick={event => {
+                        addCourse(course);
+                        event.stopPropagation();
+                    }}>
+                    +
+                  </button>
                 </div>
               </div>
             </CellMeasurer>
@@ -101,7 +94,8 @@ const CourseSearchWrapper = connect(
     },
     dispatch => ({
         setSearch: string => dispatch(actions.setSearch(string)),
-        focusCourse: key => dispatch(actions.focusCourse(key))
+        focusCourse: course => dispatch(actions.focusCourse(course)),
+        addCourse: course => dispatch(actions.addCourse(course)),
     }),
 )(CourseSearch);
 

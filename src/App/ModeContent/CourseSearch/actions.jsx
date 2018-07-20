@@ -9,3 +9,9 @@ export const focusCourse = course => ({
     type: FOCUS_COURSE,
     course,
 });
+
+export const ADD_COURSE = 'App/ModeContent/CourseSearch/ADD_COURSE';
+export const addCourse = course => ({
+    type: ADD_COURSE,
+    course,
+});
