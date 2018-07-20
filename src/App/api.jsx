@@ -20,14 +20,4 @@ function httpStatusHelper (response) {
 }
 
 
-const courseKeyFields = ['school', 'department', 'courseNumber', 'courseCodeSuffix', 'section'];
-export function computeCourseKey (course) {
-  let key = [];
-  for (let field of courseKeyFields) {
-    key.push(course[field]);
-  }
-    return key.join(':');
-}
-
-
 export default HyperscheduleApi;
