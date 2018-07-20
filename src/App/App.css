@@ -44,6 +44,25 @@ body {
     display: flex;
 }
 
+
+.course button {
+    padding: .5em 1em;
+    
+    background: none;
+    border: none;
+    outline: none;
+
+    cursor: pointer;
+}
+
+.course button::-moz-focus-inner {
+    border: none;
+}
+
+.course button.right {
+    margin-left: auto;
+}
+
 .course.item {
     margin: .5rem 1rem;
 }
@@ -104,3 +123,6 @@ body {
 .course.school-SC {
     background: lightgreen;
 }
+
+
+

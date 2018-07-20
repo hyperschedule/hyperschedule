@@ -20,5 +20,12 @@
 
     display: flex;
     flex-direction: column;
+
+
+}
+
+#selected-courses .sortable .course.item button.remove {
+    background: rgba(0, 0, 0, .05);
+
 }
 

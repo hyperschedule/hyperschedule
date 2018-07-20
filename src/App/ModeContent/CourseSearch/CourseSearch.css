@@ -55,16 +55,9 @@
 }
 
 #course-search .entries button.add {
-    border: none;
-    outline: none;
     background: rgba(0, 0, 0, .05);
 
     font-weight: bold;
-
-    margin: 0;
-    padding: .5em 1em;
-
-    cursor: pointer;
 }
 
 #course-search .entries button::-moz-focus-inner {

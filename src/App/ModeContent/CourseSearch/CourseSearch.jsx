@@ -42,7 +42,7 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
                   className={classList.join(' ')}
                   onClick={event => focusCourse(course)}>
                   {createCourseTitleElement(course)}
-                  <button className="add" onClick={event => {
+                  <button className="right add" onClick={event => {
                         addCourse(course);
                         event.stopPropagation();
                     }}>

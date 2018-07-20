@@ -10,7 +10,7 @@ import './SelectedCourses.css';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
 
-const SelectedCourses = ({courses, order, reorder, focusCourse}) => {
+const SelectedCourses = ({courses, order, reorder, focusCourse, removeCourse}) => {
 
     const SortableItem = SortableElement(({value: courseKey}) => {
 
@@ -20,6 +20,14 @@ const SelectedCourses = ({courses, order, reorder, focusCourse}) => {
             <div className={'sortable course item ' + computeCourseStyleClasses(course).join(' ')}
                  onClick={() => focusCourse(course)}>
               {createCourseTitleElement(course)}
+              <button
+                className="right button remove"
+                onClick={event => {
+                    removeCourse(courseKey);
+                    event.stopPropagation();
+                }}>
+                x
+              </button>
             </div>
         );
     });
@@ -58,6 +66,7 @@ const SelectedCoursesWrapper = connect(
     dispatch => ({
         reorder: (from, to) => dispatch(actions.reorder(from, to)),
         focusCourse: course => dispatch(actions.focusCourse(course)),
+        removeCourse: key => dispatch(actions.removeCourse(key)),
     }),
 )(SelectedCourses);
 
