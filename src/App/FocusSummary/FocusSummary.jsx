@@ -1,37 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {createCourseTitleElement} from '../util';
+
 import Measure from 'react-measure';
 
 import * as actions from './actions';
 
 import './FocusSummary.css';
 
-//import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-//import VisibleCourseListItem from '../containers/VisibleCourseListItem';
-//
-//const SortableItem = SortableElement(
-//  ({value}) =>
-//    <VisibleCourseListItem courseId={value}/>
-//);
-//
-//const SortableList = SortableContainer(
-//  ({items}) => {
-//    return (
-//      <ul>
-//        {items.map((value, index) => (
-//          <SortableItem key={`item-${index}`} index={index} value={value} />
-//        ))}
-//      </ul>
-//    );
-//  }
-//);
-
-const CoursePanel = ({focusCourse, height, setHeight}) => {        
+    const FocusSummary = ({course, height, setHeight}) => {        
     let summary = null;
-    if (focusCourse !== null) {
-        const schedule = focusCourse.get('schedule');
-        const faculty = focusCourse.get('faculty');
+    if (course !== null) {
+        const schedule = course.get('schedule');
+        const faculty = course.get('faculty');
         
         const scheduleBlocks = schedule.map((block, index) => (
             <div key={index} className="block">
@@ -58,25 +40,8 @@ const CoursePanel = ({focusCourse, height, setHeight}) => {
         
         summary = (
             <div className="summary">
-              <div className="row description">
-                <span className="department">
-                  {focusCourse.get('department')}
-                </span>
-                <span className="course-number">
-                  {focusCourse.get('courseNumber')}
-                </span>
-                <span className="course-code-suffix">
-                  {focusCourse.get('courseCodeSuffix')}
-                </span>
-                <span className="school">
-                  {focusCourse.get('school')}
-                </span>
-                <span className="section">
-                  {focusCourse.get('section').toString().padStart(2, '0')}
-                </span>
-                <span className="course-name">
-                  {focusCourse.get('courseName')}
-                </span>
+              <div className="row title">
+                {createCourseTitleElement(course)}
               </div>
               {scheduleRow}
               <div className="row faculty">
@@ -117,15 +82,15 @@ const CoursePanel = ({focusCourse, height, setHeight}) => {
     );
 };
 
-const CoursePanelWrapper = connect(
+const FocusSummaryWrapper = connect(
     state => ({
-        focusCourse: state.get('focusCourse'),
-        height: state.get('focusSummary').get('height'),
+        course: state.get('focus').get('course'),
+        height: state.get('focus').get('height'),
     }),
     dispatch => ({
         setHeight: height => dispatch(actions.setHeight(height))
     }),
-)(CoursePanel);
+)(FocusSummary);
 
-export default CoursePanelWrapper;
+export default FocusSummaryWrapper;
 

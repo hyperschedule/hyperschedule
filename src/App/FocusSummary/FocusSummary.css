@@ -3,6 +3,8 @@
     
     text-align: center;
     font-size: .8rem;
+
+    border-bottom: 1px solid whitesmoke;
 }
 
 #focus-summary .overflow {
@@ -24,29 +26,29 @@
 }
 
 
-#focus-summary .summary .row.description .department {
+#focus-summary .summary .row.title .department {
 }
-#focus-summary .summary .row.description .department::after {
+#focus-summary .summary .row.title .department::after {
     content: ' ';
 }
-#focus-summary .summary .row.description .course-number {
+#focus-summary .summary .row.title .course-number {
 }
-#focus-summary .summary .row.description .course-code-suffix {
+#focus-summary .summary .row.title .course-code-suffix {
 }
-#focus-summary .summary .row.description .school::before {
+#focus-summary .summary .row.title .school::before {
     content: ' ';
 }
-#focus-summary .summary .row.description .school {
+#focus-summary .summary .row.title .school {
 }
-#focus-summary .summary .row.description .section {
+#focus-summary .summary .row.title .section {
 }
-#focus-summary .summary .row.description .section::before {
+#focus-summary .summary .row.title .section::before {
     content: '-';
 }
-#focus-summary .summary .row.description .course-name::before {
+#focus-summary .summary .row.title .course-name::before {
     content: ': ';
 }
-#focus-summary .summary .row.description .course-name {
+#focus-summary .summary .row.title .course-name {
 }
 
 #focus-summary .summary .row.schedule .block {
