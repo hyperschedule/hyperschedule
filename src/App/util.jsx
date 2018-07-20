@@ -1,36 +1,39 @@
 import React from 'react';
 
 
-export const fields = (object, fields, props = {}) => {
-    const elements = [];
-    for (const i in fields) {
-        const {field = null, format = s => s, suffix = null} = fields[i];
+export const computeCourseKey = (course) => (
+    [
+        'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section'
+    ].map(field => course.get(field)).join('/')
+);
 
-        switch (true) {
-        case field !== null:
-            if (!object.has(field)) {
-                return null;
-            }
-            const value = object.get(field);
-            const formatted = format(value);
-            if (formatted === null) {
-                return null;
-            }
-            elements.push(
-                <span key={i} className={'field ' + field}>
-                  {formatted}
-                </span>
-            );
-            
-        case suffix !== null:
-            elements.push(suffix);
-        }
 
-    }
-    
-    return (
-        <div className={'fields'} {...props}>
-          {elements}
-        </div>
-    );
-};
+export const createCourseTitleElement = (course) => (
+    <span className="fields">
+      <span className="field department">
+        {course.get('department')}
+      </span>
+      <span className="field course-number">
+        {course.get('courseNumber').toString().padStart(3, '0')}
+      </span>
+      <span className="field course-code-suffix">
+        {course.get('courseCodeSuffix')}
+      </span>
+      <span className="field school">
+        {course.get('school')}
+      </span>
+      <span className="field section">
+        {course.get('section').toString().padStart(2, '0')}
+      </span>
+      <span className="field course-name">
+        {course.get('courseName')}
+      </span>
+    </span>
+);
+
+
+export const computeCourseStyleClasses = course => (
+    ['school', 'department'].map(field => (
+        field + '-' + course.get(field)
+    ))
+);
