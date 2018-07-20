@@ -27,14 +27,23 @@
     bottom: 0;
 
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: 1fr;
-    grid-gap: 1px;
+    grid-template: repeat(13, 1fr) / repeat(8, 1fr);
 }
 
-#schedule .background .cell {
-    border: 1px solid lightgray;
+#schedule .background.layer .column {
+    grid-row: 1 / -1;
 }
+#schedule .background.layer .column.even {
+    background: whitesmoke;
+}
+#schedule .background.layer .column.odd {
+}
+
+#schedule .background.layer .row {
+    grid-column: 1 / -1;
+    border-bottom: 1px solid lightgray;
+}
+
 
 
 
