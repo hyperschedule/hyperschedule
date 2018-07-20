@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { createStore, applyMiddleware } from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import { Provider } from 'react-redux';
+
+import {fromJS, Map} from 'immutable';
 
 import createSagaMiddleware from 'redux-saga';
 import { createLogger } from 'redux-logger';
+
+import persistState from 'redux-localstorage';
 
 import periodicApiUpdate from './sagas';
 import hyperschedule from './reducers';
@@ -27,7 +31,22 @@ const logger = createLogger({
 
 let store = createStore(
     hyperschedule,
-    applyMiddleware(sagaMiddleware, logger),
+    Map(),
+    compose(
+        applyMiddleware(sagaMiddleware, logger),
+        persistState(undefined, {
+            slicer: paths => state => state.delete('courses'),
+            serialize: state => JSON.stringify(state.toJS()),
+            deserialize: s => {
+                try {
+                    return fromJS(JSON.parse(s));
+                } catch (exception) {
+                    return Map();
+                }
+            },
+            merge: (initial, saved) => initial.merge(saved),
+        }),
+    ),
 );
 
 sagaMiddleware.run(periodicApiUpdate);
