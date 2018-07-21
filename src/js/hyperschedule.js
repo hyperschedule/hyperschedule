@@ -612,12 +612,12 @@ function attachListeners()
 
 function updateNumCourseSearchPagesDisplayed()
 {
-  let currentScrollingPosition = courseSearchScheduleColumn.scrollTop;
-  let indexLastItemSecondToLastPage = (gCourseSearchPagesShown - extraPagesToLoad) *
-                                      courseSearchPageSize;
-  const pixelHeightPerItem = 41; // <- got it from inspecting element
-  let thresholdPosition = indexLastItemSecondToLastPage * pixelHeightPerItem;
-  if (currentScrollingPosition > thresholdPosition)
+  let currentScrollPosition = courseSearchScheduleColumn.scrollTop;
+  let scrollingMaxPosition = courseSearchScheduleColumn.scrollHeight;
+  let scrollHeightLeft = scrollingMaxPosition - currentScrollPosition;
+  let screenHeight = document.documentElement.clientHeight;
+
+  if (scrollHeightLeft < 2 * screenHeight)
   {
     setCourseSearchPagesDisplayed("more");
   }
