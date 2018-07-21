@@ -35,6 +35,10 @@
 #schedule .grid .column {
     grid-row: 1 / -1;
 }
+#schedule .grid .column.header {
+    border-right: 1px solid lightgray;
+    grid-column: 1;
+}
 #schedule .grid .column.even { background: whitesmoke }
 #schedule .grid .column.odd  {}
 
