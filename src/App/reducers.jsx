@@ -49,12 +49,10 @@ const schedule = (state = Map({courses: Map(), order: List()}), action) => {
     case actions.selectedCourses.REMOVE_COURSE:
         return state.set(
             'order',
-            order.delete(order.findIndex(key => key === action.key)),
+            order.filter(key => key !== action.key),
+        ).set(
+            'courses', courses.delete(action.key),
         );
-        /*.set(
-          'courses', courses.delete(action.key),
-          );
-        */
 
     default:
         return state;
