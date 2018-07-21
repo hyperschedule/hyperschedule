@@ -613,8 +613,8 @@ function attachListeners()
 function updateNumCourseSearchPagesDisplayed()
 {
   let currentScrollPosition = courseSearchScheduleColumn.scrollTop;
-  let scrollingMaxPosition = courseSearchScheduleColumn.scrollHeight;
-  let scrollHeightLeft = scrollingMaxPosition - currentScrollPosition;
+  let scrollMaxPosition = courseSearchScheduleColumn.scrollHeight;
+  let scrollHeightLeft = scrollMaxPosition - currentScrollPosition;
   let screenHeight = document.documentElement.clientHeight;
 
   if (scrollHeightLeft < 2 * screenHeight)
