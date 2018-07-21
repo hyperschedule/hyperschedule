@@ -64,3 +64,11 @@
 #focus-summary .summary .row.schedule .end-time::after {
     content: ' ';
 }
+
+#focus-summary .summary .row.credit .duration {
+    text-transform: capitalize;
+}
+#focus-summary .summary .row.credit .duration::after {
+    text-transform: none;
+    content: '-semester course, ';
+}

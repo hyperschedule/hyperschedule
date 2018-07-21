@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {createCourseTitleElement} from '../../util';
+import * as util from 'hyperschedule-util';
 
 import * as actions from './actions';
 
@@ -39,9 +39,12 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
               key={key}>
               <div style={{...style}}>
                 <div
-                  className={classList.join(' ')}
+                  className={['course', 'item'].concat(util.courseStyleClasses(course)).join(' ')}
                   onClick={event => focusCourse(course)}>
-                  {createCourseTitleElement(course)}
+                  <div className="fields">
+                    {util.courseTitleFields(course)}
+                    {util.courseStatusFields(course)}
+                  </div>
                   <button className="right add" onClick={event => {
                         addCourse(course);
                         event.stopPropagation();
@@ -81,7 +84,7 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
 
 const CourseSearchWrapper = connect(
     state => {
-        const searchString = state.get('search').get('string');
+        const searchString = state.get('app').get('search').get('string');
 
         return {
             courses: state.get('courses').filter(course => (

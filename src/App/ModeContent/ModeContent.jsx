@@ -21,7 +21,7 @@ const content = {
 
 const ModeContentWrapper = connect(
     state => ({
-        mode: state.get('mode'),
+        mode: state.get('app').get('mode'),
     }),
     dispatch => ({}),
 )(ModeContent);

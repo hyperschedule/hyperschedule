@@ -71,37 +71,24 @@ body {
     padding: .5em 1em;
 }
 
-.course .fields .department {
+.course .fields .field.department,
+.course .fields .field.course-number,
+.course .fields .field.course-code-suffix,
+.course .fields .field.school,
+.course .fields .field.section {
     font-weight: bold;
 }
-.course .fields .department::after {
-    content: ' ';
-}
-.course .fields .course-number {
-    font-weight: bold;
-}
-.course .fields .course-code-suffix {
-    font-weight: bold;
-}
-.course .fields .school::before {
-    content: ' ';
-}
-.course .fields .school {
-    font-weight: bold;
-}
-.course .fields .section {
-    font-weight: bold;
-}
-.course .fields .section::before {
-    font-weight: bold;
-    content: '-';
-}
-.course .fields .course-name::before {
-    font-weight: bold;
-    content: ': ';
-}
-.course .fields .course-name {
-}
+
+.course .fields .department::after         { content: ' '  }
+.course .fields .course-code-suffix::after { content: ' '  }
+.course .fields .school::after             { content: '-'  }
+.course .fields .section::after            { content: ': ' }
+.course .fields .course-name::after        { content: ' '  }
+
+.course .fields .course-status.field::before { content: '('              }
+.course .fields .course-status.field::after  { content: ', '             }
+.course .fields .filled-seats.field::after   { content: '/'              }
+.course .fields .total-seats.field::after    { content: ' seats filled)' }
 
 
 

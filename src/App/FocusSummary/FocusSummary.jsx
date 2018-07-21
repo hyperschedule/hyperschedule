@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {createCourseTitleElement} from '../util';
+import * as util from 'hyperschedule-util';
 
 import Measure from 'react-measure';
 
@@ -12,48 +12,27 @@ import './FocusSummary.css';
     const FocusSummary = ({course, height, setHeight}) => {        
     let summary = null;
     if (course !== null) {
-        const schedule = course.get('schedule');
-        const faculty = course.get('faculty');
-        
-        const scheduleBlocks = schedule.map((block, index) => (
-            <div key={index} className="block">
-              <span className="days">
-                {block.get('days')}
-              </span>
-              <span className="start-time">
-                {block.get('startTime')}
-              </span>
-              <span className="end-time">
-                {block.get('endTime')}
-              </span>
-              <span className="location">
-                {block.get('location')}
-              </span>
-            </div>
-        ));
 
+        const schedule = course.get('schedule');
         const scheduleRow = schedule.size === 0 ? null : (
-            <div className="row schedule">
-              {scheduleBlocks}
+                <div className="row schedule">
+                  {schedule.map((block, index) => (
+                      util.courseScheduleBlockFields(block, index)
+                  ))}
             </div>
         );
         
         summary = (
             <div className="summary">
               <div className="row title">
-                {createCourseTitleElement(course)}
+                {util.courseTitleFields(course)}
               </div>
               {scheduleRow}
               <div className="row faculty">
-                {
-                    faculty.size === 1 ? (
-                        faculty.get(0)
-                    ) : faculty.size === 2 ? (
-                        faculty.join(' and ')
-                    ) : faculty.size === 3 ? (
-                        faculty.slice(0, -1).join(', ') + ', and ' + faculty.get(-1)
-                    ) : null
-                }
+                {util.commaJoin(course.get('faculty'))}
+              </div>
+              <div className="row credit">
+                {util.courseCreditFields(course)}
               </div>
             </div>
         );
@@ -84,8 +63,8 @@ import './FocusSummary.css';
 
 const FocusSummaryWrapper = connect(
     state => ({
-        course: state.get('focus').get('course'),
-        height: state.get('focus').get('height'),
+        course: state.get('app').get('focus').get('course'),
+        height: state.get('app').get('focus').get('height'),
     }),
     dispatch => ({
         setHeight: height => dispatch(actions.setHeight(height))

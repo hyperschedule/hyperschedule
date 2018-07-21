@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { HyperscheduleApi } from './api';
-import {computeCourseKey} from './util';
+import {courseKey} from './hyperschedule-util';
 import { updateCourses } from './actions';
 import { OrderedMap, fromJS } from 'immutable';
 
@@ -15,7 +15,7 @@ function* periodicApiUpdate(getState) {
         let courses = OrderedMap();
         for (const courseJS of response.courses) {
             const course = fromJS(courseJS);
-            courses = courses.set(computeCourseKey(course), course);
+            courses = courses.set(courseKey(course), course);
         }
         
         yield put(updateCourses(courses));

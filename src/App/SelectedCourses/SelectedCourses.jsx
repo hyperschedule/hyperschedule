@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import * as actions from './actions';
 
-import {createCourseTitleElement, computeCourseStyleClasses} from '../util';
+import * as util from 'hyperschedule-util';
 
 import './SelectedCourses.css';
 
@@ -17,9 +17,12 @@ const SelectedCourses = ({courses, order, reorder, focusCourse, removeCourse}) =
         const course = courses.get(courseKey);
 
         return (
-            <div className={'sortable course item ' + computeCourseStyleClasses(course).join(' ')}
+            <div className={'sortable course item ' + util.courseStyleClasses(course).join(' ')}
                  onClick={() => focusCourse(course)}>
-              {createCourseTitleElement(course)}
+              <div className="fields">
+                {util.courseTitleFields(course)}
+                {util.courseStatusFields(course)}
+              </div>
               <button
                 className="right button remove"
                 onClick={event => {
@@ -60,8 +63,8 @@ const SelectedCourses = ({courses, order, reorder, focusCourse, removeCourse}) =
 
 const SelectedCoursesWrapper = connect(
     state => ({
-        courses: state.get('schedule').get('courses'),
-        order: state.get('schedule').get('order'),
+        courses: state.get('app').get('schedule').get('courses'),
+        order: state.get('app').get('schedule').get('order'),
     }),
     dispatch => ({
         reorder: (from, to) => dispatch(actions.reorder(from, to)),

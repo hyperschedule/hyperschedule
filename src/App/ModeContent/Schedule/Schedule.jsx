@@ -72,7 +72,7 @@ const Schedule = ({schedule}) => {
 };
 
 const ScheduleWrapper = connect(
-    state => ({schedule: state.get('courseList')}),
+    state => ({schedule: state.get('app').get('courses')}),
     dispatch => ({}),
 )(Schedule);
 

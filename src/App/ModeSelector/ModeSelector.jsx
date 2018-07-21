@@ -23,7 +23,7 @@ const ModeSelector = ({mode, setMode}) => (
 
 const ModeSelectorWrapper = connect(
     state => ({
-        mode: state.get('mode'),
+        mode: state.get('app').get('mode'),
     }),
     dispatch => ({
         setMode: mode => dispatch(actions.setMode(mode)),
