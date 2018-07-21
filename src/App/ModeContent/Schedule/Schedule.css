@@ -53,12 +53,17 @@
 
 #schedule .grid .row.header {
     grid-row: 1;
+    
+    position: relative;
+    z-index: 1;
+
+    border-bottom: 1px solid lightgray;
 }
 
 #schedule .grid .row {
     grid-column: 1 / -1;
 }
-#schedule .grid .row + .row {
+#schedule .grid .row:not(.header) + .row {
     border-top: 1px solid lightgray;
 }
 
@@ -73,7 +78,7 @@
 }
 
 #schedule .grid .course {
-    margin-top: 1px;
+    margin-bottom: -1px;
     
     display: flex;
     justify-content: center;
