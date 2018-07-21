@@ -50,22 +50,23 @@ export const courseStatusFields = course => [(
 )];
 
 
-export const courseScheduleBlockFields = (block, key) => (
-    <span key={key} className="schedule-block fields">
-      <span key="days" className="field days">
-        {block.get('days')}
-      </span>
-      <span key="start-time" className="field start-time">
-        {block.get('startTime')}
-      </span>
-      <span key="end-time" className="field end-time">
-        {block.get('endTime')}
-      </span>
-      <span key="location" className="field location">
-        {block.get('location')}
-      </span>
+export const courseScheduleBlockFields = block => [(
+    <span key="days" className="field days">
+      {block.get('days')}
     </span>
-);
+), (
+    <span key="start-time" className="field start-time">
+      {block.get('startTime')}
+    </span>
+), (
+    <span key="end-time" className="field end-time">
+      {block.get('endTime')}
+    </span>
+), (
+    <span key="location" className="field location">
+      {block.get('location')}
+    </span>
+)];
 
 const courseDurationHalf = course => (
     course.get('firstHalfSemester') + course.get('secondHalfSemester')

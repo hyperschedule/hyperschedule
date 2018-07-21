@@ -51,8 +51,11 @@
 #focus-summary .summary .row.title .course-name {
 }
 
+#focus-summary .summary .row.schedule {
+    padding: .5em 1em;
+}
 #focus-summary .summary .row.schedule .block {
-    margin: .25em;
+    margin: .5em 0;
 }
 
 #focus-summary .summary .row.schedule .days::after {

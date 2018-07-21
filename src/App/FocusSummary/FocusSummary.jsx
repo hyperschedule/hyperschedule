@@ -17,7 +17,9 @@ const FocusSummary = ({course, height, setHeight}) => {
         const scheduleRow = schedule.size === 0 ? null : (
             <div className="row schedule">
               {schedule.map((block, index) => (
-                  util.courseScheduleBlockFields(block, index)
+                  <div key={index} className="block">
+                    {util.courseScheduleBlockFields(block, index)}
+                  </div>
               ))}
             </div>
         );
