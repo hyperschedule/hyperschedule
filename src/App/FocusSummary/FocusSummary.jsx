@@ -9,16 +9,16 @@ import * as actions from './actions';
 
 import './FocusSummary.css';
 
-    const FocusSummary = ({course, height, setHeight}) => {        
+const FocusSummary = ({course, height, setHeight}) => {        
     let summary = null;
     if (course !== null) {
 
         const schedule = course.get('schedule');
         const scheduleRow = schedule.size === 0 ? null : (
-                <div className="row schedule">
-                  {schedule.map((block, index) => (
-                      util.courseScheduleBlockFields(block, index)
-                  ))}
+            <div className="row schedule">
+              {schedule.map((block, index) => (
+                  util.courseScheduleBlockFields(block, index)
+              ))}
             </div>
         );
         
@@ -38,15 +38,12 @@ import './FocusSummary.css';
         );
     }
 
-    const updateHeight = ({offset}) => this.setState({
-        focusSummaryHeight: offset.height,
-    });
-
     const focusSummaryMeasure = ({measureRef}) => (
         <div ref={measureRef} className="measure">
           {summary}
         </div>
     );
+
 
     return (
         <div id="focus-summary">
