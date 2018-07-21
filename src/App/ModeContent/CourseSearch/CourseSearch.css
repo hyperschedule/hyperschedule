@@ -48,10 +48,10 @@
     margin: .5rem 0;
 }
 
-#course-search .entries .entry {
-    margin: .5rem 1rem;
- 
-    justify-content: space-between;
+#course-search .entries .course .fields {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #course-search .entries button.add {
