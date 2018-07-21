@@ -16,7 +16,8 @@ const height = (state = 0, action) => (
 
 const course = (state = null, action) => (
     (action.type === courseSearch.FOCUS_COURSE ||
-     action.type === selectedCourses.FOCUS_COURSE) ? (
+     action.type === selectedCourses.FOCUS_COURSE ||
+     action.type === schedule.FOCUS_COURSE) ? (
          action.course
     ) : (
         state

@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import { createSlotEntity } from '../../model';
+import * as actions from './actions';
+    
 import './Schedule.css';
 
 import * as util from 'hyperschedule-util';
@@ -27,7 +28,7 @@ const timeToRow = ({hour, minute}) => (
     ((hour - 8) * 60 + minute) / 5
 );
 
-const Schedule = ({courses, order}) => {
+const Schedule = ({courses, order, focusCourse}) => {
     const courseBlocks = order.map(courseKey => {
         const course = courses.get(courseKey);
 
@@ -45,7 +46,8 @@ const Schedule = ({courses, order}) => {
                 const className = ['course'].concat(util.courseStyleClasses(course)).join(' ');
                 
                 return (
-                    <div key={key} className={className} style={gridStyle}>
+                    <div key={key} className={className} style={gridStyle}
+                         onClick={() => focusCourse(course)}>
                       <div className="course-code fields">
                         {util.courseCodeFields(course)}
                         <div className="field course-name">
@@ -131,7 +133,9 @@ const ScheduleWrapper = connect(
         courses: state.get('app').get('schedule').get('courses'),
         order: state.get('app').get('schedule').get('order'),
     }),
-    dispatch => ({}),
+    dispatch => ({
+        focusCourse: course => dispatch(actions.focusCourse(course)),
+    }),
 )(Schedule);
 
 export default ScheduleWrapper;
