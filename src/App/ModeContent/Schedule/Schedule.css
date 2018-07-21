@@ -16,10 +16,10 @@
     position: relative;
 
     width: 100%;
-    padding-top: 80%;
+    padding-top: 100%;
 }
 
-#schedule .layer {
+#schedule .grid {
     position: absolute;
     left: 0;
     right: 0;
@@ -27,23 +27,60 @@
     bottom: 0;
 
     display: grid;
-    grid-template: repeat(13, 1fr) / repeat(8, 1fr);
+    grid-template: min-content repeat(192, 1fr) / 8em repeat(7, 1fr);
+
+    border: 1px solid lightgray;
 }
 
-#schedule .background.layer .column {
+#schedule .grid .column {
     grid-row: 1 / -1;
 }
-#schedule .background.layer .column.even {
-    background: whitesmoke;
-}
-#schedule .background.layer .column.odd {
+#schedule .grid .column.even { background: whitesmoke }
+#schedule .grid .column.odd  {}
+
+#schedule .grid .column-label {
+    font-size: .8em;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    grid-row: 1;
+
+    padding: 1em;
 }
 
-#schedule .background.layer .row {
+#schedule .grid .row.header {
+    grid-row: 1;
+}
+
+#schedule .grid .row {
     grid-column: 1 / -1;
-    border-bottom: 1px solid lightgray;
+}
+#schedule .grid .row + .row {
+    border-top: 1px solid lightgray;
 }
 
+#schedule .grid .row-label {
+    grid-column: 1;
+    grid-row-end: span 12;
 
+    padding: .5em 1em;
+    font-size: .8em;
 
+    text-align: right;
+}
 
+#schedule .grid .course {
+    margin-top: 1px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#schedule .grid .course .fields {
+    text-align: center;
+}

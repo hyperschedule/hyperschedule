@@ -7,8 +7,7 @@ export const courseKey = (course) => (
     ].map(field => course.get(field)).join('/')
 );
 
-
-export const courseTitleFields = (course) => [(
+export const courseCodeFields = course => [(
     <span key="department" className="field department">
       {course.get('department')}
     </span>
@@ -28,11 +27,13 @@ export const courseTitleFields = (course) => [(
     <span key="section" className="field section">
       {course.get('section').toString().padStart(2, '0')}
     </span>
-), (
+)];
+
+export const courseTitleFields = (course) => courseCodeFields(course).concat([(
     <span key="course-name" className="field course-name">
       {course.get('courseName')}
     </span>
-)];
+)]);
 
 export const courseStatusFields = course => [(
     <span key="course-status" className="field course-status">
@@ -41,7 +42,7 @@ export const courseStatusFields = course => [(
 ), (
     <span key="filled-seats" className="field filled-seats">
       {course.get('openSeats')}
-      </span>
+    </span>
 ), (
     <span key="total-seats" className="field total-seats">
       {course.get('totalSeats')}

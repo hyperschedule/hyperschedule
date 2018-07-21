@@ -82,7 +82,7 @@ body {
 .course .fields .department::after         { content: ' '  }
 .course .fields .course-code-suffix::after { content: ' '  }
 .course .fields .school::after             { content: '-'  }
-.course .fields .section::after            { content: ': ' }
+.course .fields .section::after            { content: ' ' }
 .course .fields .course-name::after        { content: ' '  }
 
 .course .fields .course-status.field::before { content: '('              }
