@@ -26,6 +26,7 @@ const scheduleReducers = {
     [actions.courseSearch.ADD_COURSE]: (state, {course}) => {
         const courses = state.get('courses');
         const order = state.get('order');
+        const checked = state.get('checked');
         
         const key = course.key;
         if (courses.has(key)) {
@@ -36,6 +37,8 @@ const scheduleReducers = {
             'order', order.push(key),
         ).set(
             'courses', courses.set(key, course),
+        ).set(
+            'checked', checked.add(key),
         );
         
     },
