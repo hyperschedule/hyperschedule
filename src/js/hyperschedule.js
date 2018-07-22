@@ -400,7 +400,7 @@ function courseMatchesSearchQuery(course, query)
 
 function generateScheduleSlotDescription(slot)
 {
-  return slot.days + " " + timeStringTo12HourString(slot.startTime) + " - " +
+  return slot.days + " " + timeStringTo12HourString(slot.startTime) + " – " +
     timeStringTo12HourString(slot.endTime) + " at " + slot.location;
 }
 
