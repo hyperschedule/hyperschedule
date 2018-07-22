@@ -96,7 +96,7 @@ const SelectedCourses = ({
                 items={courseItems}
                 onSortEnd={onSortEnd}
                 helperClass="sortable course item float"
-                pressDelay={50}/>
+                pressDelay={100}/>
             </div>
         );
 };
