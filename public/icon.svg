@@ -16,7 +16,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 2405546, 2018-03-11"
-   sodipodi:docname="icon.svg">
+   sodipodi:docname="icon.svg"
+   inkscape:export-filename="/home/kshi/hacks/hyperschedule/hyperschedule-react/public/icon.png"
+   inkscape:export-xdpi="12.29"
+   inkscape:export-ydpi="12.29">
   <defs
      id="defs2">
     <linearGradient
@@ -172,9 +175,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-157.81687"
-     inkscape:cy="272.03401"
+     inkscape:zoom="0.7"
+     inkscape:cx="129.96437"
+     inkscape:cy="340.59936"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -207,7 +210,7 @@
      transform="translate(-47.098313,-106.19564)">
     <g
        id="g8809"
-       transform="matrix(0.88395867,-0.11111105,0,0.88395867,29.42778,26.611127)">
+       transform="matrix(1.0110441,-0.12708532,0,1.0110441,19.848343,7.1865016)">
       <rect
          style="opacity:1;fill:#a6e6da;fill-opacity:1;stroke:none;stroke-width:0.42817849;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="rect8797"
