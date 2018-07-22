@@ -24,28 +24,28 @@
 
 }
 
-#selected-courses .list .course.item button.remove {
+.sortable.course.item button.remove {
     background: rgba(0, 0, 0, .05);
 
 }
 
-#selected-courses .list .course.item .handle {
+.sortable.course.item .handle {
     padding-left: 1em;
 
     display: flex;
     align-items: center;
 }
 
-#selected-courses .list .course.item .handle.check.off::before {
+.sortable.course.item .handle.check.off::before {
     content: 'e';
 }
-#selected-courses .list .course.item .handle.check.on::before {
+.sortable.course.item .handle.check.on::before {
     content: 'E';
 }
 
-#selected-courses .list .course.item .handle.star.off::before {
+.sortable.course.item .handle.star.off::before {
     content: 's';
 }
-#selected-courses .list .course.item .handle.star.on::before {
+.sortable.course.item .handle.star.on::before {
     content: 'S';
 }

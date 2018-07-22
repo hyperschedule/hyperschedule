@@ -22,7 +22,7 @@ const SortableItem = SortableElement(({value: {
 }}) => {
 
     return (
-        <div className={'course item ' + course.dataClasses.join(' ')}
+        <div className={'sortable course item ' + course.dataClasses.join(' ')}
              onClick={() => focusCourse(course)}>
           <span className={'handle check ' + (checked ? 'on' : 'off')}
                 onClick={event => {
@@ -95,8 +95,8 @@ const SelectedCourses = ({
               <SortableList
                 items={courseItems}
                 onSortEnd={onSortEnd}
-                helperClass="sortable float"
-                distance={10}/>
+                helperClass="sortable course item float"
+                pressDelay={50}/>
             </div>
         );
 };

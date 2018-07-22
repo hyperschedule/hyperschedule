@@ -1,5 +1,6 @@
 body {
     font-family: 'Roboto';
+    overscroll-behavior: none;
 }
 
 #root .columns {
