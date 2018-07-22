@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.1",
+    "@fortawesome/free-regular-svg-icons": "^5.1.1",
+    "@fortawesome/free-solid-svg-icons": "^5.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.0",
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -14,9 +18,11 @@
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "immutable": "^3.8.2",
+    "ionicons": "^4.2.4",
     "normalize-css": "^2.3.1",
     "react": "^16.2.0",
     "react-dom": "^16.4.1",
+    "react-fontawesome": "^1.6.1",
     "react-measure": "^2.0.2",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.17",
@@ -32,9 +38,9 @@
     "webpack": "^4.16.1"
   },
   "scripts": {
-      "start": "node server.js",
-      "webpack": "webpack",
-      "babel": "babel"
+    "start": "node server.js",
+    "webpack": "webpack",
+    "babel": "babel"
   },
   "devDependencies": {
     "webpack-cli": "^3.0.8"
