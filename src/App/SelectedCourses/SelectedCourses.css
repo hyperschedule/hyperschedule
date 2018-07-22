@@ -7,7 +7,7 @@
     -moz-user-select: none;
 }
 
-#selected-courses .sortable.list {
+#selected-courses .list {
     position: absolute;
     top: 0;
     left: 0;
@@ -24,8 +24,28 @@
 
 }
 
-#selected-courses .sortable .course.item button.remove {
+#selected-courses .list .course.item button.remove {
     background: rgba(0, 0, 0, .05);
 
 }
 
+#selected-courses .list .course.item .handle {
+    padding-left: 1em;
+
+    display: flex;
+    align-items: center;
+}
+
+#selected-courses .list .course.item .handle.check.off::before {
+    content: 'e';
+}
+#selected-courses .list .course.item .handle.check.on::before {
+    content: 'E';
+}
+
+#selected-courses .list .course.item .handle.star.off::before {
+    content: 's';
+}
+#selected-courses .list .course.item .handle.star.on::before {
+    content: 'S';
+}

@@ -58,6 +58,27 @@ const scheduleReducers = {
             'courses', courses.delete(key),
         );
     },
+    [actions.selectedCourses.TOGGLE_COURSE_CHECKED]: (state, {key}) => {
+        let checked = state.get('checked');
+        if (checked.has(key)) {
+            checked = checked.delete(key);
+        } else {
+            checked = checked.add(key);
+        }
+
+        return state.set('checked', checked);
+    },
+    [actions.selectedCourses.TOGGLE_COURSE_STARRED]: (state, {key}) => {
+        let starred = state.get('starred');
+        if (starred.has(key)) {
+            starred = starred.delete(key);
+        } else {
+            starred = starred.add(key);
+        }
+
+        return state.set('starred', starred);
+    },
+
 };
 
 const schedule = (state = Map({
@@ -65,6 +86,7 @@ const schedule = (state = Map({
         courses: Map(),
         order: List(),
         starred: Set(),
+        checked: Set(),
     }),
     scheduled: Set(),
 }), action) => {
@@ -77,19 +99,24 @@ const schedule = (state = Map({
 
     const courses = selection.get('courses');
     const starred = selection.get('starred');
+    const checked = selection.get('checked');
     const order = selection.get('order');
 
     let scheduled = Set();
 
     for (const key of order) {
-        if (!starred.has(key)) {
+        if (!(starred.has(key) && checked.has(key))) {
             continue;
         }
 
-        scheduled.add(key);
+        scheduled = scheduled.add(key);
     }
 
     for (const key of order) {
+        if (!checked.has(key)) {
+            continue;
+        }
+        
         const course = courses.get(key);
 
         let conflict = false;
