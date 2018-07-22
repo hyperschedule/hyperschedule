@@ -38,11 +38,11 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
                     {course.titleFields}
                     {course.statusFields}
                   </div>
-                  <button className="right add" onClick={event => {
-                        addCourse(course);
-                        event.stopPropagation();
+                  <button className="right add ion-md-add"
+                          onClick={event => {
+                              addCourse(course);
+                              event.stopPropagation();
                     }}>
-                    +
                   </button>
                 </div>
               </div>

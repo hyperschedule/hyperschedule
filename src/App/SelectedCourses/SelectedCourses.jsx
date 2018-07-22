@@ -24,29 +24,31 @@ const SortableItem = SortableElement(({value: {
     return (
         <div className={'sortable course item ' + course.dataClasses.join(' ')}
              onClick={() => focusCourse(course)}>
-          <span className={'handle check ' + (checked ? 'on' : 'off')}
-                onClick={event => {
-                    toggleCourseChecked(key);
-                    event.stopPropagation();
-            }}>
+          <span className='handle check'>
+            <i className={'ion-md-' + (checked ? 'checkbox' : 'square-outline')}
+               onClick={event => {
+                   toggleCourseChecked(key);
+                   event.stopPropagation();
+              }}></i>
           </span>
-          <span className={'handle star ' + (starred ? 'on' : 'off')}
-                onClick={event => {
-                    toggleCourseStarred(key);
-                    event.stopPropagation();
-            }}>
+          <span className={'handle star'}>
+            <i className={'ion-md-star' + (starred ? '' : '-outline')}
+               onClick={event => {
+                   toggleCourseStarred(key);
+                   event.stopPropagation();
+              }}>
+            </i>
           </span>
           <div className="fields">
             {course.titleFields}
             {course.statusFields}
           </div>
           <button
-            className="right remove"
+            className="right remove ion-md-close"
             onClick={event => {
                 removeCourse(key);
                 event.stopPropagation();
             }}>
-            x
           </button>
         </div>
     );
@@ -90,15 +92,15 @@ const SelectedCourses = ({
         
     }));
 
-        return (
-            <div id="selected-courses">
-              <SortableList
-                items={courseItems}
-                onSortEnd={onSortEnd}
-                helperClass="sortable course item float"
-                pressDelay={100}/>
-            </div>
-        );
+    return (
+        <div id="selected-courses">
+          <SortableList
+            items={courseItems}
+            onSortEnd={onSortEnd}
+            helperClass="sortable course item float"
+            distance={10}/>
+        </div>
+    );
 };
 
 const SelectedCoursesWrapper = connect(
