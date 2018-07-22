@@ -90,6 +90,19 @@ export class Course {
         );
     }
 
+    conflicts(other) {
+        for (const slot of this.scheduleSlots) {
+            for (const otherSlot of other.scheduleSlots) {
+                if (slot.day === otherSlot.day &&
+                    slot.timeSlot.overlaps(otherSlot.timeSlot)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     toJS() {
         return {
             ...this,

@@ -23,7 +23,7 @@ const logger = createLogger({
     collapsed: (getState, action, logEntry) => !logEntry.error,
     stateTransformer: (state) => state.set('courses', {
         alias: 'redacted',
-        length: state.get('courses').length,
+        size: state.get('courses').size,
     }).toJS(),
     actionTransformer: action => {
         if (action.hasOwnProperty('course')) {

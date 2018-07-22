@@ -21,53 +21,95 @@ const mode = (
     )
 );
 
+
 const scheduleReducers = {
-    [actions.courseSearch.ADD_COURSE]: (action, courses, order) => {
-        const key = action.course.key;
+    [actions.courseSearch.ADD_COURSE]: (state, {course}) => {
+        const courses = state.get('courses');
+        const order = state.get('order');
+        
+        const key = course.key;
         if (courses.has(key)) {
             return {courses, order};
         }
 
-        return {
-            courses: courses.set(key, action.course),
-            order: order.push(key),
-        };
+        return state.set(
+            'order', order.push(key),
+        ).set(
+            'courses', courses.set(key, course),
+        );
+        
     },
-    [actions.selectedCourses.REORDER]: (action, courses, order) => {
-        const key = order.get(action.from);
-        return {
-            courses,
-            order: order.delete(action.from).insert(action.to, key),
-        };
+    [actions.selectedCourses.REORDER]: (state, {from, to}) => {
+        const order = state.get('order');
+        
+        const key = order.get(from);
+        return state.set(
+            'order',
+            order.delete(from).insert(to, key),
+        );
     },
-    [actions.selectedCourses.REMOVE_COURSE]: (action, courses, order) => {
-        return {
-            order: order.filter(key => key !== action.key),
-            courses: courses.delete(action.key),
-        };
+    [actions.selectedCourses.REMOVE_COURSE]: (state, {key}) => {
+        const courses = state.get('courses');
+        const order = state.get('order');
+        
+        return state.set(
+            'order', order.filter(key => key !== key),
+        ).set(
+            'courses', courses.delete(key),
+        );
     },
 };
+
 const schedule = (state = Map({
-    courses: Map(),
-    order: List(),
-    included: Set(),
+    selection: Map({
+        courses: Map(),
+        order: List(),
+        starred: Set(),
+    }),
+    scheduled: Set(),
 }), action) => {
-    
-    const courses = state.get('courses');
-    const order = state.get('order');
 
     if (!scheduleReducers.hasOwnProperty(action.type)) {
         return state;
     }
 
-    const {
-        order: newOrder,
-        courses: newCourses,
-    } = scheduleReducers[action.type](action, courses, order);
+    const selection = scheduleReducers[action.type](state.get('selection'), action);
 
-    
+    const courses = selection.get('courses');
+    const starred = selection.get('starred');
+    const order = selection.get('order');
 
-    return state.set('order', newOrder).set('courses', newCourses);
+    let scheduled = Set();
+
+    for (const key of order) {
+        if (!starred.has(key)) {
+            continue;
+        }
+
+        scheduled.add(key);
+    }
+
+    for (const key of order) {
+        const course = courses.get(key);
+
+        let conflict = false;
+        for (const otherKey of scheduled) {
+            const other = courses.get(otherKey);
+            
+            if (course.conflicts(other)) {
+                conflict = true;
+                break;
+            }
+        }
+        
+        if (conflict) {
+            continue;
+        }
+
+        scheduled = scheduled.add(key);
+    }
+
+    return state.set('selection', selection).set('scheduled', scheduled);
 };
 
 const app = combineReducers({

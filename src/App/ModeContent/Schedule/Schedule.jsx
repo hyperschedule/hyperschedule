@@ -21,8 +21,8 @@ const dayIndex = {
     S: 6,
 };
 
-const Schedule = ({courses, order, focusCourse}) => {
-    const courseBlocks = order.map(courseKey => {
+const Schedule = ({courses, scheduled, starred, focusCourse}) => {
+    const courseBlocks = scheduled.map(courseKey => {
         const course = courses.get(courseKey);
 
         return course.scheduleGroups.map((group, index) => {
@@ -38,7 +38,7 @@ const Schedule = ({courses, order, focusCourse}) => {
                 
                 return (
                     <div key={day} className={className} style={gridStyle}
-                         onClick={() => course}>
+                         onClick={() => focusCourse(course)}>
                       <div className="course-code fields">
                         {course.titleFields}
                       </div>
@@ -118,8 +118,10 @@ const Schedule = ({courses, order, focusCourse}) => {
 
 const ScheduleWrapper = connect(
     state => ({
-        courses: state.get('app').get('schedule').get('courses'),
-        order: state.get('app').get('schedule').get('order'),
+        courses: state.get('app').get('schedule').get('selection').get('courses'),
+        order: state.get('app').get('schedule').get('selection').get('order'),
+        starred: state.get('app').get('schedule').get('selection').get('starred'),
+        scheduled: state.get('app').get('schedule').get('scheduled'),
     }),
     dispatch => ({
         focusCourse: course => dispatch(actions.focusCourse(course)),

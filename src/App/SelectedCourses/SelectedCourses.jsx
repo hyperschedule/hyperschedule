@@ -72,14 +72,14 @@ const SelectedCourses = ({order, courses, removeCourse, focusCourse, reorder}) =
 
 const SelectedCoursesWrapper = connect(
     state => ({
-            courses: state.get('app').get('schedule').get('courses'),
-            order: state.get('app').get('schedule').get('order'),
-        }),
-        dispatch => ({
-            reorder: (from, to) => dispatch(actions.reorder(from, to)),
-            focusCourse: course => dispatch(actions.focusCourse(course)),
-            removeCourse: key => dispatch(actions.removeCourse(key)),
-        }),
-    )(SelectedCourses);
+        courses: state.get('app').get('schedule').get('selection').get('courses'),
+        order: state.get('app').get('schedule').get('selection').get('order'),
+    }),
+    dispatch => ({
+        reorder: (from, to) => dispatch(actions.reorder(from, to)),
+        focusCourse: course => dispatch(actions.focusCourse(course)),
+        removeCourse: key => dispatch(actions.removeCourse(key)),
+    }),
+)(SelectedCourses);
 
-    export default SelectedCoursesWrapper;
+export default SelectedCoursesWrapper;
