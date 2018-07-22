@@ -30,7 +30,7 @@ const scheduleReducers = {
         
         const key = course.key;
         if (courses.has(key)) {
-            return {courses, order};
+            return state;
         }
 
         return state.set(
