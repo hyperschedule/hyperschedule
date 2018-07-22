@@ -13,12 +13,13 @@ const FocusSummary = ({course, height, setHeight}) => {
     let summary = null;
     if (course !== null) {
 
-        const schedule = course.get('schedule');
-        const scheduleRow = schedule.size === 0 ? null : (
+
+        const schedule = course.scheduleGroups;
+        const scheduleRow = course.scheduleGroups.length === 0 ? null : (
             <div className="row schedule">
-              {schedule.map((block, index) => (
+              {course.scheduleGroups.map((group, index) => (
                   <div key={index} className="block">
-                    {util.courseScheduleBlockFields(block, index)}
+                    {group.fields}
                   </div>
               ))}
             </div>
@@ -26,15 +27,15 @@ const FocusSummary = ({course, height, setHeight}) => {
         
         summary = (
             <div className="summary">
-              <div className="row title">
-                {util.courseTitleFields(course)}
+              <div className="row title fields">
+                {course.titleFields}
               </div>
               {scheduleRow}
               <div className="row faculty">
-                {util.commaJoin(course.get('faculty'))}
+                {course.facultyString}
               </div>
-              <div className="row credit">
-                {util.courseCreditFields(course)}
+              <div className="row credit fields">
+                {course.creditFields}
               </div>
             </div>
         );

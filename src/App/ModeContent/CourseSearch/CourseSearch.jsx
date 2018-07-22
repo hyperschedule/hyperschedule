@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import * as util from 'hyperschedule-util';
-
 import * as actions from './actions';
 
 //import SearchList from './SearchList';
@@ -25,11 +23,6 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
         const courseKey = courses.keySeq().get(index);
         const course = courses.get(courseKey);
 
-        const classList = ['entry', 'course'];
-        for (const field of classFields) {
-            classList.push(field + '-' + course.get(field));
-        }
-
         return (
             <CellMeasurer
               cache={cache}
@@ -39,11 +32,11 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
               key={key}>
               <div style={{...style}}>
                 <div
-                  className={['course', 'item'].concat(util.courseStyleClasses(course)).join(' ')}
+                  className={['course', 'item'].concat(course.dataClasses).join(' ')}
                   onClick={event => focusCourse(course)}>
                   <div className="fields">
-                    {util.courseTitleFields(course)}
-                    {util.courseStatusFields(course)}
+                    {course.titleFields}
+                    {course.statusFields}
                   </div>
                   <button className="right add" onClick={event => {
                         addCourse(course);
@@ -88,9 +81,7 @@ const CourseSearchWrapper = connect(
 
         return {
             courses: state.get('courses').filter(course => (
-                course.get('courseName').toLowerCase().includes(
-                    searchString.toLowerCase(),
-                )
+                course.matches(searchString)
             )),
             searchString,
         };

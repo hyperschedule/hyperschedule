@@ -7,6 +7,10 @@ import './Schedule.css';
 
 import * as util from 'hyperschedule-util';
 
+const timeToRow = ({hour, minute}) => (
+    ((hour - 8) * 60 + minute) / 5 + 2
+);
+
 const dayIndex = {
     U: 0,
     M: 1,
@@ -17,42 +21,26 @@ const dayIndex = {
     S: 6,
 };
 
-const parseTime = s => {
-    const [hourString, minuteString] = s.split(':');
-    const hour = parseInt(hourString);
-    const minute = parseInt(minuteString);
-    return {hour, minute};
-};
-
-const timeToRow = ({hour, minute}) => (
-    ((hour - 8) * 60 + minute) / 5
-);
-
 const Schedule = ({courses, order, focusCourse}) => {
     const courseBlocks = order.map(courseKey => {
         const course = courses.get(courseKey);
 
-        return course.get('schedule').map((block, index) => {
-            return block.get('days').split('').map(day => {
-
-                const key = [courseKey, index, day].join('-');
+        return course.scheduleGroups.map((group, index) => {
+            return group.days.map(day => {
 
                 const gridStyle = {
-                    gridRowStart: timeToRow(parseTime(block.get('startTime'))) + 2,
-                    gridRowEnd: timeToRow(parseTime(block.get('endTime'))) + 2,
+                    gridRowStart: timeToRow(group.timeSlot.start),
+                    gridRowEnd: timeToRow(group.timeSlot.end),
                     gridColumn: dayIndex[day] + 2,
                 };
 
-                const className = ['course'].concat(util.courseStyleClasses(course)).join(' ');
+                const className = ['course'].concat(course.dataClasses).join(' ');
                 
                 return (
-                    <div key={key} className={className} style={gridStyle}
-                         onClick={() => focusCourse(course)}>
+                    <div key={day} className={className} style={gridStyle}
+                         onClick={() => course}>
                       <div className="course-code fields">
-                        {util.courseCodeFields(course)}
-                        <div className="field course-name">
-                          {course.get('courseName')}
-                        </div>
+                        {course.titleFields}
                       </div>
                     </div>
                 );

@@ -21,7 +21,20 @@ const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger({
     duration: true,
     collapsed: (getState, action, logEntry) => !logEntry.error,
-    stateTransformer: (state) => state.delete('courses').toJS()
+    stateTransformer: (state) => state.set('courses', {
+        alias: 'redacted',
+        length: state.get('courses').length,
+    }).toJS(),
+    actionTransformer: action => {
+        if (action.hasOwnProperty('course')) {
+            return {
+                ...action,
+                course: action.course.toJS(),
+            };
+        }
+
+        return action;
+    },
 });
 
 
@@ -40,7 +53,7 @@ let store = createStore(
                     return Map();
                 }
             },
-            merge: (initial, saved) => initial.merge(saved),
+            merge: (initial, saved) => initial,
         }),
     ),
 );

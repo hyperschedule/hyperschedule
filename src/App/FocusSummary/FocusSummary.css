@@ -26,31 +26,6 @@
 }
 
 
-#focus-summary .summary .row.title .department {
-}
-#focus-summary .summary .row.title .department::after {
-    content: ' ';
-}
-#focus-summary .summary .row.title .course-number {
-}
-#focus-summary .summary .row.title .course-code-suffix {
-}
-#focus-summary .summary .row.title .school::before {
-    content: ' ';
-}
-#focus-summary .summary .row.title .school {
-}
-#focus-summary .summary .row.title .section {
-}
-#focus-summary .summary .row.title .section::before {
-    content: '-';
-}
-#focus-summary .summary .row.title .course-name::before {
-    content: ': ';
-}
-#focus-summary .summary .row.title .course-name {
-}
-
 #focus-summary .summary .row.schedule {
     padding: .5em 1em;
 }
@@ -58,15 +33,9 @@
     margin: .5em 0;
 }
 
-#focus-summary .summary .row.schedule .days::after {
-    content: ' ';
-}
-#focus-summary .summary .row.schedule .start-time::after {
-    content: '-';
-}
-#focus-summary .summary .row.schedule .end-time::after {
-    content: ' ';
-}
+#focus-summary .summary .row.schedule .field.days::after      { content: ' ' }
+#focus-summary .summary .row.schedule .field.startTime::after { content: '-' }
+#focus-summary .summary .row.schedule .field.endTime::after   { content: ' ' }
 
 #focus-summary .summary .row.credit .duration {
     text-transform: capitalize;

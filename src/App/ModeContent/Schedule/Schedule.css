@@ -96,3 +96,7 @@
     
     padding: 0 1em;
 }
+
+#schedule .grid .course .fields .field.courseName {
+    display: block;
+}

@@ -23,7 +23,7 @@ const mode = (
 
 const scheduleReducers = {
     [actions.courseSearch.ADD_COURSE]: (action, courses, order) => {
-        const key = util.courseKey(action.course);
+        const key = action.course.key;
         if (courses.has(key)) {
             return {courses, order};
         }
@@ -37,7 +37,7 @@ const scheduleReducers = {
         const key = order.get(action.from);
         return {
             courses,
-            order: order.delete(action.from).insert(action.to, key)
+            order: order.delete(action.from).insert(action.to, key),
         };
     },
     [actions.selectedCourses.REMOVE_COURSE]: (action, courses, order) => {
@@ -50,7 +50,7 @@ const scheduleReducers = {
 const schedule = (state = Map({
     courses: Map(),
     order: List(),
-    selected: Set(),
+    included: Set(),
 }), action) => {
     
     const courses = state.get('courses');
@@ -64,6 +64,8 @@ const schedule = (state = Map({
         order: newOrder,
         courses: newCourses,
     } = scheduleReducers[action.type](action, courses, order);
+
+    
 
     return state.set('order', newOrder).set('courses', newCourses);
 };

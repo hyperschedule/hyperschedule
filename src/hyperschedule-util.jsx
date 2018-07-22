@@ -1,112 +1,185 @@
 import React from 'react';
 
+export class Course {
+    constructor(data) {
+        this.data = data;
 
-export const courseKey = (course) => (
-    [
-        'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section'
-    ].map(field => course.get(field)).join('/')
-);
+        this.key = [
+            'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section'
+        ].map(field => this.data.get(field)).join('/');
 
-export const courseCodeFields = course => [(
-    <span key="department" className="field department">
-      {course.get('department')}
-    </span>
-), (
-    <span key="course-number" className="field course-number">
-      {course.get('courseNumber').toString().padStart(3, '0')}
-    </span>
-), (
-    <span key="course-code-suffix" className="field course-code-suffix">
-      {course.get('courseCodeSuffix')}
-    </span>
-), (
-    <span key="school" className="field school">
-      {course.get('school')}
-    </span>
-), (
-    <span key="section" className="field section">
-      {course.get('section').toString().padStart(2, '0')}
-    </span>
-)];
+        this.credits = this.data.get('quarterCredits') * .25;
 
-export const courseTitleFields = (course) => courseCodeFields(course).concat([(
-    <span key="course-name" className="field course-name">
-      {course.get('courseName')}
-    </span>
-)]);
+        this.halfSemesters = (
+            this.data.get('firstHalfSemester') + this.data.get('secondHalfSemester')
+        );
 
-export const courseStatusFields = course => [(
-    <span key="course-status" className="field course-status">
-      {course.get('courseStatus')}
-    </span>
-), (
-    <span key="filled-seats" className="field filled-seats">
-      {course.get('openSeats')}
-    </span>
-), (
-    <span key="total-seats" className="field total-seats">
-      {course.get('totalSeats')}
-    </span>
-)];
+        
+        this.scheduleGroups = [];
+        this.data.get('schedule').map(groupData => {
+
+            let redundant = false;
+            for (const previous of this.scheduleGroups) {
+                if (groupData.equals(previous.data)) {
+                    redundant = true;
+                    break;
+                }
+            }
+
+            if (redundant) {
+                return;
+            }
+
+            this.scheduleGroups.push(new ScheduleGroup(groupData));
+
+        });
+
+        this.scheduleSlots = this.scheduleGroups.map(group => (
+            group.slots
+        )).reduce((slots, nextSlots) => slots.concat(nextSlots), []);
+
+        this.courseCodeFields = [
+            this.field('department'),
+            this.field('courseNumber', s => s.toString().padStart(3, '0')),
+            this.field('courseCodeSuffix'),
+            this.field('school'),
+            this.field('section', s => s.toString().padStart(2, '0')),
+        ];
+        
+        this.titleFields = this.courseCodeFields.concat([
+            this.field('courseName'),
+        ]);
+
+        this.statusFields = [
+            this.field('courseStatus'),
+            this.field('openSeats'),
+            this.field('totalSeats'),
+        ];
+
+        this.creditFields = [(
+            <span key="duration" className="field duration">
+              {this.halfSemesters == 1 ? 'half' : 'full'}
+            </span>
+        ), (
+            <span key="credits" className="field credits">
+              {this.credits} {this.credits === 1 ? 'credit' : 'credits'}
+            </span>
+        )];
+
+        this.dataClasses = ['school', 'department'].map(field => (
+            field + '-' + this.data.get(field)
+        ));
+
+        this.facultyString = commaJoin(this.data.get('faculty'));
+    }
 
 
-export const courseScheduleBlockFields = block => [(
-    <span key="days" className="field days">
-      {block.get('days')}
-    </span>
-), (
-    <span key="start-time" className="field start-time">
-      {block.get('startTime')}
-    </span>
-), (
-    <span key="end-time" className="field end-time">
-      {block.get('endTime')}
-    </span>
-), (
-    <span key="location" className="field location">
-      {block.get('location')}
-    </span>
-)];
 
-const courseDurationHalf = course => (
-    course.get('firstHalfSemester') + course.get('secondHalfSemester')
-);
 
-const courseCredits = course => (
-    course.get('quarterCredits') * .25
-);
+    field(field, format = s => s) {
+        return (
+            <span key={field} className={['field', field].join(' ')}>
+              {format(this.data.get(field))}
+            </span>
+        );
+    }
 
-export const courseCreditFields = course => {
-    const credits = courseCredits(course);
+    matches(search) {
+        return this.data.get('courseName').toLowerCase().includes(
+            search.toLowerCase(),
+        );
+    }
 
-    return [(
-        <span key="duration" className="field duration">
-          {courseDurationHalf(course) == 1 ? 'half' : 'full'}
-        </span>
-    ), (
-        <span key="credits" className="field credits">
-          {credits} {credits === 1 ? 'credit' : 'credits'}
-        </span>
-    )];
-};
+    toJS() {
+        return {
+            ...this,
+            data: this.data.toJS(),
+        };
+    }
 
-export const commaJoin = items => {
+}
+
+class ScheduleGroup {
+    constructor(data) {
+        this.data = data;
+        
+        this.days = this.data.get('days').split('');
+        this.timeSlot = new TimeSlot(
+            this.data.get('startTime'),
+            this.data.get('endTime'),
+        );
+
+        
+        this.slots = this.days.map(day => ({
+            day,
+            timeSlot: this.timeSlot,
+        }));
+
+        this.fields = ['days', 'startTime', 'endTime', 'location'].map(field => (
+            <span key={field} className={['field', field].join(' ')}>
+               {this.data.get(field)}
+             </span>
+        ));
+
+    }
+
+}
+
+class TimeSlot {
+    constructor(start, end) {
+        this.start = new Time(start);
+        this.end = new Time(end);
+    }
+
+    overlaps(other) {
+        switch (this.start.compare(other.start)) {
+        case -1:
+            return this.end.compare(other.start) === 1;
+        case 1:
+            return this.start.compare(other.end) === -1;
+        default:
+            return true;
+        }
+    }
+}
+
+
+class Time {
+    constructor(s) {
+        const [hourString, minuteString] = s.split(':');
+        this.hour = parseInt(hourString);
+        this.minute = parseInt(minuteString);
+    };
+
+    compare(other) {
+        switch (true) {
+        case this.hour < other.hour:
+            return -1;
+        case this.hour > other.hour:
+            return 1;
+        default:
+            switch (true) {
+            case this.minute < other.minute:
+                return -1;
+            case this.minute > other.minute:
+                return 1;
+            default:
+                return 0;
+            }
+        }
+    }
+}
+
+
+const commaJoin = (items, comma = ',') => {
     switch (true) {
     case items.size === 1:
         return items.join('');
     case items.size === 2:
         return items.join(' and ');
     case items.size >= 3:
-            return items.slice(0, -1).join(', ') + ', and ' + items.get(-1);
-        default:
-            return '';
-        }
-    };
-
-    export const courseStyleClasses = course => (
-    ['school', 'department'].map(field => (
-        field + '-' + course.get(field)
-    ))
-);
-
-
+        return items.slice(0, -1).join(comma + ' ') + comma +' and ' + items.get(-1);
+    default:
+        return '';
+    }
+};
