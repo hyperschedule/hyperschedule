@@ -56,7 +56,7 @@ const scheduleReducers = {
         const order = state.get('order');
         
         return state.set(
-            'order', order.filter(key => key !== key),
+            'order', order.filter(courseKey => courseKey !== key),
         ).set(
             'courses', courses.delete(key),
         );
