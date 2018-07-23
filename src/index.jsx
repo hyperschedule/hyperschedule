@@ -17,6 +17,8 @@ import App from './App/App';
 import hyperschedule from './reducers';
 
 
+import * as actions from './actions';
+
 const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger({
     duration: true,
@@ -26,6 +28,16 @@ const logger = createLogger({
         size: state.get('courses').size,
     }).toJS(),
     actionTransformer: action => {
+        if (action.type === actions.UPDATE_COURSES) {
+            return {
+                ...action,
+                courses: {
+                    alias: 'redacted',
+                    size: action.courses.size,
+                },
+            };
+        }
+        
         if (action.hasOwnProperty('course')) {
             return {
                 ...action,
@@ -66,3 +78,4 @@ ReactDOM.render((
       <App/>
     </Provider>
 ), document.getElementById('root'));
+

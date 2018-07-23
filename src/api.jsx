@@ -1,12 +1,12 @@
 export const HyperscheduleApi = {
   fetch_courses () {
-      return fetch("https://hyperschedule.herokuapp.com/api/v2/all-courses")
-          .then(httpStatusHelper)
-          .then(response => response.json())
-          .catch(error => error)
-          .then(data => {
-              return data;
-          });
+    return fetch("https://hyperschedule.herokuapp.com/api/v2/all-courses")
+      .then(httpStatusHelper)
+      .then(response => response.json())
+      .catch(error => error)
+      .then(data => {
+        return data;
+      });
   }
 };
 

@@ -3,7 +3,7 @@ import { delay } from 'redux-saga';
 import { HyperscheduleApi } from './api';
 import {Course} from './hyperschedule-util';
 import { updateCourses } from './actions';
-import { OrderedMap, fromJS } from 'immutable';
+import {OrderedMap, fromJS} from 'immutable';
 
 const API_UPDATE_PERIOD_MS = 1000 * 30;
 
