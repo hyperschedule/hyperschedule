@@ -2,7 +2,7 @@ import React from 'react';
 
 import ModeSelector from './ModeSelector/ModeSelector';
 import ModeContent from './ModeContent/ModeContent';
-import FocusSummary from './FocusSummary/FocusSummary';
+import CourseDescription from './CourseDescription/CourseDescription';
 import SelectedCourses from './SelectedCourses/SelectedCourses';
 
 
@@ -20,7 +20,7 @@ const App = () => {
             </div>
           </div>
           <div className="sidebar column">
-            <FocusSummary/>
+            <CourseDescription/>
             <SelectedCourses/>
           </div>
         </div>

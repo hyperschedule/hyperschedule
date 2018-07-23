@@ -3,7 +3,7 @@ import {combineReducers} from 'redux-immutable';
 import {Map, List, Set} from 'immutable';
 
 import search from './ModeContent/CourseSearch/reducers';
-import focus from './FocusSummary/reducers';
+import focus from './CourseDescription/reducers';
 
 import * as util from 'hyperschedule-util';
 

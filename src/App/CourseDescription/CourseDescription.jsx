@@ -7,9 +7,9 @@ import Measure from 'react-measure';
 
 import * as actions from './actions';
 
-import './FocusSummary.css';
+import './CourseDescription.css';
 
-const FocusSummary = ({course, height, setHeight}) => {        
+const CourseDescription = ({course, height, setHeight}) => {        
     let summary = null;
     if (course !== null) {
 
@@ -49,7 +49,7 @@ const FocusSummary = ({course, height, setHeight}) => {
 
 
     return (
-        <div id="focus-summary">
+        <div id="course-description">
           <div className="overflow" style={{
                    height: height + 'px',
                }}>
@@ -61,7 +61,7 @@ const FocusSummary = ({course, height, setHeight}) => {
     );
 };
 
-const FocusSummaryWrapper = connect(
+const CourseDescriptionWrapper = connect(
     state => ({
         course: state.get('app').get('focus').get('course'),
         height: state.get('app').get('focus').get('height'),
@@ -69,7 +69,7 @@ const FocusSummaryWrapper = connect(
     dispatch => ({
         setHeight: height => dispatch(actions.setHeight(height))
     }),
-)(FocusSummary);
+)(CourseDescription);
 
-export default FocusSummaryWrapper;
+export default CourseDescriptionWrapper;
 
