@@ -20,6 +20,16 @@ const App = () => {
             </div>
           </div>
           <div className="sidebar column">
+            <div id='controls'>
+              <a href='https://github.com/MuddCreates/hyperschedule'
+                 className='button github'
+                 target='_blank'>
+                Github
+              </a>
+              <button className='port-data'>Import/export data</button>
+              <button className='print'>Print</button>
+              <button className='help'>Help</button>
+            </div>
             <CourseDescription/>
             <SelectedCourses/>
           </div>
