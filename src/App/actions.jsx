@@ -9,6 +9,6 @@ export const selectedCourses = selectedCourses_;
 
 
 export const Mode = {
-    COURSE_SEARCH: 'Mode.COURSE_SEARCH',
-    SCHEDULE: 'Mode.SCHEDULE',
+  COURSE_SEARCH: 'Mode.COURSE_SEARCH',
+  SCHEDULE: 'Mode.SCHEDULE',
 };

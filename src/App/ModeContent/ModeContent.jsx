@@ -9,21 +9,21 @@ import Schedule from './Schedule/Schedule';
 import './ModeContent.css';
 
 const content = {
-            [Mode.COURSE_SEARCH]: <CourseSearch/>,
-            [Mode.SCHEDULE]: <Schedule/>,
-        };
+  [Mode.COURSE_SEARCH]: <CourseSearch/>,
+  [Mode.SCHEDULE]: <Schedule/>,
+};
 
-        const ModeContent = ({mode}) => (
-            <div id="mode-content">
-              {content[mode]}
-            </div>
-        );
+const ModeContent = ({mode}) => (
+  <div id="mode-content">
+    {content[mode]}
+  </div>
+);
 
 const ModeContentWrapper = connect(
-    state => ({
-        mode: state.get('app').get('mode'),
-    }),
-    dispatch => ({}),
+  state => ({
+    mode: state.get('app').get('mode'),
+  }),
+  dispatch => ({}),
 )(ModeContent);
 
 

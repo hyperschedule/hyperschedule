@@ -7,25 +7,25 @@ import * as selectedCourses from '../SelectedCourses/actions';
 import * as actions from './actions';
 
 const height = (state = 0, action) => (
-    action.type === actions.SET_HEIGHT ? (
-        action.height
-    ) : (
-        state
-    )
+  action.type === actions.SET_HEIGHT ? (
+    action.height
+  ) : (
+    state
+  )
 );
 
 const course = (state = null, action) => (
-    (action.type === courseSearch.FOCUS_COURSE ||
-     action.type === selectedCourses.FOCUS_COURSE ||
-     action.type === schedule.FOCUS_COURSE) ? (
-         action.course
-    ) : (
-        state
-    )
+  (action.type === courseSearch.FOCUS_COURSE ||
+   action.type === selectedCourses.FOCUS_COURSE ||
+   action.type === schedule.FOCUS_COURSE) ? (
+     action.course
+   ) : (
+     state
+   )
 );
 const focusSummary = combineReducers({
-    height,
-    course,
+  height,
+  course,
 });
 export default focusSummary;
 
