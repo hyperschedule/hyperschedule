@@ -1,0 +1,29 @@
+#controls {
+    padding: 1rem .5rem;
+    
+    display: flex;
+    
+    border-bottom: 1px solid whitesmoke;
+}
+
+
+#controls .button, #controls button {
+    margin: 0 .5rem;
+    padding: .5em 1em;
+    
+    font: inherit;
+    
+    text-decoration: none;
+    
+    border: none;
+    background: deepskyblue;
+    color: white;
+
+    cursor: pointer;
+
+
+}
+
+#controls .button.github {
+    margin-right: auto;
+}

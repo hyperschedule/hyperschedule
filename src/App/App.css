@@ -38,23 +38,6 @@ body {
     position: relative;
 }
 
-#controls {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    border-bottom: 1px solid whitesmoke;
-}
-
-#controls .button, #controls button {
-    padding: .5em 1em;
-    font: inherit;
-    border: none;
-    text-decoration: none;
-    background: deepskyblue;
-    color: white;
-    cursor: pointer;
-}
-
 .course {
     font-size: .8rem;
     cursor: pointer;
