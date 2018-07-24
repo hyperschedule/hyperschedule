@@ -3,9 +3,6 @@ import {connect} from 'react-redux';
 
 import * as actions from './actions';
 
-//import SearchList from './SearchList';
-import CourseSearchInput from './CourseSearchInput';
-
 import {List, CellMeasurer, CellMeasurerCache, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css';
 
