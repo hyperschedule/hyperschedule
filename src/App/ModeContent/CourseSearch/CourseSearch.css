@@ -58,7 +58,3 @@
 
     font-weight: bold;
 }
-
-#course-search .entries button::-moz-focus-inner {
-    border: none;
-}
