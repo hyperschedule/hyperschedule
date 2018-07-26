@@ -1,0 +1,83 @@
+#popup {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, .5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .3s, opacity .3s;
+}
+
+#popup.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+#popup .box {
+    background: white;
+
+    width: 40rem;
+
+    margin-top: -5rem;
+    transition: margin-top .3s;
+}
+
+#popup.visible .box {
+    margin-top: 0;
+}
+
+#popup .box .header {
+    display: flex;
+
+    font-size: 1.25em;
+    border-bottom: 1px solid whitesmoke;
+}
+
+#popup .box .header .title {
+    padding: 1rem;
+}
+
+#popup .box .header button.close {
+    margin-left: auto;
+    padding: 1rem 1.5rem;
+
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+#popup .box .content {
+    padding: 1rem;
+
+}
+
+#popup .box .content p {
+    margin: 0;
+}
+
+#popup .box .content p + p {
+    margin-top: 1em;
+}
+
+#popup .box .content a {
+    color: deepskyblue;
+    text-decoration: none;
+}
+
+#popup .box .content button.demo {
+    background: lightgray;
+    padding: .5em 1em;
+    margin: .5em;
+    font-size: .8em;
+    border: none;
+    cursor: pointer;
+}

@@ -4,6 +4,7 @@ import {Map, List, Set} from 'immutable';
 
 import search from './ModeContent/CourseSearch/reducers';
 import focus from './CourseDescription/reducers';
+import popup from './Popup/reducers';
 
 import * as util from 'hyperschedule-util';
 
@@ -142,11 +143,12 @@ const schedule = (state = Map({
   return state.set('selection', selection).set('scheduled', scheduled);
 };
 
-const app = combineReducers({
+export default combineReducers({
   mode,
   search,
   focus,
   schedule,
+  popup,
 });
 
-export default app;
+  
