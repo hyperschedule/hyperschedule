@@ -1,11 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import './ImportExport.css';
+
 const ImportExport = ({schedule}) => {
   return (
-    <div>
-      <div>
-        {JSON.stringify(schedule.toJS())}
+    <div id='import-export'>
+      <div className='body'>
+        You can edit the JSON in another application.
+        Be warned that your changes are not validated!
+        <textarea className='data'
+                  value={JSON.stringify(schedule.toJSON())}
+                  readOnly/>
+      </div>
+      <div className='controls'>
       </div>
     </div>
   );

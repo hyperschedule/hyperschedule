@@ -110,6 +110,10 @@ export class Course {
     };
   }
 
+  toJSON() {
+    return this.data.toJS();
+  }
+
 }
 
 class ScheduleGroup {

@@ -1,0 +1,16 @@
+#import-export .body {
+    
+}
+
+#import-export textarea.data {
+    margin: 1em 0;
+    
+    width: 100%;
+    box-sizing: border-box;
+    
+    height: 10rem;
+    resize: none;
+    
+    overflow-y: scroll;
+
+}
