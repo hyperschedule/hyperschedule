@@ -990,7 +990,6 @@ function updateCourseSearchResults(attrs)
       {
         // If we've already added all the courses we were supposed to,
         // abort.
-        gNextIncrementalCourseSearchIndex = courseListIndex;
         allCoursesDisplayed = false;
         break;
       }
@@ -1001,11 +1000,13 @@ function updateCourseSearchResults(attrs)
         createCourseEntity(course, { alreadyAdded }));
     }
   }
+  gNextIncrementalCourseSearchIndex = courseListIndex;
   if (allCoursesDisplayed)
   {
     let hasResult = numAdded != 0;
     courseSearchResultsList.appendChild(createCourseSearchEndOfResult(hasResult));
     gMaxCourseSearchPage = Math.ceil(numAdded / courseSearchPageSize);
+    gCourseSearchPagesShown = gMaxCourseSearchPage;
   }
 }
 
