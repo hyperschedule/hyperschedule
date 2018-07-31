@@ -1003,11 +1003,8 @@ function updateCourseSearchResults(attrs)
   gNextIncrementalCourseSearchIndex = courseListIndex;
   if (allCoursesDisplayed)
   {
-    if (courseSearchResultsList.length != gCourseList.length)
-    {
-      let hasResult = numAdded != 0;
-      courseSearchResultsList.appendChild(createCourseSearchEndOfResult(hasResult));
-    }
+    let hasResult = numAdded != 0;
+    courseSearchResultsList.appendChild(createCourseSearchEndOfResult(hasResult));
     gMaxCourseSearchPage = Math.ceil(numAdded / courseSearchPageSize);
     gCourseSearchPagesShown = gMaxCourseSearchPage;
   }
