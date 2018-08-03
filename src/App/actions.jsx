@@ -7,6 +7,8 @@ export const courseSearch = courseSearch_;
 import * as selectedCourses_ from './SelectedCourses/actions';
 export const selectedCourses = selectedCourses_;
 
+import * as controls_ from './Controls/actions';
+export const controls = controls_;
 
 export const Mode = {
   COURSE_SEARCH: 'Mode.COURSE_SEARCH',
