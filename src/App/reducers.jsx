@@ -5,6 +5,8 @@ import {Map, List, Set} from 'immutable';
 import search from './ModeContent/CourseSearch/reducers';
 import focus from './CourseDescription/reducers';
 import popup from './Popup/reducers';
+import importExport from './Popup/ImportExport/reducers';
+
 
 import * as util from 'hyperschedule-util';
 
@@ -127,7 +129,7 @@ const schedule = (state = Map({
     for (const otherKey of scheduled) {
       const other = courses.get(otherKey);
       
-      if (course.conflicts(other)) {
+      if (course.conflicts(other) || course.equivalent(other)) {
         conflict = true;
         break;
       }
@@ -143,12 +145,37 @@ const schedule = (state = Map({
   return state.set('selection', selection).set('scheduled', scheduled);
 };
 
-export default combineReducers({
+const app = combineReducers({
   mode,
   search,
   focus,
   schedule,
   popup,
+  importExport,
 });
+
+export default (state = Map(), action) => {
+  const next = app(state, action);
+  
+  switch (action.type) {
+  case actions.controls.SHOW_IMPORT_EXPORT:
+    return next.set('importExport', JSON.stringify(
+      next
+        .get('schedule')
+        .get('selection')
+    ));
+  default:
+    return next;
+                   }
+};
+
+//combineReducers({
+//  mode,
+//  search,
+//  focus,
+//  schedule,
+//  popup,
+//  importExport,
+//});
 
   
