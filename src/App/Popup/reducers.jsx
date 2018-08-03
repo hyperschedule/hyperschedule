@@ -6,6 +6,7 @@ export default (state = Map({
   visible: false,
 }), action) => {
   switch (action.type) {
+  case actions.importExport.CLOSE:
   case actions.CLOSE:
     return state.set('visible', false);
   case actions.controls.SHOW_HELP:
