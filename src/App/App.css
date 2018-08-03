@@ -38,6 +38,16 @@ body {
     position: relative;
 }
 
+.button {
+    padding: .5em 1em;
+
+    cursor: pointer;
+    border: none;
+    color: white;
+    background: deepskyblue;
+    font: inherit;
+}
+
 .course {
     font-size: .8rem;
     cursor: pointer;
