@@ -1,7 +1,9 @@
 import React from 'react';
 
+import './Help.css';
+
 export default () => (
-  <div>
+  <div id='help'>
     <p>
       The <strong>Course Search</strong> tab lists all courses for the
       coming semester.  Click on the <button className='demo'>
