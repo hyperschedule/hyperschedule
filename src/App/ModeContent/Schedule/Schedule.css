@@ -27,13 +27,14 @@
     bottom: 0;
 
     display: grid;
-    grid-template: min-content repeat(192, 1fr) / 8em repeat(7, 1fr);
+    grid-template: min-content repeat(192, 1fr) / 8em repeat(14, 1fr);
 
     border: 1px solid lightgray;
 }
 
 #schedule .grid .column {
     grid-row: 1 / -1;
+    grid-column-end: span 2;
 }
 #schedule .grid .column.header {
     border-right: 1px solid lightgray;
@@ -51,6 +52,7 @@
     justify-content: center;
 
     grid-row: 1;
+    grid-column-end: span 2;
 
     padding: 1em;
 }
@@ -59,13 +61,13 @@
     grid-row: 1;
     
     position: relative;
-    z-index: 1;
 
     border-bottom: 1px solid lightgray;
 }
 
 #schedule .grid .row {
     grid-column: 1 / -1;
+    grid-row-end: span 12;
 }
 #schedule .grid .row:not(.header) + .row {
     border-top: 1px solid lightgray;

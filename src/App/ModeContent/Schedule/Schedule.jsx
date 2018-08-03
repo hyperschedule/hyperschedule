@@ -21,9 +21,15 @@ const dayIndex = {
   S: 6,
 };
 
+const dayToColumn = day => (
+  dayIndex[day] * 2 + 2
+);
+
 const Schedule = ({courses, scheduled, starred, focusCourse}) => {
   const courseBlocks = scheduled.map(courseKey => {
     const course = courses.get(courseKey);
+
+    const halfOffset = course.data.get('firstHalfSemester') ? 0 : 1;
 
     return course.scheduleGroups.map((group, index) => {
       return group.days.map(day => {
@@ -31,7 +37,8 @@ const Schedule = ({courses, scheduled, starred, focusCourse}) => {
         const gridStyle = {
           gridRowStart: timeToRow(group.timeSlot.start),
           gridRowEnd: timeToRow(group.timeSlot.end),
-          gridColumn: dayIndex[day] + 2,
+          gridColumnStart: dayToColumn(day) + halfOffset,
+          gridColumnEnd: 'span ' + course.halfSemesters,
         };
 
         const className = ['course'].concat(course.dataClasses).join(' ');
@@ -56,21 +63,21 @@ const Schedule = ({courses, scheduled, starred, focusCourse}) => {
         <div className="size-container">
           <div className="grid">
             <div className="column header"></div>
-            <div className="column even" style={{gridColumnStart: 2}}></div>
-            <div className="column odd"  style={{gridColumnStart: 3}}></div>
-            <div className="column even" style={{gridColumnStart: 4}}></div>
-            <div className="column odd"  style={{gridColumnStart: 5}}></div>
-            <div className="column even" style={{gridColumnStart: 6}}></div>
-            <div className="column odd"  style={{gridColumnStart: 7}}></div>
-            <div className="column even" style={{gridColumnStart: 8}}></div>
+            <div className="column even" style={{gridColumnStart: 2 + 2 * 0}}></div>
+            <div className="column odd"  style={{gridColumnStart: 2 + 2 * 1}}></div>
+            <div className="column even" style={{gridColumnStart: 2 + 2 * 2}}></div>
+            <div className="column odd"  style={{gridColumnStart: 2 + 2 * 3}}></div>
+            <div className="column even" style={{gridColumnStart: 2 + 2 * 4}}></div>
+            <div className="column odd"  style={{gridColumnStart: 2 + 2 * 5}}></div>
+            <div className="column even" style={{gridColumnStart: 2 + 2 * 6}}></div>
 
-            <div className="column-label even" style={{gridColumnStart: 2}}>Sunday</div>
-            <div className="column-label odd"  style={{gridColumnStart: 3}}>Monday</div>
-            <div className="column-label even" style={{gridColumnStart: 4}}>Tuesday</div>
-            <div className="column-label odd"  style={{gridColumnStart: 5}}>Wednesday</div>
-            <div className="column-label even" style={{gridColumnStart: 6}}>Thursday</div>
-            <div className="column-label odd"  style={{gridColumnStart: 7}}>Friday</div>
-            <div className="column-label even" style={{gridColumnStart: 8}}>Saturday</div>
+            <div className="column-label even" style={{gridColumnStart: 2 + 2 * 0}}>Sunday</div>
+            <div className="column-label odd"  style={{gridColumnStart: 2 + 2 * 1}}>Monday</div>
+            <div className="column-label even" style={{gridColumnStart: 2 + 2 * 2}}>Tuesday</div>
+            <div className="column-label odd"  style={{gridColumnStart: 2 + 2 * 3}}>Wednesday</div>
+            <div className="column-label even" style={{gridColumnStart: 2 + 2 * 4}}>Thursday</div>
+            <div className="column-label odd"  style={{gridColumnStart: 2 + 2 * 5}}>Friday</div>
+            <div className="column-label even" style={{gridColumnStart: 2 + 2 * 6}}>Saturday</div>
 
             <div className="row header"></div>
             <div className="row even" style={{gridRowStart: 2 + 12 * 0 }}></div>

@@ -8,12 +8,15 @@ export class Course {
       'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section'
     ].map(field => this.data.get(field)).join('/');
 
+    this.courseGroupKey = [
+      'school', 'department', 'courseNumber', 'courseCodeSuffix'
+    ].map(field => this.data.get(field)).join('/');
+
     this.credits = this.data.get('quarterCredits') * .25;
 
     this.halfSemesters = (
       this.data.get('firstHalfSemester') + this.data.get('secondHalfSemester')
     );
-
     
     this.scheduleGroups = [];
     this.data.get('schedule').map(groupData => {
@@ -38,6 +41,12 @@ export class Course {
       group.slots
     )).reduce((slots, nextSlots) => slots.concat(nextSlots), []);
 
+    this.courseCodeString = this.data.get('department') + ' ' +
+      this.data.get('courseNumber').toString().padStart(3, '0') +
+      this.data.get('courseCodeSuffix') + ' ' +
+      this.data.get('school') + '-' +
+      this.data.get('section').toString().padStart(2, '0');
+    
     this.courseCodeFields = [
       this.field('department'),
       this.field('courseNumber', s => s.toString().padStart(3, '0')),
@@ -73,9 +82,6 @@ export class Course {
     this.facultyString = commaJoin(this.data.get('faculty'));
   }
 
-
-
-
   field(field, format = s => s) {
     return (
       <span key={field} className={['field', field].join(' ')}>
@@ -90,7 +96,17 @@ export class Course {
     );
   }
 
+  equivalent(other) {
+    return this.courseGroupKey === other.courseGroupKey;
+  }
+
   conflicts(other) {
+    
+    if (!(this.data.get('firstHalfSemester') && other.data.get('firstHalfSemester') ||
+          this.data.get('secondHalfSemester') && other.data.get('secondHalfSemester'))) {
+      return false;
+    }
+    
     for (const slot of this.scheduleSlots) {
       for (const otherSlot of other.scheduleSlots) {
         if (slot.day === otherSlot.day &&
