@@ -1,6 +1,10 @@
 //import {ics} from './ics.js';
 
 import jsPDF from 'jspdf';
+import './jspdf.customfonts.debug';
+
+import ROBOTO from './fonts/Roboto-Regular.ttf.js';
+import ROBOTO_BOLD from './fonts/Roboto-Bold.ttf.js';
 
 const config = {
   margin: {
@@ -67,8 +71,12 @@ const dayIndex = {
 
 export const exportPDF = (courses, selected) => {
 
-  var doc = new jsPDF({unit: 'pt', format: 'letter', orientation: 'l'});
-  const pdf = doc;
+  const pdf = new jsPDF({unit: 'pt', format: 'letter', orientation: 'l'});
+
+  pdf.addFileToVFS('Roboto-Regular.ttf', ROBOTO);
+  pdf.addFileToVFS('Roboto-Bold.ttf', ROBOTO_BOLD);
+  pdf.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
+  pdf.addFont('Roboto-Bold.ttf', 'Roboto', 'bold');
 
   pdf.setFontSize(6);
   pdf.setLineWidth(.5);
@@ -83,7 +91,6 @@ export const exportPDF = (courses, selected) => {
   const columnWidth = bodyWidth / 7;
   const rowHeight = bodyHeight / 16;
 
-  pdf.setFontStyle('bold');
   for (let i = 0; i < 7; ++i) {
     const x = i * columnWidth + config.margin.left + config.first.columnWidth;
     if (i & 1) {
@@ -93,6 +100,9 @@ export const exportPDF = (courses, selected) => {
     }
     
     pdf.rect(x, config.margin.top, columnWidth, tableHeight, 'F');
+
+    pdf.setFont('Roboto');
+    pdf.setFontStyle('bold');
     pdf.text(
       x + columnWidth/2,
       config.margin.top + config.first.rowHeight / 2 + pdf.getLineHeight() / 2,
@@ -105,9 +115,12 @@ export const exportPDF = (courses, selected) => {
   for (let i = 0; i < 16; ++i) {
     const y = i * rowHeight + config.margin.top + config.first.rowHeight;
     pdf.line(config.margin.left, y, config.margin.left + tableWidth, y);
+
+    pdf.setFont('Roboto');
+    pdf.setFontStyle('normal');
     pdf.text(
       config.margin.left + config.first.columnWidth - 6,
-      y + pdf.getLineHeight() + 6,
+      y + pdf.getLineHeight() + 3,
       times[i],
       'right',
     );
@@ -118,8 +131,6 @@ export const exportPDF = (courses, selected) => {
     config.margin.left + config.first.columnWidth, config.margin.top + tableHeight,
   );
   pdf.rect(config.margin.left, config.margin.top, tableWidth, tableHeight, 'S');
-
-  pdf.setFont('Helvetica');
 
   for (const key of selected) {
     const course = courses.get(key);
@@ -135,8 +146,10 @@ export const exportPDF = (courses, selected) => {
 
       pdf.rect(x, yStart, columnWidth, yEnd-yStart, 'F');
 
+      pdf.setFont('Helvetica');
       const lines = pdf.splitTextToSize(course.data.get('courseName'), columnWidth - 12);
 
+      pdf.setFont('Roboto');
       const xText = x + columnWidth/2;
       const yText = (yStart + yEnd)/2 - (lines.length + 1) * pdf.getLineHeight() / 2 + pdf.getLineHeight();
       pdf.setFontStyle('bold');
@@ -151,7 +164,7 @@ export const exportPDF = (courses, selected) => {
   
   const uri = pdf.output('datauristring');
   window.open(uri, 'hyperschedule.pdf');
-                       
+  
 };
 
 
@@ -162,11 +175,11 @@ export const exportPDF = (courses, selected) => {
 
 
 
-  
-  //
 
-  //const dayToICal = {
-  //  U: 'SU',
+//
+
+//const dayToICal = {
+//  U: 'SU',
 //  M: 'MO',
 //  T: 'TU',
 //  W: 'WE',
