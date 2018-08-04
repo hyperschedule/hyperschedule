@@ -41,6 +41,9 @@ module.exports = {
             },
         ],
     },
+	node: {
+		fs: 'empty',
+	},
     resolve: {
         modules: [
             path.join(__dirname, 'src'),

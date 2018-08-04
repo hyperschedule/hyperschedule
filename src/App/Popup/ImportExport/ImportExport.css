@@ -1,9 +1,9 @@
 #import-export .body {
-    
+    padding: 1rem;
 }
 
 #import-export textarea.data {
-    margin: 1em 0;
+    margin-top: 1em;
     
     width: 100%;
     box-sizing: border-box;
@@ -13,4 +13,19 @@
     
     overflow-y: scroll;
 
+}
+
+#import-export .controls {
+    border-top: 1px solid whitesmoke;
+    
+    padding: 1rem .5rem;
+    display: flex;
+}
+
+#import-export .controls .button {
+    margin: 0 .5rem;
+}
+
+#import-export .controls .button.apply {
+    margin-left: auto;
 }
