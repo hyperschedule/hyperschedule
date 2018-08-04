@@ -3955,9 +3955,9 @@ iconv-lite@^0.4.13, iconv-lite@^0.4.17, iconv-lite@^0.4.22, iconv-lite@^0.4.23, 
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-ics@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/ics/-/ics-2.7.1.tgz#c03e1c92e97f0126d0c557bd2ea2f4eb980b3837"
+ics@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/ics/-/ics-2.7.2.tgz#b676e701c9862575795acbaccdc210ea44f39be8"
   dependencies:
     joi "^10.6.0"
     lodash "^4.17.4"

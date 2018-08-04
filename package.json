@@ -19,7 +19,7 @@
     "file-loader": "^1.1.11",
     "fs": "^0.0.1-security",
     "html-loader": "^0.5.5",
-    "ics": "^2.7.1",
+    "ics": "^2.7.2",
     "immutable": "^3.8.2",
     "ionicons": "^4.2.4",
     "jspdf": "^1.4.1",
