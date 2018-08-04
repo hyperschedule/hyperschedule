@@ -85,6 +85,7 @@
 
 #schedule .grid .course {
     margin-bottom: -1px;
+    overflow: hidden;
     
     display: flex;
     justify-content: center;
