@@ -28,6 +28,10 @@ const config = {
     },
     border: 192,
   },
+  padding: {
+    course: 6,
+    
+  },
 };
 
 const days = [
@@ -135,32 +139,38 @@ export const exportPDF = (courses, selected) => {
   for (const key of selected) {
     const course = courses.get(key);
     for (const {day, timeSlot: {start, end}} of course.scheduleSlots) {
+
       const x = dayIndex[day] * columnWidth +
-            config.margin.left + config.first.columnWidth;
+            config.margin.left + config.first.columnWidth +
+            (course.data.get('firstHalfSemester') ? 0 : columnWidth / 2);
+
+      const width = course.halfSemesters * columnWidth / 2;
+      
       const yStart = (start.hour - 8 + start.minute / 60) * rowHeight +
             config.margin.top + config.first.rowHeight;
+      
       const yEnd = (end.hour - 8 + end.minute / 60) * rowHeight +
             config.margin.top + config.first.rowHeight;
 
       pdf.setFillColor(128);
 
-      pdf.rect(x, yStart, columnWidth, yEnd-yStart, 'F');
+      pdf.rect(x, yStart, width, yEnd-yStart, 'F');
 
       pdf.setFont('Helvetica');
-      const lines = pdf.splitTextToSize(course.data.get('courseName'), columnWidth - 12);
+      const courseCodeLines = pdf.splitTextToSize(course.courseCodeString, width - 12);
+      const courseNameLines = pdf.splitTextToSize(course.data.get('courseName'), width - 12);
 
       pdf.setFont('Roboto');
-      const xText = x + columnWidth/2;
-      const yText = (yStart + yEnd)/2 - (lines.length + 1) * pdf.getLineHeight() / 2 + pdf.getLineHeight();
+      const xText = x + width/2;
+      const yText = (yStart + yEnd)/2 -
+            (courseCodeLines.length + courseNameLines.length) * pdf.getLineHeight() / 2 +
+            pdf.getLineHeight();
       pdf.setFontStyle('bold');
-      pdf.text(xText, yText, course.courseCodeString, 'center');
+      pdf.text(xText, yText, courseCodeLines, 'center');
       pdf.setFontStyle('normal');
-      pdf.text(xText, yText+pdf.getLineHeight(), lines, 'center');
+      pdf.text(xText, yText+courseCodeLines.length * pdf.getLineHeight(), courseNameLines, 'center');
     }
   }
-  
-  //const x = pdf.splitTextToSize('lorem ipsum dolor sit amet', 50);
-  //pdf.text(x, 15, 15);
   
   const uri = pdf.output('datauristring');
   window.open(uri, 'hyperschedule.pdf');
