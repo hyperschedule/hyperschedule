@@ -6,6 +6,8 @@ import './jspdf.customfonts.debug';
 import ROBOTO from './fonts/Roboto-Regular.ttf.js';
 import ROBOTO_BOLD from './fonts/Roboto-Bold.ttf.js';
 
+import ical from 'ical-generator';
+
 const config = {
   margin: {
     top: .5 * 72,
@@ -180,100 +182,147 @@ export const exportPDF = (courses, selected) => {
 
 
 
+const dayToICal = {
+  U: 'SU',
+  M: 'MO',
+  T: 'TU',
+  W: 'WE',
+  R: 'TH',
+  F: 'FR',
+  S: 'SA',
+};
+
+export const exportICS = (courses, selected) => {
+  const cal = ical();
+
+  for (const key of selected) {
+    const course = courses.get(key);
+    for (const slot of course.scheduleGroups) {
+
+      const listedStartDay = new Date(course.data.get('startDate'));
+      const listedStartWeekday = listedStartDay.getDay();
+      const listedEndDay = new Date(course.data.get('endDate'));
+
+      // Determine the first day of class. We want to pick the
+      // weekday that occurs the soonest after (possibly on the same
+      // day as) the listed start date.
+      let startWeekday = null;
+      let weekdayDifference = 7;
+      for (const weekday of slot.days) {
 
 
+        const possibleStartWeekday = dayIndex[weekday];
+        const possibleWeekdayDifference =
+              (possibleStartWeekday - listedStartWeekday) % 7;
+        if (possibleWeekdayDifference < weekdayDifference)
+        {
+          startWeekday = possibleStartWeekday;
+          weekdayDifference = possibleWeekdayDifference;
+        }
+      }
 
+      const description = course.courseCodeString + ' ' +
+            course.data.get('courseName') + '\n' +
+            course.facultyString;
 
+      const start = new Date(listedStartDay.valueOf());
+      start.setDate(start.getDate() + weekdayDifference);
+      const {hour: startHours, minute: startMinutes} = slot.timeSlot.start;
+      start.setHours(startHours);
+      start.setMinutes(startMinutes);
+      
+      const end = new Date(start.valueOf());
+      const {hour: endHours, minute: endMinutes} = slot.timeSlot.end;
+      end.setHours(endHours);
+      end.setMinutes(endMinutes);
+      
+      cal.createEvent({
+        summary: course.data.get('courseName'),
+        description,
+        location: course.data.get('location'),
+        start,
+        end,
+        repeating: {
+          freq: 'WEEKLY',
+          until: listedEndDay,
+          interval: 1,
+          byDay: slot.days.map(day => dayToICal[day]),
+        },
+      });
 
+    }
+  }
 
-//
+  const value = cal.toString();
+  console.log(value);
 
-//const dayToICal = {
-//  U: 'SU',
-//  M: 'MO',
-//  T: 'TU',
-//  W: 'WE',
-//  R: 'TH',
-//  F: 'FR',
-//  S: 'SA',
-//};
-//
-//function convertDayToICal(day) {
-//  return dayToICal[day];
-//}
-//
-//function weekdayCharToInteger(weekday)
-//{
-//  const index = "UMTWRFS".indexOf(weekday);
-//  if (index < 0)
-//  {
-//    throw Error("Invalid weekday: " + weekday);
-//  }
-//  return index;
-//}
-//
+  const uri = 'data:text/calendar;base64,' + btoa(value);
+  window.open(uri, 'hyperschedule.ics');
+};
+
 //// See https://github.com/nwcell/ics.js/issues/26.
 //function uglyHack(input) {
 //  return input.replace(/\n/g, "\\n").replace(/,/g, "\\,");
 //}
 //
-//  function downloadICalFile(scheduled) {
-//    const cal = ics();
-//    for (const course of scheduled) {
-//      if (course.starred) {
-//        const subject = course.courseName;
-//        // Why use a literal \n in the description? Bug in ics.js, see
-//        // .
-//        const description = uglyHack(
-//          course.courseCodeString + ' ' +
-//            course.data.get('courseName') + '\n' +
-//            course.facultyString);
-//        const listedStartDay = new Date(course.data.get('startDate'));
-//        const listedStartWeekday = listedStartDay.getDay();
-//        const listedEndDay = new Date(course.data.get('endDate'));
-//        // The range is inclusive, but ics.js interprets it exclusively.
-//        listedEndDay.setDate(listedEndDay.getDate() + 1);
-//        for (const slot of course.scheduleSlots) {
-//          const location = uglyHack(slot.data.get('location'));
-//          // Determine the first day of class. We want to pick the
-//          // weekday that occurs the soonest after (possibly on the same
-//          // day as) the listed start date.
-//          let startWeekday = null;
-//          let weekdayDifference = 7;
-//          for (const weekday of slot.days) {
-//            const possibleStartWeekday = weekdayCharToInteger(weekday);
-//            const possibleWeekdayDifference =
-//                  (possibleStartWeekday - listedStartWeekday) % 7;
-//            if (possibleWeekdayDifference < weekdayDifference)
-//            {
-//              startWeekday = possibleStartWeekday;
-//              weekdayDifference = possibleWeekdayDifference;
-//            }
+//function downloadICalFile(scheduled) {
+//  const cal = ics();
+//  for (const course of scheduled) {
+//    if (course.starred) {
+//      const subject = course.courseName;
+//      // Why use a literal \n in the description? Bug in ics.js, see
+//      // .
+//      const description = uglyHack(
+//        course.courseCodeString + ' ' +
+//          course.data.get('courseName') + '\n' +
+//          course.facultyString);
+//      const listedStartDay = new Date(course.data.get('startDate'));
+//      const listedStartWeekday = listedStartDay.getDay();
+//      const listedEndDay = new Date(course.data.get('endDate'));
+//      // The range is inclusive, but ics.js interprets it exclusively.
+//      listedEndDay.setDate(listedEndDay.getDate() + 1);
+//      for (const slot of course.scheduleSlots) {
+//        const location = uglyHack(slot.data.get('location'));
+//        // Determine the first day of class. We want to pick the
+//        // weekday that occurs the soonest after (possibly on the same
+//        // day as) the listed start date.
+//        let startWeekday = null;
+//        let weekdayDifference = 7;
+//        for (const weekday of slot.days) {
+//          const possibleStartWeekday = weekdayCharToInteger(weekday);
+//          const possibleWeekdayDifference =
+//                (possibleStartWeekday - listedStartWeekday) % 7;
+//          if (possibleWeekdayDifference < weekdayDifference)
+//          {
+//            startWeekday = possibleStartWeekday;
+//            weekdayDifference = possibleWeekdayDifference;
 //          }
-//          
-//          // See https://stackoverflow.com/a/563442/3538165.
-//          const start = new Date(listedStartDay.valueOf());
-//          start.setDate(start.getDate() + weekdayDifference);
-//          const [startHours, startMinutes] =
-//                timeStringToHoursAndMinutes(slot.data.get('startTime'));
-//          start.setHours(startHours);
-//          start.setMinutes(startMinutes);
-//          const end = new Date(start.valueOf());
-//          const [endHours, endMinutes] =
-//                timeStringToHoursAndMinutes(slot.data.get('endTime'));
-//          end.setHours(endHours);
-//          end.setMinutes(endMinutes);
-//          const freq = "WEEKLY";
-//          const until = listedEndDay;
-//          const interval = 1;
-//          const byday = slot.days.split("").map(convertDayToICal);
-//          const rrule = {
-//            freq, until, interval, byday,
-//          };
-//          cal.addEvent(subject, description, location, start, end, rrule);
 //        }
+//        
+//        // See https://stackoverflow.com/a/563442/3538165.
+//        const start = new Date(listedStartDay.valueOf());
+//        start.setDate(start.getDate() + weekdayDifference);
+//        const [startHours, startMinutes] =
+//              timeStringToHoursAndMinutes(slot.data.get('startTime'));
+//        start.setHours(startHours);
+//        start.setMinutes(startMinutes);
+//        const end = new Date(start.valueOf());
+//        const [endHours, endMinutes] =
+//              timeStringToHoursAndMinutes(slot.data.get('endTime'));
+//        end.setHours(endHours);
+//        end.setMinutes(endMinutes);
+//        const freq = "WEEKLY";
+//        const until = listedEndDay;
+//        const interval = 1;
+//        const byday = slot.days.split("").map(convertDayToICal);
+//        const rrule = {
+//          freq, until, interval, byday,
+//        };
+//        cal.addEvent(subject, description, location, start, end, rrule);
 //      }
 //    }
-//    cal.download("hyperschedule-export");
 //  }
+//  cal.download("hyperschedule-export");
+//}
+//
 //
