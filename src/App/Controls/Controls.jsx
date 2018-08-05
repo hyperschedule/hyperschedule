@@ -14,15 +14,15 @@ const Controls = ({showHelp, showImportExport}) => {
          className='button github'
          target='_blank'
          rel='noopener noreferrer'>
-        <i className='ion-logo-github'></i> Github
+        <i className='ion-logo-github'></i>
       </a>
       <button className='import-export-data'
               onClick={showImportExport}>
-        Import/export data
+        <i className='ion-md-share-alt'></i>
       </button>
       <button className='help'
               onClick={showHelp}>
-        Help
+        <i className='ion-md-help'></i>
       </button>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {exportPDF} from './export';
+import {exportPDF, exportICS} from './export';
 
 import * as actions from './actions';
 
@@ -27,9 +27,17 @@ const ImportExport = ({data, setData, apply, close, courses, schedule}) => {
                   ref={textareaRef}/>
       </div>
       <div className='controls'>
-        <button className='button export pdf' onClick={copy}>Copy</button>
-        <button className='button export pdf' onClick={() => exportPDF(courses, schedule)}>Export (PDF)</button>
-        <button className='button export ical'>Export (iCal)</button>
+        <button className='button export pdf' onClick={copy}>
+          <i className='ion-md-copy'></i>
+        </button>
+        <button className='button export pdf'
+                onClick={() => exportPDF(courses, schedule)}>
+          Export (PDF)
+        </button>
+        <button className='button export ical'
+                onClick={() => exportICS(courses, schedule)}>
+          Export (iCal)
+        </button>
         <button className='button apply' onClick={apply}>Apply</button>
         <button className='button cancel' onClick={close}>Cancel</button>
       </div>
