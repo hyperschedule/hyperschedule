@@ -49,24 +49,27 @@ const logger = createLogger({
   },
 });
 
+const persist = persistState(undefined, {
+  slicer: paths => state => state.delete('courses'),
+  serialize: state => JSON.stringify(state.toJSON()),
+  deserialize: s => {
+    try {
+      return fromJS(JSON.parse(s));
+    } catch (exception) {
+      return Map();
+    }
+  },
+  merge: (initial, saved) => {
+    return initial;
+  },
+});
 
 let store = createStore(
   hyperschedule,
   Map(),
   compose(
     applyMiddleware(sagaMiddleware, logger),
-    persistState(undefined, {
-      slicer: paths => state => state.delete('courses'),
-      serialize: state => JSON.stringify(state.toJS()),
-      deserialize: s => {
-        try {
-          return fromJS(JSON.parse(s));
-        } catch (exception) {
-          return Map();
-        }
-      },
-      merge: (initial, saved) => initial,
-    }),
+    persist,
   ),
 );
 
