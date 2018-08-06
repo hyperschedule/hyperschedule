@@ -27,9 +27,9 @@ const dayToColumn = day => (
   dayIndex[day] * 2 + 2
 );
 
-const Schedule = ({courses, scheduled, starred, focusCourse}) => {
+const Schedule = ({courses, schedule, starred, focusCourse}) => {
 
-  const blocks = scheduled.map(key => {
+  const blocks = schedule.map(key => {
     const course = courses.get(key);
     const halfOffset = course.get('firstHalfSemester') ? 0 : 1;
 
@@ -128,13 +128,13 @@ const Schedule = ({courses, scheduled, starred, focusCourse}) => {
 
 export default connect(
   state => {
-    const schedule = state.getIn(['app', 'schedule']);
-    const selection = schedule.get('selection');
+    const app = state.get('app');
+    const selection = app.get('selection');
     
     return ({
       courses: selection.get('courses'),
-      scheduled: schedule.get('scheduled'),
       starred: selection.get('starred'),
+      schedule: app.get('schedule'),
     });
   },
   dispatch => ({

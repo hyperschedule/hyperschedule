@@ -46,11 +46,16 @@ const ImportExport = ({data, setData, apply, close, courses, schedule}) => {
 };
 
 export default connect(
-  state => ({
-    data: state.get('app').get('importExport'),
-    courses: state.get('app').get('schedule').get('selection').get('courses'),
-    schedule: state.get('app').get('schedule').get('scheduled'),
-  }),
+  state => {
+
+    const app = state.get('app');
+
+    return {
+      data: app.get('importExport'),
+      courses: app.get('selection').get('courses'),
+      schedule: app.get('schedule'),
+    };
+  },
   dispatch => ({
     setData: event => dispatch(actions.setData(event.target.value)),
     apply: () => {

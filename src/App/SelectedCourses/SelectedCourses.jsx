@@ -86,7 +86,7 @@ const SelectedCourses = ({
 
 const SelectedCoursesWrapper = connect(
   state => {
-    const selection = state.getIn(['app', 'schedule', 'selection']);
+    const selection = state.getIn(['app', 'selection']);
     
     return ({
       courses: selection.get('courses'),
