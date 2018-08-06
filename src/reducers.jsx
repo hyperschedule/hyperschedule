@@ -5,20 +5,11 @@ import * as actions from './actions';
 
 import {Mode} from '@/App/mode';
 
-import {
-  UPDATE_COURSES,
-  ADD_COURSE,
-  REMOVE_COURSE,
-  REORDER_COURSE,
-} from './actions';
-
 import search       from './App/CourseSearch/reducers';
-//import focus        from './App/CourseDescription/reducers';
 import popup        from './App/Popup/reducers';
 import importExport from './App/Popup/ImportExport/reducers';
 
 import * as util from '@/util/hyperschedule-util';
-
 
 const mode = (
   state = Mode.COURSE_SEARCH,
@@ -92,9 +83,9 @@ const selection = (prev = Map(), action) => {
 const schedule = (state = Set(), action) => state;
 const focus = (state = Map(), action) => state;
 
-function updateCourses(state = OrderedMap(), action) {
+function courses(state = OrderedMap(), action) {
   switch (action.type) {
-  case UPDATE_COURSES:
+  case actions.UPDATE_COURSES:
     return action.courses;
   default:
     return state;
@@ -109,7 +100,7 @@ const app = combineReducers({
   schedule,
   popup,
   importExport,
-  courses: updateCourses,
+  courses,
 });
 
 export default (prev = Map(), action) => {

@@ -16,7 +16,7 @@ export const controls = controls_;
 import * as importExport_ from './App/Popup/ImportExport/actions';
 export const importExport = importExport_;
 
-export const UPDATE_COURSES = 'UPDATE_COURSES';
+export const UPDATE_COURSES = '.UPDATE_COURSES';
 export function updateCourses(courses) {
   return {
     type: UPDATE_COURSES,
