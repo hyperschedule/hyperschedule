@@ -53,7 +53,7 @@ const SelectedCourses = ({
         code: util.courseFullCode(course),
         name: course.get('courseName'),
         status: util.courseStatusString(course),
-        focus: () => focusCourse(course),
+        focus: () => focusCourse(key),
         checked: checked.has(key),
         starred: starred.has(key),
         color: util.courseColor(course),
@@ -97,7 +97,7 @@ const SelectedCoursesWrapper = connect(
   },
   dispatch => ({
     reorder: (from, to) => dispatch(actions.reorder(from, to)),
-    focusCourse: course => dispatch(actions.focusCourse(course)),
+    focusCourse: key => dispatch(actions.focusCourse(key)),
     removeCourse: key => dispatch(actions.removeCourse(key)),
     toggleCourseChecked: key => dispatch(actions.toggleCourseChecked(key)),
     toggleCourseStarred: key => dispatch(actions.toggleCourseStarred(key)),

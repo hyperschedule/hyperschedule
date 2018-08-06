@@ -6,9 +6,9 @@ export const reorder = (from, to) => ({
 });
 
 export const FOCUS_COURSE = 'App/SelectedCourses/FOCUS_COURSE';
-export const focusCourse = course => ({
+export const focusCourse = key => ({
   type: FOCUS_COURSE,
-  course,
+  key,
 });
 
 export const REMOVE_COURSE = 'App/SelectedCourses/REMOVE_COURSE';

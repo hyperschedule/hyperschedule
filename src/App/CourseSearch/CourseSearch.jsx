@@ -33,9 +33,9 @@ const CourseSearch = ({
     const courseKey = courses.keySeq().get(index);
     const course = courses.get(courseKey);
 
-    const focus = () => focusCourse(course);
+    const focus = () => focusCourse(courseKey);
     const add = event => {
-      addCourse(course);
+      addCourse(courseKey);
       event.stopPropagation();
     };
 
@@ -97,8 +97,8 @@ const CourseSearchWrapper = connect(
   },
   dispatch => ({
     setSearch: string => dispatch(actions.setSearch(string)),
-    focusCourse: course => dispatch(actions.focusCourse(course)),
-    addCourse: course => dispatch(actions.addCourse(course)),
+    focusCourse: key => dispatch(actions.focusCourse(key)),
+    addCourse: key => dispatch(actions.addCourse(key)),
   }),
 )(CourseSearch);
 

@@ -5,13 +5,13 @@ export const setSearch = string => ({
 });
 
 export const FOCUS_COURSE = 'App/ModeContent/CourseSearch/FOCUS_COURSE';
-export const focusCourse = course => ({
+export const focusCourse = key => ({
   type: FOCUS_COURSE,
-  course,
+  key,
 });
 
 export const ADD_COURSE = 'App/ModeContent/CourseSearch/ADD_COURSE';
-export const addCourse = course => ({
+export const addCourse = key => ({
   type: ADD_COURSE,
-  course,
+  key,
 });

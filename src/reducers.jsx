@@ -13,7 +13,7 @@ import {
 } from './actions';
 
 import search       from './App/CourseSearch/reducers';
-import focus        from './App/CourseDescription/reducers';
+//import focus        from './App/CourseDescription/reducers';
 import popup        from './App/Popup/reducers';
 import importExport from './App/Popup/ImportExport/reducers';
 
@@ -45,19 +45,16 @@ const selection = (prev = Map(), action) => {
         starred = state.get('starred');
 
   switch (action.type) {
-  case actions.courseSearch.ADD_COURSE: {
-    const key = util.courseKey(action.course);
-
-    if (courses.has(key)) {
+  case actions.courseSearch.ADD_COURSE:
+    if (courses.has(action.key)) {
       return state;
     }
-
+    
     return state.merge({
-      order: order.push(key),
-      courses: courses.set(key, action.course),
-      checked: checked.add(key),
+      order: order.push(action.key),
+      checked: checked.add(action.key),
     });
-  }
+    
   case actions.selectedCourses.REORDER: {
     const key = order.get(action.from);
     return state.set(
@@ -93,7 +90,7 @@ const selection = (prev = Map(), action) => {
 };
 
 const schedule = (state = Set(), action) => state;
-
+const focus = (state = Map(), action) => state;
 
 function updateCourses(state = OrderedMap(), action) {
   switch (action.type) {
@@ -141,7 +138,28 @@ export default (prev = Map(), action) => {
     });
   }
 
-  case actions.courseSearch.ADD_COURSE: 
+  case actions.courseSearch.FOCUS_COURSE:
+    return state.set(
+      'focus',
+      state.getIn(['courses', action.key]),
+    );
+    
+  case actions.selectedCourses.FOCUS_COURSE:
+  case actions.schedule.FOCUS_COURSE: 
+    return state.set(
+      'focus',
+      state.getIn(['selection', 'courses', action.key]),
+    );
+
+  case actions.courseSearch.ADD_COURSE: {
+    console.log(state.toJS());
+    const courses = state.get('courses');
+    const selection = state.get('selection').setIn(['courses', action.key], courses.get(action.key));
+    return state.merge({
+      selection,
+      schedule: util.computeSchedule(selection),
+    });
+  }
   case actions.selectedCourses.REORDER: 
   case actions.selectedCourses.REMOVE_COURSE: 
   case actions.selectedCourses.TOGGLE_COURSE_CHECKED: 

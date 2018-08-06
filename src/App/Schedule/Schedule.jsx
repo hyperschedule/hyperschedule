@@ -45,7 +45,7 @@ const Schedule = ({mode, courses, schedule, starred, focusCourse}) => {
           gridColumnEnd: 'span ' + util.courseHalfSemesters(course),
         };
 
-        const focus = () => focusCourse(course);
+        const focus = () => focusCourse(key);
 
         return (
           <CourseBlock key={day}
@@ -139,7 +139,7 @@ export default connect(
     });
   },
   dispatch => ({
-    focusCourse: course => dispatch(actions.focusCourse(course)),
+    focusCourse: key => dispatch(actions.focusCourse(key)),
   }),
 )(Schedule);
 

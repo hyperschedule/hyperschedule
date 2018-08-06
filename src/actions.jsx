@@ -4,6 +4,9 @@ export const modeSelector = modeSelector_;
 import * as courseSearch_ from './App/CourseSearch/actions';
 export const courseSearch = courseSearch_;
 
+import * as schedule_ from './App/Schedule/actions';
+export const schedule = schedule_;
+
 import * as selectedCourses_ from './App/SelectedCourses/actions';
 export const selectedCourses = selectedCourses_;
 

@@ -6,27 +6,25 @@ import * as selectedCourses from '@/App/SelectedCourses/actions';
 
 import * as actions from './actions';
 
-const height = (state = 0, action) => (
-  action.type === actions.SET_HEIGHT ? (
-    action.height
-  ) : (
-    state
-  )
-);
-
-const course = (state = null, action) => (
+const course = (state = null, action) => {
+  switch (action.type) {
+  case courseSearch.FOCUS_COURSE:
+  case selectedCourses.FOCUS_COURSE:
+    return action.course;
+  case schedule.FOCUS_
+  }
+};
+(
   (action.type === courseSearch.FOCUS_COURSE ||
    action.type === selectedCourses.FOCUS_COURSE ||
    action.type === schedule.FOCUS_COURSE) ? (
-     action.course
+     action.
    ) : (
      state
    )
 );
-const focusSummary = combineReducers({
-  height,
+export default combineReducers({
   course,
 });
-export default focusSummary;
 
 
