@@ -1,0 +1,29 @@
+#credit-count {
+    padding: .5rem 1rem;
+    border-top: 1px solid whitesmoke;
+
+    font-size: .8rem;
+    
+}
+
+#credit-count table {
+    margin: 0 auto;
+    
+    border-collapse: separate;
+    border-spacing: .25em 0;
+}
+
+#credit-count th {
+    padding: 0;
+    text-align: left;
+    font-weight: bold;
+}
+
+#credit-count th::first-letter {
+    text-transform: uppercase;
+}
+
+#credit-count td {
+    padding: 0;
+}
+
