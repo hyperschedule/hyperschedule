@@ -16,60 +16,65 @@ import App from './App/App';
 
 import hyperschedule from './reducers';
 
+import * as util from 'hyperschedule-util';
 
 import * as actions from './actions';
 
 const sagaMiddleware = createSagaMiddleware();
-const logger = createLogger({
-  duration: true,
-  collapsed: (getState, action, logEntry) => !logEntry.error,
-  stateTransformer: (state) => state.set('courses', {
-    alias: 'redacted',
-    size: state.get('courses').size,
-  }).toJS(),
-  actionTransformer: action => {
-    if (action.type === actions.UPDATE_COURSES) {
-      return {
-        ...action,
-        courses: {
-          alias: 'redacted',
-          size: action.courses.size,
-        },
-      };
-    }
-    
-    if (action.hasOwnProperty('course')) {
-      return {
-        ...action,
-        course: action.course.toJS(),
-      };
-    }
 
-    return action;
-  },
-});
-
-const persist = persistState(undefined, {
-  slicer: paths => state => state.delete('courses'),
-  serialize: state => JSON.stringify(state.toJSON()),
-  deserialize: s => {
-    try {
-      return fromJS(JSON.parse(s));
-    } catch (exception) {
-      return Map();
-    }
-  },
-  merge: (initial, saved) => {
-    return initial;
-  },
-});
-
-let store = createStore(
+const store = createStore(
   hyperschedule,
   Map(),
   compose(
-    applyMiddleware(sagaMiddleware, logger),
-    persist,
+    applyMiddleware(
+      sagaMiddleware,
+      createLogger({
+        duration: true,
+        collapsed: () => true,
+        stateTransformer: state => state.set('courses', {
+          alias: 'redacted',
+          size: state.get('courses').size,
+        }).toJS(),
+        actionTransformer: action => (
+          action.type === actions.UPDATE_COURSES ? (
+            {
+              ...action,
+              courses: {
+                alias: 'redacted',
+                size: action.courses.size,
+              },
+            }
+          ) : action
+        ),
+      }),
+    ),
+    persistState(undefined, {
+      key: 'hyperschedule-redux',
+      serialize: state => {
+        const selection = state.getIn(['app', 'selection']),
+              courses = state.get('courses');
+
+        return JSON.stringify({
+          selection: util.serializeSelection(selection),
+          courses: courses.toJS(),
+        });
+      },
+      deserialize: data => {
+        const {selection, courses} = JSON.parse(data);
+        return {
+          selection: util.deserializeSelection(selection),
+          courses: fromJS(courses),
+        };
+      },
+      merge: (initial, {selection, courses}) => {
+        return (
+          initial
+            .setIn(['app', 'selection'], selection)
+            .set('courses', courses)
+            .setIn(['app', 'schedule'], util.computeSchedule(selection))
+        );
+      },
+    }),
   ),
 );
 
