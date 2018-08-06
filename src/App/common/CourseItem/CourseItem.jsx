@@ -6,6 +6,7 @@ import './CourseItem.css';
 function CourseItem({
   code,
   name,
+  color,
   status,
   focus,
   add,
@@ -47,6 +48,9 @@ function CourseItem({
   return (
     <div
       className={['course', 'item'].join(' ')}
+      style={{
+        backgroundColor: color,
+      }}
       onClick={focus}>
       {checkButton}
       {starButton}

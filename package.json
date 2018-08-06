@@ -30,6 +30,7 @@
     "normalize-css": "^2.3.1",
     "pdfkit": "^0.8.3",
     "pdfmake": "^0.1.37",
+    "randomcolor": "^0.5.3",
     "react": "^16.2.0",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",

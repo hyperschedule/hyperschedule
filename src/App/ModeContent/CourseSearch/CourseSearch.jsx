@@ -39,6 +39,7 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
         key={key}>
         <div style={{...style}}>
           <CourseItem code={util.courseFullCode(course)}
+                      color={util.courseColor(course)}
                       name={course.get('courseName')}
                       status={util.courseStatusString(course)}
                       focus={focus}

@@ -56,6 +56,7 @@ const SelectedCourses = ({
         focus: () => focusCourse(course),
         checked: checked.has(key),
         starred: starred.has(key),
+        color: util.courseColor(course),
         remove: event => {
           removeCourse(key);
           event.stopPropagation();

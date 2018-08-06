@@ -1,6 +1,7 @@
 import React from 'react';
 import {fromJS, Map, List, Iterable} from 'immutable';
 
+import randomColor from 'randomcolor';
 
 export function deserializeCourse(data) {
   return fromJS(data);
@@ -61,6 +62,21 @@ export function courseMatches(course, search) {
   return course.get('courseName').toLowerCase().includes(
     search.toLowerCase(),
   );
+}
+
+const courseColorSchoolHue = {
+  HM: 'yellow',
+  CM: 'red',
+  SC: 'green',
+  PO: 'blue',
+  PZ: 'orange',
+};
+export function courseColor(course) {
+  return randomColor({
+    hue: courseColorSchoolHue[course.get('school')] || 'monochrome',
+    luminosity: 'light',
+    seed: courseFullCode(course),
+  });
 }
 
 function daysOverlap(daysA, daysB) {

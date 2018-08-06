@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import './CourseBlock.css';
+
 import * as util from 'hyperschedule-util';
 
 function CourseBlock({
@@ -8,9 +10,13 @@ function CourseBlock({
   name,
   focus,
   gridStyle,
+  color,
 }) {
   return (
-    <div className='course block' style={gridStyle}
+    <div className='course block' style={{
+           ...gridStyle,
+           backgroundColor: color,
+         }}
          onClick={focus}>
       <div className='label'>
         <div className='code'>
