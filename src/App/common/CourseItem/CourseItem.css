@@ -17,6 +17,8 @@
 .course button.add, .course button.remove {
     background: rgba(0, 0, 0, .05);
     margin-left: auto;
+
+    cursor: pointer;
 }
 
 .course.item {
@@ -24,11 +26,12 @@
     padding-left: .5em;
 }
 
-.course.item .label {
+.course .label {
     padding: .5em;
+    text-align: center;
 }
 
-.course.item .label .code {
+.course .label .code {
     font-weight: bold;
 }
 

@@ -10,13 +10,15 @@ function CourseBlock({
   gridStyle,
 }) {
   return (
-    <div className='course' style={gridStyle}
+    <div className='course block' style={gridStyle}
          onClick={focus}>
-      <div className='code'>
-        {code}
-      </div>
-      <div className='name'>
-        {name}
+      <div className='label'>
+        <div className='code'>
+          {code}
+        </div>
+        <div className='name'>
+          {name}
+        </div>
       </div>
     </div>
   );
