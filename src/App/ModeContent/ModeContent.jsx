@@ -13,9 +13,15 @@ const content = {
   [Mode.SCHEDULE]: <Schedule/>,
 };
 
+const contentClass = {
+  [Mode.COURSE_SEARCH]: 'course-search',
+  [Mode.SCHEDULE]: 'schedule',
+};
+
 const ModeContent = ({mode}) => (
-  <div id="mode-content">
-    {content[mode]}
+  <div id="mode-content" className={contentClass[mode]}>
+    <CourseSearch/>
+    <Schedule/>
   </div>
 );
 

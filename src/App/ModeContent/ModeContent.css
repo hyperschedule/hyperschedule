@@ -5,3 +5,15 @@
     top: 0;
     bottom: 0;
 }
+
+#course-search, #schedule {
+    visibility: hidden;
+    opacity: 0;
+
+    transition: visibility .2s linear, opacity .2s;
+}
+
+#mode-content.course-search #course-search, #mode-content.schedule #schedule {
+    visibility: visible;
+    opacity: 1;
+}
