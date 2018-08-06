@@ -26,6 +26,7 @@ const config = {
     columnWidth: .75 * 72,
   },
   color: {
+    background: 255,
     column: {
       even: 230,
       odd: 255,
@@ -99,6 +100,9 @@ export const exportPDF = (courses, selected) => {
   const columnWidth = bodyWidth / 7;
   const rowHeight = bodyHeight / 16;
 
+  pdf.setFillColor(config.color.background);
+  pdf.rect(config.margin.left, config.margin.top, tableWidth, tableHeight, 'FS');
+
   for (let i = 0; i < 7; ++i) {
     const x = i * columnWidth + config.margin.left + config.first.columnWidth;
     if (i & 1) {
@@ -138,7 +142,6 @@ export const exportPDF = (courses, selected) => {
     config.margin.left + config.first.columnWidth, config.margin.top,
     config.margin.left + config.first.columnWidth, config.margin.top + tableHeight,
   );
-  pdf.rect(config.margin.left, config.margin.top, tableWidth, tableHeight, 'S');
 
   for (const key of selected) {
     const course = courses.get(key);
@@ -161,10 +164,11 @@ export const exportPDF = (courses, selected) => {
         const yEnd = (end.hour - 8 + end.minute / 60) * rowHeight +
               config.margin.top + config.first.rowHeight;
 
-        pdf.setFillColor(128);
+        console.log(util.courseColor(course, 'rgbArray'));
+        pdf.setFillColor(...util.courseColor(course, 'rgbArray'));
 
         pdf.rect(x, yStart, width, yEnd-yStart, 'F');
-
+        
         pdf.setFont('Helvetica');
         const courseCodeLines = pdf.splitTextToSize(util.courseFullCode(course), width - 12);
         const courseNameLines = pdf.splitTextToSize(course.get('courseName'), width - 12);
