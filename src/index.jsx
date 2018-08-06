@@ -60,7 +60,12 @@ const store = createStore(
         });
       },
       deserialize: data => {
-        const {selection, courses} = JSON.parse(data);
+        
+        if (data === null) {
+          data = '{}';
+        }
+        
+        const {selection = [], courses = {}} = JSON.parse(data);
         return {
           selection: util.deserializeSelection(selection),
           courses: fromJS(courses),
