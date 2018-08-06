@@ -1,7 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import CourseItem from 'App/common/CourseItem/CourseItem';
+
 import * as actions from './actions';
+
+import * as util from 'hyperschedule-util';
 
 import {List, CellMeasurer, CellMeasurerCache, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css';
@@ -20,6 +24,12 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
     const courseKey = courses.keySeq().get(index);
     const course = courses.get(courseKey);
 
+    const focus = () => focusCourse(course);
+    const add = event => {
+      addCourse(course);
+      event.stopPropagation();
+    };
+
     return (
       <CellMeasurer
         cache={cache}
@@ -28,20 +38,11 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
         parent={parent}
         key={key}>
         <div style={{...style}}>
-          <div
-            className={['course', 'item'].concat(course.dataClasses).join(' ')}
-            onClick={event => focusCourse(course)}>
-            <div className="fields">
-              {course.titleFields}
-              {course.statusFields}
-            </div>
-            <button className="right add ion-md-add"
-                    onClick={event => {
-                      addCourse(course);
-                      event.stopPropagation();
-              }}>
-            </button>
-          </div>
+          <CourseItem code={util.courseFullCode(course)}
+                      name={course.get('courseName')}
+                      status={util.courseStatusString(course)}
+                      focus={focus}
+                      add={add}/>
         </div>
       </CellMeasurer>
     );
@@ -74,11 +75,11 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
 
 const CourseSearchWrapper = connect(
   state => {
-    const searchString = state.get('app').get('search').get('string');
+    const searchString = state.getIn(['app', 'search', 'string']);
 
     return {
       courses: state.get('courses').filter(course => (
-        course.matches(searchString)
+        util.courseMatches(course, searchString)
       )),
       searchString,
     };

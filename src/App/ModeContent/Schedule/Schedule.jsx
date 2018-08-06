@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import CourseBlock from './CourseBlock/CourseBlock';
+
 import * as actions from './actions';
 
 import './Schedule.css';
@@ -26,37 +28,36 @@ const dayToColumn = day => (
 );
 
 const Schedule = ({courses, scheduled, starred, focusCourse}) => {
-  const courseBlocks = scheduled.map(courseKey => {
-    const course = courses.get(courseKey);
 
-    const halfOffset = course.data.get('firstHalfSemester') ? 0 : 1;
+  const blocks = scheduled.map(key => {
+    const course = courses.get(key);
+    const halfOffset = course.get('firstHalfSemester') ? 0 : 1;
 
-    return course.scheduleGroups.map((group, index) => {
-      return group.days.map(day => {
+    return course.get('schedule').map(slot => {
+      return Array.from(slot.get('days')).map(day => {
 
         const gridStyle = {
-          gridRowStart: timeToRow(group.timeSlot.start),
-          gridRowEnd: timeToRow(group.timeSlot.end),
+          gridRowStart: timeToRow(util.parseTime(slot.get('startTime'))),
+          gridRowEnd: timeToRow(util.parseTime(slot.get('endTime'))),
           gridColumnStart: dayToColumn(day) + halfOffset,
-          gridColumnEnd: 'span ' + course.halfSemesters,
+          gridColumnEnd: 'span ' + util.courseHalfSemesters(course),
         };
 
-        const className = ['course'].concat(course.dataClasses).join(' ');
-        
+        const focus = () => focusCourse(course);
+
         return (
-          <div key={day} className={className} style={gridStyle}
-               onClick={() => focusCourse(course)}>
-            <div className="course-code fields">
-              {course.titleFields}
-            </div>
-          </div>
+          <CourseBlock key={day}
+                       code={util.courseFullCode(course)}
+                       name={course.get('courseName')}
+                       gridStyle={gridStyle}
+                       focus={focus}/>
         );
         
       });
     });
 
   });
-  
+
   return (
     <div id="schedule">
       <div className="margin-container">
@@ -114,7 +115,7 @@ const Schedule = ({courses, scheduled, starred, focusCourse}) => {
             <div className="row-label even" style={{gridRowStart: 2 + 12 * 14}}>10:00 pm</div>
             <div className="row-label odd"  style={{gridRowStart: 2 + 12 * 15}}>11:00 pm</div>
 
-            {courseBlocks}
+            {blocks}
 
           </div>
         </div>
@@ -123,17 +124,21 @@ const Schedule = ({courses, scheduled, starred, focusCourse}) => {
   ); 
 };
 
-const ScheduleWrapper = connect(
-  state => ({
-    courses: state.get('app').get('schedule').get('selection').get('courses'),
-    order: state.get('app').get('schedule').get('selection').get('order'),
-    starred: state.get('app').get('schedule').get('selection').get('starred'),
-    scheduled: state.get('app').get('schedule').get('scheduled'),
-  }),
+
+export default connect(
+  state => {
+    const schedule = state.getIn(['app', 'schedule']);
+    const selection = schedule.get('selection');
+    
+    return ({
+      courses: selection.get('courses'),
+      scheduled: schedule.get('scheduled'),
+      starred: selection.get('starred'),
+    });
+  },
   dispatch => ({
     focusCourse: course => dispatch(actions.focusCourse(course)),
   }),
 )(Schedule);
 
-export default ScheduleWrapper;
 

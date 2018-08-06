@@ -31,7 +31,7 @@ const scheduleReducers = {
     const order = state.get('order');
     const checked = state.get('checked');
     
-    const key = course.key;
+    const key = util.courseKey(course);
     if (courses.has(key)) {
       return state;
     }
@@ -129,7 +129,8 @@ const schedule = (state = Map({
     for (const otherKey of scheduled) {
       const other = courses.get(otherKey);
       
-      if (course.conflicts(other) || course.equivalent(other)) {
+      if (util.coursesConflict(course, other) ||
+          util.coursesRedundant(course, other)) {
         conflict = true;
         break;
       }

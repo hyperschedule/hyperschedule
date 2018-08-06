@@ -9,17 +9,17 @@ import * as actions from './actions';
 
 import './CourseDescription.css';
 
-const CourseDescription = ({course, height, setHeight}) => {        
+const CourseDescription = ({
+  show, credits, semesters, title, faculty, height, schedule, setHeight,
+}) => {
   let summary = null;
-  if (course !== null) {
+  if (show) {
 
-
-    const schedule = course.scheduleGroups;
-    const scheduleRow = course.scheduleGroups.length === 0 ? null : (
-      <div className="row schedule">
-        {course.scheduleGroups.map((group, index) => (
-          <div key={index} className="block">
-            {group.fields}
+    const scheduleRow = (
+      <div className='row schedule'>
+        {schedule.map((slot, index) => (
+          <div key={index} className='block'>
+            {slot.days} {slot.startTime}&ndash;{slot.endTime} at {slot.location}
           </div>
         ))}
       </div>
@@ -27,26 +27,25 @@ const CourseDescription = ({course, height, setHeight}) => {
     
     summary = (
       <div className="summary">
-        <div className="row title fields">
-          {course.titleFields}
+        <div className="row title">
+          {title}
         </div>
-        {scheduleRow}
+        {schedule.length > 0 && scheduleRow}
         <div className="row faculty">
-          {course.facultyString}
+          {faculty}
         </div>
-        <div className="row credit fields">
-          {course.creditFields}
+        <div className="row semesters-credits">
+          {semesters}, {credits}
         </div>
       </div>
     );
   }
-
+  
   const focusSummaryMeasure = ({measureRef}) => (
     <div ref={measureRef} className="measure">
       {summary}
     </div>
   );
-
 
   return (
     <div id="course-description">
@@ -61,15 +60,34 @@ const CourseDescription = ({course, height, setHeight}) => {
   );
 };
 
-const CourseDescriptionWrapper = connect(
-  state => ({
-    course: state.get('app').get('focus').get('course'),
-    height: state.get('app').get('focus').get('height'),
-  }),
-  dispatch => ({
-    setHeight: height => dispatch(actions.setHeight(height))
-  }),
-)(CourseDescription);
+export default connect(
+  state => {
+    const focus = state.getIn(['app', 'focus']);
+    const course = focus.get('course');
 
-export default CourseDescriptionWrapper;
+    if (course === null) {
+      return {
+        show: false,
+        height: 0,
+      };
+    }
+
+    const credits = util.courseCredits(course);
+
+    return {
+      show: true,
+      title: `${util.courseFullCode(course)} ${course.get('courseName')}`,
+      faculty: util.courseFacultyString(course),
+      semesters: (course.get('firstHalfSemester') ? (
+        course.get('secondHalfSemester') ? 'Full' : 'First-half'
+      ) : 'Second-half') + '-semester course',
+      schedule: course.get('schedule'),
+      credits: `${credits} credit${credits === 1 ? '' : 's'}`,
+      height: focus.get('height'),
+    };
+  },
+  dispatch => ({
+    setHeight: height => dispatch(actions.setHeight(height)),
+  }),
+)(util.componentToJS(CourseDescription));
 

@@ -87,19 +87,12 @@
     margin-bottom: -1px;
     overflow: hidden;
     
+    position: relative;
+    
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     min-height: 0;
-}
-
-#schedule .grid .course .fields {
-    text-align: center;
-    
-    padding: 0 1em;
-}
-
-#schedule .grid .course .fields .field.courseName {
-    display: block;
 }
