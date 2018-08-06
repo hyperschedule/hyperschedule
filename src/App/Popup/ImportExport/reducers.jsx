@@ -1,6 +1,8 @@
+import {combineReducers} from 'redux-immutable';
+
 import * as actions from './actions';
 
-const importExport = (state = '', action) => {
+const data = (state = '', action) => {
   switch (action.type) {
   case actions.SET_DATA:
     return action.data;
@@ -9,4 +11,6 @@ const importExport = (state = '', action) => {
   }
 };
 
-export default importExport;
+export default combineReducers({
+  data,
+});

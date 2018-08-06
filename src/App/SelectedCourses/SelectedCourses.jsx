@@ -1,11 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import CourseItem from 'App/common/CourseItem/CourseItem';
+import CourseItem from '@/App/common/CourseItem/CourseItem';
 
 import * as actions from './actions';
 
-import * as util from 'hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 
 import './SelectedCourses.css';
 
@@ -86,7 +86,7 @@ const SelectedCourses = ({
 
 const SelectedCoursesWrapper = connect(
   state => {
-    const selection = state.getIn(['app', 'selection']);
+    const selection = state.get('selection');
     
     return ({
       courses: selection.get('courses'),

@@ -6,7 +6,7 @@ import './jspdf.customfonts.debug';
 import ROBOTO from './fonts/Roboto-Regular.ttf.js';
 import ROBOTO_BOLD from './fonts/Roboto-Bold.ttf.js';
 
-import * as util from 'hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 
 import ical from 'ical-generator';
 

@@ -5,11 +5,11 @@ import CourseBlock from './CourseBlock/CourseBlock';
 
 import * as actions from './actions';
 
-import {Mode} from 'App/actions';
+import {Mode} from '@/App/mode';
 
 import './Schedule.css';
 
-import * as util from 'hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 
 const timeToRow = ({hour, minute}) => (
   ((hour - 8) * 60 + minute) / 5 + 2
@@ -130,14 +130,12 @@ const Schedule = ({mode, courses, schedule, starred, focusCourse}) => {
 
 export default connect(
   state => {
-    const app = state.get('app');
-    const selection = app.get('selection');
-    
+    const selection = state.get('selection');
     return ({
-      mode: app.get('mode'),
+      mode: state.get('mode'),
+      schedule: state.get('schedule'),
       courses: selection.get('courses'),
       starred: selection.get('starred'),
-      schedule: app.get('schedule'),
     });
   },
   dispatch => ({

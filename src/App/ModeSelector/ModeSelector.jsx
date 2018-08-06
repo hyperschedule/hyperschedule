@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import * as actions from './actions';
-import {Mode} from '../actions';
+import {Mode} from '@/App/mode';
 
 import './ModeSelector.css';
 
@@ -23,7 +23,7 @@ const ModeSelector = ({mode, setMode}) => (
 
 const ModeSelectorWrapper = connect(
   state => ({
-    mode: state.get('app').get('mode'),
+    mode: state.get('mode'),
   }),
   dispatch => ({
     setMode: mode => dispatch(actions.setMode(mode)),

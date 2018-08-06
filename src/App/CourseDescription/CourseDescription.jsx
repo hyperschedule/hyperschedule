@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import * as util from 'hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 
 import Measure from 'react-measure';
 
@@ -62,7 +62,7 @@ const CourseDescription = ({
 
 export default connect(
   state => {
-    const focus = state.getIn(['app', 'focus']);
+    const focus = state.get('focus');
     const course = focus.get('course');
 
     if (course === null) {

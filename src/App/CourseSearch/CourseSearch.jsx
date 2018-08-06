@@ -1,13 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import CourseItem from 'App/common/CourseItem/CourseItem';
+import CourseItem from '@/App/common/CourseItem/CourseItem';
 
 import * as actions from './actions';
 
-import * as util from 'hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 
-import {Mode} from 'App/actions';
+import {Mode} from '@/App/mode';
 
 import {List, CellMeasurer, CellMeasurerCache, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css';
@@ -85,10 +85,10 @@ const CourseSearch = ({
 
 const CourseSearchWrapper = connect(
   state => {
-    const searchString = state.getIn(['app', 'search', 'string']);
+    const searchString = state.getIn(['search', 'string']);
 
     return {
-      mode: state.getIn(['app', 'mode']),
+      mode: state.get('mode'),
       courses: state.get('courses').filter(course => (
         util.courseMatches(course, searchString)
       )),

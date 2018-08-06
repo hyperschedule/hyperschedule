@@ -9,7 +9,7 @@ import SelectedCourses from './SelectedCourses/SelectedCourses';
 import Controls from './Controls/Controls';
 import Popup from './Popup/Popup';
 
-import {Mode} from './actions';
+import {Mode} from '@/App/mode';
 
 import './App.css';
 
@@ -45,7 +45,7 @@ const App = ({mode}) => {
 
 export default connect(
   state => ({
-    mode: state.getIn(['app', 'mode']),
+    mode: state.get('mode'),
   }),
   dispatch => ({}),
 )(App);

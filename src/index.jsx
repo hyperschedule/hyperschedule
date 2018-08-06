@@ -16,7 +16,7 @@ import App from './App/App';
 
 import hyperschedule from './reducers';
 
-import * as util from 'hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 
 import * as actions from './actions';
 
@@ -51,7 +51,7 @@ const store = createStore(
     persistState(undefined, {
       key: 'hyperschedule-redux',
       serialize: state => {
-        const selection = state.getIn(['app', 'selection']),
+        const selection = state.get('selection'),
               courses = state.get('courses');
 
         return JSON.stringify({
@@ -74,9 +74,9 @@ const store = createStore(
       merge: (initial, {selection, courses}) => {
         return (
           initial
-            .setIn(['app', 'selection'], selection)
+            .set('selection', selection)
             .set('courses', courses)
-            .setIn(['app', 'schedule'], util.computeSchedule(selection))
+            .set('schedule', util.computeSchedule(selection))
         );
       },
     }),

@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux-immutable';
 
-import * as courseSearch from '../ModeContent/CourseSearch/actions';
-import * as schedule from '../ModeContent/Schedule/actions';
-import * as selectedCourses from '../SelectedCourses/actions';
+import * as courseSearch    from '@/App/CourseSearch/actions';
+import * as schedule        from '@/App/Schedule/actions';
+import * as selectedCourses from '@/App/SelectedCourses/actions';
 
 import * as actions from './actions';
 

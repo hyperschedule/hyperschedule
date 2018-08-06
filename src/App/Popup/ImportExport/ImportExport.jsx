@@ -48,12 +48,10 @@ const ImportExport = ({data, setData, apply, close, courses, schedule}) => {
 export default connect(
   state => {
 
-    const app = state.get('app');
-
     return {
-      data: app.get('importExport'),
-      courses: app.get('selection').get('courses'),
-      schedule: app.get('schedule'),
+      data: state.get('importExport').get('data'),
+      courses: state.get('selection').get('courses'),
+      schedule: state.get('schedule'),
     };
   },
   dispatch => ({

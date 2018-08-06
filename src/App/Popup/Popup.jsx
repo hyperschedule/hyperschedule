@@ -44,10 +44,13 @@ const Popup = ({mode, visible, close}) => {
 };
 
 export default connect(
-  state => ({
-    mode: state.get('app').get('popup').get('mode'),
-    visible: state.get('app').get('popup').get('visible'),
-  }),
+  state => {
+    const popup = state.get('popup');
+    return {
+      mode: popup.get('mode'),
+      visible: popup.get('visible'),
+    };
+  },
   dispatch => ({
     close: () => dispatch(actions.close()),
   }),

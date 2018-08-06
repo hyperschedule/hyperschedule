@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as util from 'hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 import './CourseItem.css';
 
 function CourseItem({

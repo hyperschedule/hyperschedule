@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { HyperscheduleApi } from './api';
-import * as util from './hyperschedule-util';
+import * as util from '@/util/hyperschedule-util';
 import { updateCourses } from './actions';
 import {OrderedMap, fromJS} from 'immutable';
 
