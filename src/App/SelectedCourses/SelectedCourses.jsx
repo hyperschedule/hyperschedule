@@ -35,6 +35,8 @@ const SelectedCourses = ({
   courses,
   checked,
   starred,
+  schedule,
+
   removeCourse,
   focusCourse,
   reorder,
@@ -56,6 +58,7 @@ const SelectedCourses = ({
         focus: () => focusCourse(key),
         checked: checked.has(key),
         starred: starred.has(key),
+        scheduled: schedule.has(key),
         color: util.courseColor(course),
         remove: event => {
           removeCourse(key);
@@ -84,7 +87,7 @@ const SelectedCourses = ({
   );
 };
 
-const SelectedCoursesWrapper = connect(
+export default connect(
   state => {
     const selection = state.get('selection');
     
@@ -93,6 +96,7 @@ const SelectedCoursesWrapper = connect(
       order: selection.get('order'),
       checked: selection.get('checked'),
       starred: selection.get('starred'),
+      schedule: state.get('schedule'),
     });
   },
   dispatch => ({
@@ -104,4 +108,3 @@ const SelectedCoursesWrapper = connect(
   }),
 )(SelectedCourses);
 
-export default SelectedCoursesWrapper;

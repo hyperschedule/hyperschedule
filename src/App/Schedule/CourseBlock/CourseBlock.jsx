@@ -11,13 +11,22 @@ function CourseBlock({
   focus,
   gridStyle,
   color,
+  starred,
 }) {
+  
+  
   return (
-    <div className='course block' style={{
+    <div className={util.classMap({
+           course: true,
+           block: true,
+           starred: starred,
+         })} style={{
            ...gridStyle,
            backgroundColor: color,
          }}
          onClick={focus}>
+      <div className='star'>
+      </div>
       <div className='label'>
         <div className='code'>
           {code}

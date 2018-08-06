@@ -234,6 +234,16 @@ export function computeSchedule(selection) {
   return schedule;
 }
 
+export function classMap(map) {
+  const classes = [];
+  for (const className in map) {
+    if (map[className]) {
+      classes.push(className);
+    }
+  }
+  return classes.join(' ');
+}
+
 function commaJoin(items, comma = ',') {
   switch (true) {
   case items.length === 1:

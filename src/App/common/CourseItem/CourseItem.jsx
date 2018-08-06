@@ -13,6 +13,7 @@ function CourseItem({
   remove,
   starred,
   checked,
+  scheduled,
   toggleStarred,
   toggleChecked,
 }) {
@@ -47,7 +48,7 @@ function CourseItem({
   
   return (
     <div
-      className={['course', 'item'].join(' ')}
+      className={['course', 'item'].concat(scheduled ? ['scheduled'] : []).join(' ')}
       style={{
         backgroundColor: color,
       }}

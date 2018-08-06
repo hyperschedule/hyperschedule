@@ -23,6 +23,7 @@ const classFields = ['department', 'school'];
 const CourseSearch = ({
   mode,
   courses,
+  schedule,
   searchString,
   setSearch,
   focusCourse,
@@ -49,6 +50,7 @@ const CourseSearch = ({
         <div style={{...style}}>
           <CourseItem code={util.courseFullCode(course)}
                       color={util.courseColor(course)}
+                      scheduled={schedule.has(courseKey)}
                       name={course.get('courseName')}
                       status={util.courseStatusString(course)}
                       focus={focus}
@@ -92,6 +94,7 @@ const CourseSearchWrapper = connect(
       courses: state.get('courses').filter(course => (
         util.courseMatches(course, searchString)
       )),
+      schedule: state.get('schedule'),
       searchString,
     };
   },

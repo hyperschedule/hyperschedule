@@ -23,7 +23,11 @@
 
 .course.item {
     margin: .5rem 1rem;
-    padding-left: .5em;
+    border-left: .5em solid transparent;
+}
+
+.course.item.scheduled {
+    border-left-color: rgba(0, 0, 0, .2);
 }
 
 .course .label {

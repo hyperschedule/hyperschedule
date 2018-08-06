@@ -51,6 +51,7 @@ const Schedule = ({mode, courses, schedule, starred, focusCourse}) => {
           <CourseBlock key={day}
                        color={util.courseColor(course)}
                        code={util.courseFullCode(course)}
+                       starred={starred.has(key)}
                        name={course.get('courseName')}
                        gridStyle={gridStyle}
                        focus={focus}/>
