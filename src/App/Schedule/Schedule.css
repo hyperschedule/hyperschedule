@@ -6,6 +6,15 @@
     bottom: 0;
 
     overflow-y: scroll;
+
+    transition: opacity .2s linear, visibility .2s linear;
+    visibility: hidden;
+    opacity: 0;
+}
+
+#schedule.active {
+    visibility: visible;
+    opacity: 1;
 }
 
 #schedule .margin-container {

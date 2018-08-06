@@ -5,6 +5,8 @@ import CourseBlock from './CourseBlock/CourseBlock';
 
 import * as actions from './actions';
 
+import {Mode} from 'App/actions';
+
 import './Schedule.css';
 
 import * as util from 'hyperschedule-util';
@@ -27,7 +29,7 @@ const dayToColumn = day => (
   dayIndex[day] * 2 + 2
 );
 
-const Schedule = ({courses, schedule, starred, focusCourse}) => {
+const Schedule = ({mode, courses, schedule, starred, focusCourse}) => {
 
   const blocks = schedule.map(key => {
     const course = courses.get(key);
@@ -60,7 +62,7 @@ const Schedule = ({courses, schedule, starred, focusCourse}) => {
   });
 
   return (
-    <div id="schedule">
+    <div id="schedule" className={mode === Mode.SCHEDULE ? 'active' : ''}>
       <div className="margin-container">
         <div className="size-container">
           <div className="grid">
@@ -132,6 +134,7 @@ export default connect(
     const selection = app.get('selection');
     
     return ({
+      mode: app.get('mode'),
       courses: selection.get('courses'),
       starred: selection.get('starred'),
       schedule: app.get('schedule'),

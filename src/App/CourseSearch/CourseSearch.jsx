@@ -7,6 +7,8 @@ import * as actions from './actions';
 
 import * as util from 'hyperschedule-util';
 
+import {Mode} from 'App/actions';
+
 import {List, CellMeasurer, CellMeasurerCache, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css';
 
@@ -18,7 +20,14 @@ const cache = new CellMeasurerCache({
 
 const classFields = ['department', 'school'];
 
-const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}) => {
+const CourseSearch = ({
+  mode,
+  courses,
+  searchString,
+  setSearch,
+  focusCourse,
+  addCourse,
+}) => {
 
   const rowRenderer = ({key, index, parent, style}) => {
     const courseKey = courses.keySeq().get(index);
@@ -58,7 +67,7 @@ const CourseSearch = ({courses, searchString, setSearch, focusCourse, addCourse}
   );
   
   return (
-    <div id="course-search">
+    <div id="course-search" className={mode === Mode.COURSE_SEARCH ? 'active' : 'inactive'}>
       <div className="search">
         <input type="text"
                placeholder="Search..."
@@ -79,6 +88,7 @@ const CourseSearchWrapper = connect(
     const searchString = state.getIn(['app', 'search', 'string']);
 
     return {
+      mode: state.getIn(['app', 'mode']),
       courses: state.get('courses').filter(course => (
         util.courseMatches(course, searchString)
       )),
