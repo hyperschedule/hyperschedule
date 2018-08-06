@@ -2,7 +2,7 @@
     position: relative;
 
     flex-grow: 1;
-    
+
     user-select: none;
     -moz-user-select: none;
 }
@@ -11,15 +11,12 @@
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
     bottom: 0;
-
-    padding: .5rem 0;
-
+    right: 0;
+    
     overflow-y: scroll;
+}
 
-    display: flex;
-    flex-direction: column;
-
-
+#selected-courses .list .course.item {
+    margin: 1rem;
 }

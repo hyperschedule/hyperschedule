@@ -5,8 +5,6 @@
     right: 0;
     bottom: 0;
 
-    overflow-y: scroll;
-
     transition: opacity .2s linear, visibility .2s linear;
     visibility: hidden;
     opacity: 0;
@@ -18,7 +16,15 @@
 }
 
 #schedule .margin-container {
-    margin: 1rem;
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+
+    overflow-y: scroll;
+
+    border: 1px solid lightgray;
 }
 
 #schedule .size-container {
@@ -38,7 +44,6 @@
     display: grid;
     grid-template: min-content repeat(192, 1fr) / 8em repeat(14, 1fr);
 
-    border: 1px solid lightgray;
 }
 
 #schedule .grid .column {
