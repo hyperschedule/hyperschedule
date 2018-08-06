@@ -1,5 +1,7 @@
 import React from 'react';
+
 import * as util from 'hyperschedule-util';
+import './CourseItem.css';
 
 function CourseItem({
   code,
@@ -10,21 +12,21 @@ function CourseItem({
   remove,
   starred,
   checked,
-  toggleStar,
-  toggleCheck,
+  toggleStarred,
+  toggleChecked,
 }) {
 
-  const checkButton = toggleCheck === undefined ? null : (
-    <span className='handle check'>
-      <i className={'ion-md-' + (checked ? 'checkbox' : 'square-outline')}
-         onClick={toggleCheck}></i>
+  const checkButton = toggleChecked === undefined ? null : (
+    <span className='toggle check'
+          onClick={toggleChecked}>
+      <i className={'ion-md-' + (checked ? 'checkbox' : 'square-outline')}></i>
     </span>
   );
 
-  const starButton = toggleStar === undefined ? null : (
-    <span className={'handle star'}>
-      <i className={'ion-md-star' + (starred ? '' : '-outline')}
-         onClick={toggleStar}>
+  const starButton = toggleStarred === undefined ? null : (
+    <span className={'toggle star'}
+          onClick={toggleStarred}>
+      <i className={'ion-md-star' + (starred ? '' : '-outline')}>
       </i>
     </span>
   );
@@ -46,9 +48,9 @@ function CourseItem({
     <div
       className={['course', 'item'].join(' ')}
       onClick={focus}>
-      <div className='fields'>
-        {checkButton}
-        {starButton}
+      {checkButton}
+      {starButton}
+      <span className='label'>
         <span className='code'>
           {code}
         </span>
@@ -60,7 +62,7 @@ function CourseItem({
         <span className='status'>
           ({status})
         </span>
-      </div>
+      </span>
       {addButton}
       {removeButton}
     </div>

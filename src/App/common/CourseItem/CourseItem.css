@@ -1,0 +1,59 @@
+.course {
+    font-size: .8rem;
+    cursor: pointer;
+
+    display: flex;
+}
+
+
+.course button {
+    padding: 0 1em;
+    
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.course button.add, .course button.remove {
+    background: rgba(0, 0, 0, .05);
+    margin-left: auto;
+}
+
+.course.item {
+    margin: .5rem 1rem;
+    padding-left: .5em;
+}
+
+.course.item .label {
+    padding: .5em;
+}
+
+.course.item .label .code {
+    font-weight: bold;
+}
+
+.course.item .toggle {
+    padding: .5em;
+}
+
+.course {
+    background: aliceblue;
+}
+.course.school-PO {
+    background: skyblue;
+}
+.course.school-HM {
+    background: khaki;
+}
+.course.school-PZ {
+    background: bisque;
+}
+.course.school-CM {
+    background: pink;
+}
+.course.school-SC {
+    background: lightgreen;
+}
+
+
+

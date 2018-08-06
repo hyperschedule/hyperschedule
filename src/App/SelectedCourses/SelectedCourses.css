@@ -23,29 +23,3 @@
 
 
 }
-
-.sortable.course.item button.remove {
-    background: rgba(0, 0, 0, .05);
-
-}
-
-.sortable.course.item .handle {
-    padding-left: 1em;
-
-    display: flex;
-    align-items: center;
-}
-
-.sortable.course.item .handle.check.off::before {
-    content: 'e';
-}
-.sortable.course.item .handle.check.on::before {
-    content: 'E';
-}
-
-.sortable.course.item .handle.star.off::before {
-    content: 's';
-}
-.sortable.course.item .handle.star.on::before {
-    content: 'S';
-}
