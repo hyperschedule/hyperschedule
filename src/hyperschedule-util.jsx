@@ -1,5 +1,5 @@
 import React from 'react';
-import {fromJS, Map, List, Iterable} from 'immutable';
+import {fromJS, Map, List, Set, Iterable} from 'immutable';
 
 import randomColor from 'randomcolor';
 
@@ -71,11 +71,12 @@ const courseColorSchoolHue = {
   PO: 'blue',
   PZ: 'orange',
 };
-export function courseColor(course) {
+export function courseColor(course, format = 'hex') {
   return randomColor({
     hue: courseColorSchoolHue[course.get('school')] || 'monochrome',
     luminosity: 'light',
     seed: courseFullCode(course),
+    format,
   });
 }
 
@@ -148,6 +149,90 @@ export const componentToJS = Component => props => {
 
   return <Component {...jsProps}/>;
 };
+
+export function serializeSelection(selection) {
+  const courses = selection.get('courses');
+  const order = selection.get('order');
+  const starred = selection.get('starred');
+  const checked = selection.get('checked');
+
+  return order.map(key => courses.get(key).merge({
+    starred: starred.has(key),
+    selected: checked.has(key),
+  }));
+};
+
+export function deserializeSelection(data) {
+  let courses = Map();
+  let order = List();
+  let starred = Set();
+  let checked = Set();
+
+  for (const {
+    starred: courseStarred,
+    selected: courseChecked,
+    ...courseData,
+  } of data) {
+    const course = deserializeCourse(courseData);
+          
+    const key = courseKey(course);
+    courses = courses.set(key, fromJS(course));
+    order = order.push(key);
+    
+      if (courseStarred) {
+        starred = starred.add(key);
+      }
+      if (courseChecked) {
+        checked = checked.add(key);
+      }
+  }
+
+  return Map({
+    courses, order, starred, checked,
+  });
+}
+
+export function computeSchedule(selection) {
+  const courses = selection.get('courses'),
+        starred = selection.get('starred'),
+        checked = selection.get('checked'),
+        order = selection.get('order');
+
+  let schedule = Set();
+
+  for (const key of order) {
+    if (checked.has(key) && starred.has(key)) {
+      schedule = schedule.add(key);
+    }
+  }
+
+  for (const key of order) {
+    if (!checked.has(key)) {
+      continue;
+    }
+    
+    const course = courses.get(key);
+
+    let conflict = false;
+    for (const otherKey of schedule) {
+      const other = courses.get(otherKey);
+      
+      if (coursesConflict(course, other) ||
+          coursesRedundant(course, other)) {
+        conflict = true;
+        break;
+      }
+    }
+    
+    if (conflict) {
+      continue;
+    }
+
+    schedule = schedule.add(key);
+  }
+
+  return schedule;
+}
 
 function commaJoin(items, comma = ',') {
   switch (true) {

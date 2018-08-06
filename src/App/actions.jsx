@@ -10,6 +10,9 @@ export const selectedCourses = selectedCourses_;
 import * as controls_ from './Controls/actions';
 export const controls = controls_;
 
+import * as importExport_ from './Popup/ImportExport/actions';
+export const importExport = importExport_;
+
 export const Mode = {
   COURSE_SEARCH: 'Mode.COURSE_SEARCH',
   SCHEDULE: 'Mode.SCHEDULE',

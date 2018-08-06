@@ -7,7 +7,7 @@ export const setData = data => ({
   data,
 });
 
-export const APPLY_DATA = 'App/Popup/ImportExport/APPLY';
+export const APPLY_DATA = 'App/Popup/ImportExport/APPLY_DATA';
 export const applyData = () => ({
   type: APPLY_DATA,
 });

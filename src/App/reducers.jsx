@@ -108,42 +108,7 @@ const schedule = (state = Map({
   const checked = selection.get('checked');
   const order = selection.get('order');
 
-  let scheduled = Set();
-
-  for (const key of order) {
-    if (!(starred.has(key) && checked.has(key))) {
-      continue;
-    }
-
-    scheduled = scheduled.add(key);
-  }
-
-  for (const key of order) {
-    if (!checked.has(key)) {
-      continue;
-    }
-    
-    const course = courses.get(key);
-
-    let conflict = false;
-    for (const otherKey of scheduled) {
-      const other = courses.get(otherKey);
-      
-      if (util.coursesConflict(course, other) ||
-          util.coursesRedundant(course, other)) {
-        conflict = true;
-        break;
-      }
-    }
-    
-    if (conflict) {
-      continue;
-    }
-
-    scheduled = scheduled.add(key);
-  }
-
-  return state.set('selection', selection).set('scheduled', scheduled);
+  return state.set('selection', selection).set('scheduled', util.computeSchedule(selection));
 };
 
 const app = combineReducers({
@@ -155,28 +120,29 @@ const app = combineReducers({
   importExport,
 });
 
-export default (state = Map(), action) => {
-  const next = app(state, action);
+export default (prev = Map(), action) => {
+  const state = app(prev, action);
   
   switch (action.type) {
   case actions.controls.SHOW_IMPORT_EXPORT:
-    return next.set('importExport', JSON.stringify(
-      next
-        .get('schedule')
-        .get('selection')
-    ));
+    return state.set(
+      'importExport',
+      JSON.stringify(
+        util.serializeSelection(
+          state.get('schedule').get('selection'),
+        ),
+      )
+    );
+  case actions.importExport.APPLY_DATA:
+    const selection = util.deserializeSelection(
+      JSON.parse(
+        state.get('importExport'),
+      )
+    );
+    return state.setIn(
+      ['schedule', 'selection'], selection,
+    ).setIn(['schedule', 'scheduled'], util.computeSchedule(selection));
   default:
-    return next;
-                   }
+    return state;
+  }
 };
-
-//combineReducers({
-//  mode,
-//  search,
-//  focus,
-//  schedule,
-//  popup,
-//  importExport,
-//});
-
-  
