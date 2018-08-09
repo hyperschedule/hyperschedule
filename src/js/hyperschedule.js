@@ -364,7 +364,7 @@ const schoolColors = {
 function getCourseColor(course)
 {
   return randomColor({
-    hue: schoolColors[course.school] || "monochrome",
+    //hue: schoolColors[course.school] || "monochrome",
     luminosity: "light",
     seed: courseCodeToString(course),
   });
