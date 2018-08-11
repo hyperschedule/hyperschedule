@@ -16,6 +16,9 @@ const Controls = ({showHelp, showImportExport}) => {
          rel='noopener noreferrer'>
         <i className='ion-logo-github'></i>
       </a>
+      <button className='settings'>
+        <i className='ion-md-bicycle'/>
+      </button>
       <button className='import-export-data'
               onClick={showImportExport}>
         <i className='ion-md-share-alt'></i>
