@@ -31,17 +31,20 @@ const store = createStore(
       createLogger({
         duration: true,
         collapsed: () => true,
-        stateTransformer: state => state.set('courses', {
-          alias: 'redacted',
-          size: state.get('courses').size,
-        }).toJS(),
+        stateTransformer: state => {
+          const courses = state.getIn(['api', 'courses']);
+          return state.setIn(['api', 'courses'], {
+            alias: 'redacted',
+            size: courses.size,
+          }).toJS();
+        },
         actionTransformer: action => (
-          action.type === actions.UPDATE_COURSES ? (
+          action.type === actions.ALL_COURSES ? (
             {
               ...action,
               courses: {
                 alias: 'redacted',
-                size: action.courses.size,
+                size: action.courses.length,
               },
             }
           ) : action
@@ -52,11 +55,11 @@ const store = createStore(
       key: 'hyperschedule-redux',
       serialize: state => {
         const selection = state.get('selection'),
-              courses = state.get('courses');
+              api       = state.get('api');
 
         return JSON.stringify({
           selection: util.serializeSelection(selection),
-          courses: courses.toJS(),
+          api: api.toJS(),
         });
       },
       deserialize: data => {
@@ -65,17 +68,17 @@ const store = createStore(
           data = '{}';
         }
         
-        const {selection = [], courses = {}} = JSON.parse(data);
+        const {selection = [], api = {}} = JSON.parse(data);
         return {
           selection: util.deserializeSelection(selection),
-          courses: fromJS(courses),
+          api: fromJS(api),
         };
       },
-      merge: (initial, {selection, courses}) => {
+      merge: (initial, {selection, api}) => {
         return (
           initial
             .set('selection', selection)
-            .set('courses', courses)
+            .set('api', api)
             .set('schedule', util.computeSchedule(selection))
         );
       },

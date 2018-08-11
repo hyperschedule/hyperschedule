@@ -1,17 +1,23 @@
-export const HyperscheduleApi = {
-  fetch_courses () {
-    return fetch("https://hyperschedule.herokuapp.com/api/v2/all-courses")
+export function allCourses() {
+  return (
+    fetch("https://hyperschedule.herokuapp.com/api/v2/all-courses")
       .then(httpStatusHelper)
       .then(response => response.json())
       .catch(error => error)
-      .then(data => {
-        return data;
-      });
-  }
-};
+      .then(data => data)
+  );
+}
+
+export function coursesSince(timestamp) {
+  return (
+    fetch(`https://hyperschedule.herokuapp.com/api/v2/courses-since/${timestamp}`)
+      .then(response => response.json())
+      .then(data => data)
+  );
+}
 
 
-function httpStatusHelper (response) {
+function httpStatusHelper(response) {
   if (response.status >= 200 && response.status < 300) {
     return Promise.resolve(response);
   } else {
@@ -20,4 +26,3 @@ function httpStatusHelper (response) {
 }
 
 
-export default HyperscheduleApi;

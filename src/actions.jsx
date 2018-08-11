@@ -16,10 +16,20 @@ export const controls = controls_;
 import * as importExport_ from './App/Popup/ImportExport/actions';
 export const importExport = importExport_;
 
-export const UPDATE_COURSES = '.UPDATE_COURSES';
-export function updateCourses(courses) {
+export const ALL_COURSES = 'api.ALL_COURSES';
+export function allCourses(courses, timestamp) {
   return {
-    type: UPDATE_COURSES,
-    courses
+    type: ALL_COURSES,
+    courses,
+    timestamp,
+  };
+}
+
+export const COURSES_SINCE = 'api.COURSES_SINCE';
+export function coursesSince(diff, timestamp) {
+  return {
+    type: COURSES_SINCE,
+    diff,
+    timestamp,
   };
 }

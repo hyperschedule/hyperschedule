@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux-immutable';
-import {List, OrderedMap, Map, OrderedSet, Set} from 'immutable';
+import {List, OrderedMap, Map, OrderedSet, Set, fromJS} from 'immutable';
 
 import * as actions from './actions';
 
@@ -83,13 +83,41 @@ const selection = (prev = Map(), action) => {
 const schedule = (state = Set(), action) => state;
 const focus = (state = Map(), action) => state;
 
-function courses(state = OrderedMap(), action) {
+const apiInitial = Map({
+  courses: Map(),
+  order: List(),
+  timestamp: 0,
+});
+function api(prev = Map(), action) {
+  const state = apiInitial.merge(prev);
+  
   switch (action.type) {
-  case actions.UPDATE_COURSES:
-    return action.courses;
+  case actions.ALL_COURSES: {
+    let courses = Map();
+    
+    for (const data of action.courses) {
+      const course = util.deserializeCourse(data);
+      courses = courses.set(util.courseKey(course), course);
+    }
+    
+    const order = courses.keySeq().sort((keyA, keyB) => {
+      const sortA = util.courseSortKey(courses.get(keyA)),
+            sortB = util.courseSortKey(courses.get(keyB));
+
+      return sortA < sortB ? -1 : sortA > sortB ? 1 : 0;
+    }).toList();
+    
+    return state.merge({
+      courses,
+      order,
+      timestamp: action.timestamp,
+    });
+  }
+
+    
   default:
     return state;
-  }
+                                                   }
 }
 
 const app = combineReducers({
@@ -100,7 +128,7 @@ const app = combineReducers({
   schedule,
   popup,
   importExport,
-  courses,
+  api,
 });
 
 export default (prev = Map(), action) => {
@@ -132,7 +160,7 @@ export default (prev = Map(), action) => {
   case actions.courseSearch.FOCUS_COURSE:
     return state.set(
       'focus',
-      state.getIn(['courses', action.key]),
+      state.getIn(['api', 'courses', action.key]),
     );
     
   case actions.selectedCourses.FOCUS_COURSE:
@@ -143,8 +171,7 @@ export default (prev = Map(), action) => {
     );
 
   case actions.courseSearch.ADD_COURSE: {
-    console.log(state.toJS());
-    const courses = state.get('courses');
+    const courses = state.getIn(['api', 'courses']);
     const selection = state.get('selection').setIn(['courses', action.key], courses.get(action.key));
     return state.merge({
       selection,

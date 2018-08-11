@@ -1,26 +1,31 @@
-import { call, put } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
-import { HyperscheduleApi } from './api';
+import {call, put, select} from 'redux-saga/effects';
+import {delay} from 'redux-saga';
+
+import * as api from './api';
+
 import * as util from '@/util/hyperschedule-util';
-import { updateCourses } from './actions';
-import {OrderedMap, fromJS} from 'immutable';
+
+import * as actions from './actions';
+import {Map, OrderedMap, fromJS} from 'immutable';
 
 const API_UPDATE_PERIOD_MS = 1000 * 30;
 
+function* periodicApiUpdate() {
+  const {courses, timestamp} = yield call(api.allCourses);
+  yield put(actions.allCourses(courses, timestamp));
 
-function* periodicApiUpdate(getState) {
   for (;;) {
-    // Fetch the response from the API and emit an action to update the state
-    const response = yield call(HyperscheduleApi.fetch_courses);
-    let courses = OrderedMap();
-    for (const data of response.courses) {
-      const course = new util.deserializeCourse(data);
-      courses = courses.set(util.courseKey(course), course);
-    }
-    
-    yield put(updateCourses(courses));
+    const prevTimestamp = yield select(state => state.getIn(['api', 'timestamp']));
+    const {
+      incremental, courses, diff, timestamp,
+    } = yield call(api.coursesSince, prevTimestamp);
 
-    // Wait for API_UPDATE_PERIOD_MS before next API fetch
+    if (incremental) {
+      yield put(actions.coursesSince(diff, timestamp));
+    } else {
+      yield put(actions.allCourses(courses, timestamp));
+    }
+
     yield call(delay, API_UPDATE_PERIOD_MS);
   }
 }

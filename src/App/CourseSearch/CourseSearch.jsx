@@ -12,6 +12,8 @@ import {Mode} from '@/App/mode';
 import {List, CellMeasurer, CellMeasurerCache, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css';
 
+import {List as IList} from 'immutable';
+
 import './CourseSearch.css';
 
 const cache = new CellMeasurerCache({
@@ -23,6 +25,7 @@ const classFields = ['department', 'school'];
 const CourseSearch = ({
   mode,
   courses,
+  order,
   schedule,
   searchString,
   setSearch,
@@ -31,7 +34,7 @@ const CourseSearch = ({
 }) => {
 
   const rowRenderer = ({key, index, parent, style}) => {
-    const courseKey = courses.keySeq().get(index);
+    const courseKey = order.get(index);
     const course = courses.get(courseKey);
 
     const focus = () => focusCourse(courseKey);
@@ -64,7 +67,7 @@ const CourseSearch = ({
     <List height={height}
           width={width}
           rowHeight={cache.rowHeight}
-          rowCount={courses.size}
+          rowCount={order.size}
           rowRenderer={rowRenderer}/>
   );
   
@@ -85,15 +88,20 @@ const CourseSearch = ({
   );
 };
 
-const CourseSearchWrapper = connect(
+export default connect(
   state => {
     const searchString = state.getIn(['search', 'string']);
+    const api = state.get('api');
+
+    const courses = api.get('courses');
+    const order = api.get('order').filter(key => (
+      util.courseMatches(courses.get(key), searchString)
+    ));
 
     return {
       mode: state.get('mode'),
-      courses: state.get('courses').filter(course => (
-        util.courseMatches(course, searchString)
-      )),
+      courses,
+      order,
       schedule: state.get('schedule'),
       searchString,
     };
@@ -106,4 +114,3 @@ const CourseSearchWrapper = connect(
 )(CourseSearch);
 
 
-export default CourseSearchWrapper;
