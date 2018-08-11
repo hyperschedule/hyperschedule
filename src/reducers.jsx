@@ -100,12 +100,12 @@ function api(prev = Map(), action) {
       courses = courses.set(util.courseKey(course), course);
     }
     
-    const order = courses.keySeq().sort((keyA, keyB) => {
-      const sortA = util.courseSortKey(courses.get(keyA)),
-            sortB = util.courseSortKey(courses.get(keyB));
-
-      return sortA < sortB ? -1 : sortA > sortB ? 1 : 0;
-    }).toList();
+    const order = courses.keySeq().sort((keyA, keyB) => (
+      util.courseSortCompare(
+        courses.get(keyA),
+        courses.get(keyB),
+      )
+    )).toList();
     
     return state.merge({
       courses,
@@ -114,6 +114,48 @@ function api(prev = Map(), action) {
     });
   }
 
+  case actions.COURSES_SINCE: {
+    let courses = state.get('courses');
+    let order = state.get('order');
+    const {added, removed, modified} = action.diff;
+
+    // todo: replace dumb linear search with binary search
+    for (const data of removed) {
+      const course = util.deserializeCourse(data);
+      const removedKey = util.courseKey(course);
+
+      order = order.filter(key => key !== removedKey);
+      courses = courses.delete(removedKey);
+    }
+
+    // todo: use binary insertion
+    for (const data of added) {
+      const course = util.deserializeCourse(data);
+      const addedKey = util.courseKey(course);
+
+      order = order.push(addedKey);
+      courses = courses.set(addedKey, course);
+    }
+    order = order.sort((keyA, keyB) => (
+      util.courseSortCompare(
+        courses.get(keyA),
+        courses.get(keyB),
+      )
+    ));
+
+    for (const data of modified) {
+      const course = util.deserializeCourse(data);
+      const key = util.courseKey(course);
+
+      courses = courses.mergeDeepIn([key], course);
+    }
+
+    return state.merge({
+      courses,
+      order,
+      timestamp: action.timestamp,
+    });
+  }
     
   default:
     return state;
