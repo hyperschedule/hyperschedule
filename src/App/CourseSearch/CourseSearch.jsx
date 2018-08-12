@@ -5,9 +5,9 @@ import CourseItem from '@/App/common/CourseItem/CourseItem';
 
 import * as actions from './actions';
 
-import * as util from '@/util/hyperschedule-util';
+import * as courseUtil from '@/util/course';
 
-import {Mode} from '@/App/mode';
+import Mode from '@/App/mode';
 
 import {List, CellMeasurer, CellMeasurerCache, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css';
@@ -51,66 +51,66 @@ const CourseSearch = ({
         parent={parent}
         key={key}>
         <div style={{...style}}>
-          <CourseItem code={util.courseFullCode(course)}
-                      color={util.courseColor(course)}
+          <CourseItem code={courseUtil.courseFullCode(course)}
+                      color={courseUtil.courseColor(course)}
                       scheduled={schedule.has(courseKey)}
                       name={course.get('courseName')}
-                      status={util.courseStatusString(course)}
+                      status={courseUtil.courseStatusString(course)}
                       focus={focus}
                       add={add}/>
         </div>
       </CellMeasurer>
-    );
-  };
+            );
+          };
 
-  const listRenderer = ({height, width}) => (
-    <List height={height}
-          width={width}
-          rowHeight={cache.rowHeight}
-          rowCount={order.size}
-          rowRenderer={rowRenderer}/>
-  );
-  
-  return (
-    <div id="course-search" className={mode === Mode.COURSE_SEARCH ? 'active' : 'inactive'}>
-      <div className="search">
-        <input type="text"
-               placeholder="Search..."
-               value={searchString}
-               onChange={event => setSearch(event.target.value)}/>
-      </div>
-      <div className="entries">
-        <AutoSizer>
-          {listRenderer}
-        </AutoSizer>
-      </div>
-    </div>
-  );
-};
+          const listRenderer = ({height, width}) => (
+            <List height={height}
+                  width={width}
+                  rowHeight={cache.rowHeight}
+                  rowCount={order.size}
+                  rowRenderer={rowRenderer}/>
+          );
+          
+          return (
+            <div id="course-search" className={mode === Mode.COURSE_SEARCH ? 'active' : 'inactive'}>
+              <div className="search">
+                <input type="text"
+                       placeholder="Search..."
+                       value={searchString}
+                       onChange={event => setSearch(event.target.value)}/>
+              </div>
+              <div className="entries">
+                <AutoSizer>
+                  {listRenderer}
+                </AutoSizer>
+              </div>
+            </div>
+          );
+        };
 
-export default connect(
-  state => {
-    const searchString = state.getIn(['search', 'string']);
-    const api = state.get('api');
+        export default connect(
+          state => {
+            const searchString = state.getIn(['search', 'string']);
+            const api = state.get('api');
 
-    const courses = api.get('courses');
-    const order = api.get('order').filter(key => (
-      util.courseMatches(courses.get(key), searchString)
-    ));
+            const courses = api.get('courses');
+            const order = api.get('order').filter(key => (
+              courseUtil.courseMatches(courses.get(key), searchString)
+            ));
 
-    return {
-      mode: state.get('mode'),
-      courses,
-      order,
-      schedule: state.get('schedule'),
-      searchString,
-    };
-  },
-  dispatch => ({
-    setSearch: string => dispatch(actions.setSearch(string)),
-    focusCourse: key => dispatch(actions.focusCourse(key)),
-    addCourse: key => dispatch(actions.addCourse(key)),
-  }),
-)(CourseSearch);
+            return {
+              mode: state.get('mode'),
+              courses,
+              order,
+              schedule: state.get('schedule'),
+              searchString,
+            };
+          },
+          dispatch => ({
+            setSearch: string => dispatch(actions.setSearch(string)),
+            focusCourse: key => dispatch(actions.focusCourse(key)),
+            addCourse: key => dispatch(actions.addCourse(key)),
+          }),
+        )(CourseSearch);
 
 

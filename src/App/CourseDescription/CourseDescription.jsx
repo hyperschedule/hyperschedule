@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import * as util from '@/util/hyperschedule-util';
+import * as util from '@/util/misc';
+import * as courseUtil from '@/util/course';
 
 import Measure from 'react-measure';
 
@@ -86,12 +87,12 @@ export default connect(
       };
     }
 
-    const credits = util.courseCredits(course);
+    const credits = courseUtil.courseCredits(course);
 
     return {
       show: true,
-      title: `${util.courseFullCode(course)} ${course.get('courseName')}`,
-      faculty: util.courseFacultyString(course),
+      title: `${courseUtil.courseFullCode(course)} ${course.get('courseName')}`,
+      faculty: courseUtil.courseFacultyString(course),
       semesters: (course.get('firstHalfSemester') ? (
         course.get('secondHalfSemester') ? 'Full' : 'First-half'
       ) : 'Second-half') + '-semester course',

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import './CourseBlock.css';
 
-import * as util from '@/util/hyperschedule-util';
+import * as util from '@/util/misc';
 
 function CourseBlock({
   code,

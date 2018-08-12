@@ -10,7 +10,7 @@ import CreditCount       from './CreditCount/CreditCount';
 import Controls          from './Controls/Controls';
 import Popup             from './Popup/Popup';
 
-import {Mode} from '@/App/mode';
+import Mode from '@/App/mode';
 
 import './App.css';
 

@@ -5,11 +5,11 @@ import CourseBlock from './CourseBlock/CourseBlock';
 
 import * as actions from './actions';
 
-import {Mode} from '@/App/mode';
+import Mode from '@/App/mode';
 
 import './Schedule.css';
 
-import * as util from '@/util/hyperschedule-util';
+import * as courseUtil from '@/util/course';
 
 const timeToRow = ({hour, minute}) => (
   ((hour - 8) * 60 + minute) / 5 + 2
@@ -39,18 +39,18 @@ const Schedule = ({mode, courses, schedule, starred, focusCourse}) => {
       return Array.from(slot.get('days')).map(day => {
 
         const gridStyle = {
-          gridRowStart: timeToRow(util.parseTime(slot.get('startTime'))),
-          gridRowEnd: timeToRow(util.parseTime(slot.get('endTime'))),
+          gridRowStart: timeToRow(courseUtil.parseTime(slot.get('startTime'))),
+          gridRowEnd: timeToRow(courseUtil.parseTime(slot.get('endTime'))),
           gridColumnStart: dayToColumn(day) + halfOffset,
-          gridColumnEnd: 'span ' + util.courseHalfSemesters(course),
+          gridColumnEnd: 'span ' + courseUtil.courseHalfSemesters(course),
         };
 
         const focus = () => focusCourse(key);
 
         return (
           <CourseBlock key={day}
-                       color={util.courseColor(course)}
-                       code={util.courseFullCode(course)}
+                       color={courseUtil.courseColor(course)}
+                       code={courseUtil.courseFullCode(course)}
                        starred={starred.has(key)}
                        name={course.get('courseName')}
                        gridStyle={gridStyle}

@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import * as util from '@/util/hyperschedule-util';
+import * as util from '@/util/misc';
+import * as courseUtil from '@/util/course';
 
 import './CreditCount.css';
 
@@ -76,7 +77,7 @@ export default connect(
       const school = course.get('school');
       const schoolKey = school === 'HM' ? 'HM' : 'other';
 
-      const courseCredits = util.courseCredits(course);
+      const courseCredits = courseUtil.courseCredits(course);
       
       credits.selected[schoolKey] += courseCredits;
       if (checked.has(key)) {

@@ -6,7 +6,7 @@ import './jspdf.customfonts.debug';
 import ROBOTO from './fonts/Roboto-Regular.ttf.js';
 import ROBOTO_BOLD from './fonts/Roboto-Bold.ttf.js';
 
-import * as util from '@/util/hyperschedule-util';
+import * as courseUtil from '@/util/course';
 
 import ical from 'ical-generator';
 
@@ -146,8 +146,8 @@ export const exportPDF = (courses, selected) => {
   for (const key of selected) {
     const course = courses.get(key);
     for (const slot of course.get('schedule')) {
-      const start = util.parseTime(slot.get('startTime'));
-      const end = util.parseTime(slot.get('endTime'));
+      const start = courseUtil.parseTime(slot.get('startTime'));
+      const end = courseUtil.parseTime(slot.get('endTime'));
 
       for (const day of slot.get('days')) {
 
@@ -156,7 +156,7 @@ export const exportPDF = (courses, selected) => {
               (course.get('firstHalfSemester') ? 0 : columnWidth / 2);
 
 
-        const width = util.courseHalfSemesters(course) * columnWidth / 2;
+        const width = courseUtil.courseHalfSemesters(course) * columnWidth / 2;
                                    
         const yStart = (start.hour - 8 + start.minute / 60) * rowHeight +
               config.margin.top + config.first.rowHeight;
@@ -164,13 +164,13 @@ export const exportPDF = (courses, selected) => {
         const yEnd = (end.hour - 8 + end.minute / 60) * rowHeight +
               config.margin.top + config.first.rowHeight;
 
-        console.log(util.courseColor(course, 'rgbArray'));
-        pdf.setFillColor(...util.courseColor(course, 'rgbArray'));
+        console.log(courseUtil.courseColor(course, 'rgbArray'));
+        pdf.setFillColor(...courseUtil.courseColor(course, 'rgbArray'));
 
         pdf.rect(x, yStart, width, yEnd-yStart, 'F');
         
         pdf.setFont('Helvetica');
-        const courseCodeLines = pdf.splitTextToSize(util.courseFullCode(course), width - 12);
+        const courseCodeLines = pdf.splitTextToSize(courseUtil.courseFullCode(course), width - 12);
         const courseNameLines = pdf.splitTextToSize(course.get('courseName'), width - 12);
 
         pdf.setFont('Roboto');
@@ -231,18 +231,18 @@ export const exportICS = (courses, selected) => {
         }
       }
 
-      const description = util.courseFullCode(course) + ' ' +
+      const description = courseUtil.courseFullCode(course) + ' ' +
             course.get('courseName') + '\n' +
-            util.courseFacultyString(course);
+            courseUtil.courseFacultyString(course);
 
       const start = new Date(listedStartDay.valueOf());
       start.setDate(start.getDate() + weekdayDifference);
-      const {hour: startHours, minute: startMinutes} = util.parseTime(slot.get('startTime'));
+      const {hour: startHours, minute: startMinutes} = courseUtil.parseTime(slot.get('startTime'));
       start.setHours(startHours);
       start.setMinutes(startMinutes);
       
       const end = new Date(start.valueOf());
-      const {hour: endHours, minute: endMinutes} = util.parseTime(slot.get('endTime'));
+      const {hour: endHours, minute: endMinutes} = courseUtil.parseTime(slot.get('endTime'));
       end.setHours(endHours);
       end.setMinutes(endMinutes);
       

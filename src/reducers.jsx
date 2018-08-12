@@ -3,13 +3,16 @@ import {List, OrderedMap, Map, OrderedSet, Set, fromJS} from 'immutable';
 
 import * as actions from './actions';
 
-import {Mode} from '@/App/mode';
+import Mode from '@/App/mode';
 
 import search       from './App/CourseSearch/reducers';
 import popup        from './App/Popup/reducers';
 import importExport from './App/Popup/ImportExport/reducers';
 
-import * as util from '@/util/hyperschedule-util';
+import * as util          from '@/util/misc';
+import * as courseUtil    from '@/util/course';
+import * as scheduleUtil  from '@/util/schedule';
+import * as serializeUtil from '@/util/serialize';
 
 const mode = (
   state = Mode.COURSE_SEARCH,
@@ -96,12 +99,12 @@ function api(prev = Map(), action) {
     let courses = Map();
     
     for (const data of action.courses) {
-      const course = util.deserializeCourse(data);
-      courses = courses.set(util.courseKey(course), course);
+      const course = serializeUtil.deserializeCourse(data);
+      courses = courses.set(courseUtil.courseKey(course), course);
     }
     
     const order = courses.keySeq().sort((keyA, keyB) => (
-      util.courseSortCompare(
+      courseUtil.coursesSortCompare(
         courses.get(keyA),
         courses.get(keyB),
       )
@@ -121,8 +124,8 @@ function api(prev = Map(), action) {
 
     // todo: replace dumb linear search with binary search
     for (const data of removed) {
-      const course = util.deserializeCourse(data);
-      const removedKey = util.courseKey(course);
+      const course = serializeUtil.deserializeCourse(data);
+      const removedKey = courseUtil.courseKey(course);
 
       order = order.filter(key => key !== removedKey);
       courses = courses.delete(removedKey);
@@ -130,22 +133,22 @@ function api(prev = Map(), action) {
 
     // todo: use binary insertion
     for (const data of added) {
-      const course = util.deserializeCourse(data);
-      const addedKey = util.courseKey(course);
+      const course = serializeUtil.deserializeCourse(data);
+      const addedKey = courseUtil.courseKey(course);
 
       order = order.push(addedKey);
       courses = courses.set(addedKey, course);
     }
     order = order.sort((keyA, keyB) => (
-      util.courseSortCompare(
+      courseUtil.coursesSortCompare(
         courses.get(keyA),
         courses.get(keyB),
       )
     ));
 
     for (const data of modified) {
-      const course = util.deserializeCourse(data);
-      const key = util.courseKey(course);
+      const course = serializeUtil.deserializeCourse(data);
+      const key = courseUtil.courseKey(course);
 
       courses = courses.mergeDeepIn([key], course);
     }
@@ -181,21 +184,21 @@ export default (prev = Map(), action) => {
     return state.setIn(
       ['importExport', 'data'],
       JSON.stringify(
-        util.serializeSelection(
+        serializeUtil.serializeSelection(
           state.get('selection'),
         ),
       )
     );
     
   case actions.importExport.APPLY_DATA: {
-    const selection = util.deserializeSelection(
+    const selection = serializeUtil.deserializeSelection(
       JSON.parse(
         state.getIn(['importExport', 'data']),
       )
     );
     return state.merge({
       selection,
-      schedule: util.computeSchedule(selection),
+      schedule: scheduleUtil.computeSchedule(selection),
     });
   }
 
@@ -217,7 +220,7 @@ export default (prev = Map(), action) => {
     const selection = state.get('selection').setIn(['courses', action.key], courses.get(action.key));
     return state.merge({
       selection,
-      schedule: util.computeSchedule(selection),
+      schedule: scheduleUtil.computeSchedule(selection),
     });
   }
   case actions.selectedCourses.REORDER: 
@@ -226,7 +229,7 @@ export default (prev = Map(), action) => {
   case actions.selectedCourses.TOGGLE_COURSE_STARRED: {
     const selection = state.get('selection');
     return state.set(
-      'schedule', util.computeSchedule(selection),
+      'schedule', scheduleUtil.computeSchedule(selection),
     );
   }
 

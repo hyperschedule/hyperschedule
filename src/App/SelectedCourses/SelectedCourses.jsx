@@ -5,7 +5,7 @@ import CourseItem from '@/App/common/CourseItem/CourseItem';
 
 import * as actions from './actions';
 
-import * as util from '@/util/hyperschedule-util';
+import * as courseUtil from '@/util/course';
 
 import './SelectedCourses.css';
 
@@ -52,14 +52,14 @@ const SelectedCourses = ({
     return {
       key,
       props: {
-        code: util.courseFullCode(course),
+        code: courseUtil.courseFullCode(course),
         name: course.get('courseName'),
-        status: util.courseStatusString(course),
+        status: courseUtil.courseStatusString(course),
         focus: () => focusCourse(key),
         checked: checked.has(key),
         starred: starred.has(key),
         scheduled: schedule.has(key),
-        color: util.courseColor(course),
+        color: courseUtil.courseColor(course),
         remove: event => {
           removeCourse(key);
           event.stopPropagation();
