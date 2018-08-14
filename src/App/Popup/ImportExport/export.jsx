@@ -1,5 +1,3 @@
-//import {ics} from './ics.js';
-
 import jsPDF from 'jspdf';
 import './jspdf.customfonts.debug';
 
@@ -35,7 +33,7 @@ const config = {
   },
   padding: {
     course: 6,
-    
+
   },
 };
 
@@ -110,7 +108,7 @@ export const exportPDF = (courses, selected) => {
     } else {
       pdf.setFillColor(config.color.column.even);
     }
-    
+
     pdf.rect(x, config.margin.top, columnWidth, tableHeight, 'F');
 
     pdf.setFont('Roboto');
@@ -157,10 +155,10 @@ export const exportPDF = (courses, selected) => {
 
 
         const width = courseUtil.courseHalfSemesters(course) * columnWidth / 2;
-                                   
+
         const yStart = (start.hour - 8 + start.minute / 60) * rowHeight +
               config.margin.top + config.first.rowHeight;
-        
+
         const yEnd = (end.hour - 8 + end.minute / 60) * rowHeight +
               config.margin.top + config.first.rowHeight;
 
@@ -168,7 +166,7 @@ export const exportPDF = (courses, selected) => {
         pdf.setFillColor(...courseUtil.courseColor(course, 'rgbArray'));
 
         pdf.rect(x, yStart, width, yEnd-yStart, 'F');
-        
+
         pdf.setFont('Helvetica');
         const courseCodeLines = pdf.splitTextToSize(courseUtil.courseFullCode(course), width - 12);
         const courseNameLines = pdf.splitTextToSize(course.get('courseName'), width - 12);
@@ -185,10 +183,10 @@ export const exportPDF = (courses, selected) => {
       }
     }
   }
-  
+
   const uri = pdf.output('datauristring');
   window.open(uri, 'hyperschedule.pdf');
-  
+
 };
 
 
@@ -240,12 +238,12 @@ export const exportICS = (courses, selected) => {
       const {hour: startHours, minute: startMinutes} = courseUtil.parseTime(slot.get('startTime'));
       start.setHours(startHours);
       start.setMinutes(startMinutes);
-      
+
       const end = new Date(start.valueOf());
       const {hour: endHours, minute: endMinutes} = courseUtil.parseTime(slot.get('endTime'));
       end.setHours(endHours);
       end.setMinutes(endMinutes);
-      
+
       cal.createEvent({
         summary: course.get('courseName'),
         description,
