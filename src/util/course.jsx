@@ -1,9 +1,9 @@
 import React from 'react';
+
 import {fromJS, Map, List, Set, Iterable} from 'immutable';
+import randomColor from 'randomcolor';
 
 import * as util from '@/util/misc';
-
-import randomColor from 'randomcolor';
 
 const keyFields = [
   'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section',
