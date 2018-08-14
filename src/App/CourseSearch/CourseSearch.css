@@ -9,13 +9,10 @@
     flex-direction: column;
 
     visibility: hidden;
-    opacity: 0;
-    transition: visibility .2s linear, opacity .2s linear;
 }
 
 #course-search.active {
     visibility: visible;
-    opacity: 1;
 }
 
 #course-search .search {
