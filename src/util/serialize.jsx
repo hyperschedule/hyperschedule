@@ -1,9 +1,10 @@
 import {fromJS, List, Map, Set} from 'immutable';
 
+import * as courseUtil from '@/util/course';
+
 export function deserializeCourse(data) {
   return fromJS(data);
 }
-
 
 export function serializeSelection(selection) {
   const courses = selection.get('courses');
@@ -30,9 +31,9 @@ export function deserializeSelection(data) {
   } of data) {
     const course = deserializeCourse(courseData);
     
-    const courseKey = key(course);
-    courses = courses.set(courseKey, fromJS(course));
-    order = order.push(courseKey);
+    const key = courseUtil.courseKey(course);
+    courses = courses.set(key, fromJS(course));
+    order = order.push(key);
     
     if (courseStarred) {
       starred = starred.add(key);
