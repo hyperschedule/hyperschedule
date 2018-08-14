@@ -19,20 +19,20 @@ export function computeSchedule(selection) {
     if (!checked.has(key)) {
       continue;
     }
-    
+
     const course = courses.get(key);
 
     let conflictFound = false;
     for (const otherKey of schedule) {
       const other = courses.get(otherKey);
-      
+
       if (courseUtil.coursesConflict(course, other) ||
-          courseUtil.coursesRedundant(course, other)) {
+          courseUtil.coursesEquivalent(course, other)) {
         conflictFound = true;
         break;
       }
     }
-    
+
     if (conflictFound) {
       continue;
     }
@@ -42,4 +42,3 @@ export function computeSchedule(selection) {
 
   return schedule;
 }
-

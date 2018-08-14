@@ -8,6 +8,7 @@ import randomColor from 'randomcolor';
 const keyFields = [
   'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section',
 ];
+
 export function courseKey(course) {
   return (
     keyFields
@@ -19,6 +20,7 @@ export function courseKey(course) {
 const codeKeyFields = [
   'department', 'courseNumber', 'courseCodeSuffix',
 ];
+
 export function courseCodeKey(course) {
   return (
     codeKeyFields
@@ -34,6 +36,7 @@ const sortKeyFields = [
   'school',
   'section',
 ];
+
 export function courseSortKey(course) {
   return sortKeyFields.map(field => course.get(field));
 }
@@ -87,15 +90,14 @@ const colorSchoolHue = {
   PO: 'blue',
   PZ: 'orange',
 };
+
 export function courseColor(course, format = 'hex') {
   return randomColor({
-    //hue: colorSchoolHue[course.get('school')] || 'monochrome',
     luminosity: 'light',
     seed: courseFullCode(course),
     format,
   });
 }
-
 
 function daysOverlap(daysA, daysB) {
   const daysASet = new Set(daysA);
@@ -119,13 +121,12 @@ export function timeToMinutes({hour, minute}) {
   return hour * 60 + minute;
 }
 
-
 export function coursesConflict(courseA, courseB) {
   if (!(courseA.get('firstHalfSemester') && courseB.get('firstHalfSemester') ||
         courseA.get('secondHalfSemester') && courseB.get('secondHalfSemester'))) {
     return false;
   }
-  
+
   for (const slotA of courseA.get('schedule')) {
     for (const slotB of courseB.get('schedule')) {
       if (!daysOverlap(slotA.get('days'), slotB.get('days'))) {
@@ -136,7 +137,7 @@ export function coursesConflict(courseA, courseB) {
             startB = timeToMinutes(parseTime(slotB.get('startTime'))),
             endA   = timeToMinutes(parseTime(slotA.get('endTime'))),
             endB   = timeToMinutes(parseTime(slotB.get('endTime')));
-      
+
       if (startA <= startB && startB < endA ||
           startB <= startA && startA < endB) {
         return true;
@@ -144,12 +145,9 @@ export function coursesConflict(courseA, courseB) {
     }
   }
 
-  return false;  
+  return false;
 }
 
-export function coursesRedundant(courseA, courseB) {
+export function coursesEquivalent(courseA, courseB) {
   return courseCodeKey(courseA) === courseCodeKey(courseB);
 }
-
-
-
