@@ -18,7 +18,6 @@ export const componentToJS = Component => props => {
   return <Component {...jsProps}/>;
 };
 
-
 export function classMap(map) {
   const classes = [];
   for (const className in map) {
@@ -42,3 +41,34 @@ export function commaJoin(items, comma = ',') {
   }
 };
 
+function compareDefault(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
+// Searches a sorted Immutable.List to find the index for inserting an item.
+// This is used to incrementally insert or remove items from the
+// (sorted) course list.
+export function binarySearch(list, item, compare = compareDefault) {
+  let left = 0,
+      right = list.size;
+
+  while (right > left) {
+    const mid = Math.floor((left+right) / 2);
+    const cmp = compare(item, list.get(mid));
+
+    if (cmp < 0) {
+      // item < items[mid]
+      right = mid;
+    } else if (cmp > 0) {
+      // items > items[mid]
+      left = mid + 1;
+    } else {
+      // items == items[mid]; should not occur for course
+      // incremental updating, but included for algorithmic
+      // correctness anyway
+      return mid;
+    }
+  }
+
+  return left;
+}
