@@ -1,8 +1,6 @@
 import {connect} from 'react-redux';
 import React from 'react';
 
-import Popup from 'reactjs-popup';
-
 import * as actions from './actions';
 import './Controls.css';
 
