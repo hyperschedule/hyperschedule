@@ -35,17 +35,13 @@ module.exports = {
           'css-loader',
         ]
       },
-      {
-        test: /\.(svg|woff2?|png|eot|ttf)$/,
-        loader: 'file-loader',
-      },
     ],
   },
-	node: {
-		fs: 'empty',
+  node: {
+    fs: 'empty',
     dns: 'mock',
     net: 'mock',
-	},
+  },
   resolve: {
     modules: [
       path.join(__dirname, 'node_modules'),
