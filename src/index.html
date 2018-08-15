@@ -164,6 +164,26 @@
       </div>
     </div>
 
+    <div class="modal fade" id="malformed-courses-modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Malformed Courses</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Occasionally, the registrar adds malformed data to Portal: for example, a course with no name, invalid start and end dates, or other such nonsense. This shouldn't be possible, but because Portal is poorly designed, it is. Hyperschedule keeps track of these courses since they appear in the Portal search results, even though they cannot be parsed into valid course data to be used in scheduling. These courses are displayed below:</p>
+            <div id="malformed-courses-list"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"    integrity="sha384-Ui1pvNxCzO7LqnfgsWJ2ndsgpJPrWVTg7DCIag+do29np24E7Jyy6A09M3JUuLQf" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"      integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.6.3/html.sortable.min.js" integrity="sha384-McmwXqJoBon4wsJiVtB9S/zYH9D0Vt5lKjayJuj/6mlylXYopb3bKj4gXV1dbq2W" crossorigin="anonymous"></script>

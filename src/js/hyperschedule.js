@@ -47,10 +47,13 @@ const importExportICalButton = document.getElementById('import-export-ical-butto
 const importExportSaveChangesButton = document.getElementById("import-export-save-changes-button");
 const importExportCopyButton = document.getElementById("import-export-copy-button");
 
+const malformedCoursesList = document.getElementById("malformed-courses-list");
+
 //// Global state
 
 // Persistent data.
 let gCourseList = [];
+let gMalformedCourseCount = 0;
 let gCourseDataTimestamp = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
@@ -68,6 +71,11 @@ let gNextIncrementalCourseSearchIndex = null;
 
 /// Utility functions
 //// JavaScript utility functions
+
+function isString(obj)
+{
+  return typeof obj === "string" || obj instanceof String;
+}
 
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
@@ -240,6 +248,27 @@ function timeStringTo12HourString(timeString)
     minutes.toString().padStart(2, "0") + " " + (pm ? "PM" : "AM");
 }
 
+async function runWithExponentialBackoff(
+  task, failureDelay, backoffFactor, fetchDesc)
+{
+  while (true)
+  {
+    console.log(`Attempting to ${fetchDesc}...`);
+    try
+    {
+      await task();
+      break;
+    }
+    catch (err)
+    {
+      console.error(err);
+      console.log(`Trying again to ${fetchDesc} in ${failureDelay}ms`);
+      await new Promise(resolve => setTimeout(resolve, failureDelay));
+      failureDelay *= backoffFactor;
+    }
+  }
+}
+
 //// DOM utility functions
 
 function hideEntity(entity)
@@ -270,6 +299,14 @@ function setButtonSelected(button, selected)
   const classRemoved = selected ? "btn-light" : "btn-primary";
   button.classList.add(classAdded);
   button.classList.remove(classRemoved);
+}
+
+function removeEntityChildren(entity)
+{
+  while (entity.hasChildNodes())
+  {
+    entity.removeChild(entity.lastChild);
+  }
 }
 
 //// Course and schedule utility functions
@@ -571,6 +608,36 @@ function computeCreditCountDescription(schedule) {
   return text;
 }
 
+/// API retrieval
+
+async function retrieveAPI(endpoint)
+{
+  const httpResponse = await fetch(apiURL + endpoint);
+  if (!httpResponse.ok)
+  {
+    throw Error(`Received API error for endpoint ${endpoint}: ` +
+                `${httpResponse.status} ${httpResponse.statusText}`);
+  }
+  return await httpResponse.json();
+}
+
+async function retrieveMalformedCourses()
+{
+  const malformedCourses = await retrieveAPI("/api/v2/malformed-courses");
+  if (!Array.isArray(malformedCourses))
+  {
+    throw Error();
+  }
+  for (const malformedCourse of malformedCourses)
+  {
+    if (!isString(malformedCourse))
+    {
+      throw Error();
+    }
+  }
+  return malformedCourses;
+}
+
 /// DOM manipulation
 //// DOM setup
 
@@ -665,6 +732,22 @@ function createCourseSearchEndOfResult(hasResult = true)
   }
   listItem.setAttribute("style", "color: grey");
   listItem.appendChild(text);
+  if (gMalformedCourseCount)
+  {
+    listItem.appendChild(document.createElement("br"));
+    const coursesWere =
+          (gMalformedCourseCount === 1) ? "course was" : "courses were";
+    const them =
+          (gMalformedCourseCount === 1) ? "it" : "them";
+    const hintText = document.createTextNode(
+      `${gMalformedCourseCount} ${coursesWere} omitted from results ` +
+      `because the registrar entered malformed data for ${them} – `);
+    listItem.appendChild(hintText);
+    const link = document.createElement("a");
+    link.appendChild(document.createTextNode("click here for more details"));
+    link.href = "javascript:showMalformedCoursesModal()";
+    listItem.appendChild(link);
+  }
   return listItem;
 }
 
@@ -1085,6 +1168,36 @@ function showImportExportModal()
   $("#import-export-modal").modal("show");
 }
 
+function showMalformedCoursesModal()
+{
+  removeEntityChildren(malformedCoursesList);
+  const courses = gMalformedCourseCount === 1 ? "course" : "courses";
+  malformedCoursesList.appendChild(document.createTextNode(
+    `Loading ${gMalformedCourseCount} malformed ${courses}...`));
+  $("#malformed-courses-modal").modal("show");
+  runWithExponentialBackoff(async () => {
+    const malformedCourses = await retrieveMalformedCourses();
+    console.log("Successfully fetched malformed courses.");
+    removeEntityChildren(malformedCoursesList);
+    if (malformedCourses.length !== 0)
+    {
+      const ul = document.createElement("ul");
+      for (const malformedCourse of malformedCourses)
+      {
+        const li = document.createElement("li");
+        li.appendChild(document.createTextNode(malformedCourse));
+        ul.appendChild(li);
+      }
+      malformedCoursesList.appendChild(ul);
+    }
+    else
+    {
+      malformedCoursesList.appendChild(document.createTextNode(
+        "No malformed courses."));
+    }
+  }, 500, 1.4, "fetch malformed courses");
+}
+
 function setCourseDescriptionBox(course)
 {
   while (courseDescriptionBox.hasChildNodes())
@@ -1305,7 +1418,6 @@ function buildCourseIndex(courseList)
 async function retrieveCourseData()
 {
   let apiEndpoint;
-  let apiResponse;
   let maybeIncremental = false;
   // We shouldn't need the second case here (about the empty
   // gCourseList), but why not? Added robustness hopefully.
@@ -1318,13 +1430,7 @@ async function retrieveCourseData()
     apiEndpoint = "/api/v2/courses-since/" + gCourseDataTimestamp;
     maybeIncremental = true;
   }
-  const httpResponse = await fetch(apiURL + apiEndpoint);
-  if (!httpResponse.ok)
-  {
-    throw Error("Received API error while fetching course data: " +
-                httpResponse.status + " " + httpResponse.statusText);
-  }
-  apiResponse = await httpResponse.json();
+  const apiResponse = await retrieveAPI(apiEndpoint);
   // Just in case there is an unexpected error while executing the
   // following code, make sure to fetch a whole new copy of the
   // courses list next time, since the incremental update would be
@@ -1392,6 +1498,8 @@ async function retrieveCourseData()
       Object.assign(gSelectedCoursesIndex[key], gCourseIndex[key]);
     }
   }
+  // Previous versions of the API v2 did not return this field.
+  gMalformedCourseCount = apiResponse.malformedCourseCount || 0;
   gCourseDataTimestamp = apiResponse.timestamp;
   setTimeout(() => {
     if (maybeCourseListChanged)
@@ -1407,28 +1515,13 @@ async function retrieveCourseData()
 
 async function retrieveCourseDataUntilSuccessful()
 {
-  let delay = 500;
-  const backoffFactor = 1.5;
   const pollInterval = 5 * 1000;
-  while (true)
-  {
-    console.log("Attempting to fetch course data...");
-    try
-    {
-      await retrieveCourseData();
-      console.log("Successfully fetched course data.");
-      console.log(`Polling again in ${pollInterval}ms.`);
-      setTimeout(retrieveCourseDataUntilSuccessful, pollInterval);
-      break;
-    }
-    catch (err)
-    {
-      console.error(err);
-      console.log(`Trying again in ${delay}ms`);
-      await new Promise(resolve => setTimeout(resolve, delay));
-      delay *= backoffFactor;
-    }
-  }
+  await runWithExponentialBackoff(async () => {
+    await retrieveCourseData();
+    console.log("Successfully fetched course data.");
+    console.log(`Polling again in ${pollInterval}ms.`);
+    setTimeout(retrieveCourseDataUntilSuccessful, pollInterval);
+  }, 500, 1.5, "fetch course data");
 }
 
 //// Local storage
