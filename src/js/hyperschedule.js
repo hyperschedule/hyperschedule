@@ -1480,10 +1480,28 @@ function uglyHack(input)
 
 function downloadICalFile()
 {
+  if (gSelectedCourses.length === 0)
+  {
+    alert("You have not added any courses to export.");
+    return;
+  }
   const cal = ics();
+  let anyStarred = false;
+  let anySelected = false;
   for (let course of gSelectedCourses)
   {
-    if (course.starred)
+    if (course.selected && course.starred)
+    {
+      anyStarred = true;
+    }
+    if (course.selected)
+    {
+      anySelected = true;
+    }
+  }
+  for (let course of gSelectedCourses)
+  {
+    if (!anySelected || course.selected && (!anyStarred || course.starred))
     {
       const subject = course.courseName;
       const description = uglyHack(
