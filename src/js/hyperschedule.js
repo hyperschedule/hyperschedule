@@ -1486,8 +1486,6 @@ function downloadICalFile()
     if (course.starred)
     {
       const subject = course.courseName;
-      // Why use a literal \n in the description? Bug in ics.js, see
-      // .
       const description = uglyHack(
         courseCodeToString(course) + " " +
           course.courseName + "\n" +
