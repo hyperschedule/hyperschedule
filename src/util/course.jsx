@@ -41,12 +41,7 @@ export function courseSortKey(course) {
   return sortKeyFields.map(field => course.get(field));
 }
 
-export function coursesSortCompare(courseA, courseB) {
-  const sortA = courseSortKey(courseA),
-        sortB = courseSortKey(courseB);
-
-  return sortA < sortB ? -1 : sortA > sortB ? 1 : 0;
-}
+export const coursesSortCompare = util.sortKeyComparator(courseSortKey);
 
 export function courseCode(course) {
   return course.get('department') + ' ' +
@@ -54,22 +49,25 @@ export function courseCode(course) {
     course.get('courseCodeSuffix');
 }
 
-export function courseFullCode(course) {
-  return courseCode(course) + ' ' +
-    course.get('school') + '-' +
+export function courseSection(course) {
+  return course.get('school') + '-' +
     course.get('section').toString().padStart(2, '0');
 }
 
-export function courseStatusString(course) {
-  return `${course.get('courseStatus')}, ` +
-    `${course.get('openSeats')}/${course.get('totalSeats')} seats filled`;
+export function courseFullCode(course) {
+  return courseCode(course) + ' ' + courseSection(course);
 }
 
-export function courseFacultyString(course) {
-  return util.commaJoin(course.get('faculty').toJS());
-}
+  export function courseStatusString(course) {
+    return `${course.get('courseStatus')}, ` +
+      `${course.get('openSeats')}/${course.get('totalSeats')} seats filled`;
+  }
 
-export function courseHalfSemesters(course) {
+  export function courseFacultyString(course) {
+    return util.commaJoin(course.get('faculty').toJS());
+  }
+
+  export function courseHalfSemesters(course) {
   return course.get('firstHalfSemester') + course.get('secondHalfSemester');
 }
 
@@ -78,9 +76,35 @@ export function courseCredits(course) {
 }
 
 export function courseMatches(course, search) {
-  return course.get('courseName').toLowerCase().includes(
-    search.toLowerCase(),
-  );
+  const queries = search.toLowerCase().split(/\s+/);
+
+  const code = courseCode(course).toLowerCase().replace(/\s+/, '');
+  const section = courseSection(course).toLowerCase();
+  const name = course.get('courseName').toLowerCase();
+
+  function matchesSubquery(subquery) {
+    if (code.includes(subquery) ||
+        section.includes(subquery) ||
+        name.includes(subquery)) {
+      return true;
+    }
+
+    for (const instructor of course.get('faculty')) {
+      if (instructor.includes(subquery)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  for (const subquery of queries) {
+    if (!matchesSubquery(subquery)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 const colorSchoolHue = {
