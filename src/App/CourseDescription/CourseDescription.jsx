@@ -1,16 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import Measure from 'react-measure';
 
 import * as util from '@/util/misc';
 import * as courseUtil from '@/util/course';
 
-import Measure from 'react-measure';
-
-import * as actions from './actions';
-
 import './CourseDescription.css';
 
 class CourseDescription extends React.PureComponent {
+  static propTypes = {
+    show: PropTypes.bool.isRequired,
+    credits: PropTypes.string,
+    semesters: PropTypes.string,
+    title: PropTypes.string,
+    faculty: PropTypes.string,
+    schedule: PropTypes.arrayOf(PropTypes.shape({
+      days: PropTypes.string.isRequired,
+      startTime: PropTypes.string.isRequired,
+      endTime: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+    })),
+  };
 
   constructor(props) {
     super(props);
@@ -26,7 +37,7 @@ class CourseDescription extends React.PureComponent {
 
   render() {
     const {
-      show, credits, semesters, title, faculty, height, schedule, 
+      show, credits, semesters, title, faculty, schedule,
     } = this.props;
 
     let summary = null;
@@ -40,7 +51,7 @@ class CourseDescription extends React.PureComponent {
           ))}
         </div>
       );
-      
+
       summary = (
         <div className="summary">
           <div className="row title">
@@ -66,8 +77,8 @@ class CourseDescription extends React.PureComponent {
     return (
       <div id="course-description">
         <div className="overflow" style={{
-               height: this.state.height + 'px',
-             }}>
+          height: this.state.height + 'px',
+        }}>
           <Measure offset scroll onResize={this.setHeight}>
             {measurer}
           </Measure>
@@ -100,6 +111,5 @@ export default connect(
       credits: `${credits} credit${credits === 1 ? '' : 's'}`,
     };
   },
-  dispatch => ({}),
+  () => ({}),
 )(util.componentToJS(CourseDescription));
-

@@ -1,16 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
 import CourseItem from '@/App/common/CourseItem/CourseItem';
-
 import * as actions from './actions';
-
 import * as courseUtil from '@/util/course';
 
 import './SelectedCourses.css';
-
-import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-
 
 const SortableItem = SortableElement(({props}) => {
   return (
@@ -43,7 +41,6 @@ const SelectedCourses = ({
   toggleCourseChecked,
   toggleCourseStarred,
 }) => {
-  
   const onSortEnd = ({oldIndex: from, newIndex: to}) => reorder(from, to);
 
   const courseItems = order.map(key => {
@@ -87,10 +84,23 @@ const SelectedCourses = ({
   );
 };
 
+SelectedCourses.propTypes = {
+  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map).isRequired,
+  order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
+  checked: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
+  starred: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
+  schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
+  removeCourse: PropTypes.func.isRequired,
+  focusCourse: PropTypes.func.isRequired,
+  reorder: PropTypes.func.isRequired,
+  toggleCourseChecked: PropTypes.func.isRequired,
+  toggleCourseStarred: PropTypes.func.isRequired,
+};
+
 export default connect(
   state => {
     const selection = state.get('selection');
-    
+
     return ({
       courses: selection.get('courses'),
       order: selection.get('order'),
@@ -107,4 +117,3 @@ export default connect(
     toggleCourseStarred: key => dispatch(actions.toggleCourseStarred(key)),
   }),
 )(SelectedCourses);
-

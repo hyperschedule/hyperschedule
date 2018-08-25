@@ -21,9 +21,8 @@ export default (state = Map({
         .set('mode', 'importExport')
         .set('visible', true)
     );
-    
+
   default:
     return state;
   }
-  
 };

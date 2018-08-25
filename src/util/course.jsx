@@ -1,6 +1,4 @@
-import React from 'react';
-
-import {fromJS, Map, List, Set, Iterable} from 'immutable';
+import {Set} from 'immutable';
 import randomColor from 'randomcolor';
 
 import * as util from '@/util/misc';
@@ -58,16 +56,16 @@ export function courseFullCode(course) {
   return courseCode(course) + ' ' + courseSection(course);
 }
 
-  export function courseStatusString(course) {
-    return `${course.get('courseStatus')}, ` +
-      `${course.get('openSeats')}/${course.get('totalSeats')} seats filled`;
-  }
+export function courseStatusString(course) {
+  return `${course.get('courseStatus')}, ` +
+    `${course.get('openSeats')}/${course.get('totalSeats')} seats filled`;
+}
 
-  export function courseFacultyString(course) {
-    return util.commaJoin(course.get('faculty').toJS());
-  }
+export function courseFacultyString(course) {
+  return util.commaJoin(course.get('faculty').toJS());
+}
 
-  export function courseHalfSemesters(course) {
+export function courseHalfSemesters(course) {
   return course.get('firstHalfSemester') + course.get('secondHalfSemester');
 }
 
@@ -106,14 +104,6 @@ export function courseMatches(course, search) {
 
   return true;
 }
-
-const colorSchoolHue = {
-  HM: 'yellow',
-  CM: 'red',
-  SC: 'green',
-  PO: 'blue',
-  PZ: 'orange',
-};
 
 export function courseColor(course, format = 'hex') {
   return randomColor({
@@ -159,8 +149,8 @@ export function coursesConflict(courseA, courseB) {
 
       const startA = timeToMinutes(parseTime(slotA.get('startTime'))),
             startB = timeToMinutes(parseTime(slotB.get('startTime'))),
-            endA   = timeToMinutes(parseTime(slotA.get('endTime'))),
-            endB   = timeToMinutes(parseTime(slotB.get('endTime')));
+            endA = timeToMinutes(parseTime(slotA.get('endTime'))),
+            endB = timeToMinutes(parseTime(slotB.get('endTime')));
 
       if (startA <= startB && startB < endA ||
           startB <= startA && startA < endB) {

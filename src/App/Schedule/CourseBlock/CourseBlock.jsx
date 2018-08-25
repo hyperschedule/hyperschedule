@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import './CourseBlock.css';
 
@@ -13,18 +13,16 @@ function CourseBlock({
   color,
   starred,
 }) {
-  
-  
   return (
     <div className={util.classMap({
-           course: true,
-           block: true,
-           starred: starred,
-         })} style={{
-           ...gridStyle,
-           backgroundColor: color,
-         }}
-         onClick={focus}>
+      course: true,
+      block: true,
+      starred: starred,
+    })} style={{
+      ...gridStyle,
+      backgroundColor: color,
+    }}
+    onClick={focus}>
       <div className='star'>
       </div>
       <div className='label'>
@@ -38,5 +36,14 @@ function CourseBlock({
     </div>
   );
 }
+
+CourseBlock.propTypes = {
+  code: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  focus: PropTypes.func.isRequired,
+  gridStyle: PropTypes.object,
+  color: PropTypes.string.isRequired,
+  starred: PropTypes.bool.isRequired,
+};
 
 export default util.componentToJS(CourseBlock);

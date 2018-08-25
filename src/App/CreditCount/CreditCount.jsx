@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import * as util from '@/util/misc';
 import * as courseUtil from '@/util/course';
 
 import './CreditCount.css';
-
 
 const CreditCount = ({
   credits,
@@ -30,7 +30,7 @@ const CreditCount = ({
       </tr>
     );
   }
-  
+
   return (
     <div id='credit-count'>
       <table>
@@ -42,16 +42,25 @@ const CreditCount = ({
   );
 };
 
+CreditCount.propTypes = {
+  credits: PropTypes.objectOf(
+    PropTypes.shape({
+      HM: PropTypes.number.isRequired,
+      other: PropTypes.number.isRequired,
+    }).isRequired,
+  ).isRequired,
+};
+
 export default connect(
   state => {
     const selection = state.get('selection'),
           schedule = state.get('schedule'),
-          
+
           order = selection.get('order'),
           starred = selection.get('starred'),
           checked = selection.get('checked'),
           courses = selection.get('courses');
-    
+
     const credits = {
       selected: {
         HM: 0,
@@ -73,12 +82,12 @@ export default connect(
 
     for (const key of order) {
       const course = courses.get(key);
-      
+
       const school = course.get('school');
       const schoolKey = school === 'HM' ? 'HM' : 'other';
 
       const courseCredits = courseUtil.courseCredits(course);
-      
+
       credits.selected[schoolKey] += courseCredits;
       if (checked.has(key)) {
         credits.checked[schoolKey] += courseCredits;
@@ -92,9 +101,8 @@ export default connect(
     }
 
     return {
-      credits
+      credits,
     };
-    
   },
-  dispatch => ({}),
+  () => ({}),
 )(util.componentToJS(CreditCount));

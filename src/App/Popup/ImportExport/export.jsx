@@ -77,7 +77,6 @@ const dayIndex = {
 };
 
 export const exportPDF = (courses, selected) => {
-
   const pdf = new jsPDF({unit: 'pt', format: 'letter', orientation: 'l'});
 
   pdf.addFileToVFS('Roboto-Regular.ttf', ROBOTO);
@@ -148,11 +147,9 @@ export const exportPDF = (courses, selected) => {
       const end = courseUtil.parseTime(slot.get('endTime'));
 
       for (const day of slot.get('days')) {
-
         const x = dayIndex[day] * columnWidth +
               config.margin.left + config.first.columnWidth +
               (course.get('firstHalfSemester') ? 0 : columnWidth / 2);
-
 
         const width = courseUtil.courseHalfSemesters(course) * columnWidth / 2;
 
@@ -162,7 +159,6 @@ export const exportPDF = (courses, selected) => {
         const yEnd = (end.hour - 8 + end.minute / 60) * rowHeight +
               config.margin.top + config.first.rowHeight;
 
-        console.log(courseUtil.courseColor(course, 'rgbArray'));
         pdf.setFillColor(...courseUtil.courseColor(course, 'rgbArray'));
 
         pdf.rect(x, yStart, width, yEnd-yStart, 'F');
@@ -186,11 +182,7 @@ export const exportPDF = (courses, selected) => {
 
   const uri = pdf.output('datauristring');
   window.open(uri, 'hyperschedule.pdf');
-
 };
-
-
-
 
 const dayToICal = {
   U: 'SU',
@@ -208,7 +200,6 @@ export const exportICS = (courses, selected) => {
   for (const key of selected) {
     const course = courses.get(key);
     for (const slot of course.get('schedule')) {
-
       const listedStartDay = new Date(course.get('startDate'));
       const listedStartWeekday = listedStartDay.getDay();
       const listedEndDay = new Date(course.get('endDate'));
@@ -216,15 +207,12 @@ export const exportICS = (courses, selected) => {
       // Determine the first day of class. We want to pick the
       // weekday that occurs the soonest after (possibly on the same
       // day as) the listed start date.
-      let startWeekday = null;
       let weekdayDifference = 7;
       for (const weekday of slot.get('days')) {
-
         const possibleStartWeekday = dayIndex[weekday];
         const possibleWeekdayDifference =
               (possibleStartWeekday - listedStartWeekday) % 7;
         if (possibleWeekdayDifference < weekdayDifference) {
-          startWeekday = possibleStartWeekday;
           weekdayDifference = possibleWeekdayDifference;
         }
       }
@@ -257,12 +245,10 @@ export const exportICS = (courses, selected) => {
           byDay: Array.from(slot.get('days')).map(day => dayToICal[day]),
         },
       });
-
     }
   }
 
   const value = cal.toString();
-  console.log(value);
 
   const uri = 'data:text/calendar;base64,' + btoa(value);
   window.open(uri, 'hyperschedule.ics');

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Help.css';
 
-export default () => (
+const Help = () => (
   <div id='help'>
     <p>
       The <strong>Course Search</strong> tab lists all courses for the
@@ -31,9 +31,9 @@ export default () => (
       The <strong>Schedule</strong> tab is, of course, the main event.
       Scheduling is simple: first, all of your starred courses are
       scheduled, regardless of conflicts.  Then, as many remaining
-      courses as possible are scheduled as long as they don't
+      courses as possible are scheduled as long as they don&rsquo;t
       conflict: the algorithm starts from the top of your list and
-      goes down.  Courses that are disabled, however, won't be
+      goes down.  Courses that are disabled, however, won&rsquo;t be
       considered.  So, to change your schedule, just use reordering,
       starring, and disabling, rather than paging through multiple
       schedules.
@@ -46,3 +46,4 @@ export default () => (
   </div>
 );
 
+export default Help;

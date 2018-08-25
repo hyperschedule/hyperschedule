@@ -16,7 +16,7 @@ export function serializeSelection(selection) {
     starred: starred.has(key),
     selected: checked.has(key),
   }));
-};
+}
 
 export function deserializeSelection(data) {
   let courses = Map();
@@ -27,14 +27,14 @@ export function deserializeSelection(data) {
   for (const {
     starred: courseStarred,
     selected: courseChecked,
-    ...courseData,
+    ...courseData
   } of data) {
     const course = deserializeCourse(courseData);
-    
+
     const key = courseUtil.courseKey(course);
     courses = courses.set(key, fromJS(course));
     order = order.push(key);
-    
+
     if (courseStarred) {
       starred = starred.add(key);
     }

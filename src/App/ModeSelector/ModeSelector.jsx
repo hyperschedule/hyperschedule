@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import * as actions from './actions';
@@ -21,6 +22,11 @@ const ModeSelector = ({mode, setMode}) => (
   </div>
 );
 
+ModeSelector.propTypes = {
+  mode: PropTypes.string.isRequired,
+  setMode: PropTypes.func.isRequired,
+};
+
 const ModeSelectorWrapper = connect(
   state => ({
     mode: state.get('mode'),
@@ -29,6 +35,5 @@ const ModeSelectorWrapper = connect(
     setMode: mode => dispatch(actions.setMode(mode)),
   }),
 )(ModeSelector);
-
 
 export default ModeSelectorWrapper;

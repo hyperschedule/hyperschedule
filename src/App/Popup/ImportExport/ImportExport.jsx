@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 
 import {exportPDF, exportICS} from './export';
@@ -6,7 +8,6 @@ import {exportPDF, exportICS} from './export';
 import * as actions from './actions';
 
 import './ImportExport.css';
-
 
 const ImportExport = ({data, setData, apply, close, courses, schedule}) => {
   const textareaRef = React.createRef();
@@ -22,20 +23,20 @@ const ImportExport = ({data, setData, apply, close, courses, schedule}) => {
         You can edit the JSON in another application.
         Be warned that your changes are not validated!
         <textarea className='data'
-                  value={data}
-                  onChange={setData}
-                  ref={textareaRef}/>
+          value={data}
+          onChange={setData}
+          ref={textareaRef}/>
       </div>
       <div className='controls'>
         <button className='button export pdf' onClick={copy}>
           <i className='ion-md-copy'></i>
         </button>
         <button className='button export pdf'
-                onClick={() => exportPDF(courses, schedule)}>
+          onClick={() => exportPDF(courses, schedule)}>
           Export (PDF)
         </button>
         <button className='button export ical'
-                onClick={() => exportICS(courses, schedule)}>
+          onClick={() => exportICS(courses, schedule)}>
           Export (iCal)
         </button>
         <button className='button apply' onClick={apply}>Apply</button>
@@ -45,9 +46,17 @@ const ImportExport = ({data, setData, apply, close, courses, schedule}) => {
   );
 };
 
+ImportExport.propTypes = {
+  data: PropTypes.string.isRequired,
+  setData: PropTypes.func.isRequired,
+  apply: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
+  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map).isRequired,
+  schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
+};
+
 export default connect(
   state => {
-
     return {
       data: state.get('importExport').get('data'),
       courses: state.get('selection').get('courses'),

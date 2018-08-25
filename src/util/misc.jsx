@@ -1,12 +1,12 @@
 import React from 'react';
 import {Iterable} from 'immutable';
 
-export const componentToJS = Component => props => {
+export const componentToJS = Component => function ToJSComponent(props) {
   const jsProps = {};
-  
+
   for (const key in props) {
     const value = props[key];
-    
+
     if (Iterable.isIterable(value)) {
       jsProps[key] = value.toJS();
       continue;
@@ -39,7 +39,7 @@ export function commaJoin(items, comma = ',') {
   default:
     return '';
   }
-};
+}
 
 // Produces a comparator function from a sort-key function.
 export function sortKeyComparator(key = item => item) {
@@ -50,7 +50,7 @@ export function sortKeyComparator(key = item => item) {
     switch (true) {
     case keyA < keyB: return -1;
     case keyA > keyB: return 1;
-    default:          return 0;
+    default: return 0;
     }
   };
 }
