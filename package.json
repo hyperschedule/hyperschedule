@@ -11,6 +11,9 @@
     "test": "webpack --config webpack.config.test.js",
     "lint": "eslint --ext .js,.jsx src"
   },
+  "husky": {
+    "pre-commit": "precise-commits"
+  },
   "devDependencies": {
     "@types/node": "^10.7.0",
     "assert": "^1.4.1",
@@ -29,11 +32,13 @@
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.3",
+    "husky": "^0.14.3",
     "ical-generator": "^1.0.3",
     "immutable": "^3.8.2",
     "ionicons": "^4.3.0",
     "jspdf": "^1.4.1",
     "mocha": "^5.2.0",
+    "precise-commits": "^1.0.2",
     "prettier": "^1.14.2",
     "randomcolor": "^0.5.3",
     "react": "^16.2.0",
