@@ -33,6 +33,7 @@
     "ionicons": "^4.3.0",
     "jspdf": "^1.4.1",
     "mocha": "^5.2.0",
+    "prettier": "^1.14.2",
     "randomcolor": "^0.5.3",
     "react": "^16.2.0",
     "react-dom": "^16.4.1",
