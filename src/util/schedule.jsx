@@ -1,5 +1,5 @@
-import * as courseUtil from '@/util/course';
 import {Set} from 'immutable';
+import * as courseUtil from '@/util/course';
 
 export function computeSchedule(selection) {
   const courses = selection.get('courses'),

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import ModeSelector from './ModeSelector/ModeSelector';
-import Schedule from './Schedule/Schedule';
-import CourseSearch from './CourseSearch/CourseSearch';
-import CourseDescription from './CourseDescription/CourseDescription';
-import SelectedCourses from './SelectedCourses/SelectedCourses';
-import CreditCount from './CreditCount/CreditCount';
 import Controls from './Controls/Controls';
+import CourseDescription from './CourseDescription/CourseDescription';
+import CourseSearch from './CourseSearch/CourseSearch';
+import CreditCount from './CreditCount/CreditCount';
+import ModeSelector from './ModeSelector/ModeSelector';
 import Popup from './Popup/Popup';
+import Schedule from './Schedule/Schedule';
+import SelectedCourses from './SelectedCourses/SelectedCourses';
 
 import './App.css';
 

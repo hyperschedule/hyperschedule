@@ -1,4 +1,4 @@
-import {fork, call, put, select, takeEvery} from 'redux-saga/effects';
+import {call, fork, put, select, takeEvery} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 
 import Mode from '@/App/mode';

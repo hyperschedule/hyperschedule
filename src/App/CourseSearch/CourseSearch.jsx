@@ -1,19 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import 'react-virtualized/styles.css';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {
-  List as VirtualizedList,
+  AutoSizer,
   CellMeasurer,
   CellMeasurerCache,
-  AutoSizer,
+  List as VirtualizedList,
 } from 'react-virtualized';
-import 'react-virtualized/styles.css';
+import {connect} from 'react-redux';
 
 import CourseItem from '@/App/common/CourseItem/CourseItem';
+import Mode from '@/App/mode';
 import * as actions from './actions';
 import * as courseUtil from '@/util/course';
-import Mode from '@/App/mode';
 
 import './CourseSearch.css';
 

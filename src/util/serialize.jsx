@@ -1,4 +1,4 @@
-import {fromJS, List, Map, Set} from 'immutable';
+import {List, Map, Set, fromJS} from 'immutable';
 
 import * as courseUtil from '@/util/course';
 

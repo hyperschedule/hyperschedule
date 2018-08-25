@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
+import {connect} from 'react-redux';
 
 import CourseItem from '@/App/common/CourseItem/CourseItem';
 import * as actions from './actions';

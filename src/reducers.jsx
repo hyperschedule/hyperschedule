@@ -1,13 +1,13 @@
-import {combineReducers} from 'redux-immutable';
 import {List, Map, Set} from 'immutable';
+import {combineReducers} from 'redux-immutable';
 
 import * as actions from './actions';
 
 import Mode from '@/App/mode';
 
-import search from './App/CourseSearch/reducers';
-import popup from './App/Popup/reducers';
 import importExport from './App/Popup/ImportExport/reducers';
+import popup from './App/Popup/reducers';
+import search from './App/CourseSearch/reducers';
 
 import * as courseUtil from '@/util/course';
 import * as scheduleUtil from '@/util/schedule';

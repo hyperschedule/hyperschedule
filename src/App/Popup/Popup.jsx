@@ -1,12 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
 
 import Help from './Help/Help';
 import ImportExport from './ImportExport/ImportExport';
 
-import * as actions from './actions';
 import './Popup.css';
+import * as actions from './actions';
 
 const stopPropagation = event => event.stopPropagation();
 

@@ -1,5 +1,5 @@
-import {Set} from 'immutable';
 import randomColor from 'randomcolor';
+import {Set} from 'immutable';
 
 import * as util from '@/util/misc';
 

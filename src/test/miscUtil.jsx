@@ -1,5 +1,5 @@
-import {expect} from 'chai';
 import {List} from 'immutable';
+import {expect} from 'chai';
 
 import * as util from '@/util/misc';
 

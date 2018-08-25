@@ -1,5 +1,5 @@
-import jsPDF from 'jspdf';
 import './jspdf.customfonts.debug';
+import jsPDF from 'jspdf';
 
 import ROBOTO from './fonts/Roboto-Regular.ttf.js';
 import ROBOTO_BOLD from './fonts/Roboto-Bold.ttf.js';

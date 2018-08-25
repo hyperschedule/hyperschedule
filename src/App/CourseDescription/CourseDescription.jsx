@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import Measure from 'react-measure';
+import PropTypes from 'prop-types';
+import React from 'react';
+import {connect} from 'react-redux';
 
-import * as util from '@/util/misc';
 import * as courseUtil from '@/util/course';
+import * as util from '@/util/misc';
 
 import './CourseDescription.css';
 

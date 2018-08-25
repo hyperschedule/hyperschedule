@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-import * as util from '@/util/misc';
 import './CourseItem.css';
+import * as util from '@/util/misc';
 
 function CourseItem({
   code,

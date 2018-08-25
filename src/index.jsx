@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore, applyMiddleware, compose} from 'redux';
-import {Provider} from 'react-redux';
-import sagas from './sagas';
 import createSagaMiddleware from 'redux-saga';
-import {createLogger} from 'redux-logger';
+import sagas from './sagas';
 import {Map} from 'immutable';
+import {Provider} from 'react-redux';
+import {applyMiddleware, compose, createStore} from 'redux';
+import {createLogger} from 'redux-logger';
 
 import App from './App/App';
-
 import hyperschedule from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
