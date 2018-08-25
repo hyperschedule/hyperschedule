@@ -2,7 +2,8 @@
   "parser": "babel-eslint",
   "plugins": [
     "react",
-    "prettier"
+    "prettier",
+    "sort-imports-es6-autofix"
   ],
   "extends": [
     "eslint:recommended",
@@ -16,7 +17,12 @@
     }
   },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "sort-imports-es6-autofix/sort-imports-es6": ["error", {
+      "ignoreCase": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "single", "multiple", "all"]
+    }]
   },
   "env": {
     "browser": true,
