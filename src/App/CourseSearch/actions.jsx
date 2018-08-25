@@ -4,7 +4,8 @@ export const setSearch = string => ({
   string,
 });
 
-export const FOCUS_COURSE = 'App/ModeContent/CourseSearch/FOCUS_COURSE';
+export const FOCUS_COURSE =
+  'App/ModeContent/CourseSearch/FOCUS_COURSE';
 export const focusCourse = key => ({
   type: FOCUS_COURSE,
   key,

@@ -1,22 +1,23 @@
 import React from 'react';
 import {Iterable} from 'immutable';
 
-export const componentToJS = Component => function ToJSComponent(props) {
-  const jsProps = {};
+export const componentToJS = Component =>
+  function ToJSComponent(props) {
+    const jsProps = {};
 
-  for (const key in props) {
-    const value = props[key];
+    for (const key in props) {
+      const value = props[key];
 
-    if (Iterable.isIterable(value)) {
-      jsProps[key] = value.toJS();
-      continue;
+      if (Iterable.isIterable(value)) {
+        jsProps[key] = value.toJS();
+        continue;
+      }
+
+      jsProps[key] = value;
     }
 
-    jsProps[key] = value;
-  }
-
-  return <Component {...jsProps}/>;
-};
+    return <Component {...jsProps} />;
+  };
 
 export function classMap(map) {
   const classes = [];
@@ -30,14 +31,19 @@ export function classMap(map) {
 
 export function commaJoin(items, comma = ',') {
   switch (true) {
-  case items.length === 1:
-    return items[0];
-  case items.length === 2:
-    return items.join(' and ');
-  case items.length >= 3:
-    return items.slice(0, -1).join(comma + ' ') + comma +' and ' + items[-1];
-  default:
-    return '';
+    case items.length === 1:
+      return items[0];
+    case items.length === 2:
+      return items.join(' and ');
+    case items.length >= 3:
+      return (
+        items.slice(0, -1).join(comma + ' ') +
+        comma +
+        ' and ' +
+        items[-1]
+      );
+    default:
+      return '';
   }
 }
 
@@ -45,12 +51,15 @@ export function commaJoin(items, comma = ',') {
 export function sortKeyComparator(key = item => item) {
   return (a, b) => {
     const keyA = key(a),
-          keyB = key(b);
+      keyB = key(b);
 
     switch (true) {
-    case keyA < keyB: return -1;
-    case keyA > keyB: return 1;
-    default: return 0;
+      case keyA < keyB:
+        return -1;
+      case keyA > keyB:
+        return 1;
+      default:
+        return 0;
     }
   };
 }
@@ -58,12 +67,16 @@ export function sortKeyComparator(key = item => item) {
 // Searches a sorted Immutable.List to find the index for inserting an item.
 // This is used to incrementally insert or remove items from the
 // (sorted) course list.
-export function binarySearch(list, item, compare = sortKeyComparator()) {
+export function binarySearch(
+  list,
+  item,
+  compare = sortKeyComparator(),
+) {
   let left = 0,
-      right = list.size;
+    right = list.size;
 
   while (right > left) {
-    const mid = Math.floor((left+right) / 2);
+    const mid = Math.floor((left + right) / 2);
     const cmp = compare(item, list.get(mid));
 
     if (cmp < 0) {

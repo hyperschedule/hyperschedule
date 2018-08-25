@@ -15,12 +15,14 @@ class CourseDescription extends React.PureComponent {
     semesters: PropTypes.string,
     title: PropTypes.string,
     faculty: PropTypes.string,
-    schedule: PropTypes.arrayOf(PropTypes.shape({
-      days: PropTypes.string.isRequired,
-      startTime: PropTypes.string.isRequired,
-      endTime: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
-    })),
+    schedule: PropTypes.arrayOf(
+      PropTypes.shape({
+        days: PropTypes.string.isRequired,
+        startTime: PropTypes.string.isRequired,
+        endTime: PropTypes.string.isRequired,
+        location: PropTypes.string.isRequired,
+      }),
+    ),
   };
 
   constructor(props) {
@@ -37,16 +39,23 @@ class CourseDescription extends React.PureComponent {
 
   render() {
     const {
-      show, credits, semesters, title, faculty, schedule,
+      show,
+      credits,
+      semesters,
+      title,
+      faculty,
+      schedule,
     } = this.props;
 
     let summary = null;
     if (show) {
       const scheduleRow = (
-        <div className='row schedule'>
+        <div className="row schedule">
           {schedule.map((slot, index) => (
-            <div key={index} className='block'>
-              {slot.days} {slot.startTime}&ndash;{slot.endTime} at {slot.location}
+            <div key={index} className="block">
+              {slot.days} {slot.startTime}
+              &ndash;
+              {slot.endTime} at {slot.location}
             </div>
           ))}
         </div>
@@ -54,13 +63,9 @@ class CourseDescription extends React.PureComponent {
 
       summary = (
         <div className="summary">
-          <div className="row title">
-            {title}
-          </div>
+          <div className="row title">{title}</div>
           {schedule.length > 0 && scheduleRow}
-          <div className="row faculty">
-            {faculty}
-          </div>
+          <div className="row faculty">{faculty}</div>
           <div className="row semesters-credits">
             {semesters}, {credits}
           </div>
@@ -69,16 +74,19 @@ class CourseDescription extends React.PureComponent {
     }
 
     const measurer = ({measureRef}) => (
-      <div ref={measureRef} className='measure'>
+      <div ref={measureRef} className="measure">
         {summary}
       </div>
     );
 
     return (
       <div id="course-description">
-        <div className="overflow" style={{
-          height: this.state.height + 'px',
-        }}>
+        <div
+          className="overflow"
+          style={{
+            height: this.state.height + 'px',
+          }}
+        >
           <Measure offset scroll onResize={this.setHeight}>
             {measurer}
           </Measure>
@@ -102,11 +110,16 @@ export default connect(
 
     return {
       show: true,
-      title: `${courseUtil.courseFullCode(course)} ${course.get('courseName')}`,
+      title: `${courseUtil.courseFullCode(course)} ${course.get(
+        'courseName',
+      )}`,
       faculty: courseUtil.courseFacultyString(course),
-      semesters: (course.get('firstHalfSemester') ? (
-        course.get('secondHalfSemester') ? 'Full' : 'First-half'
-      ) : 'Second-half') + '-semester course',
+      semesters:
+        (course.get('firstHalfSemester')
+          ? course.get('secondHalfSemester')
+            ? 'Full'
+            : 'First-half'
+          : 'Second-half') + '-semester course',
       schedule: course.get('schedule'),
       credits: `${credits} credit${credits === 1 ? '' : 's'}`,
     };

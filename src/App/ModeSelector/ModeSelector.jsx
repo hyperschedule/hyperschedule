@@ -10,13 +10,17 @@ import './ModeSelector.css';
 const ModeSelector = ({mode, setMode}) => (
   <div id="mode-selector">
     <button
-      className={(mode === Mode.COURSE_SEARCH ? 'active' : '') + ' left'}
-      onClick={() => setMode(Mode.COURSE_SEARCH)}>
+      className={
+        (mode === Mode.COURSE_SEARCH ? 'active' : '') + ' left'
+      }
+      onClick={() => setMode(Mode.COURSE_SEARCH)}
+    >
       Course Search
     </button>
     <button
       className={(mode === Mode.SCHEDULE ? 'active' : '') + ' right'}
-      onClick={() => setMode(Mode.SCHEDULE)}>
+      onClick={() => setMode(Mode.SCHEDULE)}
+    >
       Schedule
     </button>
   </div>

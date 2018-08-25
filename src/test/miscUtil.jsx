@@ -20,8 +20,12 @@ describe('util/misc', function() {
     });
     it('with repeats', function() {
       const items = List([1, 1, 2, 2, 3, 4, 5]);
-      expect(util.binarySearch(items, 1)).least(0).below(2);
-      expect(util.binarySearch(items, 2)).least(2).below(4);
+      expect(util.binarySearch(items, 1))
+        .least(0)
+        .below(2);
+      expect(util.binarySearch(items, 2))
+        .least(2)
+        .below(4);
       expect(util.binarySearch(items, 3)).to.equal(4);
       expect(util.binarySearch(items, 4)).to.equal(5);
       expect(util.binarySearch(items, 5)).to.equal(6);

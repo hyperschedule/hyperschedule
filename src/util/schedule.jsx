@@ -3,9 +3,9 @@ import {Set} from 'immutable';
 
 export function computeSchedule(selection) {
   const courses = selection.get('courses'),
-        starred = selection.get('starred'),
-        checked = selection.get('checked'),
-        order = selection.get('order');
+    starred = selection.get('starred'),
+    checked = selection.get('checked'),
+    order = selection.get('order');
 
   let schedule = Set();
 
@@ -26,8 +26,10 @@ export function computeSchedule(selection) {
     for (const otherKey of schedule) {
       const other = courses.get(otherKey);
 
-      if (courseUtil.coursesConflict(course, other) ||
-          courseUtil.coursesEquivalent(course, other)) {
+      if (
+        courseUtil.coursesConflict(course, other) ||
+        courseUtil.coursesEquivalent(course, other)
+      ) {
         conflictFound = true;
         break;
       }

@@ -12,10 +12,12 @@ export function serializeSelection(selection) {
   const starred = selection.get('starred');
   const checked = selection.get('checked');
 
-  return order.map(key => courses.get(key).merge({
-    starred: starred.has(key),
-    selected: checked.has(key),
-  }));
+  return order.map(key =>
+    courses.get(key).merge({
+      starred: starred.has(key),
+      selected: checked.has(key),
+    }),
+  );
 }
 
 export function deserializeSelection(data) {
@@ -44,6 +46,9 @@ export function deserializeSelection(data) {
   }
 
   return Map({
-    courses, order, starred, checked,
+    courses,
+    order,
+    starred,
+    checked,
   });
 }

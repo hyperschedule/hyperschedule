@@ -13,16 +13,8 @@ import * as courseUtil from '@/util/course';
 import * as scheduleUtil from '@/util/schedule';
 import * as serializeUtil from '@/util/serialize';
 
-const mode = (
-  state = Mode.COURSE_SEARCH,
-  action
-) => (
-  action.type === actions.modeSelector.SET_MODE ? (
-    action.mode
-  ) : (
-    state
-  )
-);
+const mode = (state = Mode.COURSE_SEARCH, action) =>
+  action.type === actions.modeSelector.SET_MODE ? action.mode : state;
 
 const selectionInitial = Map({
   courses: Map(),
@@ -33,50 +25,50 @@ const selectionInitial = Map({
 const selection = (prev = Map(), action) => {
   const state = selectionInitial.merge(prev);
   const courses = state.get('courses'),
-        order = state.get('order'),
-        checked = state.get('checked'),
-        starred = state.get('starred');
+    order = state.get('order'),
+    checked = state.get('checked'),
+    starred = state.get('starred');
 
   switch (action.type) {
-  case actions.courseSearch.ADD_COURSE:
-    if (courses.has(action.key)) {
+    case actions.courseSearch.ADD_COURSE:
+      if (courses.has(action.key)) {
+        return state;
+      }
+
+      return state.merge({
+        order: order.push(action.key),
+        checked: checked.add(action.key),
+      });
+
+    case actions.selectedCourses.REORDER: {
+      const key = order.get(action.from);
+      return state.set(
+        'order',
+        order.delete(action.from).insert(action.to, key),
+      );
+    }
+    case actions.selectedCourses.REMOVE_COURSE: {
+      return state.merge({
+        order: order.filter(courseKey => courseKey !== action.key),
+        courses: courses.delete(action.key),
+      });
+    }
+    case actions.selectedCourses.TOGGLE_COURSE_CHECKED: {
+      if (checked.has(action.key)) {
+        return state.set('checked', checked.delete(action.key));
+      } else {
+        return state.set('checked', checked.add(action.key));
+      }
+    }
+    case actions.selectedCourses.TOGGLE_COURSE_STARRED: {
+      if (starred.has(action.key)) {
+        return state.set('starred', starred.delete(action.key));
+      } else {
+        return state.set('starred', starred.add(action.key));
+      }
+    }
+    default:
       return state;
-    }
-
-    return state.merge({
-      order: order.push(action.key),
-      checked: checked.add(action.key),
-    });
-
-  case actions.selectedCourses.REORDER: {
-    const key = order.get(action.from);
-    return state.set(
-      'order',
-      order.delete(action.from).insert(action.to, key),
-    );
-  }
-  case actions.selectedCourses.REMOVE_COURSE: {
-    return state.merge({
-      order: order.filter(courseKey => courseKey !== action.key),
-      courses: courses.delete(action.key),
-    });
-  }
-  case actions.selectedCourses.TOGGLE_COURSE_CHECKED: {
-    if (checked.has(action.key)) {
-      return state.set('checked', checked.delete(action.key));
-    } else {
-      return state.set('checked', checked.add(action.key));
-    }
-  }
-  case actions.selectedCourses.TOGGLE_COURSE_STARRED: {
-    if (starred.has(action.key)) {
-      return state.set('starred', starred.delete(action.key));
-    } else {
-      return state.set('starred', starred.add(action.key));
-    }
-  }
-  default:
-    return state;
   }
 };
 
@@ -92,73 +84,76 @@ function api(prev = Map(), action) {
   const state = apiInitial.merge(prev);
 
   switch (action.type) {
-  case actions.ALL_COURSES: {
-    let courses = Map();
+    case actions.ALL_COURSES: {
+      let courses = Map();
 
-    for (const data of action.courses) {
-      const course = serializeUtil.deserializeCourse(data);
-      courses = courses.set(courseUtil.courseKey(course), course);
+      for (const data of action.courses) {
+        const course = serializeUtil.deserializeCourse(data);
+        courses = courses.set(courseUtil.courseKey(course), course);
+      }
+
+      const order = courses
+        .keySeq()
+        .sort((keyA, keyB) =>
+          courseUtil.coursesSortCompare(
+            courses.get(keyA),
+            courses.get(keyB),
+          ),
+        )
+        .toList();
+
+      return state.merge({
+        courses,
+        order,
+        timestamp: action.timestamp,
+      });
     }
 
-    const order = courses.keySeq().sort((keyA, keyB) => (
-      courseUtil.coursesSortCompare(
-        courses.get(keyA),
-        courses.get(keyB),
-      )
-    )).toList();
+    case actions.COURSES_SINCE: {
+      let courses = state.get('courses');
+      let order = state.get('order');
+      const {added, removed, modified} = action.diff;
 
-    return state.merge({
-      courses,
-      order,
-      timestamp: action.timestamp,
-    });
-  }
+      // todo: replace dumb linear search with binary search
+      for (const data of removed) {
+        const course = serializeUtil.deserializeCourse(data);
+        const removedKey = courseUtil.courseKey(course);
 
-  case actions.COURSES_SINCE: {
-    let courses = state.get('courses');
-    let order = state.get('order');
-    const {added, removed, modified} = action.diff;
+        order = order.filter(key => key !== removedKey);
+        courses = courses.delete(removedKey);
+      }
 
-    // todo: replace dumb linear search with binary search
-    for (const data of removed) {
-      const course = serializeUtil.deserializeCourse(data);
-      const removedKey = courseUtil.courseKey(course);
+      // todo: use binary insertion
+      for (const data of added) {
+        const course = serializeUtil.deserializeCourse(data);
+        const addedKey = courseUtil.courseKey(course);
 
-      order = order.filter(key => key !== removedKey);
-      courses = courses.delete(removedKey);
+        order = order.push(addedKey);
+        courses = courses.set(addedKey, course);
+      }
+      order = order.sort((keyA, keyB) =>
+        courseUtil.coursesSortCompare(
+          courses.get(keyA),
+          courses.get(keyB),
+        ),
+      );
+
+      for (const data of modified) {
+        const course = serializeUtil.deserializeCourse(data);
+        const key = courseUtil.courseKey(course);
+
+        courses = courses.mergeDeepIn([key], course);
+      }
+
+      return state.merge({
+        courses,
+        order,
+        timestamp: action.timestamp,
+      });
     }
 
-    // todo: use binary insertion
-    for (const data of added) {
-      const course = serializeUtil.deserializeCourse(data);
-      const addedKey = courseUtil.courseKey(course);
-
-      order = order.push(addedKey);
-      courses = courses.set(addedKey, course);
-    }
-    order = order.sort((keyA, keyB) => (
-      courseUtil.coursesSortCompare(
-        courses.get(keyA),
-        courses.get(keyB),
-      )
-    ));
-
-    for (const data of modified) {
-      const course = serializeUtil.deserializeCourse(data);
-      const key = courseUtil.courseKey(course);
-
-      courses = courses.mergeDeepIn([key], course);
-    }
-
-    return state.merge({
-      courses,
-      order,
-      timestamp: action.timestamp,
-    });
-  }
-
-  default:
-    return state;
+    default:
+      return state;
   }
 }
 
@@ -177,60 +172,59 @@ export default (prev = Map(), action) => {
   const state = app(prev, action);
 
   switch (action.type) {
-  case actions.controls.SHOW_IMPORT_EXPORT:
-    return state.setIn(
-      ['importExport', 'data'],
-      JSON.stringify(
-        serializeUtil.serializeSelection(
-          state.get('selection'),
+    case actions.controls.SHOW_IMPORT_EXPORT:
+      return state.setIn(
+        ['importExport', 'data'],
+        JSON.stringify(
+          serializeUtil.serializeSelection(state.get('selection')),
         ),
-      )
-    );
+      );
 
-  case actions.importExport.APPLY_DATA: {
-    const selection = serializeUtil.deserializeSelection(
-      JSON.parse(
-        state.getIn(['importExport', 'data']),
-      )
-    );
-    return state.merge({
-      selection,
-      schedule: scheduleUtil.computeSchedule(selection),
-    });
-  }
+    case actions.importExport.APPLY_DATA: {
+      const selection = serializeUtil.deserializeSelection(
+        JSON.parse(state.getIn(['importExport', 'data'])),
+      );
+      return state.merge({
+        selection,
+        schedule: scheduleUtil.computeSchedule(selection),
+      });
+    }
 
-  case actions.courseSearch.FOCUS_COURSE:
-    return state.set(
-      'focus',
-      state.getIn(['api', 'courses', action.key]),
-    );
+    case actions.courseSearch.FOCUS_COURSE:
+      return state.set(
+        'focus',
+        state.getIn(['api', 'courses', action.key]),
+      );
 
-  case actions.selectedCourses.FOCUS_COURSE:
-  case actions.schedule.FOCUS_COURSE:
-    return state.set(
-      'focus',
-      state.getIn(['selection', 'courses', action.key]),
-    );
+    case actions.selectedCourses.FOCUS_COURSE:
+    case actions.schedule.FOCUS_COURSE:
+      return state.set(
+        'focus',
+        state.getIn(['selection', 'courses', action.key]),
+      );
 
-  case actions.courseSearch.ADD_COURSE: {
-    const courses = state.getIn(['api', 'courses']);
-    const selection = state.get('selection').setIn(['courses', action.key], courses.get(action.key));
-    return state.merge({
-      selection,
-      schedule: scheduleUtil.computeSchedule(selection),
-    });
-  }
-  case actions.selectedCourses.REORDER:
-  case actions.selectedCourses.REMOVE_COURSE:
-  case actions.selectedCourses.TOGGLE_COURSE_CHECKED:
-  case actions.selectedCourses.TOGGLE_COURSE_STARRED: {
-    const selection = state.get('selection');
-    return state.set(
-      'schedule', scheduleUtil.computeSchedule(selection),
-    );
-  }
+    case actions.courseSearch.ADD_COURSE: {
+      const courses = state.getIn(['api', 'courses']);
+      const selection = state
+        .get('selection')
+        .setIn(['courses', action.key], courses.get(action.key));
+      return state.merge({
+        selection,
+        schedule: scheduleUtil.computeSchedule(selection),
+      });
+    }
+    case actions.selectedCourses.REORDER:
+    case actions.selectedCourses.REMOVE_COURSE:
+    case actions.selectedCourses.TOGGLE_COURSE_CHECKED:
+    case actions.selectedCourses.TOGGLE_COURSE_STARRED: {
+      const selection = state.get('selection');
+      return state.set(
+        'schedule',
+        scheduleUtil.computeSchedule(selection),
+      );
+    }
 
-  default:
-    return state;
+    default:
+      return state;
   }
 };

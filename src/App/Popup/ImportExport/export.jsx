@@ -10,18 +10,18 @@ import ical from 'ical-generator';
 
 const config = {
   margin: {
-    top: .5 * 72,
-    bottom: .5 * 72,
-    right: .5 * 72,
-    left: .5 * 72,
+    top: 0.5 * 72,
+    bottom: 0.5 * 72,
+    right: 0.5 * 72,
+    left: 0.5 * 72,
   },
   paper: {
     height: 8.5 * 72,
     width: 11 * 72,
   },
   first: {
-    rowHeight: .25 * 72,
-    columnWidth: .75 * 72,
+    rowHeight: 0.25 * 72,
+    columnWidth: 0.75 * 72,
   },
   color: {
     background: 255,
@@ -33,7 +33,6 @@ const config = {
   },
   padding: {
     course: 6,
-
   },
 };
 
@@ -77,7 +76,11 @@ const dayIndex = {
 };
 
 export const exportPDF = (courses, selected) => {
-  const pdf = new jsPDF({unit: 'pt', format: 'letter', orientation: 'l'});
+  const pdf = new jsPDF({
+    unit: 'pt',
+    format: 'letter',
+    orientation: 'l',
+  });
 
   pdf.addFileToVFS('Roboto-Regular.ttf', ROBOTO);
   pdf.addFileToVFS('Roboto-Bold.ttf', ROBOTO_BOLD);
@@ -85,11 +88,13 @@ export const exportPDF = (courses, selected) => {
   pdf.addFont('Roboto-Bold.ttf', 'Roboto', 'bold');
 
   pdf.setFontSize(6);
-  pdf.setLineWidth(.5);
+  pdf.setLineWidth(0.5);
   pdf.setDrawColor(config.color.border);
 
-  const tableWidth = config.paper.width - (config.margin.left + config.margin.right);
-  const tableHeight = config.paper.height - (config.margin.top + config.margin.bottom);
+  const tableWidth =
+    config.paper.width - (config.margin.left + config.margin.right);
+  const tableHeight =
+    config.paper.height - (config.margin.top + config.margin.bottom);
 
   const bodyWidth = tableWidth - config.first.columnWidth;
   const bodyHeight = tableHeight - config.first.rowHeight;
@@ -98,10 +103,17 @@ export const exportPDF = (courses, selected) => {
   const rowHeight = bodyHeight / 16;
 
   pdf.setFillColor(config.color.background);
-  pdf.rect(config.margin.left, config.margin.top, tableWidth, tableHeight, 'FS');
+  pdf.rect(
+    config.margin.left,
+    config.margin.top,
+    tableWidth,
+    tableHeight,
+    'FS',
+  );
 
   for (let i = 0; i < 7; ++i) {
-    const x = i * columnWidth + config.margin.left + config.first.columnWidth;
+    const x =
+      i * columnWidth + config.margin.left + config.first.columnWidth;
     if (i & 1) {
       pdf.setFillColor(config.color.column.odd);
     } else {
@@ -113,8 +125,10 @@ export const exportPDF = (courses, selected) => {
     pdf.setFont('Roboto');
     pdf.setFontStyle('bold');
     pdf.text(
-      x + columnWidth/2,
-      config.margin.top + config.first.rowHeight / 2 + pdf.getLineHeight() / 2,
+      x + columnWidth / 2,
+      config.margin.top +
+        config.first.rowHeight / 2 +
+        pdf.getLineHeight() / 2,
       days[i],
       'center',
     );
@@ -122,8 +136,14 @@ export const exportPDF = (courses, selected) => {
 
   pdf.setFontStyle('normal');
   for (let i = 0; i < 16; ++i) {
-    const y = i * rowHeight + config.margin.top + config.first.rowHeight;
-    pdf.line(config.margin.left, y, config.margin.left + tableWidth, y);
+    const y =
+      i * rowHeight + config.margin.top + config.first.rowHeight;
+    pdf.line(
+      config.margin.left,
+      y,
+      config.margin.left + tableWidth,
+      y,
+    );
 
     pdf.setFont('Roboto');
     pdf.setFontStyle('normal');
@@ -136,8 +156,10 @@ export const exportPDF = (courses, selected) => {
   }
 
   pdf.line(
-    config.margin.left + config.first.columnWidth, config.margin.top,
-    config.margin.left + config.first.columnWidth, config.margin.top + tableHeight,
+    config.margin.left + config.first.columnWidth,
+    config.margin.top,
+    config.margin.left + config.first.columnWidth,
+    config.margin.top + tableHeight,
   );
 
   for (const key of selected) {
@@ -147,35 +169,58 @@ export const exportPDF = (courses, selected) => {
       const end = courseUtil.parseTime(slot.get('endTime'));
 
       for (const day of slot.get('days')) {
-        const x = dayIndex[day] * columnWidth +
-              config.margin.left + config.first.columnWidth +
-              (course.get('firstHalfSemester') ? 0 : columnWidth / 2);
+        const x =
+          dayIndex[day] * columnWidth +
+          config.margin.left +
+          config.first.columnWidth +
+          (course.get('firstHalfSemester') ? 0 : columnWidth / 2);
 
-        const width = courseUtil.courseHalfSemesters(course) * columnWidth / 2;
+        const width =
+          (courseUtil.courseHalfSemesters(course) * columnWidth) / 2;
 
-        const yStart = (start.hour - 8 + start.minute / 60) * rowHeight +
-              config.margin.top + config.first.rowHeight;
+        const yStart =
+          (start.hour - 8 + start.minute / 60) * rowHeight +
+          config.margin.top +
+          config.first.rowHeight;
 
-        const yEnd = (end.hour - 8 + end.minute / 60) * rowHeight +
-              config.margin.top + config.first.rowHeight;
+        const yEnd =
+          (end.hour - 8 + end.minute / 60) * rowHeight +
+          config.margin.top +
+          config.first.rowHeight;
 
-        pdf.setFillColor(...courseUtil.courseColor(course, 'rgbArray'));
+        pdf.setFillColor(
+          ...courseUtil.courseColor(course, 'rgbArray'),
+        );
 
-        pdf.rect(x, yStart, width, yEnd-yStart, 'F');
+        pdf.rect(x, yStart, width, yEnd - yStart, 'F');
 
         pdf.setFont('Helvetica');
-        const courseCodeLines = pdf.splitTextToSize(courseUtil.courseFullCode(course), width - 12);
-        const courseNameLines = pdf.splitTextToSize(course.get('courseName'), width - 12);
+        const courseCodeLines = pdf.splitTextToSize(
+          courseUtil.courseFullCode(course),
+          width - 12,
+        );
+        const courseNameLines = pdf.splitTextToSize(
+          course.get('courseName'),
+          width - 12,
+        );
 
         pdf.setFont('Roboto');
-        const xText = x + width/2;
-        const yText = (yStart + yEnd)/2 -
-              (courseCodeLines.length + courseNameLines.length) * pdf.getLineHeight() / 2 +
-              pdf.getLineHeight();
+        const xText = x + width / 2;
+        const yText =
+          (yStart + yEnd) / 2 -
+          ((courseCodeLines.length + courseNameLines.length) *
+            pdf.getLineHeight()) /
+            2 +
+          pdf.getLineHeight();
         pdf.setFontStyle('bold');
         pdf.text(xText, yText, courseCodeLines, 'center');
         pdf.setFontStyle('normal');
-        pdf.text(xText, yText+courseCodeLines.length * pdf.getLineHeight(), courseNameLines, 'center');
+        pdf.text(
+          xText,
+          yText + courseCodeLines.length * pdf.getLineHeight(),
+          courseNameLines,
+          'center',
+        );
       }
     }
   }
@@ -211,24 +256,33 @@ export const exportICS = (courses, selected) => {
       for (const weekday of slot.get('days')) {
         const possibleStartWeekday = dayIndex[weekday];
         const possibleWeekdayDifference =
-              (possibleStartWeekday - listedStartWeekday) % 7;
+          (possibleStartWeekday - listedStartWeekday) % 7;
         if (possibleWeekdayDifference < weekdayDifference) {
           weekdayDifference = possibleWeekdayDifference;
         }
       }
 
-      const description = courseUtil.courseFullCode(course) + ' ' +
-            course.get('courseName') + '\n' +
-            courseUtil.courseFacultyString(course);
+      const description =
+        courseUtil.courseFullCode(course) +
+        ' ' +
+        course.get('courseName') +
+        '\n' +
+        courseUtil.courseFacultyString(course);
 
       const start = new Date(listedStartDay.valueOf());
       start.setDate(start.getDate() + weekdayDifference);
-      const {hour: startHours, minute: startMinutes} = courseUtil.parseTime(slot.get('startTime'));
+      const {
+        hour: startHours,
+        minute: startMinutes,
+      } = courseUtil.parseTime(slot.get('startTime'));
       start.setHours(startHours);
       start.setMinutes(startMinutes);
 
       const end = new Date(start.valueOf());
-      const {hour: endHours, minute: endMinutes} = courseUtil.parseTime(slot.get('endTime'));
+      const {
+        hour: endHours,
+        minute: endMinutes,
+      } = courseUtil.parseTime(slot.get('endTime'));
       end.setHours(endHours);
       end.setMinutes(endMinutes);
 
@@ -242,7 +296,9 @@ export const exportICS = (courses, selected) => {
           freq: 'WEEKLY',
           until: listedEndDay,
           interval: 1,
-          byDay: Array.from(slot.get('days')).map(day => dayToICal[day]),
+          byDay: Array.from(slot.get('days')).map(
+            day => dayToICal[day],
+          ),
         },
       });
     }

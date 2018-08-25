@@ -11,19 +11,15 @@ import * as courseUtil from '@/util/course';
 import './SelectedCourses.css';
 
 const SortableItem = SortableElement(({props}) => {
-  return (
-    <CourseItem {...props}/>
-  );
+  return <CourseItem {...props} />;
 });
 
 const SortableList = SortableContainer(({items}) => {
   return (
     <div className="list">
-      {
-        items.map(({key, props}, index) => (
-          <SortableItem index={index} key={key} props={props}/>
-        ))
-      }
+      {items.map(({key, props}, index) => (
+        <SortableItem index={index} key={key} props={props} />
+      ))}
     </div>
   );
 });
@@ -41,7 +37,8 @@ const SelectedCourses = ({
   toggleCourseChecked,
   toggleCourseStarred,
 }) => {
-  const onSortEnd = ({oldIndex: from, newIndex: to}) => reorder(from, to);
+  const onSortEnd = ({oldIndex: from, newIndex: to}) =>
+    reorder(from, to);
 
   const courseItems = order.map(key => {
     const course = courses.get(key);
@@ -79,13 +76,15 @@ const SelectedCourses = ({
         items={courseItems}
         onSortEnd={onSortEnd}
         helperClass="sortable course item float"
-        distance={10}/>
+        distance={10}
+      />
     </div>
   );
 };
 
 SelectedCourses.propTypes = {
-  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map).isRequired,
+  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map)
+    .isRequired,
   order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
   checked: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
   starred: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
@@ -101,19 +100,21 @@ export default connect(
   state => {
     const selection = state.get('selection');
 
-    return ({
+    return {
       courses: selection.get('courses'),
       order: selection.get('order'),
       checked: selection.get('checked'),
       starred: selection.get('starred'),
       schedule: state.get('schedule'),
-    });
+    };
   },
   dispatch => ({
     reorder: (from, to) => dispatch(actions.reorder(from, to)),
     focusCourse: key => dispatch(actions.focusCourse(key)),
     removeCourse: key => dispatch(actions.removeCourse(key)),
-    toggleCourseChecked: key => dispatch(actions.toggleCourseChecked(key)),
-    toggleCourseStarred: key => dispatch(actions.toggleCourseStarred(key)),
+    toggleCourseChecked: key =>
+      dispatch(actions.toggleCourseChecked(key)),
+    toggleCourseStarred: key =>
+      dispatch(actions.toggleCourseStarred(key)),
   }),
 )(SelectedCourses);

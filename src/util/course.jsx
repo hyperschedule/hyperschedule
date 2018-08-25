@@ -4,27 +4,25 @@ import randomColor from 'randomcolor';
 import * as util from '@/util/misc';
 
 const keyFields = [
-  'school', 'department', 'courseNumber', 'courseCodeSuffix', 'section',
+  'school',
+  'department',
+  'courseNumber',
+  'courseCodeSuffix',
+  'section',
 ];
 
 export function courseKey(course) {
-  return (
-    keyFields
-      .map(field => course.get(field))
-      .join('/')
-  );
+  return keyFields.map(field => course.get(field)).join('/');
 }
 
 const codeKeyFields = [
-  'department', 'courseNumber', 'courseCodeSuffix',
+  'department',
+  'courseNumber',
+  'courseCodeSuffix',
 ];
 
 export function courseCodeKey(course) {
-  return (
-    codeKeyFields
-      .map(field => course.get(field))
-      .join('/')
-  );
+  return codeKeyFields.map(field => course.get(field)).join('/');
 }
 
 const sortKeyFields = [
@@ -39,17 +37,31 @@ export function courseSortKey(course) {
   return sortKeyFields.map(field => course.get(field));
 }
 
-export const coursesSortCompare = util.sortKeyComparator(courseSortKey);
+export const coursesSortCompare = util.sortKeyComparator(
+  courseSortKey,
+);
 
 export function courseCode(course) {
-  return course.get('department') + ' ' +
-    course.get('courseNumber').toString().padStart(3, '0') +
-    course.get('courseCodeSuffix');
+  return (
+    course.get('department') +
+    ' ' +
+    course
+      .get('courseNumber')
+      .toString()
+      .padStart(3, '0') +
+    course.get('courseCodeSuffix')
+  );
 }
 
 export function courseSection(course) {
-  return course.get('school') + '-' +
-    course.get('section').toString().padStart(2, '0');
+  return (
+    course.get('school') +
+    '-' +
+    course
+      .get('section')
+      .toString()
+      .padStart(2, '0')
+  );
 }
 
 export function courseFullCode(course) {
@@ -57,8 +69,12 @@ export function courseFullCode(course) {
 }
 
 export function courseStatusString(course) {
-  return `${course.get('courseStatus')}, ` +
-    `${course.get('openSeats')}/${course.get('totalSeats')} seats filled`;
+  return (
+    `${course.get('courseStatus')}, ` +
+    `${course.get('openSeats')}/${course.get(
+      'totalSeats',
+    )} seats filled`
+  );
 }
 
 export function courseFacultyString(course) {
@@ -66,7 +82,9 @@ export function courseFacultyString(course) {
 }
 
 export function courseHalfSemesters(course) {
-  return course.get('firstHalfSemester') + course.get('secondHalfSemester');
+  return (
+    course.get('firstHalfSemester') + course.get('secondHalfSemester')
+  );
 }
 
 export function courseCredits(course) {
@@ -76,14 +94,18 @@ export function courseCredits(course) {
 export function courseMatches(course, search) {
   const queries = search.toLowerCase().split(/\s+/);
 
-  const code = courseCode(course).toLowerCase().replace(/\s+/, '');
+  const code = courseCode(course)
+    .toLowerCase()
+    .replace(/\s+/, '');
   const section = courseSection(course).toLowerCase();
   const name = course.get('courseName').toLowerCase();
 
   function matchesSubquery(subquery) {
-    if (code.includes(subquery) ||
-        section.includes(subquery) ||
-        name.includes(subquery)) {
+    if (
+      code.includes(subquery) ||
+      section.includes(subquery) ||
+      name.includes(subquery)
+    ) {
       return true;
     }
 
@@ -136,8 +158,14 @@ export function timeToMinutes({hour, minute}) {
 }
 
 export function coursesConflict(courseA, courseB) {
-  if (!(courseA.get('firstHalfSemester') && courseB.get('firstHalfSemester') ||
-        courseA.get('secondHalfSemester') && courseB.get('secondHalfSemester'))) {
+  if (
+    !(
+      (courseA.get('firstHalfSemester') &&
+        courseB.get('firstHalfSemester')) ||
+      (courseA.get('secondHalfSemester') &&
+        courseB.get('secondHalfSemester'))
+    )
+  ) {
     return false;
   }
 
@@ -148,12 +176,14 @@ export function coursesConflict(courseA, courseB) {
       }
 
       const startA = timeToMinutes(parseTime(slotA.get('startTime'))),
-            startB = timeToMinutes(parseTime(slotB.get('startTime'))),
-            endA = timeToMinutes(parseTime(slotA.get('endTime'))),
-            endB = timeToMinutes(parseTime(slotB.get('endTime')));
+        startB = timeToMinutes(parseTime(slotB.get('startTime'))),
+        endA = timeToMinutes(parseTime(slotA.get('endTime'))),
+        endB = timeToMinutes(parseTime(slotB.get('endTime')));
 
-      if (startA <= startB && startB < endA ||
-          startB <= startA && startA < endB) {
+      if (
+        (startA <= startB && startB < endA) ||
+        (startB <= startA && startA < endB)
+      ) {
         return true;
       }
     }

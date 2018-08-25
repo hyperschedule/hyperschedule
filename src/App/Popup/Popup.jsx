@@ -16,28 +16,25 @@ const title = {
 };
 
 const content = {
-  help: <Help/>,
-  importExport: <ImportExport/>,
+  help: <Help />,
+  importExport: <ImportExport />,
 };
 
 const Popup = ({mode, visible, close}) => {
   return (
-    <div id='popup'
+    <div
+      id="popup"
       className={visible ? ' visible' : ''}
-      onClick={close}>
-      <div className='box'
-        onClick={stopPropagation}>
-        <div className='header'>
-          <span className='title'>
-            {title[mode]}
-          </span>
-          <button className='close' onClick={close}>
-            <i className='ion-md-close'></i>
+      onClick={close}
+    >
+      <div className="box" onClick={stopPropagation}>
+        <div className="header">
+          <span className="title">{title[mode]}</span>
+          <button className="close" onClick={close}>
+            <i className="ion-md-close" />
           </button>
         </div>
-        <div className='content'>
-          {content[mode]}
-        </div>
+        <div className="content">{content[mode]}</div>
       </div>
     </div>
   );

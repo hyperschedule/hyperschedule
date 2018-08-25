@@ -17,21 +17,21 @@ function App() {
       <div className="columns">
         <div className="mode column">
           <div className="selector container">
-            <ModeSelector/>
+            <ModeSelector />
           </div>
           <div className="content container">
-            <CourseSearch/>
-            <Schedule/>
+            <CourseSearch />
+            <Schedule />
           </div>
         </div>
         <div className="sidebar column">
-          <Controls/>
-          <CourseDescription/>
-          <SelectedCourses/>
-          <CreditCount/>
+          <Controls />
+          <CourseDescription />
+          <SelectedCourses />
+          <CreditCount />
         </div>
       </div>
-      <Popup/>
+      <Popup />
     </div>
   );
 }

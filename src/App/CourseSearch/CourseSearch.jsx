@@ -47,7 +47,8 @@ const CourseSearch = ({
         columnIndex={0}
         rowIndex={index}
         parent={parent}
-        key={key}>
+        key={key}
+      >
         <div style={{...style}}>
           <CourseItem
             code={courseUtil.courseFullCode(course)}
@@ -56,7 +57,8 @@ const CourseSearch = ({
             name={course.get('courseName')}
             status={courseUtil.courseStatusString(course)}
             focus={focus}
-            add={add}/>
+            add={add}
+          />
         </div>
       </CellMeasurer>
     );
@@ -75,7 +77,8 @@ const CourseSearch = ({
       width={width}
       rowHeight={cache.rowHeight}
       rowCount={order.size}
-      rowRenderer={rowRenderer}/>
+      rowRenderer={rowRenderer}
+    />
   );
 
   listRenderer.propTypes = {
@@ -84,18 +87,20 @@ const CourseSearch = ({
   };
 
   return (
-    <div id="course-search" className={mode === Mode.COURSE_SEARCH ? 'active' : 'inactive'}>
+    <div
+      id="course-search"
+      className={mode === Mode.COURSE_SEARCH ? 'active' : 'inactive'}
+    >
       <div className="search">
         <input
           type="text"
           placeholder="Search..."
           value={searchString}
-          onChange={event => setSearch(event.target.value)}/>
+          onChange={event => setSearch(event.target.value)}
+        />
       </div>
       <div className="entries">
-        <AutoSizer>
-          {listRenderer}
-        </AutoSizer>
+        <AutoSizer>{listRenderer}</AutoSizer>
       </div>
     </div>
   );
@@ -103,7 +108,8 @@ const CourseSearch = ({
 
 CourseSearch.propTypes = {
   mode: PropTypes.string.isRequired,
-  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map).isRequired,
+  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map)
+    .isRequired,
   order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
   schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
   searchString: PropTypes.string.isRequired,
@@ -118,9 +124,11 @@ export default connect(
     const api = state.get('api');
 
     const courses = api.get('courses');
-    const order = api.get('order').filter(key => (
-      courseUtil.courseMatches(courses.get(key), searchString)
-    ));
+    const order = api
+      .get('order')
+      .filter(key =>
+        courseUtil.courseMatches(courses.get(key), searchString),
+      );
 
     return {
       mode: state.get('mode'),

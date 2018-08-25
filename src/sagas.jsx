@@ -16,10 +16,13 @@ function* periodicAPI() {
   //yield put(actions.allCourses(courses, timestamp));
 
   for (;;) {
-    const prevTimestamp = yield select(state => state.getIn(['api', 'timestamp']));
-    const {
-      incremental, courses, diff, timestamp,
-    } = yield call(api.coursesSince, prevTimestamp);
+    const prevTimestamp = yield select(state =>
+      state.getIn(['api', 'timestamp']),
+    );
+    const {incremental, courses, diff, timestamp} = yield call(
+      api.coursesSince,
+      prevTimestamp,
+    );
 
     if (incremental) {
       yield put(actions.coursesSince(diff, timestamp));
@@ -35,12 +38,12 @@ function* persistAPI() {
   const api = yield select(state => state.get('api'));
 
   const courses = api.get('courses');
-  const data = api.get('order').map(key => courses.get(key)).toJS();
+  const data = api
+    .get('order')
+    .map(key => courses.get(key))
+    .toJS();
 
-  localStorage.setItem(
-    'courseList',
-    JSON.stringify(data),
-  );
+  localStorage.setItem('courseList', JSON.stringify(data));
 
   localStorage.setItem(
     'courseDataTimestamp',
@@ -64,15 +67,21 @@ function* persistSelection() {
   );
 }
 
-export default function* () {
+export default function*() {
   yield fork(periodicAPI);
 
-  yield takeEvery([actions.ALL_COURSES, actions.COURSES_SINCE], persistAPI);
+  yield takeEvery(
+    [actions.ALL_COURSES, actions.COURSES_SINCE],
+    persistAPI,
+  );
   yield takeEvery([actions.modeSelector.SET_MODE], persistMode);
-  yield takeEvery([
-    actions.courseSearch.ADD_COURSE,
-    actions.selectedCourses.REMOVE_COURSE,
-    actions.selectedCourses.TOGGLE_COURSE_CHECKED,
-    actions.selectedCourses.TOGGLE_COURSE_STARRED,
-  ], persistSelection);
+  yield takeEvery(
+    [
+      actions.courseSearch.ADD_COURSE,
+      actions.selectedCourses.REMOVE_COURSE,
+      actions.selectedCourses.TOGGLE_COURSE_CHECKED,
+      actions.selectedCourses.TOGGLE_COURSE_STARRED,
+    ],
+    persistSelection,
+  );
 }

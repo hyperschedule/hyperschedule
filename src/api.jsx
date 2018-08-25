@@ -1,19 +1,19 @@
 export function allCourses() {
-  return (
-    fetch('https://hyperschedule.herokuapp.com/api/v2/all-courses')
-      .then(httpStatusHelper)
-      .then(response => response.json())
-      .catch(error => error)
-      .then(data => data)
-  );
+  return fetch(
+    'https://hyperschedule.herokuapp.com/api/v2/all-courses',
+  )
+    .then(httpStatusHelper)
+    .then(response => response.json())
+    .catch(error => error)
+    .then(data => data);
 }
 
 export function coursesSince(timestamp) {
-  return (
-    fetch(`https://hyperschedule.herokuapp.com/api/v2/courses-since/${timestamp}`)
-      .then(response => response.json())
-      .then(data => data)
-  );
+  return fetch(
+    `https://hyperschedule.herokuapp.com/api/v2/courses-since/${timestamp}`,
+  )
+    .then(response => response.json())
+    .then(data => data);
 }
 
 function httpStatusHelper(response) {
