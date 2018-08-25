@@ -1,7 +1,5 @@
 export function allCourses() {
-  return fetch(
-    'https://hyperschedule.herokuapp.com/api/v2/all-courses',
-  )
+  return fetch(`${API_URL}/api/v2/all-courses`)
     .then(httpStatusHelper)
     .then(response => response.json())
     .catch(error => error)
@@ -9,10 +7,9 @@ export function allCourses() {
 }
 
 export function coursesSince(timestamp) {
-  return fetch(
-    `https://hyperschedule.herokuapp.com/api/v2/courses-since/${timestamp}`,
-  )
+  return fetch(`${API_URL}/api/v2/courses-since/${timestamp}`)
     .then(response => response.json())
+    .catch(error => error)
     .then(data => data);
 }
 

@@ -1,4 +1,5 @@
-const path = require('path');
+const path = require('path'),
+      webpack = require('webpack');
 
 module.exports = {
   mode: 'development',
@@ -37,6 +38,11 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      API_URL: JSON.stringify(process.env.API_URL || 'https://hyperschedule.herokuapp.com'),
+    }),
+  ],
   node: {
     fs: 'empty',
     dns: 'mock',
