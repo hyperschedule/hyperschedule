@@ -8,7 +8,8 @@
     "dev": "run-p server watch",
     "server": "./server.js",
     "watch": "rm -rf public/static && webpack -w",
-    "test": "webpack --config webpack.config.test.js"
+    "test": "webpack --config webpack.config.test.js",
+    "lint": "eslint --ext .js,.jsx src"
   },
   "devDependencies": {
     "@types/node": "^10.7.0",
