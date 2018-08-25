@@ -108,7 +108,7 @@ const CourseSearch = ({
 
 CourseSearch.propTypes = {
   mode: PropTypes.string.isRequired,
-  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map)
+  courses: ImmutablePropTypes.mapOf(courseUtil.coursePropType)
     .isRequired,
   order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
   schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,

@@ -1,3 +1,5 @@
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import PropTypes from 'prop-types';
 import randomColor from 'randomcolor';
 import {Set} from 'immutable';
 
@@ -195,3 +197,28 @@ export function coursesConflict(courseA, courseB) {
 export function coursesEquivalent(courseA, courseB) {
   return courseCodeKey(courseA) === courseCodeKey(courseB);
 }
+
+export const coursePropType = ImmutablePropTypes.mapContains({
+  courseCodeSuffix: PropTypes.string.isRequired,
+  courseName: PropTypes.string.isRequired,
+  courseNumber: PropTypes.number.isRequired,
+  courseStatus: PropTypes.string.isRequired,
+  department: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  faculty: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
+  firstHalfSemester: PropTypes.bool.isRequired,
+  openSeats: PropTypes.number.isRequired,
+  quarterCredits: PropTypes.number.isRequired,
+  schedule: ImmutablePropTypes.listOf(
+    ImmutablePropTypes.mapContains({
+      days: PropTypes.string.isRequired,
+      endTime: PropTypes.string.isRequired,
+      startTime: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  school: PropTypes.string.isRequired,
+  secondHalfSemester: PropTypes.bool.isRequired,
+  section: PropTypes.number.isRequired,
+  startDate: PropTypes.string.isRequired,
+  totalSeats: PropTypes.number.isRequired,
+});

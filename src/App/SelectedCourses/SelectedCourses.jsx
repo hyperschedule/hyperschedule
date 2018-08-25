@@ -83,7 +83,7 @@ const SelectedCourses = ({
 };
 
 SelectedCourses.propTypes = {
-  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map)
+  courses: ImmutablePropTypes.mapOf(courseUtil.coursePropType)
     .isRequired,
   order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
   checked: ImmutablePropTypes.setOf(PropTypes.string).isRequired,

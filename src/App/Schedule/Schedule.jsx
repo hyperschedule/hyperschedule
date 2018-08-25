@@ -321,7 +321,7 @@ const Schedule = ({
 
 Schedule.propTypes = {
   mode: PropTypes.string.isRequired,
-  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map)
+  courses: ImmutablePropTypes.mapOf(courseUtil.coursePropType)
     .isRequired,
   schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
   starred: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
