@@ -1,6 +1,9 @@
 {
   "parser": "babel-eslint",
-  "plugins": ["react"],
+  "plugins": [
+    "react",
+    "prettier"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended"
@@ -13,23 +16,7 @@
     }
   },
   "rules": {
-    "indent": ["error", 2, {
-      "VariableDeclarator": {
-        "var": 2,
-        "let": 2,
-        "const": 3
-      }
-    }],
-    "comma-dangle": ["error", "always-multiline"],
-    "quotes": ["error", "single", {
-      "avoidEscape": true,
-      "allowTemplateLiterals": true
-    }],
-    "padded-blocks": ["error", "never"],
-    "no-multiple-empty-lines": ["error", {"max": 1, "maxEOF": 1, "maxBOF": 0}],
-    "no-trailing-spaces": "error",
-    "no-multi-spaces": "error",
-    "eol-last": ["error", "always"]
+    "prettier/prettier": "error"
   },
   "env": {
     "browser": true,
