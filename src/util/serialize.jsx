@@ -1,6 +1,7 @@
 import {List, Map, Set, fromJS} from 'immutable';
 
 import Mode from '@/App/mode';
+import {computeSchedule} from '@/util/schedule';
 import * as courseUtil from '@/util/course';
 
 export function deserializeCourse(data) {
@@ -126,10 +127,13 @@ export function deserializeStorage(storage) {
     data[key] = JSON.parse(storage.getItem(key));
   }
 
+  const selection = deserializeSelectionStorage(data);
+
   return Map({
     api: deserializeAPIStorage(data),
     mode: deserializeModeStorage(data),
-    selection: deserializeSelectionStorage(data),
+    selection: selection,
+    schedule: computeSchedule(selection),
   });
 }
 
