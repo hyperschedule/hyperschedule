@@ -88,6 +88,18 @@ export function courseSortKey(course) {
   ].map(field => course.get(field));
 }
 
+/**
+ * Compare two courses for sorting based on the course sort key,
+ * returning a negative value if the first argument is to be ordered
+ * before the second argument, a positive value if after, or zero if
+ * either ordering is acceptable.
+ *
+ * @see {@link module:util/misc.sortKeyComparator} higher-order
+ * comparator factory for more details on the comparator function.
+ *
+ * @see {@link courseSortKey} for the sort key used to compare
+ * courses.
+ */
 export const coursesSortCompare = util.sortKeyComparator(
   courseSortKey,
 );
