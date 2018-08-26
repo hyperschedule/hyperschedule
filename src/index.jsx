@@ -2,19 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import createSagaMiddleware from 'redux-saga';
 import sagas from './sagas';
-import {Map} from 'immutable';
 import {Provider} from 'react-redux';
 import {applyMiddleware, compose, createStore} from 'redux';
 import {createLogger} from 'redux-logger';
 
 import App from './App/App';
 import hyperschedule from './reducers';
+import * as serializeUtil from '@/util/serialize';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   hyperschedule,
-  Map(),
+  serializeUtil.deserializeStorage(localStorage),
   compose(
     applyMiddleware(
       sagaMiddleware,

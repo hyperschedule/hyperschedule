@@ -1,13 +1,9 @@
 import {call, fork, put, select, takeEvery} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 
-import Mode from '@/App/mode';
-
-import * as api from './api';
-
-import * as serializeUtil from '@/util/serialize';
-
 import * as actions from './actions';
+import * as api from './api';
+import * as serializeUtil from '@/util/serialize';
 
 const API_UPDATE_PERIOD_MS = 1000 * 30;
 
@@ -36,34 +32,25 @@ function* periodicAPI() {
 
 function* persistAPI() {
   const api = yield select(state => state.get('api'));
-
-  const courses = api.get('courses');
-  const data = api
-    .get('order')
-    .map(key => courses.get(key))
-    .toJS();
-
-  localStorage.setItem('courseList', JSON.stringify(data));
-
-  localStorage.setItem(
-    'courseDataTimestamp',
-    JSON.stringify(api.get('timestamp')),
+  serializeUtil.updateStorage(
+    localStorage,
+    serializeUtil.serializeAPIStorage(api),
   );
 }
 
 function* persistMode() {
   const mode = yield select(state => state.get('mode'));
-  localStorage.setItem(
-    'scheduleTabSelected',
-    JSON.stringify(mode === Mode.SCHEDULE),
+  serializeUtil.updateStorage(
+    localStorage,
+    serializeUtil.serializeModeStorage(mode),
   );
 }
 
 function* persistSelection() {
   const selection = yield select(state => state.get('selection'));
-  localStorage.setItem(
-    'selectedCourses',
-    JSON.stringify(serializeUtil.serializeSelection(selection)),
+  serializeUtil.updateStorage(
+    localStorage,
+    serializeUtil.serializeSelectionStorage(selection),
   );
 }
 
