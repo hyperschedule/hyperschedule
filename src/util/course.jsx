@@ -5,38 +5,87 @@ import {Set} from "immutable";
 
 import * as util from "@/util/misc";
 
-const keyFields = [
-  "school",
-  "department",
-  "courseNumber",
-  "courseCodeSuffix",
-  "section",
-];
-
+/**
+ * Generate unique course key (to be used perhaps as a dictionary key)
+ * from a course using the correct fields.
+ *
+ * @see {@link https://github.com/MuddCreates/hyperschedule-scraper}
+ * for API details regarding unique course keys.
+ *
+ * @see {@link courseCodeKey} for a similar function that generates a
+ * key but ignores the section, such that different sections of the
+ * same course are assigned the same key.
+ *
+ * @param {Immutable.Map} course Immutable course object containing
+ * course data fields used to generate the unique course key.
+ *
+ * @returns {String} The unique course key corresponding to the given
+ * course.
+ */
 export function courseKey(course) {
-  return keyFields.map(field => course.get(field)).join("/");
+  return [
+    "school",
+    "department",
+    "courseNumber",
+    "courseCodeSuffix",
+    "section",
+  ]
+    .map(field => course.get(field))
+    .join("/");
 }
 
-const codeKeyFields = [
-  "department",
-  "courseNumber",
-  "courseCodeSuffix",
-];
-
+/**
+ * Generate a course code key, which serves a unique identifier for a
+ * group of courses sharing the same course code (i.e. school,
+ * department, course number) and only differing in section.  This key
+ * is used to check for course equivalences computing the schedule and
+ * prevent different sections of the same course from concurrently
+ * being included in the schedule.
+ *
+ * @see {@link courseKey} for a truly unique course identifier key
+ * that accounts for different sections as different courses.
+ *
+ * @param {Immutable.Map} course Immutable course object containing
+ * course data fields used to generate the course code key.
+ *
+ * @returns {String} The generated course code key, a unique
+ * identifier for the course and all other sections sharing the same
+ * course code.
+ */
 export function courseCodeKey(course) {
-  return codeKeyFields.map(field => course.get(field)).join("/");
+  return ["school", "department", "courseNumber", "courseCodeSuffix"]
+    .map(field => course.get(field))
+    .join("/");
 }
 
-const sortKeyFields = [
-  "department",
-  "courseNumber",
-  "courseCodeSuffix",
-  "school",
-  "section",
-];
-
+/**
+ * Generate a course sorting key, to be used for sorting the course
+ * search list when courses are fetched from the API or loaded from
+ * the localStorage cache.
+ *
+ * Note that this course sort "key" differs from courseKey and
+ * courseCodeKey in that both courseKey and courseCodeKey return a
+ * string of slash-joined course data fields, while the sort key
+ * returned by this function is an array of course data fields, used
+ * to lexicographically compare and sort courses by their data fields.
+ *
+ * @see {@link courseKey} and {@link courseCodeKey}.
+ *
+ * @param {Immutable.Map} course Immutable course object containing
+ * course data fields used to generate the course code key.
+ *
+ * @returns {Array.<String>} The generated course sort key, an array
+ * of course data fields used to lexicographically compare and sort
+ * courses by their data fields.
+ */
 export function courseSortKey(course) {
-  return sortKeyFields.map(field => course.get(field));
+  return [
+    "department",
+    "courseNumber",
+    "courseCodeSuffix",
+    "school",
+    "section",
+  ].map(field => course.get(field));
 }
 
 export const coursesSortCompare = util.sortKeyComparator(
