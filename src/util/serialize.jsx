@@ -68,36 +68,34 @@ export function serializeSelection(selection) {
  * the global Redux state under the "selection" key.
  */
 export function deserializeSelection(data) {
-  let courses = Map();
-  let order = List();
-  let starred = Set();
-  let checked = Set();
+  const init = {
+    courses: Map(),
+    order: List(),
+    starred: Set(),
+    checked: Set(),
+  };
 
-  for (const {
-    starred: courseStarred,
-    selected: courseChecked,
-    ...courseData
-  } of data) {
-    const course = deserializeCourse(courseData);
+  return data.reduce(
+    (
+      {courses, order, starred, checked},
+      {
+        starred: courseStarred,
+        selected: courseChecked,
+        ...courseData
+      },
+    ) => {
+      const course = deserializeCourse(courseData);
+      const key = courseUtil.courseKey(course);
 
-    const key = courseUtil.courseKey(course);
-    courses = courses.set(key, course);
-    order = order.push(key);
-
-    if (courseStarred) {
-      starred = starred.add(key);
-    }
-    if (courseChecked) {
-      checked = checked.add(key);
-    }
-  }
-
-  return Map({
-    courses,
-    order,
-    starred,
-    checked,
-  });
+      return {
+        courses: courses.set(key, course),
+        order: order.push(key),
+        starred: courseStarred ? starred.add(key) : starred,
+        checked: courseChecked ? checked.add(key) : checked,
+      };
+    },
+    init,
+  );
 }
 
 export function serializeAPIStorage(api) {
