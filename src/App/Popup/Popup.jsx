@@ -1,18 +1,18 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import {connect} from 'react-redux';
+import PropTypes from "prop-types";
+import React from "react";
+import {connect} from "react-redux";
 
-import Help from './Help/Help';
-import ImportExport from './ImportExport/ImportExport';
+import Help from "./Help/Help";
+import ImportExport from "./ImportExport/ImportExport";
 
-import './Popup.css';
-import * as actions from './actions';
+import "./Popup.css";
+import * as actions from "./actions";
 
 const stopPropagation = event => event.stopPropagation();
 
 const title = {
-  help: 'Help',
-  importExport: 'Import/export data',
+  help: "Help",
+  importExport: "Import/export data",
 };
 
 const content = {
@@ -24,7 +24,7 @@ const Popup = ({mode, visible, close}) => {
   return (
     <div
       id="popup"
-      className={visible ? ' visible' : ''}
+      className={visible ? " visible" : ""}
       onClick={close}
     >
       <div className="box" onClick={stopPropagation}>
@@ -48,10 +48,10 @@ Popup.propTypes = {
 
 export default connect(
   state => {
-    const popup = state.get('popup');
+    const popup = state.get("popup");
     return {
-      mode: popup.get('mode'),
-      visible: popup.get('visible'),
+      mode: popup.get("mode"),
+      visible: popup.get("visible"),
     };
   },
   dispatch => ({

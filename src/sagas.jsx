@@ -1,9 +1,9 @@
-import {call, fork, put, select, takeEvery} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
+import {call, fork, put, select, takeEvery} from "redux-saga/effects";
+import {delay} from "redux-saga";
 
-import * as actions from './actions';
-import * as api from './api';
-import * as serializeUtil from '@/util/serialize';
+import * as actions from "./actions";
+import * as api from "./api";
+import * as serializeUtil from "@/util/serialize";
 
 const API_UPDATE_PERIOD_MS = 1000 * 30;
 
@@ -13,7 +13,7 @@ function* periodicAPI() {
 
   for (;;) {
     const prevTimestamp = yield select(state =>
-      state.getIn(['api', 'timestamp']),
+      state.getIn(["api", "timestamp"]),
     );
     const {incremental, courses, diff, timestamp} = yield call(
       api.coursesSince,
@@ -31,7 +31,7 @@ function* periodicAPI() {
 }
 
 function* persistAPI() {
-  const api = yield select(state => state.get('api'));
+  const api = yield select(state => state.get("api"));
   serializeUtil.updateStorage(
     localStorage,
     serializeUtil.serializeAPIStorage(api),
@@ -39,7 +39,7 @@ function* persistAPI() {
 }
 
 function* persistMode() {
-  const mode = yield select(state => state.get('mode'));
+  const mode = yield select(state => state.get("mode"));
   serializeUtil.updateStorage(
     localStorage,
     serializeUtil.serializeModeStorage(mode),
@@ -47,7 +47,7 @@ function* persistMode() {
 }
 
 function* persistSelection() {
-  const selection = yield select(state => state.get('selection'));
+  const selection = yield select(state => state.get("selection"));
   serializeUtil.updateStorage(
     localStorage,
     serializeUtil.serializeSelectionStorage(selection),

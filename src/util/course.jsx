@@ -1,38 +1,38 @@
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import randomColor from 'randomcolor';
-import {Set} from 'immutable';
+import ImmutablePropTypes from "react-immutable-proptypes";
+import PropTypes from "prop-types";
+import randomColor from "randomcolor";
+import {Set} from "immutable";
 
-import * as util from '@/util/misc';
+import * as util from "@/util/misc";
 
 const keyFields = [
-  'school',
-  'department',
-  'courseNumber',
-  'courseCodeSuffix',
-  'section',
+  "school",
+  "department",
+  "courseNumber",
+  "courseCodeSuffix",
+  "section",
 ];
 
 export function courseKey(course) {
-  return keyFields.map(field => course.get(field)).join('/');
+  return keyFields.map(field => course.get(field)).join("/");
 }
 
 const codeKeyFields = [
-  'department',
-  'courseNumber',
-  'courseCodeSuffix',
+  "department",
+  "courseNumber",
+  "courseCodeSuffix",
 ];
 
 export function courseCodeKey(course) {
-  return codeKeyFields.map(field => course.get(field)).join('/');
+  return codeKeyFields.map(field => course.get(field)).join("/");
 }
 
 const sortKeyFields = [
-  'department',
-  'courseNumber',
-  'courseCodeSuffix',
-  'school',
-  'section',
+  "department",
+  "courseNumber",
+  "courseCodeSuffix",
+  "school",
+  "section",
 ];
 
 export function courseSortKey(course) {
@@ -45,52 +45,52 @@ export const coursesSortCompare = util.sortKeyComparator(
 
 export function courseCode(course) {
   return (
-    course.get('department') +
-    ' ' +
+    course.get("department") +
+    " " +
     course
-      .get('courseNumber')
+      .get("courseNumber")
       .toString()
-      .padStart(3, '0') +
-    course.get('courseCodeSuffix')
+      .padStart(3, "0") +
+    course.get("courseCodeSuffix")
   );
 }
 
 export function courseSection(course) {
   return (
-    course.get('school') +
-    '-' +
+    course.get("school") +
+    "-" +
     course
-      .get('section')
+      .get("section")
       .toString()
-      .padStart(2, '0')
+      .padStart(2, "0")
   );
 }
 
 export function courseFullCode(course) {
-  return courseCode(course) + ' ' + courseSection(course);
+  return courseCode(course) + " " + courseSection(course);
 }
 
 export function courseStatusString(course) {
   return (
-    `${course.get('courseStatus')}, ` +
-    `${course.get('openSeats')}/${course.get(
-      'totalSeats',
+    `${course.get("courseStatus")}, ` +
+    `${course.get("openSeats")}/${course.get(
+      "totalSeats",
     )} seats filled`
   );
 }
 
 export function courseFacultyString(course) {
-  return util.commaJoin(course.get('faculty').toJS());
+  return util.commaJoin(course.get("faculty").toJS());
 }
 
 export function courseHalfSemesters(course) {
   return (
-    course.get('firstHalfSemester') + course.get('secondHalfSemester')
+    course.get("firstHalfSemester") + course.get("secondHalfSemester")
   );
 }
 
 export function courseCredits(course) {
-  return course.get('quarterCredits') / 4;
+  return course.get("quarterCredits") / 4;
 }
 
 export function courseMatches(course, search) {
@@ -98,9 +98,9 @@ export function courseMatches(course, search) {
 
   const code = courseCode(course)
     .toLowerCase()
-    .replace(/\s+/, '');
+    .replace(/\s+/, "");
   const section = courseSection(course).toLowerCase();
-  const name = course.get('courseName').toLowerCase();
+  const name = course.get("courseName").toLowerCase();
 
   function matchesSubquery(subquery) {
     if (
@@ -111,7 +111,7 @@ export function courseMatches(course, search) {
       return true;
     }
 
-    for (const instructor of course.get('faculty')) {
+    for (const instructor of course.get("faculty")) {
       if (instructor.includes(subquery)) {
         return true;
       }
@@ -129,9 +129,9 @@ export function courseMatches(course, search) {
   return true;
 }
 
-export function courseColor(course, format = 'hex') {
+export function courseColor(course, format = "hex") {
   return randomColor({
-    luminosity: 'light',
+    luminosity: "light",
     seed: courseFullCode(course),
     format,
   });
@@ -148,7 +148,7 @@ function daysOverlap(daysA, daysB) {
 }
 
 export function parseTime(timeString) {
-  const [hourString, minuteString] = timeString.split(':');
+  const [hourString, minuteString] = timeString.split(":");
   return {
     hour: parseInt(hourString),
     minute: parseInt(minuteString),
@@ -162,25 +162,25 @@ export function timeToMinutes({hour, minute}) {
 export function coursesConflict(courseA, courseB) {
   if (
     !(
-      (courseA.get('firstHalfSemester') &&
-        courseB.get('firstHalfSemester')) ||
-      (courseA.get('secondHalfSemester') &&
-        courseB.get('secondHalfSemester'))
+      (courseA.get("firstHalfSemester") &&
+        courseB.get("firstHalfSemester")) ||
+      (courseA.get("secondHalfSemester") &&
+        courseB.get("secondHalfSemester"))
     )
   ) {
     return false;
   }
 
-  for (const slotA of courseA.get('schedule')) {
-    for (const slotB of courseB.get('schedule')) {
-      if (!daysOverlap(slotA.get('days'), slotB.get('days'))) {
+  for (const slotA of courseA.get("schedule")) {
+    for (const slotB of courseB.get("schedule")) {
+      if (!daysOverlap(slotA.get("days"), slotB.get("days"))) {
         continue;
       }
 
-      const startA = timeToMinutes(parseTime(slotA.get('startTime'))),
-        startB = timeToMinutes(parseTime(slotB.get('startTime'))),
-        endA = timeToMinutes(parseTime(slotA.get('endTime'))),
-        endB = timeToMinutes(parseTime(slotB.get('endTime')));
+      const startA = timeToMinutes(parseTime(slotA.get("startTime"))),
+        startB = timeToMinutes(parseTime(slotB.get("startTime"))),
+        endA = timeToMinutes(parseTime(slotA.get("endTime"))),
+        endB = timeToMinutes(parseTime(slotB.get("endTime")));
 
       if (
         (startA <= startB && startB < endA) ||

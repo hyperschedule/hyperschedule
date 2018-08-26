@@ -1,13 +1,13 @@
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {connect} from 'react-redux';
+import ImmutablePropTypes from "react-immutable-proptypes";
+import PropTypes from "prop-types";
+import React from "react";
+import {connect} from "react-redux";
 
-import {exportICS, exportPDF} from './export';
+import {exportICS, exportPDF} from "./export";
 
-import * as actions from './actions';
+import * as actions from "./actions";
 
-import './ImportExport.css';
+import "./ImportExport.css";
 
 const ImportExport = ({
   data,
@@ -21,7 +21,7 @@ const ImportExport = ({
 
   const copy = () => {
     textareaRef.current.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
   };
 
   return (
@@ -76,9 +76,9 @@ ImportExport.propTypes = {
 export default connect(
   state => {
     return {
-      data: state.get('importExport').get('data'),
-      courses: state.get('selection').get('courses'),
-      schedule: state.get('schedule'),
+      data: state.get("importExport").get("data"),
+      courses: state.get("selection").get("courses"),
+      schedule: state.get("schedule"),
     };
   },
   dispatch => ({

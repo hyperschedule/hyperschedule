@@ -1,12 +1,12 @@
-import Measure from 'react-measure';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {connect} from 'react-redux';
+import Measure from "react-measure";
+import PropTypes from "prop-types";
+import React from "react";
+import {connect} from "react-redux";
 
-import * as courseUtil from '@/util/course';
-import * as util from '@/util/misc';
+import * as courseUtil from "@/util/course";
+import * as util from "@/util/misc";
 
-import './CourseDescription.css';
+import "./CourseDescription.css";
 
 class CourseDescription extends React.PureComponent {
   static propTypes = {
@@ -84,7 +84,7 @@ class CourseDescription extends React.PureComponent {
         <div
           className="overflow"
           style={{
-            height: this.state.height + 'px',
+            height: this.state.height + "px",
           }}
         >
           <Measure offset scroll onResize={this.setHeight}>
@@ -98,7 +98,7 @@ class CourseDescription extends React.PureComponent {
 
 export default connect(
   state => {
-    const course = state.get('focus');
+    const course = state.get("focus");
     if (course.size === 0) {
       return {
         show: false,
@@ -111,17 +111,17 @@ export default connect(
     return {
       show: true,
       title: `${courseUtil.courseFullCode(course)} ${course.get(
-        'courseName',
+        "courseName",
       )}`,
       faculty: courseUtil.courseFacultyString(course),
       semesters:
-        (course.get('firstHalfSemester')
-          ? course.get('secondHalfSemester')
-            ? 'Full'
-            : 'First-half'
-          : 'Second-half') + '-semester course',
-      schedule: course.get('schedule'),
-      credits: `${credits} credit${credits === 1 ? '' : 's'}`,
+        (course.get("firstHalfSemester")
+          ? course.get("secondHalfSemester")
+            ? "Full"
+            : "First-half"
+          : "Second-half") + "-semester course",
+      schedule: course.get("schedule"),
+      credits: `${credits} credit${credits === 1 ? "" : "s"}`,
     };
   },
   () => ({}),

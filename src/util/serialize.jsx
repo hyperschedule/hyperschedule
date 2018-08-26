@@ -1,18 +1,18 @@
-import {List, Map, Set, fromJS} from 'immutable';
+import {List, Map, Set, fromJS} from "immutable";
 
-import Mode from '@/App/mode';
-import {computeSchedule} from '@/util/schedule';
-import * as courseUtil from '@/util/course';
+import Mode from "@/App/mode";
+import {computeSchedule} from "@/util/schedule";
+import * as courseUtil from "@/util/course";
 
 export function deserializeCourse(data) {
   return fromJS(data);
 }
 
 export function serializeSelection(selection) {
-  const courses = selection.get('courses');
-  const order = selection.get('order');
-  const starred = selection.get('starred');
-  const checked = selection.get('checked');
+  const courses = selection.get("courses");
+  const order = selection.get("order");
+  const starred = selection.get("starred");
+  const checked = selection.get("checked");
 
   return order.map(key =>
     courses.get(key).merge({
@@ -56,14 +56,14 @@ export function deserializeSelection(data) {
 }
 
 export function serializeAPIStorage(api) {
-  const courses = api.get('courses');
+  const courses = api.get("courses");
 
   return {
     courseList: api
-      .get('order')
+      .get("order")
       .map(key => courses.get(key))
       .toJS(),
-    courseDataTimestamp: api.get('timestamp'),
+    courseDataTimestamp: api.get("timestamp"),
   };
 }
 

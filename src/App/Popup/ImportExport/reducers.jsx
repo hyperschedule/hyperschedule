@@ -1,8 +1,8 @@
-import {combineReducers} from 'redux-immutable';
+import {combineReducers} from "redux-immutable";
 
-import * as actions from './actions';
+import * as actions from "./actions";
 
-const data = (state = '', action) => {
+const data = (state = "", action) => {
   switch (action.type) {
     case actions.SET_DATA:
       return action.data;

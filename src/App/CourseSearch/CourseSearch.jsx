@@ -1,21 +1,21 @@
-import 'react-virtualized/styles.css';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import React from 'react';
+import "react-virtualized/styles.css";
+import ImmutablePropTypes from "react-immutable-proptypes";
+import PropTypes from "prop-types";
+import React from "react";
 import {
   AutoSizer,
   CellMeasurer,
   CellMeasurerCache,
   List as VirtualizedList,
-} from 'react-virtualized';
-import {connect} from 'react-redux';
+} from "react-virtualized";
+import {connect} from "react-redux";
 
-import CourseItem from '@/App/common/CourseItem/CourseItem';
-import Mode from '@/App/mode';
-import * as actions from './actions';
-import * as courseUtil from '@/util/course';
+import CourseItem from "@/App/common/CourseItem/CourseItem";
+import Mode from "@/App/mode";
+import * as actions from "./actions";
+import * as courseUtil from "@/util/course";
 
-import './CourseSearch.css';
+import "./CourseSearch.css";
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
@@ -54,7 +54,7 @@ const CourseSearch = ({
             code={courseUtil.courseFullCode(course)}
             color={courseUtil.courseColor(course)}
             scheduled={schedule.has(courseKey)}
-            name={course.get('courseName')}
+            name={course.get("courseName")}
             status={courseUtil.courseStatusString(course)}
             focus={focus}
             add={add}
@@ -89,7 +89,7 @@ const CourseSearch = ({
   return (
     <div
       id="course-search"
-      className={mode === Mode.COURSE_SEARCH ? 'active' : 'inactive'}
+      className={mode === Mode.COURSE_SEARCH ? "active" : "inactive"}
     >
       <div className="search">
         <input
@@ -120,21 +120,21 @@ CourseSearch.propTypes = {
 
 export default connect(
   state => {
-    const searchString = state.getIn(['search', 'string']);
-    const api = state.get('api');
+    const searchString = state.getIn(["search", "string"]);
+    const api = state.get("api");
 
-    const courses = api.get('courses');
+    const courses = api.get("courses");
     const order = api
-      .get('order')
+      .get("order")
       .filter(key =>
         courseUtil.courseMatches(courses.get(key), searchString),
       );
 
     return {
-      mode: state.get('mode'),
+      mode: state.get("mode"),
       courses,
       order,
-      schedule: state.get('schedule'),
+      schedule: state.get("schedule"),
       searchString,
     };
   },

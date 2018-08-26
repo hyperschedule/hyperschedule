@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import PropTypes from "prop-types";
+import React from "react";
 
-import './CourseItem.css';
-import * as util from '@/util/misc';
+import "./CourseItem.css";
+import * as util from "@/util/misc";
 
 function CourseItem({
   code,
@@ -23,7 +23,7 @@ function CourseItem({
       <span className="toggle check" onClick={toggleChecked}>
         <i
           className={
-            'ion-md-' + (checked ? 'checkbox' : 'square-outline')
+            "ion-md-" + (checked ? "checkbox" : "square-outline")
           }
         />
       </span>
@@ -31,8 +31,8 @@ function CourseItem({
 
   const starButton =
     toggleStarred === undefined ? null : (
-      <span className={'toggle star'} onClick={toggleStarred}>
-        <i className={'ion-md-star' + (starred ? '' : '-outline')} />
+      <span className={"toggle star"} onClick={toggleStarred}>
+        <i className={"ion-md-star" + (starred ? "" : "-outline")} />
       </span>
     );
 
@@ -51,9 +51,9 @@ function CourseItem({
 
   return (
     <div
-      className={['course', 'item']
-        .concat(scheduled ? ['scheduled'] : [])
-        .join(' ')}
+      className={["course", "item"]
+        .concat(scheduled ? ["scheduled"] : [])
+        .join(" ")}
       style={{
         backgroundColor: color,
       }}
@@ -62,8 +62,8 @@ function CourseItem({
       {checkButton}
       {starButton}
       <span className="label">
-        <span className="code">{code}</span>{' '}
-        <span className="name">{name}</span>{' '}
+        <span className="code">{code}</span>{" "}
+        <span className="name">{name}</span>{" "}
         <span className="status">({status})</span>
       </span>
       {addButton}

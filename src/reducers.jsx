@@ -1,17 +1,17 @@
-import {List, Map, Set} from 'immutable';
-import {combineReducers} from 'redux-immutable';
+import {List, Map, Set} from "immutable";
+import {combineReducers} from "redux-immutable";
 
-import * as actions from './actions';
+import * as actions from "./actions";
 
-import Mode from '@/App/mode';
+import Mode from "@/App/mode";
 
-import importExport from './App/Popup/ImportExport/reducers';
-import popup from './App/Popup/reducers';
-import search from './App/CourseSearch/reducers';
+import importExport from "./App/Popup/ImportExport/reducers";
+import popup from "./App/Popup/reducers";
+import search from "./App/CourseSearch/reducers";
 
-import * as courseUtil from '@/util/course';
-import * as scheduleUtil from '@/util/schedule';
-import * as serializeUtil from '@/util/serialize';
+import * as courseUtil from "@/util/course";
+import * as scheduleUtil from "@/util/schedule";
+import * as serializeUtil from "@/util/serialize";
 
 const mode = (state = Mode.COURSE_SEARCH, action) =>
   action.type === actions.modeSelector.SET_MODE ? action.mode : state;
@@ -24,10 +24,10 @@ const selectionInitial = Map({
 });
 const selection = (prev = Map(), action) => {
   const state = selectionInitial.merge(prev);
-  const courses = state.get('courses'),
-    order = state.get('order'),
-    checked = state.get('checked'),
-    starred = state.get('starred');
+  const courses = state.get("courses"),
+    order = state.get("order"),
+    checked = state.get("checked"),
+    starred = state.get("starred");
 
   switch (action.type) {
     case actions.courseSearch.ADD_COURSE:
@@ -43,7 +43,7 @@ const selection = (prev = Map(), action) => {
     case actions.selectedCourses.REORDER: {
       const key = order.get(action.from);
       return state.set(
-        'order',
+        "order",
         order.delete(action.from).insert(action.to, key),
       );
     }
@@ -55,16 +55,16 @@ const selection = (prev = Map(), action) => {
     }
     case actions.selectedCourses.TOGGLE_COURSE_CHECKED: {
       if (checked.has(action.key)) {
-        return state.set('checked', checked.delete(action.key));
+        return state.set("checked", checked.delete(action.key));
       } else {
-        return state.set('checked', checked.add(action.key));
+        return state.set("checked", checked.add(action.key));
       }
     }
     case actions.selectedCourses.TOGGLE_COURSE_STARRED: {
       if (starred.has(action.key)) {
-        return state.set('starred', starred.delete(action.key));
+        return state.set("starred", starred.delete(action.key));
       } else {
-        return state.set('starred', starred.add(action.key));
+        return state.set("starred", starred.add(action.key));
       }
     }
     default:
@@ -110,8 +110,8 @@ function api(prev = Map(), action) {
     }
 
     case actions.COURSES_SINCE: {
-      let courses = state.get('courses');
-      let order = state.get('order');
+      let courses = state.get("courses");
+      let order = state.get("order");
       const {added, removed, modified} = action.diff;
 
       // todo: replace dumb linear search with binary search
@@ -174,15 +174,15 @@ export default (prev = Map(), action) => {
   switch (action.type) {
     case actions.controls.SHOW_IMPORT_EXPORT:
       return state.setIn(
-        ['importExport', 'data'],
+        ["importExport", "data"],
         JSON.stringify(
-          serializeUtil.serializeSelection(state.get('selection')),
+          serializeUtil.serializeSelection(state.get("selection")),
         ),
       );
 
     case actions.importExport.APPLY_DATA: {
       const selection = serializeUtil.deserializeSelection(
-        JSON.parse(state.getIn(['importExport', 'data'])),
+        JSON.parse(state.getIn(["importExport", "data"])),
       );
       return state.merge({
         selection,
@@ -192,22 +192,22 @@ export default (prev = Map(), action) => {
 
     case actions.courseSearch.FOCUS_COURSE:
       return state.set(
-        'focus',
-        state.getIn(['api', 'courses', action.key]),
+        "focus",
+        state.getIn(["api", "courses", action.key]),
       );
 
     case actions.selectedCourses.FOCUS_COURSE:
     case actions.schedule.FOCUS_COURSE:
       return state.set(
-        'focus',
-        state.getIn(['selection', 'courses', action.key]),
+        "focus",
+        state.getIn(["selection", "courses", action.key]),
       );
 
     case actions.courseSearch.ADD_COURSE: {
-      const courses = state.getIn(['api', 'courses']);
+      const courses = state.getIn(["api", "courses"]);
       const selection = state
-        .get('selection')
-        .setIn(['courses', action.key], courses.get(action.key));
+        .get("selection")
+        .setIn(["courses", action.key], courses.get(action.key));
       return state.merge({
         selection,
         schedule: scheduleUtil.computeSchedule(selection),
@@ -217,9 +217,9 @@ export default (prev = Map(), action) => {
     case actions.selectedCourses.REMOVE_COURSE:
     case actions.selectedCourses.TOGGLE_COURSE_CHECKED:
     case actions.selectedCourses.TOGGLE_COURSE_STARRED: {
-      const selection = state.get('selection');
+      const selection = state.get("selection");
       return state.set(
-        'schedule',
+        "schedule",
         scheduleUtil.computeSchedule(selection),
       );
     }

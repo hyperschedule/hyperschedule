@@ -1,14 +1,14 @@
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-import {connect} from 'react-redux';
+import ImmutablePropTypes from "react-immutable-proptypes";
+import PropTypes from "prop-types";
+import React from "react";
+import {SortableContainer, SortableElement} from "react-sortable-hoc";
+import {connect} from "react-redux";
 
-import CourseItem from '@/App/common/CourseItem/CourseItem';
-import * as actions from './actions';
-import * as courseUtil from '@/util/course';
+import CourseItem from "@/App/common/CourseItem/CourseItem";
+import * as actions from "./actions";
+import * as courseUtil from "@/util/course";
 
-import './SelectedCourses.css';
+import "./SelectedCourses.css";
 
 const SortableItem = SortableElement(({props}) => {
   return <CourseItem {...props} />;
@@ -47,7 +47,7 @@ const SelectedCourses = ({
       key,
       props: {
         code: courseUtil.courseFullCode(course),
-        name: course.get('courseName'),
+        name: course.get("courseName"),
         status: courseUtil.courseStatusString(course),
         focus: () => focusCourse(key),
         checked: checked.has(key),
@@ -98,14 +98,14 @@ SelectedCourses.propTypes = {
 
 export default connect(
   state => {
-    const selection = state.get('selection');
+    const selection = state.get("selection");
 
     return {
-      courses: selection.get('courses'),
-      order: selection.get('order'),
-      checked: selection.get('checked'),
-      starred: selection.get('starred'),
-      schedule: state.get('schedule'),
+      courses: selection.get("courses"),
+      order: selection.get("order"),
+      checked: selection.get("checked"),
+      starred: selection.get("starred"),
+      schedule: state.get("schedule"),
     };
   },
   dispatch => ({

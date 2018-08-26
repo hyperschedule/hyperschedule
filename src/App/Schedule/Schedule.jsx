@@ -1,14 +1,14 @@
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {connect} from 'react-redux';
+import ImmutablePropTypes from "react-immutable-proptypes";
+import PropTypes from "prop-types";
+import React from "react";
+import {connect} from "react-redux";
 
-import CourseBlock from './CourseBlock/CourseBlock';
-import Mode from '@/App/mode';
-import * as actions from './actions';
-import * as courseUtil from '@/util/course';
+import CourseBlock from "./CourseBlock/CourseBlock";
+import Mode from "@/App/mode";
+import * as actions from "./actions";
+import * as courseUtil from "@/util/course";
 
-import './Schedule.css';
+import "./Schedule.css";
 
 const timeToRow = ({hour, minute}) =>
   ((hour - 8) * 60 + minute) / 5 + 2;
@@ -34,20 +34,20 @@ const Schedule = ({
 }) => {
   const blocks = schedule.map(key => {
     const course = courses.get(key);
-    const halfOffset = course.get('firstHalfSemester') ? 0 : 1;
+    const halfOffset = course.get("firstHalfSemester") ? 0 : 1;
 
-    return course.get('schedule').map(slot => {
-      return Array.from(slot.get('days')).map(day => {
+    return course.get("schedule").map(slot => {
+      return Array.from(slot.get("days")).map(day => {
         const gridStyle = {
           gridRowStart: timeToRow(
-            courseUtil.parseTime(slot.get('startTime')),
+            courseUtil.parseTime(slot.get("startTime")),
           ),
           gridRowEnd: timeToRow(
-            courseUtil.parseTime(slot.get('endTime')),
+            courseUtil.parseTime(slot.get("endTime")),
           ),
           gridColumnStart: dayToColumn(day) + halfOffset,
           gridColumnEnd:
-            'span ' + courseUtil.courseHalfSemesters(course),
+            "span " + courseUtil.courseHalfSemesters(course),
         };
 
         const focus = () => focusCourse(key);
@@ -58,7 +58,7 @@ const Schedule = ({
             color={courseUtil.courseColor(course)}
             code={courseUtil.courseFullCode(course)}
             starred={starred.has(key)}
-            name={course.get('courseName')}
+            name={course.get("courseName")}
             gridStyle={gridStyle}
             focus={focus}
           />
@@ -70,7 +70,7 @@ const Schedule = ({
   return (
     <div
       id="schedule"
-      className={mode === Mode.SCHEDULE ? 'active' : ''}
+      className={mode === Mode.SCHEDULE ? "active" : ""}
     >
       <div className="margin-container">
         <div className="size-container">
@@ -224,7 +224,7 @@ const Schedule = ({
               className="row-label odd"
               style={{gridRowStart: 2 + 12 * 1}}
             >
-              9:00 am{' '}
+              9:00 am{" "}
             </div>
             <div
               className="row-label even"
@@ -330,12 +330,12 @@ Schedule.propTypes = {
 
 export default connect(
   state => {
-    const selection = state.get('selection');
+    const selection = state.get("selection");
     return {
-      mode: state.get('mode'),
-      schedule: state.get('schedule'),
-      courses: selection.get('courses'),
-      starred: selection.get('starred'),
+      mode: state.get("mode"),
+      schedule: state.get("schedule"),
+      courses: selection.get("courses"),
+      starred: selection.get("starred"),
     };
   },
   dispatch => ({

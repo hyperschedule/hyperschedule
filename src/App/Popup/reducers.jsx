@@ -1,9 +1,9 @@
-import {Map} from 'immutable';
-import * as actions from './actions';
+import {Map} from "immutable";
+import * as actions from "./actions";
 
 export default (
   state = Map({
-    mode: '',
+    mode: "",
     visible: false,
   }),
   action,
@@ -11,11 +11,11 @@ export default (
   switch (action.type) {
     case actions.importExport.CLOSE:
     case actions.CLOSE:
-      return state.set('visible', false);
+      return state.set("visible", false);
     case actions.controls.SHOW_HELP:
-      return state.set('mode', 'help').set('visible', true);
+      return state.set("mode", "help").set("visible", true);
     case actions.controls.SHOW_IMPORT_EXPORT:
-      return state.set('mode', 'importExport').set('visible', true);
+      return state.set("mode", "importExport").set("visible", true);
 
     default:
       return state;

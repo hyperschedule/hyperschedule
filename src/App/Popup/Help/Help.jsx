@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import './Help.css';
+import "./Help.css";
 
 const Help = () => (
   <div id="help">
     <p>
       The <strong>Course Search</strong> tab lists all courses for the
-      coming semester. Click on the{' '}
+      coming semester. Click on the{" "}
       <button className="demo">
         <i className="ion-md-add" />
-      </button>{' '}
+      </button>{" "}
       button to add a course. Each section is listed separately, so
       make sure to get all the ones you want. You can click on a
       course to see more information about it in the upper-right
@@ -38,11 +38,11 @@ const Help = () => (
       schedules.
     </p>
     <p>
-      Hyperschedule was created by Radon Rosborough and {''}
+      Hyperschedule was created by Radon Rosborough and {""}
       <a href="https://github.com/MuddCreates/hyperschedule/contributors">
         friends
       </a>
-      {''} during Fall 2017 registration.
+      {""} during Fall 2017 registration.
     </p>
   </div>
 );

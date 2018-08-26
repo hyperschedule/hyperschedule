@@ -1,11 +1,11 @@
-import {Set} from 'immutable';
-import * as courseUtil from '@/util/course';
+import {Set} from "immutable";
+import * as courseUtil from "@/util/course";
 
 export function computeSchedule(selection) {
-  const courses = selection.get('courses'),
-    starred = selection.get('starred'),
-    checked = selection.get('checked'),
-    order = selection.get('order');
+  const courses = selection.get("courses"),
+    starred = selection.get("starred"),
+    checked = selection.get("checked"),
+    order = selection.get("order");
 
   let schedule = Set();
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import {Iterable} from 'immutable';
+import React from "react";
+import {Iterable} from "immutable";
 
 export const componentToJS = Component =>
   function ToJSComponent(props) {
@@ -26,24 +26,24 @@ export function classMap(map) {
       classes.push(className);
     }
   }
-  return classes.join(' ');
+  return classes.join(" ");
 }
 
-export function commaJoin(items, comma = ',') {
+export function commaJoin(items, comma = ",") {
   switch (true) {
     case items.length === 1:
       return items[0];
     case items.length === 2:
-      return items.join(' and ');
+      return items.join(" and ");
     case items.length >= 3:
       return (
-        items.slice(0, -1).join(comma + ' ') +
+        items.slice(0, -1).join(comma + " ") +
         comma +
-        ' and ' +
+        " and " +
         items[-1]
       );
     default:
-      return '';
+      return "";
   }
 }
 

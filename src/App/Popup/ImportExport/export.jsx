@@ -1,12 +1,12 @@
-import './jspdf.customfonts.debug';
-import jsPDF from 'jspdf';
+import "./jspdf.customfonts.debug";
+import jsPDF from "jspdf";
 
-import ROBOTO from './fonts/Roboto-Regular.ttf.js';
-import ROBOTO_BOLD from './fonts/Roboto-Bold.ttf.js';
+import ROBOTO from "./fonts/Roboto-Regular.ttf.js";
+import ROBOTO_BOLD from "./fonts/Roboto-Bold.ttf.js";
 
-import * as courseUtil from '@/util/course';
+import * as courseUtil from "@/util/course";
 
-import ical from 'ical-generator';
+import ical from "ical-generator";
 
 const config = {
   margin: {
@@ -37,32 +37,32 @@ const config = {
 };
 
 const days = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 
 const times = [
-  '8:00 am',
-  '9:00 am',
-  '10:00 am',
-  '11:00 am',
-  '12:00 pm',
-  '1:00 pm',
-  '2:00 pm',
-  '3:00 pm',
-  '4:00 pm',
-  '5:00 pm',
-  '6:00 pm',
-  '7:00 pm',
-  '8:00 pm',
-  '9:00 pm',
-  '10:00 pm',
-  '11:00 pm',
+  "8:00 am",
+  "9:00 am",
+  "10:00 am",
+  "11:00 am",
+  "12:00 pm",
+  "1:00 pm",
+  "2:00 pm",
+  "3:00 pm",
+  "4:00 pm",
+  "5:00 pm",
+  "6:00 pm",
+  "7:00 pm",
+  "8:00 pm",
+  "9:00 pm",
+  "10:00 pm",
+  "11:00 pm",
 ];
 
 const dayIndex = {
@@ -77,15 +77,15 @@ const dayIndex = {
 
 export const exportPDF = (courses, selected) => {
   const pdf = new jsPDF({
-    unit: 'pt',
-    format: 'letter',
-    orientation: 'l',
+    unit: "pt",
+    format: "letter",
+    orientation: "l",
   });
 
-  pdf.addFileToVFS('Roboto-Regular.ttf', ROBOTO);
-  pdf.addFileToVFS('Roboto-Bold.ttf', ROBOTO_BOLD);
-  pdf.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
-  pdf.addFont('Roboto-Bold.ttf', 'Roboto', 'bold');
+  pdf.addFileToVFS("Roboto-Regular.ttf", ROBOTO);
+  pdf.addFileToVFS("Roboto-Bold.ttf", ROBOTO_BOLD);
+  pdf.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+  pdf.addFont("Roboto-Bold.ttf", "Roboto", "bold");
 
   pdf.setFontSize(6);
   pdf.setLineWidth(0.5);
@@ -108,7 +108,7 @@ export const exportPDF = (courses, selected) => {
     config.margin.top,
     tableWidth,
     tableHeight,
-    'FS',
+    "FS",
   );
 
   for (let i = 0; i < 7; ++i) {
@@ -120,21 +120,21 @@ export const exportPDF = (courses, selected) => {
       pdf.setFillColor(config.color.column.even);
     }
 
-    pdf.rect(x, config.margin.top, columnWidth, tableHeight, 'F');
+    pdf.rect(x, config.margin.top, columnWidth, tableHeight, "F");
 
-    pdf.setFont('Roboto');
-    pdf.setFontStyle('bold');
+    pdf.setFont("Roboto");
+    pdf.setFontStyle("bold");
     pdf.text(
       x + columnWidth / 2,
       config.margin.top +
         config.first.rowHeight / 2 +
         pdf.getLineHeight() / 2,
       days[i],
-      'center',
+      "center",
     );
   }
 
-  pdf.setFontStyle('normal');
+  pdf.setFontStyle("normal");
   for (let i = 0; i < 16; ++i) {
     const y =
       i * rowHeight + config.margin.top + config.first.rowHeight;
@@ -145,13 +145,13 @@ export const exportPDF = (courses, selected) => {
       y,
     );
 
-    pdf.setFont('Roboto');
-    pdf.setFontStyle('normal');
+    pdf.setFont("Roboto");
+    pdf.setFontStyle("normal");
     pdf.text(
       config.margin.left + config.first.columnWidth - 6,
       y + pdf.getLineHeight() + 3,
       times[i],
-      'right',
+      "right",
     );
   }
 
@@ -164,16 +164,16 @@ export const exportPDF = (courses, selected) => {
 
   for (const key of selected) {
     const course = courses.get(key);
-    for (const slot of course.get('schedule')) {
-      const start = courseUtil.parseTime(slot.get('startTime'));
-      const end = courseUtil.parseTime(slot.get('endTime'));
+    for (const slot of course.get("schedule")) {
+      const start = courseUtil.parseTime(slot.get("startTime"));
+      const end = courseUtil.parseTime(slot.get("endTime"));
 
-      for (const day of slot.get('days')) {
+      for (const day of slot.get("days")) {
         const x =
           dayIndex[day] * columnWidth +
           config.margin.left +
           config.first.columnWidth +
-          (course.get('firstHalfSemester') ? 0 : columnWidth / 2);
+          (course.get("firstHalfSemester") ? 0 : columnWidth / 2);
 
         const width =
           (courseUtil.courseHalfSemesters(course) * columnWidth) / 2;
@@ -189,22 +189,22 @@ export const exportPDF = (courses, selected) => {
           config.first.rowHeight;
 
         pdf.setFillColor(
-          ...courseUtil.courseColor(course, 'rgbArray'),
+          ...courseUtil.courseColor(course, "rgbArray"),
         );
 
-        pdf.rect(x, yStart, width, yEnd - yStart, 'F');
+        pdf.rect(x, yStart, width, yEnd - yStart, "F");
 
-        pdf.setFont('Helvetica');
+        pdf.setFont("Helvetica");
         const courseCodeLines = pdf.splitTextToSize(
           courseUtil.courseFullCode(course),
           width - 12,
         );
         const courseNameLines = pdf.splitTextToSize(
-          course.get('courseName'),
+          course.get("courseName"),
           width - 12,
         );
 
-        pdf.setFont('Roboto');
+        pdf.setFont("Roboto");
         const xText = x + width / 2;
         const yText =
           (yStart + yEnd) / 2 -
@@ -212,31 +212,31 @@ export const exportPDF = (courses, selected) => {
             pdf.getLineHeight()) /
             2 +
           pdf.getLineHeight();
-        pdf.setFontStyle('bold');
-        pdf.text(xText, yText, courseCodeLines, 'center');
-        pdf.setFontStyle('normal');
+        pdf.setFontStyle("bold");
+        pdf.text(xText, yText, courseCodeLines, "center");
+        pdf.setFontStyle("normal");
         pdf.text(
           xText,
           yText + courseCodeLines.length * pdf.getLineHeight(),
           courseNameLines,
-          'center',
+          "center",
         );
       }
     }
   }
 
-  const uri = pdf.output('datauristring');
-  window.open(uri, 'hyperschedule.pdf');
+  const uri = pdf.output("datauristring");
+  window.open(uri, "hyperschedule.pdf");
 };
 
 const dayToICal = {
-  U: 'SU',
-  M: 'MO',
-  T: 'TU',
-  W: 'WE',
-  R: 'TH',
-  F: 'FR',
-  S: 'SA',
+  U: "SU",
+  M: "MO",
+  T: "TU",
+  W: "WE",
+  R: "TH",
+  F: "FR",
+  S: "SA",
 };
 
 export const exportICS = (courses, selected) => {
@@ -244,16 +244,16 @@ export const exportICS = (courses, selected) => {
 
   for (const key of selected) {
     const course = courses.get(key);
-    for (const slot of course.get('schedule')) {
-      const listedStartDay = new Date(course.get('startDate'));
+    for (const slot of course.get("schedule")) {
+      const listedStartDay = new Date(course.get("startDate"));
       const listedStartWeekday = listedStartDay.getDay();
-      const listedEndDay = new Date(course.get('endDate'));
+      const listedEndDay = new Date(course.get("endDate"));
 
       // Determine the first day of class. We want to pick the
       // weekday that occurs the soonest after (possibly on the same
       // day as) the listed start date.
       let weekdayDifference = 7;
-      for (const weekday of slot.get('days')) {
+      for (const weekday of slot.get("days")) {
         const possibleStartWeekday = dayIndex[weekday];
         const possibleWeekdayDifference =
           (possibleStartWeekday - listedStartWeekday) % 7;
@@ -264,9 +264,9 @@ export const exportICS = (courses, selected) => {
 
       const description =
         courseUtil.courseFullCode(course) +
-        ' ' +
-        course.get('courseName') +
-        '\n' +
+        " " +
+        course.get("courseName") +
+        "\n" +
         courseUtil.courseFacultyString(course);
 
       const start = new Date(listedStartDay.valueOf());
@@ -274,7 +274,7 @@ export const exportICS = (courses, selected) => {
       const {
         hour: startHours,
         minute: startMinutes,
-      } = courseUtil.parseTime(slot.get('startTime'));
+      } = courseUtil.parseTime(slot.get("startTime"));
       start.setHours(startHours);
       start.setMinutes(startMinutes);
 
@@ -282,21 +282,21 @@ export const exportICS = (courses, selected) => {
       const {
         hour: endHours,
         minute: endMinutes,
-      } = courseUtil.parseTime(slot.get('endTime'));
+      } = courseUtil.parseTime(slot.get("endTime"));
       end.setHours(endHours);
       end.setMinutes(endMinutes);
 
       cal.createEvent({
-        summary: course.get('courseName'),
+        summary: course.get("courseName"),
         description,
-        location: course.get('location'),
+        location: course.get("location"),
         start,
         end,
         repeating: {
-          freq: 'WEEKLY',
+          freq: "WEEKLY",
           until: listedEndDay,
           interval: 1,
-          byDay: Array.from(slot.get('days')).map(
+          byDay: Array.from(slot.get("days")).map(
             day => dayToICal[day],
           ),
         },
@@ -306,6 +306,6 @@ export const exportICS = (courses, selected) => {
 
   const value = cal.toString();
 
-  const uri = 'data:text/calendar;base64,' + btoa(value);
-  window.open(uri, 'hyperschedule.ics');
+  const uri = "data:text/calendar;base64," + btoa(value);
+  window.open(uri, "hyperschedule.ics");
 };

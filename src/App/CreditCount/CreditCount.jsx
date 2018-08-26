@@ -1,18 +1,18 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import {connect} from 'react-redux';
+import PropTypes from "prop-types";
+import React from "react";
+import {connect} from "react-redux";
 
-import * as courseUtil from '@/util/course';
-import * as util from '@/util/misc';
+import * as courseUtil from "@/util/course";
+import * as util from "@/util/misc";
 
-import './CreditCount.css';
+import "./CreditCount.css";
 
 const CreditCount = ({credits}) => {
   const rows = [];
   for (const category in credits) {
     const categoryCredits = credits[category];
     rows.push(
-      <tr key={category} className={['category', category].join(' ')}>
+      <tr key={category} className={["category", category].join(" ")}>
         <th>{category} credits:</th>
         <td>
           {categoryCredits.HM + 3 * categoryCredits.other} total
@@ -43,12 +43,12 @@ CreditCount.propTypes = {
 
 export default connect(
   state => {
-    const selection = state.get('selection'),
-      schedule = state.get('schedule'),
-      order = selection.get('order'),
-      starred = selection.get('starred'),
-      checked = selection.get('checked'),
-      courses = selection.get('courses');
+    const selection = state.get("selection"),
+      schedule = state.get("schedule"),
+      order = selection.get("order"),
+      starred = selection.get("starred"),
+      checked = selection.get("checked"),
+      courses = selection.get("courses");
 
     const credits = {
       selected: {
@@ -72,8 +72,8 @@ export default connect(
     for (const key of order) {
       const course = courses.get(key);
 
-      const school = course.get('school');
-      const schoolKey = school === 'HM' ? 'HM' : 'other';
+      const school = course.get("school");
+      const schoolKey = school === "HM" ? "HM" : "other";
 
       const courseCredits = courseUtil.courseCredits(course);
 

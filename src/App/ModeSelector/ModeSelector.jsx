@@ -1,24 +1,24 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import {connect} from 'react-redux';
+import PropTypes from "prop-types";
+import React from "react";
+import {connect} from "react-redux";
 
-import Mode from '@/App/mode';
-import * as actions from './actions';
+import Mode from "@/App/mode";
+import * as actions from "./actions";
 
-import './ModeSelector.css';
+import "./ModeSelector.css";
 
 const ModeSelector = ({mode, setMode}) => (
   <div id="mode-selector">
     <button
       className={
-        (mode === Mode.COURSE_SEARCH ? 'active' : '') + ' left'
+        (mode === Mode.COURSE_SEARCH ? "active" : "") + " left"
       }
       onClick={() => setMode(Mode.COURSE_SEARCH)}
     >
       Course Search
     </button>
     <button
-      className={(mode === Mode.SCHEDULE ? 'active' : '') + ' right'}
+      className={(mode === Mode.SCHEDULE ? "active" : "") + " right"}
       onClick={() => setMode(Mode.SCHEDULE)}
     >
       Schedule
@@ -33,7 +33,7 @@ ModeSelector.propTypes = {
 
 const ModeSelectorWrapper = connect(
   state => ({
-    mode: state.get('mode'),
+    mode: state.get("mode"),
   }),
   dispatch => ({
     setMode: mode => dispatch(actions.setMode(mode)),

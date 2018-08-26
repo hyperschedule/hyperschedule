@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import PropTypes from "prop-types";
+import React from "react";
 
-import './CourseBlock.css';
+import "./CourseBlock.css";
 
-import * as util from '@/util/misc';
+import * as util from "@/util/misc";
 
 function CourseBlock({code, name, focus, gridStyle, color, starred}) {
   return (
