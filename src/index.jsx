@@ -14,7 +14,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   hyperschedule,
-  serializeUtil.deserializeStorage(localStorage),
+  serializeUtil.extractStateStorage(localStorage),
   compose(
     applyMiddleware(
       sagaMiddleware,
