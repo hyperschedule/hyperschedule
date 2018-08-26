@@ -75,26 +75,28 @@ export function deserializeSelection(data) {
     checked: Set(),
   };
 
-  return data.reduce(
-    (
-      {courses, order, starred, checked},
-      {
-        starred: courseStarred,
-        selected: courseChecked,
-        ...courseData
-      },
-    ) => {
-      const course = deserializeCourse(courseData);
-      const key = courseUtil.courseKey(course);
+  return Map(
+    data.reduce(
+      (
+        {courses, order, starred, checked},
+        {
+          starred: courseStarred,
+          selected: courseChecked,
+          ...courseData
+        },
+      ) => {
+        const course = deserializeCourse(courseData);
+        const key = courseUtil.courseKey(course);
 
-      return {
-        courses: courses.set(key, course),
-        order: order.push(key),
-        starred: courseStarred ? starred.add(key) : starred,
-        checked: courseChecked ? checked.add(key) : checked,
-      };
-    },
-    init,
+        return {
+          courses: courses.set(key, course),
+          order: order.push(key),
+          starred: courseStarred ? starred.add(key) : starred,
+          checked: courseChecked ? checked.add(key) : checked,
+        };
+      },
+      init,
+    ),
   );
 }
 
