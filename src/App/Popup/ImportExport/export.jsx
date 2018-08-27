@@ -75,7 +75,8 @@ const dayIndex = {
   S: 6,
 };
 
-export const exportPDF = (courses, selected) => {
+export const exportPDF = (selection, schedule) => {
+  const courses = selection.get("courses");
   const pdf = new jsPDF({
     unit: "pt",
     format: "letter",
@@ -162,7 +163,7 @@ export const exportPDF = (courses, selected) => {
     config.margin.top + tableHeight,
   );
 
-  for (const key of selected) {
+  for (const key of schedule) {
     const course = courses.get(key);
     for (const slot of course.get("schedule")) {
       const start = courseUtil.parseTime(slot.get("startTime"));
@@ -239,10 +240,34 @@ const dayToICal = {
   S: "SA",
 };
 
-export const exportICS = (courses, selected) => {
+export const exportICS = selection => {
+  const courses = selection.get("courses"),
+    checked = selection.get("checked"),
+    starred = selection.get("starred"),
+    order = selection.get("order");
   const cal = ical();
 
-  for (const key of selected) {
+  let anyStarred = false;
+  let anySelected = false;
+  for (const key of order) {
+    if (checked.has(key) && starred.has(key)) {
+      anyStarred = true;
+    }
+    if (checked.has(key)) {
+      anySelected = true;
+    }
+  }
+
+  for (const key of order) {
+    if (
+      !(
+        !anySelected ||
+        (checked.has(key) && (!anyStarred || starred.has(key)))
+      )
+    ) {
+      continue;
+    }
+
     const course = courses.get(key);
     for (const slot of course.get("schedule")) {
       const listedStartDay = new Date(course.get("startDate"));

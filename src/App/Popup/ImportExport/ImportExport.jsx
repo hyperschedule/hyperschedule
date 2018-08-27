@@ -4,6 +4,7 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {exportICS, exportPDF} from "./export";
+import * as courseUtil from "@/util/course";
 
 import * as actions from "./actions";
 
@@ -14,8 +15,8 @@ const ImportExport = ({
   setData,
   apply,
   close,
-  courses,
   schedule,
+  selection,
 }) => {
   const textareaRef = React.createRef();
 
@@ -42,13 +43,13 @@ const ImportExport = ({
         </button>
         <button
           className="button export pdf"
-          onClick={() => exportPDF(courses, schedule)}
+          onClick={() => exportPDF(selection, schedule)}
         >
           Export (PDF)
         </button>
         <button
           className="button export ical"
-          onClick={() => exportICS(courses, schedule)}
+          onClick={() => exportICS(selection, schedule)}
         >
           Export (iCal)
         </button>
@@ -68,8 +69,13 @@ ImportExport.propTypes = {
   setData: PropTypes.func.isRequired,
   apply: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  courses: ImmutablePropTypes.mapOf(ImmutablePropTypes.map)
-    .isRequired,
+  selection: ImmutablePropTypes.mapContains({
+    courses: ImmutablePropTypes.mapOf(courseUtil.coursePropType)
+      .isRequired,
+    order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
+    starred: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
+    checked: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
+  }).isRequired,
   schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
 };
 
@@ -77,7 +83,7 @@ export default connect(
   state => {
     return {
       data: state.get("importExport").get("data"),
-      courses: state.get("selection").get("courses"),
+      selection: state.get("selection"),
       schedule: state.get("schedule"),
     };
   },
