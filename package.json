@@ -19,9 +19,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "./pre-commit-lint.bash"
-    ]
+    "*.{js,jsx,json}": ["./pre-commit-lint.bash"]
   },
   "devDependencies": {
     "@types/node": "^10.7.0",
