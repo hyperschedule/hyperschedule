@@ -11,16 +11,21 @@ for file in "$@"; do
     temp_record=$(git checkout-index --temp "$file")
     temp_file=$(echo "$temp_record" | cut -f 1)
 
+    echo "Linting '$file'..."
+
     ext=${file##*.}
+    temp_file_ext="$temp_file.$ext"
+
+    mv "$temp_file" "$temp_file_ext"
 
     code=0
     case "$ext" in
         json)
-            yarn prettier --parser json --list-different "$temp_file"
+            yarn prettier --parser json --list-different "$temp_file_ext"
             code=$?
             ;;
         js|jsx)
-            yarn eslint --quiet --no-ignore "$temp_file"
+            yarn eslint --no-ignore "$temp_file_ext"
             code=$?
             ;;
         *)
@@ -31,7 +36,7 @@ for file in "$@"; do
         fail=$((fail + 1))
     fi
 
-    rm "$temp_file"
+    rm "$temp_file_ext"
 
 done
 
