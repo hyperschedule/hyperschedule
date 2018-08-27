@@ -234,10 +234,51 @@ export function courseHalfSemesters(course) {
   );
 }
 
+/**
+ * Returns the number of credits for a course.  The API spec provides
+ * a "quarterCredits" property (course credits as a multiple of 0.25
+ * credits) to avoid dealing with non-integer values.  This
+ * readability function converts the quarter-credit count to a
+ * whole-credit count, to be used in course descriptions and schedule
+ * credit counts.
+ *
+ * @param {Immutable.Map} course Immutable course object containing
+ * the "quarterCredits" property from which the total number of
+ * credits is to be derived.
+ *
+ * @returns {Number} The number of credits offered by the course.
+ */
 export function courseCredits(course) {
   return course.get("quarterCredits") / 4;
 }
 
+/**
+ * Determine whether a course matches a given search query.
+ *
+ * The current search algorithm is a simple multi-part substring
+ * match.  The search query string is first split into multiple
+ * subqueries (delimited by whitespace); each subquery is then matched
+ * against the course's full title (comprising the course code,
+ * section, and name, e.g. "WRIT001 HM-02 Introduction to Academic
+ * Writing"; note that the course code outputted by courseCode
+ * contains a space between the department and course number,
+ * e.g. "WRIT 001", but the course code used here omits that space to
+ * allow queries like "WRIT001" to match the course), then each of the
+ * course's faculty members.  A course matches a given subquery if the
+ * subquery exists as a substring in the course's full title or as a
+ * substring in any of the faculty's names.  A course matches a given
+ * query if the course matches each of the query's subqueries.  All
+ * matches are case-insensitive.
+ *
+ * @param {Immutable.Map} course Immutable course object used to match
+ * against the given search query.
+ *
+ * @param {String} search The user's current search query string, stored in
+ * the global Redux state under the key path ["search", "string"].
+ *
+ * @returns {Boolean} True if the course matches the search query;
+ * false if not.
+ */
 export function courseMatches(course, search) {
   const queries = search.toLowerCase().split(/\s+/);
 
@@ -247,6 +288,9 @@ export function courseMatches(course, search) {
   const section = courseSection(course).toLowerCase();
   const name = course.get("courseName").toLowerCase();
 
+  /**
+   * Determine whether a course matches a single
+   */
   function matchesSubquery(subquery) {
     if (
       code.includes(subquery) ||
