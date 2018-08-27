@@ -13,19 +13,20 @@ for file in "$@"; do
 
     echo "Linting '$file'..."
 
+    dir=$(dirname "$file")
     ext=${file##*.}
-    temp_file_ext="$temp_file.$ext"
+    temp_target="$dir/$temp_file.$ext"
 
-    mv "$temp_file" "$temp_file_ext"
+    mv "$temp_file" "$temp_target"
 
     code=0
     case "$ext" in
         json)
-            yarn prettier --parser json --list-different "$temp_file_ext"
+            yarn prettier --parser json --list-different "$temp_target"
             code=$?
             ;;
         js|jsx)
-            yarn eslint --no-ignore "$temp_file_ext"
+            yarn eslint --no-ignore "$temp_target"
             code=$?
             ;;
         *)
@@ -36,7 +37,7 @@ for file in "$@"; do
         fail=$((fail + 1))
     fi
 
-    rm "$temp_file_ext"
+    rm "$temp_target"
 
 done
 
