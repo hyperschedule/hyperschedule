@@ -10,8 +10,8 @@
     "test": "webpack --config webpack.test.js",
     "server": "./server.js",
     "dev": "run-p server watch",
-    "lint": "eslint --ext .js,.jsx src",
-    "lintfix": "eslint --fix --ext .js,.jsx src"
+    "lint": "eslint --ext .js,.jsx src *.js && prettier --list-different *.json",
+    "lintfix": "eslint --fix --ext .js,.jsx src *.js && prettier --write *.json"
   },
   "husky": {
     "hooks": {
@@ -19,7 +19,14 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,json}": ["./pre-commit-lint.bash"]
+    "linters": {
+      "*.{js,jsx,json}": [
+        "./pre-commit-lint.bash"
+      ]
+    },
+    "ignore": [
+      "package.json"
+    ]
   },
   "devDependencies": {
     "@types/node": "^10.7.0",
