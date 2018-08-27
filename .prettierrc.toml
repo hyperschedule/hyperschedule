@@ -1,6 +1,3 @@
-# babel parser for various es7+ features
-parser = 'babylon'
-
 # formatting options
 printWidth         = 70
 tabWidth           = 2
