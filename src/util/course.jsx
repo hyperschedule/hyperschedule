@@ -289,7 +289,13 @@ export function courseMatches(course, search) {
   const name = course.get("courseName").toLowerCase();
 
   /**
-   * Determine whether a course matches a single
+   * Determine whether the course matches a single subquery.
+   *
+   * @param {String} subquery The subquery to match the course
+   * against.  The subquery should not contain any whitespace.
+   *
+   * @returns {Boolean} True if the course matches the subquery; false
+   * if not.
    */
   function matchesSubquery(subquery) {
     if (
@@ -318,14 +324,47 @@ export function courseMatches(course, search) {
   return true;
 }
 
-export function courseColor(course, format = "hex") {
+/**
+ * Deterministically generate random background color for course
+ * entities (course list items, course schedule blocks) using
+ * randomColor.  For now, color generation is a simple unbiased random
+ * color, seeded by the course's full course code.
+ *
+ * @see {@link courseFullCode} for the full course code used to seed
+ * the random color generation.
+ *
+ * @param {Immutable.Map} course Immutable course object for which to
+ * generate the random color.  The course data is used to seed the
+ * random color generation.
+ *
+ * @returns {String} The generated color as a six-digit, "#"-prefixed
+ * hex color code, to be directly used as a "backgroundColor" style
+ * value for course entities.
+ */
+export function courseColor(course) {
   return randomColor({
     luminosity: "light",
     seed: courseFullCode(course),
-    format,
+    format: "hex",
   });
 }
 
+/**
+ * Determine whether two day strings (found in a course's schedule
+ * slot data object under the "days" key, where the schedule slot data
+ * object refers to an item in the list stored under the course object
+ * under the "schedule" key; e.g. "MWF") contain any overlapping days.
+ * This is a simple set-intersection on the two strings, used to
+ * determine whether two courses have conflicting schedule times.
+ *
+ * @param {String} daysA A day string, containing some subsequence of
+ * "MTWRFSU", representing a subset of the seven days of the week.
+ *
+ * @param {String} daysB Another day string.
+ *
+ * @returns {Boolean} True if the both `daysA` and `daysB` contain
+ * some same day; false if not.
+ */
 function daysOverlap(daysA, daysB) {
   const daysASet = new Set(daysA);
   for (const dayB of daysB) {
@@ -336,6 +375,20 @@ function daysOverlap(daysA, daysB) {
   return false;
 }
 
+/**
+ * Parse a time string in "hh:mm" format into an object with "hour"
+ * and "minute" fields to facilitate arithmetic and quick-maths.  This
+ * is used to parse a course's schedule times to determine whether two
+ * courses occurring on the same day have conflicting times.
+ *
+ * @param {String} timeString A string representing a 24-hour time,
+ * precise to the minute, in "hh:mm" format.
+ *
+ * @returns {Object} An object with "hour" and "minute" fields, both
+ * integers, representing the parsed hour and minute encoded in the
+ * time string.  No validation is done to ensure that "hour" and
+ * "minute" correspond to an actual, valid, 24-hour clock time.
+ */
 export function parseTime(timeString) {
   const [hourString, minuteString] = timeString.split(":");
   return {
@@ -344,10 +397,40 @@ export function parseTime(timeString) {
   };
 }
 
+/**
+ * Convert a time object (with "hour" and "minute" fields) into a
+ * single minutes count (the number of minutes since 00:00), used to
+ * compare two different times.
+ *
+ * @param {Object} time A time object with "hour" and "minute" integer
+ * fields, representing a 24-hour clock time.
+ *
+ * @returns {Number} An integer representing the duration, in minutes,
+ * from 00:00 to the given time.
+ */
 export function timeToMinutes({hour, minute}) {
   return hour * 60 + minute;
 }
 
+/**
+ * Determine whether two courses have conflicting schedule slots.  Two
+ * courses conflict if any of their schedule slots conflict; two
+ * schedule slots conflict if they have any overlapping days and have
+ * overlapping times on those days.
+ *
+ * @see {@link daysOverlap} for the function that checks for
+ * overlapping days.
+ *
+ * @see {@link parseTime} and {@link timeToMinutes} for logic used to
+ * parse and compare times to determine overlaps.
+ *
+ * @param {Immutable.Map} courseA An immutable course object.
+ *
+ * @param {Immutable.Map} courseB Another course object, used to test
+ * for schedule time conflicts against `courseA`.
+ *
+ * @returns {Boolean} True if the two courses conflict; false if not.
+ */
 export function coursesConflict(courseA, courseB) {
   if (
     !(
@@ -383,10 +466,36 @@ export function coursesConflict(courseA, courseB) {
   return false;
 }
 
+/**
+ * Determines whether two courses are equivalent, in the sense that
+ * they represent the same course and merely differ in section.  Note
+ * that two courses sharing the same code but differing in school are
+ * still considered different, regardless of section.  This
+ * equivalence is used to prevent the same course from being included
+ * multiple times in the same schedule under different sections.
+ *
+ * @see {@link courseCodeKey} for the relevant course data fields used
+ * to determine this equivalence.
+ *
+ * @param {Immutable.Map} courseA Immutable course object used to test
+ * for equivalence against another course.
+ *
+ * @param {Immutable.Map} courseB Another course object used to test
+ * for equivalence against `courseA`.
+ *
+ * @returns {Boolean} True if the courses are equivalent; false if
+ * not.
+ */
 export function coursesEquivalent(courseA, courseB) {
   return courseCodeKey(courseA) === courseCodeKey(courseB);
 }
 
+/**
+ * React propType for used for run-time type checking of Immutable
+ * course data objects passed to React components as props.
+ *
+ * @see {@link https://reactjs.org/docs/typechecking-with-proptypes.html}.
+ */
 export const coursePropType = ImmutablePropTypes.mapContains({
   courseCodeSuffix: PropTypes.string.isRequired,
   courseName: PropTypes.string.isRequired,
