@@ -224,6 +224,19 @@ export default (prev = Map(), action) => {
       );
     }
 
+    case actions.ALL_COURSES:
+    case actions.COURSES_SINCE: {
+      const apiCourses = state.getIn(["api", "courses"]);
+      const selectionCourses = state.getIn(["selection", "courses"]);
+
+      return state.setIn(
+        ["selection", "courses"],
+        selectionCourses.map((course, key) =>
+          course.mergeDeep(apiCourses.get(key)),
+        ),
+      );
+    }
+
     default:
       return state;
   }
