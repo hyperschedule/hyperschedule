@@ -301,7 +301,7 @@ export function courseMatches(course, search) {
     }
 
     for (const instructor of course.get("faculty")) {
-      if (instructor.includes(subquery)) {
+      if (instructor.toLowerCase().includes(subquery)) {
         return true;
       }
     }
