@@ -5,15 +5,8 @@
       "version": "16.2"
     }
   },
-  "plugins": [
-    "react",
-    "prettier",
-    "sort-imports-es6-autofix"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ],
+  "plugins": ["react", "prettier", "sort-imports-es6-autofix"],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
@@ -23,25 +16,20 @@
   },
   "rules": {
     "prettier/prettier": "error",
-    "sort-imports-es6-autofix/sort-imports-es6": ["error", {
-      "ignoreCase": false,
-      "ignoreMemberSort": false,
-      "memberSyntaxSortOrder": ["none", "single", "multiple", "all"]
-    }]
+    "sort-imports-es6-autofix/sort-imports-es6": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "single", "multiple", "all"]
+      }
+    ]
   },
   "env": {
-    "browser": true,
-    "es6": true
+    "es6": true,
+    "node": true
   },
   "globals": {
     "API_URL": false
-  },
-  "overrides": [
-    {
-      "files": ["src/test/*"],
-      "env": {
-        "mocha": true
-      }
-    }
-  ]
+  }
 }
