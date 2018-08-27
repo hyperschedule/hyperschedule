@@ -1,54 +1,53 @@
 body {
-    font-family: 'Roboto';
-    overscroll-behavior: none;
+  font-family: "Roboto";
+  overscroll-behavior: none;
 }
 
 #root .columns {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    
-    display: flex;
-    flex-direction: row;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: row;
 }
 
 #root .columns > .sidebar.column {
-    width: 30%;
+  width: 30%;
 
-    border-left: 1px solid whitesmoke;
-    
-    display: flex;
-    flex-direction: column;
+  border-left: 1px solid whitesmoke;
+
+  display: flex;
+  flex-direction: column;
 }
 #root .columns > .mode.column {
-    flex-grow: 1;
+  flex-grow: 1;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #root .selector.container {
-    display: flex;
+  display: flex;
 }
 
 #root .content.container {
-    flex-grow: 1;
-    position: relative;
+  flex-grow: 1;
+  position: relative;
 }
 
 .button {
-    padding: .5em 1em;
+  padding: 0.5em 1em;
 
-    cursor: pointer;
-    border: none;
-    color: white;
-    background: deepskyblue;
-    font: inherit;
+  cursor: pointer;
+  border: none;
+  color: white;
+  background: deepskyblue;
+  font: inherit;
 }
 
 button::-moz-focus-inner {
-    border: none;
+  border: none;
 }
-
