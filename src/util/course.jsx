@@ -40,7 +40,8 @@ export function courseKey(course) {
  * department, course number) and only differing in section.  This key
  * is used to check for course equivalences computing the schedule and
  * prevent different sections of the same course from concurrently
- * being included in the schedule.
+ * being included in the schedule.  Note that courses sharing the same
+ * code among different schools are still considered different.
  *
  * @see {@link courseKey} for a truly unique course identifier key
  * that accounts for different sections as different courses.
@@ -104,6 +105,16 @@ export const coursesSortCompare = util.sortKeyComparator(
   courseSortKey,
 );
 
+/**
+ * Generate user-facing course code string without school or section
+ * (e.g. "WRIT 001"), to be used in course display lists, course
+ * descriptions, etc. for a course.
+ *
+ * @param {Immutable.Map} course Immutable course object containing
+ * course data fields used to generate the course code key.
+ *
+ * @returns {String} Course code string to be displayed to the user.
+ */
 export function courseCode(course) {
   return (
     course.get("department") +
