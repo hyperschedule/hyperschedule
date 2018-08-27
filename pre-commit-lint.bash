@@ -25,6 +25,10 @@ for file in "$@"; do
             yarn prettier --parser json --list-different "$temp_target"
             code=$?
             ;;
+        css)
+            yarn prettier --parser css --list-different "$temp_target"
+            code=$?
+            ;;
         js|jsx)
             yarn eslint --no-ignore "$temp_target"
             code=$?
