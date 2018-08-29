@@ -30,7 +30,7 @@ for file in "$@"; do
             code=$?
             ;;
         js|jsx)
-            yarn eslint --no-ignore "$temp_target"
+            yarn eslint --ignore-pattern '!.*' "$temp_target"
             code=$?
             ;;
         *)
