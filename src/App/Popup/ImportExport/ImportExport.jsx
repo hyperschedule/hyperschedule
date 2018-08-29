@@ -1,21 +1,19 @@
-import ImmutablePropTypes from "react-immutable-proptypes";
 import PropTypes from "prop-types";
 import React from "react";
 import {connect} from "react-redux";
 
-import {exportICS, exportPDF} from "@/util/export";
 import * as actions from "./actions";
-import * as courseUtil from "@/util/course";
 
 import "./ImportExport.css";
 
 const ImportExport = ({
   data,
+
   setData,
   apply,
   close,
-  schedule,
-  selection,
+  exportPDF,
+  exportICS,
 }) => {
   const textareaRef = React.createRef();
 
@@ -40,16 +38,10 @@ const ImportExport = ({
         <button className="button export pdf" onClick={copy}>
           <i className="ion-md-copy" />
         </button>
-        <button
-          className="button export pdf"
-          onClick={() => exportPDF(selection, schedule)}
-        >
+        <button className="button export pdf" onClick={exportPDF}>
           Export (PDF)
         </button>
-        <button
-          className="button export ical"
-          onClick={() => exportICS(selection, schedule)}
-        >
+        <button className="button export ical" onClick={exportICS}>
           Export (iCal)
         </button>
         <button className="button apply" onClick={apply}>
@@ -68,22 +60,14 @@ ImportExport.propTypes = {
   setData: PropTypes.func.isRequired,
   apply: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  selection: ImmutablePropTypes.mapContains({
-    courses: ImmutablePropTypes.mapOf(courseUtil.coursePropType)
-      .isRequired,
-    order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
-    starred: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
-    checked: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
-  }).isRequired,
-  schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
+  exportPDF: PropTypes.func.isRequired,
+  exportICS: PropTypes.func.isRequired,
 };
 
 export default connect(
   state => {
     return {
       data: state.get("importExport").get("data"),
-      selection: state.get("selection"),
-      schedule: state.get("schedule"),
     };
   },
   dispatch => ({
@@ -93,5 +77,7 @@ export default connect(
       dispatch(actions.close());
     },
     close: () => dispatch(actions.close()),
+    exportPDF: () => dispatch(actions.exportPDF()),
+    exportICS: () => dispatch(actions.exportICS()),
   }),
 )(ImportExport);

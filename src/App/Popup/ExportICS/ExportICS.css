@@ -1,0 +1,10 @@
+#export-ics .controls {
+  padding: 1rem 0.5rem;
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+#export-ics .controls .button {
+  margin: 0 0.5rem;
+}

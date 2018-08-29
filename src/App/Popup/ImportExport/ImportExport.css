@@ -1,31 +1,30 @@
 #import-export .body {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 #import-export textarea.data {
-    margin-top: 1em;
-    
-    width: 100%;
-    box-sizing: border-box;
-    
-    height: 10rem;
-    resize: none;
-    
-    overflow-y: scroll;
+  margin-top: 1em;
 
+  width: 100%;
+  box-sizing: border-box;
+
+  height: 10rem;
+  resize: none;
+
+  overflow-y: scroll;
 }
 
 #import-export .controls {
-    border-top: 1px solid whitesmoke;
-    
-    padding: 1rem .5rem;
-    display: flex;
+  border-top: 1px solid whitesmoke;
+
+  padding: 1rem 0.5rem;
+  display: flex;
 }
 
 #import-export .controls .button {
-    margin: 0 .5rem;
+  margin: 0 0.5rem;
 }
 
 #import-export .controls .button.apply {
-    margin-left: auto;
+  margin-left: auto;
 }
