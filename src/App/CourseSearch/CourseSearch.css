@@ -1,55 +1,57 @@
 #course-search {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    
-    display: flex;
-    flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 
-    visibility: hidden;
+  display: flex;
+  flex-direction: column;
+
+  visibility: hidden;
 }
 
 #course-search.active {
-    visibility: visible;
+  visibility: visible;
 }
 
 #course-search .search {
-    display: flex;
-    
-    padding: 1rem;
-    padding-top: 0;
+  display: flex;
 
-    border-bottom: 1px solid whitesmoke;
+  padding: 1rem;
+  padding-top: 0;
+
+  border-bottom: 1px solid whitesmoke;
 }
 
 #course-search .search input {
-    flex-grow: 1;
+  flex-grow: 1;
 
-    padding: .5em 1em;
-    
-    font: inherit;
-    border-radius: 0;
-    border: 1px solid lightgray;
-    outline: .25em solid transparent;
+  padding: 0.5em 1em;
 
-    transition: border-color .1s;
-    transition: outline-color .1s;
+  font: inherit;
+  border-radius: 0;
+  border: 1px solid lightgray;
+  outline: 0.25em solid transparent;
+
+  transition: border-color 0.1s;
+  transition: outline-color 0.1s;
 }
 #course-search .search input:focus {
-    border-color: deepskyblue;
-    outline-color: lightskyblue;
+  border-color: deepskyblue;
+  outline-color: lightskyblue;
 }
 
 #course-search .entries {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 #course-search .entries .ReactVirtualized__Grid {
-    outline: none;
+  outline: none;
 }
 
-#course-search .entries .ReactVirtualized__Grid__innerScrollContainer {
-    margin: .5rem 0;
+#course-search
+  .entries
+  .ReactVirtualized__Grid__innerScrollContainer {
+  margin: 0.5rem 0;
 }

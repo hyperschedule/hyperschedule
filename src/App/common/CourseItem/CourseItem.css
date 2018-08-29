@@ -1,65 +1,62 @@
 .course {
-    font-size: .8rem;
-    cursor: pointer;
+  font-size: 0.8rem;
+  cursor: pointer;
 
-    display: flex;
+  display: flex;
 }
-
 
 .course button {
-    padding: 0 1em;
-    
-    background: none;
-    border: none;
-    outline: none;
+  padding: 0 1em;
+
+  background: none;
+  border: none;
+  outline: none;
 }
 
-.course button.add, .course button.remove {
-    background: rgba(0, 0, 0, .05);
-    margin-left: auto;
+.course button.add,
+.course button.remove {
+  background: rgba(0, 0, 0, 0.05);
+  margin-left: auto;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .course.item {
-    margin: .5rem 1rem;
-    border-left: .5em solid transparent;
+  margin: 0.5rem 1rem;
+  border-left: 0.5em solid transparent;
 }
 
 .course.item.scheduled {
-    border-left-color: rgba(0, 0, 0, .2);
+  border-left-color: rgba(0, 0, 0, 0.2);
 }
 
 .course .label {
-    padding: .5em;
+  padding: 0.5em;
 }
 
 .course .label .code {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .course.item .toggle {
-    padding: .5em;
+  padding: 0.5em;
 }
 
 .course {
-    background: aliceblue;
+  background: aliceblue;
 }
 .course.school-PO {
-    background: skyblue;
+  background: skyblue;
 }
 .course.school-HM {
-    background: khaki;
+  background: khaki;
 }
 .course.school-PZ {
-    background: bisque;
+  background: bisque;
 }
 .course.school-CM {
-    background: pink;
+  background: pink;
 }
 .course.school-SC {
-    background: lightgreen;
+  background: lightgreen;
 }
-
-
-

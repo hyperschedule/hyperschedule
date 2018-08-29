@@ -1,22 +1,22 @@
 #selected-courses {
-    position: relative;
+  position: relative;
 
-    flex-grow: 1;
+  flex-grow: 1;
 
-    user-select: none;
-    -moz-user-select: none;
+  user-select: none;
+  -moz-user-select: none;
 }
 
 #selected-courses .list {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    
-    overflow-y: scroll;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  overflow-y: scroll;
 }
 
 #selected-courses .list .course.item {
-    margin: 1rem;
+  margin: 1rem;
 }

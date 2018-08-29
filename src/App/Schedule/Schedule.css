@@ -1,109 +1,111 @@
 #schedule {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
-    visibility: hidden;
+  visibility: hidden;
 }
 
 #schedule.active {
-    visibility: visible;
+  visibility: visible;
 }
 
 #schedule .margin-container {
-    position: absolute;
-    top: 0;
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
 
-    overflow-y: scroll;
+  overflow-y: scroll;
 
-    border: 1px solid lightgray;
+  border: 1px solid lightgray;
 }
 
 #schedule .size-container {
-    position: relative;
+  position: relative;
 
-    width: 100%;
-    padding-top: 100%;
+  width: 100%;
+  padding-top: 100%;
 }
 
 #schedule .grid {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 
-    display: grid;
-    grid-template: min-content repeat(192, 1fr) / 8em repeat(14, 1fr);
-
+  display: grid;
+  grid-template: min-content repeat(192, 1fr) / 8em repeat(14, 1fr);
 }
 
 #schedule .grid .column {
-    grid-row: 1 / -1;
-    grid-column-end: span 2;
+  grid-row: 1 / -1;
+  grid-column-end: span 2;
 }
 #schedule .grid .column.header {
-    border-right: 1px solid lightgray;
-    grid-column: 1;
+  border-right: 1px solid lightgray;
+  grid-column: 1;
 }
-#schedule .grid .column.even { background: whitesmoke }
-#schedule .grid .column.odd  {}
+#schedule .grid .column.even {
+  background: whitesmoke;
+}
+#schedule .grid .column.odd {
+}
 
 #schedule .grid .column-label {
-    font-size: .8em;
-    font-weight: bold;
+  font-size: 0.8em;
+  font-weight: bold;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    grid-row: 1;
-    grid-column-end: span 2;
+  grid-row: 1;
+  grid-column-end: span 2;
 
-    padding: 1em;
+  padding: 1em;
 }
 
 #schedule .grid .row.header {
-    grid-row: 1;
-    
-    position: relative;
+  grid-row: 1;
 
-    border-bottom: 1px solid lightgray;
+  position: relative;
+
+  border-bottom: 1px solid lightgray;
 }
 
 #schedule .grid .row {
-    grid-column: 1 / -1;
-    grid-row-end: span 12;
+  grid-column: 1 / -1;
+  grid-row-end: span 12;
 }
 #schedule .grid .row:not(.header) + .row {
-    border-top: 1px solid lightgray;
+  border-top: 1px solid lightgray;
 }
 
 #schedule .grid .row-label {
-    grid-column: 1;
-    grid-row-end: span 12;
+  grid-column: 1;
+  grid-row-end: span 12;
 
-    padding: .5em 1em;
-    font-size: .8em;
+  padding: 0.5em 1em;
+  font-size: 0.8em;
 
-    text-align: right;
+  text-align: right;
 }
 
 #schedule .grid .course {
-    margin-bottom: -1px;
-    overflow: hidden;
-    
-    position: relative;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  margin-bottom: -1px;
+  overflow: hidden;
 
-    min-height: 0;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 0;
 }

@@ -1,22 +1,22 @@
 .course.block {
-    position: relative;
+  position: relative;
 }
 
 .course.block .label {
-    text-align: center;
+  text-align: center;
 }
 
 .course.block .star {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    border-top: 1rem solid rgba(0, 0, 0, .2);
-    border-right: 1rem solid transparent;
+  border-top: 1rem solid rgba(0, 0, 0, 0.2);
+  border-right: 1rem solid transparent;
 
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .course.block.starred .star {
-    visibility: visible;
+  visibility: visible;
 }

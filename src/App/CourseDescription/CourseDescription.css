@@ -1,47 +1,52 @@
 #course-description {
-    padding: 1rem;
-    padding-top: 0;
-    
-    text-align: center;
-    font-size: .8rem;
+  padding: 1rem;
+  padding-top: 0;
 
-    border-bottom: 1px solid whitesmoke;
+  text-align: center;
+  font-size: 0.8rem;
+
+  border-bottom: 1px solid whitesmoke;
 }
 
 #course-description .overflow {
-    overflow: hidden;
-    transition: height .2s;
-    
-    border-bottom: 1px solid lightgray;
+  overflow: hidden;
+  transition: height 0.2s;
+
+  border-bottom: 1px solid lightgray;
 }
 
 #course-description .summary {
-    border: 1px solid lightgray;
-    border-top: none;
-    border-bottom: none;
+  border: 1px solid lightgray;
+  border-top: none;
+  border-bottom: none;
 }
 
 #course-description .summary .row {
-    padding: 1em;
-    border-top: 1px solid lightgray;
+  padding: 1em;
+  border-top: 1px solid lightgray;
 }
-
 
 #course-description .summary .row.schedule {
-    padding: .5em 1em;
+  padding: 0.5em 1em;
 }
 #course-description .summary .row.schedule .block {
-    margin: .5em 0;
+  margin: 0.5em 0;
 }
 
-#course-description .summary .row.schedule .field.days::after      { content: ' ' }
-#course-description .summary .row.schedule .field.startTime::after { content: '-' }
-#course-description .summary .row.schedule .field.endTime::after   { content: ' ' }
+#course-description .summary .row.schedule .field.days::after {
+  content: " ";
+}
+#course-description .summary .row.schedule .field.startTime::after {
+  content: "-";
+}
+#course-description .summary .row.schedule .field.endTime::after {
+  content: " ";
+}
 
 #course-description .summary .row.credit .duration {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 #course-description .summary .row.credit .duration::after {
-    text-transform: none;
-    content: '-semester course, ';
+  text-transform: none;
+  content: "-semester course, ";
 }
