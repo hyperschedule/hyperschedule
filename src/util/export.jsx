@@ -75,8 +75,26 @@ const dayIndex = {
   S: 6,
 };
 
-export const exportPDF = (selection, schedule) => {
-  const courses = selection.get("courses");
+export function computeKeys(allKeys, {starred, checked}) {
+  let anyStarred = false;
+  let anySelected = false;
+  for (const key of allKeys) {
+    if (checked.has(key) && starred.has(key)) {
+      anyStarred = true;
+    }
+    if (checked.has(key)) {
+      anySelected = true;
+    }
+  }
+
+  return allKeys.filter(
+    key =>
+      !anySelected ||
+      (checked.has(key) && (!anyStarred || starred.has(key))),
+  );
+}
+
+export const exportPDF = (courses, keys) => {
   const pdf = new jsPDF({
     unit: "pt",
     format: "letter",
@@ -163,7 +181,7 @@ export const exportPDF = (selection, schedule) => {
     config.margin.top + tableHeight,
   );
 
-  for (const key of schedule) {
+  for (const key of keys) {
     const course = courses.get(key);
     for (const slot of course.get("schedule")) {
       const start = courseUtil.parseTime(slot.get("startTime"));
@@ -240,34 +258,10 @@ const dayToICal = {
   S: "SA",
 };
 
-export const exportICS = selection => {
-  const courses = selection.get("courses"),
-    checked = selection.get("checked"),
-    starred = selection.get("starred"),
-    order = selection.get("order");
+export const exportICS = (courses, keys) => {
   const cal = ical();
 
-  let anyStarred = false;
-  let anySelected = false;
-  for (const key of order) {
-    if (checked.has(key) && starred.has(key)) {
-      anyStarred = true;
-    }
-    if (checked.has(key)) {
-      anySelected = true;
-    }
-  }
-
-  for (const key of order) {
-    if (
-      !(
-        !anySelected ||
-        (checked.has(key) && (!anyStarred || starred.has(key)))
-      )
-    ) {
-      continue;
-    }
-
+  for (const key of keys) {
     const course = courses.get(key);
     for (const slot of course.get("schedule")) {
       const listedStartDay = new Date(course.get("startDate"));
