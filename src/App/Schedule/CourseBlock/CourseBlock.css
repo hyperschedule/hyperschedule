@@ -17,6 +17,6 @@
   visibility: hidden;
 }
 
-.course.block.starred .star {
+#schedule.active .course.block.starred .star {
   visibility: visible;
 }
