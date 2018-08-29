@@ -11,6 +11,18 @@ const data = (state = "", action) => {
   }
 };
 
+const visible = (state = false, action) => {
+  switch (action.type) {
+    case actions.controls.SHOW_IMPORT_EXPORT:
+      return true;
+    case actions.CLOSE:
+      return false;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   data,
+  visible,
 });

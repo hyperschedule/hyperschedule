@@ -5,8 +5,10 @@ import * as actions from "./actions";
 
 import Mode from "@/App/mode";
 
-import importExport from "./App/Popup/ImportExport/reducers";
-import popup from "./App/Popup/reducers";
+import exportICS from "./App/ExportICS/reducers";
+import exportPDF from "./App/ExportPDF/reducers";
+import help from "./App/Help/reducers";
+import importExport from "./App/ImportExport/reducers";
 import search from "./App/CourseSearch/reducers";
 
 import * as courseUtil from "@/util/course";
@@ -163,8 +165,10 @@ const app = combineReducers({
   focus,
   selection,
   schedule,
-  popup,
   importExport,
+  exportICS,
+  exportPDF,
+  help,
   api,
 });
 

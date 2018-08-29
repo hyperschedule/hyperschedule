@@ -1,4 +1,4 @@
-import * as controls_ from "../../Controls/actions";
+import * as controls_ from "@/App/Controls/actions";
 export const controls = controls_;
 
 export const SET_DATA = "App/Popup/ImportExport.SET_TEXT";

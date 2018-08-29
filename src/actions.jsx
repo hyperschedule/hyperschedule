@@ -13,7 +13,7 @@ export const selectedCourses = selectedCourses_;
 import * as controls_ from "./App/Controls/actions";
 export const controls = controls_;
 
-import * as importExport_ from "./App/Popup/ImportExport/actions";
+import * as importExport_ from "./App/ImportExport/actions";
 export const importExport = importExport_;
 
 export const ALL_COURSES = "api.ALL_COURSES";

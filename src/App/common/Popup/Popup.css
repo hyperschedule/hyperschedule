@@ -1,4 +1,4 @@
-#popup {
+.popup {
   position: fixed;
   left: 0;
   right: 0;
@@ -16,12 +16,12 @@
   transition: visibility 0.3s, opacity 0.3s;
 }
 
-#popup.visible {
+.popup.visible {
   visibility: visible;
   opacity: 1;
 }
 
-#popup .box {
+.popup .box {
   background: white;
 
   width: 40rem;
@@ -30,22 +30,22 @@
   transition: margin-top 0.3s;
 }
 
-#popup.visible .box {
+.popup.visible .box {
   margin-top: 0;
 }
 
-#popup .box .header {
+.popup .box .header {
   display: flex;
 
   font-size: 1.25em;
   border-bottom: 1px solid whitesmoke;
 }
 
-#popup .box .header .title {
+.popup .box .header .title {
   padding: 1rem;
 }
 
-#popup .box .header button.close {
+.popup .box .header button.close {
   margin-left: auto;
   padding: 1rem 1.5rem;
 
@@ -55,25 +55,25 @@
   cursor: pointer;
 }
 
-#popup .box .content {
+.popup .box .content {
   display: flex;
   flex-direction: column;
 }
 
-#popup .box .content p {
+.popup .box .content p {
   margin: 0;
 }
 
-#popup .box .content p + p {
+.popup .box .content p + p {
   margin-top: 1em;
 }
 
-#popup .box .content a {
+.popup .box .content a {
   color: deepskyblue;
   text-decoration: none;
 }
 
-#popup .box .content button.demo {
+.popup .box .content button.demo {
   background: lightgray;
   padding: 0.5em 1em;
   margin: 0.5em;

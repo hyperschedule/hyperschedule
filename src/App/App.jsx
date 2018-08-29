@@ -4,8 +4,11 @@ import Controls from "./Controls/Controls";
 import CourseDescription from "./CourseDescription/CourseDescription";
 import CourseSearch from "./CourseSearch/CourseSearch";
 import CreditCount from "./CreditCount/CreditCount";
+import ExportICS from "./ExportICS/ExportICS";
+import ExportPDF from "./ExportPDF/ExportPDF";
+import Help from "./Help/Help";
+import ImportExport from "./ImportExport/ImportExport";
 import ModeSelector from "./ModeSelector/ModeSelector";
-import Popup from "./Popup/Popup";
 import Schedule from "./Schedule/Schedule";
 import SelectedCourses from "./SelectedCourses/SelectedCourses";
 
@@ -31,7 +34,12 @@ function App() {
           <CreditCount />
         </div>
       </div>
-      <Popup />
+      <div className="popups">
+        <Help />
+        <ImportExport />
+        <ExportPDF />
+        <ExportICS />
+      </div>
     </div>
   );
 }
