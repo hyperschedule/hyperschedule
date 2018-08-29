@@ -10,8 +10,8 @@
     "test": "webpack --config webpack.test.js",
     "server": "./server.js",
     "dev": "run-p server watch",
-    "lint": "eslint --ext .js,.jsx src *.js && prettier --list-different *.json src/**/*.css src/**/*.json",
-    "lintfix": "eslint --fix --ext .js,.jsx src *.js && prettier --write *.json src/**/*.css src/**/*.json"
+    "lint": "eslint --ext .js,.jsx src *.js; prettier --list-different *.json src/**/*.css src/**/*.json",
+    "lintfix": "eslint --fix --ext .js,.jsx src *.js; prettier --write *.json src/**/*.css src/**/*.json"
   },
   "husky": {
     "hooks": {
