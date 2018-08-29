@@ -337,15 +337,28 @@ export function courseMatches(course, search) {
  * generate the random color.  The course data is used to seed the
  * random color generation.
  *
+ * @param {String="hex"} format The output color format.  The default
+ * output format is "hex", corresponding to a six-digit, "#"-prefixed
+ * hex color code (e.g. "#689d6a"), to be directly used in HTML/CSS
+ * for course entities.  This option is needed because the PDF export
+ * library we use takes colors in a different format than hex; in
+ * particular, it uses the "rgbArray" format, which outputs an array
+ * of 3 integers (0-255 inclusive) corresponding to the red, green,
+ * and blue channels respectively.  This option is directly passed to
+ * the `randomColor` function, so all formats supported by that are
+ * supported by this.
+ * @see {@link https://github.com/davidmerfield/randomColor#options}
+ * for documentation on the `randomColor` function.
+ *
  * @returns {String} The generated color as a six-digit, "#"-prefixed
  * hex color code, to be directly used as a "backgroundColor" style
  * value for course entities.
  */
-export function courseColor(course) {
+export function courseColor(course, format = "hex") {
   return randomColor({
     luminosity: "light",
     seed: courseFullCode(course),
-    format: "hex",
+    format,
   });
 }
 
