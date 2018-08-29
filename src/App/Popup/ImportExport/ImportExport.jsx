@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import React from "react";
 import {connect} from "react-redux";
 
-import {exportICS, exportPDF} from "./export";
-import * as courseUtil from "@/util/course";
-
+import {exportICS, exportPDF} from "@/util/export";
 import * as actions from "./actions";
+import * as courseUtil from "@/util/course";
 
 import "./ImportExport.css";
 
