@@ -231,8 +231,11 @@ export default (prev = Map(), action) => {
 
       return state.setIn(
         ["selection", "courses"],
-        selectionCourses.map((course, key) =>
-          course.mergeDeep(apiCourses.get(key)),
+        selectionCourses.map(
+          (course, key) =>
+            apiCourses.has(key)
+              ? course.mergeDeep(apiCourses.get(key))
+              : course,
         ),
       );
     }
