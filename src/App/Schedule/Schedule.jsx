@@ -7,23 +7,14 @@ import CourseBlock from "./CourseBlock/CourseBlock";
 import Mode from "@/App/mode";
 import * as actions from "./actions";
 import * as courseUtil from "@/util/course";
+import * as util from "@/util/misc";
 
 import "./Schedule.css";
 
 const timeToRow = ({hour, minute}) =>
   ((hour - 8) * 60 + minute) / 5 + 2;
 
-const dayIndex = {
-  U: 0,
-  M: 1,
-  T: 2,
-  W: 3,
-  R: 4,
-  F: 5,
-  S: 6,
-};
-
-const dayToColumn = day => dayIndex[day] * 2 + 2;
+const dayToColumn = day => util.dayIndex[day] * 2 + 2;
 
 const Schedule = ({mode, courses, schedule, focusCourse}) => {
   const blocks = schedule.map(key => {
@@ -325,6 +316,7 @@ export default connect(
     return {
       mode: state.get("mode"),
       schedule: state.get("schedule"),
+      starred: selection.get("starred"),
       courses: selection.get("courses"),
     };
   },
