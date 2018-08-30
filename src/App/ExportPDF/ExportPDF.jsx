@@ -3,8 +3,8 @@ import React from "react";
 import {connect} from "react-redux";
 
 import Popup from "@/App/common/Popup/Popup";
+import exportPDF from "@/util/export/pdf";
 import * as actions from "./actions";
-import * as exportUtil from "@/util/export";
 
 import "./ExportPDF.css";
 
@@ -50,8 +50,8 @@ export default connect(
 
     return {
       visible: state.get("exportPDF").get("visible"),
-      exportSchedule: () => exportUtil.exportPDF(courses, schedule),
-      exportStarred: () => exportUtil.exportPDF(courses, starred),
+      exportSchedule: () => exportPDF(courses, schedule),
+      exportStarred: () => exportPDF(courses, starred),
     };
   },
   dispatch => ({

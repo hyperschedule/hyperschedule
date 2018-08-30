@@ -3,8 +3,8 @@ import React from "react";
 import {connect} from "react-redux";
 
 import Popup from "@/App/common/Popup/Popup";
+import exportICS from "@/util/export/ics";
 import * as actions from "./actions";
-import * as exportUtil from "@/util/export";
 
 import "./ExportICS.css";
 
@@ -50,8 +50,8 @@ export default connect(
 
     return {
       visible: state.get("exportICS").get("visible"),
-      exportSchedule: () => exportUtil.exportICS(courses, schedule),
-      exportStarred: () => exportUtil.exportICS(courses, starred),
+      exportSchedule: () => exportICS(courses, schedule),
+      exportStarred: () => exportICS(courses, starred),
     };
   },
   dispatch => ({
