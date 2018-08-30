@@ -26,7 +26,9 @@ function ExportPDF({visible, close, exportSchedule, exportStarred}) {
           >
             Export starred courses only
           </button>
-          <button className="button cancel">Cancel</button>
+          <button className="button cancel" onClick={close}>
+            Cancel
+          </button>
         </div>
       </div>
     </Popup>
