@@ -1691,9 +1691,8 @@ function downloadPDF()
   // grid outline
   pdf.rect(.5 * 72, .5 * 72, tableWidth, tableHeight, "FS");
 
-  const url = pdf.output("bloburl");
-  const pdfWindow = window.open(url, "hyperschedule.pdf");
-  pdfWindow.addEventListener("beforeunload", () => URL.revokeObjectURL(url));
+  // save PDF
+  pdf.save("hyperschedule.pdf");
 };
 
 
