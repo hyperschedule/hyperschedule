@@ -398,12 +398,13 @@ const schoolColors = {
   SC: "green",
   PZ: "orange",
 };
-function getCourseColor(course)
+function getCourseColor(course, format = "hex")
 {
   return randomColor({
     //hue: schoolColors[course.school] || "monochrome",
     luminosity: "light",
     seed: courseCodeToString(course),
+    format,
   });
 }
 
@@ -655,9 +656,7 @@ function attachListeners()
     forcePlaceholderSize: true,
     placeholder: createCourseEntity("placeholder").outerHTML,
   });
-  printButton.addEventListener("click", () => {
-    window.print();
-  });
+  printButton.addEventListener("click", downloadPDF);
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -1547,6 +1546,155 @@ function readStateFromLocalStorage()
   gScheduleTabSelected = localStorage.getItem("scheduleTabSelected") === "true";
   gShowClosedCourses = localStorage.getItem("showClosedCourses") !== "false";
 }
+
+/// PDF download
+
+function downloadPDF()
+{
+  // initialize PDF object
+  const pdf = new jsPDF({
+    unit: "pt",
+    format: "letter",
+    orientation: "l",
+  });
+
+  // calculate some basic dimensions
+  const tableWidth = (11 - 1) * 72;
+  const tableHeight = (8.5 - 1) * 72;
+
+  const bodyWidth = tableWidth - 0.75 * 72;
+  const bodyHeight = tableHeight - 0.25 * 72;
+
+  const columnWidth = bodyWidth / 7;
+  const rowHeight = bodyHeight / 16;
+
+  // set global styles
+  pdf.setFont("Helvetica");
+  pdf.setFontSize(6);
+  pdf.setLineWidth(0.5);
+
+  pdf.setDrawColor(192); // light gray
+  pdf.setFillColor(255); // white
+
+  // white background
+  pdf.rect(0, 0, 11 * 72, 8.5 * 72, "F");
+
+  // grid outline
+  pdf.rect(.5 * 72, .5 * 72, tableWidth, tableHeight, "FS");
+
+  // grid columns (alternating fill)
+  for (let i = 0; i < 7; ++i)
+  {
+    const x = i * columnWidth + 1.25 * 72;
+
+    pdf.setFillColor(i & 1 ? 255 : 230);
+    pdf.rect(x, 0.5 * 72, columnWidth, tableHeight, "F");
+
+    // column header
+    pdf.setFontStyle("bold");
+    pdf.text(
+      x + columnWidth / 2,
+      0.5 * 72 + 0.25 * 72 / 2 + pdf.getLineHeight() / 2,
+      [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ][i],
+      "center",
+    );
+  }
+
+  // grid rows
+  pdf.setFontStyle("normal");
+  for (let i = 0; i < 16; ++i)
+  {
+    const y = i * rowHeight + 0.75 * 72;
+    pdf.line(0.5 * 72, y, 0.5 * 72 + tableWidth, y);
+
+    pdf.text(1.25 * 72 - 6, y + pdf.getLineHeight() + 3, [
+      "8:00 am",
+      "9:00 am",
+      "10:00 am",
+      "11:00 am",
+      "12:00 pm",
+      "1:00 pm",
+      "2:00 pm",
+      "3:00 pm",
+      "4:00 pm",
+      "5:00 pm",
+      "6:00 pm",
+      "7:00 pm",
+      "8:00 pm",
+      "9:00 pm",
+      "10:00 pm",
+      "11:00 pm",
+    ][i], "right");
+  }
+
+  // header underline
+  pdf.line(1.25 * 72, 0.5 * 72, 1.25 * 72, 0.5 * 72 + tableHeight);
+
+  // course entities
+  for (const course of computeSchedule(gSelectedCourses))
+  {
+    for (const slot of course.schedule)
+    {
+      const [startHours, startMinutes] = timeStringToHoursAndMinutes(slot.startTime);
+      const [endHours, endMinutes] = timeStringToHoursAndMinutes(slot.endTime);
+
+      for (const day of slot.days)
+      {
+        const x = weekdayCharToInteger(day) * columnWidth + 1.25 * 72 +
+              (course.firstHalfSemester ? 0 : columnWidth / 2);
+
+        const width = (course.firstHalfSemester + course.secondHalfSemester) *
+              (columnWidth / 2);
+
+        const yStart = (startHours - 8 + startMinutes / 60) * rowHeight +
+              0.75 * 72;
+
+        const yEnd = (endHours - 8 + endMinutes / 60) * rowHeight +
+              0.75 * 72;
+
+        pdf.setFillColor(...getCourseColor(course, "rgbArray"));
+
+        pdf.rect(x, yStart, width, yEnd - yStart, "F");
+
+        const courseCodeLines = pdf.splitTextToSize(
+          courseCodeToString(course),
+          width - 12,
+        );
+        const courseNameLines = pdf.splitTextToSize(
+          course.courseName,
+          width - 12,
+        );
+
+        const xText = x + width / 2;
+        const yText = (yStart + yEnd) / 2 -
+              (courseCodeLines.length + courseNameLines.length) *
+              pdf.getLineHeight() / 2 +
+              pdf.getLineHeight();
+        pdf.setFontStyle("bold");
+        pdf.text(xText, yText, courseCodeLines, "center");
+        pdf.setFontStyle("normal");
+        pdf.text(
+          xText,
+          yText + courseCodeLines.length * pdf.getLineHeight(),
+          courseNameLines,
+          "center",
+        );
+      }
+    }
+  }
+
+  const uri = pdf.output("datauristring");
+  window.open(uri, "hyperschedule.pdf");
+};
+
 
 /// iCal download
 
