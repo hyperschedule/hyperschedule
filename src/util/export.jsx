@@ -244,8 +244,7 @@ export const exportPDF = (courses, keys) => {
     }
   }
 
-  const uri = pdf.output("datauristring");
-  window.open(uri, "hyperschedule.pdf");
+  pdf.save("hyperschedule.pdf");
 };
 
 const dayToICal = {
