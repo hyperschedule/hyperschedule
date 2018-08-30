@@ -46,9 +46,7 @@ const SelectedCourses = ({
     return {
       key,
       props: {
-        code: courseUtil.courseFullCode(course),
-        name: course.get("courseName"),
-        status: courseUtil.courseStatusString(course),
+        course,
         focus: () => focusCourse(key),
         checked: checked.has(key),
         starred: starred.has(key),

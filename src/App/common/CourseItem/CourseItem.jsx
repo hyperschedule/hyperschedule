@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
+import {connect} from "react-redux";
 
 import "./CourseItem.css";
+import * as courseUtil from "@/util/course";
 import * as util from "@/util/misc";
 
 function CourseItem({
@@ -14,6 +16,7 @@ function CourseItem({
   remove,
   starred,
   checked,
+  selected,
   scheduled,
   toggleStarred,
   toggleChecked,
@@ -37,7 +40,7 @@ function CourseItem({
     );
 
   const addButton =
-    add === undefined ? null : (
+    add === undefined || selected ? null : (
       <button className="right add ion-md-add" onClick={add} />
     );
 
@@ -77,9 +80,12 @@ CourseItem.propTypes = {
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  starred: PropTypes.bool,
-  checked: PropTypes.bool,
-  scheduled: PropTypes.bool,
+
+  starred: PropTypes.bool.isRequired,
+  checked: PropTypes.bool.isRequired,
+  scheduled: PropTypes.bool.isRequired,
+  selected: PropTypes.bool.isRequired,
+
   focus: PropTypes.func.isRequired,
   add: PropTypes.func,
   remove: PropTypes.func,
@@ -87,4 +93,18 @@ CourseItem.propTypes = {
   toggleChecked: PropTypes.func,
 };
 
-export default util.componentToJS(CourseItem);
+export default connect((state, {course}) => {
+  const key = courseUtil.courseKey(course);
+  const selection = state.get("selection");
+
+  return {
+    scheduled: state.get("schedule").has(key),
+    checked: selection.get("checked").has(key),
+    starred: selection.get("starred").has(key),
+    selected: selection.get("courses").has(key),
+    code: courseUtil.courseFullCode(course),
+    color: courseUtil.courseColor(course),
+    name: course.get("courseName"),
+    status: courseUtil.courseStatusString(course),
+  };
+})(util.componentToJS(CourseItem));

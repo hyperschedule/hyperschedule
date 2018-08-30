@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
+import {connect} from "react-redux";
 
 import "./CourseBlock.css";
 
+import * as courseUtil from "@/util/course";
 import * as util from "@/util/misc";
 
 function CourseBlock({code, name, focus, gridStyle, color, starred}) {
@@ -37,4 +39,14 @@ CourseBlock.propTypes = {
   starred: PropTypes.bool.isRequired,
 };
 
-export default util.componentToJS(CourseBlock);
+export default connect((state, {course}) => {
+  const key = courseUtil.courseKey(course);
+  const selection = state.get("selection");
+
+  return {
+    color: courseUtil.courseColor(course),
+    code: courseUtil.courseFullCode(course),
+    starred: selection.get("starred").has(key),
+    name: course.get("courseName"),
+  };
+})(util.componentToJS(CourseBlock));

@@ -25,13 +25,7 @@ const dayIndex = {
 
 const dayToColumn = day => dayIndex[day] * 2 + 2;
 
-const Schedule = ({
-  mode,
-  courses,
-  schedule,
-  starred,
-  focusCourse,
-}) => {
+const Schedule = ({mode, courses, schedule, focusCourse}) => {
   const blocks = schedule.map(key => {
     const course = courses.get(key);
     const halfOffset = course.get("firstHalfSemester") ? 0 : 1;
@@ -55,10 +49,7 @@ const Schedule = ({
         return (
           <CourseBlock
             key={day}
-            color={courseUtil.courseColor(course)}
-            code={courseUtil.courseFullCode(course)}
-            starred={starred.has(key)}
-            name={course.get("courseName")}
+            course={course}
             gridStyle={gridStyle}
             focus={focus}
           />
@@ -335,7 +326,6 @@ export default connect(
       mode: state.get("mode"),
       schedule: state.get("schedule"),
       courses: selection.get("courses"),
-      starred: selection.get("starred"),
     };
   },
   dispatch => ({

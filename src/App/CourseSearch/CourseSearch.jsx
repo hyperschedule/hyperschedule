@@ -25,7 +25,6 @@ const CourseSearch = ({
   mode,
   courses,
   order,
-  schedule,
   searchString,
   setSearch,
   focusCourse,
@@ -50,15 +49,7 @@ const CourseSearch = ({
         key={key}
       >
         <div style={{...style}}>
-          <CourseItem
-            code={courseUtil.courseFullCode(course)}
-            color={courseUtil.courseColor(course)}
-            scheduled={schedule.has(courseKey)}
-            name={course.get("courseName")}
-            status={courseUtil.courseStatusString(course)}
-            focus={focus}
-            add={add}
-          />
+          <CourseItem course={course} focus={focus} add={add} />
         </div>
       </CellMeasurer>
     );
@@ -111,7 +102,6 @@ CourseSearch.propTypes = {
   courses: ImmutablePropTypes.mapOf(courseUtil.coursePropType)
     .isRequired,
   order: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
-  schedule: ImmutablePropTypes.setOf(PropTypes.string).isRequired,
   searchString: PropTypes.string.isRequired,
   setSearch: PropTypes.func.isRequired,
   focusCourse: PropTypes.func.isRequired,
@@ -134,7 +124,6 @@ export default connect(
       mode: state.get("mode"),
       courses,
       order,
-      schedule: state.get("schedule"),
       searchString,
     };
   },
