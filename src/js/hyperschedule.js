@@ -1579,9 +1579,6 @@ function downloadPDF()
   // white background
   pdf.rect(0, 0, 11 * 72, 8.5 * 72, "F");
 
-  // grid outline
-  pdf.rect(.5 * 72, .5 * 72, tableWidth, tableHeight, "FS");
-
   // grid columns (alternating fill)
   for (let i = 0; i < 7; ++i)
   {
@@ -1690,6 +1687,9 @@ function downloadPDF()
       }
     }
   }
+
+  // grid outline
+  pdf.rect(.5 * 72, .5 * 72, tableWidth, tableHeight, "FS");
 
   const uri = pdf.output("datauristring");
   window.open(uri, "hyperschedule.pdf");
