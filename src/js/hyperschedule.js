@@ -396,7 +396,7 @@ function getCourseColor(course, format = "hex")
   return randomColor({
     hue: "random",
     luminosity: "light",
-    seed: courseCodeToString(course),
+    seed: CryptoJS.MD5(courseCodeToString(course)).toString(),
     format,
   });
 }
