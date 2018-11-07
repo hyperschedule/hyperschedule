@@ -391,17 +391,10 @@ function generateCourseDescription(course)
   return description;
 }
 
-const schoolColors = {
-  HM: "yellow",
-  CM: "red",
-  PO: "blue",
-  SC: "green",
-  PZ: "orange",
-};
 function getCourseColor(course, format = "hex")
 {
   return randomColor({
-    //hue: schoolColors[course.school] || "monochrome",
+    hue: "random",
     luminosity: "light",
     seed: courseCodeToString(course),
     format,
