@@ -604,12 +604,12 @@ function computeCreditCountDescription(schedule) {
 
 /// API retrieval
 
-async function retrieveAPI(endpoint)
+async function retrieveAPI()
 {
-  const httpResponse = await fetch(apiURL + endpoint);
+  const httpResponse = await fetch(apiURL);
   if (!httpResponse.ok)
   {
-    throw Error(`Received API error for endpoint ${endpoint}: ` +
+    throw Error(`Received API error for URL ${apiURL}: ` +
                 `${httpResponse.status} ${httpResponse.statusText}`);
   }
   return await httpResponse.json();
@@ -617,19 +617,7 @@ async function retrieveAPI(endpoint)
 
 async function retrieveMalformedCourses()
 {
-  const malformedCourses = await retrieveAPI("/api/v2/malformed-courses");
-  if (!Array.isArray(malformedCourses))
-  {
-    throw Error();
-  }
-  for (const malformedCourse of malformedCourses)
-  {
-    if (!isString(malformedCourse))
-    {
-      throw Error();
-    }
-  }
-  return malformedCourses;
+  return [];
 }
 
 /// DOM manipulation
@@ -1409,20 +1397,8 @@ function buildCourseIndex(courseList)
 
 async function retrieveCourseData()
 {
-  let apiEndpoint;
   let maybeIncremental = false;
-  // We shouldn't need the second case here (about the empty
-  // gCourseList), but why not? Added robustness hopefully.
-  if (gCourseDataTimestamp === null || gCourseList.length === 0)
-  {
-    apiEndpoint = "/api/v2/all-courses";
-  }
-  else
-  {
-    apiEndpoint = "/api/v2/courses-since/" + gCourseDataTimestamp;
-    maybeIncremental = true;
-  }
-  const apiResponse = await retrieveAPI(apiEndpoint);
+  const apiResponse = await retrieveAPI();
   // Just in case there is an unexpected error while executing the
   // following code, make sure to fetch a whole new copy of the
   // courses list next time, since the incremental update would be
