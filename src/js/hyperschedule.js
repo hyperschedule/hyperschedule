@@ -355,6 +355,11 @@ function courseToString(course)
     course.totalSeats + " seats filled)";
 }
 
+function courseToInstructorLastnames(course)
+{
+  return course.faculty.map(fullName => fullName.split(",")[0]).join(",");
+}
+
 function generateCourseDescription(course)
 {
   const description = [];
@@ -733,7 +738,7 @@ function createCourseSearchEndOfResult(hasResult = true)
           (gMalformedCourseCount === 1) ? "it" : "them";
     const hintText = document.createTextNode(
       `${gMalformedCourseCount} ${coursesWere} omitted from results ` +
-      `because the registrar entered malformed data for ${them} – `);
+        `because the registrar entered malformed data for ${them} – `);
     listItem.appendChild(hintText);
     const link = document.createElement("a");
     link.appendChild(document.createTextNode("click here for more details"));
@@ -1662,21 +1667,64 @@ function downloadPDF()
           course.courseName,
           width - 12,
         );
+        const courseLocationLines = pdf.splitTextToSize(
+          slot.location,
+          width - 12,
+        );
+        const courseInstructorsLines = pdf.splitTextToSize(
+          courseToInstructorLastnames(course),
+          width - 12
+        );
+
+        // Attributes to be shown are calculated based on space available
+        // order of preference: Code, location, name, professor
+        // order of display: code, name, professor, location
+
+        const entriesByPreference = ["code", "location", "name", "instructor"];
+        const entriesByOrder = ["code", "name", "instructor", "location"];
+
+        let entryNameToText = {
+          code: courseCodeLines,
+          location: courseLocationLines,
+          name: courseNameLines,
+          instructor: courseInstructorsLines,
+        };
+
+        // Limits size of text to ensure some white space at top and bottom
+        const maxTextLength = (yEnd - yStart) - 2 * pdf.getLineHeight();
+        let numEntries = 0;
+        let totalLength = 0;
+        while (totalLength * pdf.getLineHeight() < maxTextLength &&
+               numEntries < entriesByPreference.length)
+        {
+          totalLength += entryNameToText[entriesByPreference[numEntries]].length;
+          numEntries += 1;
+        }
 
         const xText = x + width / 2;
-        const yText = (yStart + yEnd) / 2 -
-              (courseCodeLines.length + courseNameLines.length) *
-              pdf.getLineHeight() / 2 +
-              pdf.getLineHeight();
+        // Find height to start the text so that it will be centered in the block
+        let yText = (yStart + yEnd) / 2 -
+            totalLength * pdf.getLineHeight() / 2 +
+            pdf.getLineHeight();
+
         pdf.setFontStyle("bold");
         pdf.text(xText, yText, courseCodeLines, "center");
+        yText += courseCodeLines.length * pdf.getLineHeight();
         pdf.setFontStyle("normal");
-        pdf.text(
-          xText,
-          yText + courseCodeLines.length * pdf.getLineHeight(),
-          courseNameLines,
-          "center",
-        );
+
+        for (let entry of entriesByOrder)
+        {
+          if (entriesByPreference.slice(1, numEntries).includes(entry))
+          {
+            pdf.text(
+              xText,
+              yText,
+              entryNameToText[entry],
+              "center",
+            );
+            yText += entryNameToText[entry].length * pdf.getLineHeight();
+          }
+        }
       }
     }
   }
