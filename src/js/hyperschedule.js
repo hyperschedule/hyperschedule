@@ -77,6 +77,17 @@ function isString(obj)
   return typeof obj === "string" || obj instanceof String;
 }
 
+// Modulo operator, because % computes remainder and not modulo.
+function mod(n, m)
+{
+  let rem = n % m;
+  if (rem < 0)
+  {
+    rem += m;
+  }
+  return rem;
+}
+
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
 {
@@ -1807,7 +1818,7 @@ function downloadICalFile()
         {
           const possibleStartWeekday = weekdayCharToInteger(weekday);
           const possibleWeekdayDifference =
-                (possibleStartWeekday - listedStartWeekday) % 7;
+                mod(possibleStartWeekday - listedStartWeekday, 7);
           if (possibleWeekdayDifference < weekdayDifference)
           {
             startWeekday = possibleStartWeekday;
