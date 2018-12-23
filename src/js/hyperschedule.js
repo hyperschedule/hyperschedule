@@ -88,6 +88,14 @@ function mod(n, m)
   return rem;
 }
 
+// Convert YYYY-MM-DD to Date. Taken from
+// https://stackoverflow.com/a/7151607/3538165.
+function parseDate(dateStr)
+{
+  const [year, month, day] = dateStr.split("-");
+  return new Date(year, month - 1, day);
+}
+
 // https://stackoverflow.com/a/2593661
 function quoteRegexp(str)
 {
@@ -1801,9 +1809,10 @@ function downloadICalFile()
         courseCodeToString(course) + " " +
           course.courseName + "\n" +
           formatList(course.faculty));
-      const listedStartDay = new Date(course.startDate);
+      const listedStartDay = parseDate(course.startDate);
+      console.log(`start date: ${course.startDate} => ${listedStartDay}`);
       const listedStartWeekday = listedStartDay.getDay();
-      const listedEndDay = new Date(course.endDate);
+      const listedEndDay = parseDate(course.endDate);
       // The range is inclusive, but ics.js interprets it exclusively.
       listedEndDay.setDate(listedEndDay.getDate() + 1);
       for (let slot of course.schedule)
