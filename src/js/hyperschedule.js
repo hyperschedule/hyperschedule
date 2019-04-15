@@ -412,6 +412,11 @@ function generateCourseDescription(course)
       (course.quarterCredits != 4 ? "s" : "");
   description.push(`${partOfYear}, ${credits}`);
 
+  if (course.courseDescription !== null)
+  {
+    description.push(course.courseDescription);
+  }
+
   return description;
 }
 
