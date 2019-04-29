@@ -47,13 +47,10 @@ const importExportICalButton = document.getElementById('import-export-ical-butto
 const importExportSaveChangesButton = document.getElementById("import-export-save-changes-button");
 const importExportCopyButton = document.getElementById("import-export-copy-button");
 
-const malformedCoursesList = document.getElementById("malformed-courses-list");
-
 //// Global state
 
 // Persistent data.
 let gCourseList = [];
-let gMalformedCourseCount = 0;
 let gCourseDataTimestamp = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
@@ -644,23 +641,6 @@ async function retrieveAPI(endpoint)
   return await httpResponse.json();
 }
 
-async function retrieveMalformedCourses()
-{
-  const malformedCourses = await retrieveAPI("/api/v2/malformed-courses");
-  if (!Array.isArray(malformedCourses))
-  {
-    throw Error();
-  }
-  for (const malformedCourse of malformedCourses)
-  {
-    if (!isString(malformedCourse))
-    {
-      throw Error();
-    }
-  }
-  return malformedCourses;
-}
-
 /// DOM manipulation
 //// DOM setup
 
@@ -753,22 +733,6 @@ function createCourseSearchEndOfResult(hasResult = true)
   }
   listItem.setAttribute("style", "color: grey");
   listItem.appendChild(text);
-  if (gMalformedCourseCount)
-  {
-    listItem.appendChild(document.createElement("br"));
-    const coursesWere =
-          (gMalformedCourseCount === 1) ? "course was" : "courses were";
-    const them =
-          (gMalformedCourseCount === 1) ? "it" : "them";
-    const hintText = document.createTextNode(
-      `${gMalformedCourseCount} ${coursesWere} omitted from results ` +
-        `because the registrar entered malformed data for ${them} – `);
-    listItem.appendChild(hintText);
-    const link = document.createElement("a");
-    link.appendChild(document.createTextNode("click here for more details"));
-    link.href = "javascript:showMalformedCoursesModal()";
-    listItem.appendChild(link);
-  }
   return listItem;
 }
 
@@ -1189,36 +1153,6 @@ function showImportExportModal()
   $("#import-export-modal").modal("show");
 }
 
-function showMalformedCoursesModal()
-{
-  removeEntityChildren(malformedCoursesList);
-  const courses = gMalformedCourseCount === 1 ? "course" : "courses";
-  malformedCoursesList.appendChild(document.createTextNode(
-    `Loading ${gMalformedCourseCount} malformed ${courses}...`));
-  $("#malformed-courses-modal").modal("show");
-  runWithExponentialBackoff(async () => {
-    const malformedCourses = await retrieveMalformedCourses();
-    console.log("Successfully fetched malformed courses.");
-    removeEntityChildren(malformedCoursesList);
-    if (malformedCourses.length !== 0)
-    {
-      const ul = document.createElement("ul");
-      for (const malformedCourse of malformedCourses)
-      {
-        const li = document.createElement("li");
-        li.appendChild(document.createTextNode(malformedCourse));
-        ul.appendChild(li);
-      }
-      malformedCoursesList.appendChild(ul);
-    }
-    else
-    {
-      malformedCoursesList.appendChild(document.createTextNode(
-        "No malformed courses."));
-    }
-  }, 500, 1.4, "fetch malformed courses");
-}
-
 function setCourseDescriptionBox(course)
 {
   while (courseDescriptionBox.hasChildNodes())
@@ -1520,7 +1454,6 @@ async function retrieveCourseData()
     }
   }
   // Previous versions of the API v2 did not return this field.
-  gMalformedCourseCount = apiResponse.malformedCourseCount || 0;
   gCourseDataTimestamp = apiResponse.timestamp;
   setTimeout(() => {
     if (maybeCourseListChanged)
