@@ -50,15 +50,12 @@ const importExportCopyButton = document.getElementById("import-export-copy-butto
 //// Global state
 
 // Persistent data.
-let gCourseList = [];
-let gCourseDataTimestamp = null;
+let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 
 // Transient data.
-let gCourseIndex = {};
-let gSelectedCoursesIndex = {};
 let gCurrentlySorting = false;
 let gCourseSearchPagesShown = courseSearchPagesShownStart;
 // gMaxCourseSearchPage starts as Infinity and stays infinity until we
@@ -209,28 +206,28 @@ function weekdayCharToInteger(weekday)
   return index;
 }
 
-function readArrayFromLocalStorage(key)
+function readFromLocalStorage(key, pred, def)
 {
   const jsonString = localStorage.getItem(key);
-  if (!key)
+  if (!jsonString)
   {
-    return [];
+    return def;
   }
   try
   {
     const obj = JSON.parse(jsonString);
-    if (Array.isArray(obj))
+    if (pred(obj))
     {
       return obj;
     }
     else
     {
-      return [];
+      return def;
     }
   }
   catch (err)
   {
-    return [];
+    return def;
   }
 }
 
@@ -328,86 +325,104 @@ function removeEntityChildren(entity)
 //// Course and schedule utility functions
 ///// Course property queries
 
-function courseToSortKey(course)
-{
-  return [
-    course.department,
-    course.courseNumber,
-    course.courseCodeSuffix,
-    course.school,
-    course.section,
-  ];
-}
-
-function compareCourses(course1, course2)
-{
-  return compareArrays(courseToSortKey(course1), courseToSortKey(course2));
-}
-
-function courseToIndexKey(course)
-{
-  return courseToSortKey(course).join("/");
-}
-
 function isCourseClosed(course)
 {
-  return course.courseStatus == "closed";
-}
-
-function courseCodeToString(course)
-{
-  return course.department + " " +
-    course.courseNumber.toString().padStart(3, "0") +
-    course.courseCodeSuffix + " " +
-    course.school + "-" +
-    course.section.toString().padStart(2, "0");
+  return course.courseEnrollmentStatus == "closed";
 }
 
 function courseToString(course)
 {
   return course.courseName + " (" +
-    course.courseStatus + ", " +
-    course.openSeats + "/" +
-    course.totalSeats + " seats filled)";
+    course.courseEnrollmentStatus + ", " +
+    course.courseSeatsFilled + "/" +
+    course.courseSeatsTotal + " seats filled)";
 }
 
 function courseToInstructorLastnames(course)
 {
-  return course.faculty.map(fullName => fullName.split(",")[0]).join(",");
+  return course.courseInstructors.map(fullName => fullName.split(",")[0]).join(",");
+}
+
+function termListDescription(terms, termCount)
+{
+  if (termCount > 10)
+  {
+    return "Complicated schedule";
+  }
+
+  if (termCount === 1)
+  {
+    return "Full-semester course";
+  }
+
+  const numbers = _.map(term => {
+    switch (term)
+    {
+      case 0: return "first";
+      case 1: return "second";
+      case 2: return "third";
+      case 3: return "fourth";
+      case 4: return "fifth";
+      case 5: return "sixth";
+      case 6: return "seventh";
+      case 7: return "eighth";
+      case 8: return "ninth";
+      case 9: return "tenth";
+      default: return "unknown";
+    }
+  }, terms);
+
+  const qualifier = (termCount => {
+    switch (termCount)
+    {
+      case 2: return "half";
+      case 3: return "third";
+      case 4: return "quarter";
+      case 5: return "fifth";
+      case 6: return "sixth";
+      case 7: return "seventh";
+      case 8: return "eighth";
+      case 9: return "ninth";
+      case 10: return "tenth";
+      default: return "unknown";
+    }
+  })(termCount);
+
+  return _.capitalize(`${formatList(numbers)} ${qualifier}-semester course`);
 }
 
 function generateCourseDescription(course)
 {
   const description = [];
 
-  const summaryLine = courseCodeToString(course) + " " + course.courseName;
+  const summaryLine = course.courseCode + " " + course.courseName;
   description.push(summaryLine);
 
-  const times = course.schedule.map(generateScheduleSlotDescription);
+  const times = course.courseSchedule.map(generateScheduleSlotDescription);
   for (const time of times)
   {
     description.push(time);
   }
 
-  const instructors = formatList(course.faculty);
+  const instructors = formatList(course.courseInstructors);
   description.push(instructors);
 
-  let partOfYear = "(malformed schedule)";
-  if (course.firstHalfSemester && course.secondHalfSemester)
+  let partOfYear;
+  if (_.isEmpty(course.courseSchedule))
   {
-    partOfYear = "Full-semester course";
+    partOfYear = "No scheduled meetings";
   }
-  else if (course.firstHalfSemester && !course.secondHalfSemester)
+  else
   {
-    partOfYear = "First half-semester course";
+    const meeting = course.courseSchedule[0];
+    partOfYear = termListDescription(
+      meeting.scheduleTerms, meeting.scheduleTermCount
+    );
   }
-  else if (!course.firstHalfSemester && course.secondHalfSemester)
-  {
-    partOfYear = "Second half-semester course";
-  }
-  let credits = (course.quarterCredits / 4) + " credit" +
-      (course.quarterCredits != 4 ? "s" : "");
-  description.push(`${partOfYear}, ${credits}`);
+  const credits = parseFloat(course.courseCredits);
+  const creditsString = credits + " credit" +
+        (credits !== 1 ? "s" : "");
+  description.push(`${partOfYear}, ${creditsString}`);
 
   if (course.courseDescription !== null)
   {
@@ -422,7 +437,7 @@ function getCourseColor(course, format = "hex")
   return randomColor({
     hue: "random",
     luminosity: "light",
-    seed: CryptoJS.MD5(courseCodeToString(course)).toString(),
+    seed: CryptoJS.MD5(course.courseCode).toString(),
     format,
   });
 }
@@ -431,20 +446,16 @@ function getCourseColor(course, format = "hex")
 
 function courseMatchesSearchQuery(course, query)
 {
-  const code = course.department +
-        course.courseNumber.toString().padStart(3, "0") +
-        course.courseCodeSuffix;
-  const section = course.school + "-" +
-        course.section.toString().padStart(2, "0");
   for (let subquery of query)
   {
-    if (code.match(subquery) || section.match(subquery) ||
+    if (course.courseCode.match(subquery) ||
+        course.courseCode.replace(/ /g, "").match(subquery) ||
         course.courseName.match(subquery))
     {
       continue;
     }
     let foundMatch = false;
-    for (let instructor of course.faculty)
+    for (let instructor of course.courseInstructors)
     {
       if (instructor.match(subquery))
       {
@@ -465,67 +476,34 @@ function courseMatchesSearchQuery(course, query)
 
 function generateScheduleSlotDescription(slot)
 {
-  return slot.days + " " + timeStringTo12HourString(slot.startTime) + " – " +
-    timeStringTo12HourString(slot.endTime) + " at " + slot.location;
-}
-
-function scheduleSlotsEqual(slot1, slot2)
-{
-  for (let attr of [
-    "days", "location", "startTime", "endTime",
-  ]) {
-    if (slot1[attr] !== slot2[attr])
-    {
-      return false;
-    }
-  }
-  return true;
-}
-
-function coursesEquivalent(course1, course2)
-{
-  for (let attr of [
-    "department", "courseNumber", "courseCodeSuffix", "school", "section",
-    "courseName", "quarterCredits", "firstHalfSemester", "secondHalfSemester",
-  ]) {
-    if (course1[attr] !== course2[attr])
-    {
-      return false;
-    }
-  }
-  if (!arraysEqual(course1.faculty, course2.faculty))
-  {
-    return false;
-  }
-  if (!arraysEqual(course1.schedule, course2.schedule, scheduleSlotsEqual))
-  {
-    return false;
-  }
-  return true;
+  return slot.scheduleDays + " " + timeStringTo12HourString(slot.scheduleStartTime) + " – " +
+    timeStringTo12HourString(slot.scheduleEndTime) + " at " + slot.scheduleLocation;
 }
 
 function coursesMutuallyExclusive(course1, course2)
 {
-  return (course1.department === course2.department &&
-          course1.courseNumber === course2.courseNumber &&
-          course1.courseCodeSuffix === course2.courseCodeSuffix);
+  return arraysEqual(course1.courseMutualExclusionKey,
+                     course2.courseMutualExclusionKey);
 }
 
 function coursesConflict(course1, course2)
 {
-  if (!(course1.firstHalfSemester && course2.firstHalfSemester) &&
-      !(course1.secondHalfSemester && course2.secondHalfSemester))
+  for (let slot1 of course1.courseSchedule)
   {
-    return false;
-  }
-  for (let slot1 of course1.schedule)
-  {
-    for (let slot2 of course2.schedule)
+    for (let slot2 of course2.courseSchedule)
     {
-      let daysOverlap = false;
-      for (let day1 of slot1.days)
+      const parts = math.lcm(slot1.scheduleTermCount, slot2.scheduleTermCount);
+      if (!_.some(idx => (
+        slot1.scheduleTerms[idx / slot2.scheduleTermCount] &&
+          slot2.scheduleTerms[idx / slot1.scheduleTermCount]
+      )))
       {
-        if (slot2.days.indexOf(day1) !== -1)
+        return false;
+      }
+      let daysOverlap = false;
+      for (let day1 of slot1.scheduleDays)
+      {
+        if (slot2.scheduleDays.indexOf(day1) !== -1)
         {
           daysOverlap = true;
           break;
@@ -535,10 +513,10 @@ function coursesConflict(course1, course2)
       {
         continue;
       }
-      const start1 = timeStringToHours(slot1.startTime);
-      const end1 = timeStringToHours(slot1.endTime);
-      const start2 = timeStringToHours(slot2.startTime);
-      const end2 = timeStringToHours(slot2.endTime);
+      const start1 = timeStringToHours(slot1.scheduleStartTime);
+      const end1 = timeStringToHours(slot1.scheduleEndTime);
+      const start2 = timeStringToHours(slot2.scheduleStartTime);
+      const end2 = timeStringToHours(slot2.scheduleEndTime);
       if (end1 <= start2 || start1 >= end2)
       {
         continue;
@@ -587,45 +565,55 @@ function computeSchedule(courses)
   return schedule;
 }
 
+/**
+ * Given an array of integers in sorted order, determine the beginning
+ * and end of each run of consecutive integers. For example:
+ *
+ * getConsecutiveRanges([0,1,2,4,5,8,10,12,13,14,15,20])
+ *   => [[0,2], [4,5], [8,8], [10,10], [12,15], [20,20]]
+ */
+function getConsecutiveRanges(nums)
+{
+  const groups = [];
+  let group = [];
+  _.forEach(([idx, num]) => {
+    if (idx > 0 && nums[idx - 1] !== nums[idx] - 1)
+    {
+      groups.push(group);
+      group = [];
+    }
+    group.push(num);
+  }, _.entries(nums));
+  groups.push(group);
+  return _.map(group => [_.min(group), _.max(group)], groups);
+}
+
 ///// Course schedule queries
 
 function computeCreditCountDescription(schedule) {
-  let onCampusStarredCredits = 0;
-  let offCampusStarredCredits = 0;
-  let onCampusCredits = 0;
-  let offCampusCredits = 0;
+  let totalCredits = 0;
+  let starredCredits = 0;
   for (let course of schedule)
   {
-    let credits = course.quarterCredits / 4;
-
-    if (course.school === "HM")
+    let credits = parseFloat(course.courseCredits);
+    totalCredits += credits;
+    if (course.starred)
     {
-      onCampusCredits += credits;
-      if (course.starred)
-      {
-        onCampusStarredCredits += credits;
-      }
-    }
-    else
-    {
-      offCampusCredits += credits;
-      if (course.starred)
-      {
-        offCampusStarredCredits += credits;
-      }
+      starredCredits += credits;
     }
   }
-  let totalCredits = onCampusCredits + 3 * offCampusCredits;
-  let totalStarredCredits = onCampusStarredCredits + 3 * offCampusStarredCredits;
+  return "Scheduled: " + totalCredits + " credit" +
+    (totalCredits !== 1 ? "s" : "") + " (" +
+    starredCredits + " starred)";
+}
 
-  const text = "Scheduled credits: " +
-        onCampusCredits + " on-campus credit" + (onCampusCredits !== 1 ? "s" : "") +
-        " (" + onCampusStarredCredits + " starred), " +
-        offCampusCredits + " off-campus credit" + (offCampusCredits !== 1 ? "s" : "") +
-        " (" + offCampusStarredCredits + " starred), " +
-        totalCredits + " total credit" + (totalCredits !== 1 ? "s" : "") +
-        " (" + totalStarredCredits + " starred)";
-  return text;
+//// Global state queries
+
+function courseAlreadyAdded(course)
+{
+  return _.some(selectedCourse => {
+    return selectedCourse.courseCode === course.courseCode;
+  }, gSelectedCourses);
 }
 
 /// API retrieval
@@ -860,7 +848,7 @@ function createCourseEntity(course, attrs)
   }
   else
   {
-    courseCode = courseCodeToString(course);
+    courseCode = course.courseCode;
     text = courseToString(course);
   }
 
@@ -913,82 +901,79 @@ function createCourseEntity(course, attrs)
   return listItem;
 }
 
-function createSlotEntity(course, day, startTime, endTime)
+function createSlotEntities(course, slot)
 {
-  startTime = timeStringToHours(startTime);
-  endTime = timeStringToHours(endTime);
-  const timeSince8am = (startTime - 8);
-  const duration = endTime - startTime;
-  const text = course.courseName;
-  const verticalOffsetPercentage = (timeSince8am + 1) / 16 * 100;
-  const heightPercentage = duration / 16 * 100;
-  const dayIndex = "MTWRF".indexOf(day);
-  if (dayIndex === -1)
+  const entities = [];
+  for (const slot of course.courseSchedule)
   {
-    return null;
+    const startTime = timeStringToHours(slot.scheduleStartTime);
+    const endTime = timeStringToHours(slot.scheduleEndTime);
+    const timeSince8am = (startTime - 8);
+    const duration = endTime - startTime;
+    const text = course.courseName;
+    const verticalOffsetPercentage = (timeSince8am + 1) / 16 * 100;
+    const heightPercentage = duration / 16 * 100;
+    for (const day of slot.scheduleDays)
+    {
+      const dayIndex = "MTWRF".indexOf(day);
+      if (dayIndex === -1)
+      {
+        continue;
+      }
+
+      for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms))
+      {
+        const horizontalOffsetPercentage =
+              (dayIndex + 1 + left / slot.scheduleTermCount) / 6 * 100;
+        const widthPercentage = ((right - left + 1) / slot.scheduleTermCount) / 6 * 100;
+        const style =
+              `top: ${verticalOffsetPercentage}%; ` +
+              `left: ${horizontalOffsetPercentage}%; ` +
+              `width: ${widthPercentage}%; ` +
+              `height: ${heightPercentage}%; `;
+
+        const wrapper = document.createElement("div");
+        wrapper.setAttribute("style", style);
+        wrapper.classList.add("schedule-slot-wrapper");
+
+        const div = document.createElement("div");
+        wrapper.appendChild(div);
+
+        div.classList.add("schedule-slot");
+        if (course.starred)
+        {
+          div.classList.add("schedule-slot-starred");
+        }
+
+        div.style["background-color"] = getCourseColor(course);
+
+        wrapper.addEventListener("click", () => {
+          setCourseDescriptionBox(course);
+        });
+
+        const courseCodeContainer = document.createElement("p");
+        const courseNameContainer = document.createElement("p");
+        const courseCodeNode = document.createTextNode(course.courseCode);
+        const courseNameNode = document.createTextNode(
+          course.courseName + " (" + course.courseSeatsFilled + "/" + course.courseSeatsTotal + ")");
+        courseCodeContainer.classList.add("schedule-slot-course-code");
+        courseNameContainer.classList.add("schedule-slot-course-name");
+        courseCodeContainer.appendChild(courseCodeNode);
+        courseNameContainer.appendChild(courseNameNode);
+
+        const textContainer = document.createElement("p");
+        textContainer.classList.add("schedule-slot-text-wrapper");
+
+        textContainer.appendChild(courseCodeContainer);
+        textContainer.appendChild(courseNameContainer);
+
+        div.appendChild(textContainer);
+
+        entities.push(wrapper);
+      }
+    }
   }
-  let halfSemesterHorizontalOffset = 0;
-  let halfSemesterWidthOffset = 0;
-  if (!course.firstHalfSemester && !course.secondHalfSemester)
-  {
-    return null;
-  }
-  if (!course.firstHalfSemester || !course.secondHalfSemester)
-  {
-    halfSemesterWidthOffset = -0.5;
-  }
-  if (!course.firstHalfSemester)
-  {
-    halfSemesterHorizontalOffset = 0.5;
-  }
-  const horizontalOffsetPercentage =
-        (dayIndex + 1 + halfSemesterHorizontalOffset) / 6 * 100;
-  const widthPercentage = (1 + halfSemesterWidthOffset) / 6 * 100;
-  const style =
-        `top: ${verticalOffsetPercentage}%; ` +
-        `left: ${horizontalOffsetPercentage}%; ` +
-        `width: ${widthPercentage}%; ` +
-        `height: ${heightPercentage}%; `;
-
-  const wrapper = document.createElement("div");
-  wrapper.setAttribute("style", style);
-  wrapper.classList.add("schedule-slot-wrapper");
-
-  const div = document.createElement("div");
-  wrapper.appendChild(div);
-
-  div.classList.add("schedule-slot");
-  if (course.starred)
-  {
-    div.classList.add("schedule-slot-starred");
-  }
-
-  div.style["background-color"] = getCourseColor(course);
-
-  wrapper.addEventListener("click", () => {
-    setCourseDescriptionBox(course);
-  });
-
-  const courseCodeContainer = document.createElement("p");
-  const courseNameContainer = document.createElement("p");
-  const courseCodeNode = document.createTextNode(courseCodeToString(course));
-  const courseNameNode = document.createTextNode(
-    course.courseName + " (" + course.openSeats + "/" + course.totalSeats + ")");
-  courseCodeContainer.classList.add("schedule-slot-course-code");
-  courseNameContainer.classList.add("schedule-slot-course-name");
-  courseCodeContainer.appendChild(courseCodeNode);
-  courseNameContainer.appendChild(courseNameNode);
-
-  const textContainer = document.createElement("p");
-  textContainer.classList.add("schedule-slot-text-wrapper");
-
-  textContainer.appendChild(courseCodeContainer);
-  textContainer.appendChild(courseNameContainer);
-
-  div.appendChild(textContainer);
-
-
-  return wrapper;
+  return entities;
 }
 
 //// DOM queries
@@ -1028,7 +1013,7 @@ function updateCourseSearchResults(attrs)
     gNextIncrementalCourseSearchIndex = null;
   }
 
-  if (gCourseList.length === 0)
+  if (gApiData === null)
   {
     let child;
     while ((child = courseSearchResultsList.lastChild))
@@ -1053,12 +1038,13 @@ function updateCourseSearchResults(attrs)
   let numAlreadyShown = courseSearchResultsList.childElementCount;
   const query = getSearchQuery();
   let allCoursesDisplayed = true;
-  // 0 in case on non-incremental update
+  // 0 in case of non-incremental update
   let numAdded = numAlreadyShown;
   let courseListIndex = gNextIncrementalCourseSearchIndex || 0;
-  for (; courseListIndex < gCourseList.length; ++courseListIndex)
-  {
-    const course = gCourseList[courseListIndex];
+  let index = 0;
+  _.forEach((course) => {
+    if (index++ < courseListIndex)
+      return null;
     const matchesQuery = courseMatchesSearchQuery(course, query);
     if (matchesQuery && (gShowClosedCourses || !isCourseClosed(course)))
     {
@@ -1067,15 +1053,15 @@ function updateCourseSearchResults(attrs)
         // If we've already added all the courses we were supposed to,
         // abort.
         allCoursesDisplayed = false;
-        break;
+        return false;
       }
       ++numAdded;
-      const key = courseToIndexKey(course);
-      const alreadyAdded = gSelectedCoursesIndex.hasOwnProperty(key);
+      const alreadyAdded = courseAlreadyAdded(course);
       courseSearchResultsList.appendChild(
         createCourseEntity(course, { alreadyAdded }));
     }
-  }
+    return null;
+  }, gApiData.data.courses);
   gNextIncrementalCourseSearchIndex = courseListIndex;
   if (allCoursesDisplayed)
   {
@@ -1118,18 +1104,8 @@ function updateSchedule()
   }
   for (let course of schedule)
   {
-    for (let slot of course.schedule)
-    {
-      for (let day of slot.days)
-      {
-        const entity = createSlotEntity(
-          course, day, slot.startTime, slot.endTime);
-        if (entity)
-        {
-          scheduleTable.appendChild(entity);
-        }
-      }
-    }
+    const entities = createSlotEntities(course);
+    _.forEach(e => scheduleTable.appendChild(e), entities);
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
 }
@@ -1223,25 +1199,20 @@ function handleGlobalStateUpdate()
 
 function addCourse(course)
 {
-  const key = courseToIndexKey(course);
-  if (gSelectedCoursesIndex.hasOwnProperty(key))
+  if (courseAlreadyAdded(course))
   {
-    // Course already added.
     return;
   }
   course = deepCopy(course);
   course.selected = true;
   course.starred = false;
   gSelectedCourses.push(course);
-  gSelectedCoursesIndex[key] = course;
   handleSelectedCoursesUpdate();
 }
 
 function removeCourse(course)
 {
-  const key = courseToIndexKey(course);
   gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
-  delete gSelectedCoursesIndex[key];
   handleSelectedCoursesUpdate();
 }
 
@@ -1263,7 +1234,6 @@ function readSelectedCoursesList()
     }
   }
   gSelectedCourses = newSelectedCourses;
-  gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
   handleSelectedCoursesUpdate();
 }
 
@@ -1283,8 +1253,7 @@ function saveImportExportModalChanges()
     alert("Malformed JSON. Refusing to save.");
     return;
   }
-  gSelectedCourses = obj;
-  gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
+  gSelectedCourses = upgradeSelectedCourses(obj);
   handleSelectedCoursesUpdate();
   $("#import-export-modal").modal("hide");
 }
@@ -1359,112 +1328,102 @@ function setCourseSearchPagesDisplayed(action)
 
 //// Course retrieval
 
-function buildCourseIndex(courseList)
+/**
+ * Given an arbitrary data value and an arbitrary diff (see the
+ * documentation for the Hyperschedule backend for information about
+ * the format of diffs), apply the diff and return a new data object.
+ * The original data object may have been mutated.
+ */
+function applyDiff(data, diff)
 {
-  const index = {};
-  for (let course of courseList)
+  if (!_.isObject(data) || !_.isObject(diff))
   {
-    const key = courseToIndexKey(course);
-    index[key] = course;
+    return diff;
   }
-  return index;
+
+  _.forEach.convert({cap: false})((val, key) => {
+    if (val === "$delete")
+    {
+      _.unset(data, key);
+    }
+    else if (!_.has(data, key))
+    {
+      _.set(data, key, val);
+    }
+    else
+    {
+      _.set(data, key, applyDiff(_.get(data, key), val));
+    }
+  }, diff);
+
+  return data;
 }
 
 async function retrieveCourseData()
 {
-  let apiEndpoint;
-  let maybeIncremental = false;
-  // We shouldn't need the second case here (about the empty
-  // gCourseList), but why not? Added robustness hopefully.
-  if (gCourseDataTimestamp === null || gCourseList.length === 0)
+  let apiEndpoint = "/api/v3/courses?school=hmc";
+  if (gApiData !== null)
   {
-    apiEndpoint = "/api/v2/all-courses";
-  }
-  else
-  {
-    apiEndpoint = "/api/v2/courses-since/" + gCourseDataTimestamp;
-    maybeIncremental = true;
+    apiEndpoint += `&since=${gApiData.until}`;
   }
   const apiResponse = await retrieveAPI(apiEndpoint);
-  // Just in case there is an unexpected error while executing the
-  // following code, make sure to fetch a whole new copy of the
-  // courses list next time, since the incremental update would be
-  // messed up.
-  gCourseDataTimestamp = null;
-  let maybeCourseListChanged = true;
-  const incremental = maybeIncremental && apiResponse.incremental;
-  if (incremental)
+  if (apiResponse.error)
   {
-    const diff = apiResponse.diff;
-    maybeCourseListChanged =
-      Object.keys(diff.modified).length !== 0 ||
-      Object.keys(diff.removed ).length !== 0 ||
-      Object.keys(diff.added   ).length !== 0;
-    for (const modified of diff.modified)
-    {
-      const key = courseToIndexKey(modified);
-      if (gCourseIndex.hasOwnProperty(key))
-      {
-        // This updates both the index and the course list, since they
-        // share a reference to the same object.
-        Object.assign(gCourseIndex[key], modified);
-      }
-      maybeCourseListChanged = true;
-    }
-    for (const removed of diff.removed)
-    {
-      const key = courseToIndexKey(removed);
-      if (gCourseIndex.hasOwnProperty(key))
-      {
-        const course = gCourseIndex[key];
-        // The reference is shared, so we can remove by identity.
-        gCourseList.splice(gCourseList.indexOf(course), 1);
-      }
-      delete gCourseIndex[key];
-    }
-    for (const added of diff.added)
-    {
-      const key = courseToIndexKey(added);
-      const idx = binarySearch(gCourseList, added, compareCourses);
-      if (idx >= 0)
-      {
-        // Shouldn't happen but we account for it anyway.
-        Object.assign(courseList[idx], added);
-      }
-      else
-      {
-        const insertBeforeIndex = -idx - 1;
-        gCourseList.splice(insertBeforeIndex, 0, added);
-        gCourseIndex[key] = added;
-      }
-    }
+    throw Error(`API error: ${apiResponse.error}`);
+  }
+  // Atomic update.
+  let apiData = gApiData;
+  let wasUpdated = false;
+  if (apiResponse.full)
+  {
+    apiData = _.pick(["data", "until"], apiResponse);
+    wasUpdated = true;
   }
   else
   {
-    gCourseList = apiResponse.courses;
-    gCourseList.sort(compareCourses);
-    gCourseIndex = buildCourseIndex(gCourseList);
-    gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
+    const diff = apiResponse.data;
+    if (!_.isEmpty(diff)) {
+      wasUpdated = true;
+      apiData.data = applyDiff(apiData.data, diff);
+    }
+    apiData.until = apiResponse.until;
   }
-  for (const key of Object.keys(gSelectedCoursesIndex))
+  for (const selectedCourse of gSelectedCourses)
   {
-    if (gCourseIndex.hasOwnProperty(key))
+    if (_.has(selectedCourse.courseCode, apiData.data.courses))
     {
-      Object.assign(gSelectedCoursesIndex[key], gCourseIndex[key]);
+      _.assign(selectedCourse, apiData.data.courses[selectedCourse.courseCode]);
     }
   }
-  // Previous versions of the API v2 did not return this field.
-  gCourseDataTimestamp = apiResponse.timestamp;
-  setTimeout(() => {
-    if (maybeCourseListChanged)
-    {
-      updateCourseSearchResults();
-      updateSelectedCoursesList();
-      updateSchedule();
-    }
-    // Timestamp may have been updated regardless.
-    writeStateToLocalStorage();
-  }, 0);
+
+  if (wasUpdated)
+  {
+    const terms = _.values(apiData.data.terms);
+    terms.sort((t1, t2) => compareArrays(t1.termSortKey, t2.termSortKey));
+    apiData.data.terms = {};
+    _.forEach(t => {
+      apiData.data.terms[t.termCode] = t;
+    }, terms);
+
+    const courses = _.values(apiData.data.courses);
+    courses.sort((t1, t2) => compareArrays(t1.courseSortKey, t2.courseSortKey));
+    apiData.data.courses = {};
+    _.forEach(c => {
+      apiData.data.courses[c.courseCode] = c;
+    }, courses);
+  }
+
+  gApiData = apiData;
+
+  if (wasUpdated)
+  {
+    updateCourseSearchResults();
+    updateSelectedCoursesList();
+    updateSchedule();
+  }
+
+  // API data was updated regardless.
+  writeStateToLocalStorage();
 }
 
 async function retrieveCourseDataUntilSuccessful()
@@ -1482,24 +1441,86 @@ async function retrieveCourseDataUntilSuccessful()
 
 function writeStateToLocalStorage()
 {
-  localStorage.setItem("courseList", JSON.stringify(gCourseList));
-  localStorage.setItem("courseDataTimestamp", gCourseDataTimestamp);
+  localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
 }
 
+function oldCourseToString(course)
+{
+  return course.department + " " +
+    course.courseNumber.toString().padStart(3, "0") +
+    course.courseCodeSuffix + " " +
+    course.school + "-" +
+    course.section.toString().padStart(2, "0");
+}
+
+function upgradeSelectedCourses(selectedCourses)
+{
+  return _.map(course => {
+    if (!_.has("quarterCredits", course))
+    {
+      return course;
+    }
+
+    // Course object is in old format returned by API v3. Upgrade to
+    // API v4 format.
+    return {
+      courseCode: oldCourseToString(course),
+      courseCredits: _.toString(course.quarterCredits / 4),
+      courseDescription: course.courseDescription,
+      courseEnrollmentStatus: course.courseStatus,
+      courseInstructors: course.faculty,
+      courseMutualExclusionKey: [
+        course.department,
+        course.courseNumber,
+        course.courseCodeSuffix,
+        course.school,
+      ],
+      courseName: course.courseName,
+      courseSchedule: _.map(slot => {
+        return {
+          scheduleDays: slot.days,
+          scheduleEndDate: course.endDate,
+          scheduleEndTime: slot.endTime,
+          scheduleLocation: slot.location,
+          scheduleStartDate: course.startDate,
+          scheduleStartTime: slot.startTime,
+          scheduleTermCount:
+          (course.firstHalfSemester && course.secondHalfSemester) ? 1 : 2,
+          scheduleTerms: !course.firstHalfSemester ? [1] : [0],
+        };
+      }, course.schedule),
+      courseSeatsFilled: course.openSeats,
+      courseSeatsTotal: course.totalSeats,
+      courseSortKey: [
+        course.department,
+        course.courseNumber,
+        course.courseCodeSuffix,
+        course.school,
+        course.section,
+      ],
+      courseTerm: "Unknown",
+      courseWaitlistLength: null,
+      selected: course.selected,
+      starred: course.starred,
+    };
+  }, selectedCourses);
+}
+
 function readStateFromLocalStorage()
 {
-  gCourseList = readArrayFromLocalStorage("courseList");
-  gCourseList.sort(compareCourses);
-  gCourseIndex = buildCourseIndex(gCourseList);
-  gSelectedCourses = readArrayFromLocalStorage("selectedCourses");
-  gSelectedCoursesIndex = buildCourseIndex(gSelectedCourses);
-  gCourseDataTimestamp =
-    parseInt(localStorage.getItem("courseDataTimestamp"), 10) || null;
-  gScheduleTabSelected = localStorage.getItem("scheduleTabSelected") === "true";
-  gShowClosedCourses = localStorage.getItem("showClosedCourses") !== "false";
+  gApiData = readFromLocalStorage("apiData", _.isObject, null);
+  gSelectedCourses = upgradeSelectedCourses(
+    readFromLocalStorage("selectedCourses", _.isArray, [])
+  );
+  gScheduleTabSelected = readFromLocalStorage(
+    "scheduleTabSelected", _.isBoolean, false
+  );
+  gShowClosedCourses = readFromLocalStorage(
+    "showClosedCourses", _.isBoolean, true
+  );
 }
 
 /// PDF download
@@ -1593,93 +1614,95 @@ function downloadPDF()
   // course entities
   for (const course of computeSchedule(gSelectedCourses))
   {
-    for (const slot of course.schedule)
+    for (const slot of course.courseSchedule)
     {
-      const [startHours, startMinutes] = timeStringToHoursAndMinutes(slot.startTime);
-      const [endHours, endMinutes] = timeStringToHoursAndMinutes(slot.endTime);
+      const [startHours, startMinutes] = timeStringToHoursAndMinutes(slot.scheduleStartTime);
+      const [endHours, endMinutes] = timeStringToHoursAndMinutes(slot.scheduleEndTime);
 
-      for (const day of slot.days)
+      for (const day of slot.scheduleDays)
       {
-        const x = weekdayCharToInteger(day) * columnWidth + 1.25 * 72 +
-              (course.firstHalfSemester ? 0 : columnWidth / 2);
-
-        const width = (course.firstHalfSemester + course.secondHalfSemester) *
-              (columnWidth / 2);
-
-        const yStart = (startHours - 8 + startMinutes / 60) * rowHeight +
-              0.75 * 72;
-
-        const yEnd = (endHours - 8 + endMinutes / 60) * rowHeight +
-              0.75 * 72;
-
-        pdf.setFillColor(...getCourseColor(course, "rgbArray"));
-
-        pdf.rect(x, yStart, width, yEnd - yStart, "F");
-
-        const courseCodeLines = pdf.splitTextToSize(
-          courseCodeToString(course),
-          width - 12,
-        );
-        const courseNameLines = pdf.splitTextToSize(
-          course.courseName,
-          width - 12,
-        );
-        const courseLocationLines = pdf.splitTextToSize(
-          slot.location,
-          width - 12,
-        );
-        const courseInstructorsLines = pdf.splitTextToSize(
-          courseToInstructorLastnames(course),
-          width - 12
-        );
-
-        // Attributes to be shown are calculated based on space available
-        // order of preference: Code, location, name, professor
-        // order of display: code, name, professor, location
-
-        const entriesByPreference = ["code", "location", "name", "instructor"];
-        const entriesByOrder = ["code", "name", "instructor", "location"];
-
-        let entryNameToText = {
-          code: courseCodeLines,
-          location: courseLocationLines,
-          name: courseNameLines,
-          instructor: courseInstructorsLines,
-        };
-
-        // Limits size of text to ensure some white space at top and bottom
-        const maxTextLength = (yEnd - yStart) - 2 * pdf.getLineHeight();
-        let numEntries = 0;
-        let totalLength = 0;
-        while (totalLength * pdf.getLineHeight() < maxTextLength &&
-               numEntries < entriesByPreference.length)
+        for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms))
         {
-          totalLength += entryNameToText[entriesByPreference[numEntries]].length;
-          numEntries += 1;
-        }
+          const x = weekdayCharToInteger(day) * columnWidth + 1.25 * 72 +
+                columnWidth * (left / slot.scheduleTermCount);
 
-        const xText = x + width / 2;
-        // Find height to start the text so that it will be centered in the block
-        let yText = (yStart + yEnd) / 2 -
-            totalLength * pdf.getLineHeight() / 2 +
-            pdf.getLineHeight();
+          const width = columnWidth * (right - left + 1) / slot.scheduleTermCount;
 
-        pdf.setFontStyle("bold");
-        pdf.text(xText, yText, courseCodeLines, "center");
-        yText += courseCodeLines.length * pdf.getLineHeight();
-        pdf.setFontStyle("normal");
+          const yStart = (startHours - 8 + startMinutes / 60) * rowHeight +
+                0.75 * 72;
 
-        for (let entry of entriesByOrder)
-        {
-          if (entriesByPreference.slice(1, numEntries).includes(entry))
+          const yEnd = (endHours - 8 + endMinutes / 60) * rowHeight +
+                0.75 * 72;
+
+          pdf.setFillColor(...getCourseColor(course, "rgbArray"));
+
+          pdf.rect(x, yStart, width, yEnd - yStart, "F");
+
+          const courseCodeLines = pdf.splitTextToSize(
+            course.courseCode,
+            width - 12,
+          );
+          const courseNameLines = pdf.splitTextToSize(
+            course.courseName,
+            width - 12,
+          );
+          const courseLocationLines = pdf.splitTextToSize(
+            slot.scheduleLocation,
+            width - 12,
+          );
+          const courseInstructorsLines = pdf.splitTextToSize(
+            courseToInstructorLastnames(course),
+            width - 12
+          );
+
+          // Attributes to be shown are calculated based on space available
+          // order of preference: Code, location, name, professor
+          // order of display: code, name, professor, location
+
+          const entriesByPreference = ["code", "location", "name", "instructor"];
+          const entriesByOrder = ["code", "name", "instructor", "location"];
+
+          let entryNameToText = {
+            code: courseCodeLines,
+            location: courseLocationLines,
+            name: courseNameLines,
+            instructor: courseInstructorsLines,
+          };
+
+          // Limits size of text to ensure some white space at top and bottom
+          const maxTextLength = (yEnd - yStart) - 2 * pdf.getLineHeight();
+          let numEntries = 0;
+          let totalLength = 0;
+          while (totalLength * pdf.getLineHeight() < maxTextLength &&
+                 numEntries < entriesByPreference.length)
           {
-            pdf.text(
-              xText,
-              yText,
-              entryNameToText[entry],
-              "center",
-            );
-            yText += entryNameToText[entry].length * pdf.getLineHeight();
+            totalLength += entryNameToText[entriesByPreference[numEntries]].length;
+            numEntries += 1;
+          }
+
+          const xText = x + width / 2;
+          // Find height to start the text so that it will be centered in the block
+          let yText = (yStart + yEnd) / 2 -
+              totalLength * pdf.getLineHeight() / 2 +
+              pdf.getLineHeight();
+
+          pdf.setFontStyle("bold");
+          pdf.text(xText, yText, courseCodeLines, "center");
+          yText += courseCodeLines.length * pdf.getLineHeight();
+          pdf.setFontStyle("normal");
+
+          for (let entry of entriesByOrder)
+          {
+            if (entriesByPreference.slice(1, numEntries).includes(entry))
+            {
+              pdf.text(
+                xText,
+                yText,
+                entryNameToText[entry],
+                "center",
+              );
+              yText += entryNameToText[entry].length * pdf.getLineHeight();
+            }
           }
         }
       }
@@ -1687,7 +1710,7 @@ function downloadPDF()
   }
 
   // grid outline
-  pdf.rect(.5 * 72, .5 * 72, tableWidth, tableHeight, "FS");
+  pdf.rect(.5 * 72, .5 * 72, tableWidth, tableHeight, "S");
 
   // save PDF
   pdf.save("hyperschedule.pdf");
@@ -1744,24 +1767,23 @@ function downloadICalFile()
     {
       const subject = course.courseName;
       const description = uglyHack(
-        courseCodeToString(course) + " " +
+        course.courseCode + " " +
           course.courseName + "\n" +
-          formatList(course.faculty));
-      const listedStartDay = parseDate(course.startDate);
-      console.log(`start date: ${course.startDate} => ${listedStartDay}`);
-      const listedStartWeekday = listedStartDay.getDay();
-      const listedEndDay = parseDate(course.endDate);
-      // The range is inclusive, but ics.js interprets it exclusively.
-      listedEndDay.setDate(listedEndDay.getDate() + 1);
-      for (let slot of course.schedule)
+          formatList(course.courseInstructors));
+      for (let slot of course.courseSchedule)
       {
-        const location = uglyHack(slot.location);
+        const listedStartDay = parseDate(slot.scheduleStartDate);
+        const listedStartWeekday = listedStartDay.getDay();
+        const listedEndDay = parseDate(slot.scheduleEndDate);
+        // The range is inclusive, but ics.js interprets it exclusively.
+        listedEndDay.setDate(listedEndDay.getDate() + 1);
+        const location = uglyHack(slot.scheduleLocation);
         // Determine the first day of class. We want to pick the
         // weekday that occurs the soonest after (possibly on the same
         // day as) the listed start date.
         let startWeekday = null;
         let weekdayDifference = 7;
-        for (let weekday of slot.days)
+        for (let weekday of slot.scheduleDays)
         {
           const possibleStartWeekday = weekdayCharToInteger(weekday);
           const possibleWeekdayDifference =
@@ -1776,18 +1798,18 @@ function downloadICalFile()
         const start = new Date(listedStartDay.valueOf());
         start.setDate(start.getDate() + weekdayDifference);
         const [startHours, startMinutes] =
-              timeStringToHoursAndMinutes(slot.startTime);
+              timeStringToHoursAndMinutes(slot.scheduleStartTime);
         start.setHours(startHours);
         start.setMinutes(startMinutes);
         const end = new Date(start.valueOf());
         const [endHours, endMinutes] =
-              timeStringToHoursAndMinutes(slot.endTime);
+              timeStringToHoursAndMinutes(slot.scheduleEndTime);
         end.setHours(endHours);
         end.setMinutes(endMinutes);
         const freq = "WEEKLY";
         const until = listedEndDay;
         const interval = 1;
-        const byday = slot.days.split("").map(convertDayToICal);
+        const byday = slot.scheduleDays.split("").map(convertDayToICal);
         const rrule = {
           freq, until, interval, byday,
         };
@@ -1805,7 +1827,6 @@ readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
 autoUpdateNumCourseSearchPagesDisplayed();
-
 
 /// Closing remarks
 

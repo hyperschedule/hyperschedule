@@ -18,4 +18,4 @@ server.use((err, req, res, next) => {
 
 const port = process.env.PORT || 5000;
 server.listen(port);
-console.log(`Hyperschedule webapp (dev server) listening on port ${port}`);
+console.log(`Hyperschedule webapp (dev server) listening on http://localhost:${port}`);

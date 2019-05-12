@@ -183,6 +183,7 @@
       </div>
     </div>
 
+    <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"    integrity="sha384-Ui1pvNxCzO7LqnfgsWJ2ndsgpJPrWVTg7DCIag+do29np24E7Jyy6A09M3JUuLQf" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"      integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.6.3/html.sortable.min.js" integrity="sha384-McmwXqJoBon4wsJiVtB9S/zYH9D0Vt5lKjayJuj/6mlylXYopb3bKj4gXV1dbq2W" crossorigin="anonymous"></script>
@@ -191,8 +192,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.min.js"            integrity="sha384-j/yjQ26lM3oABUyp5sUcxbbLK/ECT6M4bige54dRtJcbhk+j6M8GAt+ZJYPK3q/l" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.min.js"             integrity="sha384-FvUg0oOjwQ1uec6J22LkHkEihYZfQYU5BaPKoUpt5OUVr7+CKyX2o5NC/fOqFGih" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"                                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"          integrity="sha384-2HWZ0KJxkQ3nhRpHPzk4AO2iIy1S8rSGwN5MpMS/xf34mqOahLqEbqwvdk48EnEv" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.fp.min.js"       integrity="sha384-zhq5RNH3QOo8ctQjW/EV797YYDamuYSJKSkVPf4ahE2hc1rogVtjIfEQsRpTy7l5" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.10.3/math.min.js"                integrity="sha384-d1Hwkp6yS5/5wx+7N1JJGcXznjb7sSujpGdE6028s1QFCw8dhwG9iM9DBDrG22bV" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"               integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"                 integrity="sha384-l7aOEgTYxgJ0nn2MziQWZCvuvJ2PtNcP05R4QwEoHW+kIS1gFpzupcQ7WhAdRKuq" crossorigin="anonymous"></script>
     <script src="js/vendor/ics-0.2.0.min.js"></script>
     <script src="js/hyperschedule.js"></script>
   </body>
