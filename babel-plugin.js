@@ -7,7 +7,7 @@ module.exports = function () {
         if (path.node.name === 'API_URL')
         {
           path.node.name = JSON.stringify(
-            process.env.API_URL || 'https://hyperschedule-api-v3.herokuapp.com');
+            process.env.API_URL || 'https://hyperschedule.herokuapp.com');
         }
       }
     }
