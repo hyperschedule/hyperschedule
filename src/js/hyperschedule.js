@@ -494,9 +494,9 @@ function coursesConflict(course1, course2)
     {
       const parts = math.lcm(slot1.scheduleTermCount, slot2.scheduleTermCount);
       if (!_.some(idx => (
-        slot1.scheduleTerms[idx / slot2.scheduleTermCount] &&
-          slot2.scheduleTerms[idx / slot1.scheduleTermCount]
-      )))
+        slot1.scheduleTerms.indexOf(idx / slot2.scheduleTermCount) != -1 &&
+          slot2.scheduleTerms.indexOf(idx / slot1.scheduleTermCount) != -1
+      ), _.range(0, parts)))
       {
         return false;
       }
