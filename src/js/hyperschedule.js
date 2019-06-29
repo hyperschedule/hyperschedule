@@ -1763,7 +1763,7 @@ function downloadICalFile()
   }
   for (let course of gSelectedCourses)
   {
-    if (!anySelected || course.selected && (!anyStarred || course.starred))
+    if ((!anySelected || course.selected) && (!anyStarred || course.starred))
     {
       const subject = course.courseName;
       const description = uglyHack(
