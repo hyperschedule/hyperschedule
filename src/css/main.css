@@ -313,8 +313,6 @@ body {
     list-style-type: none;
     margin: 1px 0;
     padding: 0;
-    height: 85%;
-    overflow-y: auto;
 }
 
 .course-box {
