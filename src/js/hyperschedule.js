@@ -33,7 +33,9 @@ const courseSearchResultsList = document.getElementById("course-search-results-l
 
 const selectedCoursesColumn = document.getElementById("selected-courses-column");
 const importExportDataButton = document.getElementById("import-export-data-button");
-const printButton = document.getElementById("print-button");
+const printDropdown = document.getElementById("print-dropdown");
+const printAllButton = document.getElementById("print-button-all");
+const printStarredButton = document.getElementById("print-button-starred");
 const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
@@ -716,7 +718,12 @@ function attachListeners()
     forcePlaceholderSize: true,
     placeholder: createCourseEntity("placeholder").outerHTML,
   });
-  printButton.addEventListener("click", downloadPDF);
+  printAllButton.addEventListener("click", () => {
+    downloadPDF(false)
+  });
+  printStarredButton.addEventListener("click", () => {
+    downloadPDF(true)
+  });
   settingsButton.addEventListener("click", showSettingsModal);
 
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
@@ -756,10 +763,10 @@ function attachListeners()
 }
 
 function onResize() {
-  updateCourseSearchBar();
-  updateSelectedCoursesBar();
   updateSearchScheduleColumn();
   updateSelectedCoursesWrapper();
+  updateSelectedCoursesBar();
+  updateCourseSearchBar();
 }
 
 function updateNumCourseSearchPagesDisplayed()
@@ -1260,7 +1267,7 @@ function updateCourseSearchBar() {
 function updateSelectedCoursesBar() {
   const githubLink = document.getElementById("github-link");
   const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
-  const printButtonWrapper = document.getElementById("print-button-wrapper");
+  const printDropdownWrapper = document.getElementById("print-dropdown-wrapper");
   const settingsButtonWrapper = document.getElementById("settings-button-wrapper");
 
   // default values
@@ -1270,10 +1277,10 @@ function updateSelectedCoursesBar() {
   let settingsButtonMarginValue = "0 3px 0 auto";
   let rightButtonsPaddingLeftValue = "10px";
 
-  let linkWidth = 150;
+  let linkWidth = 100;
   if (selectedCoursesColumn.offsetWidth <
     (linkWidth + importExportDataButton.offsetWidth 
-      + printButton.offsetWidth + settingsButton.offsetWidth)) {
+      + printDropdown.offsetWidth + settingsButton.offsetWidth)) {
     tableValue = "table-row";
     floatValue = "left";
     marginValue = "5px auto";
@@ -1284,10 +1291,10 @@ function updateSelectedCoursesBar() {
   importExportButtonWrapper.style.display = tableValue;
   importExportDataButton.style.float = floatValue;
   importExportDataButton.style.margin = marginValue;
-  printButtonWrapper.style.display = printButtonWrapper;
-  printButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  printButton.style.float = floatValue;
-  printButton.style.margin = marginValue;
+  printDropdownWrapper.style.display = tableValue;
+  printDropdownWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
+  printDropdown.style.float = floatValue; //TODO
+  printDropdown.style.margin = marginValue;
   settingsButtonWrapper.style.display = tableValue;
   settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
   settingsButton.style.float = floatValue;
@@ -1758,7 +1765,7 @@ function validateGGreyConflictCourses(value)
 
 /// PDF download
 
-function downloadPDF()
+function downloadPDF(starredOnly)
 {
   // initialize PDF object
   const pdf = new jsPDF({
@@ -1844,8 +1851,20 @@ function downloadPDF()
   // header underline
   pdf.line(1.25 * 72, 0.5 * 72, 1.25 * 72, 0.5 * 72 + tableHeight);
 
+  let pdfCourses = [];
+  if (!starredOnly) {
+    pdfCourses = gSelectedCourses;
+  }
+  else {
+    for (const course of gSelectedCourses) {
+      if (course.starred) {
+        pdfCourses.push(course);
+      }
+    }
+  }
+
   // course entities
-  for (const course of computeSchedule(gSelectedCourses))
+  for (const course of computeSchedule(pdfCourses))
   {
     for (const slot of course.courseSchedule)
     {
