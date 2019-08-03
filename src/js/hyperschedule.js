@@ -396,6 +396,8 @@ function generateCourseDescription(course)
   const description = [];
 
   const summaryLine = course.courseCode + " " + course.courseName;
+  // const summaryLine = course.courseCode + " " + course.courseName + " (" + course.courseEnrollmentStatus + ")";
+  // const summaryLine = course.courseCode + " " + courseToString(course);
   description.push(summaryLine);
 
   const times = course.courseSchedule.map(generateScheduleSlotDescription);
@@ -428,6 +430,12 @@ function generateCourseDescription(course)
   {
     description.push(course.courseDescription);
   }
+
+  const enrollment = course.courseEnrollmentStatus.charAt(0).toUpperCase() +
+    course.courseEnrollmentStatus.slice(1) + ", " +
+    course.courseSeatsFilled + "/" +
+    course.courseSeatsTotal + " seats filled";
+  description.push(enrollment);
 
   return description;
 }
