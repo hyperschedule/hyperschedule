@@ -54,7 +54,6 @@ body {
 .two-column-left {
     float: left;
     height: 100%;
-    overflow-y: auto;
     width: 70%;
 }
 
@@ -69,7 +68,6 @@ body {
 
 #course-search-schedule-column {
     padding-top: 20px;
-    overflow-y: scroll;
 }
 
 #course-search-toggle-wrapper {
@@ -98,10 +96,15 @@ body {
     width: 100%;
 }
 
+#schedule-column {
+    height: 93%;
+    overflow-y: auto;
+}
+
 /** Course search **/
 
 #course-search-column {
-    /* nothing to do here */
+    height: 100%;
 }
 
 /*** Course search header bar ***/
@@ -310,6 +313,8 @@ body {
     list-style-type: none;
     margin: 1px 0;
     padding: 0;
+    height: 85%;
+    overflow-y: auto;
 }
 
 .course-box {
