@@ -29,8 +29,8 @@ const courseSearchScheduleColumn = document.getElementById("course-search-schedu
 const courseSearchInput = document.getElementById("course-search-course-name-input");
 const courseSearchResultsList = document.getElementById("course-search-results-list");
 
+const selectedCoursesColumn = document.getElementById("selected-courses-column");
 const importExportDataButton = document.getElementById("import-export-data-button");
-
 const printButton = document.getElementById("print-button");
 
 const courseDescriptionBox = document.getElementById("course-description-box");
@@ -640,7 +640,8 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
-  document.addEventListener("DOMContentLoaded", updateCourseSearchBar());
+  document.addEventListener("DOMContentLoaded", updateCourseSearchBar);
+  document.addEventListener("DOMContentLoaded", updateSelectedCoursesBar);
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
@@ -664,6 +665,7 @@ function attachListeners()
   });
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
   window.addEventListener("resize", updateCourseSearchBar);
+  window.addEventListener("resize", updateSelectedCoursesBar);
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
@@ -1141,7 +1143,9 @@ function updateCourseSearchBar() {
   const helpButtonWrapper = document.getElementById("help-button-wrapper");
   const helpButton = document.getElementById("help-button");
 
-  let tableValue = "table-cell"
+  // default value
+  let tableValue = "table-cell";
+
   if (courseSearchColumn.offsetWidth < 
     (courseClosedToggleLabel.offsetWidth + helpButton.offsetWidth + 100)) {
     tableValue = "table-row";
@@ -1149,6 +1153,33 @@ function updateCourseSearchBar() {
   courseSearchInputWrapper.style.display = tableValue;
   courseClosedToggleWrapper.style.display = tableValue;
   helpButtonWrapper.style.display = tableValue;
+}
+
+function updateSelectedCoursesBar() {
+  const githubLink = document.getElementById("github-link");
+  const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
+  const printButtonWrapper = document.getElementById("print-button-wrapper");
+
+  // default values
+  let tableValue = "table-cell";
+  let floatValue = "right";
+  let marginValue = "0 auto";
+  let printPaddingLeftValue = "10px";
+  if (selectedCoursesColumn.offsetWidth <
+    (150 + importExportDataButton.offsetWidth + printButton.offsetWidth)) {
+    tableValue = "table-row";
+    floatValue = "left";
+    marginValue = "5px auto";
+    printPaddingLeftValue = "0px";
+  }
+  githubLink.style.display = tableValue;
+  importExportButtonWrapper.style.display = tableValue;
+  importExportDataButton.style.float = floatValue;
+  importExportDataButton.style.margin = marginValue;
+  printButtonWrapper.style.display = printButtonWrapper;
+  printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
+  printButton.style.float = floatValue;
+  printButton.style.margin = marginValue;
 }
 
 ///// DOM updates miscellaneous
