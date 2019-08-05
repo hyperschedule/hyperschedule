@@ -429,6 +429,12 @@ function generateCourseDescription(course)
     description.push(course.courseDescription);
   }
 
+  const enrollment = course.courseEnrollmentStatus.charAt(0).toUpperCase() +
+    course.courseEnrollmentStatus.slice(1) + ", " +
+    course.courseSeatsFilled + "/" +
+    course.courseSeatsTotal + " seats filled";
+  description.push(enrollment);
+
   return description;
 }
 
