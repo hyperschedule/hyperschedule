@@ -96,7 +96,7 @@ body {
 }
 
 #schedule-column {
-    height: 93%;
+    /*height: 93%;*/
     overflow-y: auto;
 }
 
@@ -104,6 +104,11 @@ body {
 
 #course-search-column {
     height: 100%;
+}
+
+#course-search-results-list {
+    /*height: 85%;*/
+    overflow-y: auto;
 }
 
 /*** Course search header bar ***/
@@ -316,7 +321,6 @@ body {
 .courses-list {
     list-style-type: none;
     margin: 0;
-    /*margin-bottom: 1px;*/
     padding: 0;
 }
 

@@ -22,10 +22,10 @@ const scheduleToggle = document.getElementById("schedule-toggle");
 
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 
+const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchColumn = document.getElementById("course-search-column");
 const scheduleColumn = document.getElementById("schedule-column");
 
-const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchInput = document.getElementById("course-search-course-name-input");
 const courseSearchResultsList = document.getElementById("course-search-results-list");
 
@@ -642,7 +642,9 @@ function attachListeners()
 {
   document.addEventListener("DOMContentLoaded", updateCourseSearchBar);
   document.addEventListener("DOMContentLoaded", updateSelectedCoursesBar);
+  document.addEventListener("DOMContentLoaded", updateSearchScheduleColumn);
   document.addEventListener("DOMContentLoaded", updateSelectedCoursesWrapper);
+
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
@@ -667,6 +669,7 @@ function attachListeners()
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
   window.addEventListener("resize", updateCourseSearchBar);
   window.addEventListener("resize", updateSelectedCoursesBar);
+  window.addEventListener("resize", updateSearchScheduleColumn);
   window.addEventListener("resize", updateSelectedCoursesWrapper);  
 
   // Attach import/export copy button
@@ -1187,6 +1190,25 @@ function updateSelectedCoursesBar() {
   printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
   printButton.style.float = floatValue;
   printButton.style.margin = marginValue;
+}
+
+function updateSearchScheduleColumn() {
+  const searchScheduleToggleBar = document.getElementById("course-search-schedule-toggle-bar");
+  const courseSearchBar = document.getElementById("course-search-bar");
+  const columnPaddingTop = 20;
+
+  const placeholderHeight = 50;
+  const listHeight = courseSearchScheduleColumn.offsetHeight
+    - columnPaddingTop
+    - searchScheduleToggleBar.offsetHeight
+    - courseSearchBar.offsetHeight
+    - placeholderHeight;
+  courseSearchResultsList.style.height = "" + listHeight + "px";
+
+  const scheduleHeight = courseSearchScheduleColumn.offsetHeight
+    - columnPaddingTop
+    - searchScheduleToggleBar.offsetHeight;
+  scheduleColumn.style.height = "" + scheduleHeight + "px";
 }
 
 function updateSelectedCoursesWrapper() {
