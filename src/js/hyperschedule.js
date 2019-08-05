@@ -396,8 +396,6 @@ function generateCourseDescription(course)
   const description = [];
 
   const summaryLine = course.courseCode + " " + course.courseName;
-  // const summaryLine = course.courseCode + " " + course.courseName + " (" + course.courseEnrollmentStatus + ")";
-  // const summaryLine = course.courseCode + " " + courseToString(course);
   description.push(summaryLine);
 
   const times = course.courseSchedule.map(generateScheduleSlotDescription);
