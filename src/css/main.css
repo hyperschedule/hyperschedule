@@ -60,7 +60,6 @@ body {
 .two-column-right {
     float: right;
     height: 100%;
-    overflow-y: auto;
     width: 32%;
 }
 
@@ -194,13 +193,18 @@ body {
 
 /*** Course description box ***/
 
+#selected-courses-wrapper {
+    margin-top: 8px;
+    overflow-y: auto;
+}
+
 #course-description-box-outer {
     display: block;
     border: 1px solid transparent;
     height: 0px;
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    /*margin-top: 10px;
+    margin-bottom: 5px;*/
     overflow: hidden;
     transition: height .2s, border .2s;
 }
@@ -311,7 +315,8 @@ body {
 
 .courses-list {
     list-style-type: none;
-    margin: 1px 0;
+    margin: 0;
+    /*margin-bottom: 1px;*/
     padding: 0;
 }
 
