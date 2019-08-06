@@ -645,7 +645,6 @@ function attachListeners()
   document.addEventListener("DOMContentLoaded", updateSearchScheduleColumn);
   document.addEventListener("DOMContentLoaded", updateSelectedCoursesWrapper);
 
-
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
@@ -670,7 +669,7 @@ function attachListeners()
   window.addEventListener("resize", updateCourseSearchBar);
   window.addEventListener("resize", updateSelectedCoursesBar);
   window.addEventListener("resize", updateSearchScheduleColumn);
-  window.addEventListener("resize", updateSelectedCoursesWrapper);  
+  window.addEventListener("resize", updateSelectedCoursesWrapper);
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
