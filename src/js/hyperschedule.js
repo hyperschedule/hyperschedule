@@ -640,6 +640,8 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
+  document.addEventListener("DOMContentLoaded", updateCourseSearchBar());
+
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
@@ -661,6 +663,7 @@ function attachListeners()
     gCurrentlySorting = false;
   });
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
+  window.addEventListener("resize", updateCourseSearchBar);
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
@@ -1125,6 +1128,27 @@ function updateCourseDescriptionBoxHeight() {
   }
   courseDescriptionBoxOuter.style.height =
     "" + courseDescriptionBox.scrollHeight + "px";
+}
+
+function updateCourseSearchBar() {
+  if (courseSearchColumn.classList.contains("hidden")) {
+    return;
+  }
+
+  const courseSearchInputWrapper = document.getElementById("course-search-course-name-input-wrapper");
+  const courseClosedToggleWrapper = document.getElementById("closed-courses-toggle-wrapper");
+  const courseClosedToggleLabel = document.getElementById("closed-courses-toggle-label");
+  const helpButtonWrapper = document.getElementById("help-button-wrapper");
+  const helpButton = document.getElementById("help-button");
+
+  let tableValue = "table-cell"
+  if (courseSearchColumn.offsetWidth < 
+    (courseClosedToggleLabel.offsetWidth + helpButton.offsetWidth + 100)) {
+    tableValue = "table-row";
+  }
+  courseSearchInputWrapper.style.display = tableValue;
+  courseClosedToggleWrapper.style.display = tableValue;
+  helpButtonWrapper.style.display = tableValue;
 }
 
 ///// DOM updates miscellaneous
