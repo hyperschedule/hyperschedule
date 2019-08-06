@@ -640,10 +640,7 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
-  document.addEventListener("DOMContentLoaded", updateCourseSearchBar);
-  document.addEventListener("DOMContentLoaded", updateSelectedCoursesBar);
-  document.addEventListener("DOMContentLoaded", updateSearchScheduleColumn);
-  document.addEventListener("DOMContentLoaded", updateSelectedCoursesWrapper);
+  document.addEventListener("DOMContentLoaded", onResize);
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
@@ -666,10 +663,7 @@ function attachListeners()
     gCurrentlySorting = false;
   });
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
-  window.addEventListener("resize", updateCourseSearchBar);
-  window.addEventListener("resize", updateSelectedCoursesBar);
-  window.addEventListener("resize", updateSearchScheduleColumn);
-  window.addEventListener("resize", updateSelectedCoursesWrapper);
+  window.addEventListener("resize", onResize);
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
@@ -687,6 +681,13 @@ function attachListeners()
     importExportCopyButton.classList.remove("copy-button-copied");
     importExportCopyButton.classList.remove("copy-button-error");
   });
+}
+
+function onResize() {
+  updateCourseSearchBar();
+  updateSelectedCoursesBar();
+  updateSearchScheduleColumn();
+  updateSelectedCoursesWrapper();
 }
 
 function updateNumCourseSearchPagesDisplayed()
