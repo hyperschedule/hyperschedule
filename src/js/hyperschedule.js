@@ -1228,6 +1228,67 @@ function updateSelectedCoursesWrapper() {
   selectedCoursesWrapper.style.height = "" + wrapperHeight + "px";
 }
 
+function updateSelectedCoursesBar() {
+  const githubLink = document.getElementById("github-link");
+  const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
+  const printButtonWrapper = document.getElementById("print-button-wrapper");
+
+  // default values
+  let tableValue = "table-cell";
+  let floatValue = "right";
+  let marginValue = "0 auto";
+  let printPaddingLeftValue = "10px";
+
+  let linkWidth = 150;
+  if (selectedCoursesColumn.offsetWidth <
+    (linkWidth + importExportDataButton.offsetWidth + printButton.offsetWidth)) {
+    tableValue = "table-row";
+    floatValue = "left";
+    marginValue = "5px auto";
+    printPaddingLeftValue = "0px";
+  }
+  githubLink.style.display = tableValue;
+  importExportButtonWrapper.style.display = tableValue;
+  importExportDataButton.style.float = floatValue;
+  importExportDataButton.style.margin = marginValue;
+  printButtonWrapper.style.display = printButtonWrapper;
+  printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
+  printButton.style.float = floatValue;
+  printButton.style.margin = marginValue;
+}
+
+function updateSearchScheduleColumn() {
+  const searchScheduleToggleBar = document.getElementById("course-search-schedule-toggle-bar");
+  const courseSearchBar = document.getElementById("course-search-bar");
+  const columnPaddingTop = 20;
+
+  const placeholderHeight = 50;
+  const listHeight = courseSearchScheduleColumn.offsetHeight
+    - columnPaddingTop
+    - searchScheduleToggleBar.offsetHeight
+    - courseSearchBar.offsetHeight
+    - placeholderHeight;
+  courseSearchResultsList.style.height = "" + listHeight + "px";
+
+  const scheduleHeight = courseSearchScheduleColumn.offsetHeight
+    - columnPaddingTop
+    - searchScheduleToggleBar.offsetHeight;
+  scheduleColumn.style.height = "" + scheduleHeight + "px";
+}
+
+function updateSelectedCoursesWrapper() {
+  const selectedCoursesWrapper = document.getElementById("selected-courses-wrapper");
+  const selectedCoursesBar = document.getElementById("selected-courses-bar");
+
+  const columnPaddingTop = 20;
+  const wrapperMarginTop = 8;
+  const wrapperHeight = selectedCoursesColumn.offsetHeight
+    - columnPaddingTop
+    - selectedCoursesBar.offsetHeight
+    - wrapperMarginTop;
+  selectedCoursesWrapper.style.height = "" + wrapperHeight + "px";
+}
+
 ///// DOM updates miscellaneous
 
 function showImportExportModal()
