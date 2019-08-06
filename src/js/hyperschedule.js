@@ -22,15 +22,15 @@ const scheduleToggle = document.getElementById("schedule-toggle");
 
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 
+const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchColumn = document.getElementById("course-search-column");
 const scheduleColumn = document.getElementById("schedule-column");
 
-const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchInput = document.getElementById("course-search-course-name-input");
 const courseSearchResultsList = document.getElementById("course-search-results-list");
 
+const selectedCoursesColumn = document.getElementById("selected-courses-column");
 const importExportDataButton = document.getElementById("import-export-data-button");
-
 const printButton = document.getElementById("print-button");
 
 const courseDescriptionBox = document.getElementById("course-description-box");
@@ -640,7 +640,10 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
-  document.addEventListener("DOMContentLoaded", updateCourseSearchBar());
+  document.addEventListener("DOMContentLoaded", updateCourseSearchBar);
+  document.addEventListener("DOMContentLoaded", updateSelectedCoursesBar);
+  document.addEventListener("DOMContentLoaded", updateSearchScheduleColumn);
+  document.addEventListener("DOMContentLoaded", updateSelectedCoursesWrapper);
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
@@ -664,6 +667,9 @@ function attachListeners()
   });
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
   window.addEventListener("resize", updateCourseSearchBar);
+  window.addEventListener("resize", updateSelectedCoursesBar);
+  window.addEventListener("resize", updateSearchScheduleColumn);
+  window.addEventListener("resize", updateSelectedCoursesWrapper);
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
@@ -1128,6 +1134,8 @@ function updateCourseDescriptionBoxHeight() {
   }
   courseDescriptionBoxOuter.style.height =
     "" + courseDescriptionBox.scrollHeight + "px";
+
+  courseDescriptionBoxOuter.style.marginBottom = "9px";
 }
 
 function updateCourseSearchBar() {
@@ -1141,14 +1149,78 @@ function updateCourseSearchBar() {
   const helpButtonWrapper = document.getElementById("help-button-wrapper");
   const helpButton = document.getElementById("help-button");
 
-  let tableValue = "table-cell"
+  // default value
+  let tableValue = "table-cell";
+
+  let minSearchInputWidth = 100;
   if (courseSearchColumn.offsetWidth < 
-    (courseClosedToggleLabel.offsetWidth + helpButton.offsetWidth + 100)) {
+    (minSearchInputWidth + courseClosedToggleLabel.offsetWidth + helpButton.offsetWidth)) {
     tableValue = "table-row";
   }
   courseSearchInputWrapper.style.display = tableValue;
   courseClosedToggleWrapper.style.display = tableValue;
   helpButtonWrapper.style.display = tableValue;
+}
+
+function updateSelectedCoursesBar() {
+  const githubLink = document.getElementById("github-link");
+  const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
+  const printButtonWrapper = document.getElementById("print-button-wrapper");
+
+  // default values
+  let tableValue = "table-cell";
+  let floatValue = "right";
+  let marginValue = "0 auto";
+  let printPaddingLeftValue = "10px";
+
+  let linkWidth = 150;
+  if (selectedCoursesColumn.offsetWidth <
+    (linkWidth + importExportDataButton.offsetWidth + printButton.offsetWidth)) {
+    tableValue = "table-row";
+    floatValue = "left";
+    marginValue = "5px auto";
+    printPaddingLeftValue = "0px";
+  }
+  githubLink.style.display = tableValue;
+  importExportButtonWrapper.style.display = tableValue;
+  importExportDataButton.style.float = floatValue;
+  importExportDataButton.style.margin = marginValue;
+  printButtonWrapper.style.display = printButtonWrapper;
+  printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
+  printButton.style.float = floatValue;
+  printButton.style.margin = marginValue;
+}
+
+function updateSearchScheduleColumn() {
+  const searchScheduleToggleBar = document.getElementById("course-search-schedule-toggle-bar");
+  const courseSearchBar = document.getElementById("course-search-bar");
+  const columnPaddingTop = 20;
+
+  const placeholderHeight = 50;
+  const listHeight = courseSearchScheduleColumn.offsetHeight
+    - columnPaddingTop
+    - searchScheduleToggleBar.offsetHeight
+    - courseSearchBar.offsetHeight
+    - placeholderHeight;
+  courseSearchResultsList.style.height = "" + listHeight + "px";
+
+  const scheduleHeight = courseSearchScheduleColumn.offsetHeight
+    - columnPaddingTop
+    - searchScheduleToggleBar.offsetHeight;
+  scheduleColumn.style.height = "" + scheduleHeight + "px";
+}
+
+function updateSelectedCoursesWrapper() {
+  const selectedCoursesWrapper = document.getElementById("selected-courses-wrapper");
+  const selectedCoursesBar = document.getElementById("selected-courses-bar");
+
+  const columnPaddingTop = 20;
+  const wrapperMarginTop = 8;
+  const wrapperHeight = selectedCoursesColumn.offsetHeight
+    - columnPaddingTop
+    - selectedCoursesBar.offsetHeight
+    - wrapperMarginTop;
+  selectedCoursesWrapper.style.height = "" + wrapperHeight + "px";
 }
 
 ///// DOM updates miscellaneous

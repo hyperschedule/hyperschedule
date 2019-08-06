@@ -54,14 +54,13 @@ body {
 .two-column-left {
     float: left;
     height: 100%;
-    width: 70%;
+    width: 68%;
 }
 
 .two-column-right {
     float: right;
     height: 100%;
-    overflow-y: auto;
-    width: 30%;
+    width: 32%;
 }
 
 /*** Course search/schedule column ***/
@@ -97,7 +96,7 @@ body {
 }
 
 #schedule-column {
-    height: 93%;
+    /*height: 93%;*/
     overflow-y: auto;
 }
 
@@ -105,6 +104,11 @@ body {
 
 #course-search-column {
     height: 100%;
+}
+
+#course-search-results-list {
+    /*height: 85%;*/
+    overflow-y: auto;
 }
 
 /*** Course search header bar ***/
@@ -194,13 +198,18 @@ body {
 
 /*** Course description box ***/
 
+#selected-courses-wrapper {
+    margin-top: 8px;
+    overflow-y: auto;
+}
+
 #course-description-box-outer {
     display: block;
     border: 1px solid transparent;
     height: 0px;
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    /*margin-top: 10px;
+    margin-bottom: 5px;*/
     overflow: hidden;
     transition: height .2s, border .2s;
 }
@@ -311,10 +320,8 @@ body {
 
 .courses-list {
     list-style-type: none;
-    margin: 1px 0;
+    margin: 0;
     padding: 0;
-    height: 85%;
-    overflow-y: auto;
 }
 
 .course-box {
