@@ -1151,15 +1151,20 @@ function updateCourseSearchBar() {
 
   // default value
   let tableValue = "table-cell";
+  let marginValue = "0 auto";
 
   let minSearchInputWidth = 100;
   if (courseSearchColumn.offsetWidth < 
     (minSearchInputWidth + courseClosedToggleLabel.offsetWidth + helpButton.offsetWidth)) {
     tableValue = "table-row";
+    marginValue = "5px auto";
   }
   courseSearchInputWrapper.style.display = tableValue;
+  courseSearchInput.style.margin = marginValue;
   courseClosedToggleWrapper.style.display = tableValue;
+  courseClosedToggleLabel.style.margin = marginValue;
   helpButtonWrapper.style.display = tableValue;
+  helpButton.style.margin = marginValue;
 }
 
 function updateSelectedCoursesBar() {
