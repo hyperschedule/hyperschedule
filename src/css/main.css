@@ -96,7 +96,6 @@ body {
 }
 
 #schedule-column {
-    /*height: 93%;*/
     overflow-y: auto;
 }
 
@@ -107,7 +106,6 @@ body {
 }
 
 #course-search-results-list {
-    /*height: 85%;*/
     overflow-y: auto;
 }
 
