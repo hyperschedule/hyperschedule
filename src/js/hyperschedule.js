@@ -32,6 +32,7 @@ const courseSearchResultsList = document.getElementById("course-search-results-l
 const selectedCoursesColumn = document.getElementById("selected-courses-column");
 const importExportDataButton = document.getElementById("import-export-data-button");
 const printButton = document.getElementById("print-button");
+const settingsButton = document.getElementById("settings-button");
 
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById("course-description-box-outer");
@@ -1172,90 +1173,37 @@ function updateSelectedCoursesBar() {
   const githubLink = document.getElementById("github-link");
   const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
   const printButtonWrapper = document.getElementById("print-button-wrapper");
+  const settingsButtonWrapper = document.getElementById("settings-button-wrapper");
 
   // default values
   let tableValue = "table-cell";
   let floatValue = "right";
   let marginValue = "0 auto";
-  let printPaddingLeftValue = "10px";
+  let settingsButtonMarginValue = "0 3px 0 auto";
+  let rightButtonsPaddingLeftValue = "10px";
 
   let linkWidth = 150;
   if (selectedCoursesColumn.offsetWidth <
-    (linkWidth + importExportDataButton.offsetWidth + printButton.offsetWidth)) {
+    (linkWidth + importExportDataButton.offsetWidth 
+      + printButton.offsetWidth + settingsButton.offsetWidth)) {
     tableValue = "table-row";
     floatValue = "left";
     marginValue = "5px auto";
-    printPaddingLeftValue = "0px";
+    settingsButtonMarginValue = "0 5px 0 auto";
+    rightButtonsPaddingLeftValue = "0px";
   }
   githubLink.style.display = tableValue;
   importExportButtonWrapper.style.display = tableValue;
   importExportDataButton.style.float = floatValue;
   importExportDataButton.style.margin = marginValue;
   printButtonWrapper.style.display = printButtonWrapper;
-  printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
+  printButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
   printButton.style.float = floatValue;
   printButton.style.margin = marginValue;
-}
-
-function updateSearchScheduleColumn() {
-  const searchScheduleToggleBar = document.getElementById("course-search-schedule-toggle-bar");
-  const courseSearchBar = document.getElementById("course-search-bar");
-  const columnPaddingTop = 20;
-
-  const placeholderHeight = 50;
-  const listHeight = courseSearchScheduleColumn.offsetHeight
-    - columnPaddingTop
-    - searchScheduleToggleBar.offsetHeight
-    - courseSearchBar.offsetHeight
-    - placeholderHeight;
-  courseSearchResultsList.style.height = "" + listHeight + "px";
-
-  const scheduleHeight = courseSearchScheduleColumn.offsetHeight
-    - columnPaddingTop
-    - searchScheduleToggleBar.offsetHeight;
-  scheduleColumn.style.height = "" + scheduleHeight + "px";
-}
-
-function updateSelectedCoursesWrapper() {
-  const selectedCoursesWrapper = document.getElementById("selected-courses-wrapper");
-  const selectedCoursesBar = document.getElementById("selected-courses-bar");
-
-  const columnPaddingTop = 20;
-  const wrapperMarginTop = 8;
-  const wrapperHeight = selectedCoursesColumn.offsetHeight
-    - columnPaddingTop
-    - selectedCoursesBar.offsetHeight
-    - wrapperMarginTop;
-  selectedCoursesWrapper.style.height = "" + wrapperHeight + "px";
-}
-
-function updateSelectedCoursesBar() {
-  const githubLink = document.getElementById("github-link");
-  const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
-  const printButtonWrapper = document.getElementById("print-button-wrapper");
-
-  // default values
-  let tableValue = "table-cell";
-  let floatValue = "right";
-  let marginValue = "0 auto";
-  let printPaddingLeftValue = "10px";
-
-  let linkWidth = 150;
-  if (selectedCoursesColumn.offsetWidth <
-    (linkWidth + importExportDataButton.offsetWidth + printButton.offsetWidth)) {
-    tableValue = "table-row";
-    floatValue = "left";
-    marginValue = "5px auto";
-    printPaddingLeftValue = "0px";
-  }
-  githubLink.style.display = tableValue;
-  importExportButtonWrapper.style.display = tableValue;
-  importExportDataButton.style.float = floatValue;
-  importExportDataButton.style.margin = marginValue;
-  printButtonWrapper.style.display = printButtonWrapper;
-  printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
-  printButton.style.float = floatValue;
-  printButton.style.margin = marginValue;
+  settingsButtonWrapper.style.display = tableValue;
+  settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
+  settingsButton.style.float = floatValue;
+  settingsButton.style.margin = settingsButtonMarginValue;
 }
 
 function updateSearchScheduleColumn() {
