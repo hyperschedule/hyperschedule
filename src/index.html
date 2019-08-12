@@ -188,6 +188,31 @@
       </div>
     </div>
 
+
+    <div class="modal fade" id="settings-modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Settings</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="conflict-courses-toggle-wrapper">
+              <label id="conflict-courses-toggle-heading">Gray out conflicting courses</label>
+              <label id="conflict-courses-toggle-label1"><input id="conflict-courses1" name="conflict-courses" type="radio"> Don't gray out any conflicting courses</label>
+              <label id="conflict-courses-toggle-label2"><input id="conflict-courses2" name="conflict-courses" type="radio" checked="checked"> Only gray out conflicting starred courses</label>
+              <label id="conflict-courses-toggle-label3"><input id="conflict-courses3" name="conflict-courses" type="radio"> Gray out all conflicting courses</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"    integrity="sha384-Ui1pvNxCzO7LqnfgsWJ2ndsgpJPrWVTg7DCIag+do29np24E7Jyy6A09M3JUuLQf" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"      integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
