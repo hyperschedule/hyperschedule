@@ -730,6 +730,11 @@ function attachListeners()
     gCurrentlySorting = false;
   });
 
+  // for (var i = 0; i < conflictCoursesRadios; i++) {
+  //   conflictCoursesRadios[i].addEventListener("click", () => {
+  //     gGreyConflictCourses = gGreyConflictCoursesOptions[i];
+  //   })
+  // }
   conflictCoursesRadio1.addEventListener("click", () => {
     gGreyConflictCourses = gGreyConflictCoursesOptions[0];
     toggleConflictCourses();
@@ -1507,7 +1512,7 @@ function toggleCourseStarred(course)
 {
   course.starred = !course.starred;
   updateCourseSearchResults();
-  updateSelectedCoursesList(); // TODO
+  updateSelectedCoursesList();
   updateSchedule();
   writeStateToLocalStorage();
 }
@@ -1678,7 +1683,7 @@ function writeStateToLocalStorage()
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
-  localStorage.setItem("greyConflictCourses", gGreyConflictCourses); //TODO
+  localStorage.setItem("greyConflictCourses", JSON.stringify(gGreyConflictCourses));
 }
 
 function oldCourseToString(course)
@@ -1757,7 +1762,7 @@ function readStateFromLocalStorage()
   );
   gGreyConflictCourses = readFromLocalStorage(
     "greyConflictCourses", _.isString, gGreyConflictCoursesOptions[1]
-  ); //TODO
+  );
 }
 
 /// PDF download
