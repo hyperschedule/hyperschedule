@@ -1099,6 +1099,27 @@ function updateShowClosedCoursesCheckbox()
   closedCoursesToggle.checked = gShowClosedCourses;
 }
 
+function updateConflictCoursesRadio()
+{
+  switch(gGreyConflictCourses)
+  {
+    case(gGreyConflictCoursesOptions[0]):
+      conflictCoursesRadio1.checked = true;
+      break;
+
+    case(gGreyConflictCoursesOptions[1]):
+      conflictCoursesRadio2.checked = true;
+      break;
+
+    case(gGreyConflictCoursesOptions[2]):
+      conflictCoursesRadio3.checked = true;
+      break;
+
+    default:
+      conflictCoursesRadio2.checked = true;
+  }
+}
+
 function updateCourseSearchResults(attrs)
 {
   attrs = attrs || {};
@@ -1387,6 +1408,7 @@ function handleGlobalStateUpdate()
   // Update UI elements.
   updateTabToggle();
   updateShowClosedCoursesCheckbox();
+  updateConflictCoursesRadio();
 
   // Update course displays.
   updateCourseSearchResults();
@@ -1656,7 +1678,7 @@ function writeStateToLocalStorage()
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
-  localStorage.setItem("greyConflictCourses", JSON.stringify(gGreyConflictCourses)); //TODO
+  localStorage.setItem("greyConflictCourses", gGreyConflictCourses); //TODO
 }
 
 function oldCourseToString(course)
