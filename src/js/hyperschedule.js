@@ -15,6 +15,8 @@ const extraPagesToLoad = 2;
 
 const apiURL = API_URL; // replaced by Babel with a string literal
 
+const greyConflictCoursesOptions = ["none", "starred", "all"];
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
@@ -34,6 +36,7 @@ const importExportDataButton = document.getElementById("import-export-data-butto
 const printButton = document.getElementById("print-button");
 const settingsButton = document.getElementById("settings-button");
 
+// const conflictCoursesRadios = document.getElementsByName("conflict-courses"); TODO
 const conflictCoursesRadio1 = document.getElementById("conflict-courses1");
 const conflictCoursesRadio2 = document.getElementById("conflict-courses2");
 const conflictCoursesRadio3 = document.getElementById("conflict-courses3");
@@ -53,14 +56,13 @@ const importExportSaveChangesButton = document.getElementById("import-export-sav
 const importExportCopyButton = document.getElementById("import-export-copy-button");
 
 //// Global state
-const gGreyConflictCoursesOptions = ["none", "starred", "all"];
 
 // Persistent data.
 let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
-let gGreyConflictCourses = gGreyConflictCoursesOptions[1];
+let gGreyConflictCourses = greyConflictCoursesOptions[1];
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -459,17 +461,17 @@ function getCourseColor(course, format = "hex")
 
   if (course.starred || !courseInSchedule(course))
     switch (gGreyConflictCourses) {
-      case gGreyConflictCoursesOptions[0]:
+      case greyConflictCoursesOptions[0]:
         break;
 
-      case gGreyConflictCoursesOptions[1]:
+      case greyConflictCoursesOptions[1]:
         if (course.starred && courseConflictWithSchedule(course)) {
           hue = "monochrome";
           seed = "-10";
         }
         break;
 
-      case gGreyConflictCoursesOptions[2]:
+      case greyConflictCoursesOptions[2]:
         if (courseConflictWithSchedule(course)) {
           hue = "monochrome";
           seed = "-10";
@@ -730,21 +732,22 @@ function attachListeners()
     gCurrentlySorting = false;
   });
 
-  // for (var i = 0; i < conflictCoursesRadios; i++) {
+  // for (var i = 0; conflictCoursesRadios[i]; i++) {
   //   conflictCoursesRadios[i].addEventListener("click", () => {
-  //     gGreyConflictCourses = gGreyConflictCoursesOptions[i];
+  //     gGreyConflictCourses = greyConflictCoursesOptions[i];
+  //     toggleConflictCourses();
   //   })
-  // }
+  // } TODO
   conflictCoursesRadio1.addEventListener("click", () => {
-    gGreyConflictCourses = gGreyConflictCoursesOptions[0];
+    gGreyConflictCourses = greyConflictCoursesOptions[0];
     toggleConflictCourses();
   })
   conflictCoursesRadio2.addEventListener("click", () => {
-    gGreyConflictCourses = gGreyConflictCoursesOptions[1];
+    gGreyConflictCourses = greyConflictCoursesOptions[1];
     toggleConflictCourses();
   })
   conflictCoursesRadio3.addEventListener("click", () => {
-    gGreyConflictCourses = gGreyConflictCoursesOptions[2];
+    gGreyConflictCourses = greyConflictCoursesOptions[2];
     toggleConflictCourses();
   })
 
@@ -1108,19 +1111,23 @@ function updateConflictCoursesRadio()
 {
   switch(gGreyConflictCourses)
   {
-    case(gGreyConflictCoursesOptions[0]):
+    case(greyConflictCoursesOptions[0]):
+      // conflictCoursesRadios[0].checked = true; TODO
       conflictCoursesRadio1.checked = true;
       break;
 
-    case(gGreyConflictCoursesOptions[1]):
+    case(greyConflictCoursesOptions[1]):
+      // conflictCoursesRadios[1].checked = true;
       conflictCoursesRadio2.checked = true;
       break;
 
-    case(gGreyConflictCoursesOptions[2]):
+    case(greyConflictCoursesOptions[2]):
+      // conflictCoursesRadios[2].checked = true;
       conflictCoursesRadio3.checked = true;
       break;
 
     default:
+      // conflictCoursesRadios[1].checked = true;
       conflictCoursesRadio2.checked = true;
   }
 }
@@ -1761,7 +1768,7 @@ function readStateFromLocalStorage()
     "showClosedCourses", _.isBoolean, true
   );
   gGreyConflictCourses = readFromLocalStorage(
-    "greyConflictCourses", _.isString, gGreyConflictCoursesOptions[1]
+    "greyConflictCourses", _.isString, greyConflictCoursesOptions[1]
   );
 }
 
