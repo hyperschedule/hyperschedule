@@ -465,14 +465,14 @@ function getCourseColor(course, format = "hex")
       case gGreyConflictCoursesOptions[1]:
         if (course.starred && courseConflictWithSchedule(course)) {
           hue = "monochrome";
-          seed = "0";
+          seed = "-10";
         }
         break;
 
       case gGreyConflictCoursesOptions[2]:
         if (courseConflictWithSchedule(course)) {
           hue = "monochrome";
-          seed = "0";
+          seed = "-10";
         }
         break;
     }
