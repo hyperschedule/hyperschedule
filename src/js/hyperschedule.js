@@ -34,6 +34,10 @@ const importExportDataButton = document.getElementById("import-export-data-butto
 const printButton = document.getElementById("print-button");
 const settingsButton = document.getElementById("settings-button");
 
+const conflictCoursesRadio1 = document.getElementById("conflict-courses1");
+const conflictCoursesRadio2 = document.getElementById("conflict-courses2");
+const conflictCoursesRadio3 = document.getElementById("conflict-courses3");
+
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById("course-description-box-outer");
 
@@ -49,12 +53,14 @@ const importExportSaveChangesButton = document.getElementById("import-export-sav
 const importExportCopyButton = document.getElementById("import-export-copy-button");
 
 //// Global state
+const gGreyConflictCoursesOptions = ["none", "starred", "all"];
 
 // Persistent data.
 let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
+let gGreyConflictCourses = gGreyConflictCoursesOptions[1];
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -344,6 +350,13 @@ function courseToInstructorLastnames(course)
   return course.courseInstructors.map(fullName => fullName.split(",")[0]).join(",");
 }
 
+function coursesEqual(course1, course2) {
+  if (course1.courseCode == course2.courseCode) {
+    return true;
+  }
+  return false;
+}
+
 function termListDescription(terms, termCount)
 {
   if (termCount > 10)
@@ -441,10 +454,37 @@ function generateCourseDescription(course)
 
 function getCourseColor(course, format = "hex")
 {
+  let hue = "random";
+  let seed = CryptoJS.MD5(course.courseCode).toString();
+
+  if (course.starred || !courseInSchedule(course))
+    switch (gGreyConflictCourses) {
+      case gGreyConflictCoursesOptions[0]:
+        break;
+
+      case gGreyConflictCoursesOptions[1]:
+        if (course.starred && courseConflictWithSchedule(course)) {
+          hue = "monochrome";
+          seed = "0";
+        }
+        break;
+
+      case gGreyConflictCoursesOptions[2]:
+        if (courseConflictWithSchedule(course)) {
+          hue = "monochrome";
+          seed = "0";
+        }
+        break;
+    }
+
+  return getRandomColor(hue, seed, format);
+}
+
+function getRandomColor(hue, seed, format = "hex") {
   return randomColor({
-    hue: "random",
+    hue: hue,
     luminosity: "light",
-    seed: CryptoJS.MD5(course.courseCode).toString(),
+    seed: seed,
     format,
   });
 }
@@ -532,6 +572,30 @@ function coursesConflict(course1, course2)
       {
         return true;
       }
+    }
+  }
+  return false;
+}
+
+function courseConflictWithSchedule(course) {
+  const schedule = computeSchedule(gSelectedCourses);
+
+  for (let existingCourse of schedule) {
+    if (!coursesEqual(existingCourse, course)
+      && coursesConflict(course, existingCourse) 
+      && (course.starred == existingCourse.starred)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function courseInSchedule(course) {
+  const schedule = computeSchedule(gSelectedCourses);
+
+  for (let existingCourse of schedule) {
+    if (coursesEqual(existingCourse, course)) {
+      return true;
     }
   }
   return false;
@@ -656,6 +720,8 @@ function attachListeners()
     placeholder: createCourseEntity("placeholder").outerHTML,
   });
   printButton.addEventListener("click", downloadPDF);
+  settingsButton.addEventListener("click", showSettingsModal);
+
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -663,6 +729,20 @@ function attachListeners()
   selectedCoursesList.addEventListener("sortstop", () => {
     gCurrentlySorting = false;
   });
+
+  conflictCoursesRadio1.addEventListener("click", () => {
+    gGreyConflictCourses = gGreyConflictCoursesOptions[0];
+    toggleConflictCourses();
+  })
+  conflictCoursesRadio2.addEventListener("click", () => {
+    gGreyConflictCourses = gGreyConflictCoursesOptions[1];
+    toggleConflictCourses();
+  })
+  conflictCoursesRadio3.addEventListener("click", () => {
+    gGreyConflictCourses = gGreyConflictCoursesOptions[2];
+    toggleConflictCourses();
+  })
+
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
   window.addEventListener("resize", onResize);
 
@@ -1246,6 +1326,11 @@ function showImportExportModal()
   $("#import-export-modal").modal("show");
 }
 
+function showSettingsModal()
+{
+  $("#settings-modal").modal("show");
+}
+
 function setCourseDescriptionBox(course)
 {
   while (courseDescriptionBox.hasChildNodes())
@@ -1382,6 +1467,13 @@ function toggleClosedCourses()
   writeStateToLocalStorage();
 }
 
+function toggleConflictCourses() {
+  updateCourseSearchResults();
+  updateSelectedCoursesList();
+  updateSchedule();
+  writeStateToLocalStorage();
+}
+
 function toggleCourseSelected(course)
 {
   course.selected = !course.selected;
@@ -1392,6 +1484,8 @@ function toggleCourseSelected(course)
 function toggleCourseStarred(course)
 {
   course.starred = !course.starred;
+  updateCourseSearchResults();
+  updateSelectedCoursesList(); // TODO
   updateSchedule();
   writeStateToLocalStorage();
 }
@@ -1562,6 +1656,7 @@ function writeStateToLocalStorage()
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
+  localStorage.setItem("greyConflictCourses", JSON.stringify(gGreyConflictCourses)); //TODO
 }
 
 function oldCourseToString(course)
@@ -1638,6 +1733,9 @@ function readStateFromLocalStorage()
   gShowClosedCourses = readFromLocalStorage(
     "showClosedCourses", _.isBoolean, true
   );
+  gGreyConflictCourses = readFromLocalStorage(
+    "greyConflictCourses", _.isString, gGreyConflictCoursesOptions[1]
+  ); //TODO
 }
 
 /// PDF download
