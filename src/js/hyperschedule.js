@@ -1235,10 +1235,6 @@ function updateCourseDescriptionBoxHeight() {
 }
 
 function updateCourseSearchBar() {
-  if (courseSearchColumn.classList.contains("hidden")) {
-    return;
-  }
-
   const courseSearchInputWrapper = document.getElementById("course-search-course-name-input-wrapper");
   const courseClosedToggleWrapper = document.getElementById("closed-courses-toggle-wrapper");
   const courseClosedToggleLabel = document.getElementById("closed-courses-toggle-label");
