@@ -36,10 +36,7 @@ const importExportDataButton = document.getElementById("import-export-data-butto
 const printButton = document.getElementById("print-button");
 const settingsButton = document.getElementById("settings-button");
 
-// const conflictCoursesRadios = document.getElementsByName("conflict-courses"); TODO
-const conflictCoursesRadio1 = document.getElementById("conflict-courses1");
-const conflictCoursesRadio2 = document.getElementById("conflict-courses2");
-const conflictCoursesRadio3 = document.getElementById("conflict-courses3");
+const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById("course-description-box-outer");
@@ -732,24 +729,12 @@ function attachListeners()
     gCurrentlySorting = false;
   });
 
-  // for (var i = 0; conflictCoursesRadios[i]; i++) {
-  //   conflictCoursesRadios[i].addEventListener("click", () => {
-  //     gGreyConflictCourses = greyConflictCoursesOptions[i];
-  //     toggleConflictCourses();
-  //   })
-  // } TODO
-  conflictCoursesRadio1.addEventListener("click", () => {
-    gGreyConflictCourses = greyConflictCoursesOptions[0];
-    toggleConflictCourses();
-  })
-  conflictCoursesRadio2.addEventListener("click", () => {
-    gGreyConflictCourses = greyConflictCoursesOptions[1];
-    toggleConflictCourses();
-  })
-  conflictCoursesRadio3.addEventListener("click", () => {
-    gGreyConflictCourses = greyConflictCoursesOptions[2];
-    toggleConflictCourses();
-  })
+  for (let i = 0; conflictCoursesRadios[i]; i++) {
+    conflictCoursesRadios[i].addEventListener("click", () => {
+      gGreyConflictCourses = greyConflictCoursesOptions[i];
+      toggleConflictCourses();
+    })
+  }
 
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
   window.addEventListener("resize", onResize);
@@ -1112,23 +1097,19 @@ function updateConflictCoursesRadio()
   switch(gGreyConflictCourses)
   {
     case(greyConflictCoursesOptions[0]):
-      // conflictCoursesRadios[0].checked = true; TODO
-      conflictCoursesRadio1.checked = true;
+      conflictCoursesRadios[0].checked = true;
       break;
 
     case(greyConflictCoursesOptions[1]):
-      // conflictCoursesRadios[1].checked = true;
-      conflictCoursesRadio2.checked = true;
+      conflictCoursesRadios[1].checked = true;
       break;
 
     case(greyConflictCoursesOptions[2]):
-      // conflictCoursesRadios[2].checked = true;
-      conflictCoursesRadio3.checked = true;
+      conflictCoursesRadios[2].checked = true;
       break;
 
     default:
-      // conflictCoursesRadios[1].checked = true;
-      conflictCoursesRadio2.checked = true;
+      conflictCoursesRadios[1].checked = true;
   }
 }
 
