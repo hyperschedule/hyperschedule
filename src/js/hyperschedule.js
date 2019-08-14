@@ -581,8 +581,7 @@ function courseConflictWithSchedule(course) {
 
   for (let existingCourse of schedule) {
     if (!coursesEqual(existingCourse, course)
-      && coursesConflict(course, existingCourse) 
-      && (course.starred == existingCourse.starred)) {
+      && coursesConflict(course, existingCourse)) {
       return true;
     }
   }
@@ -1400,9 +1399,7 @@ function handleGlobalStateUpdate()
   updateConflictCoursesRadio();
 
   // Update course displays.
-  updateCourseSearchResults();
-  updateSelectedCoursesList();
-  updateSchedule();
+  updateCourseDisplays();
 
   // Canonicalize the state of local storage.
   writeStateToLocalStorage();
@@ -1479,26 +1476,29 @@ function toggleClosedCourses()
 }
 
 function toggleConflictCourses() {
-  updateCourseSearchResults();
-  updateSelectedCoursesList();
-  updateSchedule();
+  updateCourseDisplays();
   writeStateToLocalStorage();
 }
 
 function toggleCourseSelected(course)
 {
   course.selected = !course.selected;
-  updateSchedule();
+  updateCourseDisplays();
   writeStateToLocalStorage();
 }
 
 function toggleCourseStarred(course)
 {
   course.starred = !course.starred;
+  updateCourseDisplays();
+  writeStateToLocalStorage();
+}
+
+function updateCourseDisplays()
+{
   updateCourseSearchResults();
   updateSelectedCoursesList();
   updateSchedule();
-  writeStateToLocalStorage();
 }
 
 function displayCourseSearchColumn()
