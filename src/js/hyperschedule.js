@@ -606,7 +606,7 @@ function computeSchedule(courses)
   {
     if (course.selected && course.starred)
     {
-      schedule.push(course);
+      schedule.unshift(course);
     }
   }
   for (let course of courses)
