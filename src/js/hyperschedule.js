@@ -33,6 +33,10 @@ const selectedCoursesColumn = document.getElementById("selected-courses-column")
 const importExportDataButton = document.getElementById("import-export-data-button");
 const printButton = document.getElementById("print-button");
 
+const addFolderButton = document.getElementById("add-folder-button");
+const closeRightClickMenu = document.getElementById("close-right-click-menu")
+const rightClickMenu = document.getElementById("right-click-menu");
+
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById("course-description-box-outer");
 
@@ -51,7 +55,7 @@ const importExportCopyButton = document.getElementById("import-export-copy-butto
 
 // Persistent data.
 let gApiData = null;
-let gSelectedCourses = [];
+let gSelectedCoursesAndFolders = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 
@@ -486,6 +490,11 @@ function generateScheduleSlotDescription(slot)
     timeStringTo12HourString(slot.scheduleEndTime) + " at " + slot.scheduleLocation;
 }
 
+function courseInSameFolder(course1, course2)
+{
+  return (course1.folder == course2.folder && course1.folder && course2.folder)
+}
+
 function coursesMutuallyExclusive(course1, course2)
 {
   return arraysEqual(course1.courseMutualExclusionKey,
@@ -557,7 +566,7 @@ function computeSchedule(courses)
     for (let existingCourse of schedule)
     {
       if (coursesMutuallyExclusive(course, existingCourse) ||
-          coursesConflict(course, existingCourse))
+          coursesConflict(course, existingCourse) || courseInSameFolder(course, existingCourse))
       {
         conflicts = true;
         break;
@@ -619,7 +628,7 @@ function courseAlreadyAdded(course)
 {
   return _.some(selectedCourse => {
     return selectedCourse.courseCode === course.courseCode;
-  }, gSelectedCourses);
+  }, gSelectedCoursesAndFolders);
 }
 
 /// API retrieval
@@ -641,6 +650,10 @@ async function retrieveAPI(endpoint)
 function attachListeners()
 {
   document.addEventListener("DOMContentLoaded", onResize);
+  document.addEventListener("click",() => {
+    rightClickMenu.classList.add("hide-right-click-menu");
+    rightClickMenu.classList.remove("show-right-click-menu");
+  });
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
@@ -653,8 +666,27 @@ function attachListeners()
   sortable(".sortable-list", {
     forcePlaceholderSize: true,
     placeholder: createCourseEntity("placeholder").outerHTML,
+    acceptFrom: '.folder-list'
+  });
+  sortable(".folder-list", {
+    forcePlaceholderSize: true,
+    placeholder: createCourseEntity("placeholder").outerHTML,
+    acceptFrom: '.sortable-list, .folder-list'
   });
   printButton.addEventListener("click", downloadPDF);
+  addFolderButton.addEventListener("click",addFolder);
+  selectedCoursesList.addEventListener("contextmenu",(event) => {
+    rightClickMenu.classList.add("show-right-click-menu"); 
+    rightClickMenu.classList.remove("hide-right-click-menu");
+    rightClickMenu.style.top =  event.clientY + 'px';
+    rightClickMenu.style.left = event.clientX + 'px';
+    window.event.returnValue = false;
+  });
+  closeRightClickMenu.addEventListener("click",() => {
+    rightClickMenu.classList.add("hide-right-click-menu");
+    rightClickMenu.classList.remove("show-right-click-menu");
+  })
+
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -893,6 +925,65 @@ function createCourseEntity(course, attrs)
     listItemContent.appendChild(addButton);
   }
 
+  const folderButtonContainer = document.createElement("div");
+  folderButtonContainer.classList.add("dropdown");
+  folderButtonContainer.classList.add("course-box-folder-button-container");
+
+  const folderButton = document.createElement("button");
+  folderButton.setAttribute("type","button");
+  folderButton.setAttribute("data-toggle","dropdown");
+  folderButton.classList.add("course-box-folder-button")
+  folderButton.classList.add("dropdown-toggle");
+
+  folderButtonContainer.appendChild(folderButton);
+
+  const folderIcon = document.createElement("i");
+  folderIcon.classList.add("icon");
+  folderIcon.classList.add("ion-folder");
+
+  folderButton.appendChild(folderIcon)
+
+  const folderButtonDropdown = document.createElement("div");
+  folderButtonDropdown.classList.add("dropdown-menu");
+
+  let folderNames = new Set();
+  for (let course of gSelectedCoursesAndFolders)
+  {
+    if(course.folder)
+    {
+      folderNames.add(course.folder);
+    }
+  }
+
+  const noFolderListing = document.createElement("span");
+  noFolderListing.classList.add("dropdown-item");
+  noFolderListing.appendChild(document.createTextNode("None"));
+  folderButtonDropdown.append(noFolderListing)
+
+  noFolderListing.addEventListener("click",() => {
+    course.folder = null;
+    updateSelectedCoursesList();
+    updateSchedule();
+  });
+
+  for (let folderName of folderNames)
+  {
+    const folderListing = document.createElement("span");
+    folderListing.classList.add("dropdown-item");
+    folderListing.appendChild(document.createTextNode(folderName));
+    folderButtonDropdown.append(folderListing)
+
+    folderListing.addEventListener("click",() => {
+      course.folder = folderName;
+      updateSelectedCoursesList();
+      updateSchedule();
+    });
+  }
+
+  folderButtonContainer.appendChild(folderButtonDropdown);
+
+  listItemContent.appendChild(folderButtonContainer);
+
   const removeButton = document.createElement("i");
   removeButton.classList.add("course-box-button");
   removeButton.classList.add("course-box-remove-button");
@@ -909,6 +1000,129 @@ function createCourseEntity(course, attrs)
     listItem.classList.add("placeholder");
   }
 
+  if (idx !== undefined)
+  {
+    listItem.setAttribute("data-course-index", idx);
+  }
+
+  return listItem;
+}
+
+function createFolderEntity(folder, attrs)
+{
+  attrs = attrs || {};
+  const idx = attrs.idx;
+
+  const listItem = document.createElement("li");
+  listItem.classList.add("course-box");
+  listItem.id = "folder";
+
+  const folderHeader = document.createElement("div");
+  folderHeader.classList.add("course-box-content");
+  
+  folderHeader.style["background-color"] = getCourseColor(folder);
+
+
+  const collapseLabel = document.createElement("label");
+  collapseLabel.classList.add("course-box-collapse-label");
+
+  const collapseIcon = document.createElement("i");
+  collapseIcon.classList.add("course-box-collapse-icon");
+  collapseIcon.classList.add("icon");
+  if (!!folder.open) {
+    collapseIcon.classList.add("ion-android-arrow-dropdown-circle");
+  }
+  else
+  {
+    collapseIcon.classList.add("ion-android-arrow-dropright-circle");
+  }
+
+  collapseLabel.appendChild(collapseIcon);
+  folderHeader.appendChild(collapseLabel);
+
+  folderHeader.appendChild(collapseLabel);
+
+  folderHeader.addEventListener("click", () => {
+    if (containedCourses.style.display == "none")
+    {
+      containedCourses.style.display = "block";
+      collapseIcon.classList.remove("ion-android-arrow-dropright-circle");
+      collapseIcon.classList.add("ion-android-arrow-dropdown-circle")
+      folder.open = true;
+    } else {
+      containedCourses.style.display = "none";
+      collapseIcon.classList.add("ion-android-arrow-dropright-circle");
+      collapseIcon.classList.remove("ion-android-arrow-dropdown-circle")
+      folder.open = false;
+    }
+  });
+ 
+  listItem.appendChild(folderHeader);
+
+
+  const headerLabel = document.createElement("label");
+  headerLabel.addEventListener("click", catchEvent);
+  headerLabel.classList.add("folder-box-text");
+
+  const headerText = document.createElement("input");
+  headerText.setAttribute("type","text");
+  headerText.classList.add("folder-box-name");
+  headerText.value = folder.folder;
+  
+  headerText.addEventListener("change",(name) => 
+  {
+    name = name.srcElement.value;
+    if(_.some(course => {return course.folder == name},gSelectedCoursesAndFolders)==false)
+    {
+      let prevName = folder.folder;
+      folder.folder = name;
+      for (let course of gSelectedCoursesAndFolders)
+      {
+        if (course.folder == prevName)
+        {
+          course.folder = name;
+        }
+      }
+      updateSelectedCoursesList();
+      updateSchedule();
+    } else {
+      alert("Can't have two folders with the same name!");
+      updateSelectedCoursesList();
+    }
+  });
+  headerLabel.appendChild(headerText);
+  folderHeader.appendChild(headerLabel);
+
+  const removeButton = document.createElement("i");
+  removeButton.classList.add("course-box-button");
+  removeButton.classList.add("course-box-remove-button");
+  removeButton.classList.add("icon");
+  removeButton.classList.add("ion-close");
+  removeButton.addEventListener("click", () => {
+    removeFolder(folder);
+  });
+  removeButton.addEventListener("click", catchEvent);
+  folderHeader.appendChild(removeButton);
+
+  const containedCourses = document.createElement("ul");
+  containedCourses.classList.add("course-box-content");
+  containedCourses.classList.add("folder-list");
+
+  if (!folder.open)
+  {
+    containedCourses.style.display = "none";
+  }
+
+  listItem.appendChild(containedCourses);
+
+  containedCourses.addEventListener("sortupdate", readSelectedCoursesList);
+  containedCourses.addEventListener("sortstart", () => {
+    gCurrentlySorting = true;
+  });
+  containedCourses.addEventListener("sortstop", () => {
+    gCurrentlySorting = false;
+  });
+  
   if (idx !== undefined)
   {
     listItem.setAttribute("data-course-index", idx);
@@ -1101,17 +1315,48 @@ function updateSelectedCoursesList()
   {
     selectedCoursesList.removeChild(selectedCoursesList.lastChild);
   }
-  for (let idx = 0; idx < gSelectedCourses.length; ++idx)
-  {
-    const course = gSelectedCourses[idx];
-    selectedCoursesList.appendChild(createCourseEntity(course, { idx }));
+
+  let currentFolder = null;
+  let folderEntity;
+
+  let coursesAndFoldersAdded = 0;
+
+  const newSelectedCourses = [];
+
+  for (let course of gSelectedCoursesAndFolders){
+    if (course.isFolder)
+    {
+      let idx = coursesAndFoldersAdded;
+      folderEntity = createFolderEntity(course, { idx });
+      newSelectedCourses.push(course);
+      coursesAndFoldersAdded += 1;
+      for (let comparisonCourse of gSelectedCoursesAndFolders)
+      {
+        if(!comparisonCourse.isFolder && comparisonCourse.folder == course.folder){
+          let idx = coursesAndFoldersAdded;
+          folderEntity.lastChild.appendChild(createCourseEntity(comparisonCourse, { idx }));
+          newSelectedCourses.push(comparisonCourse);
+          coursesAndFoldersAdded += 1;
+        }
+      }
+      selectedCoursesList.appendChild(folderEntity);
+    } else if (course.folder == null) {
+      let idx = coursesAndFoldersAdded;
+      selectedCoursesList.appendChild(createCourseEntity(course, { idx }));
+      newSelectedCourses.push(course);
+      coursesAndFoldersAdded += 1;
+    }
   }
+
+  gSelectedCoursesAndFolders = newSelectedCourses;
+
   sortable(".sortable-list");
+  sortable(".folder-list");
 }
 
 function updateSchedule()
 {
-  const schedule = computeSchedule(gSelectedCourses);
+  const schedule = computeSchedule(gSelectedCoursesAndFolders);
   while (scheduleTable.getElementsByClassName("schedule-slot").length > 0)
   {
     const element =
@@ -1294,7 +1539,7 @@ function updateSelectedCoursesWrapper() {
 
 function showImportExportModal()
 {
-  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  importExportTextArea.value = JSON.stringify(gSelectedCoursesAndFolders, 2);
   $("#import-export-modal").modal("show");
 }
 
@@ -1375,13 +1620,56 @@ function addCourse(course)
   course = deepCopy(course);
   course.selected = true;
   course.starred = false;
-  gSelectedCourses.push(course);
+  course.folder = null;
+  course.isFolder = false;
+  gSelectedCoursesAndFolders.push(course);
   handleSelectedCoursesUpdate();
 }
 
+function addFolder()
+{
+  const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+  let counter = 1;
+  let name = null;
+  while (!name)
+  {
+    if(_.some(course => {return course.folder == "Folder "+counter},gSelectedCoursesAndFolders)==false)
+    {
+      name = "Folder "+ counter;
+    } else {
+      counter += 1;
+    }
+  }
+
+  let folder = {
+    selected: false,
+    starred: false,
+    open: true,
+    isFolder: true,
+    courseCode: randomString,
+    folder: name
+  }
+  gSelectedCoursesAndFolders.push(folder);
+  handleSelectedCoursesUpdate();
+ }
+
 function removeCourse(course)
 {
-  gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
+  gSelectedCoursesAndFolders.splice(gSelectedCoursesAndFolders.indexOf(course), 1);
+  handleSelectedCoursesUpdate();
+}
+
+function removeFolder(folder)
+{
+  gSelectedCoursesAndFolders.splice(gSelectedCoursesAndFolders.indexOf(folder), 1);
+  for (let course of gSelectedCoursesAndFolders)
+  {
+    if (course.folder == folder.folder)
+    {
+      course.folder = null;
+    }
+  }
   handleSelectedCoursesUpdate();
 }
 
@@ -1391,9 +1679,9 @@ function readSelectedCoursesList()
   for (let entity of selectedCoursesList.children)
   {
     const idx = parseInt(entity.getAttribute("data-course-index"), 10);
-    if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length)
+    if (!isNaN(idx) && idx >= 0 && idx < gSelectedCoursesAndFolders.length)
     {
-      newSelectedCourses.push(gSelectedCourses[idx]);
+      newSelectedCourses.push(gSelectedCoursesAndFolders[idx]);
     }
     else
     {
@@ -1401,8 +1689,25 @@ function readSelectedCoursesList()
       updateSelectedCoursesList();
       return;
     }
+    if (entity.lastChild.nodeName == "UL")
+    {
+      for (let subentity of entity.lastChild.children)
+      {
+        const idx = parseInt(subentity.getAttribute("data-course-index"), 10);
+        if (!isNaN(idx) && idx >= 0 && idx < gSelectedCoursesAndFolders.length)
+        {
+          newSelectedCourses.push(gSelectedCoursesAndFolders[idx]);
+        }
+        else
+        {
+          alert("An internal error occurred. This is bad.");
+          updateSelectedCoursesList();
+          return;
+        }
+      }
+    }
   }
-  gSelectedCourses = newSelectedCourses;
+  gSelectedCoursesAndFolders = newSelectedCourses;
   handleSelectedCoursesUpdate();
 }
 
@@ -1422,7 +1727,7 @@ function saveImportExportModalChanges()
     alert("Malformed JSON. Refusing to save.");
     return;
   }
-  gSelectedCourses = upgradeSelectedCourses(obj);
+  gSelectedCoursesAndFolders = upgradeSelectedCourses(obj);
   handleSelectedCoursesUpdate();
   $("#import-export-modal").modal("hide");
 }
@@ -1557,7 +1862,7 @@ async function retrieveCourseData()
     }
     apiData.until = apiResponse.until;
   }
-  for (const selectedCourse of gSelectedCourses)
+  for (const selectedCourse of gSelectedCoursesAndFolders)
   {
     if (_.has(selectedCourse.courseCode, apiData.data.courses))
     {
@@ -1611,7 +1916,7 @@ async function retrieveCourseDataUntilSuccessful()
 function writeStateToLocalStorage()
 {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
-  localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
+  localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCoursesAndFolders));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
 }
@@ -1681,7 +1986,7 @@ function upgradeSelectedCourses(selectedCourses)
 function readStateFromLocalStorage()
 {
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
-  gSelectedCourses = upgradeSelectedCourses(
+  gSelectedCoursesAndFolders = upgradeSelectedCourses(
     readFromLocalStorage("selectedCourses", _.isArray, [])
   );
   gScheduleTabSelected = readFromLocalStorage(
@@ -1781,7 +2086,7 @@ function downloadPDF()
   pdf.line(1.25 * 72, 0.5 * 72, 1.25 * 72, 0.5 * 72 + tableHeight);
 
   // course entities
-  for (const course of computeSchedule(gSelectedCourses))
+  for (const course of computeSchedule(gSelectedCoursesAndFolders))
   {
     for (const slot of course.courseSchedule)
     {
@@ -1911,7 +2216,7 @@ function uglyHack(input)
 
 function downloadICalFile()
 {
-  if (gSelectedCourses.length === 0)
+  if (gSelectedCoursesAndFolders.length === 0)
   {
     alert("You have not added any courses to export.");
     return;
@@ -1919,7 +2224,7 @@ function downloadICalFile()
   const cal = ics();
   let anyStarred = false;
   let anySelected = false;
-  for (let course of gSelectedCourses)
+  for (let course of gSelectedCoursesAndFolders)
   {
     if (course.selected && course.starred)
     {
@@ -1930,7 +2235,7 @@ function downloadICalFile()
       anySelected = true;
     }
   }
-  for (let course of gSelectedCourses)
+  for (let course of gSelectedCoursesAndFolders)
   {
     if ((!anySelected || course.selected) && (!anyStarred || course.starred))
     {

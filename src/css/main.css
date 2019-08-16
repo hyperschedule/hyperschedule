@@ -222,7 +222,7 @@ body {
 
 #course-description-box p {
     font-size: small;
-    lpine-height: 100%;
+    line-height: 100%;
     margin: 0px 10px;
 }
 
@@ -372,6 +372,14 @@ body {
     display: none;
 }
 
+#course-search-column .folder-box-name {
+    display: none;
+}
+
+#course-search-column .course-box-folder-button {
+    display: none;
+}
+
 #course-search-column .course-box-text {
     padding-left: 5px;
     padding-right: 30px;
@@ -402,8 +410,24 @@ body {
     text-align: center;
 }
 
+#selected-courses-column .course-box-collapse-label {
+    display: block;
+    height: 50px;
+    margin-top: -25px;
+    position: absolute;
+    line-height: 50px;
+    left: 5px;
+    top: 50%;
+    width: 25px;
+    text-align: center;
+}
+
 #selected-courses-column .course-box-select-icon {
     cursor: pointer;
+    font-size: 1.2em;
+}
+
+#selected-courses-column .course-box-collapse-icon {
     font-size: 1.2em;
 }
 
@@ -442,6 +466,15 @@ body {
     padding-right: 30px;
 }
 
+#selected-courses-column .folder-box-text {
+    display: inline-block;
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 55px;
+    padding-right: 30px;
+}
+
 #selected-courses-column .course-box-remove-button {
     display: block;
     height: 50px;
@@ -451,6 +484,34 @@ body {
     right: 0;
     top: 50%;
     width: 25px;
+}
+
+#selected-courses-column .course-box-folder-button-container {
+    display: block;
+    height: 50px;
+    margin-top: -25px;
+    line-height: 50px;
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    width: 25px;
+    font-size: 1.2em;
+}
+
+#selected-courses-column .course-box-folder-button {
+    background-color: transparent;
+    border-width:0px;
+    border: none;
+}
+
+#selected-courses-column .dropdown-toggle::after {
+    display:none;
+}
+
+#selected-courses-column .folder-box-name {
+    background: transparent;
+    border-width:0px;
+    border:none;
 }
 
 /** Modals **/
@@ -471,6 +532,22 @@ body {
 
 #import-export-copy-button.copy-button-error::after {
     content: "Couldn't copy";
+}
+
+.show-right-click-menu {
+    z-index:1000;
+    position: absolute;
+    background-color:#C0C0C0;
+    border: 1px solid blue;
+    padding: 2px;
+    display: block;
+    margin: 0;
+    list-style-type: none;
+    list-style: none;
+}
+
+.hide-right-click-menu {
+    display: none;
 }
 
 /* Local Variables:           */
