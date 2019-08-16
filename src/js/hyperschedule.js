@@ -1163,6 +1163,7 @@ function updateCourseSearchBar() {
 
   const courseSearchInputWrapper = document.getElementById("course-search-course-name-input-wrapper");
   const courseClosedToggleWrapper = document.getElementById("closed-courses-toggle-wrapper");
+  const courseConflictingToggleWrapper = document.getElementById("conflicting-courses-toggle-wrapper");
   const courseClosedToggleLabel = document.getElementById("closed-courses-toggle-label");
   const helpButtonWrapper = document.getElementById("help-button-wrapper");
   const helpButton = document.getElementById("help-button");
@@ -1180,6 +1181,7 @@ function updateCourseSearchBar() {
   courseSearchInputWrapper.style.display = tableValue;
   courseSearchInput.style.margin = marginValue;
   courseClosedToggleWrapper.style.display = tableValue;
+  courseConflictingToggleWrapper.style.display = tableValue;
   courseClosedToggleLabel.style.margin = marginValue;
   helpButtonWrapper.style.display = tableValue;
   helpButton.style.margin = marginValue;
