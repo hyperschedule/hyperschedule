@@ -1747,8 +1747,16 @@ function readStateFromLocalStorage()
     "showClosedCourses", _.isBoolean, true
   );
   gGreyConflictCourses = readFromLocalStorage(
-    "greyConflictCourses", _.isString, greyConflictCoursesOptions[0]
+    "greyConflictCourses", validateGGreyConflictCourses, greyConflictCoursesOptions[0]
   );
+}
+
+function validateGGreyConflictCourses(value) 
+{
+  if (!_.isString(value)) {
+    return false;
+  }
+  return greyConflictCoursesOptions.includes(value);
 }
 
 /// PDF download
