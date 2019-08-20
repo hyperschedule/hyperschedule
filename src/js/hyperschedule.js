@@ -59,7 +59,7 @@ let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
-let gGreyConflictCourses = greyConflictCoursesOptions[1];
+let gGreyConflictCourses = greyConflictCoursesOptions[0];
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -456,25 +456,26 @@ function getCourseColor(course, format = "hex")
   let hue = "random";
   let seed = CryptoJS.MD5(course.courseCode).toString();
 
-  if (course.starred || !courseInSchedule(course))
+  if (course.starred || !courseInSchedule(course)) {
     switch (gGreyConflictCourses) {
       case greyConflictCoursesOptions[0]:
         break;
 
       case greyConflictCoursesOptions[1]:
-        if (course.starred && courseConflictWithSchedule(course)) {
+        if (courseConflictWithSchedule(course, true)) {
           hue = "monochrome";
           seed = "-10";
         }
         break;
 
       case greyConflictCoursesOptions[2]:
-        if (courseConflictWithSchedule(course)) {
+        if (courseConflictWithSchedule(course, false)) {
           hue = "monochrome";
           seed = "-10";
         }
         break;
     }
+  }
 
   return getRandomColor(hue, seed, format);
 }
@@ -576,11 +577,12 @@ function coursesConflict(course1, course2)
   return false;
 }
 
-function courseConflictWithSchedule(course) {
+function courseConflictWithSchedule(course, starredOnly) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
-    if (!coursesEqual(existingCourse, course)
+    if ((!starredOnly || existingCourse.starred == starredOnly)
+      && !coursesEqual(existingCourse, course)
       && coursesConflict(course, existingCourse)) {
       return true;
     }
@@ -1108,7 +1110,7 @@ function updateConflictCoursesRadio()
       break;
 
     default:
-      conflictCoursesRadios[1].checked = true;
+      conflictCoursesRadios[0].checked = true;
   }
 }
 
@@ -1745,7 +1747,7 @@ function readStateFromLocalStorage()
     "showClosedCourses", _.isBoolean, true
   );
   gGreyConflictCourses = readFromLocalStorage(
-    "greyConflictCourses", _.isString, greyConflictCoursesOptions[1]
+    "greyConflictCourses", _.isString, greyConflictCoursesOptions[0]
   );
 }
 
