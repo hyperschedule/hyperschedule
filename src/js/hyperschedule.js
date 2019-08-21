@@ -954,8 +954,8 @@ function createCourseEntity(course, attrs)
 
   noFolderListing.addEventListener("click",() => {
     course.folder = null;
-    updateSelectedCoursesList();
-    updateSchedule();
+
+    handleFolderEvent();
   });
 
   for (let folderName of gExistingFolderNames)
@@ -967,8 +967,8 @@ function createCourseEntity(course, attrs)
 
     folderListing.addEventListener("click",() => {
       course.folder = folderName;
-      updateSelectedCoursesList();
-      updateSchedule();
+      
+      handleFolderEvent();
     });
   }
 
@@ -1079,8 +1079,7 @@ function createFolderEntity(folder, attrs)
           course.folder = name;
         }
       }
-      updateSelectedCoursesList();
-      updateSchedule();
+      handleFolderEvent();
     } else {
       alert("Can't have two folders with the same name!");
       updateSelectedCoursesList();
@@ -1602,6 +1601,13 @@ function handleGlobalStateUpdate()
   updateSchedule();
 
   // Canonicalize the state of local storage.
+  writeStateToLocalStorage();
+}
+
+function handleFolderEvent()
+{
+  updateSelectedCoursesList();
+  updateSchedule();
   writeStateToLocalStorage();
 }
 
