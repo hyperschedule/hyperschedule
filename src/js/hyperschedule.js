@@ -350,10 +350,7 @@ function courseToInstructorLastnames(course)
 }
 
 function coursesEqual(course1, course2) {
-  if (course1.courseCode == course2.courseCode) {
-    return true;
-  }
-  return false;
+  return course1.courseCode === course2.courseCode;
 }
 
 function termListDescription(terms, termCount)
@@ -581,7 +578,7 @@ function courseConflictWithSchedule(course, starredOnly) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
-    if ((!starredOnly || existingCourse.starred == starredOnly)
+    if ((!starredOnly || existingCourse.starred === starredOnly)
       && !coursesEqual(existingCourse, course)
       && coursesConflict(course, existingCourse)) {
       return true;
