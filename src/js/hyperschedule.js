@@ -56,6 +56,7 @@ const importExportCopyButton = document.getElementById("import-export-copy-butto
 // Persistent data.
 let gApiData = null;
 let gSelectedCoursesAndFolders = [];
+let gExistingFolderNames = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 
@@ -946,15 +947,6 @@ function createCourseEntity(course, attrs)
   const folderButtonDropdown = document.createElement("div");
   folderButtonDropdown.classList.add("dropdown-menu");
 
-  let folderNames = new Set();
-  for (let course of gSelectedCoursesAndFolders)
-  {
-    if(course.folder)
-    {
-      folderNames.add(course.folder);
-    }
-  }
-
   const noFolderListing = document.createElement("span");
   noFolderListing.classList.add("dropdown-item");
   noFolderListing.appendChild(document.createTextNode("None"));
@@ -966,7 +958,7 @@ function createCourseEntity(course, attrs)
     updateSchedule();
   });
 
-  for (let folderName of folderNames)
+  for (let folderName of gExistingFolderNames)
   {
     const folderListing = document.createElement("span");
     folderListing.classList.add("dropdown-item");
@@ -1072,10 +1064,14 @@ function createFolderEntity(folder, attrs)
   headerText.addEventListener("change",(name) => 
   {
     name = name.srcElement.value;
-    if(_.some(course => {return course.folder == name},gSelectedCoursesAndFolders)==false)
+    if(gExistingFolderNames.indexOf(name) < 0)
     {
       let prevName = folder.folder;
       folder.folder = name;
+
+      gExistingFolderNames.splice(gExistingFolderNames.indexOf(prevName), 1);
+      gExistingFolderNames.push(name);
+
       for (let course of gSelectedCoursesAndFolders)
       {
         if (course.folder == prevName)
@@ -1634,7 +1630,7 @@ function addFolder()
   let name = null;
   while (!name)
   {
-    if(_.some(course => {return course.folder == "Folder "+counter},gSelectedCoursesAndFolders)==false)
+    if(gExistingFolderNames.indexOf("Folder "+counter) < 0)
     {
       name = "Folder "+ counter;
     } else {
@@ -1650,6 +1646,7 @@ function addFolder()
     courseCode: randomString,
     folder: name
   }
+  gExistingFolderNames.push(name);
   gSelectedCoursesAndFolders.push(folder);
   handleSelectedCoursesUpdate();
  }
@@ -1670,6 +1667,7 @@ function removeFolder(folder)
       course.folder = null;
     }
   }
+  gExistingFolderNames.splice(gExistingFolderNames.indexOf(folder.name), 1);
   handleSelectedCoursesUpdate();
 }
 
@@ -1917,6 +1915,7 @@ function writeStateToLocalStorage()
 {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCoursesAndFolders));
+  localStorage.setItem("folderNames", JSON.stringify(gExistingFolderNames));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
 }
@@ -1988,6 +1987,9 @@ function readStateFromLocalStorage()
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
   gSelectedCoursesAndFolders = upgradeSelectedCourses(
     readFromLocalStorage("selectedCourses", _.isArray, [])
+  );
+  gExistingFolderNames = readFromLocalStorage(
+    "folderNames", _.isArray, []
   );
   gScheduleTabSelected = readFromLocalStorage(
     "scheduleTabSelected", _.isBoolean, false
