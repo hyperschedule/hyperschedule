@@ -1006,20 +1006,19 @@ function createFolderEntity(folder, attrs)
   const idx = attrs.idx;
 
   const listItem = document.createElement("li");
-  listItem.classList.add("course-box");
+  listItem.classList.add("folder-box");
   listItem.id = "folder";
 
   const folderHeader = document.createElement("div");
-  folderHeader.classList.add("course-box-content");
+  folderHeader.classList.add("folder-box-content");
   
   folderHeader.style["background-color"] = getCourseColor(folder);
 
-
   const collapseLabel = document.createElement("label");
-  collapseLabel.classList.add("course-box-collapse-label");
+  collapseLabel.classList.add("folder-box-collapse-label");
 
   const collapseIcon = document.createElement("i");
-  collapseIcon.classList.add("course-box-collapse-icon");
+  collapseIcon.classList.add("folder-box-collapse-icon");
   collapseIcon.classList.add("icon");
   if (!!folder.open) {
     collapseIcon.classList.add("ion-android-arrow-dropdown-circle");
@@ -1089,8 +1088,8 @@ function createFolderEntity(folder, attrs)
   folderHeader.appendChild(headerLabel);
 
   const removeButton = document.createElement("i");
-  removeButton.classList.add("course-box-button");
-  removeButton.classList.add("course-box-remove-button");
+  removeButton.classList.add("folder-box-button");
+  removeButton.classList.add("folder-box-remove-button");
   removeButton.classList.add("icon");
   removeButton.classList.add("ion-close");
   removeButton.addEventListener("click", () => {
@@ -1100,7 +1099,7 @@ function createFolderEntity(folder, attrs)
   folderHeader.appendChild(removeButton);
 
   const containedCourses = document.createElement("ul");
-  containedCourses.classList.add("course-box-content");
+  containedCourses.classList.add("folder-box-content");
   containedCourses.classList.add("folder-list");
 
   if (!folder.open)

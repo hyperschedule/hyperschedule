@@ -360,6 +360,32 @@ body {
     display: none;
 }
 
+/* Folder Listing */
+
+.folder-box {
+    cursor: pointer;
+    margin: 0 auto;
+    padding: 6px 0;
+    position: relative;
+    width: 95%;
+    font-size: 0.8em;
+}
+
+.folder-box-content {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 5px;
+}
+
+.folder-box-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: none;
+}
+
+
 /*** Course search listing ***/
 
 #course-search-column .course-box-select-label {
@@ -410,7 +436,7 @@ body {
     text-align: center;
 }
 
-#selected-courses-column .course-box-collapse-label {
+#selected-courses-column .folder-box-collapse-label {
     display: block;
     height: 50px;
     margin-top: -25px;
@@ -427,7 +453,7 @@ body {
     font-size: 1.2em;
 }
 
-#selected-courses-column .course-box-collapse-icon {
+#selected-courses-column .folder-box-collapse-icon {
     font-size: 1.2em;
 }
 
@@ -476,6 +502,17 @@ body {
 }
 
 #selected-courses-column .course-box-remove-button {
+    display: block;
+    height: 50px;
+    margin-top: -25px;
+    line-height: 50px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 25px;
+}
+
+#selected-courses-column .folder-box-remove-button {
     display: block;
     height: 50px;
     margin-top: -25px;
