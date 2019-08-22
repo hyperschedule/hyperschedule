@@ -531,17 +531,29 @@ function generateScheduleSlotDescription(slot)
 
 function courseInSameFolder(course1, course2)
 {
+  if (course1.isFolder || course2.isFolder)
+  {
+    return false;
+  }
   return (course1.folder == course2.folder && course1.folder && course2.folder)
 }
 
 function coursesMutuallyExclusive(course1, course2)
 {
+  if (course1.isFolder || course2.isFolder)
+  {
+    return false;
+  }
   return arraysEqual(course1.courseMutualExclusionKey,
                      course2.courseMutualExclusionKey);
 }
 
 function coursesConflict(course1, course2)
 {
+  if (course1.isFolder || course2.isFolder)
+  {
+    return false;
+  }
   for (let slot1 of course1.courseSchedule)
   {
     for (let slot2 of course2.courseSchedule)
@@ -585,7 +597,7 @@ function coursesConflict(course1, course2)
 }
 
 function courseConflictWithSchedule(course, starredOnly) {
-  const schedule = computeSchedule(gSelectedCourses);
+  const schedule = computeSchedule(gSelectedCoursesAndFolders);
 
   for (let existingCourse of schedule) {
     if ((!starredOnly || existingCourse.starred === starredOnly)
@@ -598,7 +610,7 @@ function courseConflictWithSchedule(course, starredOnly) {
 }
 
 function courseInSchedule(course) {
-  const schedule = computeSchedule(gSelectedCourses);
+  const schedule = computeSchedule(gSelectedCoursesAndFolders);
 
   for (let existingCourse of schedule) {
     if (coursesEqual(existingCourse, course)) {
@@ -1649,6 +1661,7 @@ function handleFolderEvent()
 {
   updateSelectedCoursesList();
   updateSchedule();
+  updateCourseSearchResults();
   writeStateToLocalStorage();
 }
 
@@ -1707,6 +1720,7 @@ function removeCourse(course)
 function removeFolder(folder)
 {
   gSelectedCoursesAndFolders.splice(gSelectedCoursesAndFolders.indexOf(folder), 1);
+  gExistingFolderNames.splice(gExistingFolderNames.indexOf(folder.folder),1)
   for (let course of gSelectedCoursesAndFolders)
   {
     if (course.folder == folder.folder)
