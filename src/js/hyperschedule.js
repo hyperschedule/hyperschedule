@@ -926,55 +926,58 @@ function createCourseEntity(course, attrs)
     listItemContent.appendChild(addButton);
   }
 
-  const folderButtonContainer = document.createElement("div");
-  folderButtonContainer.classList.add("dropdown");
-  folderButtonContainer.classList.add("course-box-folder-button-container");
-
-  const folderButton = document.createElement("button");
-  folderButton.setAttribute("type","button");
-  folderButton.setAttribute("data-toggle","dropdown");
-  folderButton.classList.add("course-box-folder-button")
-  folderButton.classList.add("dropdown-toggle");
-
-  folderButtonContainer.appendChild(folderButton);
-
-  const folderIcon = document.createElement("i");
-  folderIcon.classList.add("icon");
-  folderIcon.classList.add("ion-folder");
-
-  folderButton.appendChild(folderIcon)
-
-  const folderButtonDropdown = document.createElement("div");
-  folderButtonDropdown.classList.add("dropdown-menu");
-
-  const noFolderListing = document.createElement("span");
-  noFolderListing.classList.add("dropdown-item");
-  noFolderListing.appendChild(document.createTextNode("None"));
-  folderButtonDropdown.append(noFolderListing)
-
-  noFolderListing.addEventListener("click",() => {
-    course.folder = null;
-
-    handleFolderEvent();
-  });
-
-  for (let folderName of gExistingFolderNames)
+  if(gSelectedCoursesAndFolders.indexOf(course) >= 0)
   {
-    const folderListing = document.createElement("span");
-    folderListing.classList.add("dropdown-item");
-    folderListing.appendChild(document.createTextNode(folderName));
-    folderButtonDropdown.append(folderListing)
+    const folderButtonContainer = document.createElement("div");
+    folderButtonContainer.classList.add("dropdown");
+    folderButtonContainer.classList.add("course-box-folder-button-container");
 
-    folderListing.addEventListener("click",() => {
-      course.folder = folderName;
-      
+    const folderButton = document.createElement("button");
+    folderButton.setAttribute("type","button");
+    folderButton.setAttribute("data-toggle","dropdown");
+    folderButton.classList.add("course-box-folder-button")
+    folderButton.classList.add("dropdown-toggle");
+
+    folderButtonContainer.appendChild(folderButton);
+
+    const folderIcon = document.createElement("i");
+    folderIcon.classList.add("icon");
+    folderIcon.classList.add("ion-folder");
+
+    folderButton.appendChild(folderIcon)
+
+    const folderButtonDropdown = document.createElement("div");
+    folderButtonDropdown.classList.add("dropdown-menu");
+
+    const noFolderListing = document.createElement("span");
+    noFolderListing.classList.add("dropdown-item");
+    noFolderListing.appendChild(document.createTextNode("None"));
+    folderButtonDropdown.append(noFolderListing)
+
+    noFolderListing.addEventListener("click",() => {
+      course.folder = null;
+
       handleFolderEvent();
     });
+
+    for (let folderName of gExistingFolderNames)
+    {
+      const folderListing = document.createElement("span");
+      folderListing.classList.add("dropdown-item");
+      folderListing.appendChild(document.createTextNode(folderName));
+      folderButtonDropdown.append(folderListing)
+
+      folderListing.addEventListener("click",() => {
+        course.folder = folderName;
+        
+        handleFolderEvent();
+      });
+    }
+
+    folderButtonContainer.appendChild(folderButtonDropdown);
+
+    listItemContent.appendChild(folderButtonContainer);
   }
-
-  folderButtonContainer.appendChild(folderButtonDropdown);
-
-  listItemContent.appendChild(folderButtonContainer);
 
   const removeButton = document.createElement("i");
   removeButton.classList.add("course-box-button");
@@ -1672,7 +1675,6 @@ function removeFolder(folder)
       course.folder = null;
     }
   }
-  gExistingFolderNames.splice(gExistingFolderNames.indexOf(folder.name), 1);
   handleSelectedCoursesUpdate();
 }
 
