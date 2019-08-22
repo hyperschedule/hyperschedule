@@ -724,11 +724,14 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
+
   document.addEventListener("DOMContentLoaded", onResize);
   document.addEventListener("click",() => {
     rightClickMenu.classList.add("hide-right-click-menu");
     rightClickMenu.classList.remove("show-right-click-menu");
   });
+
+  window.onload = onResize();
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
