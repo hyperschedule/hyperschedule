@@ -15,6 +15,8 @@ const extraPagesToLoad = 2;
 
 const apiURL = API_URL; // replaced by Babel with a string literal
 
+const greyConflictCoursesOptions = ["none", "starred", "all"];
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
@@ -33,6 +35,9 @@ const courseSearchResultsList = document.getElementById("course-search-results-l
 const selectedCoursesColumn = document.getElementById("selected-courses-column");
 const importExportDataButton = document.getElementById("import-export-data-button");
 const printButton = document.getElementById("print-button");
+const settingsButton = document.getElementById("settings-button");
+
+const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById("course-description-box-outer");
@@ -56,6 +61,7 @@ let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideConflictingCourses = true;
+let gGreyConflictCourses = greyConflictCoursesOptions[0];
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -345,6 +351,10 @@ function courseToInstructorLastnames(course)
   return course.courseInstructors.map(fullName => fullName.split(",")[0]).join(",");
 }
 
+function coursesEqual(course1, course2) {
+  return course1.courseCode === course2.courseCode;
+}
+
 function termListDescription(terms, termCount)
 {
   if (termCount > 10)
@@ -442,10 +452,38 @@ function generateCourseDescription(course)
 
 function getCourseColor(course, format = "hex")
 {
+  let hue = "random";
+  let seed = CryptoJS.MD5(course.courseCode).toString();
+
+  if (course.starred || !courseInSchedule(course)) {
+    switch (gGreyConflictCourses) {
+      case greyConflictCoursesOptions[0]:
+        break;
+
+      case greyConflictCoursesOptions[1]:
+        if (courseConflictWithSchedule(course, true)) {
+          hue = "monochrome";
+          seed = "-10";
+        }
+        break;
+
+      case greyConflictCoursesOptions[2]:
+        if (courseConflictWithSchedule(course, false)) {
+          hue = "monochrome";
+          seed = "-10";
+        }
+        break;
+    }
+  }
+
+  return getRandomColor(hue, seed, format);
+}
+
+function getRandomColor(hue, seed, format = "hex") {
   return randomColor({
-    hue: "random",
+    hue: hue,
     luminosity: "light",
-    seed: CryptoJS.MD5(course.courseCode).toString(),
+    seed: seed,
     format,
   });
 }
@@ -538,6 +576,30 @@ function coursesConflict(course1, course2)
   return false;
 }
 
+function courseConflictWithSchedule(course, starredOnly) {
+  const schedule = computeSchedule(gSelectedCourses);
+
+  for (let existingCourse of schedule) {
+    if ((!starredOnly || existingCourse.starred === starredOnly)
+      && !coursesEqual(existingCourse, course)
+      && coursesConflict(course, existingCourse)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function courseInSchedule(course) {
+  const schedule = computeSchedule(gSelectedCourses);
+
+  for (let existingCourse of schedule) {
+    if (coursesEqual(existingCourse, course)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function computeSchedule(courses)
 {
   const schedule = [];
@@ -545,7 +607,7 @@ function computeSchedule(courses)
   {
     if (course.selected && course.starred)
     {
-      schedule.push(course);
+      schedule.unshift(course);
     }
   }
   for (let course of courses)
@@ -642,7 +704,7 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
-  document.addEventListener("DOMContentLoaded", onResize);
+  window.onload = onResize();
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
@@ -658,6 +720,8 @@ function attachListeners()
     placeholder: createCourseEntity("placeholder").outerHTML,
   });
   printButton.addEventListener("click", downloadPDF);
+  settingsButton.addEventListener("click", showSettingsModal);
+
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -665,6 +729,14 @@ function attachListeners()
   selectedCoursesList.addEventListener("sortstop", () => {
     gCurrentlySorting = false;
   });
+
+  for (let i = 0; conflictCoursesRadios[i]; i++) {
+    conflictCoursesRadios[i].addEventListener("click", () => {
+      gGreyConflictCourses = greyConflictCoursesOptions[i];
+      toggleConflictCourses();
+    })
+  }
+
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
   window.addEventListener("resize", onResize);
 
@@ -1026,6 +1098,27 @@ function updateShowConflictingCoursesCheckbox()
   conflictingCoursesToggle.checked = gHideConflictingCourses;
 }
 
+function updateConflictCoursesRadio()
+{
+  switch(gGreyConflictCourses)
+  {
+    case(greyConflictCoursesOptions[0]):
+      conflictCoursesRadios[0].checked = true;
+      break;
+
+    case(greyConflictCoursesOptions[1]):
+      conflictCoursesRadios[1].checked = true;
+      break;
+
+    case(greyConflictCoursesOptions[2]):
+      conflictCoursesRadios[2].checked = true;
+      break;
+
+    default:
+      conflictCoursesRadios[0].checked = true;
+  }
+}
+
 function updateCourseSearchResults(attrs)
 {
   attrs = attrs || {};
@@ -1149,10 +1242,6 @@ function updateCourseDescriptionBoxHeight() {
 }
 
 function updateCourseSearchBar() {
-  if (courseSearchColumn.classList.contains("hidden")) {
-    return;
-  }
-
   const courseSearchInputWrapper = document.getElementById("course-search-course-name-input-wrapper");
   const courseClosedToggleWrapper = document.getElementById("closed-courses-toggle-wrapper");
   const courseConflictingToggleWrapper = document.getElementById("conflicting-courses-toggle-wrapper");
@@ -1183,90 +1272,37 @@ function updateSelectedCoursesBar() {
   const githubLink = document.getElementById("github-link");
   const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
   const printButtonWrapper = document.getElementById("print-button-wrapper");
+  const settingsButtonWrapper = document.getElementById("settings-button-wrapper");
 
   // default values
   let tableValue = "table-cell";
   let floatValue = "right";
   let marginValue = "0 auto";
-  let printPaddingLeftValue = "10px";
+  let settingsButtonMarginValue = "0 3px 0 auto";
+  let rightButtonsPaddingLeftValue = "10px";
 
   let linkWidth = 150;
   if (selectedCoursesColumn.offsetWidth <
-    (linkWidth + importExportDataButton.offsetWidth + printButton.offsetWidth)) {
+    (linkWidth + importExportDataButton.offsetWidth 
+      + printButton.offsetWidth + settingsButton.offsetWidth)) {
     tableValue = "table-row";
     floatValue = "left";
     marginValue = "5px auto";
-    printPaddingLeftValue = "0px";
+    settingsButtonMarginValue = "0 5px 0 auto";
+    rightButtonsPaddingLeftValue = "0px";
   }
   githubLink.style.display = tableValue;
   importExportButtonWrapper.style.display = tableValue;
   importExportDataButton.style.float = floatValue;
   importExportDataButton.style.margin = marginValue;
   printButtonWrapper.style.display = printButtonWrapper;
-  printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
+  printButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
   printButton.style.float = floatValue;
   printButton.style.margin = marginValue;
-}
-
-function updateSearchScheduleColumn() {
-  const searchScheduleToggleBar = document.getElementById("course-search-schedule-toggle-bar");
-  const courseSearchBar = document.getElementById("course-search-bar");
-  const columnPaddingTop = 20;
-
-  const placeholderHeight = 50;
-  const listHeight = courseSearchScheduleColumn.offsetHeight
-    - columnPaddingTop
-    - searchScheduleToggleBar.offsetHeight
-    - courseSearchBar.offsetHeight
-    - placeholderHeight;
-  courseSearchResultsList.style.height = "" + listHeight + "px";
-
-  const scheduleHeight = courseSearchScheduleColumn.offsetHeight
-    - columnPaddingTop
-    - searchScheduleToggleBar.offsetHeight;
-  scheduleColumn.style.height = "" + scheduleHeight + "px";
-}
-
-function updateSelectedCoursesWrapper() {
-  const selectedCoursesWrapper = document.getElementById("selected-courses-wrapper");
-  const selectedCoursesBar = document.getElementById("selected-courses-bar");
-
-  const columnPaddingTop = 20;
-  const wrapperMarginTop = 8;
-  const wrapperHeight = selectedCoursesColumn.offsetHeight
-    - columnPaddingTop
-    - selectedCoursesBar.offsetHeight
-    - wrapperMarginTop;
-  selectedCoursesWrapper.style.height = "" + wrapperHeight + "px";
-}
-
-function updateSelectedCoursesBar() {
-  const githubLink = document.getElementById("github-link");
-  const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
-  const printButtonWrapper = document.getElementById("print-button-wrapper");
-
-  // default values
-  let tableValue = "table-cell";
-  let floatValue = "right";
-  let marginValue = "0 auto";
-  let printPaddingLeftValue = "10px";
-
-  let linkWidth = 150;
-  if (selectedCoursesColumn.offsetWidth <
-    (linkWidth + importExportDataButton.offsetWidth + printButton.offsetWidth)) {
-    tableValue = "table-row";
-    floatValue = "left";
-    marginValue = "5px auto";
-    printPaddingLeftValue = "0px";
-  }
-  githubLink.style.display = tableValue;
-  importExportButtonWrapper.style.display = tableValue;
-  importExportDataButton.style.float = floatValue;
-  importExportDataButton.style.margin = marginValue;
-  printButtonWrapper.style.display = printButtonWrapper;
-  printButtonWrapper.style.paddingLeft = printPaddingLeftValue;
-  printButton.style.float = floatValue;
-  printButton.style.margin = marginValue;
+  settingsButtonWrapper.style.display = tableValue;
+  settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
+  settingsButton.style.float = floatValue;
+  settingsButton.style.margin = settingsButtonMarginValue;
 }
 
 function updateSearchScheduleColumn() {
@@ -1307,6 +1343,11 @@ function showImportExportModal()
 {
   importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
   $("#import-export-modal").modal("show");
+}
+
+function showSettingsModal()
+{
+  $("#settings-modal").modal("show");
 }
 
 function setCourseDescriptionBox(course)
@@ -1366,11 +1407,10 @@ function handleGlobalStateUpdate()
   updateTabToggle();
   updateShowClosedCoursesCheckbox();
   updateShowConflictingCoursesCheckbox();
+  updateConflictCoursesRadio();
 
   // Update course displays.
-  updateCourseSearchResults();
-  updateSelectedCoursesList();
-  updateSchedule();
+  updateCourseDisplays();
 
   // Canonicalize the state of local storage.
   writeStateToLocalStorage();
@@ -1450,21 +1490,32 @@ function toggleConflictingCourses()
 {
   gHideConflictingCourses = !gHideConflictingCourses;
   updateCourseSearchResults();
+}
+
+function toggleConflictCourses() {
+  updateCourseDisplays();
   writeStateToLocalStorage();
 }
 
 function toggleCourseSelected(course)
 {
   course.selected = !course.selected;
-  updateSchedule();
+  updateCourseDisplays();
   writeStateToLocalStorage();
 }
 
 function toggleCourseStarred(course)
 {
   course.starred = !course.starred;
-  updateSchedule();
+  updateCourseDisplays();
   writeStateToLocalStorage();
+}
+
+function updateCourseDisplays()
+{
+  updateCourseSearchResults();
+  updateSelectedCoursesList();
+  updateSchedule();
 }
 
 function displayCourseSearchColumn()
@@ -1634,6 +1685,7 @@ function writeStateToLocalStorage()
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
   localStorage.setItem("showConflictingCourses", gHideConflictingCourses);
+  localStorage.setItem("greyConflictCourses", JSON.stringify(gGreyConflictCourses));
 }
 
 function oldCourseToString(course)
@@ -1713,6 +1765,17 @@ function readStateFromLocalStorage()
   gHideConflictingCourses = readFromLocalStorage(
     "showConflictingCourses",_.isBoolean, true
   );
+  gGreyConflictCourses = readFromLocalStorage(
+    "greyConflictCourses", validateGGreyConflictCourses, greyConflictCoursesOptions[0]
+  );
+}
+
+function validateGGreyConflictCourses(value) 
+{
+  if (!_.isString(value)) {
+    return false;
+  }
+  return greyConflictCoursesOptions.includes(value);
 }
 
 /// PDF download

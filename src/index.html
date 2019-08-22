@@ -140,6 +140,9 @@
         <div id="print-button-wrapper">
           <button type="button" id="print-button" class="btn btn-primary">Print</button>
         </div>
+        <div id="settings-button-wrapper">
+          <button type="button" id="settings-button" class="btn"><i class="icon ion-gear-b"></i></button>
+        </div>
       </div>
 
       <div id="selected-courses-wrapper">
@@ -212,6 +215,31 @@
           <div class="modal-body">
             <p>Occasionally, the registrar adds malformed data to Portal: for example, a course with no name, invalid start and end dates, or other such nonsense. This shouldn't be possible, but because Portal is poorly designed, it is. Hyperschedule keeps track of these courses since they appear in the Portal search results, even though they cannot be parsed into valid course data to be used in scheduling. These courses are displayed below:</p>
             <div id="malformed-courses-list"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="settings-modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Settings</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="conflict-courses-toggle-wrapper">
+              <label id="conflict-courses-toggle-heading">Gray out conflicting courses</label>
+              <label id="conflict-courses-toggle-label1"><input id="conflict-courses1" name="conflict-courses" type="radio"> Don't gray out any conflicting courses</label>
+              <label id="conflict-courses-toggle-label2"><input id="conflict-courses2" name="conflict-courses" type="radio"> Only gray out courses conflicting with starred courses</label>
+              <label id="conflict-courses-toggle-label3"><input id="conflict-courses3" name="conflict-courses" type="radio"> Gray out courses conflicting with any course</label>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

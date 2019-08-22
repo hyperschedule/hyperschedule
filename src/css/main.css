@@ -237,6 +237,29 @@ body {
     margin: 0 auto;
 }
 
+#settings-button-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+    padding-top: 0px;
+}
+
+#settings-button {
+    display: block;
+    float: right;
+    margin: 0 auto;
+    margin-right: 3px;
+    background-color: transparent;
+    color: #007bff;
+    font-size: 30px;
+    line-height: 1;
+    padding: 0px 2px;
+}
+
+#settings-button:hover {
+    color: #0069d9;
+}
+
 /*** Course description box ***/
 
 #selected-courses-wrapper {
