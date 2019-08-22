@@ -702,7 +702,7 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
-  document.addEventListener("DOMContentLoaded", onResize);
+  window.onload = onResize();
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
