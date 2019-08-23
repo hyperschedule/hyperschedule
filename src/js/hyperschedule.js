@@ -1035,23 +1035,26 @@ function createCourseEntity(course, attrs)
     const folderButtonDropdown = document.createElement("div");
     folderButtonDropdown.classList.add("dropdown-menu");
 
-    const noFolderListing = document.createElement("span");
-    noFolderListing.classList.add("dropdown-item");
-    noFolderListing.appendChild(document.createTextNode("None"));
-    folderButtonDropdown.append(noFolderListing)
+    if (course.folder)
+    {
+      const noFolderListing = document.createElement("span");
+      noFolderListing.classList.add("dropdown-item");
+      noFolderListing.appendChild(document.createTextNode("Remove From Folder"));
+      folderButtonDropdown.appendChild(noFolderListing);
 
-    noFolderListing.addEventListener("click",() => {
-      course.folder = null;
+      noFolderListing.addEventListener("click",() => {
+        course.folder = null;
 
-      handleFolderEvent();
-    });
+        handleFolderEvent();
+      });
+    }
 
     for (let folderName of gExistingFolderNames)
     {
       const folderListing = document.createElement("span");
       folderListing.classList.add("dropdown-item");
       folderListing.appendChild(document.createTextNode(folderName));
-      folderButtonDropdown.append(folderListing)
+      folderButtonDropdown.appendChild(folderListing);
 
       folderListing.addEventListener("click",() => {
         course.folder = folderName;
@@ -1059,6 +1062,17 @@ function createCourseEntity(course, attrs)
         handleFolderEvent();
       });
     }
+
+    const addFolderListing = document.createElement("span");
+    addFolderListing.classList.add("dropdown-item");
+    addFolderListing.appendChild(document.createTextNode("New Folder"));
+    folderButtonDropdown.appendChild(addFolderListing);
+
+    addFolderListing.addEventListener("click", () => {
+      addFolder();
+      course.folder = gExistingFolderNames[gExistingFolderNames.length - 1];
+      handleFolderEvent();
+    });
 
     folderButtonContainer.appendChild(folderButtonDropdown);
 
