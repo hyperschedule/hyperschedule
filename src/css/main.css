@@ -161,11 +161,6 @@ body {
     position: relative;
 }
 
-.checkbox-menu li.active label {
-    background-color: #cbcbff;
-    font-weight:bold;
-}
-
 .checkbox-menu li label:hover,
 .checkbox-menu li label:focus {
     background-color: #f5f5f5;
