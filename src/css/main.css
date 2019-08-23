@@ -122,26 +122,15 @@ body {
     width: 100%;
 }
 
-#course-search-filters-wrapper {
+#filter-button-wrapper {
     display: table-cell;
     vertical-align: middle;
-    white-space: nowrap;
-}
-
-#closed-courses-toggle-wrapper {
     padding-left: 10px;
 }
 
-#closed-courses-toggle-wrapper label {
-    margin-bottom: 0 !important;
-}
-
-#conflicting-courses-toggle-wrapper {
-    padding-left: 10px;
-}
-
-#conflicting-courses-toggle-wrapper label {
-    margin-bottom: 0 !important;
+#filter-button {
+    display: table-cell;
+    margin: 0 auto;
 }
 
 #help-button-wrapper {
