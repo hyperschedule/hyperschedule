@@ -117,13 +117,17 @@
           View on GitHub
         </a>
         <div id="import-export-data-button-wrapper">
-          <button type="button" id="import-export-data-button" class="btn btn-primary">Import/Export Data</button>
+          <button type="button" id="import-export-data-button" class="btn btn-primary selected-courses-bar-btn">Import/Export Data</button>
         </div>
-        <div id="print-button-wrapper">
-          <button type="button" id="print-button" class="btn btn-primary">Print</button>
+        <div id="print-dropdown-wrapper" class="dropdown">
+          <button type="button" id="print-dropdown" class="btn btn-primary dropdown-toggle selected-courses-bar-btn" data-toggle="dropdown">Print</button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li class="print-btn" id="print-button-all"><a>Print All</a></li>
+            <li class="print-btn" id="print-button-starred"><a>Print Starred</a></li>
+          </ul>
         </div>
         <div id="settings-button-wrapper">
-          <button type="button" id="settings-button" class="btn"><i class="icon ion-gear-b"></i></button>
+          <button type="button" id="settings-button" class="btn selected-courses-bar-btn"><i class="icon ion-gear-b"></i></button>
         </div>
       </div>
 

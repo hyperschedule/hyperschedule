@@ -36,7 +36,9 @@ const courseSearchResultsList = document.getElementById("course-search-results-l
 
 const selectedCoursesColumn = document.getElementById("selected-courses-column");
 const importExportDataButton = document.getElementById("import-export-data-button");
-const printButton = document.getElementById("print-button");
+const printDropdown = document.getElementById("print-dropdown");
+const printAllButton = document.getElementById("print-button-all");
+const printStarredButton = document.getElementById("print-button-starred");
 const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
@@ -495,6 +497,7 @@ function getRandomColor(hue, seed, format = "hex") {
 
 function courseMatchesSearchQuery(course, query)
 {
+  
   for (let subquery of query)
   {
     if (course.courseCode.match(subquery) ||
@@ -517,6 +520,18 @@ function courseMatchesSearchQuery(course, query)
       continue;
     }
     return false;
+  }
+  return true;
+}
+
+function coursePassesTextFilters(course, textFilters)
+{
+  if(textFilters.department)
+  {
+    if(!course.courseCode.split(" ")[0].match(textFilters.department))
+    {
+      return false;
+    }
   }
   return true;
 }
@@ -723,7 +738,12 @@ function attachListeners()
     forcePlaceholderSize: true,
     placeholder: createCourseEntity("placeholder").outerHTML,
   });
-  printButton.addEventListener("click", downloadPDF);
+  printAllButton.addEventListener("click", () => {
+    downloadPDF(false)
+  });
+  printStarredButton.addEventListener("click", () => {
+    downloadPDF(true)
+  });
   settingsButton.addEventListener("click", showSettingsModal);
 
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
@@ -763,10 +783,10 @@ function attachListeners()
 }
 
 function onResize() {
-  updateCourseSearchBar();
-  updateSelectedCoursesBar();
   updateSearchScheduleColumn();
   updateSelectedCoursesWrapper();
+  updateSelectedCoursesBar();
+  updateCourseSearchBar();
 }
 
 function updateNumCourseSearchPagesDisplayed()
@@ -1073,11 +1093,49 @@ function createSlotEntities(course, slot)
 
 //// DOM queries
 
-function getSearchQuery()
+function processSearchText()
 {
-  return courseSearchInput.value.trim().split(/\s+/).map(subquery => {
-    return new RegExp(quoteRegexp(subquery), "i");
-  });
+  const searchText = courseSearchInput.value.trim().split(/\s+/);
+  const filterKeywords = ["dept:"]
+  let filtersText = [];
+  let queryText = [];
+  for (let text of searchText)
+  {
+    if (_.some(filter => {
+      return text.includes(filter);
+    },filterKeywords))
+    {
+      filtersText.push(text);
+    } else {
+      queryText.push(text);
+    }
+  }
+
+  const query = getSearchQuery(queryText);
+  const filters = getSearchTextFilters(filtersText);
+
+  return [query, filters];
+  
+}
+
+function getSearchQuery(searchTextArray)
+{
+  return searchTextArray.map(subquery => {
+      return new RegExp(quoteRegexp(subquery), "i");
+    });
+}
+
+function getSearchTextFilters(filtersTextArray)
+{
+  let filter = {};
+  for (let text of filtersTextArray)
+  {
+    if (text.slice(0,5) == "dept:")
+    {
+      filter.department = new RegExp(quoteRegexp(text.split(":")[1]),"i");
+    }
+  }
+  return filter;
 }
 
 //// DOM updates
@@ -1158,7 +1216,9 @@ function updateCourseSearchResults(attrs)
   }
 
   let numAlreadyShown = courseSearchResultsList.childElementCount;
-  const query = getSearchQuery();
+  const queryAndFilters = processSearchText();
+  const query = queryAndFilters[0];
+  const textFilters = queryAndFilters[1];
   let allCoursesDisplayed = true;
   // 0 in case of non-incremental update
   let numAdded = numAlreadyShown;
@@ -1168,7 +1228,8 @@ function updateCourseSearchResults(attrs)
     if (index++ < courseListIndex)
       return null;
     const matchesQuery = courseMatchesSearchQuery(course, query);
-    if (matchesQuery && (gShowClosedCourses || !isCourseClosed(course)) && ( !gHideStarredConflictingCourses || !courseConflictWithSchedule(course,true) ) && ( !gHideAllConflictingCourses || !courseConflictWithSchedule(course,false)))
+    const passesTextFilters = coursePassesTextFilters(course, textFilters);
+    if (matchesQuery && passesTextFilters && (gShowClosedCourses || !isCourseClosed(course)) && ( !gHideStarredConflictingCourses || !courseConflictWithSchedule(course,true) ) && ( !gHideAllConflictingCourses || !courseConflictWithSchedule(course,false)))
     {
       if (numAdded >= numToShow)
       {
@@ -1273,7 +1334,7 @@ function updateCourseSearchBar() {
 function updateSelectedCoursesBar() {
   const githubLink = document.getElementById("github-link");
   const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
-  const printButtonWrapper = document.getElementById("print-button-wrapper");
+  const printDropdownWrapper = document.getElementById("print-dropdown-wrapper");
   const settingsButtonWrapper = document.getElementById("settings-button-wrapper");
 
   // default values
@@ -1283,10 +1344,10 @@ function updateSelectedCoursesBar() {
   let settingsButtonMarginValue = "0 3px 0 auto";
   let rightButtonsPaddingLeftValue = "10px";
 
-  let linkWidth = 150;
+  let linkWidth = 100;
   if (selectedCoursesColumn.offsetWidth <
     (linkWidth + importExportDataButton.offsetWidth 
-      + printButton.offsetWidth + settingsButton.offsetWidth)) {
+      + printDropdown.offsetWidth + settingsButton.offsetWidth)) {
     tableValue = "table-row";
     floatValue = "left";
     marginValue = "5px auto";
@@ -1297,10 +1358,10 @@ function updateSelectedCoursesBar() {
   importExportButtonWrapper.style.display = tableValue;
   importExportDataButton.style.float = floatValue;
   importExportDataButton.style.margin = marginValue;
-  printButtonWrapper.style.display = printButtonWrapper;
-  printButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  printButton.style.float = floatValue;
-  printButton.style.margin = marginValue;
+  printDropdownWrapper.style.display = tableValue;
+  printDropdownWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
+  printDropdown.style.float = floatValue; //TODO
+  printDropdown.style.margin = marginValue;
   settingsButtonWrapper.style.display = tableValue;
   settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
   settingsButton.style.float = floatValue;
@@ -1792,7 +1853,7 @@ function validateGGreyConflictCourses(value)
 
 /// PDF download
 
-function downloadPDF()
+function downloadPDF(starredOnly)
 {
   // initialize PDF object
   const pdf = new jsPDF({
@@ -1878,8 +1939,20 @@ function downloadPDF()
   // header underline
   pdf.line(1.25 * 72, 0.5 * 72, 1.25 * 72, 0.5 * 72 + tableHeight);
 
+  let pdfCourses = [];
+  if (!starredOnly) {
+    pdfCourses = gSelectedCourses;
+  }
+  else {
+    for (const course of gSelectedCourses) {
+      if (course.starred) {
+        pdfCourses.push(course);
+      }
+    }
+  }
+
   // course entities
-  for (const course of computeSchedule(gSelectedCourses))
+  for (const course of computeSchedule(pdfCourses))
   {
     for (const slot of course.courseSchedule)
     {
