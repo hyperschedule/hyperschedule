@@ -1247,11 +1247,10 @@ function updateCourseDescriptionBoxHeight() {
 
 function updateCourseSearchBar() {
   const courseSearchInputWrapper = document.getElementById("course-search-course-name-input-wrapper");
-  const courseClosedToggleWrapper = document.getElementById("closed-courses-toggle-wrapper");
-  const courseConflictingToggleWrapper = document.getElementById("conflicting-courses-toggle-wrapper");
-  const courseClosedToggleLabel = document.getElementById("closed-courses-toggle-label");
   const helpButtonWrapper = document.getElementById("help-button-wrapper");
   const helpButton = document.getElementById("help-button");
+  const filterButtonWrapper = document.getElementById("filter-button-wrapper");
+  const filterButton = document.getElementById("filter-button");
 
   // default value
   let tableValue = "table-cell";
@@ -1259,17 +1258,16 @@ function updateCourseSearchBar() {
 
   let minSearchInputWidth = 100;
   if (courseSearchColumn.offsetWidth < 
-    (minSearchInputWidth + courseClosedToggleLabel.offsetWidth + helpButton.offsetWidth)) {
+    (minSearchInputWidth + filterButton.offsetWidth + helpButton.offsetWidth)) {
     tableValue = "table-row";
     marginValue = "5px auto";
   }
   courseSearchInputWrapper.style.display = tableValue;
   courseSearchInput.style.margin = marginValue;
-  // courseClosedToggleWrapper.style.display = tableValue;
-  // courseConflictingToggleWrapper.style.display = tableValue;
-  // courseClosedToggleLabel.style.margin = marginValue;
   helpButtonWrapper.style.display = tableValue;
   helpButton.style.margin = marginValue;
+  filterButtonWrapper.style.display = tableValue;
+  filterButton.style.margin = marginValue
 }
 
 function updateSelectedCoursesBar() {
