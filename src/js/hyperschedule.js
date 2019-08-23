@@ -492,6 +492,7 @@ function getRandomColor(hue, seed, format = "hex") {
 
 function courseMatchesSearchQuery(course, query)
 {
+  
   for (let subquery of query)
   {
     if (course.courseCode.match(subquery) ||
@@ -514,6 +515,18 @@ function courseMatchesSearchQuery(course, query)
       continue;
     }
     return false;
+  }
+  return true;
+}
+
+function coursePassesTextFilters(course, textFilters)
+{
+  if(textFilters.department)
+  {
+    if(!course.courseCode.split(" ")[0].match(textFilters.department))
+    {
+      return false;
+    }
   }
   return true;
 }
@@ -1073,11 +1086,49 @@ function createSlotEntities(course, slot)
 
 //// DOM queries
 
-function getSearchQuery()
+function processSearchText()
 {
-  return courseSearchInput.value.trim().split(/\s+/).map(subquery => {
-    return new RegExp(quoteRegexp(subquery), "i");
-  });
+  const searchText = courseSearchInput.value.trim().split(/\s+/);
+  const filterKeywords = ["dept:"]
+  let filtersText = [];
+  let queryText = [];
+  for (let text of searchText)
+  {
+    if (_.some(filter => {
+      return text.includes(filter);
+    },filterKeywords))
+    {
+      filtersText.push(text);
+    } else {
+      queryText.push(text);
+    }
+  }
+
+  const query = getSearchQuery(queryText);
+  const filters = getSearchTextFilters(filtersText);
+
+  return [query, filters];
+  
+}
+
+function getSearchQuery(searchTextArray)
+{
+  return searchTextArray.map(subquery => {
+      return new RegExp(quoteRegexp(subquery), "i");
+    });
+}
+
+function getSearchTextFilters(filtersTextArray)
+{
+  let filter = {};
+  for (let text of filtersTextArray)
+  {
+    if (text.slice(0,5) == "dept:")
+    {
+      filter.department = new RegExp(quoteRegexp(text.split(":")[1]),"i");
+    }
+  }
+  return filter;
 }
 
 //// DOM updates
@@ -1152,7 +1203,9 @@ function updateCourseSearchResults(attrs)
   }
 
   let numAlreadyShown = courseSearchResultsList.childElementCount;
-  const query = getSearchQuery();
+  const queryAndFilters = processSearchText();
+  const query = queryAndFilters[0];
+  const textFilters = queryAndFilters[1];
   let allCoursesDisplayed = true;
   // 0 in case of non-incremental update
   let numAdded = numAlreadyShown;
@@ -1162,7 +1215,8 @@ function updateCourseSearchResults(attrs)
     if (index++ < courseListIndex)
       return null;
     const matchesQuery = courseMatchesSearchQuery(course, query);
-    if (matchesQuery && (gShowClosedCourses || !isCourseClosed(course)))
+    const passesTextFilters = coursePassesTextFilters(course, textFilters);
+    if (matchesQuery && passesTextFilters && (gShowClosedCourses || !isCourseClosed(course)))
     {
       if (numAdded >= numToShow)
       {
