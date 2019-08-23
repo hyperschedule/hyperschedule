@@ -17,13 +17,15 @@ const apiURL = API_URL; // replaced by Babel with a string literal
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
 const scheduleToggle = document.getElementById("schedule-toggle");
 
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
-const conflictingCoursesToggle = document.getElementById("all-conflicting-courses-toggle");
+const hideAllConflictingCoursesToggle = document.getElementById("all-conflicting-courses-toggle");
+const hideStarredConflictingCoursesToggle = document.getElementById("star-conflicting-courses-toggle");
 
 const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchColumn = document.getElementById("course-search-column");
@@ -60,7 +62,8 @@ let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
-let gHideConflictingCourses = true;
+let gHideAllConflictingCourses = false;
+let gHideStarredConflictingCourses = false;
 let gGreyConflictCourses = greyConflictCoursesOptions[0];
 
 // Transient data.
@@ -709,7 +712,8 @@ function attachListeners()
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
-  conflictingCoursesToggle.addEventListener("click",toggleConflictingCourses);
+  hideAllConflictingCoursesToggle.addEventListener("click",toggleAllConflictingCourses);
+  hideStarredConflictingCoursesToggle.addEventListener("click",toggleStarredConflictingCourses);
   courseSearchInput.addEventListener("keyup", handleCourseSearchInputUpdate);
   importExportDataButton.addEventListener("click", showImportExportModal);
   importExportICalButton.addEventListener("click", downloadICalFile);
@@ -1095,7 +1099,8 @@ function updateShowClosedCoursesCheckbox()
 
 function updateShowConflictingCoursesCheckbox()
 {
-  conflictingCoursesToggle.checked = gHideConflictingCourses;
+  hideAllConflictingCoursesToggle.checked = gHideAllConflictingCourses;
+  hideStarredConflictingCoursesToggle.checked = gHideStarredConflictingCourses;
 }
 
 function updateConflictCoursesRadio()
@@ -1163,8 +1168,7 @@ function updateCourseSearchResults(attrs)
     if (index++ < courseListIndex)
       return null;
     const matchesQuery = courseMatchesSearchQuery(course, query);
-    const conflicting = _.some(comparisonCourse => {return coursesConflict(course,comparisonCourse)},gSelectedCourses);
-    if (matchesQuery && (gShowClosedCourses || !isCourseClosed(course)) && ( !gHideConflictingCourses || !conflicting))
+    if (matchesQuery && (gShowClosedCourses || !isCourseClosed(course)) && ( !gHideStarredConflictingCourses || !courseConflictWithSchedule(course,true) ) && ( !gHideAllConflictingCourses || !courseConflictWithSchedule(course,false)))
     {
       if (numAdded >= numToShow)
       {
@@ -1486,9 +1490,15 @@ function toggleClosedCourses()
   writeStateToLocalStorage();
 }
 
-function toggleConflictingCourses()
+function toggleAllConflictingCourses()
 {
-  gHideConflictingCourses = !gHideConflictingCourses;
+  gHideAllConflictingCourses = !gHideAllConflictingCourses;
+  updateCourseSearchResults();
+}
+
+function toggleStarredConflictingCourses()
+{
+  gHideStarredConflictingCourses = !gHideStarredConflictingCourses;
   updateCourseSearchResults();
 }
 
@@ -1684,7 +1694,8 @@ function writeStateToLocalStorage()
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
-  localStorage.setItem("showConflictingCourses", gHideConflictingCourses);
+  localStorage.setItem("hideAllConflictingCourses", gHideAllConflictingCourses);
+  localStorage.setItem("hideStarredConflictingCourses", gHideStarredConflictingCourses);
   localStorage.setItem("greyConflictCourses", JSON.stringify(gGreyConflictCourses));
 }
 
@@ -1762,9 +1773,12 @@ function readStateFromLocalStorage()
   gShowClosedCourses = readFromLocalStorage(
     "showClosedCourses", _.isBoolean, true
   );
-  gHideConflictingCourses = readFromLocalStorage(
-    "showConflictingCourses",_.isBoolean, true
+  gHideAllConflictingCourses = readFromLocalStorage(
+    "hideAllConflictingCourses",_.isBoolean, false
   );
+  gHideStarredConflictingCourses = readFromLocalStorage(
+    "hideStarredConflictingCourses",_.isBoolean, false
+  )
   gGreyConflictCourses = readFromLocalStorage(
     "greyConflictCourses", validateGGreyConflictCourses, greyConflictCoursesOptions[0]
   );
