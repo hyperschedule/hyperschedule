@@ -784,8 +784,8 @@ function onResize() {
 
 function updateNumCourseSearchPagesDisplayed()
 {
-  let currentScrollPosition = courseSearchScheduleColumn.scrollTop;
-  let scrollMaxPosition = courseSearchScheduleColumn.scrollHeight;
+  let currentScrollPosition = courseSearchResultsList.scrollTop;
+  let scrollMaxPosition = courseSearchResultsList.scrollHeight;
   let scrollHeightLeft = scrollMaxPosition - currentScrollPosition;
   let screenHeight = document.documentElement.clientHeight;
 
