@@ -526,12 +526,13 @@ function courseMatchesSearchQuery(course, query)
 
 function coursePassesTextFilters(course, textFilters)
 {
-  if(textFilters.department)
+  const dept = course.courseCode.split(" ")[0];
+  const col = course.courseCode.split(" ")[2].split("-")[0];
+
+  if ((textFilters["dept:"] && !dept.match(textFilters["dept:"]))
+    || (textFilters["col:"] && !col.match(textFilters["col:"])))
   {
-    if(!course.courseCode.split(" ")[0].match(textFilters.department))
-    {
-      return false;
-    }
+    return false;
   }
   return true;
 }
@@ -1056,7 +1057,7 @@ function createSlotEntities(course, slot)
 function processSearchText()
 {
   const searchText = courseSearchInput.value.trim().split(/\s+/);
-  const filterKeywords = ["dept:"]
+  const filterKeywords = ["dept:", "col:"]
   let filtersText = [];
   let queryText = [];
 
@@ -1091,10 +1092,9 @@ function getSearchTextFilters(filtersTextArray)
   let filter = {};
   for (let text of filtersTextArray)
   {
-    if (text.slice(0,5) == "dept:")
-    {
-      filter.department = new RegExp(quoteRegexp(text.split(":")[1]),"i");
-    }
+    const keyword = text.split(":")[0] + ":";
+    const filterText = text.split(":")[1];
+    filter[keyword] = filterText;
   }
   return filter;
 }
