@@ -17,6 +17,10 @@ const apiURL = API_URL; // replaced by Babel with a string literal
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
+const filterKeywords = 
+      {"dept:": ["dept:"],
+       "college:": ["college", "col:", "school:", "sch:"]};
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
@@ -516,11 +520,15 @@ function courseMatchesSearchQuery(course, query) {
   return true;
 }
 
-function coursePassesTextFilters(course, textFilters) {
-  if (textFilters.department) {
-    if (!course.courseCode.split(" ")[0].match(textFilters.department)) {
-      return false;
-    }
+function coursePassesTextFilters(course, textFilters)
+{
+  const dept = course.courseCode.split(" ")[0];
+  const col = course.courseCode.split(" ")[2].split("-")[0];
+
+  if ((textFilters["dept:"] && !dept.match(textFilters["dept:"]))
+    || (textFilters["col:"] && !col.match(textFilters["col:"])))
+  {
+    return false;
   }
   return true;
 }
@@ -1031,7 +1039,12 @@ function createSlotEntities(course, slot) {
 
 function processSearchText() {
   const searchText = courseSearchInput.value.trim().split(/\s+/);
-  const filterKeywords = ["dept:"];
+  let filterKeywordsValues = [];
+  for (let key of Object.keys(filterKeywords)) 
+  {
+    filterKeywordsValues = filterKeywordsValues.concat(filterKeywords[key]);
+  }
+
   let filtersText = [];
   let queryText = [];
 
@@ -1039,7 +1052,7 @@ function processSearchText() {
   {
     if (_.some(filter => {
       return text.includes(filter);
-    },filterKeywords)) {
+    },filterKeywordsValues)) {
       filtersText.push(text);
     } else {
       queryText.push(text);
@@ -1060,10 +1073,22 @@ function getSearchQuery(searchTextArray) {
 
 function getSearchTextFilters(filtersTextArray) {
   let filter = {};
-  for (let text of filtersTextArray) {
-    if (text.slice(0, 5) == "dept:") {
-      filter.department = new RegExp(quoteRegexp(text.split(":")[1]), "i");
+  for (let text of filtersTextArray)
+  {
+    const keyword = text.split(":")[0] + ":";
+    const filterText = text.split(":")[1];
+    if (!(keyword in Object.keys(filterKeywords))) 
+    {
+      for (let key of Object.keys(filterKeywords)) 
+      {
+        if (keyword in filterKeywords[key]) 
+        {
+          keyword = key;
+          break;
+        }
+      }
     }
+    filter[keyword] = filterText;
   }
   return filter;
 }
