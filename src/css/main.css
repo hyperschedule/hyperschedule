@@ -20,6 +20,11 @@
     cursor: auto;
 }
 
+.dropdown-menu {
+    min-width: 0;
+    padding: 0;
+}
+
 .hidden {
     display: none;
 }
@@ -163,6 +168,12 @@ body {
     table-layout: auto;
 }
 
+.selected-courses-bar-btn {
+    display: block;
+    float: right;
+    margin: 0 auto;
+}
+
 #github-link {
     display: table-cell;
     text-align: left;
@@ -176,22 +187,22 @@ body {
     padding-left: 10px;
 }
 
-#import-export-data-button {
-    display: block;
-    float: right;
-    margin: 0 auto;
-}
-
-#print-button-wrapper {
+#print-dropdown-wrapper {
     display: table-cell;
     vertical-align: middle;
     padding-left: 10px;
 }
 
-#print-button {
-    display: block;
-    float: right;
-    margin: 0 auto;
+.print-btn {
+    white-space: nowrap;
+    padding: 5px;
+    min-width: 0;
+    cursor: pointer;
+    background-.color: white;
+}
+
+.print-btn:hover {
+    background-color: #e9ecef;
 }
 
 #settings-button-wrapper {
@@ -202,9 +213,6 @@ body {
 }
 
 #settings-button {
-    display: block;
-    float: right;
-    margin: 0 auto;
     margin-right: 3px;
     background-color: transparent;
     color: #007bff;
