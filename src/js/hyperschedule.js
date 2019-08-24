@@ -1034,12 +1034,12 @@ function processSearchText() {
   const filterKeywords = ["dept:"];
   let filtersText = [];
   let queryText = [];
-  for (let text of searchText) {
-    if (
-      _.some(filter => {
-        return text.includes(filter);
-      }, filterKeywords)
-    ) {
+
+  for (let text of searchText)
+  {
+    if (_.some(filter => {
+      return text.includes(filter);
+    },filterKeywords)) {
       filtersText.push(text);
     } else {
       queryText.push(text);
@@ -1289,7 +1289,7 @@ function updateSelectedCoursesBar() {
   importExportDataButton.style.margin = marginValue;
   printDropdownWrapper.style.display = tableValue;
   printDropdownWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  printDropdown.style.float = floatValue; //TODO
+  printDropdown.style.float = floatValue;
   printDropdown.style.margin = marginValue;
   settingsButtonWrapper.style.display = tableValue;
   settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
