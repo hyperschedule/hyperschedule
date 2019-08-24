@@ -17,12 +17,15 @@ const apiURL = API_URL; // replaced by Babel with a string literal
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
 const scheduleToggle = document.getElementById("schedule-toggle");
 
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
+const hideAllConflictingCoursesToggle = document.getElementById("all-conflicting-courses-toggle");
+const hideStarredConflictingCoursesToggle = document.getElementById("star-conflicting-courses-toggle");
 
 const courseSearchScheduleColumn = document.getElementById("course-search-schedule-column");
 const courseSearchColumn = document.getElementById("course-search-column");
@@ -61,6 +64,8 @@ let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
+let gHideAllConflictingCourses = false;
+let gHideStarredConflictingCourses = false;
 let gGreyConflictCourses = greyConflictCoursesOptions[0];
 
 // Transient data.
@@ -722,6 +727,8 @@ function attachListeners()
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
+  hideAllConflictingCoursesToggle.addEventListener("click",toggleAllConflictingCourses);
+  hideStarredConflictingCoursesToggle.addEventListener("click",toggleStarredConflictingCourses);
   courseSearchInput.addEventListener("keyup", handleCourseSearchInputUpdate);
   importExportDataButton.addEventListener("click", showImportExportModal);
   importExportICalButton.addEventListener("click", downloadICalFile);
@@ -1148,6 +1155,12 @@ function updateShowClosedCoursesCheckbox()
   closedCoursesToggle.checked = gShowClosedCourses;
 }
 
+function updateShowConflictingCoursesCheckbox()
+{
+  hideAllConflictingCoursesToggle.checked = gHideAllConflictingCourses;
+  hideStarredConflictingCoursesToggle.checked = gHideStarredConflictingCourses;
+}
+
 function updateConflictCoursesRadio()
 {
   switch(gGreyConflictCourses)
@@ -1216,7 +1229,7 @@ function updateCourseSearchResults(attrs)
       return null;
     const matchesQuery = courseMatchesSearchQuery(course, query);
     const passesTextFilters = coursePassesTextFilters(course, textFilters);
-    if (matchesQuery && passesTextFilters && (gShowClosedCourses || !isCourseClosed(course)))
+    if (matchesQuery && passesTextFilters && (gShowClosedCourses || !isCourseClosed(course)) && ( !gHideStarredConflictingCourses || !courseConflictWithSchedule(course,true) ) && ( !gHideAllConflictingCourses || !courseConflictWithSchedule(course,false)))
     {
       if (numAdded >= numToShow)
       {
@@ -1295,10 +1308,10 @@ function updateCourseDescriptionBoxHeight() {
 
 function updateCourseSearchBar() {
   const courseSearchInputWrapper = document.getElementById("course-search-course-name-input-wrapper");
-  const courseClosedToggleWrapper = document.getElementById("closed-courses-toggle-wrapper");
-  const courseClosedToggleLabel = document.getElementById("closed-courses-toggle-label");
   const helpButtonWrapper = document.getElementById("help-button-wrapper");
   const helpButton = document.getElementById("help-button");
+  const filterButtonWrapper = document.getElementById("filter-button-wrapper");
+  const filterButton = document.getElementById("filter-button");
 
   // default value
   let tableValue = "table-cell";
@@ -1306,16 +1319,16 @@ function updateCourseSearchBar() {
 
   let minSearchInputWidth = 100;
   if (courseSearchColumn.offsetWidth < 
-    (minSearchInputWidth + courseClosedToggleLabel.offsetWidth + helpButton.offsetWidth)) {
+    (minSearchInputWidth + filterButton.offsetWidth + helpButton.offsetWidth)) {
     tableValue = "table-row";
     marginValue = "5px auto";
   }
   courseSearchInputWrapper.style.display = tableValue;
   courseSearchInput.style.margin = marginValue;
-  courseClosedToggleWrapper.style.display = tableValue;
-  courseClosedToggleLabel.style.margin = marginValue;
   helpButtonWrapper.style.display = tableValue;
   helpButton.style.margin = marginValue;
+  filterButtonWrapper.style.display = tableValue;
+  filterButton.style.margin = marginValue
 }
 
 function updateSelectedCoursesBar() {
@@ -1456,6 +1469,7 @@ function handleGlobalStateUpdate()
   // Update UI elements.
   updateTabToggle();
   updateShowClosedCoursesCheckbox();
+  updateShowConflictingCoursesCheckbox();
   updateConflictCoursesRadio();
 
   // Update course displays.
@@ -1533,6 +1547,18 @@ function toggleClosedCourses()
   gShowClosedCourses = !gShowClosedCourses;
   updateCourseSearchResults();
   writeStateToLocalStorage();
+}
+
+function toggleAllConflictingCourses()
+{
+  gHideAllConflictingCourses = !gHideAllConflictingCourses;
+  updateCourseSearchResults();
+}
+
+function toggleStarredConflictingCourses()
+{
+  gHideStarredConflictingCourses = !gHideStarredConflictingCourses;
+  updateCourseSearchResults();
 }
 
 function toggleConflictCourses() {
@@ -1727,6 +1753,8 @@ function writeStateToLocalStorage()
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
+  localStorage.setItem("hideAllConflictingCourses", gHideAllConflictingCourses);
+  localStorage.setItem("hideStarredConflictingCourses", gHideStarredConflictingCourses);
   localStorage.setItem("greyConflictCourses", JSON.stringify(gGreyConflictCourses));
 }
 
@@ -1804,6 +1832,12 @@ function readStateFromLocalStorage()
   gShowClosedCourses = readFromLocalStorage(
     "showClosedCourses", _.isBoolean, true
   );
+  gHideAllConflictingCourses = readFromLocalStorage(
+    "hideAllConflictingCourses",_.isBoolean, false
+  );
+  gHideStarredConflictingCourses = readFromLocalStorage(
+    "hideStarredConflictingCourses",_.isBoolean, false
+  )
   gGreyConflictCourses = readFromLocalStorage(
     "greyConflictCourses", validateGGreyConflictCourses, greyConflictCoursesOptions[0]
   );

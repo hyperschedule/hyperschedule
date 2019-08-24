@@ -127,15 +127,15 @@ body {
     width: 100%;
 }
 
-#closed-courses-toggle-wrapper {
+#filter-button-wrapper {
     display: table-cell;
     vertical-align: middle;
     padding-left: 10px;
-    white-space: nowrap;
 }
 
-#closed-courses-toggle-wrapper label {
-    margin-bottom: 0 !important;
+#filter-button {
+    display: table-cell;
+    margin: 0 auto;
 }
 
 #help-button-wrapper {
@@ -147,6 +147,33 @@ body {
 #help-button {
     display: table-cell;
     margin: 0 auto;
+}
+
+.checkbox-menu li label {
+    display: block;
+    padding: 3px 10px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    margin:0;
+    transition: background-color .4s ease;
+}
+.checkbox-menu li input {
+    margin: 0px 5px;
+    top: 2px;
+    position: relative;
+}
+
+.checkbox-menu li label:hover,
+.checkbox-menu li label:focus {
+    background-color: #f5f5f5;
+}
+
+.checkbox-menu li.active label:hover,
+.checkbox-menu li.active label:focus {
+    background-color: #b8b8ff;
 }
 
 /*** Course search placeholder ***/
