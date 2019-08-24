@@ -1045,7 +1045,6 @@ function processSearchText() {
   {
     filterKeywordsValues = filterKeywordsValues.concat(filterKeywords[key]);
   }
-
   let filtersText = [];
   let queryText = [];
 
