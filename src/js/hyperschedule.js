@@ -1092,6 +1092,7 @@ function processSearchText()
   const filterKeywords = ["dept:"]
   let filtersText = [];
   let queryText = [];
+
   for (let text of searchText)
   {
     if (_.some(filter => {
@@ -1203,13 +1204,15 @@ function updateCourseSearchResults(attrs)
   }
 
   let numAlreadyShown = courseSearchResultsList.childElementCount;
-  const queryAndFilters = processSearchText();
-  const query = queryAndFilters[0];
-  const textFilters = queryAndFilters[1];
   let allCoursesDisplayed = true;
   // 0 in case of non-incremental update
   let numAdded = numAlreadyShown;
   let courseListIndex = gNextIncrementalCourseSearchIndex || 0;
+
+  const queryAndFilters = processSearchText();
+  const query = queryAndFilters[0];
+  const textFilters = queryAndFilters[1];
+
   let index = 0;
   _.forEach((course) => {
     if (index++ < courseListIndex)
@@ -1347,7 +1350,7 @@ function updateSelectedCoursesBar() {
   importExportDataButton.style.margin = marginValue;
   printDropdownWrapper.style.display = tableValue;
   printDropdownWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  printDropdown.style.float = floatValue; //TODO
+  printDropdown.style.float = floatValue;
   printDropdown.style.margin = marginValue;
   settingsButtonWrapper.style.display = tableValue;
   settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
