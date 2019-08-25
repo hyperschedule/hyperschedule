@@ -17,7 +17,7 @@ Claremont Colleges course catalog, is located [here][scraper].
 Install [Yarn]. Then, install the NPM dependencies by running `yarn`
 in the project root. You are ready to run the webapp locally:
 
-    $ yarn dev
+    $ make dev
 
 This will build the static files and serve them to `localhost:5000`;
 to use a different port, just export `PORT`. By default, the webapp
@@ -28,12 +28,16 @@ to `http://localhost:3000` (or similar). If exporting to `localhost`,
 don't forget the `http`, since otherwise Chrome's CORS policy will
 block the request.
 
-There are a few other Yarn tasks available, each runnable with `yarn
-<task>`. The `dev` task actually just runs `server` and `watch` in
-parallel. The `server` task serves the built static files, while
-`watch` compiles those files and recompiles when there is a change to
-the source. You can build just once with the `build` task, and remove
-the built files with the `clean` task.
+Other Makefile targets are available:
+
+    $ make help
+    usage:
+      make build       Compile JavaScript for development
+      make build-prod  Compile JavaScript for production
+      make server      Start development server
+      make watch       Automatically recompile JavaScript on file changes
+      make dev         Start development server and automatically recompile JavaScript
+      make help        Show this message
 
 ### Deploy
 
