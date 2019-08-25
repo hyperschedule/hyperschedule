@@ -1412,7 +1412,7 @@ function handleCourseSearchInputUpdate()
 function handleSelectedCoursesUpdate()
 {
   // We need to add/remove the "+" buttons.
-  updateCourseSearchResults();
+  rerenderCourseSearchResults();
 
   // Obviously the selected courses list needs to be rebuilt.
   updateSelectedCoursesList();
