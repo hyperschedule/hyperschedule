@@ -29,6 +29,7 @@
   },
   "license": "MIT",
   "name": "hyperschedule-frontend",
+  "private": true,
   "scripts": {
     "build": "rm -rf out && babel src -d out -D -s true",
     "build-prod": "rm -rf out && babel src -d out -D",
