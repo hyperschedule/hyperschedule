@@ -602,22 +602,6 @@ body {
     content: "Couldn't copy";
 }
 
-.show-right-click-menu {
-    z-index:1000;
-    position: absolute;
-    background-color:#C0C0C0;
-    border: 1px solid blue;
-    padding: 2px;
-    display: block;
-    margin: 0;
-    list-style-type: none;
-    list-style: none;
-}
-
-.hide-right-click-menu {
-    display: none;
-}
-
 /* Local Variables:           */
 /* outline-regexp: "/\\*\\*+" */
 /* End:                       */

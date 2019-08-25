@@ -40,10 +40,6 @@ const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
-const addFolderButton = document.getElementById("add-folder-button");
-const closeRightClickMenu = document.getElementById("close-right-click-menu")
-const rightClickMenu = document.getElementById("right-click-menu");
-
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById("course-description-box-outer");
 
@@ -728,10 +724,6 @@ function attachListeners()
 {
 
   document.addEventListener("DOMContentLoaded", onResize);
-  document.addEventListener("click",() => {
-    rightClickMenu.classList.add("hide-right-click-menu");
-    rightClickMenu.classList.remove("show-right-click-menu");
-  });
 
   window.onload = onResize();
 
@@ -753,18 +745,6 @@ function attachListeners()
     placeholder: createCourseEntity("placeholder").outerHTML,
     acceptFrom: '.sortable-list, .folder-list'
   });
-  // addFolderButton.addEventListener("click",addFolder);
-  selectedCoursesList.addEventListener("contextmenu",(event) => {
-    rightClickMenu.classList.add("show-right-click-menu"); 
-    rightClickMenu.classList.remove("hide-right-click-menu");
-    rightClickMenu.style.top =  event.clientY + 'px';
-    rightClickMenu.style.left = event.clientX + 'px';
-    window.event.returnValue = false;
-  });
-  closeRightClickMenu.addEventListener("click",() => {
-    rightClickMenu.classList.add("hide-right-click-menu");
-    rightClickMenu.classList.remove("show-right-click-menu");
-  })
   printAllButton.addEventListener("click", () => {
     downloadPDF(false)
   });
