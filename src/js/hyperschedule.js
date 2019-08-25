@@ -526,8 +526,9 @@ function courseMatchesSearchQuery(course, query)
 
 function coursePassesTextFilters(course, textFilters)
 {
-  const dept = course.courseCode.split(" ")[0];
-  const col = course.courseCode.split(" ")[2].split("-")[0];
+  const lowerCourseCode = course.courseCode.toLowerCase();
+  const dept = lowerCourseCode.split(" ")[0];
+  const col = lowerCourseCode.split(" ")[2].split("-")[0];
 
   if ((textFilters["dept:"] && !dept.match(textFilters["dept:"]))
     || (textFilters["col:"] && !col.match(textFilters["col:"])))
@@ -1063,6 +1064,7 @@ function processSearchText()
 
   for (let text of searchText)
   {
+    text = text.toLowerCase();
     if (_.some(filter => {
       return text.includes(filter);
     },filterKeywords))
