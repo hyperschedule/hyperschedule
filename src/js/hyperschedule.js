@@ -753,7 +753,7 @@ function attachListeners()
     placeholder: createCourseEntity("placeholder").outerHTML,
     acceptFrom: '.sortable-list, .folder-list'
   });
-  addFolderButton.addEventListener("click",addFolder);
+  // addFolderButton.addEventListener("click",addFolder);
   selectedCoursesList.addEventListener("contextmenu",(event) => {
     rightClickMenu.classList.add("show-right-click-menu"); 
     rightClickMenu.classList.remove("hide-right-click-menu");
@@ -1075,11 +1075,7 @@ function createCourseEntity(course, attrs)
     addFolderListing.appendChild(document.createTextNode("New Folder"));
     folderButtonDropdown.appendChild(addFolderListing);
 
-    addFolderListing.addEventListener("click", () => {
-      addFolder();
-      course.folder = gExistingFolderNames[gExistingFolderNames.length - 1];
-      handleFolderEvent();
-    });
+    addFolderListing.addEventListener("click", () => {addFolder(course)});
 
     folderButtonContainer.appendChild(folderButtonDropdown);
 
@@ -1706,34 +1702,37 @@ function addCourse(course)
   handleSelectedCoursesUpdate();
 }
 
-function addFolder()
+function addFolder(course)
 {
   const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-  let counter = 1;
-  let name = null;
-  while (!name)
-  {
-    if(gExistingFolderNames.indexOf("Folder "+counter) < 0)
-    {
-      name = "Folder "+ counter;
-    } else {
-      counter += 1;
+  bootbox.prompt({
+    title:"What should the folder's name be?",
+    centerVertical:true,
+    callback: (name) => {
+      if(name){
+        if (gExistingFolderNames.indexOf(name) < 0)
+        {
+          let folder = {
+            selected: false,
+            starred: false,
+            open: true,
+            isFolder: true,
+            courseCode: randomString,
+            folder: name
+          }
+          gExistingFolderNames.push(name);
+          gSelectedCoursesAndFolders.push(folder);
+          course.folder = name;
+          handleFolderEvent();
+        } else {
+          bootbox.alert("Can't have two folders with the same name!");
+          return false;
+        }
+      }
     }
-  }
-
-  let folder = {
-    selected: false,
-    starred: false,
-    open: true,
-    isFolder: true,
-    courseCode: randomString,
-    folder: name
-  }
-  gExistingFolderNames.push(name);
-  gSelectedCoursesAndFolders.push(folder);
-  handleSelectedCoursesUpdate();
- }
+ });
+}
 
 function removeCourse(course)
 {
