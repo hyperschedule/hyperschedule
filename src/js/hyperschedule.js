@@ -2094,7 +2094,7 @@ function downloadICalFile()
 attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
-//retrieveCourseDataUntilSuccessful();
+retrieveCourseDataUntilSuccessful();
 
 /// Closing remarks
 
