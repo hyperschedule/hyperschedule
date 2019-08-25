@@ -1172,7 +1172,7 @@ function updateCourseSearchResults()
 
 function rerenderCourseSearchResults() {
   if (gApiData === null) {
-    courseSearchResultsEnd.textContent = "Loading API data...";
+    courseSearchResultsEnd.textContent = "Fetching courses from Portal...";
     return;
   }
 
