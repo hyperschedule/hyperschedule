@@ -45,12 +45,29 @@
           <div id="course-search-course-name-input-wrapper">
             <input type="text" id="course-search-course-name-input" class="form-control" placeholder="Search by name, course code, etc.">
           </div>
-          <div id="closed-courses-toggle-wrapper">
-            <label id="closed-courses-toggle-label">
-              Show closed courses
-              <input type="checkbox" id="closed-courses-toggle">
-            </label>
+          <div id="filter-button-wrapper" class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="filter-button" data-toggle="dropdown">
+                Filters
+              </button>
+              <ul class="dropdown-menu checkbox-menu allow-focus">
+                <li>
+                  <label id="closed-courses-toggle-label">
+                    <input id="closed-courses-toggle" type="checkbox"> Show closed courses
+                  </label>
+                </li>
+                <li>
+                  <label id="all-conflicting-courses-toggle-label">
+                    <input id="all-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with schedule
+                  </label>
+                </li>
+                <li>
+                  <label id="star-conflicting-courses-toggle-label">
+                    <input id="star-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with starred courses
+                  </label>
+                </li>
+              </ul>
           </div>
+            
           <div id="help-button-wrapper">
             <button type="button" id="help-button" class="btn btn-primary" data-toggle="modal" data-target="#help-modal">How does it work?</button>
           </div>
@@ -204,7 +221,7 @@
           </div>
           <div class="modal-body">
             <div id="conflict-courses-toggle-wrapper">
-              <label id="conflict-courses-toggle-heading">Gray out conflicting courses</label>
+              <label id="conflict-courses-toggle-heading">Gray out courses conflicting with schedule</label>
               <label id="conflict-courses-toggle-label1"><input id="conflict-courses1" name="conflict-courses" type="radio"> Don't gray out any conflicting courses</label>
               <label id="conflict-courses-toggle-label2"><input id="conflict-courses2" name="conflict-courses" type="radio"> Only gray out courses conflicting with starred courses</label>
               <label id="conflict-courses-toggle-label3"><input id="conflict-courses3" name="conflict-courses" type="radio"> Gray out courses conflicting with any course</label>
