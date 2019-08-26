@@ -32,7 +32,10 @@ const courseSearchColumn = document.getElementById("course-search-column");
 const scheduleColumn = document.getElementById("schedule-column");
 
 const courseSearchInput = document.getElementById("course-search-course-name-input");
+const courseSearchResults = document.getElementById("course-search-results");
 const courseSearchResultsList = document.getElementById("course-search-results-list");
+const courseSearchResultsPlaceholder = document.getElementById("course-search-results-placeholder");
+const courseSearchResultsEnd = document.getElementById("course-search-results-end");
 
 const selectedCoursesColumn = document.getElementById("selected-courses-column");
 const importExportDataButton = document.getElementById("import-export-data-button");
@@ -70,11 +73,8 @@ let gGreyConflictCourses = greyConflictCoursesOptions[0];
 
 // Transient data.
 let gCurrentlySorting = false;
-let gCourseSearchPagesShown = courseSearchPagesShownStart;
-// gMaxCourseSearchPage starts as Infinity and stays infinity until we
-// exhaust the search result, at which point, it is calculated and set.
-let gMaxCourseSearchPage = Infinity;
-let gNextIncrementalCourseSearchIndex = null;
+let gCourseEntityHeight = 0;
+let gFilteredCourseKeys = [];
 
 /// Utility functions
 //// JavaScript utility functions
@@ -724,6 +724,11 @@ function attachListeners()
 {
   window.onload = onResize();
 
+  let ent = createCourseEntity("placeholder");
+  courseSearchResultsList.appendChild(ent);
+  gCourseEntityHeight = ent.clientHeight;
+  courseSearchResultsList.removeChild(ent);
+
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
@@ -753,6 +758,9 @@ function attachListeners()
   selectedCoursesList.addEventListener("sortstop", () => {
     gCurrentlySorting = false;
   });
+
+  courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
+  window.addEventListener("resize", rerenderCourseSearchResults);
 
   for (let i = 0; conflictCoursesRadios[i]; i++) {
     conflictCoursesRadios[i].addEventListener("click", () => {
@@ -789,55 +797,7 @@ function onResize() {
   updateCourseSearchBar();
 }
 
-function updateNumCourseSearchPagesDisplayed()
-{
-  let currentScrollPosition = courseSearchResultsList.scrollTop;
-  let scrollMaxPosition = courseSearchResultsList.scrollHeight;
-  let scrollHeightLeft = scrollMaxPosition - currentScrollPosition;
-  let screenHeight = document.documentElement.clientHeight;
-
-  if (scrollHeightLeft < 2 * screenHeight)
-  {
-    setCourseSearchPagesDisplayed("more");
-  }
-}
-
-function autoUpdateNumCourseSearchPagesDisplayed()
-{
-  updateNumCourseSearchPagesDisplayed();
-  setTimeout(autoUpdateNumCourseSearchPagesDisplayed, 100);
-}
-
 //// DOM element creation
-
-function createCourseLoadingMessage()
-{
-  const listItem = document.createElement("li");
-  listItem.id = "course-search-placeholder";
-  listItem.setAttribute("data-placeholder", "true");
-  const text = document.createTextNode("Loading courses...");
-  listItem.appendChild(text);
-  return listItem;
-}
-
-function createCourseSearchEndOfResult(hasResult = true)
-{
-  const listItem = document.createElement("li");
-  listItem.id = "course-search-placeholder";
-  listItem.setAttribute("data-placeholder", "true");
-  let text;
-  if (hasResult)
-  {
-    text = document.createTextNode("End of results");
-  }
-  else
-  {
-    text = document.createTextNode("No results");
-  }
-  listItem.setAttribute("style", "color: grey");
-  listItem.appendChild(text);
-  return listItem;
-}
 
 function createCourseEntity(course, attrs)
 {
@@ -1114,7 +1074,7 @@ function processSearchText()
   const query = getSearchQuery(queryText);
   const filters = getSearchTextFilters(filtersText);
 
-  return [query, filters];
+  return {query, filters};
   
 }
 
@@ -1182,77 +1142,79 @@ function updateConflictCoursesRadio()
   }
 }
 
-function updateCourseSearchResults(attrs)
+
+function updateCourseSearchResults()
 {
-  attrs = attrs || {};
-  const incremental = attrs.incremental;
-
-  if (!incremental)
-  {
-    gMaxCourseSearchPage = Infinity;
-    gNextIncrementalCourseSearchIndex = null;
-  }
-
   if (gApiData === null)
   {
-    let child;
-    while ((child = courseSearchResultsList.lastChild))
-    {
-      courseSearchResultsList.removeChild(child);
-    }
-    courseSearchResultsList.appendChild(createCourseLoadingMessage());
+    gFilteredCourseKeys = [];
+  }
+  else
+  {
+    const {query, filters} = processSearchText();
+
+    gFilteredCourseKeys =
+      gApiData === null
+      ? []
+      : Object.keys(gApiData.data.courses)
+      .filter(
+        key => {
+          const course = gApiData.data.courses[key];
+          return courseMatchesSearchQuery(course, query)
+            && coursePassesTextFilters(course, filters)
+            && (gShowClosedCourses || !isCourseClosed(course));
+        }
+      );
+  }
+
+  rerenderCourseSearchResults();
+}
+
+function rerenderCourseSearchResults() {
+  if (gApiData === null) {
+    courseSearchResultsEnd.textContent = "Fetching courses from Portal...";
     return;
   }
 
-  let numToShow = gCourseSearchPagesShown * courseSearchPageSize;
-
   // Remove courses that should no longer be shown (or all courses, if
   // updating non-incrementally).
-  while (courseSearchResultsList.childElementCount >
-         (incremental ? numToShow : 0))
+  while (courseSearchResultsList.childElementCount > 0)
   {
     // Make sure to remove from the end.
     courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
 
+  let numToShow = document.documentElement.clientHeight / gCourseEntityHeight * 3;
+  const startIndex = Math.floor(
+    (courseSearchResults.scrollTop
+     - document.documentElement.clientHeight
+    ) / gCourseEntityHeight
+  );
+
   let numAlreadyShown = courseSearchResultsList.childElementCount;
-  const queryAndFilters = processSearchText();
-  const query = queryAndFilters[0];
-  const textFilters = queryAndFilters[1];
   let allCoursesDisplayed = true;
   // 0 in case of non-incremental update
   let numAdded = numAlreadyShown;
-  let courseListIndex = gNextIncrementalCourseSearchIndex || 0;
-  let index = 0;
-  _.forEach((course) => {
-    if (index++ < courseListIndex)
-      return null;
-    const matchesQuery = courseMatchesSearchQuery(course, query);
-    const passesTextFilters = coursePassesTextFilters(course, textFilters);
-    if (matchesQuery && passesTextFilters && (gShowClosedCourses || !isCourseClosed(course)) && ( !gHideStarredConflictingCourses || !courseConflictWithSchedule(course,true) ) && ( !gHideAllConflictingCourses || !courseConflictWithSchedule(course,false)))
-    {
-      if (numAdded >= numToShow)
-      {
-        // If we've already added all the courses we were supposed to,
-        // abort.
-        allCoursesDisplayed = false;
-        return false;
-      }
-      ++numAdded;
-      const alreadyAdded = courseAlreadyAdded(course);
-      courseSearchResultsList.appendChild(
-        createCourseEntity(course, { alreadyAdded }));
-    }
-    return null;
-  }, gApiData.data.courses);
-  gNextIncrementalCourseSearchIndex = courseListIndex;
-  if (allCoursesDisplayed)
-  {
-    let hasResult = numAdded != 0;
-    courseSearchResultsList.appendChild(createCourseSearchEndOfResult(hasResult));
-    gMaxCourseSearchPage = Math.ceil(numAdded / courseSearchPageSize);
-    gCourseSearchPagesShown = gMaxCourseSearchPage;
+
+  for (
+    let index = Math.max(startIndex, 0);
+    index < Math.min(startIndex + numToShow, gFilteredCourseKeys.length);
+    ++index
+  ) {
+    const course = gApiData.data.courses[gFilteredCourseKeys[index]];
+    const alreadyAdded = courseAlreadyAdded(course);
+    const entity = createCourseEntity(course, { alreadyAdded });
+    entity.style.top = "" + gCourseEntityHeight * index + "px";
+    courseSearchResultsList.appendChild(entity);
   }
+
+  courseSearchResultsPlaceholder.style.height =
+    (gCourseEntityHeight * gFilteredCourseKeys.length) + "px";
+
+  courseSearchResultsEnd.textContent =
+    gFilteredCourseKeys.length != 0
+    ? "End of results"
+    : "No results";
 }
 
 function updateSelectedCoursesList()
@@ -1379,7 +1341,6 @@ function updateSearchScheduleColumn() {
     - searchScheduleToggleBar.offsetHeight
     - courseSearchBar.offsetHeight
     - placeholderHeight;
-  courseSearchResultsList.style.height = "" + listHeight + "px";
 
   const scheduleHeight = courseSearchScheduleColumn.offsetHeight
     - columnPaddingTop
@@ -1445,14 +1406,13 @@ function setCourseDescriptionBox(course)
 
 function handleCourseSearchInputUpdate()
 {
-  gCourseSearchPagesShown = courseSearchPagesShownStart;
   updateCourseSearchResults();
 }
 
 function handleSelectedCoursesUpdate()
 {
   // We need to add/remove the "+" buttons.
-  updateCourseSearchResults();
+  rerenderCourseSearchResults();
 
   // Obviously the selected courses list needs to be rebuilt.
   updateSelectedCoursesList();
@@ -1601,37 +1561,6 @@ function displayScheduleColumn()
   gScheduleTabSelected = true;
   updateTabToggle();
   writeStateToLocalStorage();
-}
-
-function setCourseSearchPagesDisplayed(action)
-{
-  let numPages = gCourseSearchPagesShown;
-  if (action === "one")
-  {
-    numPages = 1;
-  }
-  else if (action === "fewer")
-  {
-    --numPages;
-  }
-  else if (action === "more")
-  {
-    ++numPages;
-  }
-  else if (action === "all")
-  {
-    numPages = gMaxCourseSearchPage;
-  }
-  if (numPages !== null)
-  {
-    numPages = Math.max(numPages, 1);
-    numPages = Math.min(numPages, gMaxCourseSearchPage);
-  }
-  if (numPages !== gCourseSearchPagesShown)
-  {
-    gCourseSearchPagesShown = numPages;
-    updateCourseSearchResults({ incremental: true });
-  }
 }
 
 //// Course retrieval
@@ -2166,7 +2095,6 @@ attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
-autoUpdateNumCourseSearchPagesDisplayed();
 
 /// Closing remarks
 
