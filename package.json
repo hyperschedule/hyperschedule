@@ -21,7 +21,8 @@
     "babel-preset-env": "^1.7.0"
   },
   "devDependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "prettier": "^1.18.2"
   },
   "engines": {
     "node": ">=8.8.1"

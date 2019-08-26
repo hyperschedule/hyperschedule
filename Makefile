@@ -3,6 +3,17 @@ BIN := node_modules/.bin
 SERVER := ./server.js
 WATCH := $(BIN)/babel src -d out -D -w -q -s true
 
+FIND_JS := 				\
+	find . \(			\
+		-path ./.git -o		\
+		-path ./node_modules -o	\
+		-path ./out -o		\
+		-name vendor		\
+	\) -prune -o			\
+	-name '*.js' -print
+
+JS_FILES := $(shell $(FIND_JS))
+
 .PHONY: all
 all: build-prod
 
@@ -30,6 +41,14 @@ watch: clean ## Automatically recompile JavaScript on file changes
 dev: ## Start development server and automatically recompile JavaScript
 	$(WATCH) &
 	$(SERVER)
+
+.PHONY: format
+format: ## Auto-format JavaScript
+	@$(BIN)/prettier --write $(JS_FILES)
+
+.PHONY: ci
+ci: ## Verify that all code is correctly formatted
+	@$(BIN)/prettier --check $(JS_FILES)
 
 .PHONY: help
 help: ## Show this message
