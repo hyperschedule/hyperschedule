@@ -22,7 +22,7 @@
 
 .dropdown-menu {
     min-width: 0;
-    padding: 0;
+    padding: 2px 0;
 }
 
 .hidden {
@@ -164,7 +164,7 @@ body {
 
 .checkbox-menu li label {
     display: block;
-    padding: 3px 10px;
+    padding: 3px 8px;
     clear: both;
     font-weight: normal;
     line-height: 1.42857143;
@@ -177,6 +177,7 @@ body {
     margin: 0px 5px;
     top: 2px;
     position: relative;
+    cursor: pointer;
 }
 
 .checkbox-menu li label:hover,
@@ -236,10 +237,10 @@ body {
 
 .print-btn {
     white-space: nowrap;
-    padding: 5px;
+    padding: 3px 8px;
     min-width: 0;
     cursor: pointer;
-    background-.color: white;
+    background-color: white;
 }
 
 .print-btn:hover {
@@ -534,6 +535,10 @@ body {
 }
 
 /** Modals **/
+.modal-input-text {
+    font-family: Courier New !important;
+}
+
 /*** Import/export modal ***/
 
 #import-export-text-area {
