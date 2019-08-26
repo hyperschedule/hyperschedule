@@ -16,8 +16,10 @@ server.use((err, req, res, next) => {
   res.status(500).send("Internal server error");
 });
 
+const host = process.env.HOST || "localhost";
 const port = process.env.PORT || 5000;
-server.listen(port);
+const hostDisplay = process.env.HOST_DISPLAY || host;
+server.listen(port, host);
 console.log(
-  `Hyperschedule webapp (dev server) listening on http://localhost:${port}`
+  `Hyperschedule webapp (dev server) listening on http://${hostDisplay}:${port}`
 );

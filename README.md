@@ -37,6 +37,7 @@ Other Makefile targets are available:
       make server      Start development server
       make watch       Automatically recompile JavaScript on file changes
       make dev         Start development server and automatically recompile JavaScript
+      make docker      Start shell or run command (e.g. make docker CMD="make dev")
       make format      Auto-format JavaScript
       make ci          Verify that all code is correctly formatted
       make help        Show this message

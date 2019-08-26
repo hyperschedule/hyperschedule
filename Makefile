@@ -39,8 +39,13 @@ watch: clean ## Automatically recompile JavaScript on file changes
 
 .PHONY: dev
 dev: ## Start development server and automatically recompile JavaScript
-	$(WATCH) &
-	$(SERVER)
+	@# Switching SERVER and WATCH breaks control-c inside Docker;
+	@# I have no idea why.
+	$(SERVER) & $(WATCH)
+
+.PHONY: docker
+docker: ## Start shell or run command (e.g. make docker CMD="make dev")
+	@scripts/docker.bash "$(CMD)"
 
 .PHONY: format
 format: ## Auto-format JavaScript
