@@ -21,6 +21,10 @@ all: build-prod
 clean: ## Remove build artifacts
 	rm -rf out
 
+.PHONY: hooks
+hooks: ## Install Git hooks
+	@ln -sf ../../scripts/pre-commit .git/hooks/pre-commit
+
 .PHONY: build
 build: clean ## Compile JavaScript for development
 	$(BIN)/babel src -d out -D -s true
@@ -31,6 +35,7 @@ build-prod: clean ## Compile JavaScript for production
 
 .PHONY: server
 server: ## Start development server
+	@[[ -n "$$HYPERSCHEDULE_NO_HOOKS" ]] || make -s hooks
 	$(SERVER)
 
 .PHONY: watch
