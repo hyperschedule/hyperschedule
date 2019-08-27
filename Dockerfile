@@ -7,6 +7,8 @@ RUN /tmp/docker-install.bash "$UID"
 
 USER $UID
 WORKDIR /home/docker/hyperschedule
-RUN echo "yarn install" >> /home/docker/.bashrc
 
+ENTRYPOINT ["/usr/local/bin/pid1.bash"]
 CMD bash
+
+COPY scripts/pid1.bash /usr/local/bin/
