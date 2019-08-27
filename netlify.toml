@@ -1,4 +1,4 @@
 [build]
 
-command = "make build-prod"
-publish = "out"
+command = "make build"
+publish = "dist"

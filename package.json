@@ -1,28 +1,10 @@
 {
-  "babel": {
-    "plugins": [
-      "./babel-plugin.js"
-    ],
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "browsers": [
-              "> 1%"
-            ]
-          }
-        }
-      ]
-    ]
-  },
-  "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
-  },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "babel-preset-env": "^1.7.0",
     "express": "^4.16.3",
     "lint-staged": "^9.2.4",
+    "parcel-bundler": "^1.12.3",
     "prettier": "^1.18.2"
   },
   "engines": {

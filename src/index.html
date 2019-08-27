@@ -1,44 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111346837-1"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-111346837-1"
+    ></script>
     <script>
-     window.dataLayer = window.dataLayer || [];
-     function gtag() { dataLayer.push(arguments); }
-     gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-     gtag('config', 'UA-111346837-1');
+      gtag("config", "UA-111346837-1");
     </script>
     <!-- End gtag.js -->
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Hyperschedule - The fast course scheduler</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png" />
+    <link rel="icon" href="icon.png" />
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css" media="screen">
-
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+      integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" media="screen" />
   </head>
   <body>
     <!--[if lte IE 9]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+        your experience and security.
+      </p>
     <![endif]-->
 
     <div id="course-search-schedule-column" class="two-column-left">
       <div id="course-search-schedule-toggle-bar" class="toolbar">
         <div id="course-search-toggle-wrapper">
-          <button type="button" id="course-search-toggle" class="btn">Course Search</button>
+          <button type="button" id="course-search-toggle" class="btn">
+            Course Search
+          </button>
         </div>
         <div id="schedule-toggle-wrapper">
-          <button type="button" id="schedule-toggle" class="btn">Schedule</button>
+          <button type="button" id="schedule-toggle" class="btn">
+            Schedule
+          </button>
         </div>
       </div>
       <div id="course-search-column">
@@ -47,30 +66,46 @@
             <input type="text" id="course-search-course-name-input" class="form-control" placeholder="Search by name, course code, text filter, etc.">
           </div>
           <div id="filter-button-wrapper" class="dropdown">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="filter-button" data-toggle="dropdown">
-                Filters
-              </button>
-              <ul class="dropdown-menu checkbox-menu allow-focus">
-                <li>
-                  <label id="closed-courses-toggle-label">
-                    <input id="closed-courses-toggle" type="checkbox"> Show closed courses
-                  </label>
-                </li>
-                <li>
-                  <label id="all-conflicting-courses-toggle-label">
-                    <input id="all-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with schedule
-                  </label>
-                </li>
-                <li>
-                  <label id="star-conflicting-courses-toggle-label">
-                    <input id="star-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with starred courses
-                  </label>
-                </li>
-              </ul>
+            <button
+              class="btn btn-primary dropdown-toggle"
+              type="button"
+              id="filter-button"
+              data-toggle="dropdown"
+            >
+              Filters
+            </button>
+            <ul class="dropdown-menu checkbox-menu allow-focus">
+              <li>
+                <label id="closed-courses-toggle-label">
+                  <input id="closed-courses-toggle" type="checkbox" /> Show
+                  closed courses
+                </label>
+              </li>
+              <li>
+                <label id="all-conflicting-courses-toggle-label">
+                  <input id="all-conflicting-courses-toggle" type="checkbox" />
+                  Hide courses conflicting with schedule
+                </label>
+              </li>
+              <li>
+                <label id="star-conflicting-courses-toggle-label">
+                  <input id="star-conflicting-courses-toggle" type="checkbox" />
+                  Hide courses conflicting with starred courses
+                </label>
+              </li>
+            </ul>
           </div>
-            
+
           <div id="help-button-wrapper">
-            <button type="button" id="help-button" class="btn btn-primary" data-toggle="modal" data-target="#help-modal">How does it work?</button>
+            <button
+              type="button"
+              id="help-button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#help-modal"
+            >
+              How does it work?
+            </button>
           </div>
         </div>
 
@@ -91,21 +126,126 @@
             <th class="schedule-day schedule-day-5">Friday</th>
           </thead>
           <tbody id="schedule-table-body">
-            <tr><td class="schedule-hour-1 schedule-hour">8am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-2 schedule-hour">9am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-3 schedule-hour">10am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-4 schedule-hour">11am</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-5 schedule-hour">12pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-6 schedule-hour">1pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-7 schedule-hour">2pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-8 schedule-hour">3pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-9 schedule-hour">4pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-10 schedule-hour">5pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-11 schedule-hour">6pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-12 schedule-hour">7pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-13 schedule-hour">8pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-14 schedule-hour">9pm</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="schedule-hour-15 schedule-hour">10pm</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr>
+              <td class="schedule-hour-1 schedule-hour">8am</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-2 schedule-hour">9am</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-3 schedule-hour">10am</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-4 schedule-hour">11am</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-5 schedule-hour">12pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-6 schedule-hour">1pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-7 schedule-hour">2pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-8 schedule-hour">3pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-9 schedule-hour">4pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-10 schedule-hour">5pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-11 schedule-hour">6pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-12 schedule-hour">7pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-13 schedule-hour">8pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-14 schedule-hour">9pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="schedule-hour-15 schedule-hour">10pm</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
         <div id="credit-count-box" class="toolbar">
@@ -116,33 +256,56 @@
 
     <div id="selected-courses-column" class="two-column-right">
       <div id="selected-courses-bar" class="toolbar">
-        <a id="github-link" href="https://github.com/MuddCreates/hyperschedule" target="_blank">
+        <a
+          id="github-link"
+          href="https://github.com/MuddCreates/hyperschedule"
+          target="_blank"
+        >
           <i class="icon ion-social-github"></i>
           View on GitHub
         </a>
         <div id="import-export-data-button-wrapper">
-          <button type="button" id="import-export-data-button" class="btn btn-primary selected-courses-bar-btn">Import/Export Data</button>
+          <button
+            type="button"
+            id="import-export-data-button"
+            class="btn btn-primary selected-courses-bar-btn"
+          >
+            Import/Export Data
+          </button>
         </div>
         <div id="print-dropdown-wrapper" class="dropdown">
-          <button type="button" id="print-dropdown" class="btn btn-primary dropdown-toggle selected-courses-bar-btn" data-toggle="dropdown">Print</button>
+          <button
+            type="button"
+            id="print-dropdown"
+            class="btn btn-primary dropdown-toggle selected-courses-bar-btn"
+            data-toggle="dropdown"
+          >
+            Print
+          </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <li class="print-btn" id="print-button-all"><a>Print All</a></li>
-            <li class="print-btn" id="print-button-starred"><a>Print Starred</a></li>
+            <li class="print-btn" id="print-button-starred">
+              <a>Print Starred</a>
+            </li>
           </ul>
         </div>
         <div id="settings-button-wrapper">
-          <button type="button" id="settings-button" class="btn selected-courses-bar-btn"><i class="icon ion-gear-b"></i></button>
+          <button
+            type="button"
+            id="settings-button"
+            class="btn selected-courses-bar-btn"
+          >
+            <i class="icon ion-gear-b"></i>
+          </button>
         </div>
       </div>
 
       <div id="selected-courses-wrapper">
         <div id="course-description-box-outer" class="toolbar">
-          <div id="course-description-box">
-          </div>
+          <div id="course-description-box"></div>
         </div>
 
-        <ul id="selected-courses-list" class="sortable-list courses-list">
-        </ul>
+        <ul id="selected-courses-list" class="sortable-list courses-list"></ul>
       </div>
     </div>
 
@@ -156,16 +319,48 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>You can edit the JSON in another application. Be warned that your changes are <b>not</b> validated!</p>
-            <textarea id="import-export-text-area" class="form-control"></textarea>
-            <br>
-            <p>Alternatively, use the button below to export an iCal file with your starred courses.</p>
+            <p>
+              You can edit the JSON in another application. Be warned that your
+              changes are <b>not</b> validated!
+            </p>
+            <textarea
+              id="import-export-text-area"
+              class="form-control"
+            ></textarea>
+            <br />
+            <p>
+              Alternatively, use the button below to export an iCal file with
+              your starred courses.
+            </p>
           </div>
           <div class="modal-footer">
-            <button type="button" id="import-export-copy-button" class="btn btn-info" data-clipboard-target="#import-export-text-area"></button>
-            <button type="button" id="import-export-ical-button" class="btn btn-info">To iCal</button>
-            <button type="button" id="import-export-save-changes-button" class="btn btn-primary">Save changes</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button
+              type="button"
+              id="import-export-copy-button"
+              class="btn btn-info"
+              data-clipboard-target="#import-export-text-area"
+            ></button>
+            <button
+              type="button"
+              id="import-export-ical-button"
+              class="btn btn-info"
+            >
+              To iCal
+            </button>
+            <button
+              type="button"
+              id="import-export-save-changes-button"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>
@@ -192,7 +387,13 @@
             <p>Hyperschedule was created by Radon Rosborough <a href="https://github.com/MuddCreates/hyperschedule/graphs/contributors" target="_blank">and friends</a> during Fall 2017 registration.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>
@@ -208,16 +409,29 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Occasionally, the registrar adds malformed data to Portal: for example, a course with no name, invalid start and end dates, or other such nonsense. This shouldn't be possible, but because Portal is poorly designed, it is. Hyperschedule keeps track of these courses since they appear in the Portal search results, even though they cannot be parsed into valid course data to be used in scheduling. These courses are displayed below:</p>
+            <p>
+              Occasionally, the registrar adds malformed data to Portal: for
+              example, a course with no name, invalid start and end dates, or
+              other such nonsense. This shouldn't be possible, but because
+              Portal is poorly designed, it is. Hyperschedule keeps track of
+              these courses since they appear in the Portal search results, even
+              though they cannot be parsed into valid course data to be used in
+              scheduling. These courses are displayed below:
+            </p>
             <div id="malformed-courses-list"></div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>
     </div>
-
 
     <div class="modal fade" id="settings-modal" tabindex="-1">
       <div class="modal-dialog">
@@ -230,33 +444,114 @@
           </div>
           <div class="modal-body">
             <div id="conflict-courses-toggle-wrapper">
-              <label id="conflict-courses-toggle-heading">Gray out courses conflicting with schedule</label>
-              <label id="conflict-courses-toggle-label1"><input id="conflict-courses1" name="conflict-courses" type="radio"> Don't gray out any conflicting courses</label>
-              <label id="conflict-courses-toggle-label2"><input id="conflict-courses2" name="conflict-courses" type="radio"> Only gray out courses conflicting with starred courses</label>
-              <label id="conflict-courses-toggle-label3"><input id="conflict-courses3" name="conflict-courses" type="radio"> Gray out courses conflicting with any course</label>
+              <label id="conflict-courses-toggle-heading"
+                >Gray out courses conflicting with schedule</label
+              >
+              <label id="conflict-courses-toggle-label1"
+                ><input
+                  id="conflict-courses1"
+                  name="conflict-courses"
+                  type="radio"
+                />
+                Don't gray out any conflicting courses</label
+              >
+              <label id="conflict-courses-toggle-label2"
+                ><input
+                  id="conflict-courses2"
+                  name="conflict-courses"
+                  type="radio"
+                />
+                Only gray out courses conflicting with starred courses</label
+              >
+              <label id="conflict-courses-toggle-label3"
+                ><input
+                  id="conflict-courses3"
+                  name="conflict-courses"
+                  type="radio"
+                />
+                Gray out courses conflicting with any course</label
+              >
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"    integrity="sha384-Ui1pvNxCzO7LqnfgsWJ2ndsgpJPrWVTg7DCIag+do29np24E7Jyy6A09M3JUuLQf" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"      integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.6.3/html.sortable.min.js" integrity="sha384-McmwXqJoBon4wsJiVtB9S/zYH9D0Vt5lKjayJuj/6mlylXYopb3bKj4gXV1dbq2W" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"       integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"     integrity="sha384-/fwzB6+UmLHGu4Y0cOi5r8tRXd36OVkdBgohrKfMQOAhnH6LrAX6aEOFmqebDSk8" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.min.js"            integrity="sha384-j/yjQ26lM3oABUyp5sUcxbbLK/ECT6M4bige54dRtJcbhk+j6M8GAt+ZJYPK3q/l" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.min.js"             integrity="sha384-FvUg0oOjwQ1uec6J22LkHkEihYZfQYU5BaPKoUpt5OUVr7+CKyX2o5NC/fOqFGih" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"                                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"          integrity="sha384-2HWZ0KJxkQ3nhRpHPzk4AO2iIy1S8rSGwN5MpMS/xf34mqOahLqEbqwvdk48EnEv" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.fp.min.js"       integrity="sha384-zhq5RNH3QOo8ctQjW/EV797YYDamuYSJKSkVPf4ahE2hc1rogVtjIfEQsRpTy7l5" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.10.3/math.min.js"                integrity="sha384-d1Hwkp6yS5/5wx+7N1JJGcXznjb7sSujpGdE6028s1QFCw8dhwG9iM9DBDrG22bV" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"                 integrity="sha384-l7aOEgTYxgJ0nn2MziQWZCvuvJ2PtNcP05R4QwEoHW+kIS1gFpzupcQ7WhAdRKuq" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"
+      integrity="sha384-Ui1pvNxCzO7LqnfgsWJ2ndsgpJPrWVTg7DCIag+do29np24E7Jyy6A09M3JUuLQf"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"
+      integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.6.3/html.sortable.min.js"
+      integrity="sha384-McmwXqJoBon4wsJiVtB9S/zYH9D0Vt5lKjayJuj/6mlylXYopb3bKj4gXV1dbq2W"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+      integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"
+      integrity="sha384-/fwzB6+UmLHGu4Y0cOi5r8tRXd36OVkdBgohrKfMQOAhnH6LrAX6aEOFmqebDSk8"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.min.js"
+      integrity="sha384-j/yjQ26lM3oABUyp5sUcxbbLK/ECT6M4bige54dRtJcbhk+j6M8GAt+ZJYPK3q/l"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.min.js"
+      integrity="sha384-FvUg0oOjwQ1uec6J22LkHkEihYZfQYU5BaPKoUpt5OUVr7+CKyX2o5NC/fOqFGih"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"
+      integrity="sha384-2HWZ0KJxkQ3nhRpHPzk4AO2iIy1S8rSGwN5MpMS/xf34mqOahLqEbqwvdk48EnEv"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.fp.min.js"
+      integrity="sha384-zhq5RNH3QOo8ctQjW/EV797YYDamuYSJKSkVPf4ahE2hc1rogVtjIfEQsRpTy7l5"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.10.3/math.min.js"
+      integrity="sha384-d1Hwkp6yS5/5wx+7N1JJGcXznjb7sSujpGdE6028s1QFCw8dhwG9iM9DBDrG22bV"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"
+      integrity="sha384-l7aOEgTYxgJ0nn2MziQWZCvuvJ2PtNcP05R4QwEoHW+kIS1gFpzupcQ7WhAdRKuq"
+      crossorigin="anonymous"
+    ></script>
     <script src="js/vendor/ics-0.2.0.min.js"></script>
     <script src="js/hyperschedule.js"></script>
   </body>
