@@ -13,7 +13,7 @@ const courseSearchPageSize = 20;
 const courseSearchPagesShownStart = 3;
 const extraPagesToLoad = 2;
 
-const apiURL = API_URL; // replaced by Babel with a string literal
+const apiURL = process.env.API_URL || "https://hyperschedule.herokuapp.com";
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
