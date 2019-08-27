@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build_and_lint:
+    # Using machine simplifies our Docker configuration (else we have
+    # to create a new user for the CI and drop permissions, to deal
+    # with duplicate UID woes).
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run: make docker CMD="make ci"
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - build_and_lint
