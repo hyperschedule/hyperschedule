@@ -56,9 +56,12 @@ docker: ## Start shell or run command (e.g. make docker CMD="make dev")
 format: ## Auto-format JavaScript
 	@$(BIN)/prettier --write $(JS_FILES)
 
-.PHONY: ci
-ci: ## Verify that all code is correctly formatted
+.PHONY: lint
+lint: ## Verify that all code is correctly formatted
 	@$(BIN)/prettier --check $(JS_FILES)
+
+.PHONY: ci
+ci: build-prod lint ## Run tests that CI will run
 
 .PHONY: help
 help: ## Show this message
