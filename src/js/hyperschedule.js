@@ -18,7 +18,7 @@ const apiURL = API_URL; // replaced by Babel with a string literal
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
 const filterKeywords = 
-      {"dept:": ["dept:"],
+      {"dept:": ["dept:", "department:"],
        "college:": ["college", "col:", "school:", "sch:"]};
 
 //// DOM elements
@@ -527,7 +527,7 @@ function coursePassesTextFilters(course, textFilters)
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
 
   if ((textFilters["dept:"] && !dept.match(textFilters["dept:"]))
-    || (textFilters["col:"] && !col.match(textFilters["col:"])))
+    || (textFilters["college:"] && !col.match(textFilters["college:"])))
   {
     return false;
   }
@@ -1082,7 +1082,7 @@ function getSearchTextFilters(filtersTextArray) {
     {
       for (let key of Object.keys(filterKeywords)) 
       {
-        if (keyword in filterKeywords[key]) 
+        if (filterKeywords[key].includes(keyword)) 
         {
           keyword = key;
           break;
