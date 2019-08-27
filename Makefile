@@ -3,16 +3,16 @@ BIN := node_modules/.bin
 SERVER := ./server.js
 WATCH := $(BIN)/babel src -d out -D -w -q -s true
 
-FIND_JS := 				\
+FIND_WEB_FILES := 			\
 	find . \(			\
 		-path ./.git -o		\
 		-path ./node_modules -o	\
 		-path ./out -o		\
 		-name vendor		\
 	\) -prune -o			\
-	-name '*.js' -print
+	\( -name '*.html' -o -name '*.js' \) -print
 
-JS_FILES := $(shell $(FIND_JS))
+WEB_FILES := $(shell $(FIND_WEB_FILES))
 
 .PHONY: all
 all: build-prod
@@ -54,11 +54,11 @@ docker: ## Start shell or run command (e.g. make docker CMD="make dev")
 
 .PHONY: format
 format: ## Auto-format JavaScript
-	@$(BIN)/prettier --write $(JS_FILES)
+	@$(BIN)/prettier --write $(WEB_FILES)
 
 .PHONY: lint
 lint: ## Verify that all code is correctly formatted
-	@$(BIN)/prettier --check $(JS_FILES)
+	@$(BIN)/prettier --check $(WEB_FILES)
 
 .PHONY: ci
 ci: build-prod lint ## Run tests that CI will run
