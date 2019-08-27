@@ -29,7 +29,8 @@ build: ## Compile JavaScript for production
 
 .PHONY: dev
 dev: ## Start development server and automatically recompile JavaScript
-	$(BIN)/parcel src/index.html
+	@[ -n "$$HYPERSCHEDULE_NO_HOOKS" ] || make -s hooks
+	$(BIN)/parcel src/index.html --port "$${PORT:-5000}"
 
 .PHONY: docker
 docker: ## Start shell or run command (e.g. make docker CMD="make dev")
