@@ -10,7 +10,7 @@ FIND_WEB_FILES := 			\
 		-path ./out -o		\
 		-name vendor		\
 	\) -prune -o			\
-	\( -name '*.html' -o -name '*.js' \) -print
+	\( -name '*.css' -o -name '*.html' -o -name '*.js' \) -print
 
 WEB_FILES := $(shell $(FIND_WEB_FILES))
 
