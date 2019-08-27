@@ -14,19 +14,23 @@ Claremont Colleges course catalog, is located [here][scraper].
 
 ## Local development
 
-Install [Yarn]. Then, install the NPM dependencies by running `yarn`
-in the project root. You are ready to run the webapp locally:
+Install [Docker]. Then, run
+
+    $ make docker
+
+to start a shell with all of the project dependencies already
+installed. At this point you can run the webapp locally by running
 
     $ make dev
 
 This will build the static files and serve them to `localhost:5000`;
-to use a different port, just export `PORT`. By default, the webapp
-expects the API to be running at
+to use a different port, just pass e.g. `PORT=5001` as an argument to
+`make dev`. By default, the webapp expects the API to be running at
 `https://hyperschedule.herokuapp.com`. If you're doing development on
-the API locally, you'll want to override this by exporting `API_URL`
-to `http://localhost:3000` (or similar). If exporting to `localhost`,
-don't forget the `http`, since otherwise Chrome's CORS policy will
-block the request.
+the API locally, you'll want to override this by passing e.g.
+`API_URL=http://localhost:3000` (or similar). If exporting to
+`localhost`, don't forget the `http`, since otherwise Chrome's CORS
+policy will block the request.
 
 Other Makefile targets are available:
 
@@ -61,7 +65,7 @@ and replacing the string `rrule` with `RRULE` in one place to work
 around [an issue](https://github.com/nwcell/ics.js/issues/51). Is it
 horrifying? Yes. But does it work? Yes.
 
+[docker]: https://www.docker.com/
 [heroku]: https://dashboard.heroku.com/apps/hyperschedule
 [netlify]: https://app.netlify.com/sites/hyperschedule/overview
 [scraper]: https://github.com/MuddCreates/hyperschedule-scraper
-[yarn]: https://yarnpkg.com/en/
