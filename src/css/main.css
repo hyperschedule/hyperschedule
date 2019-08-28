@@ -8,549 +8,550 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 
 * {
-    font-family: "Roboto", sans-serif !important;
-    border-radius: 0 !important;
+  font-family: "Roboto", sans-serif !important;
+  border-radius: 0 !important;
 }
 
 .btn {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .btn:disabled {
-    cursor: auto;
+  cursor: auto;
 }
 
 .dropdown-menu {
-    min-width: 0;
-    padding: 0;
+  min-width: 0;
+  padding: 0;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .placeholder {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .toolbar {
-    display: flex;
-    padding: 0;
-    margin: 0 1em;
+  display: flex;
+  padding: 0;
+  margin: 0 1em;
 }
 
 /** Page layout **/
 
 html {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 /** Column layout **/
 
 .two-column-left {
-    float: left;
-    height: 100%;
-    width: 68%;
+  float: left;
+  height: 100%;
+  width: 68%;
 }
 
 .two-column-right {
-    float: right;
-    height: 100%;
-    width: 32%;
+  float: right;
+  height: 100%;
+  width: 32%;
 }
 
 /*** Course search/schedule column ***/
 
 #course-search-schedule-column {
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-#course-search-toggle-wrapper, #schedule-toggle-wrapper {
-    flex-grow: 1;
-    flex-basis: 0;
+#course-search-toggle-wrapper,
+#schedule-toggle-wrapper {
+  flex-grow: 1;
+  flex-basis: 0;
 }
 
 #course-search-toggle {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    display: block;
-    margin: 0 auto;
-    width: 100%;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
 }
 
 #schedule-toggle {
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    display: block;
-    margin: 0 auto;
-    width: 100%;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
 }
 
 #schedule-column {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 /** Course search **/
 
 #course-search-column {
-    flex-basis: 0;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+  flex-basis: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 #course-search-column.hidden {
-    display: none;
+  display: none;
 }
 
 #course-search-results {
-    overflow-y: auto;
-    flex-basis: 0;
-    flex-grow: 1;
-    position: relative;
+  overflow-y: auto;
+  flex-basis: 0;
+  flex-grow: 1;
+  position: relative;
 }
 
 #course-search-results-list {
-    height: 0;
+  height: 0;
 }
 
 #course-search-results-placeholder {
-    position: relative;
+  position: relative;
 }
 
 /*** Course search header bar ***/
 
 #course-search-bar {
-    table-layout: auto !important;
-    margin-top: 10px !important;
-    margin-bottom: 5px !important;
+  table-layout: auto !important;
+  margin-top: 10px !important;
+  margin-bottom: 5px !important;
 }
 
 #course-search-course-name-input-wrapper {
-    display: table-cell;
-    width: 100%;
+  display: table-cell;
+  width: 100%;
 }
 
 #filter-button-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 10px;
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;
 }
 
 #filter-button {
-    display: table-cell;
-    margin: 0 auto;
+  display: table-cell;
+  margin: 0 auto;
 }
 
 #help-button-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 10px;
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;
 }
 
 #help-button {
-    display: table-cell;
-    margin: 0 auto;
+  display: table-cell;
+  margin: 0 auto;
 }
 
 .checkbox-menu li label {
-    display: block;
-    padding: 3px 10px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-    margin:0;
-    transition: background-color .4s ease;
+  display: block;
+  padding: 3px 10px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+  margin: 0;
+  transition: background-color 0.4s ease;
 }
 .checkbox-menu li input {
-    margin: 0px 5px;
-    top: 2px;
-    position: relative;
+  margin: 0px 5px;
+  top: 2px;
+  position: relative;
 }
 
 .checkbox-menu li label:hover,
 .checkbox-menu li label:focus {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 .checkbox-menu li.active label:hover,
 .checkbox-menu li.active label:focus {
-    background-color: #b8b8ff;
+  background-color: #b8b8ff;
 }
 
 /*** Course search end of list ***/
 
 #course-search-results-end {
-    margin: .5em 1em 1em 1em;
-    text-align: center;
-    color: gray;
+  margin: 0.5em 1em 1em 1em;
+  text-align: center;
+  color: gray;
 }
 
 /** Selected courses **/
 
 #selected-courses-column {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
-    table-layout: auto;
+  table-layout: auto;
 }
 
 .selected-courses-bar-btn {
-    display: block;
-    float: right;
-    margin: 0 auto;
+  display: block;
+  float: right;
+  margin: 0 auto;
 }
 
 #github-link {
-    display: table-cell;
-    text-align: left;
-    vertical-align: middle;
-    width: 100%;
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  width: 100%;
 }
 
 #import-export-data-button-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 10px;
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;
 }
 
 #print-dropdown-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 10px;
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;
 }
 
 .print-btn {
-    white-space: nowrap;
-    padding: 5px;
-    min-width: 0;
-    cursor: pointer;
-    background-.color: white;
+  white-space: nowrap;
+  padding: 5px;
+  min-width: 0;
+  cursor: pointer;
+  background-.color: white;
 }
 
 .print-btn:hover {
-    background-color: #e9ecef;
+  background-color: #e9ecef;
 }
 
 #settings-button-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 10px;
-    padding-top: 0px;
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;
+  padding-top: 0px;
 }
 
 #settings-button {
-    margin-right: 3px;
-    background-color: transparent;
-    color: #007bff;
-    font-size: 30px;
-    line-height: 1;
-    padding: 0px 2px;
+  margin-right: 3px;
+  background-color: transparent;
+  color: #007bff;
+  font-size: 30px;
+  line-height: 1;
+  padding: 0px 2px;
 }
 
 #settings-button:hover {
-    color: #0069d9;
+  color: #0069d9;
 }
 
 /*** Course description box ***/
 
 #selected-courses-wrapper {
-    margin-top: 8px;
-    overflow-y: auto;
+  margin-top: 8px;
+  overflow-y: auto;
 }
 
 #course-description-box-outer {
-    display: block;
-    border: 1px solid transparent;
-    height: 0px;
-    text-align: center;
-    /*margin-top: 10px;
+  display: block;
+  border: 1px solid transparent;
+  height: 0px;
+  text-align: center;
+  /*margin-top: 10px;
     margin-bottom: 5px;*/
-    overflow: hidden;
-    transition: height .2s, border .2s;
+  overflow: hidden;
+  transition: height 0.2s, border 0.2s;
 }
 
 #course-description-box-outer.course-description-box-visible {
-    border: 1px solid #cccccc;
+  border: 1px solid #cccccc;
 }
 
 #course-description-box {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 #course-description-box p {
-    font-size: small;
-    lpine-height: 100%;
-    margin: 0px 10px;
+  font-size: small;
+  lpine-height: 100%;
+  margin: 0px 10px;
 }
 
 #course-description-box hr {
-    font-size: small;
-    line-height: 100%;
-    margin: 10px 0;
+  font-size: small;
+  line-height: 100%;
+  margin: 10px 0;
 }
 
 /*** Schedule ***/
 
 #schedule-table {
-    border: none;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 5px;
-    position: relative;
-    table-layout: fixed;
-    text-align: center;
-    width: 95%;
-    border-collapse: collapse;
+  border: none;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+  position: relative;
+  table-layout: fixed;
+  text-align: center;
+  width: 95%;
+  border-collapse: collapse;
 }
 
 #schedule-table th {
-    height: 60px;
+  height: 60px;
 }
 
 #schedule-table td {
-    border: 1px solid #bbbbbb;
-    height: 60px;
+  border: 1px solid #bbbbbb;
+  height: 60px;
 }
 
 .schedule-slot-wrapper {
-    cursor: pointer;
-    overflow: hidden;
-    position: absolute;
-    width: 16.6667%;
+  cursor: pointer;
+  overflow: hidden;
+  position: absolute;
+  width: 16.6667%;
 }
 
 .schedule-slot {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
 }
 
 .schedule-slot-starred {
-    /* nothing to do here */
+  /* nothing to do here */
 }
 
 .schedule-slot-starred::before {
-    content: "";
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    width: 0;
-    height: 0;
-    border-top: solid #bbbbbb 1em;
-    border-right: solid transparent 1em;
-    mix-blend-mode: multiply;
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 0;
+  height: 0;
+  border-top: solid #bbbbbb 1em;
+  border-right: solid transparent 1em;
+  mix-blend-mode: multiply;
 }
 
 .schedule-slot-text-wrapper {
-    font-size: 75%;
-    line-height: 125%;
-    margin: 0;
-    padding: 5px 5px;
+  font-size: 75%;
+  line-height: 125%;
+  margin: 0;
+  padding: 5px 5px;
 }
 
 .schedule-slot-text-wrapper p {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .schedule-slot-text-wrapper .schedule-slot-course-code {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 /**** Credit count ****/
 
 #credit-count-box {
-    margin-bottom: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 #credit-count {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
 }
 
 /** Course listings **/
 
 .courses-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .course-list .course-box {
-    margin: 0px 1em;
+  margin: 0px 1em;
 }
 
 #course-search-results-list .course-box {
-    position: absolute;
+  position: absolute;
 }
 
 .course-box {
-    cursor: pointer;
-    margin: 0 auto;
-    padding: 6px 0;
-    position: relative;
-    width: 100%;
-    font-size: 0.8em;
+  cursor: pointer;
+  margin: 0 auto;
+  padding: 6px 0;
+  position: relative;
+  width: 100%;
+  font-size: 0.8em;
 }
 
 .course-box-content {
-    display: block;
-    margin: 0 1em;
-    position: relative;
-    padding-left: 5px;
+  display: block;
+  margin: 0 1em;
+  position: relative;
+  padding-left: 5px;
 }
 
 .course-box-text {
-    display: inline-block;
-    margin: 0;
-    padding-top: 5px;
-    padding-bottom: 5px;
+  display: inline-block;
+  margin: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .course-box-text .course-box-course-code {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .course-box-text .course-box-course-code::after {
-    content: " ";
+  content: " ";
 }
 
 .course-box-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    display: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: none;
 }
 
 /*** Course search listing ***/
 
 #course-search-column .course-box-select-label {
-    margin-left: 5px;
-    margin-right: 5px;
-    display: none;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: none;
 }
 
 #course-search-column .course-box-star-label {
-    display: none;
+  display: none;
 }
 
 #course-search-column .course-box-text {
-    padding-left: 5px;
-    padding-right: 30px;
+  padding-left: 5px;
+  padding-right: 30px;
 }
 
 #course-search-column .course-box-add-button {
-    display: block;
-    height: 50px;
-    margin-top: -25px;
-    line-height: 50px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 25px;
+  display: block;
+  height: 50px;
+  margin-top: -25px;
+  line-height: 50px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 25px;
 }
 
 /*** Selected courses listing ***/
 
 #selected-courses-column .course-box-select-label {
-    display: block;
-    height: 50px;
-    margin-top: -25px;
-    position: absolute;
-    line-height: 50px;
-    left: 5px;
-    top: 50%;
-    width: 25px;
-    text-align: center;
+  display: block;
+  height: 50px;
+  margin-top: -25px;
+  position: absolute;
+  line-height: 50px;
+  left: 5px;
+  top: 50%;
+  width: 25px;
+  text-align: center;
 }
 
 #selected-courses-column .course-box-select-icon {
-    cursor: pointer;
-    font-size: 1.2em;
+  cursor: pointer;
+  font-size: 1.2em;
 }
 
 #selected-courses-column .course-box-select-toggle {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 #selected-courses-column .course-box-star-toggle {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 #selected-courses-column .course-box-star-label {
-    visibility: hidden;
-    display: block;
-    width: 25px;
-    height: 50px;
-    left: 30px;
-    margin-top: -25px;
-    line-height: 50px;
-    position: absolute;
-    top: 50%;
-    text-align: center;
+  visibility: hidden;
+  display: block;
+  width: 25px;
+  height: 50px;
+  left: 30px;
+  margin-top: -25px;
+  line-height: 50px;
+  position: absolute;
+  top: 50%;
+  text-align: center;
 }
 
 #selected-courses-column .course-box-star-label.star-visible {
-    visibility: visible;
+  visibility: visible;
 }
 
 #selected-courses-column .course-box-star-icon {
-    font-size: 1.3em;
-    cursor: pointer;
+  font-size: 1.3em;
+  cursor: pointer;
 }
 
 #selected-courses-column .course-box-text {
-    padding-left: 55px;
-    padding-right: 30px;
+  padding-left: 55px;
+  padding-right: 30px;
 }
 
 #selected-courses-column .course-box-remove-button {
-    display: block;
-    height: 50px;
-    margin-top: -25px;
-    line-height: 50px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 25px;
+  display: block;
+  height: 50px;
+  margin-top: -25px;
+  line-height: 50px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 25px;
 }
 
 /** Modals **/
 /*** Import/export modal ***/
 
 #import-export-text-area {
-    font-family: monospace;
-    min-height: 100px;
+  font-family: monospace;
+  min-height: 100px;
 }
 
 #import-export-copy-button::after {
-    content: "To clipboard";
+  content: "To clipboard";
 }
 
 #import-export-copy-button.copy-button-copied::after {
-    content: "Copied!";
+  content: "Copied!";
 }
 
 #import-export-copy-button.copy-button-error::after {
-    content: "Couldn't copy";
+  content: "Couldn't copy";
 }
 
 /* Local Variables:           */

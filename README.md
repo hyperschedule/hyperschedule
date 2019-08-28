@@ -34,20 +34,16 @@ policy will block the request.
 
 Other Makefile targets are available:
 
-    $ make help
-    usage:
-      make clean       Remove build artifacts
-      make hooks       Install Git hooks
-      make build       Compile JavaScript for development
-      make build-prod  Compile JavaScript for production
-      make server      Start development server
-      make watch       Automatically recompile JavaScript on file changes
-      make dev         Start development server and automatically recompile JavaScript
-      make docker      Start shell or run command (e.g. make docker CMD="make dev")
-      make format      Auto-format JavaScript
-      make lint        Verify that all code is correctly formatted
-      make ci          Run tests that CI will run
-      make help        Show this message
+    $ usage:
+      make clean   Remove build artifacts
+      make hooks   Install Git hooks
+      make build   Compile JavaScript for production
+      make dev     Start development server and automatically recompile JavaScript
+      make docker  Start shell or run command (e.g. make docker CMD="make dev")
+      make format  Auto-format JavaScript
+      make lint    Verify that all code is correctly formatted
+      make ci      Run tests that CI will run
+      make help    Show this message
 
 ### Deploy
 
