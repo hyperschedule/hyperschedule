@@ -58,8 +58,10 @@ file `ics.deps.min.js` from the repository
 https://github.com/nwcell/ics.js at tag
 0.2.0](https://github.com/nwcell/ics.js/blob/0.2.0/ics.deps.min.js)
 and replacing the string `rrule` with `RRULE` in one place to work
-around [an issue](https://github.com/nwcell/ics.js/issues/51). Is it
-horrifying? Yes. But does it work? Yes.
+around [an issue](https://github.com/nwcell/ics.js/issues/51) and
+replacing `var ics=` with `module.exports = ` to work around another
+issue where Parcel changes global variable names of included scripts.
+Is it horrifying? Yes. But does it work? Yes.
 
 [docker]: https://www.docker.com/
 [heroku]: https://dashboard.heroku.com/apps/hyperschedule

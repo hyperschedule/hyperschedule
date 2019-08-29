@@ -4,6 +4,10 @@
 // M-x occur with the following query: ^\(///+\|const\|\(async \)?function\|let\)
 
 /// Globals
+//// Modules
+
+const ics = require("/js/vendor/ics-0.2.0.min.js");
+
 //// Data constants
 
 const millisecondsPerHour = 3600 * 1000;
