@@ -43,40 +43,43 @@
       </div>
       <div id="course-search-column">
         <div id="course-search-bar" class="toolbar">
-          <div id="course-search-course-name-input-wrapper">
-            <input type="text" id="course-search-course-name-input" class="form-control" placeholder="Search by name, course code, etc.">
-          </div>
+          <input
+            type="text"
+            id="course-search-course-name-input"
+            class="form-control"
+            placeholder="Search by name, course code, etc.">
           <div id="filter-button-wrapper" class="dropdown">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="filter-button" data-toggle="dropdown">
-                Filters
-              </button>
-              <ul class="dropdown-menu checkbox-menu allow-focus">
-                <li>
-                  <label id="closed-courses-toggle-label">
-                    <input id="closed-courses-toggle" type="checkbox"> Show closed courses
-                  </label>
-                </li>
-                <li>
-                  <label id="all-conflicting-courses-toggle-label">
-                    <input id="all-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with schedule
-                  </label>
-                </li>
-                <li>
-                  <label id="star-conflicting-courses-toggle-label">
-                    <input id="star-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with starred courses
-                  </label>
-                </li>
-              </ul>
+            <button
+              class="btn btn-primary dropdown-toggle"
+              id="filter-button"
+              data-toggle="dropdown">
+              Filters
+            </button>
+            <ul class="dropdown-menu checkbox-menu allow-focus">
+              <li>
+                <label id="closed-courses-toggle-label">
+                  <input id="closed-courses-toggle" type="checkbox"> Show closed courses
+                </label>
+              </li>
+              <li>
+                <label id="all-conflicting-courses-toggle-label">
+                  <input id="all-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with schedule
+                </label>
+              </li>
+              <li>
+                <label id="star-conflicting-courses-toggle-label">
+                  <input id="star-conflicting-courses-toggle" type="checkbox"> Hide courses conflicting with starred courses
+                </label>
+              </li>
+            </ul>
           </div>
-            
-          <div id="help-button-wrapper">
-            <button type="button" id="help-button" class="btn btn-primary" data-toggle="modal" data-target="#help-modal">How does it work?</button>
-          </div>
+
+          <button type="button" id="help-button" class="btn btn-primary" data-toggle="modal" data-target="#help-modal">How does it work?</button>
         </div>
 
         <div id="course-search-results">
-          <div id="course-search-results-placeholder"></div>
           <ul id="course-search-results-list" class="courses-list"></ul>
+          <div id="course-search-results-placeholder"></div>
           <div id="course-search-results-end"></div>
         </div>
       </div>
@@ -121,26 +124,42 @@
           View on GitHub
         </a>
         <div id="import-export-data-button-wrapper">
-          <button type="button" id="import-export-data-button" class="btn btn-primary selected-courses-bar-btn">Import/Export Data</button>
+          <button
+          id="import-export-data-button"
+          class="btn btn-primary">
+          Import/Export Data
+          </button>
         </div>
         <div id="print-dropdown-wrapper" class="dropdown">
-          <button type="button" id="print-dropdown" class="btn btn-primary dropdown-toggle selected-courses-bar-btn" data-toggle="dropdown">Print</button>
+          <button
+            id="print-dropdown"
+            class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown">
+            Print
+          </button>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li class="print-btn" id="print-button-all"><a>Print All</a></li>
-            <li class="print-btn" id="print-button-starred"><a>Print Starred</a></li>
+            <li class="print-btn" id="print-button-all">
+              <a>Print All</a>
+            </li>
+            <li class="print-btn" id="print-button-starred">
+              <a>Print Starred</a>
+            </li>
           </ul>
         </div>
         <div id="settings-button-wrapper">
-          <button type="button" id="settings-button" class="btn selected-courses-bar-btn"><i class="icon ion-gear-b"></i></button>
+          <button
+            type="button"
+            id="settings-button"
+            class="btn">
+            <i class="icon ion-gear-b"></i>
+          </button>
         </div>
       </div>
 
+      <div id="course-description-box-outer">
+        <div id="course-description-box"></div>
+      </div>
       <div id="selected-courses-wrapper">
-        <div id="course-description-box-outer" class="toolbar">
-          <div id="course-description-box">
-          </div>
-        </div>
-
         <ul id="selected-courses-list" class="sortable-list courses-list">
         </ul>
       </div>
@@ -239,20 +258,20 @@
     </div>
 
     <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"    integrity="sha384-Ui1pvNxCzO7LqnfgsWJ2ndsgpJPrWVTg7DCIag+do29np24E7Jyy6A09M3JUuLQf" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"      integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.6.3/html.sortable.min.js" integrity="sha384-McmwXqJoBon4wsJiVtB9S/zYH9D0Vt5lKjayJuj/6mlylXYopb3bKj4gXV1dbq2W" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"       integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"     integrity="sha384-/fwzB6+UmLHGu4Y0cOi5r8tRXd36OVkdBgohrKfMQOAhnH6LrAX6aEOFmqebDSk8" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.min.js"            integrity="sha384-j/yjQ26lM3oABUyp5sUcxbbLK/ECT6M4bige54dRtJcbhk+j6M8GAt+ZJYPK3q/l" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.min.js"             integrity="sha384-FvUg0oOjwQ1uec6J22LkHkEihYZfQYU5BaPKoUpt5OUVr7+CKyX2o5NC/fOqFGih" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"                                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"          integrity="sha384-2HWZ0KJxkQ3nhRpHPzk4AO2iIy1S8rSGwN5MpMS/xf34mqOahLqEbqwvdk48EnEv" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.fp.min.js"       integrity="sha384-zhq5RNH3QOo8ctQjW/EV797YYDamuYSJKSkVPf4ahE2hc1rogVtjIfEQsRpTy7l5" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.10.3/math.min.js"                integrity="sha384-d1Hwkp6yS5/5wx+7N1JJGcXznjb7sSujpGdE6028s1QFCw8dhwG9iM9DBDrG22bV" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"                 integrity="sha384-l7aOEgTYxgJ0nn2MziQWZCvuvJ2PtNcP05R4QwEoHW+kIS1gFpzupcQ7WhAdRKuq" crossorigin="anonymous"></script>
-    <script src="js/vendor/ics-0.2.0.min.js"></script>
-    <script src="js/hyperschedule.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"    integrity="sha384-Ui1pvNxCzO7LqnfgsWJ2ndsgpJPrWVTg7DCIag+do29np24E7Jyy6A09M3JUuLQf" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"      integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.6.3/html.sortable.min.js" integrity="sha384-McmwXqJoBon4wsJiVtB9S/zYH9D0Vt5lKjayJuj/6mlylXYopb3bKj4gXV1dbq2W" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"       integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"     integrity="sha384-/fwzB6+UmLHGu4Y0cOi5r8tRXd36OVkdBgohrKfMQOAhnH6LrAX6aEOFmqebDSk8" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.min.js"            integrity="sha384-j/yjQ26lM3oABUyp5sUcxbbLK/ECT6M4bige54dRtJcbhk+j6M8GAt+ZJYPK3q/l" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.min.js"             integrity="sha384-FvUg0oOjwQ1uec6J22LkHkEihYZfQYU5BaPKoUpt5OUVr7+CKyX2o5NC/fOqFGih" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"                                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"          integrity="sha384-2HWZ0KJxkQ3nhRpHPzk4AO2iIy1S8rSGwN5MpMS/xf34mqOahLqEbqwvdk48EnEv" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.fp.min.js"       integrity="sha384-zhq5RNH3QOo8ctQjW/EV797YYDamuYSJKSkVPf4ahE2hc1rogVtjIfEQsRpTy7l5" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.10.3/math.min.js"                integrity="sha384-d1Hwkp6yS5/5wx+7N1JJGcXznjb7sSujpGdE6028s1QFCw8dhwG9iM9DBDrG22bV" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"                 integrity="sha384-l7aOEgTYxgJ0nn2MziQWZCvuvJ2PtNcP05R4QwEoHW+kIS1gFpzupcQ7WhAdRKuq" crossorigin="anonymous"></script>
+      <script src="js/vendor/ics-0.2.0.min.js"></script>
+      <script src="js/hyperschedule.js"></script>
   </body>
 </html>

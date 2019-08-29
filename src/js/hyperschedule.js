@@ -722,8 +722,6 @@ async function retrieveAPI(endpoint)
 
 function attachListeners()
 {
-  window.onload = onResize();
-
   let ent = createCourseEntity("placeholder");
   courseSearchResultsList.appendChild(ent);
   gCourseEntityHeight = ent.clientHeight;
@@ -760,7 +758,6 @@ function attachListeners()
   });
 
   courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
-  window.addEventListener("resize", rerenderCourseSearchResults);
 
   for (let i = 0; conflictCoursesRadios[i]; i++) {
     conflictCoursesRadios[i].addEventListener("click", () => {
@@ -769,8 +766,15 @@ function attachListeners()
     })
   }
 
+  // DO NOT use Javascript size computations for ANYTHING ELSE!  The
+  // _only_ reason we use Javascript to set the course description box
+  // height is to leverage CSS transitions to animate the resizing of
+  // the course description; in _all other cases_, especially for
+  // static layout calculations, use CSS Flexbox!!!
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
-  window.addEventListener("resize", onResize);
+
+  // Re-render virtualized list on viewport resizes.
+  window.addEventListener("resize", rerenderCourseSearchResults);
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
@@ -788,13 +792,6 @@ function attachListeners()
     importExportCopyButton.classList.remove("copy-button-copied");
     importExportCopyButton.classList.remove("copy-button-error");
   });
-}
-
-function onResize() {
-  updateSearchScheduleColumn();
-  updateSelectedCoursesWrapper();
-  updateSelectedCoursesBar();
-  updateCourseSearchBar();
 }
 
 //// DOM element creation
@@ -1264,101 +1261,6 @@ function updateCourseDescriptionBoxHeight() {
   }
   courseDescriptionBoxOuter.style.height =
     "" + courseDescriptionBox.scrollHeight + "px";
-
-  courseDescriptionBoxOuter.style.marginBottom = "9px";
-}
-
-function updateCourseSearchBar() {
-  const courseSearchInputWrapper = document.getElementById("course-search-course-name-input-wrapper");
-  const helpButtonWrapper = document.getElementById("help-button-wrapper");
-  const helpButton = document.getElementById("help-button");
-  const filterButtonWrapper = document.getElementById("filter-button-wrapper");
-  const filterButton = document.getElementById("filter-button");
-
-  // default value
-  let tableValue = "table-cell";
-  let marginValue = "0 auto";
-
-  let minSearchInputWidth = 100;
-  if (courseSearchColumn.offsetWidth < 
-    (minSearchInputWidth + filterButton.offsetWidth + helpButton.offsetWidth)) {
-    tableValue = "table-row";
-    marginValue = "5px auto";
-  }
-  courseSearchInputWrapper.style.display = tableValue;
-  courseSearchInput.style.margin = marginValue;
-  helpButtonWrapper.style.display = tableValue;
-  helpButton.style.margin = marginValue;
-  filterButtonWrapper.style.display = tableValue;
-  filterButton.style.margin = marginValue
-}
-
-function updateSelectedCoursesBar() {
-  const githubLink = document.getElementById("github-link");
-  const importExportButtonWrapper = document.getElementById("import-export-data-button-wrapper");
-  const printDropdownWrapper = document.getElementById("print-dropdown-wrapper");
-  const settingsButtonWrapper = document.getElementById("settings-button-wrapper");
-
-  // default values
-  let tableValue = "table-cell";
-  let floatValue = "right";
-  let marginValue = "0 auto";
-  let settingsButtonMarginValue = "0 3px 0 auto";
-  let rightButtonsPaddingLeftValue = "10px";
-
-  let linkWidth = 100;
-  if (selectedCoursesColumn.offsetWidth <
-    (linkWidth + importExportDataButton.offsetWidth 
-      + printDropdown.offsetWidth + settingsButton.offsetWidth)) {
-    tableValue = "table-row";
-    floatValue = "left";
-    marginValue = "5px auto";
-    settingsButtonMarginValue = "0 5px 0 auto";
-    rightButtonsPaddingLeftValue = "0px";
-  }
-  githubLink.style.display = tableValue;
-  importExportButtonWrapper.style.display = tableValue;
-  importExportDataButton.style.float = floatValue;
-  importExportDataButton.style.margin = marginValue;
-  printDropdownWrapper.style.display = tableValue;
-  printDropdownWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  printDropdown.style.float = floatValue; //TODO
-  printDropdown.style.margin = marginValue;
-  settingsButtonWrapper.style.display = tableValue;
-  settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  settingsButton.style.float = floatValue;
-  settingsButton.style.margin = settingsButtonMarginValue;
-}
-
-function updateSearchScheduleColumn() {
-  const searchScheduleToggleBar = document.getElementById("course-search-schedule-toggle-bar");
-  const courseSearchBar = document.getElementById("course-search-bar");
-  const columnPaddingTop = 20;
-
-  const placeholderHeight = 50;
-  const listHeight = courseSearchScheduleColumn.offsetHeight
-    - columnPaddingTop
-    - searchScheduleToggleBar.offsetHeight
-    - courseSearchBar.offsetHeight
-    - placeholderHeight;
-
-  const scheduleHeight = courseSearchScheduleColumn.offsetHeight
-    - columnPaddingTop
-    - searchScheduleToggleBar.offsetHeight;
-  scheduleColumn.style.height = "" + scheduleHeight + "px";
-}
-
-function updateSelectedCoursesWrapper() {
-  const selectedCoursesWrapper = document.getElementById("selected-courses-wrapper");
-  const selectedCoursesBar = document.getElementById("selected-courses-bar");
-
-  const columnPaddingTop = 20;
-  const wrapperMarginTop = 8;
-  const wrapperHeight = selectedCoursesColumn.offsetHeight
-    - columnPaddingTop
-    - selectedCoursesBar.offsetHeight
-    - wrapperMarginTop;
-  selectedCoursesWrapper.style.height = "" + wrapperHeight + "px";
 }
 
 ///// DOM updates miscellaneous
