@@ -21,6 +21,10 @@ const apiURL = process.env.API_URL || "https://hyperschedule.herokuapp.com";
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
+const filterKeywords = 
+      {"dept:": ["dept:", "department:"],
+       "college:": ["college", "col:", "school:", "sch:"]};
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
@@ -520,11 +524,16 @@ function courseMatchesSearchQuery(course, query) {
   return true;
 }
 
-function coursePassesTextFilters(course, textFilters) {
-  if (textFilters.department) {
-    if (!course.courseCode.split(" ")[0].match(textFilters.department)) {
-      return false;
-    }
+function coursePassesTextFilters(course, textFilters)
+{
+  const lowerCourseCode = course.courseCode.toLowerCase();
+  const dept = lowerCourseCode.split(" ")[0];
+  const col = lowerCourseCode.split(" ")[2].split("-")[0];
+
+  if ((textFilters["dept:"] && !dept.match(textFilters["dept:"]))
+    || (textFilters["college:"] && !col.match(textFilters["college:"])))
+  {
+    return false;
   }
   return true;
 }
@@ -1035,15 +1044,20 @@ function createSlotEntities(course, slot) {
 
 function processSearchText() {
   const searchText = courseSearchInput.value.trim().split(/\s+/);
-  const filterKeywords = ["dept:"];
+  let filterKeywordsValues = [];
+  for (let key of Object.keys(filterKeywords)) 
+  {
+    filterKeywordsValues = filterKeywordsValues.concat(filterKeywords[key]);
+  }
   let filtersText = [];
   let queryText = [];
-  for (let text of searchText) {
-    if (
-      _.some(filter => {
-        return text.includes(filter);
-      }, filterKeywords)
-    ) {
+
+  for (let text of searchText)
+  {
+    text = text.toLowerCase();
+    if (_.some(filter => {
+      return text.includes(filter);
+    },filterKeywordsValues)) {
       filtersText.push(text);
     } else {
       queryText.push(text);
@@ -1064,10 +1078,22 @@ function getSearchQuery(searchTextArray) {
 
 function getSearchTextFilters(filtersTextArray) {
   let filter = {};
-  for (let text of filtersTextArray) {
-    if (text.slice(0, 5) == "dept:") {
-      filter.department = new RegExp(quoteRegexp(text.split(":")[1]), "i");
+  for (let text of filtersTextArray)
+  {
+    const keyword = text.split(":")[0] + ":";
+    const filterText = text.split(":")[1];
+    if (!(keyword in Object.keys(filterKeywords))) 
+    {
+      for (let key of Object.keys(filterKeywords)) 
+      {
+        if (filterKeywords[key].includes(keyword)) 
+        {
+          keyword = key;
+          break;
+        }
+      }
     }
+    filter[keyword] = filterText;
   }
   return filter;
 }
@@ -1293,7 +1319,7 @@ function updateSelectedCoursesBar() {
   importExportDataButton.style.margin = marginValue;
   printDropdownWrapper.style.display = tableValue;
   printDropdownWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  printDropdown.style.float = floatValue; //TODO
+  printDropdown.style.float = floatValue;
   printDropdown.style.margin = marginValue;
   settingsButtonWrapper.style.display = tableValue;
   settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
