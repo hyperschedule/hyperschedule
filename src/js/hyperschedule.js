@@ -1151,7 +1151,9 @@ function updateCourseSearchResults() {
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
-              (gShowClosedCourses || !isCourseClosed(course))
+              (gShowClosedCourses || !isCourseClosed(course)) && 
+              ( !gHideStarredConflictingCourses || !courseConflictWithSchedule(course,true) ) && 
+              ( !gHideAllConflictingCourses || !courseConflictWithSchedule(course,false))
             );
           });
   }
