@@ -14,26 +14,36 @@ Claremont Colleges course catalog, is located [here][scraper].
 
 ## Local development
 
-Install [Yarn]. Then, install the NPM dependencies by running `yarn`
-in the project root. You are ready to run the webapp locally:
+Install [Docker]. Then, run
 
-    $ yarn dev
+    $ make docker
+
+to start a shell with all of the project dependencies already
+installed. At this point you can run the webapp locally by running
+
+    $ make dev
 
 This will build the static files and serve them to `localhost:5000`;
-to use a different port, just export `PORT`. By default, the webapp
-expects the API to be running at
+to use a different port, just pass e.g. `PORT=5001` as an argument to
+`make dev`. By default, the webapp expects the API to be running at
 `https://hyperschedule.herokuapp.com`. If you're doing development on
-the API locally, you'll want to override this by exporting `API_URL`
-to `http://localhost:3000` (or similar). If exporting to `localhost`,
-don't forget the `http`, since otherwise Chrome's CORS policy will
-block the request.
+the API locally, you'll want to override this by passing e.g.
+`API_URL=http://localhost:3000` (or similar). If exporting to
+`localhost`, don't forget the `http`, since otherwise Chrome's CORS
+policy will block the request.
 
-There are a few other Yarn tasks available, each runnable with `yarn
-<task>`. The `dev` task actually just runs `server` and `watch` in
-parallel. The `server` task serves the built static files, while
-`watch` compiles those files and recompiles when there is a change to
-the source. You can build just once with the `build` task, and remove
-the built files with the `clean` task.
+Other Makefile targets are available:
+
+    $ usage:
+      make clean   Remove build artifacts
+      make hooks   Install Git hooks
+      make build   Compile JavaScript for production
+      make dev     Start development server and automatically recompile JavaScript
+      make docker  Start shell or run command (e.g. make docker CMD="make dev")
+      make format  Auto-format JavaScript
+      make lint    Verify that all code is correctly formatted
+      make ci      Run tests that CI will run
+      make help    Show this message
 
 ### Deploy
 
@@ -48,10 +58,12 @@ file `ics.deps.min.js` from the repository
 https://github.com/nwcell/ics.js at tag
 0.2.0](https://github.com/nwcell/ics.js/blob/0.2.0/ics.deps.min.js)
 and replacing the string `rrule` with `RRULE` in one place to work
-around [an issue](https://github.com/nwcell/ics.js/issues/51). Is it
-horrifying? Yes. But does it work? Yes.
+around [an issue](https://github.com/nwcell/ics.js/issues/51) and
+replacing `var ics=` with `module.exports = ` to work around another
+issue where Parcel changes global variable names of included scripts.
+Is it horrifying? Yes. But does it work? Yes.
 
+[docker]: https://www.docker.com/
 [heroku]: https://dashboard.heroku.com/apps/hyperschedule
 [netlify]: https://app.netlify.com/sites/hyperschedule/overview
 [scraper]: https://github.com/MuddCreates/hyperschedule-scraper
-[yarn]: https://yarnpkg.com/en/

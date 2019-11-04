@@ -1,5 +1,7 @@
+.cache
 .netlify
 .tern-port
+dist
 node_modules
 out
 yarn-error.log
