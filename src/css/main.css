@@ -357,7 +357,7 @@ body {
 /**** Credit count ****/
 
 #credit-count-box {
-  justify-content: self;
+  justify-content: center;
 }
 
 #credit-count {
