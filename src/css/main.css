@@ -357,13 +357,10 @@ body {
 /**** Credit count ****/
 
 #credit-count-box {
-  margin-bottom: 10px !important;
+  justify-content: self;
 }
 
 #credit-count {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
 }
 
 /** Course listings **/
