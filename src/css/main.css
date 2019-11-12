@@ -403,6 +403,7 @@ body {
   z-index: 1;
   grid-column-end: span 1;
   display: grid;
+  overflow-y: hidden;
 }
 
 .schedule-slot {
