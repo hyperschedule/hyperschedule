@@ -978,57 +978,49 @@ function createSlotEntities(course, slot) {
         continue;
       }
 
-      const wrapper = document.createElement("div");
-      wrapper.style.gridColumnStart = Math.round(dayIndex + 2);
-      wrapper.style.gridRowStart = Math.round(timeSince8am * 12 + 2);
-      wrapper.style.gridRowEnd = "span " + Math.round(duration * 12);
-      wrapper.style.gridTemplateColumns =
-        "repeat(" + slot.scheduleTermCount + ", 1fr)";
-      wrapper.classList.add("schedule-slot-wrapper");
+      const wrapper = redom.el(
+        "div.schedule-slot-wrapper",
+        {
+          style: {
+            gridColumnStart: Math.round(dayIndex + 2),
+            gridRowStart: Math.round(timeSince8am * 12 + 2),
+            gridRowEnd: "span " + Math.round(duration * 12),
+            gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)"
+          },
+          onclick: () => setCourseDescriptionBox(course)
+        },
+        getConsecutiveRanges(slot.scheduleTerms).map(([left, right]) =>
+          redom.el(
+            "div",
+            {
+              class:
+                "schedule-slot" +
+                (course.starred ? " schedule-slot-starred" : ""),
+              style: {
+                gridColumnStart: left + 1,
+                gridColumnEnd: right + 1,
+                backgroundColor: getCourseColor(course)
+              }
+            },
+            [
+              redom.el("p.schedule-slot-text-wrapper", [
+                redom.el("p.schedule-slot-course-code", course.courseCode),
+                redom.el(
+                  "p.schedule-slot-course-name",
+                  course.courseName +
+                    " (" +
+                    course.courseSeatsFilled +
+                    "/" +
+                    course.courseSeatsTotal +
+                    ")"
+                )
+              ])
+            ]
+          )
+        )
+      );
 
-      for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
-        const div = document.createElement("div");
-        wrapper.appendChild(div);
-        div.style.gridColumnStart = left + 1;
-        div.style.gridColumnEnd = right + 1;
-
-        div.classList.add("schedule-slot");
-        if (course.starred) {
-          div.classList.add("schedule-slot-starred");
-        }
-
-        div.style["background-color"] = getCourseColor(course);
-
-        wrapper.addEventListener("click", () => {
-          setCourseDescriptionBox(course);
-        });
-
-        const courseCodeContainer = document.createElement("p");
-        const courseNameContainer = document.createElement("p");
-        const courseCodeNode = document.createTextNode(course.courseCode);
-        const courseNameNode = document.createTextNode(
-          course.courseName +
-            " (" +
-            course.courseSeatsFilled +
-            "/" +
-            course.courseSeatsTotal +
-            ")"
-        );
-        courseCodeContainer.classList.add("schedule-slot-course-code");
-        courseNameContainer.classList.add("schedule-slot-course-name");
-        courseCodeContainer.appendChild(courseCodeNode);
-        courseNameContainer.appendChild(courseNameNode);
-
-        const textContainer = document.createElement("p");
-        textContainer.classList.add("schedule-slot-text-wrapper");
-
-        textContainer.appendChild(courseCodeContainer);
-        textContainer.appendChild(courseNameContainer);
-
-        div.appendChild(textContainer);
-
-        entities.push(wrapper);
-      }
+      entities.push(wrapper);
     }
   }
   return entities;
