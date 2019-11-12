@@ -306,6 +306,7 @@ body {
   grid-row-end: span 1;
   font-weight: bold;
   font-size: 0.875rem;
+  overflow-x: hidden;
 }
 
 #schedule-table .schedule-day-column {
