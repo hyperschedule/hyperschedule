@@ -102,6 +102,13 @@ body {
 
 #schedule-column {
   overflow-y: auto;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+#schedule-column.hidden {
+  display: none;
 }
 
 /** Course search **/
@@ -287,40 +294,125 @@ body {
 /*** Schedule ***/
 
 #schedule-table {
-  border: none;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5px;
-  position: relative;
-  table-layout: fixed;
+  display: grid;
+  grid-template-columns: 4rem repeat(5, 1fr);
+  grid-template-rows: 2rem repeat(180, calc(4rem / 12));
+  margin: 0 1rem;
+}
+
+#schedule-table .schedule-day {
   text-align: center;
-  width: 95%;
-  border-collapse: collapse;
+  grid-row-start: 1;
+  grid-row-end: span 1;
+  font-weight: bold;
+  font-size: 0.875rem;
 }
 
-#schedule-table th {
-  height: 60px;
+#schedule-table .schedule-day-column {
+  grid-row-start: 2;
+  grid-row-end: -1;
 }
 
-#schedule-table td {
-  border: 1px solid #bbbbbb;
-  height: 60px;
+#schedule-table .schedule-day-column.odd {
+  background-color: whitesmoke;
+}
+
+#schedule-table .monday {
+  grid-column-start: calc(1 + 1);
+}
+#schedule-table .tuesday {
+  grid-column-start: calc(2 + 1);
+}
+#schedule-table .wednesday {
+  grid-column-start: calc(3 + 1);
+}
+#schedule-table .thursday {
+  grid-column-start: calc(4 + 1);
+}
+#schedule-table .friday {
+  grid-column-start: calc(5 + 1);
+}
+
+#schedule-table .schedule-hour {
+  grid-column-start: 1;
+  text-align: right;
+  font-size: 0.75rem;
+  opacity: 0.75;
+  margin-right: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 0;
+}
+
+#schedule-table .schedule-hour-row {
+  grid-column-start: 2;
+  grid-column-end: -1;
+  border-top: 1px solid black;
+  opacity: 0.125;
+}
+
+#schedule-table .schedule-hour-1 {
+  grid-row-start: calc((1 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-2 {
+  grid-row-start: calc((2 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-3 {
+  grid-row-start: calc((3 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-4 {
+  grid-row-start: calc((4 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-5 {
+  grid-row-start: calc((5 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-6 {
+  grid-row-start: calc((6 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-7 {
+  grid-row-start: calc((7 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-8 {
+  grid-row-start: calc((8 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-9 {
+  grid-row-start: calc((9 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-10 {
+  grid-row-start: calc((10 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-11 {
+  grid-row-start: calc((11 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-12 {
+  grid-row-start: calc((12 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-13 {
+  grid-row-start: calc((13 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-14 {
+  grid-row-start: calc((14 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-15 {
+  grid-row-start: calc((15 - 1) * 12 + 2);
 }
 
 .schedule-slot-wrapper {
-  cursor: pointer;
-  overflow: hidden;
-  position: absolute;
-  width: 16.6667%;
+  z-index: 1;
+  grid-column-end: span 1;
+  display: grid;
 }
 
 .schedule-slot {
+  overflow: hidden;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   justify-content: center;
+  text-align: center;
 }
 
 .schedule-slot-starred {

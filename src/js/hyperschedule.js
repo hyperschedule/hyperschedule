@@ -978,23 +978,19 @@ function createSlotEntities(course, slot) {
         continue;
       }
 
+      const wrapper = document.createElement("div");
+      wrapper.style.gridColumnStart = Math.round(dayIndex + 2);
+      wrapper.style.gridRowStart = Math.round(timeSince8am * 12 + 2);
+      wrapper.style.gridRowEnd = "span " + Math.round(duration * 12);
+      wrapper.style.gridTemplateColumns =
+        "repeat(" + slot.scheduleTermCount + ", 1fr)";
+      wrapper.classList.add("schedule-slot-wrapper");
+
       for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
-        const horizontalOffsetPercentage =
-          ((dayIndex + 1 + left / slot.scheduleTermCount) / 6) * 100;
-        const widthPercentage =
-          ((right - left + 1) / slot.scheduleTermCount / 6) * 100;
-        const style =
-          `top: ${verticalOffsetPercentage}%; ` +
-          `left: ${horizontalOffsetPercentage}%; ` +
-          `width: ${widthPercentage}%; ` +
-          `height: ${heightPercentage}%; `;
-
-        const wrapper = document.createElement("div");
-        wrapper.setAttribute("style", style);
-        wrapper.classList.add("schedule-slot-wrapper");
-
         const div = document.createElement("div");
         wrapper.appendChild(div);
+        div.style.gridColumnStart = left + 1;
+        div.style.gridColumnEnd = right + 1;
 
         div.classList.add("schedule-slot");
         if (course.starred) {
