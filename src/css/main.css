@@ -413,6 +413,7 @@ body {
   height: 100%;
   justify-content: center;
   text-align: center;
+  position: relative;
 }
 
 .schedule-slot-starred {
