@@ -172,6 +172,10 @@ function compareArrays(arr1, arr2) {
   }
 }
 
+function joinClasses(classes) {
+  return classes.join(" ");
+}
+
 // https://stackoverflow.com/a/29018745/3538165
 function binarySearch(ar, el, compare_fn) {
   var m = 0;
