@@ -808,18 +808,15 @@ function createCourseEntity(course, attrs) {
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
 
-  const listItem = document.createElement("li");
-  listItem.classList.add("course-box");
-
-  const listItemContent = document.createElement("div");
-  listItemContent.classList.add("course-box-content");
-  if (course !== "placeholder") {
-    listItemContent.style["background-color"] = getCourseColor(course);
-  }
-  listItemContent.addEventListener("click", () => {
-    setCourseDescriptionBox(course);
+  const listItemContent = redom.el("div.course-box-content", {
+    style:
+      course === "placeholder"
+        ? {}
+        : { backgroundColor: getCourseColor(course) },
+    onclick: () => setCourseDescriptionBox(course)
   });
-  listItem.appendChild(listItemContent);
+
+  const listItem = redom.el("li.course-box", [listItemContent]);
 
   const selectLabel = document.createElement("label");
   selectLabel.classList.add("course-box-select-label");
@@ -927,28 +924,29 @@ function createCourseEntity(course, attrs) {
   textBox.appendChild(courseNameNode);
 
   if (!alreadyAdded) {
-    const addButton = document.createElement("i");
-    addButton.classList.add("course-box-button");
-    addButton.classList.add("course-box-add-button");
-    addButton.classList.add("icon");
-    addButton.classList.add("ion-plus");
+    const addButton = redom.el(
+      "i.course-box-button.course-box-add-button.icon.ion-plus",
+      {
+        onclick: e => {
+          addCourse(course);
+          e.stopPropagation();
+        }
+      }
+    );
 
-    addButton.addEventListener("click", () => {
-      addCourse(course);
-    });
-    addButton.addEventListener("click", catchEvent);
     listItemContent.appendChild(addButton);
   }
 
-  const removeButton = document.createElement("i");
-  removeButton.classList.add("course-box-button");
-  removeButton.classList.add("course-box-remove-button");
-  removeButton.classList.add("icon");
-  removeButton.classList.add("ion-close");
-  removeButton.addEventListener("click", () => {
-    removeCourse(course);
-  });
-  removeButton.addEventListener("click", catchEvent);
+  const removeButton = redom.el(
+    "i.course-box-button.course-box-remove-button.icon.ion-close",
+    {
+      onclick: e => {
+        removeCourse(course);
+        e.stopPropagation();
+      }
+    }
+  );
+
   listItemContent.appendChild(removeButton);
 
   if (course === "placeholder") {
