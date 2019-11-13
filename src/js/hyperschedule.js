@@ -1196,7 +1196,9 @@ function updateSelectedCoursesList() {
   }
   for (let idx = 0; idx < gSelectedCourses.length; ++idx) {
     const course = gSelectedCourses[idx];
-    selectedCoursesList.appendChild(createCourseEntity(course, { idx }));
+    selectedCoursesList.appendChild(
+      createCourseEntity(course, { idx, alreadyAdded: true })
+    );
   }
   sortable(".sortable-list");
 }
