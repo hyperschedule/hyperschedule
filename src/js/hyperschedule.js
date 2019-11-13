@@ -812,156 +812,149 @@ function createCourseEntity(course, attrs) {
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
 
-  const listItemContent = redom.el("div.course-box-content", {
-    style:
-      course === "placeholder"
-        ? {}
-        : { backgroundColor: getCourseColor(course) },
-    onclick: () => setCourseDescriptionBox(course)
+  const selectIcon = redom.el("i", {
+    class: joinClasses([
+      "course-box-select-icon",
+      "icon",
+      !!course.selected
+        ? "ion-android-checkbox"
+        : "ion-android-checkbox-outline-blank"
+    ])
   });
 
-  const listItem = redom.el("li.course-box", [listItemContent]);
-
-  const selectLabel = document.createElement("label");
-  selectLabel.classList.add("course-box-select-label");
-
-  const selectIcon = document.createElement("i");
-  selectIcon.classList.add("course-box-select-icon");
-  selectIcon.classList.add("icon");
-  if (!!course.selected) {
-    selectLabel.classList.add("course-selected");
-    selectIcon.classList.add("ion-android-checkbox");
-  } else {
-    selectIcon.classList.add("ion-android-checkbox-outline-blank");
-  }
-
-  const selectToggle = document.createElement("input");
-  selectToggle.setAttribute("type", "checkbox");
-  selectToggle.classList.add("course-box-button");
-  selectToggle.classList.add("course-box-toggle");
-  selectToggle.classList.add("course-box-select-toggle");
-  selectToggle.checked = !!course.selected;
-  selectToggle.addEventListener("change", () => {
-    if (selectLabel.classList.contains("course-selected")) {
-      selectLabel.classList.remove("course-selected");
-      selectIcon.classList.remove("ion-android-checkbox");
-      selectIcon.classList.add("ion-android-checkbox-outline-blank");
-    } else {
-      selectLabel.classList.add("course-selected");
-      selectIcon.classList.remove("ion-android-checkbox-outline-blank");
-      selectIcon.classList.add("ion-android-checkbox");
-    }
-
-    toggleCourseSelected(course);
-  });
-  selectToggle.addEventListener("click", catchEvent);
-  selectLabel.addEventListener("click", catchEvent);
-  selectLabel.appendChild(selectToggle);
-  selectLabel.appendChild(selectIcon);
-  listItemContent.appendChild(selectLabel);
-
-  const starLabel = document.createElement("label");
-  starLabel.classList.add("course-box-star-label");
-
-  const starToggle = document.createElement("input");
-  starToggle.setAttribute("type", "checkbox");
-  starToggle.classList.add("course-box-button");
-  starToggle.classList.add("course-box-toggle");
-  starToggle.classList.add("course-box-star-toggle");
-
-  const starIcon = document.createElement("i");
-  starIcon.classList.add("course-box-star-icon");
-  starIcon.classList.add("icon");
-
-  if (course !== "placeholder") {
-    starLabel.classList.add("star-visible");
-  }
-  starToggle.checked = !!course.starred;
-  if (!!course.starred) {
-    starLabel.classList.add("star-checked");
-    starIcon.classList.add("ion-android-star");
-  } else {
-    starIcon.classList.add("ion-android-star-outline");
-  }
-  starToggle.addEventListener("change", () => {
-    if (starLabel.classList.contains("star-checked")) {
-      starLabel.classList.remove("star-checked");
-      starIcon.classList.remove("ion-android-star");
-      starIcon.classList.add("ion-android-star-outline");
-    } else {
-      starLabel.classList.add("star-checked");
-      starIcon.classList.remove("ion-android-star-outline");
-      starIcon.classList.add("ion-android-star");
-    }
-
-    toggleCourseStarred(course);
-  });
-  starToggle.addEventListener("click", catchEvent);
-  starLabel.addEventListener("click", catchEvent);
-
-  starLabel.appendChild(starToggle);
-  starLabel.appendChild(starIcon);
-  listItemContent.appendChild(starLabel);
-
-  const textBox = document.createElement("p");
-  textBox.classList.add("course-box-text");
-  listItemContent.appendChild(textBox);
-
-  let courseCode;
-  let text;
-  if (course === "placeholder") {
-    courseCode = "placeholder";
-    text = "placeholder";
-  } else {
-    courseCode = course.courseCode;
-    text = courseToString(course);
-  }
-
-  const courseCodeContainer = document.createElement("span");
-  const courseCodeNode = document.createTextNode(courseCode);
-  courseCodeContainer.classList.add("course-box-course-code");
-  courseCodeContainer.appendChild(courseCodeNode);
-
-  const courseNameNode = document.createTextNode(text);
-
-  textBox.appendChild(courseCodeContainer);
-  textBox.appendChild(courseNameNode);
-
-  if (!alreadyAdded) {
-    const addButton = redom.el(
-      "i.course-box-button.course-box-add-button.icon.ion-plus",
-      {
-        onclick: e => {
-          addCourse(course);
-          e.stopPropagation();
-        }
-      }
-    );
-
-    listItemContent.appendChild(addButton);
-  }
-
-  const removeButton = redom.el(
-    "i.course-box-button.course-box-remove-button.icon.ion-close",
+  const selectToggle = redom.el(
+    "input.course-box-button.course-box-toggle.course-box-select-toggle",
     {
-      onclick: e => {
-        removeCourse(course);
-        e.stopPropagation();
+      type: "checkbox",
+      checked: !!course.selected,
+      onchange: e => {
+        if (selectLabel.classList.contains("course-selected")) {
+          selectLabel.classList.remove("course-selected");
+          selectIcon.classList.remove("ion-android-checkbox");
+          selectIcon.classList.add("ion-android-checkbox-outline-blank");
+        } else {
+          selectLabel.classList.add("course-selected");
+          selectIcon.classList.remove("ion-android-checkbox-outline-blank");
+          selectIcon.classList.add("ion-android-checkbox");
+        }
+        toggleCourseSelected(course);
       }
-    }
+    },
+    [selectIcon]
   );
 
-  listItemContent.appendChild(removeButton);
+  const selectLabel = redom.el(
+    "label",
+    {
+      class: joinClasses(
+        ["course-box-select-label"].concat(
+          !!course.selected ? ["course-selected"] : []
+        )
+      ),
+      onclick: catchEvent
+    },
+    [selectIcon, selectToggle]
+  );
 
-  if (course === "placeholder") {
-    listItem.classList.add("placeholder");
-  }
+  const starToggle = redom.el("input", {
+    type: "checkbox",
+    class: joinClasses([
+      "course-box-button",
+      "course-box-toggle",
+      "course-box-star-toggle"
+    ]),
+    checked: !!course.starred,
+    onchange: () => {
+      if (starLabel.classList.contains("star-checked")) {
+        starLabel.classList.remove("star-checked");
+        starIcon.classList.remove("ion-android-star");
+        starIcon.classList.add("ion-android-star-outline");
+      } else {
+        starLabel.classList.add("star-checked");
+        starIcon.classList.remove("ion-android-star-outline");
+        starIcon.classList.add("ion-android-star");
+      }
 
-  if (idx !== undefined) {
-    listItem.setAttribute("data-course-index", idx);
-  }
+      toggleCourseStarred(course);
+    }
+  });
 
-  return listItem;
+  const starIcon = redom.el("i", {
+    class: joinClasses([
+      "course-box-star-icon",
+      "icon",
+      !!course.starred ? "ion-android-star" : "ion-android-star-outline"
+    ])
+  });
+
+  const starLabel = redom.el(
+    "label",
+    {
+      class: joinClasses(
+        ["course-box-star-label"]
+          .concat(course === "placeholder" ? [] : ["star-visible"])
+          .concat(!!course.starred ? ["star-checked"] : [])
+      ),
+      onclick: catchEvent
+    },
+    [starToggle, starIcon]
+  );
+
+  const listItemContent = redom.el(
+    "div.course-box-content",
+    {
+      style:
+        course === "placeholder"
+          ? {}
+          : { backgroundColor: getCourseColor(course) },
+      onclick: () => setCourseDescriptionBox(course)
+    },
+    [
+      selectLabel,
+      starLabel,
+      redom.el("p.course-box-text", [
+        redom.el(
+          "span.course-box-course-code",
+          course === "placeholder" ? "placeholder" : course.courseCode
+        ),
+        course === "placeholder" ? "placeholder" : courseToString(course)
+      ]),
+
+      // remove button
+      redom.el("i.course-box-button.course-box-remove-button.icon.ion-close", {
+        onclick: e => {
+          removeCourse(course);
+          e.stopPropagation();
+        }
+      })
+    ].concat(
+      // add button; show only if not already added
+      alreadyAdded
+        ? []
+        : [
+            redom.el(
+              "i.course-box-button.course-box-add-button.icon.ion-plus",
+              {
+                onclick: e => {
+                  addCourse(course);
+                  e.stopPropagation();
+                }
+              }
+            )
+          ]
+    )
+  );
+
+  return redom.el(
+    "li.course-box",
+    {
+      class: joinClasses(
+        ["course-box"].concat(course === "placeholder" ? ["placeholder"] : [])
+      ),
+      ...(idx === undefined ? {} : { "data-course-index": idx })
+    },
+    [listItemContent]
+  );
 }
 
 function createSlotEntities(course, slot) {
