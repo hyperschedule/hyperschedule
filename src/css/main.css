@@ -258,8 +258,9 @@ body {
 }
 
 #course-description-minimize {
+  font-size: 1rem;
+  line-height: 1em;
   display: none;
-  font-size: small;
   flex-grow: 1;
   padding: 0.25rem 0.5rem;
 }
