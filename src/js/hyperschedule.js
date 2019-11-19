@@ -1468,7 +1468,10 @@ async function retrieveCourseData() {
   }
   for (const selectedCourse of gSelectedCourses) {
     if (_.has(selectedCourse.courseCode, apiData.data.courses)) {
-      _.assign(selectedCourse, apiData.data.courses[selectedCourse.courseCode]);
+      Object.assign(
+        selectedCourse,
+        apiData.data.courses[selectedCourse.courseCode]
+      );
     }
   }
 
