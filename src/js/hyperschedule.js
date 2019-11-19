@@ -72,6 +72,13 @@ const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
+const courseDescriptionMinimize = document.getElementById(
+  "course-description-minimize"
+);
+const minimizeIcon = document.getElementById("minimize-icon");
+const courseDescriptionClose = document.getElementById(
+  "course-description-close"
+);
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById(
   "course-description-box-outer"
@@ -104,6 +111,7 @@ let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
 let gGreyConflictCourses = greyConflictCoursesOptions[0];
+let gMinimizedCourseDescription = document.createElement("button");
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -757,6 +765,11 @@ function attachListeners() {
   });
   settingsButton.addEventListener("click", showSettingsModal);
 
+  courseDescriptionMinimize.addEventListener(
+    "click",
+    minimizeCourseDescription
+  );
+  courseDescriptionClose.addEventListener("click", closeCourseDescription);
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -1231,10 +1244,11 @@ function updateCourseDescriptionBoxHeight() {
       "course-description-box-visible"
     )
   ) {
-    return;
+    courseDescriptionBoxOuter.style.height = "0px";
+  } else {
+    courseDescriptionBoxOuter.style.height =
+      "" + courseDescriptionBox.scrollHeight + "px";
   }
-  courseDescriptionBoxOuter.style.height =
-    "" + courseDescriptionBox.scrollHeight + "px";
 }
 
 ///// DOM updates miscellaneous
@@ -1264,6 +1278,75 @@ function setCourseDescriptionBox(course) {
     courseDescriptionBox.appendChild(paragraph);
   }
 
+  if (gMinimizedCourseDescription.hasChildNodes()) {
+    while (gMinimizedCourseDescription.hasChildNodes()) {
+      gMinimizedCourseDescription.removeChild(
+        gMinimizedCourseDescription.lastChild
+      );
+    }
+  }
+  if (minimizeIcon.classList.contains("ion-arrow-down-b")) {
+    minimizeIcon.classList.remove("ion-arrow-down-b");
+    minimizeIcon.classList.add("ion-arrow-up-b");
+  }
+  courseDescriptionVisible();
+}
+
+function minimizeCourseDescription() {
+  if (gMinimizedCourseDescription.hasChildNodes()) {
+    while (gMinimizedCourseDescription.hasChildNodes()) {
+      courseDescriptionBox.appendChild(
+        gMinimizedCourseDescription.removeChild(
+          gMinimizedCourseDescription.lastChild
+        )
+      );
+    }
+    courseDescriptionVisible();
+  } else {
+    while (courseDescriptionBox.hasChildNodes()) {
+      gMinimizedCourseDescription.appendChild(
+        courseDescriptionBox.removeChild(courseDescriptionBox.lastChild)
+      );
+    }
+    courseDescriptionInvisible();
+  }
+  if (minimizeIcon.classList.contains("ion-arrow-down-b")) {
+    minimizeIcon.classList.remove("ion-arrow-down-b");
+    minimizeIcon.classList.add("ion-arrow-up-b");
+  } else {
+    minimizeIcon.classList.remove("ion-arrow-up-b");
+    minimizeIcon.classList.add("ion-arrow-down-b");
+  }
+}
+
+function closeCourseDescription() {
+  while (courseDescriptionBox.hasChildNodes()) {
+    courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
+  }
+  while (gMinimizedCourseDescription.hasChildNodes()) {
+    gMinimizedCourseDescription.removeChild(
+      gMinimizedCourseDescription.lastChild
+    );
+  }
+  courseDescriptionMinimize.style.display = "none";
+  courseDescriptionClose.style.display = "none";
+  courseDescriptionInvisible();
+}
+
+function courseDescriptionInvisible() {
+  if (
+    courseDescriptionBoxOuter.classList.contains(
+      "course-description-box-visible"
+    )
+  ) {
+    courseDescriptionBoxOuter.classList.remove(
+      "course-description-box-visible"
+    );
+  }
+  updateCourseDescriptionBoxHeight();
+}
+
+function courseDescriptionVisible() {
   if (
     !courseDescriptionBoxOuter.classList.contains(
       "course-description-box-visible"
@@ -1271,7 +1354,8 @@ function setCourseDescriptionBox(course) {
   ) {
     courseDescriptionBoxOuter.classList.add("course-description-box-visible");
   }
-
+  courseDescriptionMinimize.style.display = "block";
+  courseDescriptionClose.style.display = "block";
   updateCourseDescriptionBoxHeight();
 }
 

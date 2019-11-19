@@ -253,9 +253,22 @@ body {
 
 /*** Course description box ***/
 
+#minimize-close-wrapper {
+  display: flex;
+  margin: 0 1rem 0 1rem;
+}
+
+.minimize-close {
+  display: none;
+  background-color: #307cf7 !important;
+  font-size: small;
+  flex-grow: 1;
+}
+
 #selected-courses-wrapper {
   overflow-y: auto;
 }
+
 
 #course-description-box-outer {
   display: block;
@@ -565,9 +578,11 @@ body {
 #selected-courses-column .course-box-remove-button {
 }
 
+/*
 #selected-courses-list {
   margin-top: -0.5rem;
 }
+*/
 
 /** Modals **/
 .modal-input-text {
