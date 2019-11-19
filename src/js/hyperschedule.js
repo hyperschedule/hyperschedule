@@ -72,13 +72,13 @@ const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
+const courseDescriptionMinimizeOuter = document.getElementById(
+  "minimize-outer"
+);
 const courseDescriptionMinimize = document.getElementById(
   "course-description-minimize"
 );
 const minimizeIcon = document.getElementById("minimize-icon");
-const courseDescriptionClose = document.getElementById(
-  "course-description-close"
-);
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById(
   "course-description-box-outer"
@@ -769,7 +769,6 @@ function attachListeners() {
     "click",
     minimizeCourseDescription
   );
-  courseDescriptionClose.addEventListener("click", closeCourseDescription);
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -1319,20 +1318,6 @@ function minimizeCourseDescription() {
   }
 }
 
-function closeCourseDescription() {
-  while (courseDescriptionBox.hasChildNodes()) {
-    courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
-  }
-  while (gMinimizedCourseDescription.hasChildNodes()) {
-    gMinimizedCourseDescription.removeChild(
-      gMinimizedCourseDescription.lastChild
-    );
-  }
-  courseDescriptionMinimize.style.display = "none";
-  courseDescriptionClose.style.display = "none";
-  courseDescriptionInvisible();
-}
-
 function courseDescriptionInvisible() {
   if (
     courseDescriptionBoxOuter.classList.contains(
@@ -1343,6 +1328,7 @@ function courseDescriptionInvisible() {
       "course-description-box-visible"
     );
   }
+  courseDescriptionMinimizeOuter.style.margin = "0 1rem 1rem 1rem";
   updateCourseDescriptionBoxHeight();
 }
 
@@ -1355,7 +1341,7 @@ function courseDescriptionVisible() {
     courseDescriptionBoxOuter.classList.add("course-description-box-visible");
   }
   courseDescriptionMinimize.style.display = "block";
-  courseDescriptionClose.style.display = "block";
+  courseDescriptionMinimizeOuter.style.margin = "0 1rem 0rem 1rem";
   updateCourseDescriptionBoxHeight();
 }
 

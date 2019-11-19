@@ -253,16 +253,15 @@ body {
 
 /*** Course description box ***/
 
-#minimize-close-wrapper {
+#minimize-outer {
   display: flex;
-  margin: 0 1rem 0 1rem;
 }
 
-.minimize-close {
+#course-description-minimize {
   display: none;
-  background-color: #307cf7 !important;
   font-size: small;
   flex-grow: 1;
+  padding: 0.25rem 0.5rem;
 }
 
 #selected-courses-wrapper {
@@ -577,11 +576,9 @@ body {
 #selected-courses-column .course-box-remove-button {
 }
 
-/*
 #selected-courses-list {
   margin-top: -0.5rem;
 }
-*/
 
 /** Modals **/
 .modal-input-text {
