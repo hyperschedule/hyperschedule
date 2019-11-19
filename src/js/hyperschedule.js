@@ -1454,7 +1454,8 @@ async function retrieveCourseData() {
   // Atomic update.
   let apiData = gApiData;
   let wasUpdated = false;
-  if (apiResponse.full) {
+  if (apiResponse.full || true) {
+    // hotfix
     apiData = _.pick(["data", "until"], apiResponse);
     wasUpdated = true;
   } else {
