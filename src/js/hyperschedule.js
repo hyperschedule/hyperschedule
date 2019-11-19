@@ -1441,9 +1441,12 @@ function applyDiff(data, diff) {
 
 async function retrieveCourseData() {
   let apiEndpoint = "/api/v3/courses?school=hmc";
-  if (gApiData !== null) {
-    apiEndpoint += `&since=${gApiData.until}`;
-  }
+  // Hotfix for error in production that prevents course data from
+  // being updated correctly. Kills performance but should ensure data
+  // correctness.
+  // if (gApiData !== null) {
+  //   apiEndpoint += `&since=${gApiData.until}`;
+  // }
   const apiResponse = await retrieveAPI(apiEndpoint);
   if (apiResponse.error) {
     throw Error(`API error: ${apiResponse.error}`);
