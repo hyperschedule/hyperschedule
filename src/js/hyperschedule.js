@@ -72,6 +72,13 @@ const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
+const courseDescriptionMinimizeOuter = document.getElementById(
+  "minimize-outer"
+);
+const courseDescriptionMinimize = document.getElementById(
+  "course-description-minimize"
+);
+const minimizeIcon = document.getElementById("minimize-icon");
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById(
   "course-description-box-outer"
@@ -757,6 +764,10 @@ function attachListeners() {
   });
   settingsButton.addEventListener("click", showSettingsModal);
 
+  courseDescriptionMinimize.addEventListener(
+    "click",
+    minimizeCourseDescription
+  );
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -1227,14 +1238,15 @@ function updateSchedule() {
 
 function updateCourseDescriptionBoxHeight() {
   if (
-    !courseDescriptionBoxOuter.classList.contains(
+    courseDescriptionBoxOuter.classList.contains(
       "course-description-box-visible"
     )
   ) {
-    return;
+    courseDescriptionBoxOuter.style.height =
+      "" + courseDescriptionBox.scrollHeight + "px";
+  } else {
+    courseDescriptionBoxOuter.style.height = "0px";
   }
-  courseDescriptionBoxOuter.style.height =
-    "" + courseDescriptionBox.scrollHeight + "px";
 }
 
 ///// DOM updates miscellaneous
@@ -1263,16 +1275,43 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
+  minimizeArrowPointUp();
+  courseDescriptionVisible();
+}
 
+function minimizeCourseDescription() {
   if (
-    !courseDescriptionBoxOuter.classList.contains(
+    courseDescriptionBoxOuter.classList.contains(
       "course-description-box-visible"
     )
   ) {
-    courseDescriptionBoxOuter.classList.add("course-description-box-visible");
+    courseDescriptionInvisible();
+    minimizeArrowPointDown();
+  } else {
+    courseDescriptionVisible();
+    minimizeArrowPointUp();
   }
+}
 
+function courseDescriptionInvisible() {
+  courseDescriptionBoxOuter.classList.remove("course-description-box-visible");
   updateCourseDescriptionBoxHeight();
+}
+
+function courseDescriptionVisible() {
+  courseDescriptionBoxOuter.classList.add("course-description-box-visible");
+  courseDescriptionMinimizeOuter.style.height = `${courseDescriptionMinimizeOuter.scrollHeight}px`;
+  updateCourseDescriptionBoxHeight();
+}
+
+function minimizeArrowPointUp() {
+  minimizeIcon.classList.remove("ion-arrow-down-b");
+  minimizeIcon.classList.add("ion-arrow-up-b");
+}
+
+function minimizeArrowPointDown() {
+  minimizeIcon.classList.remove("ion-arrow-up-b");
+  minimizeIcon.classList.add("ion-arrow-down-b");
 }
 
 /// Global state handling

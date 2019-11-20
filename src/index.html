@@ -76,7 +76,9 @@
             >
               Filters
             </button>
-            <ul class="dropdown-menu checkbox-menu allow-focus">
+            <ul
+              class="dropdown-menu dropdown-menu-right checkbox-menu allow-focus"
+            >
               <li>
                 <label id="closed-courses-toggle-label">
                   <input id="closed-courses-toggle" type="checkbox" /> Show
@@ -337,7 +339,18 @@
           </button>
         </div>
       </div>
-
+      <div id="minimize-outer">
+        <button
+          id="course-description-minimize"
+          type="button"
+          class="btn btn-light"
+        >
+          <i
+            class="icon ion-arrow-down-b course-box-text"
+            id="minimize-icon"
+          ></i>
+        </button>
+      </div>
       <div id="course-description-box-outer">
         <div id="course-description-box"></div>
       </div>
