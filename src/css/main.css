@@ -258,6 +258,7 @@ body {
   height: 0px;
   overflow: hidden;
   transition: 0.1s height;
+  flex-shrink: 0;
 }
 
 #course-description-minimize {
