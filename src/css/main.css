@@ -257,7 +257,7 @@ body {
   margin: 0 1rem;
   height: 0px;
   overflow: hidden;
-  transition: .1s height;
+  transition: 0.1s height;
 }
 
 #course-description-minimize {
