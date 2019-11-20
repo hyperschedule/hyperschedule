@@ -254,15 +254,19 @@ body {
 /*** Course description box ***/
 
 #minimize-outer {
-  display: flex;
+  margin: 0 1rem;
 }
 
 #course-description-minimize {
   font-size: 1rem;
   line-height: 1em;
-  display: none;
-  flex-grow: 1;
+  width: 100%;
   padding: 0.25rem 0.5rem;
+  display: none;
+}
+
+#course-description-minimize.course-description-minimize-visible {
+  display: block;
 }
 
 #selected-courses-wrapper {
@@ -279,12 +283,11 @@ body {
     margin-bottom: 5px;*/
   overflow: hidden;
   transition: height 0.2s, border 0.2s;
-  margin: 0 1rem 0 1rem;
+  margin: 0 1rem 1rem 1rem;
 }
 
 #course-description-box-outer.course-description-box-visible {
   border: 1px solid #cccccc;
-  margin-bottom: 1rem;
 }
 
 #course-description-box {
