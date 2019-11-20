@@ -1300,7 +1300,7 @@ function courseDescriptionInvisible() {
 
 function courseDescriptionVisible() {
   courseDescriptionBoxOuter.classList.add("course-description-box-visible");
-  courseDescriptionMinimize.classList.add("course-description-minimize-visible");
+  courseDescriptionMinimizeOuter.style.height = `${courseDescriptionBoxMinimizeOuter.scrollHeight}px`;
   updateCourseDescriptionBoxHeight();
 }
 
