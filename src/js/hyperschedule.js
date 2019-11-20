@@ -111,7 +111,6 @@ let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
 let gGreyConflictCourses = greyConflictCoursesOptions[0];
-let gMinimizedCourseDescription = document.createElement("button");
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -1239,14 +1238,14 @@ function updateSchedule() {
 
 function updateCourseDescriptionBoxHeight() {
   if (
-    !courseDescriptionBoxOuter.classList.contains(
+    courseDescriptionBoxOuter.classList.contains(
       "course-description-box-visible"
     )
   ) {
-    courseDescriptionBoxOuter.style.height = "0px";
-  } else {
     courseDescriptionBoxOuter.style.height =
       "" + courseDescriptionBox.scrollHeight + "px";
+  } else {
+    courseDescriptionBoxOuter.style.height = "0px";
   }
 }
 
@@ -1276,73 +1275,45 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
-
-  if (gMinimizedCourseDescription.hasChildNodes()) {
-    while (gMinimizedCourseDescription.hasChildNodes()) {
-      gMinimizedCourseDescription.removeChild(
-        gMinimizedCourseDescription.lastChild
-      );
-    }
-  }
-  if (minimizeIcon.classList.contains("ion-arrow-down-b")) {
-    minimizeIcon.classList.remove("ion-arrow-down-b");
-    minimizeIcon.classList.add("ion-arrow-up-b");
-  }
+  minimizeArrowPointUp();
   courseDescriptionVisible();
 }
 
 function minimizeCourseDescription() {
-  if (gMinimizedCourseDescription.hasChildNodes()) {
-    while (gMinimizedCourseDescription.hasChildNodes()) {
-      courseDescriptionBox.appendChild(
-        gMinimizedCourseDescription.removeChild(
-          gMinimizedCourseDescription.lastChild
-        )
-      );
-    }
-    courseDescriptionVisible();
-  } else {
-    while (courseDescriptionBox.hasChildNodes()) {
-      gMinimizedCourseDescription.appendChild(
-        courseDescriptionBox.removeChild(courseDescriptionBox.lastChild)
-      );
-    }
-    courseDescriptionInvisible();
-  }
-  if (minimizeIcon.classList.contains("ion-arrow-down-b")) {
-    minimizeIcon.classList.remove("ion-arrow-down-b");
-    minimizeIcon.classList.add("ion-arrow-up-b");
-  } else {
-    minimizeIcon.classList.remove("ion-arrow-up-b");
-    minimizeIcon.classList.add("ion-arrow-down-b");
-  }
-}
-
-function courseDescriptionInvisible() {
   if (
     courseDescriptionBoxOuter.classList.contains(
       "course-description-box-visible"
     )
   ) {
-    courseDescriptionBoxOuter.classList.remove(
-      "course-description-box-visible"
-    );
+    courseDescriptionInvisible();
+    minimizeArrowPointDown();
+  } else {
+    courseDescriptionVisible();
+    minimizeArrowPointUp();
   }
-  courseDescriptionMinimizeOuter.style.margin = "0 1rem 1rem 1rem";
+}
+
+function courseDescriptionInvisible() {
+  courseDescriptionBoxOuter.classList.remove("course-description-box-visible");
+  courseDescriptionMinimizeOuter.style.margin = "0 1rem 1rem";
   updateCourseDescriptionBoxHeight();
 }
 
 function courseDescriptionVisible() {
-  if (
-    !courseDescriptionBoxOuter.classList.contains(
-      "course-description-box-visible"
-    )
-  ) {
-    courseDescriptionBoxOuter.classList.add("course-description-box-visible");
-  }
+  courseDescriptionBoxOuter.classList.add("course-description-box-visible");
   courseDescriptionMinimize.style.display = "block";
-  courseDescriptionMinimizeOuter.style.margin = "0 1rem 0rem 1rem";
+  courseDescriptionMinimizeOuter.style.margin = "0 1rem";
   updateCourseDescriptionBoxHeight();
+}
+
+function minimizeArrowPointUp() {
+  minimizeIcon.classList.remove("ion-arrow-down-b");
+  minimizeIcon.classList.add("ion-arrow-up-b");
+}
+
+function minimizeArrowPointDown() {
+  minimizeIcon.classList.remove("ion-arrow-up-b");
+  minimizeIcon.classList.add("ion-arrow-down-b");
 }
 
 /// Global state handling
