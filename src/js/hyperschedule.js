@@ -1295,14 +1295,11 @@ function minimizeCourseDescription() {
 
 function courseDescriptionInvisible() {
   courseDescriptionBoxOuter.classList.remove("course-description-box-visible");
-  courseDescriptionMinimizeOuter.style.margin = "0 1rem 1rem";
   updateCourseDescriptionBoxHeight();
 }
 
 function courseDescriptionVisible() {
   courseDescriptionBoxOuter.classList.add("course-description-box-visible");
-  courseDescriptionMinimize.style.display = "block";
-  courseDescriptionMinimizeOuter.style.margin = "0 1rem";
   updateCourseDescriptionBoxHeight();
 }
 
