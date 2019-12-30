@@ -85,6 +85,7 @@ const courseDescriptionBoxOuter = document.getElementById(
 );
 
 const selectedCoursesList = document.getElementById("selected-courses-list");
+const createGroupButton = document.getElementById("create-group-button");
 
 const scheduleTable = document.getElementById("schedule-table");
 const scheduleTableBody = document.getElementById("schedule-table-body");
