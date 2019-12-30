@@ -20,6 +20,13 @@
   cursor: auto;
 }
 
+.btn-selected-course {
+  font-size: 1rem;
+  line-height: 1em;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+}
+
 .dropdown-menu {
   min-width: 0;
   padding: 2px 0;
@@ -151,15 +158,15 @@ body {
   flex-grow: 1;
 }
 
-#filter-button-wrapper {
+#filter--wrapper {
   margin-left: 1rem;
 }
 
-#filter-button {
+#filter- {
   margin: 0 auto;
 }
 
-#help-button {
+#help- {
   margin-left: 1rem;
 }
 
@@ -206,6 +213,10 @@ body {
   flex-direction: column;
 }
 
+#group-button-outer {
+  margin: 0.5rem 1rem;
+}
+
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
@@ -215,7 +226,7 @@ body {
   flex-grow: 1;
 }
 
-#import-export-data-button {
+#import-export-data- {
 }
 
 #print-dropdown-wrapper {
@@ -234,11 +245,11 @@ body {
   background-color: #e9ecef;
 }
 
-#settings-button-wrapper {
+#settings--wrapper {
   margin-left: 0.5rem;
 }
 
-#settings-button {
+#settings- {
   margin-right: 3px;
   background-color: transparent;
   color: #007bff;
@@ -247,7 +258,7 @@ body {
   padding: 0px 2px;
 }
 
-#settings-button:hover {
+#settings-:hover {
   color: #0069d9;
 }
 
@@ -259,13 +270,6 @@ body {
   overflow: hidden;
   transition: 0.1s height;
   flex-shrink: 0;
-}
-
-#course-description-minimize {
-  font-size: 1rem;
-  line-height: 1em;
-  width: 100%;
-  padding: 0.25rem 0.5rem;
 }
 
 #selected-courses-wrapper {
