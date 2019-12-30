@@ -1007,31 +1007,52 @@ function createCourseEntity(course, attrs) {
     listItemContent.appendChild(starLabel);
   }
 
-  const textBox = document.createElement("p");
-  textBox.classList.add("course-box-text");
-  listItemContent.appendChild(textBox);
+  if (groupBool) {
+    const groupNameContainer = document.createElement("span");
+    groupNameContainer.classList.add("course-box-text");
+    groupNameContainer.classList.add("course-box-course-code");
 
-  let courseCode;
-  let text;
-  if (course === "placeholder") {
-    courseCode = "placeholder";
-    text = "placeholder";
-  } else if (groupBool) {
-    courseCode = course.title;
-    text = "";
+    let groupNameNode = document.createTextNode(course.title);
+    groupNameContainer.appendChild(groupNameNode);
+    listItemContent.appendChild(groupNameContainer);
+
+    groupNameContainer.addEventListener("dblclick", () => {
+      groupNameContainer.removeChild(groupNameContainer.lastChild);
+      let textBox = document.createElement("input");
+      textBox.setAttribute("type", "text");
+      textBox.setAttribute("value", course.title);
+      groupNameContainer.appendChild(textBox);
+      textBox.focus();
+    });
+
+    groupNameContainer.addEventListener("focusout", () => {
+      course.title = groupNameContainer.lastChild.value;
+      let groupNameNode = document.createTextNode(course.title);
+      groupNameContainer.removeChild(groupNameContainer.lastChild);
+      groupNameContainer.appendChild(groupNameNode);
+    });
   } else {
-    courseCode = course.courseCode;
-    text = courseToString(course);
+    const textBox = document.createElement("p");
+    textBox.classList.add("course-box-text");
+    listItemContent.appendChild(textBox);
+    let courseCode;
+    let text;
+    if (course === "placeholder") {
+      courseCode = "placeholder";
+      text = "placeholder";
+    } else {
+      courseCode = course.courseCode;
+      text = courseToString(course);
+    }
+
+    const courseCodeContainer = document.createElement("span");
+    const courseCodeNode = document.createTextNode(courseCode);
+    courseCodeContainer.classList.add("course-box-course-code");
+    courseCodeContainer.appendChild(courseCodeNode);
+    const courseNameNode = document.createTextNode(text);
+    textBox.appendChild(courseCodeContainer);
+    textBox.appendChild(courseNameNode);
   }
-
-  const courseCodeContainer = document.createElement("span");
-  const courseCodeNode = document.createTextNode(courseCode);
-  courseCodeContainer.classList.add("course-box-course-code");
-  courseCodeContainer.appendChild(courseCodeNode);
-  const courseNameNode = document.createTextNode(text);
-  textBox.appendChild(courseCodeContainer);
-  textBox.appendChild(courseNameNode);
-
   if (!alreadyAdded) {
     const addButton = document.createElement("i");
     addButton.classList.add("course-box-button");
