@@ -777,6 +777,8 @@ function attachListeners() {
     gCurrentlySorting = false;
   });
 
+  createGroupButton.addEventListener("click", createGroup);
+
   courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
 
   for (let i = 0; conflictCoursesRadios[i]; i++) {
@@ -819,100 +821,109 @@ function createCourseEntity(course, attrs) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
+  let groupBool = false;
+  if (course.type === "group") {
+    groupBool = true;
+  }
 
   const listItem = document.createElement("li");
   listItem.classList.add("course-box");
 
   const listItemContent = document.createElement("div");
   listItemContent.classList.add("course-box-content");
-  if (course !== "placeholder") {
+  if (groupBool) {
+    listItemContent.style["background-color"] = "#4a82ff";
+  } else if (course !== "placeholder") {
     listItemContent.style["background-color"] = getCourseColor(course);
+    listItemContent.addEventListener("click", () => {
+      setCourseDescriptionBox(course);
+    });
   }
-  listItemContent.addEventListener("click", () => {
-    setCourseDescriptionBox(course);
-  });
+
   listItem.appendChild(listItemContent);
 
-  const selectLabel = document.createElement("label");
-  selectLabel.classList.add("course-box-select-label");
+  if (!groupBool) {
+    const selectLabel = document.createElement("label");
+    selectLabel.classList.add("course-box-select-label");
 
-  const selectIcon = document.createElement("i");
-  selectIcon.classList.add("course-box-select-icon");
-  selectIcon.classList.add("icon");
-  if (!!course.selected) {
-    selectLabel.classList.add("course-selected");
-    selectIcon.classList.add("ion-android-checkbox");
-  } else {
-    selectIcon.classList.add("ion-android-checkbox-outline-blank");
-  }
-
-  const selectToggle = document.createElement("input");
-  selectToggle.setAttribute("type", "checkbox");
-  selectToggle.classList.add("course-box-button");
-  selectToggle.classList.add("course-box-toggle");
-  selectToggle.classList.add("course-box-select-toggle");
-  selectToggle.checked = !!course.selected;
-  selectToggle.addEventListener("change", () => {
-    if (selectLabel.classList.contains("course-selected")) {
-      selectLabel.classList.remove("course-selected");
-      selectIcon.classList.remove("ion-android-checkbox");
-      selectIcon.classList.add("ion-android-checkbox-outline-blank");
-    } else {
+    const selectIcon = document.createElement("i");
+    selectIcon.classList.add("course-box-select-icon");
+    selectIcon.classList.add("icon");
+    if (!!course.selected) {
       selectLabel.classList.add("course-selected");
-      selectIcon.classList.remove("ion-android-checkbox-outline-blank");
       selectIcon.classList.add("ion-android-checkbox");
-    }
-
-    toggleCourseSelected(course);
-  });
-  selectToggle.addEventListener("click", catchEvent);
-  selectLabel.addEventListener("click", catchEvent);
-  selectLabel.appendChild(selectToggle);
-  selectLabel.appendChild(selectIcon);
-  listItemContent.appendChild(selectLabel);
-
-  const starLabel = document.createElement("label");
-  starLabel.classList.add("course-box-star-label");
-
-  const starToggle = document.createElement("input");
-  starToggle.setAttribute("type", "checkbox");
-  starToggle.classList.add("course-box-button");
-  starToggle.classList.add("course-box-toggle");
-  starToggle.classList.add("course-box-star-toggle");
-
-  const starIcon = document.createElement("i");
-  starIcon.classList.add("course-box-star-icon");
-  starIcon.classList.add("icon");
-
-  if (course !== "placeholder") {
-    starLabel.classList.add("star-visible");
-  }
-  starToggle.checked = !!course.starred;
-  if (!!course.starred) {
-    starLabel.classList.add("star-checked");
-    starIcon.classList.add("ion-android-star");
-  } else {
-    starIcon.classList.add("ion-android-star-outline");
-  }
-  starToggle.addEventListener("change", () => {
-    if (starLabel.classList.contains("star-checked")) {
-      starLabel.classList.remove("star-checked");
-      starIcon.classList.remove("ion-android-star");
-      starIcon.classList.add("ion-android-star-outline");
     } else {
-      starLabel.classList.add("star-checked");
-      starIcon.classList.remove("ion-android-star-outline");
-      starIcon.classList.add("ion-android-star");
+      selectIcon.classList.add("ion-android-checkbox-outline-blank");
     }
 
-    toggleCourseStarred(course);
-  });
-  starToggle.addEventListener("click", catchEvent);
-  starLabel.addEventListener("click", catchEvent);
+    const selectToggle = document.createElement("input");
+    selectToggle.setAttribute("type", "checkbox");
+    selectToggle.classList.add("course-box-button");
+    selectToggle.classList.add("course-box-toggle");
+    selectToggle.classList.add("course-box-select-toggle");
+    selectToggle.checked = !!course.selected;
+    selectToggle.addEventListener("change", () => {
+      if (selectLabel.classList.contains("course-selected")) {
+        selectLabel.classList.remove("course-selected");
+        selectIcon.classList.remove("ion-android-checkbox");
+        selectIcon.classList.add("ion-android-checkbox-outline-blank");
+      } else {
+        selectLabel.classList.add("course-selected");
+        selectIcon.classList.remove("ion-android-checkbox-outline-blank");
+        selectIcon.classList.add("ion-android-checkbox");
+      }
 
-  starLabel.appendChild(starToggle);
-  starLabel.appendChild(starIcon);
-  listItemContent.appendChild(starLabel);
+      toggleCourseSelected(course);
+    });
+    selectToggle.addEventListener("click", catchEvent);
+    selectLabel.addEventListener("click", catchEvent);
+    selectLabel.appendChild(selectToggle);
+    selectLabel.appendChild(selectIcon);
+    listItemContent.appendChild(selectLabel);
+
+    const starLabel = document.createElement("label");
+    starLabel.classList.add("course-box-star-label");
+
+    const starToggle = document.createElement("input");
+    starToggle.setAttribute("type", "checkbox");
+    starToggle.classList.add("course-box-button");
+    starToggle.classList.add("course-box-toggle");
+    starToggle.classList.add("course-box-star-toggle");
+
+    const starIcon = document.createElement("i");
+    starIcon.classList.add("course-box-star-icon");
+    starIcon.classList.add("icon");
+
+    if (course !== "placeholder") {
+      starLabel.classList.add("star-visible");
+    }
+    starToggle.checked = !!course.starred;
+    if (!!course.starred) {
+      starLabel.classList.add("star-checked");
+      starIcon.classList.add("ion-android-star");
+    } else {
+      starIcon.classList.add("ion-android-star-outline");
+    }
+    starToggle.addEventListener("change", () => {
+      if (starLabel.classList.contains("star-checked")) {
+        starLabel.classList.remove("star-checked");
+        starIcon.classList.remove("ion-android-star");
+        starIcon.classList.add("ion-android-star-outline");
+      } else {
+        starLabel.classList.add("star-checked");
+        starIcon.classList.remove("ion-android-star-outline");
+        starIcon.classList.add("ion-android-star");
+      }
+
+      toggleCourseStarred(course);
+    });
+    starToggle.addEventListener("click", catchEvent);
+    starLabel.addEventListener("click", catchEvent);
+
+    starLabel.appendChild(starToggle);
+    starLabel.appendChild(starIcon);
+    listItemContent.appendChild(starLabel);
+  }
 
   const textBox = document.createElement("p");
   textBox.classList.add("course-box-text");
@@ -923,6 +934,9 @@ function createCourseEntity(course, attrs) {
   if (course === "placeholder") {
     courseCode = "placeholder";
     text = "placeholder";
+  } else if (groupBool) {
+    courseCode = course.title;
+    text = "";
   } else {
     courseCode = course.courseCode;
     text = courseToString(course);
@@ -932,9 +946,7 @@ function createCourseEntity(course, attrs) {
   const courseCodeNode = document.createTextNode(courseCode);
   courseCodeContainer.classList.add("course-box-course-code");
   courseCodeContainer.appendChild(courseCodeNode);
-
   const courseNameNode = document.createTextNode(text);
-
   textBox.appendChild(courseCodeContainer);
   textBox.appendChild(courseNameNode);
 
@@ -1313,6 +1325,14 @@ function minimizeArrowPointUp() {
 function minimizeArrowPointDown() {
   minimizeIcon.classList.remove("ion-arrow-up-b");
   minimizeIcon.classList.add("ion-arrow-down-b");
+}
+
+//// Group functions
+
+function createGroup() {
+  let g = { title: "Untitled Group", type: "group" };
+  gSelectedCourses.push(g);
+  handleSelectedCoursesUpdate();
 }
 
 /// Global state handling
