@@ -776,7 +776,12 @@ function attachListeners() {
   selectedCoursesList.addEventListener("sortstop", () => {
     gCurrentlySorting = false;
   });
-
+  selectedCoursesList.addEventListener("coursenametyping", () => {
+    sortable(".sortable-list", "disable");
+  });
+  selectedCoursesList.addEventListener("coursenametypingdone", () => {
+    sortable(".sortable-list");
+  });
   createGroupButton.addEventListener("click", createGroup);
 
   courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
@@ -935,6 +940,7 @@ function createCourseEntity(course, attrs) {
     listItemContent.appendChild(groupNameContainer);
 
     groupNameContainer.addEventListener("dblclick", () => {
+      selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
       groupNameContainer.removeChild(groupNameContainer.lastChild);
       let textBox = document.createElement("input");
       textBox.setAttribute("type", "text");
@@ -948,6 +954,9 @@ function createCourseEntity(course, attrs) {
       let groupNameNode = document.createTextNode(course.title);
       groupNameContainer.removeChild(groupNameContainer.lastChild);
       groupNameContainer.appendChild(groupNameNode);
+      selectedCoursesList.dispatchEvent(
+        new CustomEvent("coursenametypingdone")
+      );
     });
   } else {
     const textBox = document.createElement("p");
