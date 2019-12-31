@@ -37,11 +37,11 @@
 .hidden {
   display: none;
 }
-
+/*
 .placeholder {
   visibility: hidden;
 }
-
+*/
 .toolbar {
   display: flex;
   padding: 0;
@@ -217,6 +217,11 @@ body {
 
 #group-button-outer {
   margin: 0.5rem 1rem;
+}
+
+.group-list {
+  background-color: gray;
+  list-style-type: none;
 }
 
 /*** Selected courses header bar ***/

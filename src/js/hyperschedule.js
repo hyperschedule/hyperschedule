@@ -117,7 +117,7 @@ let gGreyConflictCourses = greyConflictCoursesOptions[0];
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
-
+let gPlaceholders = 0;
 /// Utility functions
 //// JavaScript utility functions
 
@@ -755,8 +755,15 @@ function attachListeners() {
   );
   sortable(".sortable-list", {
     forcePlaceholderSize: true,
+    placeholder: createCourseEntity("placeholder").outerHTML,
+    handle: ".course-box-text"
+  });
+
+  sortable(".sortable-group", {
+    forcePlaceholderSize: true,
     placeholder: createCourseEntity("placeholder").outerHTML
   });
+
   printAllButton.addEventListener("click", () => {
     downloadPDF(false);
   });
@@ -780,7 +787,7 @@ function attachListeners() {
     sortable(".sortable-list", "disable");
   });
   selectedCoursesList.addEventListener("coursenametypingdone", () => {
-    sortable(".sortable-list");
+    sortable(".sortable-list", "enable");
   });
   createGroupButton.addEventListener("click", createGroup);
 
@@ -965,7 +972,8 @@ function createCourseEntity(course, attrs) {
     let courseCode;
     let text;
     if (course === "placeholder") {
-      courseCode = "placeholder";
+      courseCode = gPlaceholders;
+      gPlaceholders += 1;
       text = "placeholder";
     } else {
       courseCode = course.courseCode;
@@ -1007,6 +1015,21 @@ function createCourseEntity(course, attrs) {
 
   if (course === "placeholder") {
     listItem.classList.add("placeholder");
+  }
+
+  if (groupBool) {
+    let groupNode = document.createElement("UL");
+    groupNode.classList.add("group-list");
+    groupNode.classList.add("sortable-group");
+
+    //testing dragging items within groups
+    for (let i = 3; i < 5; i++) {
+      let item = createCourseEntity("placeholder");
+      groupNode.appendChild(item);
+    }
+
+    listItem.appendChild(groupNode);
+    listItem.classList.add("group");
   }
 
   if (idx !== undefined) {
@@ -1260,6 +1283,7 @@ function updateSelectedCoursesList() {
     );
   }
   sortable(".sortable-list");
+  sortable(".sortable-group");
 }
 
 function updateSchedule() {
@@ -2050,7 +2074,7 @@ function downloadICalFile() {
 attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
-retrieveCourseDataUntilSuccessful();
+//retrieveCourseDataUntilSuccessful();
 
 /// Closing remarks
 
