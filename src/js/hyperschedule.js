@@ -108,8 +108,6 @@ const importExportCopyButton = document.getElementById(
 let gApiData = null;
 let gNestedSelectedCoursesAndGroups = [];
 let gSelectedCourses = [];
-let gSelectedCoursesAndGroups = [];
-let gGroups = new Object();
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
@@ -783,7 +781,6 @@ function attachListeners() {
     minimizeCourseDescription
   );
   selectedCoursesList.addEventListener("coursenametyping", () => {
-    console.log(sortableList.toArray());
     sortableList.option("disabled", true);
   });
   selectedCoursesList.addEventListener("coursenametypingdone", () => {
@@ -999,6 +996,10 @@ function createCourseEntity(course, attrs) {
     });
     addButton.addEventListener("click", catchEvent);
     listItemContent.appendChild(addButton);
+  }
+
+  if (!alreadyAdded && groupBool) {
+    gGroupCounter += 1;
   }
 
   const removeButton = document.createElement("i");
@@ -1283,6 +1284,57 @@ function updateSelectedCoursesList() {
   while (selectedCoursesList.hasChildNodes()) {
     selectedCoursesList.removeChild(selectedCoursesList.lastChild);
   }
+  updateSelectedCoursesListHelper(
+    gNestedSelectedCoursesAndGroups,
+    selectedCoursesList,
+    0
+  );
+}
+
+function updateSelectedCoursesListHelper(inputList, outputList, index) {
+  for (let idx = 0; idx < inputList.length; ++idx) {
+    const course = inputList[idx];
+    if (Array.isArray(course)) {
+      let courseBox = createCourseEntity(course[0], {
+        idx: index,
+        alreadyAdded: true
+      });
+      index++;
+      let groupList = courseBox.lastChild;
+      index = updateSelectedCoursesListHelper(course[1], groupList, index);
+      outputList.appendChild(courseBox);
+    } else {
+      outputList.appendChild(
+        createCourseEntity(course, { idx: index, alreadyAdded: true })
+      );
+      index++;
+    }
+  }
+  return index;
+}
+
+function findIndex(list, course) {
+  for (let idx = 0; idx < list.length; idx++) {
+    if (course.courseCode === list[idx].courseCode) {
+      return idx;
+    } else if (course.groupID === list[idx].groupID) {
+      return idx;
+    }
+  }
+  return -1;
+}
+
+/*
+function updateSelectedCoursesList() {
+  if (gCurrentlySorting) {
+    // Defer to after the user has finished sorting, otherwise we mess
+    // up the drag and drop.
+    setTimeout(updateSelectedCoursesList, 100);
+    return;
+  }
+  while (selectedCoursesList.hasChildNodes()) {
+    selectedCoursesList.removeChild(selectedCoursesList.lastChild);
+  }
   for (let idx = 0; idx < gSelectedCourses.length; ++idx) {
     const course = gSelectedCourses[idx];
     selectedCoursesList.appendChild(
@@ -1290,7 +1342,7 @@ function updateSelectedCoursesList() {
     );
   }
 }
-
+*/
 function updateSchedule() {
   const schedule = computeSchedule(gSelectedCourses);
   while (scheduleTable.getElementsByClassName("schedule-slot").length > 0) {
@@ -1390,7 +1442,7 @@ function minimizeArrowPointDown() {
 
 function createGroup() {
   let g = { title: "Untitled Group", type: "group" };
-  gSelectedCourses.push(g);
+  gNestedSelectedCoursesAndGroups.push([g, []]);
   handleSelectedCoursesUpdate();
 }
 
@@ -1402,6 +1454,14 @@ function handleCourseSearchInputUpdate() {
 }
 
 function handleSelectedCoursesUpdate() {
+  // Update the derivative variable from main (gNestedSelectedCoursesAndGroups)
+  gSelectedCourses = gNestedSelectedCoursesAndGroups
+    .flatten(Infinity)
+    .filter(isCourse);
+
+  // Reindex the course boxes to match
+  indexSelectedCoursesHelper(selectedCoursesList.children, 0);
+
   // We need to add/remove the "+" buttons.
   rerenderCourseSearchResults();
 
@@ -1438,27 +1498,35 @@ function addCourse(course) {
   course = deepCopy(course);
   course.selected = true;
   course.starred = false;
-  gSelectedCourses.push(course);
+  gNestedSelectedCoursesAndGroups.push(course);
   handleSelectedCoursesUpdate();
 }
 
 function removeCourse(course) {
-  gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
-  handleSelectedCoursesUpdate();
+  removeCourseHelper(course, gNestedSelectedCoursesAndGroups);
+}
+
+function removeCourseHelper(course, list) {
+  let idx = list.indexOf(course);
+  if (idx !== -1) {
+    list.splice(list.indexOf(course), 1);
+    handleSelectedCoursesUpdate();
+    return;
+  } else {
+    let trim = list.filter(Array.isArray);
+    if (trim.length > 0) {
+      for (let group of trim) {
+        let groupList = group[1];
+        removeCourseHelper(course, groupList);
+      }
+    }
+  }
 }
 
 function readSelectedCoursesList() {
-  const newSelectedCourses = readSelectedCoursesListHelper(
+  gNestedSelectedCoursesAndGroups = readSelectedCoursesListHelper(
     selectedCoursesList.children
   );
-  console.log(newSelectedCourses);
-  gSelectedCoursesAndGroups = newSelectedCourses.flatten(Infinity);
-  let selectedCourses = gSelectedCoursesAndGroups.filter(isCourse);
-
-  //might need to go in handle update?
-  indexSelectedCoursesHelper(selectedCoursesList.children, 0);
-  console.log(selectedCoursesList.children);
-
   handleSelectedCoursesUpdate();
 }
 
@@ -1480,20 +1548,30 @@ function isCourse(course) {
 function readSelectedCoursesListHelper(lst) {
   const newSelectedCourses = [];
   for (let entity of lst) {
+    //const
     const idx = parseInt(entity.getAttribute("data-course-index"), 10);
-    const course = gSelectedCourses[idx];
+    const coursesAndGroups = gNestedSelectedCoursesAndGroups.flatten(Infinity);
+    const course = coursesAndGroups[idx];
     if (entity.classList.contains("group")) {
-      let temp = readSelectedCoursesListHelper(entity.lastChild.children);
+      let temp;
+      if (entity.lastChild.hasChildNodes) {
+        temp = readSelectedCoursesListHelper(entity.lastChild.children);
+      } else {
+        temp = [];
+      }
       let temp2 = [course, temp];
       newSelectedCourses.push(temp2);
     } else {
+      newSelectedCourses.push(
+        course
+      ); /*
       if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length) {
         newSelectedCourses.push(course);
       } else {
         alert("An internal error occurred. This is bad.");
         updateSelectedCoursesList();
         return;
-      }
+      }*/
     }
   }
   return newSelectedCourses;
@@ -1678,6 +1756,10 @@ async function retrieveCourseDataUntilSuccessful() {
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
+  localStorage.setItem(
+    "nestedSelectedCoursesAndGroups",
+    JSON.stringify(gNestedSelectedCoursesAndGroups)
+  );
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
   localStorage.setItem("hideAllConflictingCourses", gHideAllConflictingCourses);
@@ -1759,6 +1841,9 @@ function readStateFromLocalStorage() {
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage("selectedCourses", _.isArray, [])
+  );
+  gNestedSelectedCoursesAndGroups = upgradeSelectedCourses(
+    readFromLocalStorage("nestedSelectedCoursesAndGroups", _.isArray, [])
   );
   gScheduleTabSelected = readFromLocalStorage(
     "scheduleTabSelected",
