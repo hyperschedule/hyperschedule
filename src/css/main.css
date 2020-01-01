@@ -37,11 +37,11 @@
 .hidden {
   display: none;
 }
-/*
+
 .placeholder {
   visibility: hidden;
 }
-*/
+
 .toolbar {
   display: flex;
   padding: 0;
@@ -220,8 +220,11 @@ body {
 }
 
 .group-list {
-  background-color: gray;
   list-style-type: none;
+  list-style-position: outside;
+  margin: 0.5rem 0 0 2rem;
+  padding-left: 0.25rem;
+  border-left: solid 2px #e3e6ea;
 }
 
 /*** Selected courses header bar ***/
