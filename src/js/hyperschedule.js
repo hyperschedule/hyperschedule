@@ -913,28 +913,78 @@ function createCourseEntity(course, attrs) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
-  let groupBool = false;
-  if (course.type === "group") {
-    groupBool = true;
-  }
 
   const listItem = document.createElement("li");
   listItem.classList.add("course-box");
 
   const listItemContent = document.createElement("div");
   listItemContent.classList.add("course-box-content");
-  if (groupBool) {
-    listItemContent.style["background-color"] = "#4a82ff";
-  } else if (course !== "placeholder") {
-    listItemContent.style["background-color"] = getCourseColor(course);
-    listItemContent.addEventListener("click", () => {
-      setCourseDescriptionBox(course);
-    });
-  }
-
   listItem.appendChild(listItemContent);
 
-  if (!groupBool) {
+  if (course.type === "group") {
+    listItemContent.classList.add("group-box-content");
+    const groupNameContainer = document.createElement("span");
+    groupNameContainer.classList.add("course-box-text");
+    groupNameContainer.classList.add("course-box-course-code");
+
+    let groupNameNode = document.createTextNode(course.title);
+    groupNameContainer.appendChild(groupNameNode);
+    listItemContent.appendChild(groupNameContainer);
+
+    groupNameContainer.addEventListener("dblclick", () => {
+      selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
+      groupNameContainer.removeChild(groupNameContainer.lastChild);
+      let textBox = document.createElement("input");
+      textBox.setAttribute("type", "text");
+      textBox.setAttribute("value", course.title);
+      groupNameContainer.appendChild(textBox);
+      textBox.focus();
+    });
+
+    groupNameContainer.addEventListener("focusout", () => {
+      course.title = groupNameContainer.lastChild.value;
+      let groupNameNode = document.createTextNode(course.title);
+      groupNameContainer.removeChild(groupNameContainer.lastChild);
+      groupNameContainer.appendChild(groupNameNode);
+      selectedCoursesList.dispatchEvent(
+        new CustomEvent("coursenametypingdone")
+      );
+    });
+    let groupNode = document.createElement("UL");
+    groupNode.classList.add("group-list");
+    let sortableGroupList = Sortable.create(groupNode, {
+      handle: ".course-box-text",
+      ghostClass: "placeholder",
+      group: "courses",
+      onSort: function(evt) {
+        readSelectedCoursesList();
+      },
+      onStart: function(evt) {
+        gCurrentlySorting = true;
+      },
+      onEnd: function(evt) {
+        gCurrentlySorting = false;
+      },
+      emptyInsertThreshold: 20
+    });
+
+    selectedCoursesList.addEventListener("coursenametyping", () => {
+      sortableGroupList.option("disabled", true);
+    });
+    selectedCoursesList.addEventListener("coursenametypingdone", () => {
+      sortableGroupList.option("disabled", false);
+    });
+
+    listItem.appendChild(groupNode);
+    listItem.classList.add("group");
+  } else {
+    if (course !== "placeholder") {
+      listItemContent.style["background-color"] = getCourseColor(course);
+      listItemContent.addEventListener("click", () => {
+        setCourseDescriptionBox(course);
+      });
+    }
+
     const selectLabel = document.createElement("label");
     selectLabel.classList.add("course-box-select-label");
 
@@ -1015,37 +1065,7 @@ function createCourseEntity(course, attrs) {
     starLabel.appendChild(starToggle);
     starLabel.appendChild(starIcon);
     listItemContent.appendChild(starLabel);
-  }
 
-  if (groupBool) {
-    const groupNameContainer = document.createElement("span");
-    groupNameContainer.classList.add("course-box-text");
-    groupNameContainer.classList.add("course-box-course-code");
-
-    let groupNameNode = document.createTextNode(course.title);
-    groupNameContainer.appendChild(groupNameNode);
-    listItemContent.appendChild(groupNameContainer);
-
-    groupNameContainer.addEventListener("dblclick", () => {
-      selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
-      groupNameContainer.removeChild(groupNameContainer.lastChild);
-      let textBox = document.createElement("input");
-      textBox.setAttribute("type", "text");
-      textBox.setAttribute("value", course.title);
-      groupNameContainer.appendChild(textBox);
-      textBox.focus();
-    });
-
-    groupNameContainer.addEventListener("focusout", () => {
-      course.title = groupNameContainer.lastChild.value;
-      let groupNameNode = document.createTextNode(course.title);
-      groupNameContainer.removeChild(groupNameContainer.lastChild);
-      groupNameContainer.appendChild(groupNameNode);
-      selectedCoursesList.dispatchEvent(
-        new CustomEvent("coursenametypingdone")
-      );
-    });
-  } else {
     const textBox = document.createElement("p");
     textBox.classList.add("course-box-text");
     listItemContent.appendChild(textBox);
@@ -1066,19 +1086,23 @@ function createCourseEntity(course, attrs) {
     const courseNameNode = document.createTextNode(text);
     textBox.appendChild(courseCodeContainer);
     textBox.appendChild(courseNameNode);
-  }
-  if (!alreadyAdded) {
-    const addButton = document.createElement("i");
-    addButton.classList.add("course-box-button");
-    addButton.classList.add("course-box-add-button");
-    addButton.classList.add("icon");
-    addButton.classList.add("ion-plus");
 
-    addButton.addEventListener("click", () => {
-      addCourse(course);
-    });
-    addButton.addEventListener("click", catchEvent);
-    listItemContent.appendChild(addButton);
+    if (!alreadyAdded) {
+      const addButton = document.createElement("i");
+      addButton.classList.add("course-box-button");
+      addButton.classList.add("course-box-add-button");
+      addButton.classList.add("icon");
+      addButton.classList.add("ion-plus");
+
+      addButton.addEventListener("click", () => {
+        addCourse(course);
+      });
+      addButton.addEventListener("click", catchEvent);
+      listItemContent.appendChild(addButton);
+    }
+    if (course === "placeholder") {
+      listItem.classList.add("placeholder");
+    }
   }
 
   const removeButton = document.createElement("i");
@@ -1086,44 +1110,11 @@ function createCourseEntity(course, attrs) {
   removeButton.classList.add("course-box-remove-button");
   removeButton.classList.add("icon");
   removeButton.classList.add("ion-close");
-  if (groupBool) {
-    removeButton.addEventListener("click", () => {
-      removeCourse(course);
-    });
-  } else {
-    removeButton.addEventListener("click", () => {
-      removeCourse(course);
-    });
-  }
+  removeButton.addEventListener("click", () => {
+    removeCourse(course);
+  });
   removeButton.addEventListener("click", catchEvent);
   listItemContent.appendChild(removeButton);
-
-  if (course === "placeholder") {
-    listItem.classList.add("placeholder");
-  }
-
-  if (groupBool) {
-    let groupNode = document.createElement("UL");
-    groupNode.classList.add("group-list");
-    let sortableGroupList = Sortable.create(groupNode, {
-      handle: ".course-box-text",
-      ghostClass: "placeholder",
-      group: "courses",
-      onSort: function(evt) {
-        readSelectedCoursesList();
-      },
-      onStart: function(evt) {
-        gCurrentlySorting = true;
-      },
-      onEnd: function(evt) {
-        gCurrentlySorting = false;
-      },
-      emptyInsertThreshold: 20
-    });
-
-    listItem.appendChild(groupNode);
-    listItem.classList.add("group");
-  }
 
   if (idx !== undefined) {
     listItem.setAttribute("data-course-index", idx);
@@ -1524,10 +1515,21 @@ function handleSelectedCoursesUpdate() {
   // Update the derivative variable from main (gNestedSelectedCoursesAndGroups)
   gSelectedCourses = gNestedSelectedCoursesAndGroups
     .flatten(Infinity)
-    .filter(isCourse);
+    .filter(course => course.type !== "group");
 
-  // Reindex the course boxes to match
-  indexSelectedCoursesHelper(selectedCoursesList.children, 0);
+  // Reindex the course boxes to match any new ordering
+  indexSelectedCourses(selectedCoursesList.children, 0);
+
+  function indexSelectedCourses(lst, index) {
+    for (let entity of lst) {
+      entity.setAttribute("data-course-index", index);
+      index += 1;
+      if (entity.classList.contains("group")) {
+        index = indexSelectedCourses(entity.lastChild.children, index);
+      }
+    }
+    return index;
+  }
 
   // We need to add/remove the "+" buttons.
   rerenderCourseSearchResults();
@@ -1571,28 +1573,28 @@ function addCourse(course) {
 
 function removeCourse(course) {
   removeCourseHelper(course, gNestedSelectedCoursesAndGroups);
-}
 
-function removeCourseHelper(course, list) {
-  let idx;
-  if (course.type === "group") {
-    function rightGroup(g) {
-      return Array.isArray(g) && g[0] === course;
+  function removeCourseHelper(course, list) {
+    let idx;
+    if (course.type === "group") {
+      function rightGroup(g) {
+        return Array.isArray(g) && g[0] === course;
+      }
+      idx = list.findIndex(rightGroup);
+    } else {
+      idx = list.indexOf(course);
     }
-    idx = list.findIndex(rightGroup);
-  } else {
-    idx = list.indexOf(course);
-  }
-  if (idx !== -1) {
-    list.splice(idx, 1);
-    handleSelectedCoursesUpdate();
-    return;
-  } else {
-    let trim = list.filter(Array.isArray);
-    if (trim.length > 0) {
-      for (let group of trim) {
-        let groupList = group[1];
-        removeCourseHelper(course, groupList);
+    if (idx !== -1) {
+      list.splice(idx, 1);
+      handleSelectedCoursesUpdate();
+      return;
+    } else {
+      let trim = list.filter(Array.isArray);
+      if (trim.length > 0) {
+        for (let group of trim) {
+          let groupList = group[1];
+          removeCourseHelper(course, groupList);
+        }
       }
     }
   }
@@ -1603,53 +1605,27 @@ function readSelectedCoursesList() {
     selectedCoursesList.children
   );
   handleSelectedCoursesUpdate();
-}
 
-function indexSelectedCoursesHelper(lst, index) {
-  for (let entity of lst) {
-    entity.setAttribute("data-course-index", index);
-    index += 1;
-    if (entity.classList.contains("group")) {
-      index = indexSelectedCoursesHelper(entity.lastChild.children, index);
-    }
-  }
-  return index;
-}
-
-function isCourse(course) {
-  return course.type !== "group";
-}
-
-function readSelectedCoursesListHelper(lst) {
-  const newSelectedCourses = [];
-  for (let entity of lst) {
-    //const
-    const idx = parseInt(entity.getAttribute("data-course-index"), 10);
-    const coursesAndGroups = gNestedSelectedCoursesAndGroups.flatten(Infinity);
-    const course = coursesAndGroups[idx];
-    if (entity.classList.contains("group")) {
-      let temp;
-      if (entity.lastChild.hasChildNodes) {
-        temp = readSelectedCoursesListHelper(entity.lastChild.children);
+  function readSelectedCoursesListHelper(lst) {
+    const newSelectedCourses = [];
+    for (let entity of lst) {
+      const idx = parseInt(entity.getAttribute("data-course-index"), 10);
+      const course = gNestedSelectedCoursesAndGroups.flatten(Infinity)[idx];
+      if (entity.classList.contains("group")) {
+        let temp;
+        if (entity.lastChild.hasChildNodes) {
+          temp = readSelectedCoursesListHelper(entity.lastChild.children);
+        } else {
+          temp = [];
+        }
+        let temp2 = [course, temp];
+        newSelectedCourses.push(temp2);
       } else {
-        temp = [];
-      }
-      let temp2 = [course, temp];
-      newSelectedCourses.push(temp2);
-    } else {
-      newSelectedCourses.push(
-        course
-      ); /*
-      if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length) {
         newSelectedCourses.push(course);
-      } else {
-        alert("An internal error occurred. This is bad.");
-        updateSelectedCoursesList();
-        return;
-      }*/
+      }
     }
+    return newSelectedCourses;
   }
-  return newSelectedCourses;
 }
 
 function saveImportExportModalChanges() {

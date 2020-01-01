@@ -227,6 +227,10 @@ body {
   border-left: solid 2px #e3e6ea;
 }
 
+.group-box-content {
+  background-color: #f8f9fa;
+}
+
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
