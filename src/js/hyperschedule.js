@@ -109,7 +109,10 @@ const importExportCopyButton = document.getElementById(
 
 // Persistent data.
 let gApiData = null;
+let gNestedSelectedCoursesAndGroups = [];
 let gSelectedCourses = [];
+let gSelectedCoursesAndGroups = [];
+let gGroups = new Object();
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
@@ -120,7 +123,6 @@ let gGreyConflictCourses = greyConflictCoursesOptions[0];
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
-let gPlaceholders = 0;
 /// Utility functions
 //// JavaScript utility functions
 
@@ -838,7 +840,16 @@ function attachListeners() {
   let sortableList = Sortable.create(selectedCoursesList, {
     handle: ".course-box-text",
     ghostClass: "placeholder",
-    group: "courses"
+    group: "courses",
+    onSort: function(evt) {
+      readSelectedCoursesList();
+    },
+    onStart: function(evt) {
+      gCurrentlySorting = true;
+    },
+    onEnd: function(evt) {
+      gCurrentlySorting = false;
+    }
   });
 
   printAllButton.addEventListener("click", () => {
@@ -853,16 +864,9 @@ function attachListeners() {
     "click",
     minimizeCourseDescription
   );
-  selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
-  selectedCoursesList.addEventListener("sortstart", () => {
-    gCurrentlySorting = true;
-  });
-  selectedCoursesList.addEventListener("sortstop", () => {
-    gCurrentlySorting = false;
-  });
   selectedCoursesList.addEventListener("coursenametyping", () => {
-    sortableList.option("disabled", true);
     console.log(sortableList.toArray());
+    sortableList.option("disabled", true);
   });
   selectedCoursesList.addEventListener("coursenametypingdone", () => {
     sortableList.option("disabled", false);
@@ -1050,8 +1054,7 @@ function createCourseEntity(course, attrs) {
     let courseCode;
     let text;
     if (course === "placeholder") {
-      courseCode = gPlaceholders;
-      gPlaceholders += 1;
+      courseCode = "p";
       text = "placeholder";
     } else {
       courseCode = course.courseCode;
@@ -1098,16 +1101,21 @@ function createCourseEntity(course, attrs) {
   if (groupBool) {
     let groupNode = document.createElement("UL");
     groupNode.classList.add("group-list");
-    let sortableList = Sortable.create(groupNode, {
+    let sortableGroupList = Sortable.create(groupNode, {
       handle: ".course-box-text",
       ghostClass: "placeholder",
-      group: "courses"
+      group: "courses",
+      onSort: function(evt) {
+        readSelectedCoursesList();
+      },
+      onStart: function(evt) {
+        gCurrentlySorting = true;
+      },
+      onEnd: function(evt) {
+        gCurrentlySorting = false;
+      },
+      emptyInsertThreshold: 20
     });
-    //testing dragging items within groups
-    for (let i = 3; i < 6; i++) {
-      let item = createCourseEntity("placeholder");
-      groupNode.appendChild(item);
-    }
 
     listItem.appendChild(groupNode);
     listItem.classList.add("group");
@@ -1522,31 +1530,55 @@ function removeCourse(course) {
 }
 
 function readSelectedCoursesList() {
-  const newSelectedCourses = [];
-  newSelectedCourses = readSelectedCoursesListHelper(
+  const newSelectedCourses = readSelectedCoursesListHelper(
     selectedCoursesList.children
   );
-  gSelectedCourses = newSelectedCourses;
+  console.log(newSelectedCourses);
+  gSelectedCoursesAndGroups = newSelectedCourses.flatten(Infinity);
+  let selectedCourses = gSelectedCoursesAndGroups.filter(isCourse);
+
+  //might need to go in handle update?
+  indexSelectedCoursesHelper(selectedCoursesList.children, 0);
+  console.log(selectedCoursesList.children);
+
   handleSelectedCoursesUpdate();
 }
 
-function readSelectedCoursesListHelper(lst) {
-  for (let entity of lst.children) {
-    if (entity.type === "group") {
-      readSelectedCoursesListHelper(entity);
-    }
-    const idx = parseInt(entity.getAttribute("data-course-index"), 10);
-    if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length) {
-      newSelectedCourses.push(gSelectedCourses[idx]);
-      newSelectedCourses.lastChild.setAttribute(
-        "data-course-index"
-      ) = newSelectedCourses.length;
-    } else {
-      alert("An internal error occurred. This is bad.");
-      updateSelectedCoursesList();
-      return;
+function indexSelectedCoursesHelper(lst, index) {
+  for (let entity of lst) {
+    entity.setAttribute("data-course-index", index);
+    index += 1;
+    if (entity.classList.contains("group")) {
+      index = indexSelectedCoursesHelper(entity.lastChild.children, index);
     }
   }
+  return index;
+}
+
+function isCourse(course) {
+  return course.type !== "group";
+}
+
+function readSelectedCoursesListHelper(lst) {
+  const newSelectedCourses = [];
+  for (let entity of lst) {
+    const idx = parseInt(entity.getAttribute("data-course-index"), 10);
+    const course = gSelectedCourses[idx];
+    if (entity.classList.contains("group")) {
+      let temp = readSelectedCoursesListHelper(entity.lastChild.children);
+      let temp2 = [course, temp];
+      newSelectedCourses.push(temp2);
+    } else {
+      if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length) {
+        newSelectedCourses.push(course);
+      } else {
+        alert("An internal error occurred. This is bad.");
+        updateSelectedCoursesList();
+        return;
+      }
+    }
+  }
+  return newSelectedCourses;
 }
 
 function saveImportExportModalChanges() {
