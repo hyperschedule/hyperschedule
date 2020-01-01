@@ -753,15 +753,10 @@ function attachListeners() {
     "click",
     saveImportExportModalChanges
   );
-  sortable(".sortable-list", {
-    forcePlaceholderSize: true,
-    placeholder: createCourseEntity("placeholder").outerHTML,
-    handle: ".course-box-text"
-  });
-
-  sortable(".sortable-group", {
-    forcePlaceholderSize: true,
-    placeholder: createCourseEntity("placeholder").outerHTML
+  let sortableList = Sortable.create(selectedCoursesList, {
+    handle: ".course-box-text",
+    ghostClass: "placeholder",
+    group: "courses"
   });
 
   printAllButton.addEventListener("click", () => {
@@ -784,10 +779,11 @@ function attachListeners() {
     gCurrentlySorting = false;
   });
   selectedCoursesList.addEventListener("coursenametyping", () => {
-    sortable(".sortable-list", "disable");
+    sortableList.option("disabled", true);
+    console.log(sortableList.toArray());
   });
   selectedCoursesList.addEventListener("coursenametypingdone", () => {
-    sortable(".sortable-list", "enable");
+    sortableList.option("disabled", false);
   });
   createGroupButton.addEventListener("click", createGroup);
 
@@ -1020,10 +1016,13 @@ function createCourseEntity(course, attrs) {
   if (groupBool) {
     let groupNode = document.createElement("UL");
     groupNode.classList.add("group-list");
-    groupNode.classList.add("sortable-group");
-
+    let sortableList = Sortable.create(groupNode, {
+      handle: ".course-box-text",
+      ghostClass: "placeholder",
+      group: "courses"
+    });
     //testing dragging items within groups
-    for (let i = 3; i < 5; i++) {
+    for (let i = 3; i < 6; i++) {
       let item = createCourseEntity("placeholder");
       groupNode.appendChild(item);
     }
@@ -1282,8 +1281,6 @@ function updateSelectedCoursesList() {
       createCourseEntity(course, { idx, alreadyAdded: true })
     );
   }
-  sortable(".sortable-list");
-  sortable(".sortable-group");
 }
 
 function updateSchedule() {
@@ -1444,18 +1441,30 @@ function removeCourse(course) {
 
 function readSelectedCoursesList() {
   const newSelectedCourses = [];
-  for (let entity of selectedCoursesList.children) {
+  newSelectedCourses = readSelectedCoursesListHelper(
+    selectedCoursesList.children
+  );
+  gSelectedCourses = newSelectedCourses;
+  handleSelectedCoursesUpdate();
+}
+
+function readSelectedCoursesListHelper(lst) {
+  for (let entity of lst.children) {
+    if (entity.type === "group") {
+      readSelectedCoursesListHelper(entity);
+    }
     const idx = parseInt(entity.getAttribute("data-course-index"), 10);
     if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length) {
       newSelectedCourses.push(gSelectedCourses[idx]);
+      newSelectedCourses.lastChild.setAttribute(
+        "data-course-index"
+      ) = newSelectedCourses.length;
     } else {
       alert("An internal error occurred. This is bad.");
       updateSelectedCoursesList();
       return;
     }
   }
-  gSelectedCourses = newSelectedCourses;
-  handleSelectedCoursesUpdate();
 }
 
 function saveImportExportModalChanges() {
@@ -2074,7 +2083,7 @@ function downloadICalFile() {
 attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
-//retrieveCourseDataUntilSuccessful();
+retrieveCourseDataUntilSuccessful();
 
 /// Closing remarks
 
