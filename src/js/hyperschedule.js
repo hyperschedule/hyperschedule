@@ -105,6 +105,7 @@ const importExportCopyButton = document.getElementById(
 //// Global state
 
 // Persistent data.
+let gGroupCounter = 0;
 let gApiData = null;
 let gNestedSelectedCoursesAndGroups = [];
 let gSelectedCourses = [];
@@ -998,18 +999,20 @@ function createCourseEntity(course, attrs) {
     listItemContent.appendChild(addButton);
   }
 
-  if (!alreadyAdded && groupBool) {
-    gGroupCounter += 1;
-  }
-
   const removeButton = document.createElement("i");
   removeButton.classList.add("course-box-button");
   removeButton.classList.add("course-box-remove-button");
   removeButton.classList.add("icon");
   removeButton.classList.add("ion-close");
-  removeButton.addEventListener("click", () => {
-    removeCourse(course);
-  });
+  if (groupBool) {
+    removeButton.addEventListener("click", () => {
+      removeCourse(course);
+    });
+  } else {
+    removeButton.addEventListener("click", () => {
+      removeCourse(course);
+    });
+  }
   removeButton.addEventListener("click", catchEvent);
   listItemContent.appendChild(removeButton);
 
@@ -1324,25 +1327,6 @@ function findIndex(list, course) {
   return -1;
 }
 
-/*
-function updateSelectedCoursesList() {
-  if (gCurrentlySorting) {
-    // Defer to after the user has finished sorting, otherwise we mess
-    // up the drag and drop.
-    setTimeout(updateSelectedCoursesList, 100);
-    return;
-  }
-  while (selectedCoursesList.hasChildNodes()) {
-    selectedCoursesList.removeChild(selectedCoursesList.lastChild);
-  }
-  for (let idx = 0; idx < gSelectedCourses.length; ++idx) {
-    const course = gSelectedCourses[idx];
-    selectedCoursesList.appendChild(
-      createCourseEntity(course, { idx, alreadyAdded: true })
-    );
-  }
-}
-*/
 function updateSchedule() {
   const schedule = computeSchedule(gSelectedCourses);
   while (scheduleTable.getElementsByClassName("schedule-slot").length > 0) {
@@ -1441,7 +1425,8 @@ function minimizeArrowPointDown() {
 //// Group functions
 
 function createGroup() {
-  let g = { title: "Untitled Group", type: "group" };
+  let g = { title: "Untitled Group", type: "group", groupID: gGroupCounter };
+  gGroupCounter += 1;
   gNestedSelectedCoursesAndGroups.push([g, []]);
   handleSelectedCoursesUpdate();
 }
@@ -1507,9 +1492,17 @@ function removeCourse(course) {
 }
 
 function removeCourseHelper(course, list) {
-  let idx = list.indexOf(course);
+  let idx;
+  if (course.type === "group") {
+    function rightGroup(g) {
+      return Array.isArray(g) && g[0] === course;
+    }
+    idx = list.findIndex(rightGroup);
+  } else {
+    idx = list.indexOf(course);
+  }
   if (idx !== -1) {
-    list.splice(list.indexOf(course), 1);
+    list.splice(idx, 1);
     handleSelectedCoursesUpdate();
     return;
   } else {
