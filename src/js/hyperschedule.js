@@ -840,6 +840,36 @@ function createCourseEntity(course, attrs) {
   listItem.appendChild(listItemContent);
 
   if (course.type === "group") {
+    const minimizeLabel = document.createElement("label");
+    minimizeLabel.classList.add("course-box-minimize-label");
+
+    const minimizeIcon = document.createElement("i");
+    minimizeIcon.classList.add("course-box-minimize-icon");
+    minimizeIcon.classList.add("icon");
+
+    const minimizeToggle = document.createElement("input");
+    minimizeToggle.setAttribute("type", "checkbox");
+    minimizeToggle.classList.add("course-box-button");
+    minimizeToggle.classList.add("course-box-minimize-toggle");
+    minimizeToggle.checked = !!course.minimized;
+    minimizeToggle.addEventListener("click", () => {
+      if (minimizeLabel.classList.contains("course-minimized")) {
+        minimizeLabel.classList.remove("course-minimized");
+        minimizeIcon.classList.remove("ion-arrow-down-b");
+        minimizeIcon.classList.add("ion-arrow-right-b");
+      } else {
+        minimizeLabel.classList.add("course-minimized");
+        minimizeIcon.classList.remove("ion-arrow-right-b");
+        minimizeIcon.classList.add("ion-arrow-down-b");
+      }
+      toggleGroupMinimized(course);
+    });
+    minimizeToggle.addEventListener("click", catchEvent);
+    minimizeLabel.addEventListener("click", catchEvent);
+    minimizeLabel.appendChild(minimizeToggle);
+    minimizeLabel.appendChild(minimizeIcon);
+    listItemContent.appendChild(minimizeLabel);
+
     listItemContent.classList.add("group-box-content");
     const groupNameContainer = document.createElement("span");
     groupNameContainer.classList.add("course-box-text");
@@ -868,6 +898,7 @@ function createCourseEntity(course, attrs) {
         new CustomEvent("coursenametypingdone")
       );
     });
+
     let groupNode = document.createElement("UL");
     groupNode.classList.add("group-list");
     let sortableGroupList = Sortable.create(groupNode, {
@@ -885,6 +916,15 @@ function createCourseEntity(course, attrs) {
       },
       emptyInsertThreshold: 20
     });
+
+    if (!!course.minimized) {
+      minimizeLabel.classList.add("course-minimized");
+      minimizeIcon.classList.add("ion-arrow-down-b");
+      groupNode.style.display = "none";
+    } else {
+      minimizeIcon.classList.add("ion-arrow-right-b");
+      groupNode.style.display = "block";
+    }
 
     selectedCoursesList.addEventListener("coursenametyping", () => {
       sortableGroupList.option("disabled", true);
@@ -1416,7 +1456,12 @@ function minimizeArrowPointDown() {
 //// Group functions
 
 function createGroup() {
-  let g = { title: "Untitled Group", type: "group", groupID: gGroupCounter };
+  let g = {
+    title: "Untitled Group",
+    type: "group",
+    groupID: gGroupCounter,
+    minimized: false
+  };
   gGroupCounter += 1;
   gNestedSelectedCoursesAndGroups.push([g, []]);
   handleSelectedCoursesUpdate();
@@ -1495,21 +1540,22 @@ function removeCourse(course) {
   function removeCourseHelper(course, list) {
     let idx;
     if (course.type === "group") {
-      function rightGroup(g) {
-        return Array.isArray(g) && g[0] === course;
-      }
-      idx = list.findIndex(rightGroup);
+      idx = list.findIndex(g => Array.isArray(g) && g[0] === course);
     } else {
       idx = list.indexOf(course);
     }
     if (idx !== -1) {
-      list.splice(idx, 1);
+      if (course.type === "group") {
+        list.splice(idx, 1, ...list[idx][1]);
+      } else {
+        list.splice(idx, 1);
+      }
       handleSelectedCoursesUpdate();
       return;
     } else {
-      let trim = list.filter(Array.isArray);
-      if (trim.length > 0) {
-        for (let group of trim) {
+      let groups = list.filter(Array.isArray);
+      if (groups.length > 0) {
+        for (let group of groups) {
           let groupList = group[1];
           removeCourseHelper(course, groupList);
         }
@@ -1530,14 +1576,11 @@ function readSelectedCoursesList() {
       const idx = parseInt(entity.getAttribute("data-course-index"), 10);
       const course = gNestedSelectedCoursesAndGroups.flatten(Infinity)[idx];
       if (entity.classList.contains("group")) {
-        let temp;
+        let temp = [];
         if (entity.lastChild.hasChildNodes) {
           temp = readSelectedCoursesListHelper(entity.lastChild.children);
-        } else {
-          temp = [];
         }
-        let temp2 = [course, temp];
-        newSelectedCourses.push(temp2);
+        newSelectedCourses.push([course, temp]);
       } else {
         newSelectedCourses.push(course);
       }
@@ -1579,6 +1622,12 @@ function toggleStarredConflictingCourses() {
 }
 
 function toggleConflictCourses() {
+  updateCourseDisplays();
+  writeStateToLocalStorage();
+}
+
+function toggleGroupMinimized(group) {
+  group.minimized = !group.minimized;
   updateCourseDisplays();
   writeStateToLocalStorage();
 }

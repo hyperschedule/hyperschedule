@@ -594,6 +594,21 @@ body {
   cursor: pointer;
 }
 
+#selected-courses-column .course-box-minimize-toggle {
+  display: none;
+}
+
+#selected-courses-column .course-box-minimize-label {
+  margin: 0;
+  padding: 0.25rem 0.5rem;
+  line-height: 1em;
+}
+
+#selected-courses-column .course-box-minimize-icon {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
 #selected-courses-column .course-box-remove-button {
 }
 
