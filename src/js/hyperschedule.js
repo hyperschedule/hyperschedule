@@ -831,7 +831,6 @@ function createCourseEntity(course, attrs) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
-
   const listItem = document.createElement("li");
   listItem.classList.add("course-box");
 
@@ -935,6 +934,14 @@ function createCourseEntity(course, attrs) {
 
     listItem.appendChild(groupNode);
     listItem.classList.add("group");
+    if (!alreadyAdded) {
+      console.log("fire");
+      var event = new MouseEvent("dblclick", {
+        view: window,
+        bubbles: true
+      });
+      groupNameContainer.dispatchEvent(event);
+    }
   } else {
     if (course !== "placeholder") {
       listItemContent.style["background-color"] = getCourseColor(course);
@@ -1457,7 +1464,7 @@ function minimizeArrowPointDown() {
 
 function createGroup() {
   let g = {
-    title: "Untitled Group",
+    title: "",
     type: "group",
     groupID: gGroupCounter,
     minimized: false
@@ -1465,6 +1472,16 @@ function createGroup() {
   gGroupCounter += 1;
   gNestedSelectedCoursesAndGroups.push([g, []]);
   handleSelectedCoursesUpdate();
+  // https://stackoverflow.com/a/18399339
+  var event = new MouseEvent("dblclick", {
+    view: window,
+    bubbles: true,
+    cancelable: true
+  });
+  let newGroupBox = selectedCoursesList.lastChild;
+  let newGroupBoxContent = newGroupBox.firstChild;
+  let newGroupBoxTitle = newGroupBoxContent.childNodes[1];
+  newGroupBoxTitle.dispatchEvent(event);
 }
 
 /// Global state handling
