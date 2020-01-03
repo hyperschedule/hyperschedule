@@ -966,8 +966,15 @@ function createCourseEntity(course, attrs) {
       let textBox = document.createElement("input");
       textBox.setAttribute("type", "text");
       textBox.setAttribute("value", course.title);
+      textBox.classList.add("group-box-typing-box");
       groupNameContainer.appendChild(textBox);
       textBox.focus();
+    });
+
+    groupNameContainer.addEventListener("keyup", event => {
+      if (event.keyCode === 13) {
+        groupNameContainer.lastChild.disabled = true;
+      }
     });
 
     groupNameContainer.addEventListener("focusout", () => {

@@ -231,6 +231,10 @@ body {
   background-color: #f8f9fa;
 }
 
+.group-box-typing-box {
+  width: 100%;
+}
+
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
