@@ -1273,8 +1273,10 @@ function setCourseDescriptionBox(course) {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
   const description = generateCourseDescription(course);
+  let totalLength = 0;
   for (let idx = 0; idx < description.length; ++idx) {
     const line = description[idx];
+    totalLength += line.length;
     if (idx !== 0) {
       courseDescriptionBox.appendChild(document.createElement("hr"));
     }
@@ -1283,6 +1285,13 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
+  courseDescriptionBox.appendChild(document.createElement("hr"));
+  const paragraph = document.createElement("p");
+  const text = document.createTextNode(
+    "Total characters in description: " + totalLength
+  );
+  paragraph.appendChild(text);
+  courseDescriptionBox.appendChild(paragraph);
   minimizeArrowPointUp();
   courseDescriptionVisible();
 }
