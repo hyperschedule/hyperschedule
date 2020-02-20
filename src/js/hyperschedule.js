@@ -1256,6 +1256,11 @@ function showImportExportModal() {
   $("#import-export-modal").modal("show");
 }
 
+function showUploadModal() {
+  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  $("#upload-syllabus-modal").modal("show");
+}
+
 function showSettingsModal() {
   $("#settings-modal").modal("show");
 }
@@ -1275,8 +1280,32 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
+
+  courseDescriptionBox.appendChild(document.createElement("hr"));
+  createSyllabusUploadBox(courseDescriptionBox);
+
   minimizeArrowPointUp();
   courseDescriptionVisible();
+}
+
+function createSyllabusUploadBox(courseDescriptionBox) {
+  const icon = document.createElement("i");
+  icon.classList.add("course-box-button");
+  icon.classList.add("course-box-add-button");
+  icon.classList.add("icon");
+  icon.classList.add("ion-upload");
+  icon.addEventListener("click", showUploadModal);
+
+  const paragraph = document.createElement("p");
+  const link = document.createElement("a");
+  link.textContent = "Syllabus (2019)";
+  var hreflink = document.createAttribute("href");
+  hreflink.value = "https://www.google.com";
+  link.attributes.setNamedItem(hreflink);
+  paragraph.appendChild(link);
+
+  courseDescriptionBox.appendChild(paragraph);
+  courseDescriptionBox.appendChild(icon);
 }
 
 function minimizeCourseDescription() {
