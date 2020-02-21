@@ -1290,8 +1290,7 @@ function setCourseDescriptionBox(course) {
 
 function createSyllabusUploadBox(courseDescriptionBox) {
   const icon = document.createElement("i");
-  icon.classList.add("course-box-button");
-  icon.classList.add("course-box-add-button");
+  icon.classList.add("upload-syllabus-button");
   icon.classList.add("icon");
   icon.classList.add("ion-upload");
   icon.addEventListener("click", showUploadModal);
@@ -1303,9 +1302,9 @@ function createSyllabusUploadBox(courseDescriptionBox) {
   hreflink.value = "https://www.google.com";
   link.attributes.setNamedItem(hreflink);
   paragraph.appendChild(link);
+  paragraph.appendChild(icon);
 
   courseDescriptionBox.appendChild(paragraph);
-  courseDescriptionBox.appendChild(icon);
 }
 
 function minimizeCourseDescription() {
