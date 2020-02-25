@@ -23,7 +23,8 @@ const greyConflictCoursesOptions = ["none", "starred", "all"];
 
 const filterKeywords = {
   "dept:": ["dept:", "department:"],
-  "college:": ["college", "col:", "school:", "sch:"]
+  "college:": ["college", "col:", "school:", "sch:"],
+  "days:": ["days:", "day:"]
 };
 
 //// DOM elements
@@ -536,13 +537,23 @@ function coursePassesTextFilters(course, textFilters) {
   const lowerCourseCode = course.courseCode.toLowerCase();
   const dept = lowerCourseCode.split(" ")[0];
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
+  const scheduleList = course.courseSchedule;
+  let days = "";
+
+  for (let schedule of scheduleList) {
+    days += schedule.scheduleDays.toLowerCase();
+  }
 
   if (
     (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
-    (textFilters["college:"] && !col.match(textFilters["college:"]))
+    (textFilters["college:"] && !col.match(textFilters["college:"])) ||
+    (textFilters["days:"] && !days.match(textFilters["days:"]))
   ) {
     return false;
   }
+
+  
+
   return true;
 }
 
