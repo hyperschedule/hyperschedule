@@ -552,8 +552,6 @@ function coursePassesTextFilters(course, textFilters) {
     return false;
   }
 
-  
-
   return true;
 }
 
