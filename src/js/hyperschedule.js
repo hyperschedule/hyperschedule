@@ -23,8 +23,11 @@ const greyConflictCoursesOptions = ["none", "starred", "all"];
 
 const filterKeywords = {
   "dept:": ["dept:", "department:"],
-  "college:": ["college", "col:", "school:", "sch:"]
+  "college:": ["college", "col:", "school:", "sch:"],
+  "credits:": ["credits:", "credit:"]
 };
+
+const filterInequalities = ["<=", ">=", "<", "=", ">"];
 
 //// DOM elements
 
@@ -536,14 +539,52 @@ function coursePassesTextFilters(course, textFilters) {
   const lowerCourseCode = course.courseCode.toLowerCase();
   const dept = lowerCourseCode.split(" ")[0];
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
+  const credits = course.courseCredits;
 
   if (
     (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
-    (textFilters["college:"] && !col.match(textFilters["college:"]))
+    (textFilters["college:"] && !col.match(textFilters["college:"])) ||
+    (textFilters["credits:"] && !courseCreditMatch(credits, textFilters["credits:"]))
   ) {
     return false;
   }
   return true;
+}
+
+function courseCreditMatch(courseCredits, inputCredits) {
+  let ine;
+  let floatCredits = parseFloat(courseCredits);
+  let floatInput; 
+
+  if(!isNaN(inputCredits.substring(0,1))) {
+    floatInput = parseFloat(inputCredits);
+    return floatInput == floatCredits;
+  }
+
+  for (let operator of filterInequalities) {
+    if(inputCredits.startsWith(operator)){
+      ine = operator;
+      break;
+    }
+  }
+
+  // Update input to contain actual credit amount
+  floatInput = parseFloat(inputCredits.substring(ine.length));
+
+  switch(ine) {
+    case "<=":
+      return floatCredits <= floatInput; 
+    case ">=":
+      return floatCredits >= floatInput;
+    case "=":
+      return floatCredits == floatInput;
+    case "<":
+      return floatCredits < floatInput;
+    case ">":
+      return floatCredits > floatInput;
+    default:
+      return false;
+  }
 }
 
 ///// Course scheduling
