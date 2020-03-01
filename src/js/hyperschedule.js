@@ -548,7 +548,7 @@ function coursePassesTextFilters(course, textFilters) {
 
 function coursePassesTimeFilters(course, timeFilters) {
   // timeFilters is a two element array - [start_time, end_time]
-  if(timeFilters[0] == "") {
+  if (timeFilters[0] == "") {
     // indicates no current time filters
     return true;
   }
@@ -557,8 +557,10 @@ function coursePassesTimeFilters(course, timeFilters) {
     let scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
     let start = timeFilters[0].replace(":", ".");
     let end = timeFilters[1].replace(":", ".");
-    if(parseFloat(start) <= parseFloat(scheduleStart) && 
-        parseFloat(end) >= parseFloat(scheduleEnd)){
+    if (
+      parseFloat(start) <= parseFloat(scheduleStart) &&
+      parseFloat(end) >= parseFloat(scheduleEnd)
+    ) {
       return true;
     }
   }
@@ -1084,18 +1086,19 @@ function processSearchText() {
       queryText.push(text);
     }
   }
-  //console.log(timeText);
 
   const query = getSearchQuery(queryText);
   const filters = getSearchTextFilters(filtersText);
   const time = getTimeFilter(timeText);
 
-  return { query, filters, time};
+  return { query, filters, time };
 }
 
 function isTimeRange(searchText) {
   timeArray = searchText.split(":");
-  return (timeArray.length == 3) && (!isNaN(timeArray[0])) && (timeArray[1].includes("-"));
+  return (
+    timeArray.length == 3 && !isNaN(timeArray[0]) && timeArray[1].includes("-")
+  );
 }
 
 function getTimeFilter(timeText) {
@@ -1105,15 +1108,15 @@ function getTimeFilter(timeText) {
   timeArray = timeText.split("-");
   timeTuple = [];
   for (let time of timeArray) {
-    if (time.substring(time.length-2) == "am") {
+    if (time.substring(time.length - 2) == "am") {
       // remove "am"
-      time = time.substring(0, time.length-2);
+      time = time.substring(0, time.length - 2);
       if (time.startsWith("12")) {
         time = "00:".concat(time.substring(3));
       }
-    } else if (time.substring(time.length-2) == "pm") {
+    } else if (time.substring(time.length - 2) == "pm") {
       // remove "pm"
-      time = time.substring(0, time.length-2);
+      time = time.substring(0, time.length - 2);
       if (!time.startsWith("12")) {
         let hour = time.split(":")[0];
         hour = parseInt(hour) + 12;
