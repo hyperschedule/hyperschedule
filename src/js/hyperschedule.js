@@ -548,7 +548,22 @@ function coursePassesTextFilters(course, textFilters) {
 
 function coursePassesTimeFilters(course, timeFilters) {
   // timeFilters is a two element array - [start_time, end_time]
-  
+  if(timeFilters[0] == "") {
+    // indicates no current time filters
+    return true;
+  }
+  for (let schedule of course.courseSchedule) {
+    let scheduleStart = schedule.scheduleStartTime.replace(":", ".");
+    let scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
+    let start = timeFilters[0].replace(":", ".");
+    let end = timeFilters[1].replace(":", ".");
+    if(parseFloat(start) <= parseFloat(scheduleStart) && 
+        parseFloat(end) >= parseFloat(scheduleEnd)){
+      return true;
+    }
+  }
+
+  return false;
 }
 
 ///// Course scheduling
@@ -1069,12 +1084,13 @@ function processSearchText() {
       queryText.push(text);
     }
   }
+  //console.log(timeText);
 
   const query = getSearchQuery(queryText);
   const filters = getSearchTextFilters(filtersText);
   const time = getTimeFilter(timeText);
 
-  return { query, filters };
+  return { query, filters, time};
 }
 
 function isTimeRange(searchText) {
@@ -1176,7 +1192,7 @@ function updateCourseSearchResults() {
   if (gApiData === null) {
     gFilteredCourseKeys = [];
   } else {
-    const { query, filters } = processSearchText();
+    const { query, filters, time } = processSearchText();
 
     gFilteredCourseKeys =
       gApiData === null
@@ -1186,7 +1202,7 @@ function updateCourseSearchResults() {
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
-              //coursePassesTimeFilters(course, timeFilters) &&
+              coursePassesTimeFilters(course, time) &&
               (gShowClosedCourses || !isCourseClosed(course)) &&
               (!gHideAllConflictingCourses ||
                 !courseConflictWithSchedule(course, false)) &&
