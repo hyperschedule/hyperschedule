@@ -546,6 +546,11 @@ function coursePassesTextFilters(course, textFilters) {
   return true;
 }
 
+function coursePassesTimeFilters(course, timeFilters) {
+  // timeFilters is a two element array - [start_time, end_time]
+  
+}
+
 ///// Course scheduling
 
 function generateScheduleSlotDescription(slot) {
@@ -1047,6 +1052,7 @@ function processSearchText() {
   }
   let filtersText = [];
   let queryText = [];
+  let timeText = "";
 
   for (let text of searchText) {
     text = text.toLowerCase();
@@ -1056,6 +1062,9 @@ function processSearchText() {
       }, filterKeywordsValues)
     ) {
       filtersText.push(text);
+    } else if (isTimeRange(text)) {
+      // Looks only at one time range.
+      timeText = text;
     } else {
       queryText.push(text);
     }
@@ -1063,8 +1072,41 @@ function processSearchText() {
 
   const query = getSearchQuery(queryText);
   const filters = getSearchTextFilters(filtersText);
+  const time = getTimeFilter(timeText);
 
   return { query, filters };
+}
+
+function isTimeRange(searchText) {
+  timeArray = searchText.split(":");
+  return (timeArray.length == 3) && (!isNaN(timeArray[0])) && (timeArray[1].includes("-"));
+}
+
+function getTimeFilter(timeText) {
+  // Returns a two element list with the specified
+  // beginning time and end time.
+  timeText = timeText.toLowerCase();
+  timeArray = timeText.split("-");
+  timeTuple = [];
+  for (let time of timeArray) {
+    if (time.substring(time.length-2) == "am") {
+      // remove "am"
+      time = time.substring(0, time.length-2);
+      if (time.startsWith("12")) {
+        time = "00:".concat(time.substring(3));
+      }
+    } else if (time.substring(time.length-2) == "pm") {
+      // remove "pm"
+      time = time.substring(0, time.length-2);
+      if (!time.startsWith("12")) {
+        let hour = time.split(":")[0];
+        hour = parseInt(hour) + 12;
+        time = hour.toString().concat(":" + time.split(":")[1]);
+      }
+    }
+    timeTuple.push(time);
+  }
+  return timeTuple;
 }
 
 function getSearchQuery(searchTextArray) {
@@ -1144,6 +1186,7 @@ function updateCourseSearchResults() {
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
+              //coursePassesTimeFilters(course, timeFilters) &&
               (gShowClosedCourses || !isCourseClosed(course)) &&
               (!gHideAllConflictingCourses ||
                 !courseConflictWithSchedule(course, false)) &&
