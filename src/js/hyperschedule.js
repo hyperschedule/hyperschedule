@@ -544,7 +544,8 @@ function coursePassesTextFilters(course, textFilters) {
   if (
     (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
     (textFilters["college:"] && !col.match(textFilters["college:"])) ||
-    (textFilters["credits:"] && !courseCreditMatch(credits, textFilters["credits:"]))
+    (textFilters["credits:"] &&
+      !courseCreditMatch(credits, textFilters["credits:"]))
   ) {
     return false;
   }
@@ -554,15 +555,15 @@ function coursePassesTextFilters(course, textFilters) {
 function courseCreditMatch(courseCredits, inputCredits) {
   let ine;
   let floatCredits = parseFloat(courseCredits);
-  let floatInput; 
+  let floatInput;
 
-  if(!isNaN(inputCredits.substring(0,1))) {
+  if (!isNaN(inputCredits.substring(0, 1))) {
     floatInput = parseFloat(inputCredits);
     return floatInput == floatCredits;
   }
 
   for (let operator of filterInequalities) {
-    if(inputCredits.startsWith(operator)){
+    if (inputCredits.startsWith(operator)) {
       ine = operator;
       break;
     }
@@ -571,9 +572,9 @@ function courseCreditMatch(courseCredits, inputCredits) {
   // Update input to contain actual credit amount
   floatInput = parseFloat(inputCredits.substring(ine.length));
 
-  switch(ine) {
+  switch (ine) {
     case "<=":
-      return floatCredits <= floatInput; 
+      return floatCredits <= floatInput;
     case ">=":
       return floatCredits >= floatInput;
     case "=":
