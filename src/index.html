@@ -313,7 +313,7 @@
         </a>
         <div id="import-export-data-button-wrapper">
           <button id="import-export-data-button" class="btn btn-primary">
-            Import/Export Data
+            Import/Export
           </button>
         </div>
         <div id="print-dropdown-wrapper" class="dropdown">
@@ -332,6 +332,12 @@
               <a>Print Starred</a>
             </li>
           </ul>
+        </div>
+        <div id="user-button-wrapper">
+          <button id="signin-button" class="btn btn-primary">
+            Sign In
+          </button>
+          <img id="user-button-icon" style="display: none;"></img>
         </div>
         <div id="settings-button-wrapper">
           <button type="button" id="settings-button" class="btn">
@@ -575,6 +581,31 @@
       </div>
     </div>
 
+    <div class="modal fade" id="signin-modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Sign In</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="firebaseui-auth-container"></div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"
@@ -642,6 +673,15 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/redom/3.24.1/redom.min.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-auth.js"></script>
+    <!-- End firebase -->
+
+    <!-- Firebase UI-->
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" /> 
+    <!-- End Firebase UI-->
     <script src="js/hyperschedule.js"></script>
   </body>
 </html>

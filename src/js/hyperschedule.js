@@ -8,6 +8,20 @@
 
 const ics = require("/js/vendor/ics-0.2.0.min.js");
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCelRaVwcwPV5sPpGYy_AGEpK4TOgA5_iQ",
+  authDomain: "hyperschedule-course-info.firebaseapp.com",
+  databaseURL: "https://hyperschedule-course-info.firebaseio.com",
+  projectId: "hyperschedule-course-info",
+  storageBucket: "hyperschedule-course-info.appspot.com",
+  messagingSenderId: "280583982425",
+  appId: "1:280583982425:web:15145198927778bc831048",
+  measurementId: "G-BMMJ3G37Y0"
+};
+
+// Database Initialization
+firebase.initializeApp(firebaseConfig);
+
 //// Data constants
 
 const millisecondsPerHour = 3600 * 1000;
@@ -68,6 +82,8 @@ const importExportDataButton = document.getElementById(
 const printDropdown = document.getElementById("print-dropdown");
 const printAllButton = document.getElementById("print-button-all");
 const printStarredButton = document.getElementById("print-button-starred");
+const signinButton = document.getElementById("signin-button");
+const userIcon = document.getElementById("user-button-icon");
 const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
@@ -762,6 +778,7 @@ function attachListeners() {
   printStarredButton.addEventListener("click", () => {
     downloadPDF(true);
   });
+  signinButton.addEventListener("click", showSignInModal);
   settingsButton.addEventListener("click", showSettingsModal);
 
   courseDescriptionMinimize.addEventListener(
@@ -1254,6 +1271,10 @@ function updateCourseDescriptionBoxHeight() {
 function showImportExportModal() {
   importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
   $("#import-export-modal").modal("show");
+}
+
+function showSignInModal() {
+  $("#signin-modal").modal("show");
 }
 
 function showSettingsModal() {
@@ -1994,9 +2015,57 @@ function downloadICalFile() {
   cal.download("hyperschedule-export");
 }
 
+/// Authentication
+
+/* 
+  setupSigninModal() sets up the sign in screen modal.
+*/
+function setupSigninModal() {
+  const ui = new firebaseui.auth.AuthUI(firebase.auth());
+  var uiConfig = {
+    callbacks: {
+      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+        // User successfully signed in.
+        updateUserButton();
+        // Return type determines whether we continue the redirect automatically
+        // or whether we leave that to developer to handle.
+        return false;
+      }
+    },
+    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+    signInFlow: "popup",
+    // signInSuccessUrl: '<url-to-redirect-to-on-success>',
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ]
+  };
+  ui.start("#firebaseui-auth-container", uiConfig);
+}
+
+/* 
+  updateUserButton() checks whether we are currently logged in. If we are
+  logged in, it displays a user photo. Otherwise, it displays a sign in
+  button.
+*/
+function updateUserButton() {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      userIcon.style.display = "inline";
+      signinButton.style.display = "none";
+      userIcon.src = user.photoURL;
+    } else {
+      userIcon.style.display = "none";
+      signinButton.style.display = "inline";
+    }
+  });
+}
+
 /// Startup actions
 
 attachListeners();
+setupSigninModal();
+updateUserButton();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();

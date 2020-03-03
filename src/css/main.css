@@ -234,6 +234,10 @@ body {
   background-color: #e9ecef;
 }
 
+#user-button-wrapper {
+  margin-left: 1rem;
+}
+
 #settings-button-wrapper {
   margin-left: 0.5rem;
 }
@@ -605,6 +609,10 @@ body {
 
 #import-export-copy-button.copy-button-error::after {
   content: "Couldn't copy";
+}
+
+#user-button-icon {
+  max-width: 2.3em;
 }
 
 /* Local Variables:           */
