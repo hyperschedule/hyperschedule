@@ -552,27 +552,26 @@ function coursePassesTextFilters(course, textFilters) {
   return true;
 }
 
+function parseCreditsInequality(inputCredits) {
+  for (const rel of filterInequalities)
+    if (inputCredits.startsWith(rel)) return rel;
+  return "";
+}
+
+function parseCreditsFilter(inputCredits) {
+  const rel = parseCreditsInequality(inputCredits);
+  return { rel, floatInput: parseFloat(inputCredits.substring(rel.length)) };
+}
+
 function courseCreditMatch(courseCredits, inputCredits) {
-  let ine;
-  let floatCredits = parseFloat(courseCredits);
-  let floatInput;
+  const { rel, floatInput } = parseCreditsFilter(inputCredits);
+  const floatCredits = parseFloat(courseCredits);
 
   if (!isNaN(inputCredits.substring(0, 1))) {
-    floatInput = parseFloat(inputCredits);
     return floatInput == floatCredits;
   }
 
-  for (let operator of filterInequalities) {
-    if (inputCredits.startsWith(operator)) {
-      ine = operator;
-      break;
-    }
-  }
-
-  // Update input to contain actual credit amount
-  floatInput = parseFloat(inputCredits.substring(ine.length));
-
-  switch (ine) {
+  switch (rel) {
     case "<=":
       return floatCredits <= floatInput;
     case ">=":
