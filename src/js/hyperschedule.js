@@ -537,23 +537,95 @@ function coursePassesTextFilters(course, textFilters) {
   const lowerCourseCode = course.courseCode.toLowerCase();
   const dept = lowerCourseCode.split(" ")[0];
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
-  const scheduleList = course.courseSchedule;
-  let days = "";
-
-  for (let schedule of scheduleList) {
-    days += schedule.scheduleDays.toLowerCase();
-  }
 
   if (
     (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
     (textFilters["college:"] && !col.match(textFilters["college:"])) ||
-    (textFilters["days:"] && !days.match(textFilters["days:"]))
+    (textFilters["days:"] &&
+      !coursePassesDayFilter(course, textFilters["days:"]))
   ) {
     return false;
   }
 
   return true;
 }
+
+filterInequalities = ["<=", ">=", "<", ">", "="];
+
+function displaySet(s) {
+  s.forEach(console.log, s);
+}
+
+function parseDaysInequality(inputDays) {
+  for (const rel of filterInequalities)
+    if (inputDays.startsWith(rel)) return rel;
+  return "";
+}
+
+function generateDayFilter(course) {
+  const scheduleList = course.courseSchedule;
+  let days = new Set();
+
+  for (let schedule of scheduleList) {
+    const str1 = schedule.scheduleDays.toLowerCase();
+    const arr1 = [...str1];
+    arr1.forEach(days.add, days);
+  }
+  return days;
+}
+
+function generateInputDays(input) {
+  let days = new Set();
+  const arr1 = [...input];
+  arr1.forEach(days.add, days);
+  return days;
+}
+
+function coursePassesDayFilter(course, inputString) {
+  const courseDays = generateDayFilter(course);
+  const rel = parseDaysInequality(inputString);
+  const inputDays = generateInputDays(
+    inputString.substring(rel.length).toLowerCase()
+  );
+
+  switch (rel) {
+    case "<=": // courseDays is a subset of inputDays
+      return courseDays.subSet(inputDays);
+    case "":
+    case ">=": // inputDays is a subset of courseDays
+      return inputDays.subSet(courseDays);
+    case "=": // inputDays match exactly courseDays
+      const difference1 = new Set(
+        [...courseDays].filter(x => !inputDays.has(x))
+      );
+      const difference2 = new Set(
+        [...inputDays].filter(x => !courseDays.has(x))
+      );
+      return difference1.size == 0 && difference2.size == 0;
+    case "<": // courseDays is a proper subset of inputDays
+      return courseDays.subSet(inputDays) && inputDays.size != courseDays.size;
+    case ">": // inputDays is a proper subset of courseDays
+      return inputDays.subSet(courseDays) && inputDays.size != courseDays.size;
+    default:
+      return false;
+  }
+}
+
+Set.prototype.subSet = function(otherSet) {
+  // if size of this set is greater
+  // than otherSet then it can'nt be
+  //  a subset
+  if (this.size > otherSet.size) return false;
+  else {
+    for (var elem of this) {
+      // if any of the element of
+      // this is not present in the
+      // otherset then return false
+      if (!otherSet.has(elem)) return false;
+    }
+    return true;
+  }
+};
 
 ///// Course scheduling
 
