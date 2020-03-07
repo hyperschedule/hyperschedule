@@ -333,11 +333,28 @@
             </li>
           </ul>
         </div>
-        <div id="user-button-wrapper">
+        <div id="user-wrapper">
           <button id="signin-button" class="btn btn-primary">
             Sign In
           </button>
-          <img id="user-button-icon" style="display: none;"></img>
+          <div
+            id="user-dropdown-wrapper"
+            class="dropdown"
+            style="display: none;"
+          >
+            <button
+              id="user-dropdown"
+              class="btn btn-primary dropdown-toggle"
+              data-toggle="dropdown"
+            >
+              <img id="user-button-icon" />
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li class="dropdown-btn" id="signout-btn">
+                <a>Sign Out</a>
+              </li>
+            </ul>
+          </div>
         </div>
         <div id="settings-button-wrapper">
           <button type="button" id="settings-button" class="btn">
@@ -680,7 +697,11 @@
 
     <!-- Firebase UI-->
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" /> 
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"
+    />
     <!-- End Firebase UI-->
     <script src="js/hyperschedule.js"></script>
   </body>

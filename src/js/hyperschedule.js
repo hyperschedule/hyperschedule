@@ -83,7 +83,9 @@ const printDropdown = document.getElementById("print-dropdown");
 const printAllButton = document.getElementById("print-button-all");
 const printStarredButton = document.getElementById("print-button-starred");
 const signinButton = document.getElementById("signin-button");
+const userDropdown = document.getElementById("user-dropdown-wrapper");
 const userIcon = document.getElementById("user-button-icon");
+const signoutButton = document.getElementById("signout-btn");
 const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
@@ -116,6 +118,8 @@ const importExportSaveChangesButton = document.getElementById(
 const importExportCopyButton = document.getElementById(
   "import-export-copy-button"
 );
+
+const signinModal = document.getElementById("signin-modal");
 
 //// Global state
 
@@ -779,6 +783,7 @@ function attachListeners() {
     downloadPDF(true);
   });
   signinButton.addEventListener("click", showSignInModal);
+  signoutButton.addEventListener("click", signout);
   settingsButton.addEventListener("click", showSettingsModal);
 
   courseDescriptionMinimize.addEventListener(
@@ -1279,6 +1284,12 @@ function showSignInModal() {
 
 function showSettingsModal() {
   $("#settings-modal").modal("show");
+}
+
+function hideSigninModal() {
+  signinModal.classList.remove("fade");
+  $("#signin-modal").modal("hide");
+  signinModal.classList.add("fade");
 }
 
 function setCourseDescriptionBox(course) {
@@ -2018,15 +2029,23 @@ function downloadICalFile() {
 /// Authentication
 
 /* 
-  setupSigninModal() sets up the sign in screen modal.
+  setupAuthentication() sets up everything related to authentication.
 */
-function setupSigninModal() {
+function setupAuthentication() {
+  initializeAuthenticationUI();
+  observeUserChanged();
+}
+
+/* 
+  initializeAuthenticationUI() puts FirebaseUI into the container.
+*/
+function initializeAuthenticationUI() {
   const ui = new firebaseui.auth.AuthUI(firebase.auth());
   var uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: function(authResult, redirectUrl) {
         // User successfully signed in.
-        updateUserButton();
+        hideSigninModal();
         // Return type determines whether we continue the redirect automatically
         // or whether we leave that to developer to handle.
         return false;
@@ -2043,29 +2062,40 @@ function setupSigninModal() {
   ui.start("#firebaseui-auth-container", uiConfig);
 }
 
-/* 
-  updateUserButton() checks whether we are currently logged in. If we are
-  logged in, it displays a user photo. Otherwise, it displays a sign in
-  button.
+/*
+  observeUserChanged() adds a listener that triggers when the user signs in
+  or out.
 */
-function updateUserButton() {
+function observeUserChanged() {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      userIcon.style.display = "inline";
+      userDropdown.style.display = "inline";
       signinButton.style.display = "none";
       userIcon.src = user.photoURL;
     } else {
-      userIcon.style.display = "none";
+      userDropdown.style.display = "none";
       signinButton.style.display = "inline";
+      initializeAuthenticationUI();
     }
   });
+}
+
+function signout() {
+  firebase
+    .auth()
+    .signOut()
+    .then(function() {
+      console.log("Succesfully signed out");
+    })
+    .catch(function(error) {
+      console.error("Could not sign out: ", error);
+    });
 }
 
 /// Startup actions
 
 attachListeners();
-setupSigninModal();
-updateUserButton();
+setupAuthentication();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
