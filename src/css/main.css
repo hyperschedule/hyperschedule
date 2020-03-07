@@ -222,7 +222,7 @@ body {
   margin-left: 1rem;
 }
 
-.print-btn {
+.dropdown-btn {
   white-space: nowrap;
   padding: 3px 8px;
   min-width: 0;
@@ -230,7 +230,7 @@ body {
   background-color: white;
 }
 
-.print-btn:hover {
+.dropdown-btn:hover {
   background-color: #e9ecef;
 }
 
