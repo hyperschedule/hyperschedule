@@ -2076,12 +2076,32 @@ function observeUserChanged() {
       userDropdown.style.display = "inline";
       signinButton.style.display = "none";
       userIcon.src = user.photoURL;
+
+      uploadSyllabusURL = apiURL + "/upload-syllabus";
+      user.getIdToken().then(async token => {
+        // TODO: remove, only put this in upload syllabus
+        sendTokenIDToServer(uploadSyllabusURL, token);
+      });
     } else {
       userDropdown.style.display = "none";
       signinButton.style.display = "inline";
       initializeAuthenticationUI();
     }
   });
+}
+
+async function sendTokenIDToServer(url, token) {
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ token: token }) // body data type must match "Content-Type" header
+  });
+  result = await response.json();
 }
 
 function signout() {
