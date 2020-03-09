@@ -27,6 +27,8 @@ const filterKeywords = {
   "days:": ["days:", "day:"]
 };
 
+filterInequalities = ["<=", ">=", "<", ">", "="];
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
@@ -550,12 +552,6 @@ function coursePassesTextFilters(course, textFilters) {
   return true;
 }
 
-filterInequalities = ["<=", ">=", "<", ">", "="];
-
-function displaySet(s) {
-  s.forEach(console.log, s);
-}
-
 function parseDaysInequality(inputDays) {
   for (const rel of filterInequalities)
     if (inputDays.startsWith(rel)) return rel;
@@ -589,12 +585,15 @@ function coursePassesDayFilter(course, inputString) {
   );
 
   switch (rel) {
-    case "<=": // courseDays is a subset of inputDays
+    case "<=":
+      // courseDays is a subset of inputDays
       return courseDays.subSet(inputDays);
     case "":
-    case ">=": // inputDays is a subset of courseDays
+    case ">=":
+      // inputDays is a subset of courseDays
       return inputDays.subSet(courseDays);
-    case "=": // inputDays match exactly courseDays
+    case "=":
+      // inputDays match exactly courseDays
       const difference1 = new Set(
         [...courseDays].filter(x => !inputDays.has(x))
       );
@@ -602,9 +601,11 @@ function coursePassesDayFilter(course, inputString) {
         [...inputDays].filter(x => !courseDays.has(x))
       );
       return difference1.size == 0 && difference2.size == 0;
-    case "<": // courseDays is a proper subset of inputDays
+    case "<":
+      // courseDays is a proper subset of inputDays
       return courseDays.subSet(inputDays) && inputDays.size != courseDays.size;
-    case ">": // inputDays is a proper subset of courseDays
+    case ">":
+      // inputDays is a proper subset of courseDays
       return inputDays.subSet(courseDays) && inputDays.size != courseDays.size;
     default:
       return false;
