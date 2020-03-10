@@ -26,6 +26,8 @@ const filterKeywords = {
   "college:": ["college", "col:", "school:", "sch:"]
 };
 
+const filterInequalities = ["<=", ">=", "<", "=", ">"];
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
@@ -546,26 +548,74 @@ function coursePassesTextFilters(course, textFilters) {
   return true;
 }
 
+function parseTimeInequality(inputTime) {
+  let newTimeFilter;
+  for (const rel of filterInequalities)
+    if (inputTime.startsWith(rel)) {
+      // remove inequality from string
+      const removeRel = inputTime.substring(rel.length);
+      newTimeFilter = [removeRel];
+      return { rel, newTimeFilter };
+    }
+  newTimeFilter = [inputTime];
+  const rel = "";
+  return { rel, newTimeFilter };
+}
+
+function checkTimeInequality(timeFilter) {
+  const { rel, newTimeFilter } = parseTimeInequality(timeFilter[0]);
+  switch (rel) {
+    case ">":
+    case ">=":
+      newTimeFilter.push("23:59");
+      break;
+    case "=":
+      rel = "";
+      break;
+    case "<=":
+    case "<":
+      newTimeFilter.push(newTimeFilter[0]);
+      newTimeFilter[0] = "00:00";
+      break;
+    default:
+  }
+
+  return { rel, newTimeFilter };
+}
+
 function coursePassesTimeFilters(course, timeFilters) {
   // timeFilters is a two element array - [start_time, end_time]
   if (timeFilters[0] == "") {
     // indicates no current time filters
     return true;
   }
+
   for (let schedule of course.courseSchedule) {
-    let scheduleStart = schedule.scheduleStartTime.replace(":", ".");
-    let scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
-    let start = timeFilters[0].replace(":", ".");
-    let end = timeFilters[1].replace(":", ".");
+    const scheduleStart = schedule.scheduleStartTime.replace(":", ".");
+    const scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
+    const start = timeFilters[0].replace(":", ".");
+
+    if (timeFilters.length == 1) {
+      let { rel, newTimeFilters } = checkTimeInequality(timeFilters);
+      if (rel == "") {
+        return parseFloat(start) == parseFloat(scheduleStart);
+      }
+    }
+
+    const end = timeFilters[1].replace(":", ".");
+
     if (
-      parseFloat(start) <= parseFloat(scheduleStart) &&
-      parseFloat(end) >= parseFloat(scheduleEnd)
+      // returns false if any schedule object is not within the range.
+      !(
+        parseFloat(start) <= parseFloat(scheduleStart) &&
+        parseFloat(end) >= parseFloat(scheduleEnd)
+      )
     ) {
-      return true;
+      return false;
     }
   }
 
-  return false;
+  return true;
 }
 
 ///// Course scheduling
@@ -1095,17 +1145,22 @@ function processSearchText() {
 }
 
 function isTimeRange(searchText) {
-  timeArray = searchText.split(":");
+  const timeArray = searchText.split(":");
   return (
-    timeArray.length == 3 && !isNaN(timeArray[0]) && timeArray[1].includes("-")
+    (timeArray.length == 3 &&
+      !isNaN(timeArray[0]) &&
+      timeArray[1].includes("-")) ||
+    (timeArray.length == 2 &&
+      !isNaN(timeArray[0].charAt(timeArray[0].length - 1)) &&
+      !isNaN(timeArray[1].substring(0, 2)))
   );
 }
 
 function getTimeFilter(timeText) {
-  // Returns a two element list with the specified
+  // Returns a list with the specified
   // beginning time and end time.
   timeText = timeText.toLowerCase();
-  timeArray = timeText.split("-");
+  const timeArray = timeText.split("-");
   timeTuple = [];
   for (let time of timeArray) {
     if (time.substring(time.length - 2) == "am") {
