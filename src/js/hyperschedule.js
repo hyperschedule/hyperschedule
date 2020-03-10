@@ -563,7 +563,7 @@ function parseTimeInequality(inputTime) {
 }
 
 function checkTimeInequality(timeFilter) {
-  const { rel, newTimeFilter } = parseTimeInequality(timeFilter[0]);
+  let { rel, newTimeFilter } = parseTimeInequality(timeFilter[0]);
   switch (rel) {
     case ">":
     case ">=":
@@ -578,9 +578,9 @@ function checkTimeInequality(timeFilter) {
       newTimeFilter[0] = "00:00";
       break;
     default:
+      rel = "";
   }
-
-  return { rel, newTimeFilter };
+  return newTimeFilter;
 }
 
 function coursePassesTimeFilters(course, timeFilters) {
@@ -595,14 +595,16 @@ function coursePassesTimeFilters(course, timeFilters) {
     const scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
     const start = timeFilters[0].replace(":", ".");
 
+    const end = 0;
     if (timeFilters.length == 1) {
-      let { rel, newTimeFilters } = checkTimeInequality(timeFilters);
-      if (rel == "") {
+      let newTimeFilters = checkTimeInequality(timeFilters);
+      if (newTimeFilters.length == 1) {
         return parseFloat(start) == parseFloat(scheduleStart);
       }
+      end = newTimeFilters[1].replace(":", ".");
+    } else {
+      end = timeFilters[1].replace(":", ".");
     }
-
-    const end = timeFilters[1].replace(":", ".");
 
     if (
       // returns false if any schedule object is not within the range.
