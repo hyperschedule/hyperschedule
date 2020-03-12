@@ -548,43 +548,9 @@ function coursePassesTextFilters(course, textFilters) {
   return true;
 }
 
-function parseTimeInequality(inputTime) {
-  let newTimeFilter;
-  for (const rel of filterInequalities)
-    if (inputTime.startsWith(rel)) {
-      // remove inequality from string
-      const removeRel = inputTime.substring(rel.length);
-      newTimeFilter = [removeRel];
-      return { rel, newTimeFilter };
-    }
-  newTimeFilter = [inputTime];
-  const rel = "";
-  return { rel, newTimeFilter };
-}
-
-function checkTimeInequality(timeFilter) {
-  let { rel, newTimeFilter } = parseTimeInequality(timeFilter[0]);
-  switch (rel) {
-    case ">":
-    case ">=":
-      newTimeFilter.push("23:59");
-      break;
-    case "=":
-      rel = "";
-      break;
-    case "<=":
-    case "<":
-      newTimeFilter.push(newTimeFilter[0]);
-      newTimeFilter[0] = "00:00";
-      break;
-    default:
-      rel = "";
-  }
-  return newTimeFilter;
-}
-
+// timeFilters is a one or two element array
+// [start_time] or [start_time, end_time]
 function coursePassesTimeFilters(course, timeFilters) {
-  // timeFilters is a two element array - [start_time, end_time]
   if (timeFilters[0] == "") {
     // indicates no current time filters
     return true;
@@ -595,16 +561,11 @@ function coursePassesTimeFilters(course, timeFilters) {
     const scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
     const start = timeFilters[0].replace(":", ".");
 
-    const end = 0;
     if (timeFilters.length == 1) {
-      let newTimeFilters = checkTimeInequality(timeFilters);
-      if (newTimeFilters.length == 1) {
-        return parseFloat(start) == parseFloat(scheduleStart);
-      }
-      end = newTimeFilters[1].replace(":", ".");
-    } else {
-      end = timeFilters[1].replace(":", ".");
+      return parseFloat(start) == parseFloat(scheduleStart);
     }
+
+    const end = timeFilters[1].replace(":", ".");
 
     if (
       // returns false if any schedule object is not within the range.
@@ -1158,11 +1119,47 @@ function isTimeRange(searchText) {
   );
 }
 
+function getTimeRange(rel, timeText) {
+  let newTimeFilter = [];
+  switch (rel) {
+    case ">":
+    case ">=":
+      newTimeFilter.push(timeText);
+      newTimeFilter.push("23:59");
+      break;
+    case "=":
+      newTimeFilter.push(timeText);
+      break;
+    case "<=":
+    case "<":
+      newTimeFilter.push("00:00");
+      newTimeFilter.push(timeText);
+      break;
+    default:
+      newTimeFilter.push(timeText);
+  }
+  return newTimeFilter;
+}
+
+function getTimeInequality(inputTime) {
+  for (const rel of filterInequalities) {
+    if (inputTime.startsWith(rel)) {
+      return rel;
+    }
+  }
+  return "";
+}
+
+// Returns an array containing either the start time
+// and end time or the start time alone
 function getTimeFilter(timeText) {
-  // Returns a list with the specified
-  // beginning time and end time.
   timeText = timeText.toLowerCase();
-  const timeArray = timeText.split("-");
+  let timeArray = timeText.split("-");
+  // timeArray.length = 1 when there's no "-"
+  if (timeArray.length == 1) {
+    const rel = getTimeInequality(timeText);
+    timeArray = getTimeRange(rel, timeText.substring(rel.length));
+  }
   timeTuple = [];
   for (let time of timeArray) {
     if (time.substring(time.length - 2) == "am") {
