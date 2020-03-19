@@ -969,7 +969,7 @@ function createCourseEntity(course, attrs) {
     // deals with case of clicking on page, not on group naming box
     function clickHandler(course) {
       return function(event) {
-        if (event.target != groupNameContainer.lastChild) {
+        if (!event.target.classList.contains("group-box-typing-box")) {
           console.log("click");
           disableGroupNameChange(course);
         }
@@ -996,22 +996,26 @@ function createCourseEntity(course, attrs) {
 
     function doubleClickHandler(course) {
       return function(event) {
-        console.log("doubleclick");
+        if (course.naming != true) {
+          // prevent errors when double clicking already editing box
 
-        gClick = clickHandler(course); // create reference to allow removal
+          gClick = clickHandler(course); // create reference to allow removal
 
-        document.addEventListener("click", gClick);
-        course.naming = true;
-        selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
-        groupNameContainer.removeChild(groupNameContainer.lastChild);
-        let textBox = document.createElement("input");
-        textBox.setAttribute("type", "text");
-        textBox.setAttribute("value", course.title);
-        textBox.classList.add("group-box-typing-box");
-        groupNameContainer.appendChild(textBox);
-        gFocusedTextBox = textBox;
-        gFocusedTextBoxSelection = [0, 0];
-        textBox.focus();
+          document.addEventListener("click", gClick);
+          course.naming = true;
+          selectedCoursesList.dispatchEvent(
+            new CustomEvent("coursenametyping")
+          );
+          groupNameContainer.removeChild(groupNameContainer.lastChild);
+          let textBox = document.createElement("input");
+          textBox.setAttribute("type", "text");
+          textBox.setAttribute("value", course.title);
+          textBox.classList.add("group-box-typing-box");
+          groupNameContainer.appendChild(textBox);
+          gFocusedTextBox = textBox;
+          gFocusedTextBoxSelection = [0, 0];
+          textBox.focus();
+        }
       };
     }
 
@@ -1031,6 +1035,7 @@ function createCourseEntity(course, attrs) {
     function disableGroupNameChange(course) {
       gFocusedTextBox = null;
       course.naming = false;
+      // doesn't always reliably delete click function
       document.removeEventListener("click", gClick);
       gClick = null;
       groupNameContainer.lastChild.disabled = true; // triggers losing focus
