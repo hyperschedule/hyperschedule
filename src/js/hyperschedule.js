@@ -979,6 +979,9 @@ function createCourseEntity(course, attrs) {
     }
 
     if (course.naming) {
+      if (gClick != null) {
+        document.removeEventListener("mouseup", gClick); // remove any existing listener
+      }
       gClick = clickHandler(course); // create reference to allow removal
       document.addEventListener("mouseup", gClick);
 
@@ -1001,6 +1004,10 @@ function createCourseEntity(course, attrs) {
         // prevent errors when double clicking already editing box
         if (course.naming != true) {
           course.naming = true;
+
+          if (gClick != null) {
+            document.removeEventListener("mouseup", gClick); // remove any existing listener
+          }
 
           gClick = clickHandler(course); // create reference to allow removal
           document.addEventListener("mouseup", gClick);
@@ -1651,7 +1658,7 @@ function createGroup() {
     });
     gFocusedTextBox.dispatchEvent(e);
   }
-
+  gFocusedTextBoxSelection = [0, 0];
   handleSelectedCoursesUpdate();
 }
 
