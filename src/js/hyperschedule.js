@@ -969,14 +969,19 @@ function createCourseEntity(course, attrs) {
     // deals with case of clicking on page, not on group naming box
     function clickHandler(course) {
       return function(event) {
-        if (!event.target.classList.contains("group-box-typing-box")) {
+        if ($(event.target).closest(".group-box-typing-box").length === 0) {
           console.log("click");
+          console.log(event.target);
+          document.removeEventListener("mouseup", gClick);
           disableGroupNameChange(course);
         }
       };
     }
 
     if (course.naming) {
+      gClick = clickHandler(course); // create reference to allow removal
+      document.addEventListener("mouseup", gClick);
+
       selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
       let textBox = document.createElement("input");
       textBox.setAttribute("type", "text");
@@ -984,9 +989,6 @@ function createCourseEntity(course, attrs) {
       textBox.classList.add("group-box-typing-box");
       groupNameContainer.appendChild(textBox);
       gFocusedTextBox = textBox;
-
-      gClick = clickHandler(course); // create reference to allow removal
-      document.addEventListener("click", gClick);
     } else {
       let groupNameNode = document.createTextNode(course.title);
       groupNameContainer.appendChild(groupNameNode);
@@ -996,17 +998,18 @@ function createCourseEntity(course, attrs) {
 
     function doubleClickHandler(course) {
       return function(event) {
+        // prevent errors when double clicking already editing box
         if (course.naming != true) {
-          // prevent errors when double clicking already editing box
+          course.naming = true;
 
           gClick = clickHandler(course); // create reference to allow removal
+          document.addEventListener("mouseup", gClick);
 
-          document.addEventListener("click", gClick);
-          course.naming = true;
           selectedCoursesList.dispatchEvent(
             new CustomEvent("coursenametyping")
           );
           groupNameContainer.removeChild(groupNameContainer.lastChild);
+
           let textBox = document.createElement("input");
           textBox.setAttribute("type", "text");
           textBox.setAttribute("value", course.title);
@@ -1014,6 +1017,7 @@ function createCourseEntity(course, attrs) {
           groupNameContainer.appendChild(textBox);
           gFocusedTextBox = textBox;
           gFocusedTextBoxSelection = [0, 0];
+
           textBox.focus();
         }
       };
@@ -1035,9 +1039,6 @@ function createCourseEntity(course, attrs) {
     function disableGroupNameChange(course) {
       gFocusedTextBox = null;
       course.naming = false;
-      // doesn't always reliably delete click function
-      document.removeEventListener("click", gClick);
-      gClick = null;
       groupNameContainer.lastChild.disabled = true; // triggers losing focus
     }
 
@@ -1637,6 +1638,20 @@ function createGroup() {
   };
   gGroupCounter += 1;
   gNestedSelectedCoursesAndGroups.push([g, []]);
+
+  // stop typing on currently open text box
+  // https://stackoverflow.com/a/51457710
+  if (gFocusedTextBox != null) {
+    let e = new KeyBoardEvent("keydown", {
+      code: "Enter",
+      key: "Enter",
+      charKode: 13,
+      keyCode: 13,
+      view: window
+    });
+    gFocusedTextBox.dispatchEvent(e);
+  }
+
   handleSelectedCoursesUpdate();
 }
 
