@@ -122,6 +122,10 @@ let gGreyConflictCourses = greyConflictCoursesOptions[0];
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
+let gFocusedTextBox = null;
+let gFocusedTextBoxSelection = [0, 0];
+let gClick = null;
+
 /// Utility functions
 //// JavaScript utility functions
 
@@ -869,7 +873,12 @@ function attachListeners() {
   selectedCoursesList.addEventListener("coursenametypingdone", () => {
     sortableList.option("disabled", false);
   });
-  createGroupButton.addEventListener("click", createGroup);
+
+  createGroupButton.addEventListener("click", event => {
+    // catch click so doesn't propagate to click away function in group
+    catchEvent(event);
+    createGroup();
+  });
 
   courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
 
@@ -921,6 +930,7 @@ function createCourseEntity(course, attrs) {
   listItem.appendChild(listItemContent);
 
   if (course.type === "group") {
+    console.log(course);
     const minimizeLabel = document.createElement("label");
     minimizeLabel.classList.add("course-box-minimize-label");
 
@@ -956,31 +966,85 @@ function createCourseEntity(course, attrs) {
     groupNameContainer.classList.add("course-box-text");
     groupNameContainer.classList.add("course-box-course-code");
 
-    let groupNameNode = document.createTextNode(course.title);
-    groupNameContainer.appendChild(groupNameNode);
-    listItemContent.appendChild(groupNameContainer);
+    // deals with case of clicking on page, not on group naming box
+    function clickHandler(course) {
+      return function(event) {
+        if (event.target != groupNameContainer.lastChild) {
+          console.log("click");
+          disableGroupNameChange(course);
+        }
+      };
+    }
 
-    groupNameContainer.addEventListener("dblclick", () => {
+    if (course.naming) {
       selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
-      groupNameContainer.removeChild(groupNameContainer.lastChild);
       let textBox = document.createElement("input");
       textBox.setAttribute("type", "text");
       textBox.setAttribute("value", course.title);
       textBox.classList.add("group-box-typing-box");
       groupNameContainer.appendChild(textBox);
-      textBox.focus();
-    });
+      gFocusedTextBox = textBox;
 
-    groupNameContainer.addEventListener("keyup", event => {
-      if (event.keyCode === 13) {
-        groupNameContainer.lastChild.disabled = true;
-      }
-    });
+      gClick = clickHandler(course); // create reference to allow removal
+      document.addEventListener("click", gClick);
+    } else {
+      let groupNameNode = document.createTextNode(course.title);
+      groupNameContainer.appendChild(groupNameNode);
+    }
+
+    listItemContent.appendChild(groupNameContainer);
+
+    function doubleClickHandler(course) {
+      return function(event) {
+        console.log("doubleclick");
+
+        gClick = clickHandler(course); // create reference to allow removal
+
+        document.addEventListener("click", gClick);
+        course.naming = true;
+        selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
+        groupNameContainer.removeChild(groupNameContainer.lastChild);
+        let textBox = document.createElement("input");
+        textBox.setAttribute("type", "text");
+        textBox.setAttribute("value", course.title);
+        textBox.classList.add("group-box-typing-box");
+        groupNameContainer.appendChild(textBox);
+        gFocusedTextBox = textBox;
+        gFocusedTextBoxSelection = [0, 0];
+        textBox.focus();
+      };
+    }
+
+    groupNameContainer.addEventListener("dblclick", doubleClickHandler(course));
+
+    // deals with case of hitting enter on text box
+    function enterHandler(course) {
+      return function(event) {
+        if (event.keyCode === 13) {
+          disableGroupNameChange(course);
+        }
+      };
+    }
+
+    groupNameContainer.addEventListener("keyup", enterHandler(course));
+
+    function disableGroupNameChange(course) {
+      gFocusedTextBox = null;
+      course.naming = false;
+      document.removeEventListener("click", gClick);
+      gClick = null;
+      groupNameContainer.lastChild.disabled = true; // triggers losing focus
+    }
 
     groupNameContainer.addEventListener("focusout", () => {
-      course.title = groupNameContainer.lastChild.value;
+      let textBox = groupNameContainer.lastChild;
+      course.title = textBox.value;
+      if (gFocusedTextBox != null) {
+        gFocusedTextBoxSelection[0] = textBox.selectionStart;
+        gFocusedTextBoxSelection[1] = textBox.selectionEnd;
+      }
       let groupNameNode = document.createTextNode(course.title);
-      groupNameContainer.removeChild(groupNameContainer.lastChild);
+      groupNameContainer.removeChild(textBox);
       groupNameContainer.appendChild(groupNameNode);
       selectedCoursesList.dispatchEvent(
         new CustomEvent("coursenametypingdone")
@@ -1419,6 +1483,13 @@ function updateSelectedCoursesList() {
     selectedCoursesList,
     0
   );
+  if (gFocusedTextBox != null) {
+    gFocusedTextBox.focus();
+    gFocusedTextBox.setSelectionRange(
+      gFocusedTextBoxSelection[0],
+      gFocusedTextBoxSelection[1]
+    );
+  }
 }
 
 function updateSelectedCoursesListHelper(inputList, outputList, index) {
@@ -1553,24 +1624,15 @@ function minimizeArrowPointDown() {
 
 function createGroup() {
   let g = {
-    title: "",
+    title: "Unnamed Group",
     type: "group",
     groupID: gGroupCounter,
-    minimized: false
+    minimized: false,
+    naming: true
   };
   gGroupCounter += 1;
   gNestedSelectedCoursesAndGroups.push([g, []]);
   handleSelectedCoursesUpdate();
-  // https://stackoverflow.com/a/18399339
-  var event = new MouseEvent("dblclick", {
-    view: window,
-    bubbles: true,
-    cancelable: true
-  });
-  let newGroupBox = selectedCoursesList.lastChild;
-  let newGroupBoxContent = newGroupBox.firstChild;
-  let newGroupBoxTitle = newGroupBoxContent.childNodes[1];
-  newGroupBoxTitle.dispatchEvent(event);
 }
 
 /// Global state handling
