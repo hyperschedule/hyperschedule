@@ -216,7 +216,12 @@ body {
 }
 
 #group-button-outer {
-  margin: 0.5rem 1rem;
+  margin: 0rem 1rem 1rem;
+}
+
+#create-group-button {
+  float:right;
+  font-weight: normal;
 }
 
 .group-list {
@@ -300,8 +305,6 @@ body {
   height: 0px;
   flex-shrink: 0;
   text-align: center;
-  /*margin-top: 10px;
-    margin-bottom: 5px;*/
   overflow: hidden;
   transition: height 0.2s, border 0.2s;
   margin: 0 1rem 1rem 1rem;
