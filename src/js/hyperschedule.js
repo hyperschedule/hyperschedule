@@ -930,7 +930,6 @@ function createCourseEntity(course, attrs) {
   listItem.appendChild(listItemContent);
 
   if (course.type === "group") {
-    console.log(course);
     const minimizeLabel = document.createElement("label");
     minimizeLabel.classList.add("course-box-minimize-label");
 
@@ -970,8 +969,6 @@ function createCourseEntity(course, attrs) {
     function clickHandler(course) {
       return function(event) {
         if ($(event.target).closest(".group-box-typing-box").length === 0) {
-          console.log("click");
-          console.log(event.target);
           document.removeEventListener("mouseup", gClick);
           disableGroupNameChange(course);
         }
@@ -1044,9 +1041,11 @@ function createCourseEntity(course, attrs) {
     groupNameContainer.addEventListener("keyup", enterHandler(course));
 
     function disableGroupNameChange(course) {
-      gFocusedTextBox = null;
-      course.naming = false;
-      groupNameContainer.lastChild.disabled = true; // triggers losing focus
+      if (gFocusedTextBox != null) {
+        gFocusedTextBox.blur(); // triggers losing focus
+        gFocusedTextBox = null;
+        course.naming = false;
+      }
     }
 
     groupNameContainer.addEventListener("focusout", () => {
@@ -1940,6 +1939,10 @@ async function retrieveCourseData() {
   gApiData = apiData;
 
   if (wasUpdated) {
+    // necessary for Firefox to make refresh naming work
+    if (gFocusedTextBox != null) {
+      gFocusedTextBox.blur();
+    }
     updateCourseSearchResults();
     updateSelectedCoursesList();
     updateSchedule();
