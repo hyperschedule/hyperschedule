@@ -122,9 +122,9 @@ let gGreyConflictCourses = greyConflictCoursesOptions[0];
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
-let gFocusedTextBox = null;
-let gFocusedTextBoxSelection = [0, 0];
-let gClick = null;
+let gFocusedGroupTextBox = null; // group text box currently being typed in
+let gFocusedGroupTextBoxSelection = [0, 0]; // selected text in focused text box
+let gClick = null; // keeps track of function
 
 /// Utility functions
 //// JavaScript utility functions
@@ -929,7 +929,68 @@ function createCourseEntity(course, attrs) {
   listItemContent.classList.add("course-box-content");
   listItem.appendChild(listItemContent);
 
+  //////// CREATING GROUP
   if (course.type === "group") {
+    //////// VARIOUS HELPER FUNCTIONS
+    function beginGroupNameChange(course) {
+      if (gClick != null) {
+        // remove any existing listener
+        document.removeEventListener("mouseup", gClick);
+      }
+      gClick = clickHandler(course); // create reference to allow removal
+      document.addEventListener("mouseup", gClick);
+
+      selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
+      let textBox = document.createElement("input");
+      textBox.setAttribute("type", "text");
+      textBox.setAttribute("value", course.title);
+      textBox.classList.add("group-box-typing-box");
+      groupNameContainer.appendChild(textBox);
+      gFocusedGroupTextBox = textBox;
+    }
+
+    function endGroupNameChange(course) {
+      if (gFocusedGroupTextBox != null) {
+        gFocusedGroupTextBox.blur(); // triggers losing focus
+        gFocusedGroupTextBox = null;
+        course.naming = false;
+      }
+    }
+
+    // double click to start naming process
+    function doubleClickHandler(course) {
+      return function(event) {
+        // prevent errors when double clicking already editing box
+        if (course.naming != true) {
+          course.naming = true;
+          groupNameContainer.removeChild(groupNameContainer.lastChild);
+          beginGroupNameChange(course);
+          gFocusedGroupTextBoxSelection = [0, 0];
+          gFocusedGroupTextBox.focus();
+        }
+      };
+    }
+
+    //  clicking on page, not on group name text box ends naming process
+    function clickHandler(course) {
+      return function(event) {
+        if ($(event.target).closest(".group-box-typing-box").length === 0) {
+          document.removeEventListener("mouseup", gClick);
+          endGroupNameChange(course);
+        }
+      };
+    }
+
+    // hitting enter while in group name text box ends naming process
+    function enterHandler(course) {
+      return function(event) {
+        if (event.keyCode === 13) {
+          endGroupNameChange(course);
+        }
+      };
+    }
+
+    /////////////// Create group DOM element
     const minimizeLabel = document.createElement("label");
     minimizeLabel.classList.add("course-box-minimize-label");
 
@@ -965,30 +1026,8 @@ function createCourseEntity(course, attrs) {
     groupNameContainer.classList.add("course-box-text");
     groupNameContainer.classList.add("course-box-course-code");
 
-    // deals with case of clicking on page, not on group naming box
-    function clickHandler(course) {
-      return function(event) {
-        if ($(event.target).closest(".group-box-typing-box").length === 0) {
-          document.removeEventListener("mouseup", gClick);
-          disableGroupNameChange(course);
-        }
-      };
-    }
-
     if (course.naming) {
-      if (gClick != null) {
-        document.removeEventListener("mouseup", gClick); // remove any existing listener
-      }
-      gClick = clickHandler(course); // create reference to allow removal
-      document.addEventListener("mouseup", gClick);
-
-      selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
-      let textBox = document.createElement("input");
-      textBox.setAttribute("type", "text");
-      textBox.setAttribute("value", course.title);
-      textBox.classList.add("group-box-typing-box");
-      groupNameContainer.appendChild(textBox);
-      gFocusedTextBox = textBox;
+      beginGroupNameChange(course);
     } else {
       let groupNameNode = document.createTextNode(course.title);
       groupNameContainer.appendChild(groupNameNode);
@@ -996,64 +1035,16 @@ function createCourseEntity(course, attrs) {
 
     listItemContent.appendChild(groupNameContainer);
 
-    function doubleClickHandler(course) {
-      return function(event) {
-        // prevent errors when double clicking already editing box
-        if (course.naming != true) {
-          course.naming = true;
-
-          if (gClick != null) {
-            document.removeEventListener("mouseup", gClick); // remove any existing listener
-          }
-
-          gClick = clickHandler(course); // create reference to allow removal
-          document.addEventListener("mouseup", gClick);
-
-          selectedCoursesList.dispatchEvent(
-            new CustomEvent("coursenametyping")
-          );
-          groupNameContainer.removeChild(groupNameContainer.lastChild);
-
-          let textBox = document.createElement("input");
-          textBox.setAttribute("type", "text");
-          textBox.setAttribute("value", course.title);
-          textBox.classList.add("group-box-typing-box");
-          groupNameContainer.appendChild(textBox);
-          gFocusedTextBox = textBox;
-          gFocusedTextBoxSelection = [0, 0];
-
-          textBox.focus();
-        }
-      };
-    }
-
     groupNameContainer.addEventListener("dblclick", doubleClickHandler(course));
-
-    // deals with case of hitting enter on text box
-    function enterHandler(course) {
-      return function(event) {
-        if (event.keyCode === 13) {
-          disableGroupNameChange(course);
-        }
-      };
-    }
-
     groupNameContainer.addEventListener("keyup", enterHandler(course));
-
-    function disableGroupNameChange(course) {
-      if (gFocusedTextBox != null) {
-        gFocusedTextBox.blur(); // triggers losing focus
-        gFocusedTextBox = null;
-        course.naming = false;
-      }
-    }
 
     groupNameContainer.addEventListener("focusout", () => {
       let textBox = groupNameContainer.lastChild;
       course.title = textBox.value;
-      if (gFocusedTextBox != null) {
-        gFocusedTextBoxSelection[0] = textBox.selectionStart;
-        gFocusedTextBoxSelection[1] = textBox.selectionEnd;
+      if (gFocusedGroupTextBox != null) {
+        // record current selection
+        gFocusedGroupTextBoxSelection[0] = textBox.selectionStart;
+        gFocusedGroupTextBoxSelection[1] = textBox.selectionEnd;
       }
       let groupNameNode = document.createTextNode(course.title);
       groupNameContainer.removeChild(textBox);
@@ -1078,7 +1069,9 @@ function createCourseEntity(course, attrs) {
       onEnd: function(evt) {
         gCurrentlySorting = false;
       },
-      emptyInsertThreshold: 20
+      // px, distance mouse must be from empty sortable
+      // to insert drag element into it
+      emptyInsertThreshold: 35
     });
 
     if (!!course.minimized) {
@@ -1107,7 +1100,9 @@ function createCourseEntity(course, attrs) {
       });
       groupNameContainer.dispatchEvent(event);
     }
-  } else {
+  }
+  ////////// CREATING COURSES
+  else {
     if (course !== "placeholder") {
       listItemContent.style["background-color"] = getCourseColor(course);
       listItemContent.addEventListener("click", () => {
@@ -1495,11 +1490,11 @@ function updateSelectedCoursesList() {
     selectedCoursesList,
     0
   );
-  if (gFocusedTextBox != null) {
-    gFocusedTextBox.focus();
-    gFocusedTextBox.setSelectionRange(
-      gFocusedTextBoxSelection[0],
-      gFocusedTextBoxSelection[1]
+  if (gFocusedGroupTextBox != null) {
+    gFocusedGroupTextBox.focus();
+    gFocusedGroupTextBox.setSelectionRange(
+      gFocusedGroupTextBoxSelection[0],
+      gFocusedGroupTextBoxSelection[1]
     );
   }
 }
@@ -1647,7 +1642,7 @@ function createGroup() {
 
   // stop typing on currently open text box
   // https://stackoverflow.com/a/51457710
-  if (gFocusedTextBox != null) {
+  if (gFocusedGroupTextBox != null) {
     let e = new KeyBoardEvent("keydown", {
       code: "Enter",
       key: "Enter",
@@ -1655,9 +1650,9 @@ function createGroup() {
       keyCode: 13,
       view: window
     });
-    gFocusedTextBox.dispatchEvent(e);
+    gFocusedGroupTextBox.dispatchEvent(e);
   }
-  gFocusedTextBoxSelection = [0, 0];
+  gFocusedGroupTextBoxSelection = [0, 0];
   handleSelectedCoursesUpdate();
 }
 
@@ -1940,8 +1935,8 @@ async function retrieveCourseData() {
 
   if (wasUpdated) {
     // necessary for Firefox to make refresh naming work
-    if (gFocusedTextBox != null) {
-      gFocusedTextBox.blur();
+    if (gFocusedGroupTextBox != null) {
+      gFocusedGroupTextBox.blur();
     }
     updateCourseSearchResults();
     updateSelectedCoursesList();
