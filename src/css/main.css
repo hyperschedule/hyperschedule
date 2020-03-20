@@ -238,7 +238,9 @@ body {
 
 .group-box-typing-box {
   width: 100%;
+  border: 2px solid #BFDEFF; /* darker option = #80BDFF*/
 }
+
 
 /*** Selected courses header bar ***/
 
