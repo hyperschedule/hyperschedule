@@ -220,7 +220,7 @@ body {
 }
 
 #create-group-button {
-  float:right;
+  float: right;
   font-weight: normal;
 }
 
@@ -238,9 +238,8 @@ body {
 
 .group-box-typing-box {
   width: 100%;
-  border: 2px solid #BFDEFF; /* darker option = #80BDFF*/
+  border: 2px solid #bfdeff; /* darker option = #80BDFF*/
 }
-
 
 /*** Selected courses header bar ***/
 

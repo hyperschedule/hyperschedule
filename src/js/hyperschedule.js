@@ -124,7 +124,9 @@ let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
 let gFocusedGroupTextBox = null; // group text box currently being typed in
 let gFocusedGroupTextBoxSelection = [0, 0]; // selected text in focused text box
-let gClick = null; // keeps track of function
+// keeps track of function that checks for clicking anywhere but group naming
+// box, so it can be deleted later
+let gClickAwayFunction = null;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -933,13 +935,13 @@ function createCourseEntity(course, attrs) {
   if (course.type === "group") {
     //////// VARIOUS HELPER FUNCTIONS
     function beginGroupNameChange(course) {
-      if (gClick != null) {
+      if (gClickAwayFunction != null) {
         // remove any existing listener
-        document.removeEventListener("mouseup", gClick);
+        document.removeEventListener("mouseup", gClickAwayFunction);
       }
-      gClick = clickHandler(course); // create reference to allow removal
-      document.addEventListener("mouseup", gClick);
-
+      gClickAwayFunction = clickHandler(course); // create reference to allow removal
+      document.addEventListener("mouseup", gClickAwayFunction);
+      // event signals to disallow drag-and-drop while renaming
       selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
       let textBox = document.createElement("input");
       textBox.setAttribute("type", "text");
@@ -951,7 +953,8 @@ function createCourseEntity(course, attrs) {
 
     function endGroupNameChange(course) {
       if (gFocusedGroupTextBox != null) {
-        gFocusedGroupTextBox.blur(); // triggers losing focus
+        // triggers losing focus, focus out event has rest of functionality
+        gFocusedGroupTextBox.blur();
         gFocusedGroupTextBox = null;
         course.naming = false;
       }
@@ -975,7 +978,7 @@ function createCourseEntity(course, attrs) {
     function clickHandler(course) {
       return function(event) {
         if ($(event.target).closest(".group-box-typing-box").length === 0) {
-          document.removeEventListener("mouseup", gClick);
+          document.removeEventListener("mouseup", gClickAwayFunction);
           endGroupNameChange(course);
         }
       };
@@ -1049,6 +1052,7 @@ function createCourseEntity(course, attrs) {
       let groupNameNode = document.createTextNode(course.title);
       groupNameContainer.removeChild(textBox);
       groupNameContainer.appendChild(groupNameNode);
+      // dispatches event to reallow drag and drop
       selectedCoursesList.dispatchEvent(
         new CustomEvent("coursenametypingdone")
       );
@@ -1083,23 +1087,24 @@ function createCourseEntity(course, attrs) {
       groupNode.style.display = "block";
     }
 
+    // prevent drag and drop while typing course name
     selectedCoursesList.addEventListener("coursenametyping", () => {
       sortableGroupList.option("disabled", true);
     });
     selectedCoursesList.addEventListener("coursenametypingdone", () => {
       sortableGroupList.option("disabled", false);
     });
-
     listItem.appendChild(groupNode);
     listItem.classList.add("group");
-    if (!alreadyAdded) {
-      console.log("fire");
-      var event = new MouseEvent("dblclick", {
-        view: window,
-        bubbles: true
-      });
-      groupNameContainer.dispatchEvent(event);
-    }
+  }
+  ////////// TEXT THAT EXPLAINS HOW TO ADD THINGS TO GROUP WHEN GROUP IS EMPTY
+  else if (course.type === "explain-group") {
+    const textBox = document.createElement("p");
+    const explain = document.createTextNode("Drag courses to add");
+    textBox.classList.add("course-box-text");
+    textBox.appendChild(explain);
+    listItem.classList.add("explain-group");
+    listItemContent.appendChild(textBox);
   }
   ////////// CREATING COURSES
   else {
@@ -1229,20 +1234,21 @@ function createCourseEntity(course, attrs) {
       listItem.classList.add("placeholder");
     }
   }
+  if (course.type != "explain-group") {
+    const removeButton = document.createElement("i");
+    removeButton.classList.add("course-box-button");
+    removeButton.classList.add("course-box-remove-button");
+    removeButton.classList.add("icon");
+    removeButton.classList.add("ion-close");
+    removeButton.addEventListener("click", () => {
+      removeCourse(course);
+    });
+    removeButton.addEventListener("click", catchEvent);
+    listItemContent.appendChild(removeButton);
 
-  const removeButton = document.createElement("i");
-  removeButton.classList.add("course-box-button");
-  removeButton.classList.add("course-box-remove-button");
-  removeButton.classList.add("icon");
-  removeButton.classList.add("ion-close");
-  removeButton.addEventListener("click", () => {
-    removeCourse(course);
-  });
-  removeButton.addEventListener("click", catchEvent);
-  listItemContent.appendChild(removeButton);
-
-  if (idx !== undefined) {
-    listItem.setAttribute("data-course-index", idx);
+    if (idx !== undefined) {
+      listItem.setAttribute("data-course-index", idx);
+    }
   }
 
   return listItem;
@@ -1475,6 +1481,10 @@ function rerenderCourseSearchResults() {
     gFilteredCourseKeys.length != 0 ? "End of results" : "No results";
 }
 
+/*
+Updates the DOM Object selectedCoursesList based on what is in
+gNestedSelectedCoursesAndGroups
+*/
 function updateSelectedCoursesList() {
   if (gCurrentlySorting) {
     // Defer to after the user has finished sorting, otherwise we mess
@@ -1491,6 +1501,7 @@ function updateSelectedCoursesList() {
     0
   );
   if (gFocusedGroupTextBox != null) {
+    // refocus on a group text box that was being typed in before update
     gFocusedGroupTextBox.focus();
     gFocusedGroupTextBox.setSelectionRange(
       gFocusedGroupTextBoxSelection[0],
@@ -1503,13 +1514,19 @@ function updateSelectedCoursesListHelper(inputList, outputList, index) {
   for (let idx = 0; idx < inputList.length; ++idx) {
     const course = inputList[idx];
     if (Array.isArray(course)) {
+      // means course is actually a group and should recurse accordingly
       let courseBox = createCourseEntity(course[0], {
         idx: index,
         alreadyAdded: true
       });
       index++;
       let groupList = courseBox.lastChild;
-      index = updateSelectedCoursesListHelper(course[1], groupList, index);
+      if (course[1].length === 0) {
+        // no courses in group, should add text explaining how groups work
+        groupList.appendChild(createCourseEntity({ type: "explain-group" }));
+      } else {
+        index = updateSelectedCoursesListHelper(course[1], groupList, index);
+      }
       outputList.appendChild(courseBox);
     } else {
       outputList.appendChild(
@@ -1519,17 +1536,6 @@ function updateSelectedCoursesListHelper(inputList, outputList, index) {
     }
   }
   return index;
-}
-
-function findIndex(list, course) {
-  for (let idx = 0; idx < list.length; idx++) {
-    if (course.courseCode === list[idx].courseCode) {
-      return idx;
-    } else if (course.groupID === list[idx].groupID) {
-      return idx;
-    }
-  }
-  return -1;
 }
 
 function updateSchedule() {
@@ -1727,6 +1733,20 @@ function removeCourse(course) {
   removeCourseHelper(course, gNestedSelectedCoursesAndGroups);
 
   function removeCourseHelper(course, list) {
+    /*
+    finds index of matching course or group; if none found, return -1
+    */
+    function findIndex(list, course) {
+      for (let idx = 0; idx < list.length; idx++) {
+        if (course.courseCode === list[idx].courseCode) {
+          return idx;
+        } else if (course.groupID === list[idx].groupID) {
+          return idx;
+        }
+      }
+      return -1;
+    }
+
     let idx;
     if (course.type === "group") {
       idx = list.findIndex(g => Array.isArray(g) && g[0] === course);
@@ -1753,11 +1773,30 @@ function removeCourse(course) {
   }
 }
 
+/*
+update the array gNestedSelectedCoursesAndGroups based on what is in the
+DOM object selectedCoursesList
+*/
 function readSelectedCoursesList() {
+  removeExplanatoryText(selectedCoursesList);
   gNestedSelectedCoursesAndGroups = readSelectedCoursesListHelper(
     selectedCoursesList.children
   );
   handleSelectedCoursesUpdate();
+
+  // remove explanatory text of how groups ionicframework
+  // from the selectedCoursesList to prevent index-search errors
+  function removeExplanatoryText(lst) {
+    let l = lst.children;
+    for (let entity of l) {
+      if (entity.classList.contains("explain-group")) {
+        lst.removeChild(entity);
+      }
+      if (entity.classList.contains("group")) {
+        removeExplanatoryText(entity.lastChild);
+      }
+    }
+  }
 
   function readSelectedCoursesListHelper(lst) {
     const newSelectedCourses = [];
