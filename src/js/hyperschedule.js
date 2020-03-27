@@ -1658,7 +1658,7 @@ function createGroup() {
     });
     gFocusedGroupTextBox.dispatchEvent(e);
   }
-  gFocusedGroupTextBoxSelection = [0, 0];
+  gFocusedGroupTextBoxSelection = [0, 13]; // enough to highlight default title
   handleSelectedCoursesUpdate();
 }
 
