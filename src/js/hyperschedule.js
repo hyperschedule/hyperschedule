@@ -24,10 +24,11 @@ const greyConflictCoursesOptions = ["none", "starred", "all"];
 const filterKeywords = {
   "dept:": ["dept:", "department:"],
   "college:": ["college", "col:", "school:", "sch:"],
-  "days:": ["days:", "day:"]
+  "days:": ["days:", "day:"],
+  "credits:": ["credits:", "credit:"]
 };
 
-filterInequalities = ["<=", ">=", "<", ">", "="];
+const filterInequalities = ["<=", ">=", "<", "=", ">"];
 
 //// DOM elements
 
@@ -539,18 +540,22 @@ function coursePassesTextFilters(course, textFilters) {
   const lowerCourseCode = course.courseCode.toLowerCase();
   const dept = lowerCourseCode.split(" ")[0];
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
+  const credits = course.courseCredits;
 
   if (
     (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
     (textFilters["college:"] && !col.match(textFilters["college:"])) ||
     (textFilters["days:"] &&
-      !coursePassesDayFilter(course, textFilters["days:"]))
+      !coursePassesDayFilter(course, textFilters["days:"])) ||
+    (textFilters["credits:"] &&
+      !courseCreditMatch(credits, textFilters["credits:"]))
   ) {
     return false;
   }
 
   return true;
 }
+
 
 function parseDaysInequality(inputDays) {
   for (const rel of filterInequalities)
@@ -607,6 +612,37 @@ function coursePassesDayFilter(course, inputString) {
     case ">":
       // inputDays is a proper subset of courseDays
       return inputDays.subSet(courseDays) && inputDays.size != courseDays.size;
+
+function parseCreditsInequality(inputCredits) {
+  for (const rel of filterInequalities)
+    if (inputCredits.startsWith(rel)) return rel;
+  return "";
+}
+
+function parseCreditsFilter(inputCredits) {
+  const rel = parseCreditsInequality(inputCredits);
+  return { rel, floatInput: parseFloat(inputCredits.substring(rel.length)) };
+}
+
+function courseCreditMatch(courseCredits, inputCredits) {
+  const { rel, floatInput } = parseCreditsFilter(inputCredits);
+  const floatCredits = parseFloat(courseCredits);
+
+  if (!isNaN(inputCredits.substring(0, 1))) {
+    return floatInput == floatCredits;
+  }
+
+  switch (rel) {
+    case "<=":
+      return floatCredits <= floatInput;
+    case ">=":
+      return floatCredits >= floatInput;
+    case "=":
+      return floatCredits == floatInput;
+    case "<":
+      return floatCredits < floatInput;
+    case ">":
+      return floatCredits > floatInput;
     default:
       return false;
   }
