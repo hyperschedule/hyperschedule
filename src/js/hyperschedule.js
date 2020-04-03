@@ -937,10 +937,10 @@ function createCourseEntity(course, attrs) {
     function beginGroupNameChange(course) {
       if (gClickAwayFunction != null) {
         // remove any existing listener
-        document.removeEventListener("mouseup", gClickAwayFunction);
+        document.removeEventListener("mousedown", gClickAwayFunction);
       }
       gClickAwayFunction = clickHandler(course); // create reference to allow removal
-      document.addEventListener("mouseup", gClickAwayFunction);
+      document.addEventListener("mousedown", gClickAwayFunction);
       // event signals to disallow drag-and-drop while renaming
       selectedCoursesList.dispatchEvent(new CustomEvent("coursenametyping"));
       let textBox = document.createElement("input");
@@ -978,7 +978,7 @@ function createCourseEntity(course, attrs) {
     function clickHandler(course) {
       return function(event) {
         if ($(event.target).closest(".group-box-typing-box").length === 0) {
-          document.removeEventListener("mouseup", gClickAwayFunction);
+          document.removeEventListener("mousedown", gClickAwayFunction);
           endGroupNameChange(course);
         }
       };
@@ -1658,7 +1658,7 @@ function createGroup() {
     });
     gFocusedGroupTextBox.dispatchEvent(e);
   }
-  gFocusedGroupTextBoxSelection = [0, 13]; // enough to highlight default title
+  gFocusedGroupTextBoxSelection = [0, 13]; // enough to highlight
   handleSelectedCoursesUpdate();
 }
 
