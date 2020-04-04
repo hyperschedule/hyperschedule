@@ -4,10 +4,11 @@
 // M-x occur with the following query: ^\(///+\|const\|\(async \)?function\|let\)
 
 /// Globals
-//// Modules
 
+//// Modules
 const ics = require("/js/vendor/ics-0.2.0.min.js");
 
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCelRaVwcwPV5sPpGYy_AGEpK4TOgA5_iQ",
   authDomain: "hyperschedule-course-info.firebaseapp.com",
@@ -19,8 +20,9 @@ const firebaseConfig = {
   measurementId: "G-BMMJ3G37Y0"
 };
 
-// Database Initialization
+// Database initialization
 firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
 
 //// Data constants
 
@@ -87,6 +89,7 @@ const userDropdown = document.getElementById("user-dropdown-wrapper");
 const userIcon = document.getElementById("user-button-icon");
 const signoutButton = document.getElementById("signout-btn");
 const settingsButton = document.getElementById("settings-button");
+const uploadPDFButton = document.getElementById("upload-syllabus-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
@@ -785,6 +788,7 @@ function attachListeners() {
   signinButton.addEventListener("click", showSignInModal);
   signoutButton.addEventListener("click", signout);
   settingsButton.addEventListener("click", showSettingsModal);
+  uploadPDFButton.addEventListener("click", uploadPDFToServer);
 
   courseDescriptionMinimize.addEventListener(
     "click",
@@ -1282,6 +1286,11 @@ function showSignInModal() {
   $("#signin-modal").modal("show");
 }
 
+function showUploadModal() {
+  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  $("#upload-syllabus-modal").modal("show");
+}
+
 function showSettingsModal() {
   $("#settings-modal").modal("show");
 }
@@ -1290,6 +1299,25 @@ function hideSigninModal() {
   signinModal.classList.remove("fade");
   $("#signin-modal").modal("hide");
   signinModal.classList.add("fade");
+}
+
+function getCourseFromDB(courseCode) {
+  docRef = db.collection("courseData").doc(courseCode);
+
+  docRef
+    .get()
+    .then(function(doc) {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        return doc.data();
+      } else {
+        docRef.set({});
+      }
+    })
+    .catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  return {};
 }
 
 function setCourseDescriptionBox(course) {
@@ -1307,8 +1335,51 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
+
+  docRef = db.collection("courseData").doc(course.courseCode);
+
+  docRef
+    .get()
+    .then(function(doc) {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+      } else {
+        docRef.set({});
+      }
+      courseDescriptionBox.appendChild(document.createElement("hr"));
+      createSyllabusUploadBox(courseDescriptionBox, doc.data());
+      courseDescriptionVisible();
+    })
+    .catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+
   minimizeArrowPointUp();
   courseDescriptionVisible();
+}
+
+function createSyllabusUploadBox(courseDescriptionBox, dbCourseInfo) {
+  const icon = document.createElement("i");
+  icon.classList.add("course-box-button");
+  icon.classList.add("course-box-add-button");
+  icon.classList.add("icon");
+  icon.classList.add("ion-upload");
+  icon.addEventListener("click", showUploadModal);
+
+  const paragraph = document.createElement("p");
+  if (dbCourseInfo.syllabusData !== undefined) {
+    const link = document.createElement("a");
+    link.textContent = "Syllabus (2019)";
+    var hreflink = document.createAttribute("href");
+    hreflink.value = dbCourseInfo.syllabusData;
+    link.attributes.setNamedItem(hreflink);
+    paragraph.appendChild(link);
+  } else {
+    paragraph.textContent = "Add a syllabus";
+  }
+
+  courseDescriptionBox.appendChild(paragraph);
+  courseDescriptionBox.appendChild(icon);
 }
 
 function minimizeCourseDescription() {
@@ -2079,7 +2150,6 @@ function observeUserChanged() {
 
       uploadSyllabusURL = apiURL + "/upload-syllabus";
       user.getIdToken().then(async token => {
-        // TODO: remove, only put this in upload syllabus
         sendTokenIDToServer(uploadSyllabusURL, token);
       });
     } else {
@@ -2090,10 +2160,23 @@ function observeUserChanged() {
   });
 }
 
+async function uploadPDFToServer() {
+  var user = firebase.auth().currentUser;
+  if (user) {
+    uploadSyllabusURL = apiURL + "/upload-syllabus";
+    user.getIdToken().then(async token => {
+      sendTokenIDToServer(uploadSyllabusURL, token);
+    });
+    console.log("it does works");
+  } else {
+    console.log("it does not works");
+  }
+}
+
 async function sendTokenIDToServer(url, token) {
   const response = await fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
+    mode: "cors", // no-cors, *cors, same-origin  CHANGE TO CORS LATER
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
