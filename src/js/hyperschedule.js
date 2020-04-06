@@ -81,6 +81,7 @@ const selectedCoursesColumn = document.getElementById(
 const importExportDataButton = document.getElementById(
   "import-export-data-button"
 );
+
 const printDropdown = document.getElementById("print-dropdown");
 const printAllButton = document.getElementById("print-button-all");
 const printStarredButton = document.getElementById("print-button-starred");
@@ -90,6 +91,9 @@ const userIcon = document.getElementById("user-button-icon");
 const signoutButton = document.getElementById("signout-btn");
 const settingsButton = document.getElementById("settings-button");
 const uploadPDFButton = document.getElementById("upload-syllabus-button");
+
+const PDFFile = document.getElementById("myFile");
+const syllabusDate = document.getElementById("semester-select");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
@@ -125,6 +129,7 @@ const importExportCopyButton = document.getElementById(
 const signinModal = document.getElementById("signin-modal");
 
 //// Global state
+let currentCourseCode = null; // CHANGE LATER
 
 // Persistent data.
 let gApiData = null;
@@ -1347,6 +1352,7 @@ function setCourseDescriptionBox(course) {
         docRef.set({});
       }
       courseDescriptionBox.appendChild(document.createElement("hr"));
+      currentCourseCode = course.courseCode;
       createSyllabusUploadBox(courseDescriptionBox, doc.data());
       courseDescriptionVisible();
     })
@@ -2166,10 +2172,12 @@ async function uploadPDFToServer() {
     uploadSyllabusURL = apiURL + "/upload-syllabus";
     user.getIdToken().then(async token => {
       sendTokenIDToServer(uploadSyllabusURL, token);
+      sendPDFToServer(uploadSyllabusURL);
+      sendSyllabusDataToServer(uploadSyllabusURL);
+      console.log();
     });
-    console.log("it does works");
   } else {
-    console.log("it does not works");
+    console.log("Null User");
   }
 }
 
@@ -2183,6 +2191,37 @@ async function sendTokenIDToServer(url, token) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ token: token }) // body data type must match "Content-Type" header
+  });
+  result = await response.json();
+}
+
+async function sendPDFToServer(url) {
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin  CHANGE TO CORS LATER
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    body: PDFFile
+  });
+
+  result = await response.json();
+}
+
+async function sendSyllabusDataToServer(url) {
+  syllabusDataDictionary = {
+    courseCode: currentCourseCode,
+    syllabusDate: syllabusDate
+  };
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin  CHANGE TO CORS LATER
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(syllabusDataDictionary)
+    // body data type must match "Content-Type" header
   });
   result = await response.json();
 }
