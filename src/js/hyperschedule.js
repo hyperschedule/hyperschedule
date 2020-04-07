@@ -1800,7 +1800,7 @@ function saveImportExportModalChanges() {
     alert("Malformed JSON. Refusing to save.");
     return;
   }
-  gSelectedCourses = upgradeSelectedCourses(obj);
+  gNestedSelectedCoursesAndGroups = upgradeSelectedCourses(obj);
   handleSelectedCoursesUpdate();
   $("#import-export-modal").modal("hide");
 }
