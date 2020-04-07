@@ -846,6 +846,7 @@ function attachListeners() {
     handle: ".course-box-text",
     ghostClass: "placeholder",
     group: "courses",
+    emptyInsertThreshold: 15,
     onSort: function(evt) {
       readSelectedCoursesList();
     },
@@ -1097,15 +1098,7 @@ function createCourseEntity(course, attrs) {
     listItem.appendChild(groupNode);
     listItem.classList.add("group");
   }
-  ////////// TEXT THAT EXPLAINS HOW TO ADD THINGS TO GROUP WHEN GROUP IS EMPTY
-  else if (course.type === "explain-group") {
-    const textBox = document.createElement("p");
-    const explain = document.createTextNode("Drag courses to add");
-    textBox.classList.add("course-box-text");
-    textBox.appendChild(explain);
-    listItem.classList.add("explain-group");
-    listItemContent.appendChild(textBox);
-  }
+
   ////////// CREATING COURSES
   else {
     if (course !== "placeholder") {
@@ -1234,21 +1227,20 @@ function createCourseEntity(course, attrs) {
       listItem.classList.add("placeholder");
     }
   }
-  if (course.type != "explain-group") {
-    const removeButton = document.createElement("i");
-    removeButton.classList.add("course-box-button");
-    removeButton.classList.add("course-box-remove-button");
-    removeButton.classList.add("icon");
-    removeButton.classList.add("ion-close");
-    removeButton.addEventListener("click", () => {
-      removeCourse(course);
-    });
-    removeButton.addEventListener("click", catchEvent);
-    listItemContent.appendChild(removeButton);
 
-    if (idx !== undefined) {
-      listItem.setAttribute("data-course-index", idx);
-    }
+  const removeButton = document.createElement("i");
+  removeButton.classList.add("course-box-button");
+  removeButton.classList.add("course-box-remove-button");
+  removeButton.classList.add("icon");
+  removeButton.classList.add("ion-close");
+  removeButton.addEventListener("click", () => {
+    removeCourse(course);
+  });
+  removeButton.addEventListener("click", catchEvent);
+  listItemContent.appendChild(removeButton);
+
+  if (idx !== undefined) {
+    listItem.setAttribute("data-course-index", idx);
   }
 
   return listItem;
@@ -1521,12 +1513,7 @@ function updateSelectedCoursesListHelper(inputList, outputList, index) {
       });
       index++;
       let groupList = courseBox.lastChild;
-      if (course[1].length === 0) {
-        // no courses in group, should add text explaining how groups work
-        groupList.appendChild(createCourseEntity({ type: "explain-group" }));
-      } else {
-        index = updateSelectedCoursesListHelper(course[1], groupList, index);
-      }
+      index = updateSelectedCoursesListHelper(course[1], groupList, index);
       outputList.appendChild(courseBox);
     } else {
       outputList.appendChild(
@@ -1778,25 +1765,10 @@ update the array gNestedSelectedCoursesAndGroups based on what is in the
 DOM object selectedCoursesList
 */
 function readSelectedCoursesList() {
-  removeExplanatoryText(selectedCoursesList);
   gNestedSelectedCoursesAndGroups = readSelectedCoursesListHelper(
     selectedCoursesList.children
   );
   handleSelectedCoursesUpdate();
-
-  // remove explanatory text of how groups ionicframework
-  // from the selectedCoursesList to prevent index-search errors
-  function removeExplanatoryText(lst) {
-    let l = lst.children;
-    for (let entity of l) {
-      if (entity.classList.contains("explain-group")) {
-        lst.removeChild(entity);
-      }
-      if (entity.classList.contains("group")) {
-        removeExplanatoryText(entity.lastChild);
-      }
-    }
-  }
 
   function readSelectedCoursesListHelper(lst) {
     const newSelectedCourses = [];
