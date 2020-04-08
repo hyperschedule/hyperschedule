@@ -427,6 +427,19 @@ function termListDescription(terms, termCount) {
   return _.capitalize(`${formatList(numbers)} ${qualifier}-semester course`);
 }
 
+function generateRateMyP(instructors) {
+  urlArr = [];
+  for (const prof of instructors) {
+    const nameArr = prof.split(",");
+    const last = nameArr[0];
+    const first = nameArr[1].split(" ")[1];
+    const url =
+      "https://www.ratemyprofessors.com/search.jsp?query=" + first + "+" + last;
+    urlArr.push(url);
+  }
+  return urlArr;
+}
+
 function generateCourseDescription(course) {
   const description = [];
 
@@ -440,6 +453,8 @@ function generateCourseDescription(course) {
 
   const instructors = formatList(course.courseInstructors);
   description.push(instructors);
+
+  const urlAarr = generateRateMyP(course.courseInstructors);
 
   let partOfYear;
   if (_.isEmpty(course.courseSchedule)) {
@@ -1358,8 +1373,11 @@ function setCourseDescriptionBox(course) {
     courseDescriptionBox.appendChild(paragraph);
   }
   minimizeArrowPointUp();
+  injectLinks();
   courseDescriptionVisible();
 }
+
+function injectLinks() {}
 
 function minimizeCourseDescription() {
   if (
