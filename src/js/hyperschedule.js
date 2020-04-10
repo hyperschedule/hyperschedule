@@ -428,7 +428,7 @@ function termListDescription(terms, termCount) {
 }
 
 function generateRateMyP(instructors) {
-  urlArr = [];
+  let urlArr = [];
   for (const prof of instructors) {
     if (prof == "Staff") {
       urlArr.push("Staff");
@@ -1374,13 +1374,12 @@ function setCourseDescriptionBox(course) {
     const text = document.createTextNode(line);
 
     let offset = 4;
-    if (course.courseDescription == null) offset--;
-    if (idx == description.length - offset) {
+    if (course.courseDescription === null) offset--;
+    if (idx === description.length - offset) {
       injectLinks(course, paragraph);
     } else {
       paragraph.appendChild(text);
     }
-
     courseDescriptionBox.appendChild(paragraph);
   }
   minimizeArrowPointUp();
@@ -1392,7 +1391,7 @@ function injectLinks(course, paragraph) {
   const nameArr = course.courseInstructors;
   let linkList = [];
   for (let i = 0; i < nameArr.length; i++) {
-    if (nameArr[i] != "Staff") {
+    if (nameArr[i] !== "Staff") {
       let profLink = nameArr[i];
       profLink = profLink.link(urlArr[i]);
       linkList.push(profLink);
