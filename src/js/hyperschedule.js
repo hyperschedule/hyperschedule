@@ -454,8 +454,6 @@ function generateCourseDescription(course) {
   const instructors = formatList(course.courseInstructors);
   description.push(instructors);
 
-  const urlAarr = generateRateMyP(course.courseInstructors);
-
   let partOfYear;
   if (_.isEmpty(course.courseSchedule)) {
     partOfYear = "No scheduled meetings";
@@ -1362,6 +1360,7 @@ function setCourseDescriptionBox(course) {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
   const description = generateCourseDescription(course);
+
   for (let idx = 0; idx < description.length; ++idx) {
     const line = description[idx];
     if (idx !== 0) {
@@ -1369,15 +1368,32 @@ function setCourseDescriptionBox(course) {
     }
     const paragraph = document.createElement("p");
     const text = document.createTextNode(line);
-    paragraph.appendChild(text);
+
+    let offset = 4;
+    if (course.courseDescription == null) offset--;
+    if (idx == description.length - offset) {
+      injectLinks(course, paragraph);
+    } else {
+      paragraph.appendChild(text);
+    }
+
     courseDescriptionBox.appendChild(paragraph);
   }
   minimizeArrowPointUp();
-  injectLinks();
   courseDescriptionVisible();
 }
 
-function injectLinks() {}
+function injectLinks(course, paragraph) {
+  const urlArr = generateRateMyP(course.courseInstructors);
+  const nameArr = course.courseInstructors;
+  let linkList = [];
+  for (let i = 0; i < nameArr.length; i++) {
+    let profLink = nameArr[i];
+    profLink = profLink.link(urlArr[i]);
+    linkList.push(profLink);
+  }
+  paragraph.innerHTML = formatList(linkList);
+}
 
 function minimizeCourseDescription() {
   if (
