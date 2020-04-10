@@ -430,6 +430,10 @@ function termListDescription(terms, termCount) {
 function generateRateMyP(instructors) {
   urlArr = [];
   for (const prof of instructors) {
+    if (prof == "Staff") {
+      urlArr.push("Staff");
+      continue;
+    }
     const nameArr = prof.split(",");
     const last = nameArr[0];
     const first = nameArr[1].split(" ")[1];
@@ -1388,11 +1392,21 @@ function injectLinks(course, paragraph) {
   const nameArr = course.courseInstructors;
   let linkList = [];
   for (let i = 0; i < nameArr.length; i++) {
-    let profLink = nameArr[i];
-    profLink = profLink.link(urlArr[i]);
-    linkList.push(profLink);
+    if (nameArr[i] != "Staff") {
+      let profLink = nameArr[i];
+      profLink = profLink.link(urlArr[i]);
+      linkList.push(profLink);
+    } else {
+      linkList.push(nameArr[i]);
+    }
   }
   paragraph.innerHTML = formatList(linkList);
+  for (let child of paragraph.childNodes) {
+    if (child.nodeName === "A") {
+      child.target = "_blank";
+      child.rel = "noopener noreferrer";
+    }
+  }
 }
 
 function minimizeCourseDescription() {
