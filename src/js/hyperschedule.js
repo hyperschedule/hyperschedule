@@ -92,9 +92,6 @@ const signoutButton = document.getElementById("signout-btn");
 const settingsButton = document.getElementById("settings-button");
 const uploadPDFButton = document.getElementById("upload-syllabus-button");
 
-const PDFFile = document.getElementById("myFile");
-const syllabusDate = document.getElementById("semester-select");
-
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
 const courseDescriptionMinimizeOuter = document.getElementById(
@@ -127,6 +124,9 @@ const importExportCopyButton = document.getElementById(
 );
 
 const signinModal = document.getElementById("signin-modal");
+
+let syllabusFile = document.getElementById("syllabus-file");
+let syllabusDate = document.getElementById("semester-select");
 
 //// Global state
 let currentCourseCode = null; // CHANGE LATER
@@ -2171,9 +2171,7 @@ async function uploadPDFToServer() {
   if (user) {
     uploadSyllabusURL = apiURL + "/upload-syllabus";
     user.getIdToken().then(async token => {
-      sendTokenIDToServer(uploadSyllabusURL, token);
-      sendPDFToServer(uploadSyllabusURL);
-      sendSyllabusDataToServer(uploadSyllabusURL);
+      sendSyllabusInfoToServer(uploadSyllabusURL, token);
       console.log();
     });
   } else {
@@ -2190,38 +2188,24 @@ async function sendTokenIDToServer(url, token) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ token: token }) // body data type must match "Content-Type" header
+    body: JSON.stringify(token) // body data type must match "Content-Type" header
   });
   result = await response.json();
 }
 
-async function sendPDFToServer(url) {
+async function sendSyllabusInfoToServer(url, token) {
+  const formData = new FormData();
+  formData.append("token", token);
+  formData.append("courseCode", currentCourseCode);
+  formData.append("syllabusDate", syllabusDate.value);
+  formData.append("pdf", syllabusFile.files[0]); //?
+
   const response = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin  CHANGE TO CORS LATER
+    method: "PUT", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
     credentials: "same-origin", // include, *same-origin, omit
-    body: PDFFile
-  });
-
-  result = await response.json();
-}
-
-async function sendSyllabusDataToServer(url) {
-  syllabusDataDictionary = {
-    courseCode: currentCourseCode,
-    syllabusDate: syllabusDate
-  };
-  const response = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin  CHANGE TO CORS LATER
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(syllabusDataDictionary)
-    // body data type must match "Content-Type" header
+    body: formData
   });
   result = await response.json();
 }
