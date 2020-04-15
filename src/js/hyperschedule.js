@@ -128,6 +128,10 @@ const signinModal = document.getElementById("signin-modal");
 let syllabusFile = document.getElementById("syllabus-file");
 let syllabusDate = document.getElementById("semester-select");
 
+const syllabusUploadInfoBar = document.getElementById(
+  "upload-syllabus-infobar"
+);
+
 //// Global state
 let currentCourseCode = null; // CHANGE LATER
 
@@ -356,6 +360,19 @@ function removeEntityChildren(entity) {
   while (entity.hasChildNodes()) {
     entity.removeChild(entity.lastChild);
   }
+}
+
+/*
+  setEntityParagraph creates a new p element with specified class list
+  and set it to be the only child of the eneity.
+*/
+function setEntityParagraph(entity, text, class_str) {
+  removeEntityChildren(entity);
+  const paragraph = document.createElement("p");
+  textnode = document.createTextNode(text);
+  paragraph.appendChild(textnode);
+  paragraph.classList.add(class_str);
+  syllabusUploadInfoBar.appendChild(paragraph);
 }
 
 //// Course and schedule utility functions
@@ -1292,7 +1309,7 @@ function showSignInModal() {
 }
 
 function showUploadModal() {
-  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  removeEntityChildren(syllabusUploadInfoBar);
   $("#upload-syllabus-modal").modal("show");
 }
 
@@ -2166,11 +2183,31 @@ async function uploadPDFToServer() {
   if (user) {
     uploadSyllabusURL = apiURL + "/upload-syllabus";
     user.getIdToken().then(async token => {
-      sendSyllabusInfoToServer(uploadSyllabusURL, token);
-      console.log();
+      setEntityParagraph(
+        syllabusUploadInfoBar,
+        "Uploading syllabus",
+        "text-warning"
+      );
+
+      result = await sendSyllabusInfoToServer(uploadSyllabusURL, token);
+      console.log("Upload Syllabus result:", result);
+      if (result === undefined || result.error) {
+        setEntityParagraph(syllabusUploadInfoBar, result.error, "text-warning");
+      } else {
+        setEntityParagraph(
+          syllabusUploadInfoBar,
+          "Upload Successful",
+          "text-success"
+        );
+      }
     });
   } else {
-    console.log("Null User");
+    console.log("Cannot upload syallabus, user is not logged in");
+    setEntityParagraph(
+      syllabusUploadInfoBar,
+      "Cannot upload syallabus, user is not logged in",
+      "text-danger"
+    );
   }
 }
 
@@ -2179,7 +2216,7 @@ async function sendSyllabusInfoToServer(url, token) {
   formData.append("token", token);
   formData.append("courseCode", currentCourseCode);
   formData.append("syllabusDate", syllabusDate.value);
-  formData.append("pdf", syllabusFile.files[0]); //?
+  formData.append("pdf", syllabusFile.files[0]);
 
   const response = await fetch(url, {
     method: "PUT", // *GET, POST, PUT, DELETE, etc.
@@ -2189,6 +2226,7 @@ async function sendSyllabusInfoToServer(url, token) {
     body: formData
   });
   result = await response.json();
+  return result;
 }
 
 function signout() {
