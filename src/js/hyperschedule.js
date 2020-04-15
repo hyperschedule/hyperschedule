@@ -2192,7 +2192,7 @@ async function uploadPDFToServer() {
       result = await sendSyllabusInfoToServer(uploadSyllabusURL, token);
       console.log("Upload Syllabus result:", result);
       if (result === undefined || result.error) {
-        setEntityParagraph(syllabusUploadInfoBar, result.error, "text-warning");
+        setEntityParagraph(syllabusUploadInfoBar, result.error, "text-danger");
       } else {
         setEntityParagraph(
           syllabusUploadInfoBar,
