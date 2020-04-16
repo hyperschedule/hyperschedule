@@ -34,6 +34,11 @@ filterInequalities = ["<=", ">=", "<", ">", "="];
 const courseSearchToggle = document.getElementById("course-search-toggle");
 const scheduleToggle = document.getElementById("schedule-toggle");
 
+const schedule1 = document.getElementById("schedule1");
+const schedule2 = document.getElementById("schedule2");
+const schedule3 = document.getElementById("schedule3");
+const schedule4 = document.getElementById("schedule4");
+
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 const hideAllConflictingCoursesToggle = document.getElementById(
   "all-conflicting-courses-toggle"
@@ -110,6 +115,8 @@ const importExportCopyButton = document.getElementById(
 let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
+let gLastScheduleSelected = 1;
+let gSchedulesSelected = [0];
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
@@ -818,6 +825,10 @@ function attachListeners() {
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
+  schedule1.addEventListener("click", checkSchedule1);
+  schedule2.addEventListener("click", checkSchedule2);
+  schedule3.addEventListener("click", checkSchedule3);
+  schedule4.addEventListener("click", checkSchedule4);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   hideAllConflictingCoursesToggle.addEventListener(
     "click",
@@ -1532,6 +1543,22 @@ function displayScheduleColumn() {
   gScheduleTabSelected = true;
   updateTabToggle();
   writeStateToLocalStorage();
+}
+
+function checkSchedule1() {
+  console.log("schedule 1 clicked");
+}
+
+function checkSchedule2() {
+  console.log("schedule 2 clicked");
+}
+
+function checkSchedule3() {
+  console.log("schedule 3 clicked");
+}
+
+function checkSchedule4() {
+  console.log("schedule 4 clicked");
 }
 
 //// Course retrieval
