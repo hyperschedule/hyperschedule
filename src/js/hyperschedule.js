@@ -133,7 +133,6 @@ const syllabusUploadInfoBar = document.getElementById(
 );
 
 //// Global state
-let currentCourseCode = null; // CHANGE LATER
 
 // Persistent data.
 let gApiData = null;
@@ -148,6 +147,7 @@ let gGreyConflictCourses = greyConflictCoursesOptions[0];
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
+let gSelectedCourseCode = null;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -1313,6 +1313,11 @@ function showUploadModal() {
   $("#upload-syllabus-modal").modal("show");
 }
 
+function hideUploadModal() {
+  removeEntityChildren(syllabusUploadInfoBar);
+  $("#upload-syllabus-modal").modal("hide");
+}
+
 function showSettingsModal() {
   $("#settings-modal").modal("show");
 }
@@ -1369,7 +1374,7 @@ function setCourseDescriptionBox(course) {
         docRef.set({});
       }
       courseDescriptionBox.appendChild(document.createElement("hr"));
-      currentCourseCode = course.courseCode;
+      gSelectedCourseCode = course.courseCode;
       createSyllabusUploadBox(courseDescriptionBox, doc.data());
       courseDescriptionVisible();
     })
@@ -2199,6 +2204,7 @@ async function uploadPDFToServer() {
           "Upload Successful",
           "text-success"
         );
+        setTimeout(hideUploadModal, 1000);
       }
     });
   } else {
@@ -2214,7 +2220,7 @@ async function uploadPDFToServer() {
 async function sendSyllabusInfoToServer(url, token) {
   const formData = new FormData();
   formData.append("token", token);
-  formData.append("courseCode", currentCourseCode);
+  formData.append("courseCode", gSelectedCourseCode);
   formData.append("syllabusDate", syllabusDate.value);
   formData.append("pdf", syllabusFile.files[0]);
 
