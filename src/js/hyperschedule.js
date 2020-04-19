@@ -334,6 +334,22 @@ function setButtonSelected(button, selected) {
   button.classList.remove(classRemoved);
 }
 
+function setScheduleSelected() {
+  const schedSelected = "btn-info";
+  const schedInactive = "btn-light";
+  let i;
+  for (i = 1; i <= 4; i++) {
+    let button = document.getElementById("schedule" + i);
+    if (i == gLastScheduleSelected) {
+      button.classList.add(schedSelected);
+      button.classList.remove(schedInactive);
+    } else {
+      button.classList.add(schedInactive);
+      button.classList.remove(schedSelected);
+    }
+  }
+}
+
 function removeEntityChildren(entity) {
   while (entity.hasChildNodes()) {
     entity.removeChild(entity.lastChild);
@@ -1582,6 +1598,8 @@ function checkSchedule() {
 
   updateCourseDisplays();
 
+  setScheduleSelected();
+
   writeStateToLocalStorage();
 }
 
@@ -2149,6 +2167,7 @@ function downloadICalFile() {
 attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
+setScheduleSelected();
 retrieveCourseDataUntilSuccessful();
 
 /// Closing remarks

@@ -75,11 +75,12 @@ body {
 }
 
 #course-search-schedule-toggle-bar {
-  margin: 1rem 0 1rem 1rem;
+  margin: 1rem 0 0 1rem;
 }
 
 #course-schedules-buttons-bar {
   margin: 1rem 0 1rem 1rem;
+  padding: 0 0;
   justify-content: space-around;
 }
 
