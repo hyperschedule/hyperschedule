@@ -811,10 +811,10 @@ function computeCreditCountDescription(schedule) {
 
 //// Global state queries
 
-function courseAlreadyAdded(course) {
+function courseAlreadyAdded(course, selectedCoursesList) {
   return _.some(selectedCourse => {
     return selectedCourse.courseCode === course.courseCode;
-  }, gSelectedCourses);
+  }, selectedCoursesList);
 }
 
 /// API retrieval
@@ -1296,7 +1296,7 @@ function rerenderCourseSearchResults() {
     ++index
   ) {
     const course = gApiData.data.courses[gFilteredCourseKeys[index]];
-    const alreadyAdded = courseAlreadyAdded(course);
+    const alreadyAdded = courseAlreadyAdded(course, gSelectedCourses);
     const entity = createCourseEntity(course, { alreadyAdded });
     entity.style.top = "" + gCourseEntityHeight * index + "px";
     courseSearchResultsList.appendChild(entity);
@@ -1461,7 +1461,7 @@ function handleGlobalStateUpdate() {
 //// Global state mutation
 
 function addCourse(course) {
-  if (courseAlreadyAdded(course)) {
+  if (courseAlreadyAdded(course, gSelectedCourses)) {
     return;
   }
   course = deepCopy(course);
@@ -1480,8 +1480,10 @@ function addToSchedules(course) {
         _.isArray,
         []
       );
-      oldSchedule.push(course);
-      localStorage.setItem(`schedulesSelected${schedule}`, oldSchedule);
+      if (!courseAlreadyAdded(course, oldSchedule)) {
+        oldSchedule.push(course);
+        localStorage.setItem(`schedulesSelected${schedule}`, oldSchedule);
+      }
     }
   }
 }
