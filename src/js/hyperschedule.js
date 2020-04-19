@@ -113,10 +113,10 @@ const importExportCopyButton = document.getElementById(
 
 // Persistent data.
 let gApiData = null;
+let gLastScheduleSelected = 1;
+let gSchedulesSelected = [1];
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
-let gLastScheduleSelected = 1;
-let gSchedulesSelected = [0];
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
@@ -825,10 +825,10 @@ function attachListeners() {
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
-  schedule1.addEventListener("click", checkSchedule1);
-  schedule2.addEventListener("click", checkSchedule2);
-  schedule3.addEventListener("click", checkSchedule3);
-  schedule4.addEventListener("click", checkSchedule4);
+  schedule1.addEventListener("click", checkSchedule);
+  schedule2.addEventListener("click", checkSchedule);
+  schedule3.addEventListener("click", checkSchedule);
+  schedule4.addEventListener("click", checkSchedule);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   hideAllConflictingCoursesToggle.addEventListener(
     "click",
@@ -1545,20 +1545,29 @@ function displayScheduleColumn() {
   writeStateToLocalStorage();
 }
 
-function checkSchedule1() {
-  console.log("schedule 1 clicked");
-}
+function checkSchedule() {
+  const id = event.target.id;
+  if (id === "schedule1") {
+    gLastScheduleSelected = 1;
+  } else if (id === "schedule2") {
+    gLastScheduleSelected = 2;
+  } else if (id === "schedule3") {
+    gLastScheduleSelected = 3;
+  } else if (id === "schedule4") {
+    gLastScheduleSelected = 4;
+  }
 
-function checkSchedule2() {
-  console.log("schedule 2 clicked");
-}
+  gSelectedCourses = upgradeSelectedCourses(
+    readFromLocalStorage(
+      `selectedCourses${gLastScheduleSelected}`,
+      _.isArray,
+      []
+    )
+  );
 
-function checkSchedule3() {
-  console.log("schedule 3 clicked");
-}
+  updateCourseDisplays();
 
-function checkSchedule4() {
-  console.log("schedule 4 clicked");
+  writeStateToLocalStorage();
 }
 
 //// Course retrieval
@@ -1670,7 +1679,12 @@ async function retrieveCourseDataUntilSuccessful() {
 
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
-  localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
+  localStorage.setItem("lastScheduleSelected", gLastScheduleSelected);
+  localStorage.setItem("schedulesSelected", gSchedulesSelected);
+  localStorage.setItem(
+    `selectedCourses${gLastScheduleSelected}`,
+    JSON.stringify(gSelectedCourses)
+  );
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
   localStorage.setItem("hideAllConflictingCourses", gHideAllConflictingCourses);
@@ -1750,8 +1764,20 @@ function upgradeSelectedCourses(selectedCourses) {
 
 function readStateFromLocalStorage() {
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
+  gLastScheduleSelected = readFromLocalStorage(
+    "lastScheduleSelected",
+    _.isNumber,
+    1
+  );
+  gSchedulesSelected = readFromLocalStorage("schedulesSelected", _.isArray, [
+    1
+  ]);
   gSelectedCourses = upgradeSelectedCourses(
-    readFromLocalStorage("selectedCourses", _.isArray, [])
+    readFromLocalStorage(
+      `selectedCourses${gLastScheduleSelected}`,
+      _.isArray,
+      []
+    )
   );
   gScheduleTabSelected = readFromLocalStorage(
     "scheduleTabSelected",
