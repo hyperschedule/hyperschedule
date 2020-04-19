@@ -80,6 +80,7 @@ body {
 
 #course-schedules-buttons-bar {
   margin: 1rem 0 1rem 1rem;
+  justify-content: space-around;
 }
 
 #course-search-toggle-wrapper,
@@ -88,15 +89,12 @@ body {
   flex-basis: 0;
 }
 
-#schedule-1-wrapper,
-#schedule-2-wrapper,
-#schedule-3-wrapper,
-#schedule-4-wrapper {
+#schedule1,
+#schedule2,
+#schedule3,
+#schedule4 {
   flex-grow: 1;
   flex-basis: 0;
-  display: block;
-  margin: 0 auto;
-  width: 100%;
 }
 
 #course-search-toggle {
