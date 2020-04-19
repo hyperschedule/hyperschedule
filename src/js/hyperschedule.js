@@ -1452,7 +1452,22 @@ function addCourse(course) {
   course.selected = true;
   course.starred = false;
   gSelectedCourses.push(course);
+  addToSchedules(course);
   handleSelectedCoursesUpdate();
+}
+
+function addToSchedules(course) {
+  for (const schedule of gSchedulesSelected) {
+    if (schedule !== gLastScheduleSelected) {
+      let oldSchedule = readFromLocalStorage(
+        `schedulesSelected${schedule}`,
+        _.isArray,
+        []
+      );
+      oldSchedule.push(course);
+      localStorage.setItem(`schedulesSelected${schedule}`, oldSchedule);
+    }
+  }
 }
 
 function removeCourse(course) {
