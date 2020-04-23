@@ -1567,11 +1567,19 @@ function toggleCourseStarred(course) {
 
 function toggleScheduleSelected() {
   let schedArr = event.target.parentNode.children;
-  console.log(schedArr);
-  console.log("hi");
   if (schedArr[1].classList.contains("ion-android-checkbox")) {
-    schedArr[1].classList.remove("ion-android-checkbox");
-    schedArr[1].classList.add("ion-android-checkbox-outline-blank");
+    // Check first that at least one other schedule is still checked
+    let numChecked = 0;
+    for (let l of document.getElementsByClassName("schedule-checkbox")) {
+      if (l.checked) numChecked++;
+    }
+    console.log(numChecked);
+    if (numChecked >= 1) {
+      schedArr[1].classList.remove("ion-android-checkbox");
+      schedArr[1].classList.add("ion-android-checkbox-outline-blank");
+    } else {
+      schedArr[0].checked = true;
+    }
   } else {
     schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
     schedArr[1].classList.add("ion-android-checkbox");
