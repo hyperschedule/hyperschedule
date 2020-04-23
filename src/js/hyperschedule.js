@@ -1210,6 +1210,14 @@ function getSearchTextFilters(filtersTextArray) {
 //// DOM updates
 ///// DOM updates due to global state change
 
+function updateScheduleSelectedStartup() {
+  let schedule = document.getElementById("schedule" + gLastScheduleSelected);
+  let schedArr = schedule.children[0].children;
+  schedArr[0].checked = true;
+  schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
+  schedArr[1].classList.add("ion-android-checkbox");
+}
+
 function updateTabToggle() {
   setEntityVisibility(scheduleColumn, gScheduleTabSelected);
   setButtonSelected(scheduleToggle, gScheduleTabSelected);
@@ -1573,7 +1581,6 @@ function toggleScheduleSelected() {
     for (let l of document.getElementsByClassName("schedule-checkbox")) {
       if (l.checked) numChecked++;
     }
-    console.log(numChecked);
     if (numChecked >= 1) {
       schedArr[1].classList.remove("ion-android-checkbox");
       schedArr[1].classList.add("ion-android-checkbox-outline-blank");
@@ -2199,6 +2206,7 @@ readStateFromLocalStorage();
 handleGlobalStateUpdate();
 setScheduleSelected();
 retrieveCourseDataUntilSuccessful();
+updateScheduleSelectedStartup();
 
 /// Closing remarks
 
