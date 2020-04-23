@@ -39,6 +39,8 @@ const schedule2 = document.getElementById("schedule2");
 const schedule3 = document.getElementById("schedule3");
 const schedule4 = document.getElementById("schedule4");
 
+const scheduleLabels = document.getElementsByClassName("schedule-label");
+
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 const hideAllConflictingCoursesToggle = document.getElementById(
   "all-conflicting-courses-toggle"
@@ -845,6 +847,11 @@ function attachListeners() {
   schedule2.addEventListener("click", checkSchedule);
   schedule3.addEventListener("click", checkSchedule);
   schedule4.addEventListener("click", checkSchedule);
+
+  for (let label of scheduleLabels) {
+    label.addEventListener("change", toggleScheduleSelected);
+  }
+
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   hideAllConflictingCoursesToggle.addEventListener(
     "click",
@@ -1556,6 +1563,19 @@ function toggleCourseStarred(course) {
   course.starred = !course.starred;
   updateCourseDisplays();
   writeStateToLocalStorage();
+}
+
+function toggleScheduleSelected() {
+  let schedArr = event.target.parentNode.children;
+  console.log(schedArr);
+  console.log("hi");
+  if (schedArr[1].classList.contains("ion-android-checkbox")) {
+    schedArr[1].classList.remove("ion-android-checkbox");
+    schedArr[1].classList.add("ion-android-checkbox-outline-blank");
+  } else {
+    schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
+    schedArr[1].classList.add("ion-android-checkbox");
+  }
 }
 
 function updateCourseDisplays() {
