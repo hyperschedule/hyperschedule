@@ -848,7 +848,7 @@ function attachListeners() {
   schedule3.addEventListener("click", checkSchedule);
   schedule4.addEventListener("click", checkSchedule);
 
-  for (let label of scheduleLabels) {
+  for (const label of scheduleLabels) {
     label.addEventListener("change", toggleScheduleSelected);
   }
 
@@ -1211,8 +1211,8 @@ function getSearchTextFilters(filtersTextArray) {
 ///// DOM updates due to global state change
 
 function updateScheduleSelectedStartup() {
-  let schedule = document.getElementById("schedule" + gLastScheduleSelected);
-  let schedArr = schedule.children[0].children;
+  const schedule = document.getElementById("schedule" + gLastScheduleSelected);
+  const schedArr = schedule.children[0].children;
   schedArr[0].checked = true;
   schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
   schedArr[1].classList.add("ion-android-checkbox");
@@ -1574,11 +1574,11 @@ function toggleCourseStarred(course) {
 }
 
 function toggleScheduleSelected() {
-  let schedArr = event.target.parentNode.children;
+  const schedArr = event.target.parentNode.children;
   if (schedArr[1].classList.contains("ion-android-checkbox")) {
     // Check first that at least one other schedule is still checked
     let numChecked = 0;
-    for (let l of document.getElementsByClassName("schedule-checkbox")) {
+    for (const l of document.getElementsByClassName("schedule-checkbox")) {
       if (l.checked) numChecked++;
     }
     if (numChecked >= 1) {
