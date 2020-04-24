@@ -116,7 +116,7 @@ const importExportCopyButton = document.getElementById(
 // Persistent data.
 let gApiData = null;
 let gLastScheduleSelected = 1;
-let gSchedulesSelected = [1];
+let gSchedulesSelected = [gLastScheduleSelected];
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
@@ -341,8 +341,8 @@ function setScheduleSelected() {
   const schedInactive = "btn-light";
   let i;
   for (i = 1; i <= 4; i++) {
-    let button = document.getElementById("schedule" + i);
-    if (i == gLastScheduleSelected) {
+    let button = document.getElementById(`schedule${i}`);
+    if (i === gLastScheduleSelected) {
       button.classList.add(schedSelected);
       button.classList.remove(schedInactive);
     } else {
@@ -1211,7 +1211,7 @@ function getSearchTextFilters(filtersTextArray) {
 ///// DOM updates due to global state change
 
 function updateScheduleSelectedStartup() {
-  const schedule = document.getElementById("schedule" + gLastScheduleSelected);
+  const schedule = document.getElementById(`schedule${gLastScheduleSelected}`);
   const schedArr = schedule.children[0].children;
   schedArr[0].checked = true;
   schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
@@ -1495,6 +1495,7 @@ function addToSchedules(course) {
         _.isArray,
         []
       );
+      console.log(oldSchedule);
       if (!courseAlreadyAdded(course, oldSchedule)) {
         oldSchedule.push(course);
         localStorage.setItem(`schedulesSelected${schedule}`, oldSchedule);
@@ -1574,20 +1575,26 @@ function toggleCourseStarred(course) {
 }
 
 function toggleScheduleSelected() {
-  const schedArr = event.target.parentNode.children;
+  const parent = event.target.parentNode;
+  const schedArr = parent.children;
+  const schedNum = Number(parent.id.charAt(8));
+
   if (schedArr[1].classList.contains("ion-android-checkbox")) {
     // Check first that at least one other schedule is still checked
-    let numChecked = 0;
-    for (const l of document.getElementsByClassName("schedule-checkbox")) {
-      if (l.checked) numChecked++;
-    }
-    if (numChecked >= 1) {
+    const numChecked = gSchedulesSelected.length;
+    if (numChecked > 1) {
+      gSchedulesSelected.splice(gSchedulesSelected.indexOf(schedNum), 1);
+
+      // Uncheck schedule in UI
       schedArr[1].classList.remove("ion-android-checkbox");
       schedArr[1].classList.add("ion-android-checkbox-outline-blank");
     } else {
       schedArr[0].checked = true;
     }
   } else {
+    gSchedulesSelected.push(schedNum);
+
+    // Check off schedule in UI
     schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
     schedArr[1].classList.add("ion-android-checkbox");
   }
@@ -1614,30 +1621,24 @@ function displayScheduleColumn() {
 }
 
 function checkSchedule() {
-  const id = event.target.id;
-  if (id === "schedule1") {
-    gLastScheduleSelected = 1;
-  } else if (id === "schedule2") {
-    gLastScheduleSelected = 2;
-  } else if (id === "schedule3") {
-    gLastScheduleSelected = 3;
-  } else if (id === "schedule4") {
-    gLastScheduleSelected = 4;
+  // Only check schedule when user clicked on schedule button (and not checkbox)
+  if (
+    event.target.className === "course-schedule-button-content btn btn-light" ||
+    event.target.className === "course-schedule-button-content btn btn-info"
+  ) {
+    gLastScheduleSelected = Number(event.target.id.charAt(8));
+    gSelectedCourses = upgradeSelectedCourses(
+      readFromLocalStorage(
+        `selectedCourses${gLastScheduleSelected}`,
+        _.isArray,
+        []
+      )
+    );
+
+    updateCourseDisplays();
+    setScheduleSelected();
+    writeStateToLocalStorage();
   }
-
-  gSelectedCourses = upgradeSelectedCourses(
-    readFromLocalStorage(
-      `selectedCourses${gLastScheduleSelected}`,
-      _.isArray,
-      []
-    )
-  );
-
-  updateCourseDisplays();
-
-  setScheduleSelected();
-
-  writeStateToLocalStorage();
 }
 
 //// Course retrieval
@@ -1750,7 +1751,7 @@ async function retrieveCourseDataUntilSuccessful() {
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("lastScheduleSelected", gLastScheduleSelected);
-  localStorage.setItem("schedulesSelected", gSchedulesSelected);
+  localStorage.setItem("schedulesSelected", [gLastScheduleSelected]);
   localStorage.setItem(
     `selectedCourses${gLastScheduleSelected}`,
     JSON.stringify(gSelectedCourses)
@@ -1840,7 +1841,7 @@ function readStateFromLocalStorage() {
     1
   );
   gSchedulesSelected = readFromLocalStorage("schedulesSelected", _.isArray, [
-    1
+    gLastScheduleSelected
   ]);
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
