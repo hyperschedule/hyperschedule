@@ -362,7 +362,7 @@ function removeEntityChildren(entity) {
 ///// Course property queries
 
 function isCourseClosed(course) {
-  return course.courseEnrollmentStatus == "closed";
+  return course.courseEnrollmentStatus === "closed";
 }
 
 function courseToString(course) {
@@ -625,13 +625,13 @@ function coursePassesDayFilter(course, inputString) {
       const difference2 = new Set(
         [...inputDays].filter(x => !courseDays.has(x))
       );
-      return difference1.size == 0 && difference2.size == 0;
+      return difference1.size === 0 && difference2.size === 0;
     case "<":
       // courseDays is a proper subset of inputDays
-      return courseDays.subSet(inputDays) && inputDays.size != courseDays.size;
+      return courseDays.subSet(inputDays) && inputDays.size !== courseDays.size;
     case ">":
       // inputDays is a proper subset of courseDays
-      return inputDays.subSet(courseDays) && inputDays.size != courseDays.size;
+      return inputDays.subSet(courseDays) && inputDays.size !== courseDays.size;
     default:
       return false;
   }
@@ -1640,6 +1640,8 @@ function checkSchedule() {
       checkBox.classList.remove("ion-android-checkbox");
       checkBox.classList.add("ion-android-checkbox-outline-blank");
     }
+
+    // Switch current schedule
     gLastScheduleSelected = Number(event.target.id.charAt(8));
     gSelectedCourses = upgradeSelectedCourses(
       readFromLocalStorage(
@@ -1648,8 +1650,8 @@ function checkSchedule() {
         []
       )
     );
+
     // Check if not already checked
-    console.log(event.target.children[0].children[1]);
     if (!gSchedulesSelected.includes(gLastScheduleSelected)) {
       gSchedulesSelected.push(gLastScheduleSelected);
       const checkBox = event.target.children[0].children[1];
