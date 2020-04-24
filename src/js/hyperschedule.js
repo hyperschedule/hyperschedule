@@ -1491,14 +1491,16 @@ function addToSchedules(course) {
   for (const schedule of gSchedulesSelected) {
     if (schedule !== gLastScheduleSelected) {
       let oldSchedule = readFromLocalStorage(
-        `schedulesSelected${schedule}`,
+        `selectedCourses${schedule}`,
         _.isArray,
         []
       );
-      console.log(oldSchedule);
       if (!courseAlreadyAdded(course, oldSchedule)) {
         oldSchedule.push(course);
-        localStorage.setItem(`schedulesSelected${schedule}`, oldSchedule);
+        localStorage.setItem(
+          `selectedCourses${schedule}`,
+          JSON.stringify(oldSchedule)
+        );
       }
     }
   }
@@ -1626,6 +1628,18 @@ function checkSchedule() {
     event.target.className === "course-schedule-button-content btn btn-light" ||
     event.target.className === "course-schedule-button-content btn btn-info"
   ) {
+    // Uncheck previously selected schedule
+    if (gSchedulesSelected.includes(gLastScheduleSelected)) {
+      gSchedulesSelected.splice(
+        gSchedulesSelected.indexOf(gLastScheduleSelected),
+        1
+      );
+      const checkBox = document.getElementsByClassName(
+        "schedule-icon icon ion-android-checkbox"
+      )[0];
+      checkBox.classList.remove("ion-android-checkbox");
+      checkBox.classList.add("ion-android-checkbox-outline-blank");
+    }
     gLastScheduleSelected = Number(event.target.id.charAt(8));
     gSelectedCourses = upgradeSelectedCourses(
       readFromLocalStorage(
@@ -1634,6 +1648,14 @@ function checkSchedule() {
         []
       )
     );
+    // Check if not already checked
+    console.log(event.target.children[0].children[1]);
+    if (!gSchedulesSelected.includes(gLastScheduleSelected)) {
+      gSchedulesSelected.push(gLastScheduleSelected);
+      const checkBox = event.target.children[0].children[1];
+      checkBox.classList.remove("ion-android-checkbox-outline-blank");
+      checkBox.classList.add("ion-android-checkbox");
+    }
 
     updateCourseDisplays();
     setScheduleSelected();
