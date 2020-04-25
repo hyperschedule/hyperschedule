@@ -1558,7 +1558,10 @@ function updateCourseDescriptionBoxHeight() {
 ///// DOM updates miscellaneous
 
 function showImportExportModal() {
-  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  importExportTextArea.value = JSON.stringify(
+    gNestedSelectedCoursesAndGroups,
+    2
+  );
   $("#import-export-modal").modal("show");
 }
 
