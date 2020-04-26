@@ -139,6 +139,11 @@ body {
   display: none;
 }
 
+.schedule-label {
+  padding: 0 0;
+  margin: 0em .35em 0em 0em;
+}
+
 .schedule-element {
   display: flex;
   flex-direction: row;
