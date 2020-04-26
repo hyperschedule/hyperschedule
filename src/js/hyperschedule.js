@@ -1523,10 +1523,31 @@ function addNewSchedule() {
   console.log(event.target);
   let wrapper = document.getElementById("schedule-dropdown-content");
   let newSched = document.createElement("div");
-  let newName = document.createTextNode("Schedule" + gLastScheduleId);
+  let newName = document.createTextNode(
+    "ScheduleREEEEEEEEEEEEE" + gLastScheduleId
+  );
+  let checkLabel = document.createElement("label");
+  let checkIcon = document.createElement("i");
+  let checkBox = document.createElement("input");
+
+  checkLabel.id = "schedule-" + gLastScheduleId + "-checkbox";
+  checkLabel.classList.add("schedule-label");
+  checkLabel.addEventListener("change", toggleScheduleSelected);
+
+  checkIcon.classList.add("schedule-icon");
+  checkIcon.classList.add("icon");
+  checkIcon.classList.add("ion-android-checkbox-outline-blank");
+
+  checkBox.type = "checkbox";
+  checkBox.classList.add("schedule-checkbox");
+
+  checkLabel.appendChild(checkBox);
+  checkLabel.appendChild(checkIcon);
+
   newSched.classList.add("schedule-element");
   newSched.classList.add("btn");
   newSched.id = "schedule-" + gLastScheduleId;
+  newSched.appendChild(checkLabel);
   newSched.appendChild(newName);
   newSched.addEventListener("click", selectSchedule);
   wrapper.appendChild(newSched);

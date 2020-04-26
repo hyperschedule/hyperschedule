@@ -139,9 +139,11 @@ body {
   display: none;
 }
 
-.schedule-label {
-  margin: 0em 0.5em;
+.schedule-element {
+  display: flex;
+  flex-direction: row;
 }
+
 
 #course-schedules-buttons-bar {
   margin: 1rem 0 1rem 1rem;
