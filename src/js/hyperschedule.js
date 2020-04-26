@@ -38,11 +38,6 @@ const scheduleDropDownContent = document.getElementById(
 );
 const scheduleDropdownAdd = document.getElementById("schedule-dropdown-add");
 
-const schedule1 = document.getElementById("schedule1");
-const schedule2 = document.getElementById("schedule2");
-const schedule3 = document.getElementById("schedule3");
-const schedule4 = document.getElementById("schedule4");
-
 const scheduleLabels = document.getElementsByClassName("schedule-label");
 const scheduleElements = document.getElementsByClassName("schedule-element");
 
@@ -852,10 +847,6 @@ function attachListeners() {
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
   scheduleDropdownAdd.addEventListener("click", addNewSchedule);
-  schedule1.addEventListener("click", checkSchedule);
-  schedule2.addEventListener("click", checkSchedule);
-  schedule3.addEventListener("click", checkSchedule);
-  schedule4.addEventListener("click", checkSchedule);
 
   for (const sched of scheduleElements) {
     sched.addEventListener("click", selectSchedule);
