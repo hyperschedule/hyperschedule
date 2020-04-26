@@ -1675,15 +1675,30 @@ function toggleScheduleSelected() {
 }
 
 function selectSchedule() {
+  // Switch current schedule and update global variables
+  gLastScheduleSelected = Number(event.target.id.charAt(9));
+  gSelectedCourses = upgradeSelectedCourses(
+    readFromLocalStorage(
+      `selectedCourses${gLastScheduleSelected}`,
+      _.isArray,
+      []
+    )
+  );
+
+  updateCourseDisplays();
+  writeStateToLocalStorage();
+
+  highlightSchedule(event);
+
+  // prevent dropdown menu from closing
+  catchEvent(event);
+}
+
+function highlightSchedule(event) {
   // multischedule new function - highlights one schedule in the dropdown
   // intended to replace the old function "setScheduleSelected"
   const schedActive = "btn-info";
   const schedInactive = "btn-light";
-
-  // Update global var and state
-  const scheduleId = event.target.id.charAt(9);
-  gLastScheduleSelected = Number(scheduleId);
-  writeStateToLocalStorage();
 
   if (!event.target.classList.contains(schedActive)) {
     // if schedule isn't already active
@@ -1700,9 +1715,6 @@ function selectSchedule() {
       sched.classList.add(schedInactive);
     }
   }
-
-  // prevent dropdown menu from closing
-  catchEvent(event);
 }
 
 function updateCourseDisplays() {
