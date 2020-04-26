@@ -22,7 +22,6 @@ const firebaseConfig = {
 
 // Database initialization
 firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
 
 //// Data constants
 
@@ -1362,32 +1361,24 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
-
-  docRef = db.collection("courseData").doc(course.courseCode);
-
-  docRef
-    .get()
-    .then(function(doc) {
-      if (doc.exists) {
-        console.log("Document data:", doc.data());
-      } else {
-        docRef.set({});
-      }
-      courseDescriptionBox.appendChild(document.createElement("hr"));
-      gSelectedCourseCode = course.courseCode;
-      createSyllabusUploadBox(courseDescriptionBox, doc.data());
-      courseDescriptionVisible();
-    })
-    .catch(function(error) {
-      console.log("Error getting document:", error);
-    });
+  courseDescriptionBox.appendChild(document.createElement("hr"));
+  gSelectedCourseCode = course.courseCode;
+  createSyllabusUploadBox(
+    courseDescriptionBox,
+    course.syllabus_link,
+    course.syllabus_term
+  );
 
   minimizeArrowPointUp();
   courseDescriptionVisible();
 }
 
-function createSyllabusUploadBox(courseDescriptionBox, dbCourseInfo) {
-  const icon = document.createElement("i");
+function createSyllabusUploadBox(
+  courseDescriptionBox,
+  syllabusLink,
+  syllabusTerm
+) {
+  const icon = document.createElement("p");
   icon.classList.add("course-box-button");
   icon.classList.add("course-box-add-button");
   icon.classList.add("icon");
@@ -1395,17 +1386,18 @@ function createSyllabusUploadBox(courseDescriptionBox, dbCourseInfo) {
   icon.addEventListener("click", showUploadModal);
 
   const paragraph = document.createElement("p");
-  if (dbCourseInfo.syllabusData !== undefined) {
+  if (syllabusLink !== undefined) {
     const link = document.createElement("a");
-    link.textContent = "Syllabus (2019)";
+    link.target = "_blank";
+    link.textContent = "Syllabus (" + syllabusTerm + ")";
     var hreflink = document.createAttribute("href");
-    hreflink.value = dbCourseInfo.syllabusData;
+    hreflink.value = syllabusLink;
     link.attributes.setNamedItem(hreflink);
     paragraph.appendChild(link);
+    icon.textContent = "  Upload a new syllabus";
   } else {
-    paragraph.textContent = "Add a syllabus";
+    icon.textContent = "  Upload a syllabus";
   }
-
   courseDescriptionBox.appendChild(paragraph);
   courseDescriptionBox.appendChild(icon);
 }
@@ -2221,7 +2213,10 @@ async function sendSyllabusInfoToServer(url, token) {
   const formData = new FormData();
   formData.append("token", token);
   formData.append("courseCode", gSelectedCourseCode);
-  formData.append("syllabusDate", syllabusDate.value);
+  formData.append(
+    "syllabusDate",
+    syllabusDate.options[syllabusDate.selectedIndex].text
+  );
   formData.append("pdf", syllabusFile.files[0]);
 
   const response = await fetch(url, {
