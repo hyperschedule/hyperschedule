@@ -80,6 +80,7 @@ body {
 
 #course-search-toggle-wrapper,
 #schedule-toggle-wrapper {
+  display: flex;
   flex-grow: 1;
   flex-basis: 0;
 }
@@ -98,6 +99,14 @@ body {
   display: block;
   margin: 0 auto;
   width: 100%;
+  flex-basis: 95%;
+  flex-grow: 1;
+}
+
+#schedule-dropdown-toggle {
+  flex-basis: 5%;
+  flex-grow: 1;
+  margin: 0 auto;
 }
 
 #schedule-column {
