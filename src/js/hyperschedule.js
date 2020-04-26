@@ -1223,6 +1223,7 @@ function getSearchTextFilters(filtersTextArray) {
 ///// DOM updates due to global state change
 
 function updateScheduleMenu() {
+  console.log(gScheduleList);
   for (const sched of gScheduleList) {
     appendScheduleRow(sched);
   }
@@ -1487,7 +1488,6 @@ function handleGlobalStateUpdate() {
 
   // Update course displays.
   updateCourseDisplays();
-
   // Canonicalize the state of local storage.
   writeStateToLocalStorage();
 }
@@ -1679,6 +1679,12 @@ function selectSchedule() {
   // intended to replace the old function "setScheduleSelected"
   const schedActive = "btn-info";
   const schedInactive = "btn-light";
+
+  // Update global var and state
+  const scheduleId = event.target.id.charAt(9);
+  gLastScheduleSelected = Number(scheduleId);
+  writeStateToLocalStorage();
+
   if (!event.target.classList.contains(schedActive)) {
     // if schedule isn't already active
 
@@ -1873,6 +1879,7 @@ function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("scheduleList", JSON.stringify(gScheduleList));
   localStorage.setItem("lastScheduleSelected", gLastScheduleSelected);
+  localStorage.setItem("lastScheduleId", gLastScheduleId);
   localStorage.setItem("schedulesChecked", [gLastScheduleSelected]);
   localStorage.setItem(
     `selectedCourses${gLastScheduleSelected}`,
@@ -1965,6 +1972,7 @@ function readStateFromLocalStorage() {
     _.isNumber,
     1
   );
+  gLastScheduleId = readFromLocalStorage("lastScheduleId", _.isNumber, 1);
   gSchedulesChecked = readFromLocalStorage("schedulesChecked", _.isArray, [
     gLastScheduleSelected
   ]);
@@ -2335,7 +2343,6 @@ retrieveCourseDataUntilSuccessful();
 updateScheduleSelectedStartup();
 
 /// Closing remarks
-
 // Local Variables:
 // outline-regexp: "///+"
 // End:
