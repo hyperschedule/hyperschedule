@@ -33,6 +33,7 @@ filterInequalities = ["<=", ">=", "<", ">", "="];
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
 const scheduleToggle = document.getElementById("schedule-toggle");
+const scheduleDropdownAdd = document.getElementById("schedule-dropdown-add");
 
 const schedule1 = document.getElementById("schedule1");
 const schedule2 = document.getElementById("schedule2");
@@ -40,6 +41,7 @@ const schedule3 = document.getElementById("schedule3");
 const schedule4 = document.getElementById("schedule4");
 
 const scheduleLabels = document.getElementsByClassName("schedule-label");
+const scheduleElements = document.getElementsByClassName("schedule-element");
 
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 const hideAllConflictingCoursesToggle = document.getElementById(
@@ -116,6 +118,7 @@ const importExportCopyButton = document.getElementById(
 // Persistent data.
 let gApiData = null;
 let gLastScheduleSelected = 1;
+let gLastScheduleId = 1;
 let gSchedulesSelected = [gLastScheduleSelected];
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
@@ -843,11 +846,15 @@ function attachListeners() {
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
+  scheduleDropdownAdd.addEventListener("click", addNewSchedule);
   schedule1.addEventListener("click", checkSchedule);
   schedule2.addEventListener("click", checkSchedule);
   schedule3.addEventListener("click", checkSchedule);
   schedule4.addEventListener("click", checkSchedule);
 
+  for (const sched of scheduleElements) {
+    sched.addEventListener("click", selectSchedule);
+  }
   for (const label of scheduleLabels) {
     label.addEventListener("change", toggleScheduleSelected);
   }
@@ -1506,6 +1513,27 @@ function addToSchedules(course) {
   }
 }
 
+function addNewSchedule() {
+  // Adds a new schedule to the dropdown list.
+
+  // update global var
+  gLastScheduleId++;
+
+  // handle new DOM elements
+  console.log(event.target);
+  let wrapper = document.getElementById("schedule-dropdown-content");
+  let newSched = document.createElement("div");
+  let newName = document.createTextNode("Schedule" + gLastScheduleId);
+  newSched.classList.add("schedule-element");
+  newSched.classList.add("btn");
+  newSched.id = "schedule-" + gLastScheduleId;
+  newSched.appendChild(newName);
+  newSched.addEventListener("click", selectSchedule);
+  wrapper.appendChild(newSched);
+
+  event.stopPropagation();
+}
+
 function removeCourse(course) {
   gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
   handleSelectedCoursesUpdate();
@@ -1600,6 +1628,31 @@ function toggleScheduleSelected() {
     schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
     schedArr[1].classList.add("ion-android-checkbox");
   }
+}
+
+function selectSchedule() {
+  // multischedule new function - highlights one schedule in the dropdown
+  // intended to replace the old function "setScheduleSelected"
+  const schedActive = "btn-info";
+  const schedInactive = "btn-light";
+  if (!event.target.classList.contains(schedActive)) {
+    // if schedule isn't already active
+
+    // UI activate
+    event.target.classList.add(schedActive);
+    event.target.classList.remove(schedInactive);
+  }
+  // loop through remaining schedules and un-select them
+  for (sched of scheduleElements) {
+    if (sched.id != event.target.id) {
+      // UI de-activate
+      sched.classList.remove(schedActive);
+      sched.classList.add(schedInactive);
+    }
+  }
+
+  // prevent dropdown menu from closing
+  event.stopPropagation();
 }
 
 function updateCourseDisplays() {

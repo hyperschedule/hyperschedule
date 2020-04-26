@@ -109,6 +109,11 @@ body {
   margin: 0 auto;
 }
 
+#schedule-dropdown-content {
+  position: absolute;
+  z-index: 1;
+}
+
 #schedule-column {
   overflow-y: auto;
   display: flex;
