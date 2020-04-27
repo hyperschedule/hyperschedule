@@ -75,7 +75,7 @@ body {
 }
 
 #course-search-schedule-toggle-bar {
-  margin: 1rem 0 0 1rem;
+  margin: 1rem 0 1rem 1rem;
 }
 
 #course-search-toggle-wrapper,
@@ -147,20 +147,6 @@ body {
 .schedule-element {
   display: flex;
   flex-direction: row;
-}
-
-#course-schedules-buttons-bar {
-  margin: 1rem 0 1rem 1rem;
-  padding: 0 0;
-  justify-content: space-around;
-}
-
-#schedule1,
-#schedule2,
-#schedule3,
-#schedule4 {
-  flex-grow: 1;
-  flex-basis: 0;
 }
 
 /** Course search **/
