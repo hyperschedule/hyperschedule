@@ -1536,6 +1536,7 @@ function appendScheduleRow(schedule) {
   let checkLabel = document.createElement("label");
   let checkIcon = document.createElement("i");
   let checkBox = document.createElement("input");
+  let deleteButton = document.createElement("i");
 
   checkLabel.id = `schedule-${scheduleId}-checkbox`;
   checkLabel.classList.add("schedule-label");
@@ -1552,11 +1553,18 @@ function appendScheduleRow(schedule) {
   checkLabel.appendChild(checkBox);
   checkLabel.appendChild(checkIcon);
 
+  deleteButton.classList.add("icon");
+  deleteButton.classList.add("ion-close");
+  deleteButton.classList.add("schedule-delete-button");
+  deleteButton.addEventListener("click", removeSchedule);
+  deleteButton.addEventListener("click", catchEvent);
+
   newSched.classList.add("schedule-element");
   newSched.classList.add("btn");
   newSched.id = `schedule-${scheduleId}`;
   newSched.appendChild(checkLabel);
   newSched.appendChild(newName);
+  newSched.appendChild(deleteButton);
   newSched.addEventListener("click", selectSchedule);
   newSched.addEventListener("click", catchEvent);
   scheduleDropDownContent.appendChild(newSched);
@@ -1569,6 +1577,10 @@ function appendScheduleRow(schedule) {
     checkIcon.classList.remove("ion-android-checkbox-outline-blank");
     checkIcon.classList.add("ion-android-checkbox");
   }
+}
+
+function removeSchedule() {
+  alert("removeSchedule called");
 }
 
 function removeCourse(course) {

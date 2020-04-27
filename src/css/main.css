@@ -144,7 +144,11 @@ body {
 
 .schedule-label {
   padding: 0 0;
-  margin: 0em 0.35em 0em 0em;
+  margin: 0em 0.5em 0em 0em;
+}
+
+.schedule-delete-button {
+  margin: 0em 0em 0em .5em;
 }
 
 .schedule-element {
