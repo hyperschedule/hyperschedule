@@ -112,6 +112,9 @@ body {
 #schedule-dropdown-content {
   position: absolute;
   z-index: 1;
+  height: auto;
+  max-height: 30em;
+  overflow-x: hidden;
 }
 
 #schedule-column {
