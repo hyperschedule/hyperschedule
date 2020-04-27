@@ -1757,13 +1757,13 @@ function defaultCheckSchedule(event) {
 function updateScheduleTabTitle() {
   for (const sched of gScheduleList) {
     if (sched.id === gLastScheduleSelected) {
-      scheduleToggle.innerText = sched.name;
+      scheduleToggle.textContent = sched.name;
     }
   }
 }
 
 function updateDropDownText() {
-  scheduleDropDownText.innerText = `Your Schedules: ${gScheduleList.length}`;
+  scheduleDropDownText.textContent = `Your Schedules: ${gScheduleList.length}`;
 }
 
 function updateCourseDisplays() {
