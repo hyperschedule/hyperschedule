@@ -265,6 +265,7 @@ function readFromLocalStorage(key, pred, def) {
 }
 
 function catchEvent(event) {
+  console.log("CAUGHT");
   event.stopPropagation();
 }
 
@@ -837,10 +838,12 @@ function attachListeners() {
 
   for (const sched of scheduleElements) {
     sched.addEventListener("click", selectSchedule);
+    sched.addEventListener("click", catchEvent);
   }
 
   for (const label of scheduleLabels) {
     label.addEventListener("change", toggleScheduleSelected);
+    label.addEventListener("change", catchEvent);
   }
 
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
@@ -1538,6 +1541,7 @@ function appendScheduleRow(schedule) {
   checkLabel.id = `schedule-${scheduleId}-checkbox`;
   checkLabel.classList.add("schedule-label");
   checkLabel.addEventListener("change", toggleScheduleSelected);
+  checkLabel.addEventListener("change", catchEvent);
 
   checkIcon.classList.add("schedule-icon");
   checkIcon.classList.add("icon");
@@ -1555,6 +1559,7 @@ function appendScheduleRow(schedule) {
   newSched.appendChild(checkLabel);
   newSched.appendChild(newName);
   newSched.addEventListener("click", selectSchedule);
+  newSched.addEventListener("click", catchEvent);
   scheduleDropDownContent.appendChild(newSched);
 
   if (scheduleId === gLastScheduleSelected) {
@@ -1638,58 +1643,69 @@ function toggleCourseStarred(course) {
 }
 
 function toggleScheduleSelected() {
-  const parent = event.target.parentNode;
-  const schedArr = parent.children;
-  const schedNum = Number(parent.id.charAt(9));
+  if (!event.target.classList.contains("schedule-label")) {
+    const parent = event.target.parentNode;
+    const schedArr = parent.children;
+    const schedNum = Number(parent.id.charAt(9));
 
-  if (schedArr[1].classList.contains("ion-android-checkbox")) {
-    // Check first that at least one other schedule is still checked
-    const numChecked = gSchedulesChecked.length;
-    if (numChecked > 1) {
-      gSchedulesChecked.splice(gSchedulesChecked.indexOf(schedNum), 1);
+    console.log("TOGGLE");
+    console.log(gLastScheduleSelected);
+    if (schedArr[1].classList.contains("ion-android-checkbox")) {
+      // Check first that at least one other schedule is still checked
+      const numChecked = gSchedulesChecked.length;
+      if (numChecked > 1) {
+        gSchedulesChecked.splice(gSchedulesChecked.indexOf(schedNum), 1);
 
-      // Uncheck schedule in UI
-      schedArr[1].classList.remove("ion-android-checkbox");
-      schedArr[1].classList.add("ion-android-checkbox-outline-blank");
+        // Uncheck schedule in UI
+        schedArr[1].classList.remove("ion-android-checkbox");
+        schedArr[1].classList.add("ion-android-checkbox-outline-blank");
+      } else {
+        schedArr[0].checked = true;
+      }
     } else {
-      schedArr[0].checked = true;
-    }
-  } else {
-    gSchedulesChecked.push(schedNum);
+      gSchedulesChecked.push(schedNum);
 
-    // Check off schedule in UI
-    schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
-    schedArr[1].classList.add("ion-android-checkbox");
+      // Check off schedule in UI
+      schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
+      schedArr[1].classList.add("ion-android-checkbox");
+    }
+
+    // prevent dropdown from closing
+    // catchEvent(event);
   }
 }
 
 function selectSchedule() {
   // Make sure checkbox is not activating event listener here
-  highlightSchedule(event);
-  defaultCheckSchedule(event);
+  if (
+    !event.target.classList.contains("schedule-checkbox") &&
+    !event.target.classList.contains("icon") &&
+    !event.target.classList.contains("schedule-label")
+  ) {
+    highlightSchedule(event);
+    defaultCheckSchedule(event);
 
-  // Switch current schedule (some global var updated in defaultCheckSchedule)
-  gSelectedCourses = upgradeSelectedCourses(
-    readFromLocalStorage(
-      `selectedCourses${gLastScheduleSelected}`,
-      _.isArray,
-      []
-    )
-  );
+    // Switch current schedule (some global var updated in defaultCheckSchedule)
+    gSelectedCourses = upgradeSelectedCourses(
+      readFromLocalStorage(
+        `selectedCourses${gLastScheduleSelected}`,
+        _.isArray,
+        []
+      )
+    );
 
-  // prevent dropdown menu from closing
-  catchEvent(event);
-
-  updateCourseDisplays();
-  updateScheduleTabTitle();
-  writeStateToLocalStorage();
+    updateCourseDisplays();
+    updateScheduleTabTitle();
+    writeStateToLocalStorage();
+  }
 }
 
 function highlightSchedule(event) {
   // multischedules- highlights one schedule in the dropdown
   const schedActive = "btn-info";
   const schedInactive = "btn-light";
-
+  console.log("HIGHLIGHT");
+  console.log(gLastScheduleSelected);
   if (
     !event.target.classList.contains(schedActive) &&
     !event.target.classList.contains("schedule-checkbox")
