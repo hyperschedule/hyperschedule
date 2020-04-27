@@ -265,7 +265,6 @@ function readFromLocalStorage(key, pred, def) {
 }
 
 function catchEvent(event) {
-  console.log("CAUGHT");
   event.stopPropagation();
 }
 
@@ -1648,8 +1647,6 @@ function toggleScheduleSelected() {
     const schedArr = parent.children;
     const schedNum = Number(parent.id.charAt(9));
 
-    console.log("TOGGLE");
-    console.log(gLastScheduleSelected);
     if (schedArr[1].classList.contains("ion-android-checkbox")) {
       // Check first that at least one other schedule is still checked
       const numChecked = gSchedulesChecked.length;
@@ -1704,8 +1701,6 @@ function highlightSchedule(event) {
   // multischedules- highlights one schedule in the dropdown
   const schedActive = "btn-info";
   const schedInactive = "btn-light";
-  console.log("HIGHLIGHT");
-  console.log(gLastScheduleSelected);
   if (
     !event.target.classList.contains(schedActive) &&
     !event.target.classList.contains("schedule-checkbox")
