@@ -147,6 +147,7 @@ body {
 .schedule-element {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 /** Course search **/
