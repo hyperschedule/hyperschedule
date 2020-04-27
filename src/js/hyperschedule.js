@@ -36,6 +36,9 @@ const scheduleToggle = document.getElementById("schedule-toggle");
 const scheduleDropDownContent = document.getElementById(
   "schedule-dropdown-content"
 );
+const scheduleDropDownText = document.getElementById(
+  "schedule-dropdown-content-text"
+);
 const scheduleDropdownAdd = document.getElementById("schedule-dropdown-add");
 
 const scheduleLabels = document.getElementsByClassName("schedule-label");
@@ -1477,6 +1480,7 @@ function handleGlobalStateUpdate() {
   updateConflictCoursesRadio();
   updateScheduleMenu();
   updateScheduleTabTitle();
+  updateDropDownText();
 
   // Update course displays.
   updateCourseDisplays();
@@ -1531,6 +1535,7 @@ function addNewSchedule() {
   // handle new DOM elements
   appendScheduleRow(defaultPair);
   catchEvent(event);
+  updateDropDownText();
 
   // Update state
   writeStateToLocalStorage();
@@ -1755,6 +1760,10 @@ function updateScheduleTabTitle() {
       scheduleToggle.innerText = sched.name;
     }
   }
+}
+
+function updateDropDownText() {
+  scheduleDropDownText.innerText = `Your Schedules: ${gScheduleList.length}`;
 }
 
 function updateCourseDisplays() {
