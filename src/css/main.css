@@ -154,21 +154,30 @@ body {
   justify-content: space-between;
 }
 
+.schedule-delete-placeholder {
+  visibility: hidden;
+}
+
+#schedule-dropdown-content {
+  width: 300px;
+}
+
 #schedule-dropdown-add-wrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   cursor: pointer;
 }
 
 #schedule-dropdown-add-text {
-  margin: .33em 1em .25em .5em;
+  margin: .25em 0 .25em 0;
   padding: 0 0;
 }
 
 #schedule-dropdown-add {
-  margin: .25em .5em .25em 1em;
+  margin: .25em 1em .25em 0;
   padding: 0 0;
 }
+
 /** Course search **/
 
 #course-search-column {

@@ -1590,7 +1590,15 @@ function appendScheduleRow(schedule) {
   newSched.id = scheduleId;
   newSched.appendChild(checkEditWrapper);
   newSched.appendChild(newName);
+
+  // Add placeholder for delete so that schedule 1 lines up properly.
+  let fakeDelete = document.createElement("div");
+  fakeDelete.classList.add("schedule-delete-placeholder");
+  fakeDelete.classList.add("icon");
+  fakeDelete.classList.add("ion-close");
+
   if (scheduleId !== "schedule-1") newSched.appendChild(deleteButton);
+  else newSched.appendChild(fakeDelete);
   newSched.addEventListener("click", selectSchedule);
   newSched.addEventListener("click", catchEvent);
   scheduleDropDownContent.appendChild(newSched);
