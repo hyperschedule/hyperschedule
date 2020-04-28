@@ -107,6 +107,8 @@ body {
   flex-basis: 5%;
   flex-grow: 1;
   margin: 0 auto;
+  outline: none;
+  box-shadow: none;
 }
 
 #schedule-dropdown-content {
@@ -152,6 +154,7 @@ body {
 .schedule-element {
   display: flex;
   justify-content: space-between;
+  margin: 0em .25em .25em .25em;
 }
 
 .schedule-delete-placeholder {
