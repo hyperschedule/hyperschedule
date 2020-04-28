@@ -1567,7 +1567,24 @@ function appendScheduleRow(schedule) {
 }
 
 function removeSchedule() {
-  console.log(event.target.parentNode);
+  // only remove if at least one remains
+
+  const id = Number(event.target.parentNode.id.charAt(9));
+
+  // remove from global var
+  for (const sched of gScheduleList) {
+    if (sched.id === id) {
+      gScheduleList.splice(gScheduleList.indexOf(sched, id));
+    }
+  }
+
+  // remove from UI
+  const row = event.target.parentNode;
+  row.parentNode.removeChild(row);
+
+  catchEvent(event);
+
+  writeStateToLocalStorage();
 }
 
 function removeCourse(course) {
