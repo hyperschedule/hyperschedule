@@ -1601,12 +1601,23 @@ function appendScheduleRow(schedule) {
   else newSched.appendChild(fakeDelete);
   newSched.addEventListener("click", selectSchedule);
   newSched.addEventListener("click", catchEvent);
+
+  if (scheduleId != "schedule-1") {
+    let hue = "random";
+    let seed = CryptoJS.MD5(scheduleId + newName).toString();
+
+    let newColor = getRandomColor(hue, seed, "hex");
+    newSched.style.backgroundColor = newColor;
+  } else {
+    newSched.classList.add("btn-primary");
+  }
+
   scheduleDropDownContent.appendChild(newSched);
 
   if (scheduleId === gLastScheduleSelected) {
     // highlight
-    newSched.classList.add("btn-info");
-    newSched.classList.remove("btn-light");
+    newSched.classList.add("schedule-active");
+    newSched.classList.remove("schedule-inactive");
     // check
     checkIcon.classList.remove("ion-android-checkbox-outline-blank");
     checkIcon.classList.add("ion-android-checkbox");
@@ -1650,12 +1661,12 @@ function handleCurrentScheduleRemoval() {
     )
   );
   // highlight
-  defaultRow.classList.add("btn-info");
-  defaultRow.classList.remove("btn-light");
+  defaultRow.classList.add("schedule-active");
+  defaultRow.classList.remove("schedule-inactive");
   // check
   if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
     gSchedulesChecked.push(gLastScheduleSelected);
-    const checkBox = defaultRow.children[0].children[1];
+    const checkBox = defaultRow.children[0].children[0].children[1];
     checkBox.classList.remove("ion-android-checkbox-outline-blank");
     checkBox.classList.add("ion-android-checkbox");
   }
@@ -1664,7 +1675,7 @@ function handleCurrentScheduleRemoval() {
 }
 
 function editName() {
-  const id = event.target.parentNode.id;
+  const id = event.target.parentNode.parentNode.id;
   const inputName = promptName();
   // User pressed cancel
   if (inputName === undefined) {
@@ -1672,12 +1683,13 @@ function editName() {
   }
   // change global var
   for (const sched of gScheduleList) {
+    console.log(sched.name);
     if (sched.id === id) {
       sched.name = inputName;
     }
   }
   // change UI
-  const oldName = event.target.parentNode.childNodes[2];
+  const oldName = event.target.parentNode.parentNode.childNodes[1];
   oldName.nodeValue = inputName;
 
   catchEvent(event);
@@ -1786,8 +1798,12 @@ function toggleScheduleChecked() {
 
 function selectSchedule() {
   if (
-    event.target.className === "schedule-element btn btn-info" ||
-    event.target.className === "schedule-element btn btn-light" ||
+    event.target.className === "schedule-element btn schedule-active" ||
+    event.target.className === "schedule-element btn schedule-inactive" ||
+    event.target.className ===
+      "schedule-element btn btn-primary schedule-active" ||
+    event.target.className ===
+      "schedule-element btn btn-primary schedule-inactive" ||
     event.target.className === "schedule-element btn"
   ) {
     // Switch current schedule
@@ -1811,14 +1827,15 @@ function selectSchedule() {
 
 function highlightSchedule(event) {
   // multischedules- highlights one schedule in the dropdown
-  const schedActive = "btn-info";
-  const schedInactive = "btn-light";
+  const schedActive = "schedule-active";
+  const schedInactive = "schedule-inactive";
+  console.log("LITT");
   if (
     !event.target.classList.contains(schedActive) &&
     !event.target.classList.contains("schedule-checkbox")
   ) {
     // if schedule isn't already active
-
+    console.log("YEET");
     // UI activate
     event.target.classList.add(schedActive);
     event.target.classList.remove(schedInactive);
@@ -1837,8 +1854,12 @@ function defaultCheckSchedule(event) {
   // every time user switches to a different schedule, current schedule should be checked
   // Only check schedule when user clicked on schedule button (and not checkbox)
   if (
-    event.target.className === "schedule-element btn btn-info" ||
-    event.target.className === "schedule-element btn btn-light" ||
+    event.target.className === "schedule-element btn schedule-active" ||
+    event.target.className === "schedule-element btn schedule-inactive" ||
+    event.target.className ===
+      "schedule-element btn btn-primary schedule-active" ||
+    event.target.className ===
+      "schedule-element btn btn-primary schedule-inactive" ||
     event.target.className === "schedule-element btn"
   ) {
     // Only check if not already checked
