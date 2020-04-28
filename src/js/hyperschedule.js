@@ -1479,15 +1479,16 @@ function addCourse(course) {
 function addToSchedules(course) {
   for (const schedule of gSchedulesChecked) {
     if (schedule !== gLastScheduleSelected) {
+      console.log(schedule);
       let oldSchedule = readFromLocalStorage(
-        `selectedCourses-${schedule}`,
+        "selectedCourses-" + schedule,
         _.isArray,
         []
       );
       if (!courseAlreadyAdded(course, oldSchedule)) {
         oldSchedule.push(course);
         localStorage.setItem(
-          `selectedCourses-${schedule}`,
+          "selectedCourses-" + schedule,
           JSON.stringify(oldSchedule)
         );
       }
@@ -1508,7 +1509,7 @@ function addNewSchedule() {
   gLastScheduleId++;
   const defaultPair = {
     name: inputName,
-    id: `schedule-${gLastScheduleId}`
+    id: "schedule-" + gLastScheduleId
   };
   gScheduleList.push(defaultPair);
 
@@ -1752,15 +1753,16 @@ function selectSchedule() {
     highlightSchedule(event);
     defaultCheckSchedule(event);
     console.log(gLastScheduleSelected);
+    console.log("selectedCourses-" + gLastScheduleSelected);
     // Switch current schedule (some global var updated in defaultCheckSchedule)
     gSelectedCourses = upgradeSelectedCourses(
       readFromLocalStorage(
-        `selectedCourses-${gLastScheduleSelected}`,
+        "selectedCourses-" + gLastScheduleSelected,
         _.isArray,
         []
       )
     );
-    console.log(gSelectedCourses);
+
     console.log(gLastScheduleSelected);
     console.log(gSchedulesChecked);
     updateCourseDisplays();
@@ -1813,7 +1815,6 @@ function defaultCheckSchedule(event) {
     }
 
     gLastScheduleSelected = event.target.id;
-    writeStateToLocalStorage();
 
     // Check if not already checked
     if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
@@ -1973,7 +1974,7 @@ function writeStateToLocalStorage() {
     JSON.stringify([gLastScheduleSelected])
   );
   localStorage.setItem(
-    `selectedCourses-${gLastScheduleSelected}`,
+    "selectedCourses-" + gLastScheduleSelected,
     JSON.stringify(gSelectedCourses)
   );
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
@@ -2069,7 +2070,7 @@ function readStateFromLocalStorage() {
   ]);
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
-      `selectedCourses-${gLastScheduleSelected}`,
+      "selectedCourses-" + gLastScheduleSelected,
       _.isArray,
       []
     )
