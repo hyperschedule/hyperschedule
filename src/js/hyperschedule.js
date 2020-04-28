@@ -1524,6 +1524,7 @@ function appendScheduleRow(schedule) {
   let checkIcon = document.createElement("i");
   let checkBox = document.createElement("input");
   let deleteButton = document.createElement("i");
+  let editButton = document.createElement("i");
 
   checkLabel.id = `schedule-${scheduleId}-checkbox`;
   checkLabel.classList.add("schedule-label");
@@ -1546,10 +1547,16 @@ function appendScheduleRow(schedule) {
   deleteButton.addEventListener("click", removeSchedule);
   deleteButton.addEventListener("click", catchEvent);
 
+  editButton.classList.add("icon");
+  editButton.classList.add("ion-edit");
+  editButton.classList.add("schedule-edit-button");
+  editButton.addEventListener("click", catchEvent);
+
   newSched.classList.add("schedule-element");
   newSched.classList.add("btn");
   newSched.id = `schedule-${scheduleId}`;
   newSched.appendChild(checkLabel);
+  newSched.appendChild(editButton);
   newSched.appendChild(newName);
   newSched.appendChild(deleteButton);
   newSched.addEventListener("click", selectSchedule);

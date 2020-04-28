@@ -151,6 +151,10 @@ body {
   margin: 0em 0em 0em 0.5em;
 }
 
+.schedule-edit-button {
+  margin: 0em .5em 0em 0em;
+}
+
 .schedule-element {
   display: flex;
   flex-direction: row;
