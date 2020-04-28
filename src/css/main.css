@@ -130,17 +130,10 @@ body {
 
 /** Multiple schedules buttons **/
 
-.course-schedule-button-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
 .schedule-checkbox {
   flex-grow: 0;
   flex-basis: 0;
   display: none;
-  justify-self: start;
 }
 
 .schedule-label {
@@ -149,7 +142,7 @@ body {
 }
 
 .schedule-delete-button {
-  margin: 0em 0em 0em 0.75em;
+  margin: 0em 0em 0em .5em;
 }
 
 .schedule-edit-button {
@@ -158,10 +151,24 @@ body {
 
 .schedule-element {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
 }
 
+#schedule-dropdown-add-wrapper {
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+}
+
+#schedule-dropdown-add-text {
+  margin: .33em 1em .25em .5em;
+  padding: 0 0;
+}
+
+#schedule-dropdown-add {
+  margin: .25em .5em .25em 1em;
+  padding: 0 0;
+}
 /** Course search **/
 
 #course-search-column {

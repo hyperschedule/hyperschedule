@@ -36,7 +36,9 @@ const scheduleToggle = document.getElementById("schedule-toggle");
 const scheduleDropDownContent = document.getElementById(
   "schedule-dropdown-content"
 );
-const scheduleDropdownAdd = document.getElementById("schedule-dropdown-add");
+const scheduleDropdownAdd = document.getElementById(
+  "schedule-dropdown-add-wrapper"
+);
 
 const scheduleLabels = document.getElementsByClassName("schedule-label");
 const scheduleElements = document.getElementsByClassName("schedule-element");
