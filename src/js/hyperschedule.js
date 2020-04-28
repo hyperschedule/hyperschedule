@@ -1609,7 +1609,6 @@ function removeSchedule() {
       gSchedulesChecked.splice(gSchedulesChecked.indexOf(sched.id), 1);
     }
   }
-
   // remove from UI
   const row = event.target.parentNode;
   row.parentNode.removeChild(row);
@@ -1619,47 +1618,50 @@ function removeSchedule() {
   // case where removing current schedule
   // change current schedule to default schedule
   if (id === gLastScheduleSelected) {
-    const defaultRow = document.getElementById("schedule-1");
-    gLastScheduleSelected = "schedule-1";
-    gSelectedCourses = upgradeSelectedCourses(
-      readFromLocalStorage(
-        "selectedCourses-" + gLastScheduleSelected,
-        _.isArray,
-        []
-      )
-    );
-
-    defaultRow.classList.add("btn-info");
-    defaultRow.classList.remove("btn-light");
-    if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
-      gSchedulesChecked.push(gLastScheduleSelected);
-      const checkBox = defaultRow.children[0].children[1];
-      checkBox.classList.remove("ion-android-checkbox-outline-blank");
-      checkBox.classList.add("ion-android-checkbox");
-    }
-    updateCourseDisplays();
-    updateScheduleTabTitle();
+    handleCurrentScheduleRemoval();
   }
 
   writeStateToLocalStorage();
 }
 
+function handleCurrentScheduleRemoval() {
+  const defaultRow = document.getElementById("schedule-1");
+  // update global var
+  gLastScheduleSelected = "schedule-1";
+  gSelectedCourses = upgradeSelectedCourses(
+    readFromLocalStorage(
+      "selectedCourses-" + gLastScheduleSelected,
+      _.isArray,
+      []
+    )
+  );
+  // highlight
+  defaultRow.classList.add("btn-info");
+  defaultRow.classList.remove("btn-light");
+  // check
+  if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
+    gSchedulesChecked.push(gLastScheduleSelected);
+    const checkBox = defaultRow.children[0].children[1];
+    checkBox.classList.remove("ion-android-checkbox-outline-blank");
+    checkBox.classList.add("ion-android-checkbox");
+  }
+  updateCourseDisplays();
+  updateScheduleTabTitle();
+}
+
 function editName() {
   const id = event.target.parentNode.id;
-
   const inputName = promptName();
   // User pressed cancel
   if (inputName === undefined) {
     return;
   }
-
   // change global var
   for (const sched of gScheduleList) {
     if (sched.id === id) {
       sched.name = inputName;
     }
   }
-
   // change UI
   const oldName = event.target.parentNode.childNodes[2];
   oldName.nodeValue = inputName;
@@ -1748,11 +1750,10 @@ function toggleScheduleChecked() {
     // cannot uncheck currently selected schedule
     if (schedId !== gLastScheduleSelected) {
       if (schedArr[1].classList.contains("ion-android-checkbox")) {
-        // Check first that at least one other schedule is still checked
+        // One schedule must be checked
         const numChecked = gSchedulesChecked.length;
         if (numChecked > 1) {
           gSchedulesChecked.splice(gSchedulesChecked.indexOf(schedId), 1);
-
           // Uncheck schedule in UI
           schedArr[1].classList.remove("ion-android-checkbox");
           schedArr[1].classList.add("ion-android-checkbox-outline-blank");
@@ -1761,7 +1762,6 @@ function toggleScheduleChecked() {
         }
       } else {
         gSchedulesChecked.push(schedId);
-
         // Check off schedule in UI
         schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
         schedArr[1].classList.add("ion-android-checkbox");
@@ -1827,7 +1827,7 @@ function defaultCheckSchedule(event) {
     event.target.className === "schedule-element btn btn-light" ||
     event.target.className === "schedule-element btn"
   ) {
-    // Check if not already checked
+    // Only check if not already checked
     if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
       gSchedulesChecked.push(gLastScheduleSelected);
       const checkBox = event.target.children[0].children[1];
