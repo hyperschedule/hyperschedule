@@ -1552,6 +1552,7 @@ function appendScheduleRow(schedule) {
   let checkBox = document.createElement("input");
   let deleteButton = document.createElement("i");
   let editButton = document.createElement("i");
+  let checkEditWrapper = document.createElement("div");
 
   checkLabel.id = `schedule-${scheduleId}-checkbox`;
   checkLabel.classList.add("schedule-label");
@@ -1580,11 +1581,14 @@ function appendScheduleRow(schedule) {
   editButton.addEventListener("click", editName);
   editButton.addEventListener("click", catchEvent);
 
+  checkEditWrapper.classList.add("schedule-checkbox-edit-wrapper");
+  checkEditWrapper.appendChild(checkLabel);
+  if (scheduleId !== "schedule-1") checkEditWrapper.appendChild(editButton);
+
   newSched.classList.add("schedule-element");
   newSched.classList.add("btn");
   newSched.id = scheduleId;
-  newSched.appendChild(checkLabel);
-  if (scheduleId !== "schedule-1") newSched.appendChild(editButton);
+  newSched.appendChild(checkEditWrapper);
   newSched.appendChild(newName);
   if (scheduleId !== "schedule-1") newSched.appendChild(deleteButton);
   newSched.addEventListener("click", selectSchedule);
@@ -1746,27 +1750,27 @@ function toggleCourseStarred(course) {
 function toggleScheduleChecked() {
   if (event.target.className === "schedule-checkbox") {
     const parent = event.target.parentNode;
-    const schedArr = parent.children;
-    const schedId = parent.parentNode.id;
+    const checkArr = parent.children;
+    const schedId = event.target.parentNode.parentNode.parentNode.id;
 
     // cannot uncheck currently selected schedule
     if (schedId !== gLastScheduleSelected) {
-      if (schedArr[1].classList.contains("ion-android-checkbox")) {
+      if (checkArr[1].classList.contains("ion-android-checkbox")) {
         // One schedule must be checked
         const numChecked = gSchedulesChecked.length;
         if (numChecked > 1) {
           gSchedulesChecked.splice(gSchedulesChecked.indexOf(schedId), 1);
           // Uncheck schedule in UI
-          schedArr[1].classList.remove("ion-android-checkbox");
-          schedArr[1].classList.add("ion-android-checkbox-outline-blank");
+          checkArr[1].classList.remove("ion-android-checkbox");
+          checkArr[1].classList.add("ion-android-checkbox-outline-blank");
         } else {
-          schedArr[0].checked = true;
+          checkArr[0].checked = true;
         }
       } else {
         gSchedulesChecked.push(schedId);
         // Check off schedule in UI
-        schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
-        schedArr[1].classList.add("ion-android-checkbox");
+        checkArr[1].classList.remove("ion-android-checkbox-outline-blank");
+        checkArr[1].classList.add("ion-android-checkbox");
       }
     }
   }
@@ -1832,7 +1836,7 @@ function defaultCheckSchedule(event) {
     // Only check if not already checked
     if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
       gSchedulesChecked.push(gLastScheduleSelected);
-      const checkBox = event.target.children[0].children[1];
+      const checkBox = event.target.children[0].children[0].children[1];
       checkBox.classList.remove("ion-android-checkbox-outline-blank");
       checkBox.classList.add("ion-android-checkbox");
     }
