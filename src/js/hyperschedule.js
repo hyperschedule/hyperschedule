@@ -116,8 +116,8 @@ const importExportCopyButton = document.getElementById(
 // Persistent data.
 let gApiData = null;
 // [Schedule name, Unique schedule ID]
-let gScheduleList = [{ name: "Schedule1", id: 1 }];
-let gLastScheduleSelected = 1;
+let gScheduleList = [{ name: "Schedule (default)", id: "schedule-1" }];
+let gLastScheduleSelected = "schedule-1";
 let gLastScheduleId = 1;
 let gSchedulesChecked = [gLastScheduleSelected];
 let gSelectedCourses = [];
@@ -1480,14 +1480,14 @@ function addToSchedules(course) {
   for (const schedule of gSchedulesChecked) {
     if (schedule !== gLastScheduleSelected) {
       let oldSchedule = readFromLocalStorage(
-        `selectedCourses${schedule}`,
+        `selectedCourses-${schedule}`,
         _.isArray,
         []
       );
       if (!courseAlreadyAdded(course, oldSchedule)) {
         oldSchedule.push(course);
         localStorage.setItem(
-          `selectedCourses${schedule}`,
+          `selectedCourses-${schedule}`,
           JSON.stringify(oldSchedule)
         );
       }
@@ -1498,11 +1498,17 @@ function addToSchedules(course) {
 function addNewSchedule() {
   // Adds a new schedule to the dropdown list.
 
+  const inputName = promptName();
+  // User pressed cancel
+  if (inputName === undefined) {
+    return;
+  }
+
   // update global var
   gLastScheduleId++;
   const defaultPair = {
-    name: `Schedule${gScheduleList.length + 1}`,
-    id: gLastScheduleId
+    name: inputName,
+    id: `schedule-${gLastScheduleId}`
   };
   gScheduleList.push(defaultPair);
 
@@ -1512,6 +1518,25 @@ function addNewSchedule() {
 
   // Update state
   writeStateToLocalStorage();
+}
+
+function promptName() {
+  let name = "";
+
+  while (true) {
+    name = prompt("Please enter a name for this schedule.");
+
+    if (name === null) {
+      return;
+    } else if (name === "") {
+      alert("Please enter a non-empty name.");
+    } else if (name.length > 20) {
+      alert("Please enter a name with 20 characters or less.");
+    } else {
+      break;
+    }
+  }
+  return name;
 }
 
 function appendScheduleRow(schedule) {
@@ -1550,15 +1575,16 @@ function appendScheduleRow(schedule) {
   editButton.classList.add("icon");
   editButton.classList.add("ion-edit");
   editButton.classList.add("schedule-edit-button");
+  editButton.addEventListener("click", editName);
   editButton.addEventListener("click", catchEvent);
 
   newSched.classList.add("schedule-element");
   newSched.classList.add("btn");
-  newSched.id = `schedule-${scheduleId}`;
+  newSched.id = scheduleId;
   newSched.appendChild(checkLabel);
-  newSched.appendChild(editButton);
+  if (scheduleId !== "schedule-1") newSched.appendChild(editButton);
   newSched.appendChild(newName);
-  newSched.appendChild(deleteButton);
+  if (scheduleId !== "schedule-1") newSched.appendChild(deleteButton);
   newSched.addEventListener("click", selectSchedule);
   newSched.addEventListener("click", catchEvent);
   scheduleDropDownContent.appendChild(newSched);
@@ -1574,20 +1600,44 @@ function appendScheduleRow(schedule) {
 }
 
 function removeSchedule() {
-  // only remove if at least one remains
-
-  const id = Number(event.target.parentNode.id.charAt(9));
+  const id = event.target.parentNode.id;
 
   // remove from global var
   for (const sched of gScheduleList) {
     if (sched.id === id) {
-      gScheduleList.splice(gScheduleList.indexOf(sched, id));
+      gScheduleList.splice(gScheduleList.indexOf(sched, id), 1);
     }
   }
 
   // remove from UI
   const row = event.target.parentNode;
   row.parentNode.removeChild(row);
+
+  catchEvent(event);
+
+  writeStateToLocalStorage();
+}
+
+function editName() {
+  const id = event.target.parentNode.id;
+
+  const inputName = promptName();
+  // User pressed cancel
+  if (inputName === undefined) {
+    return;
+  }
+
+  // change global var
+  for (const sched of gScheduleList) {
+    if (sched.id === id) {
+      sched.name = inputName;
+    }
+  }
+
+  // change UI
+  const oldName = event.target.parentNode.childNodes[2];
+  oldName.nodeValue = inputName;
+  console.log(oldName);
 
   catchEvent(event);
 
@@ -1668,13 +1718,13 @@ function toggleScheduleSelected() {
   if (!event.target.classList.contains("schedule-label")) {
     const parent = event.target.parentNode;
     const schedArr = parent.children;
-    const schedNum = Number(parent.id.charAt(9));
+    const schedId = parent.id;
 
     if (schedArr[1].classList.contains("ion-android-checkbox")) {
       // Check first that at least one other schedule is still checked
       const numChecked = gSchedulesChecked.length;
       if (numChecked > 1) {
-        gSchedulesChecked.splice(gSchedulesChecked.indexOf(schedNum), 1);
+        gSchedulesChecked.splice(gSchedulesChecked.indexOf(schedId), 1);
 
         // Uncheck schedule in UI
         schedArr[1].classList.remove("ion-android-checkbox");
@@ -1683,15 +1733,12 @@ function toggleScheduleSelected() {
         schedArr[0].checked = true;
       }
     } else {
-      gSchedulesChecked.push(schedNum);
+      gSchedulesChecked.push(schedId);
 
       // Check off schedule in UI
       schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
       schedArr[1].classList.add("ion-android-checkbox");
     }
-
-    // prevent dropdown from closing
-    // catchEvent(event);
   }
 }
 
@@ -1704,16 +1751,18 @@ function selectSchedule() {
   ) {
     highlightSchedule(event);
     defaultCheckSchedule(event);
-
+    console.log(gLastScheduleSelected);
     // Switch current schedule (some global var updated in defaultCheckSchedule)
     gSelectedCourses = upgradeSelectedCourses(
       readFromLocalStorage(
-        `selectedCourses${gLastScheduleSelected}`,
+        `selectedCourses-${gLastScheduleSelected}`,
         _.isArray,
         []
       )
     );
-
+    console.log(gSelectedCourses);
+    console.log(gLastScheduleSelected);
+    console.log(gSchedulesChecked);
     updateCourseDisplays();
     updateScheduleTabTitle();
     writeStateToLocalStorage();
@@ -1763,7 +1812,8 @@ function defaultCheckSchedule(event) {
       checkBox.classList.add("ion-android-checkbox-outline-blank");
     }
 
-    gLastScheduleSelected = Number(event.target.id.charAt(9));
+    gLastScheduleSelected = event.target.id;
+    writeStateToLocalStorage();
 
     // Check if not already checked
     if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
@@ -1913,11 +1963,17 @@ async function retrieveCourseDataUntilSuccessful() {
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("scheduleList", JSON.stringify(gScheduleList));
-  localStorage.setItem("lastScheduleSelected", gLastScheduleSelected);
-  localStorage.setItem("lastScheduleId", gLastScheduleId);
-  localStorage.setItem("schedulesChecked", [gLastScheduleSelected]);
   localStorage.setItem(
-    `selectedCourses${gLastScheduleSelected}`,
+    "lastScheduleSelected",
+    JSON.stringify(gLastScheduleSelected)
+  );
+  localStorage.setItem("lastScheduleId", gLastScheduleId);
+  localStorage.setItem(
+    "schedulesChecked",
+    JSON.stringify([gLastScheduleSelected])
+  );
+  localStorage.setItem(
+    `selectedCourses-${gLastScheduleSelected}`,
     JSON.stringify(gSelectedCourses)
   );
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
@@ -2000,12 +2056,12 @@ function upgradeSelectedCourses(selectedCourses) {
 function readStateFromLocalStorage() {
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
   gScheduleList = readFromLocalStorage("scheduleList", _.isArray, [
-    { name: "Schedule1", id: 1 }
+    { name: "Schedule (default)", id: "schedule-1" }
   ]);
   gLastScheduleSelected = readFromLocalStorage(
     "lastScheduleSelected",
-    _.isNumber,
-    1
+    _.isString,
+    "schedule-1"
   );
   gLastScheduleId = readFromLocalStorage("lastScheduleId", _.isNumber, 1);
   gSchedulesChecked = readFromLocalStorage("schedulesChecked", _.isArray, [
@@ -2013,7 +2069,7 @@ function readStateFromLocalStorage() {
   ]);
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
-      `selectedCourses${gLastScheduleSelected}`,
+      `selectedCourses-${gLastScheduleSelected}`,
       _.isArray,
       []
     )
