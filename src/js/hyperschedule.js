@@ -36,9 +36,6 @@ const scheduleToggle = document.getElementById("schedule-toggle");
 const scheduleDropDownContent = document.getElementById(
   "schedule-dropdown-content"
 );
-const scheduleDropDownText = document.getElementById(
-  "schedule-dropdown-content-text"
-);
 const scheduleDropdownAdd = document.getElementById("schedule-dropdown-add");
 
 const scheduleLabels = document.getElementsByClassName("schedule-label");
@@ -1209,14 +1206,6 @@ function updateScheduleMenu() {
   }
 }
 
-function updateScheduleSelectedStartup() {
-  const schedule = document.getElementById(`schedule${gLastScheduleSelected}`);
-  const schedArr = schedule.children[0].children;
-  schedArr[0].checked = true;
-  schedArr[1].classList.remove("ion-android-checkbox-outline-blank");
-  schedArr[1].classList.add("ion-android-checkbox");
-}
-
 function updateTabToggle() {
   setEntityVisibility(scheduleColumn, gScheduleTabSelected);
   setButtonSelected(scheduleToggle, gScheduleTabSelected);
@@ -1466,7 +1455,6 @@ function handleGlobalStateUpdate() {
   updateConflictCoursesRadio();
   updateScheduleMenu();
   updateScheduleTabTitle();
-  updateDropDownText();
 
   // Update course displays.
   updateCourseDisplays();
@@ -1521,7 +1509,6 @@ function addNewSchedule() {
   // handle new DOM elements
   appendScheduleRow(defaultPair);
   catchEvent(event);
-  updateDropDownText();
 
   // Update state
   writeStateToLocalStorage();
@@ -1580,7 +1567,7 @@ function appendScheduleRow(schedule) {
 }
 
 function removeSchedule() {
-  alert("removeSchedule called");
+  console.log(event.target.parentNode);
 }
 
 function removeCourse(course) {
@@ -1770,10 +1757,6 @@ function updateScheduleTabTitle() {
       scheduleToggle.textContent = sched.name;
     }
   }
-}
-
-function updateDropDownText() {
-  scheduleDropDownText.textContent = `Your Schedules: ${gScheduleList.length}`;
 }
 
 function updateCourseDisplays() {
@@ -2367,7 +2350,6 @@ attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
-updateScheduleSelectedStartup();
 
 /// Closing remarks
 // Local Variables:
