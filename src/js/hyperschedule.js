@@ -1616,6 +1616,31 @@ function removeSchedule() {
 
   catchEvent(event);
 
+  // case where removing current schedule
+  // change current schedule to default schedule
+  if (id === gLastScheduleSelected) {
+    const defaultRow = document.getElementById("schedule-1");
+    gLastScheduleSelected = "schedule-1";
+    gSelectedCourses = upgradeSelectedCourses(
+      readFromLocalStorage(
+        "selectedCourses-" + gLastScheduleSelected,
+        _.isArray,
+        []
+      )
+    );
+
+    defaultRow.classList.add("btn-info");
+    defaultRow.classList.remove("btn-light");
+    if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
+      gSchedulesChecked.push(gLastScheduleSelected);
+      const checkBox = defaultRow.children[0].children[1];
+      checkBox.classList.remove("ion-android-checkbox-outline-blank");
+      checkBox.classList.add("ion-android-checkbox");
+    }
+    updateCourseDisplays();
+    updateScheduleTabTitle();
+  }
+
   writeStateToLocalStorage();
 }
 
@@ -1796,17 +1821,14 @@ function highlightSchedule(event) {
 
 function defaultCheckSchedule(event) {
   // every time user switches to a different schedule, current schedule should be checked
-  console.log(event.target);
   // Only check schedule when user clicked on schedule button (and not checkbox)
   if (
     event.target.className === "schedule-element btn btn-info" ||
     event.target.className === "schedule-element btn btn-light" ||
     event.target.className === "schedule-element btn"
   ) {
-    console.log("should check");
     // Check if not already checked
     if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
-      console.log("checked for real");
       gSchedulesChecked.push(gLastScheduleSelected);
       const checkBox = event.target.children[0].children[1];
       checkBox.classList.remove("ion-android-checkbox-outline-blank");
