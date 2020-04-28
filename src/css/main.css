@@ -140,6 +140,7 @@ body {
   flex-grow: 0;
   flex-basis: 0;
   display: none;
+  justify-self: start;
 }
 
 .schedule-label {
@@ -148,7 +149,7 @@ body {
 }
 
 .schedule-delete-button {
-  margin: 0em 0em 0em 0.5em;
+  margin: 0em 0em 0em 0.75em;
 }
 
 .schedule-edit-button {
