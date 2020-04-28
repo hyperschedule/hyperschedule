@@ -163,6 +163,7 @@ body {
 
 #schedule-dropdown-content {
   width: 300px;
+  z-index: 20;
 }
 
 #schedule-dropdown-add-wrapper {
