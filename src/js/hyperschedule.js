@@ -1599,6 +1599,7 @@ function appendScheduleRow(schedule) {
 
   if (scheduleId !== "schedule-1") newSched.appendChild(deleteButton);
   else newSched.appendChild(fakeDelete);
+
   newSched.addEventListener("click", selectSchedule);
   newSched.addEventListener("click", catchEvent);
 
@@ -1683,7 +1684,6 @@ function editName() {
   }
   // change global var
   for (const sched of gScheduleList) {
-    console.log(sched.name);
     if (sched.id === id) {
       sched.name = inputName;
     }
@@ -1691,6 +1691,9 @@ function editName() {
   // change UI
   const oldName = event.target.parentNode.parentNode.childNodes[1];
   oldName.nodeValue = inputName;
+
+  // update schedule tab to reflect name change
+  updateScheduleTabTitle();
 
   catchEvent(event);
 
@@ -1829,13 +1832,12 @@ function highlightSchedule(event) {
   // multischedules- highlights one schedule in the dropdown
   const schedActive = "schedule-active";
   const schedInactive = "schedule-inactive";
-  console.log("LITT");
   if (
     !event.target.classList.contains(schedActive) &&
     !event.target.classList.contains("schedule-checkbox")
   ) {
     // if schedule isn't already active
-    console.log("YEET");
+
     // UI activate
     event.target.classList.add(schedActive);
     event.target.classList.remove(schedInactive);
@@ -1847,6 +1849,14 @@ function highlightSchedule(event) {
       sched.classList.remove(schedActive);
       sched.classList.add(schedInactive);
     }
+  }
+
+  // handle schedule tab color change
+  const scheduleTab = document.querySelector("#schedule-toggle");
+  if (event.target.id != "schedule-1") {
+    scheduleTab.setAttribute("style", event.target.getAttribute("style"));
+  } else {
+    scheduleTab.removeAttribute("style");
   }
 }
 
