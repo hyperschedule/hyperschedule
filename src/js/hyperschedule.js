@@ -1363,43 +1363,31 @@ function setCourseDescriptionBox(course) {
   }
   courseDescriptionBox.appendChild(document.createElement("hr"));
   gSelectedCourseCode = course.courseCode;
-  createSyllabusUploadBox(
-    courseDescriptionBox,
-    course.syllabus_link,
-    course.syllabus_term
-  );
+  createSyllabusBox(courseDescriptionBox, course["syllabus"]);
 
   minimizeArrowPointUp();
   courseDescriptionVisible();
 }
 
-function createSyllabusUploadBox(
-  courseDescriptionBox,
-  syllabusLink,
-  syllabusTerm
-) {
-  const icon = document.createElement("p");
-  icon.classList.add("course-box-button");
-  icon.classList.add("course-box-add-button");
-  icon.classList.add("icon");
-  icon.classList.add("ion-upload");
-  icon.addEventListener("click", showUploadModal);
-
-  const paragraph = document.createElement("p");
-  if (syllabusLink !== undefined) {
+function createSyllabusBox(courseDescriptionBox, syllabus) {
+  // Create a syllabus information display paragraph
+  paragraph = document.createElement("p");
+  if (syllabus !== undefined) {
     const link = document.createElement("a");
-    link.target = "_blank";
-    link.textContent = "Syllabus (" + syllabusTerm + ")";
-    var hreflink = document.createAttribute("href");
-    hreflink.value = syllabusLink;
-    link.attributes.setNamedItem(hreflink);
+    link.target = "_blank"; // open in a new tab
+    link.textContent = "Syllabus (" + syllabus["semester"] + ")";
+    link.setAttribute("href", syllabus["link"]);
     paragraph.appendChild(link);
-    icon.textContent = "  Upload a new syllabus";
-  } else {
-    icon.textContent = "  Upload a syllabus";
+    paragraph.append(" | ");
   }
+
+  // Create a syllabus upload paragraph
+  const link = document.createElement("a");
+  link.setAttribute("href", "#");
+  link.textContent = "Upload a syllabus";
+  paragraph.appendChild(link);
+  paragraph.addEventListener("click", showUploadModal);
   courseDescriptionBox.appendChild(paragraph);
-  courseDescriptionBox.appendChild(icon);
 }
 
 function minimizeCourseDescription() {
