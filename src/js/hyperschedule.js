@@ -4,6 +4,9 @@
 // M-x occur with the following query: ^\(///+\|const\|\(async \)?function\|let\)
 
 /// Globals
+//// CSS Stylesheets
+const mainSheetRules = document.styleSheets[3].cssRules;
+
 //// Modules
 
 const ics = require("/js/vendor/ics-0.2.0.min.js");
@@ -27,7 +30,7 @@ const filterKeywords = {
   "days:": ["days:", "day:"]
 };
 
-filterInequalities = ["<=", ">=", "<", ">", "="];
+const filterInequalities = ["<=", ">=", "<", ">", "="];
 
 //// DOM elements
 
@@ -38,6 +41,12 @@ const scheduleDropDownContent = document.getElementById(
 );
 const scheduleDropdownAdd = document.getElementById(
   "schedule-dropdown-add-wrapper"
+);
+const scheduleDropDownButton = document.getElementById(
+  "schedule-dropdown-toggle"
+);
+const scheduleDropDownArrow = document.getElementById(
+  "schedule-dropdown-toggle-btn"
 );
 
 const scheduleLabels = document.getElementsByClassName("schedule-label");
@@ -521,6 +530,46 @@ function getRandomColor(hue, seed, format = "hex") {
     seed: seed,
     format
   });
+}
+
+// lighten/darken hex shades
+// https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+function shadeColor(color, percent) {
+  let R = parseInt(color.substring(1, 3), 16);
+  let G = parseInt(color.substring(3, 5), 16);
+  let B = parseInt(color.substring(5, 7), 16);
+
+  R = parseInt((R * (100 + percent)) / 100);
+  G = parseInt((G * (100 + percent)) / 100);
+  B = parseInt((B * (100 + percent)) / 100);
+
+  R = R < 255 ? R : 255;
+  G = G < 255 ? G : 255;
+  B = B < 255 ? B : 255;
+
+  let RR = R.toString(16).length == 1 ? "0" + R.toString(16) : R.toString(16);
+  let GG = G.toString(16).length == 1 ? "0" + G.toString(16) : G.toString(16);
+  let BB = B.toString(16).length == 1 ? "0" + B.toString(16) : B.toString(16);
+
+  return "#" + RR + GG + BB;
+}
+
+// https://stackoverflow.com/questions/13712697/set-background-color-in-hex
+function rgbToHex(col) {
+  if (col.charAt(0) == "r") {
+    col = col
+      .replace("rgb(", "")
+      .replace(")", "")
+      .split(",");
+    let r = parseInt(col[0], 10).toString(16);
+    let g = parseInt(col[1], 10).toString(16);
+    let b = parseInt(col[2], 10).toString(16);
+    r = r.length == 1 ? "0" + r : r;
+    g = g.length == 1 ? "0" + g : g;
+    b = b.length == 1 ? "0" + b : b;
+    let colHex = "#" + r + g + b;
+    return colHex;
+  }
 }
 
 ///// Course search
@@ -1214,6 +1263,13 @@ function updateTabToggle() {
 
   setEntityVisibility(courseSearchColumn, !gScheduleTabSelected);
   setButtonSelected(courseSearchToggle, !gScheduleTabSelected);
+
+  // Necessary for overwriting boostrap colors
+  if (gScheduleTabSelected) {
+    scheduleToggle.classList.add("change-tab-color");
+  } else {
+    scheduleToggle.classList.remove("change-tab-color");
+  }
 }
 
 function updateShowClosedCoursesCheckbox() {
@@ -1820,11 +1876,40 @@ function selectSchedule() {
     );
 
     highlightSchedule(event);
+    updateScheduleTabDisplay(event);
     defaultCheckSchedule(event);
 
     updateCourseDisplays();
     updateScheduleTabTitle();
     writeStateToLocalStorage();
+  }
+}
+
+function updateScheduleTabDisplay(event) {
+  const newColor = rgbToHex(event.target.style.backgroundColor);
+  const hoverColor = shadeColor(newColor, -2);
+  changeCSSColors(mainSheetRules, newColor, hoverColor);
+}
+
+function changeCSSColors(rules, newColor, hoverColor) {
+  for (const rule of rules) {
+    if (rule.selectorText === ".change-dropdown-color") {
+      rule.style["border-color"] = newColor;
+      rule.style.color = newColor;
+    } else if (rule.selectorText === ".change-tab-color") {
+      rule.style["background-color"] = newColor;
+    } else if (
+      rule.selectorText ===
+      ".change-dropdown-color:hover, .change-dropdown-color:focus, .change-dropdown-color:active, .change-dropdown-color.active, .open > .dropdown-toggle.change-dropdown-color"
+    ) {
+      rule.style.setProperty("background-color", newColor, "important");
+      rule.style["border-color"] = newColor + "important";
+    } else if (
+      rule.selectorText ===
+      ".change-tab-color:hover, .change-tab-color:focus, .change-tab-color:active, .change-tab-color.active, .open > .dropdown-toggle.change-tab-color"
+    ) {
+      rule.style["background-color"] = hoverColor;
+    }
   }
 }
 
@@ -1849,14 +1934,6 @@ function highlightSchedule(event) {
       sched.classList.remove(schedActive);
       sched.classList.add(schedInactive);
     }
-  }
-
-  // handle schedule tab color change
-  const scheduleTab = document.querySelector("#schedule-toggle");
-  if (event.target.id != "schedule-1") {
-    scheduleTab.setAttribute("style", event.target.getAttribute("style"));
-  } else {
-    scheduleTab.removeAttribute("style");
   }
 }
 

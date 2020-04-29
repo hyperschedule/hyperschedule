@@ -41,6 +41,42 @@
   whitespace: nowrap;
 }
 
+/** Alter colors when switching schedules **/
+
+.change-dropdown-color {
+  box-shadow: none;
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.change-dropdown-color:hover,
+.change-dropdown-color:focus,
+.change-dropdown-color:active,
+.change-dropdown-color.active,
+.open > .dropdown-toggle.change-dropdown-color {
+  box-shadow: none;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.change-tab-color {
+  box-shadow: none;
+  color: black;
+  background-color: #007bff;
+  border: none;
+}
+
+.change-tab-color:hover,
+.change-tab-color:focus,
+.change-tab-color:active,
+.change-tab-color.active,
+.open > .dropdown-toggle.change-tab-color {
+  box-shadow: none;
+  color: black;
+  background-color: #007bff;
+}
+
 /** Page layout **/
 
 html {
@@ -144,7 +180,7 @@ body {
 }
 
 .schedule-delete-button {
-  margin: 0em 0em 0em .5em;
+  margin: 0em 0em 0em 0.5em;
 }
 
 .schedule-edit-button {
@@ -154,7 +190,7 @@ body {
 .schedule-element {
   display: flex;
   justify-content: space-between;
-  margin: 0em .25em .25em .25em;
+  margin: 0em 0.25em 0.25em 0.25em;
 }
 
 .schedule-delete-placeholder {
@@ -173,12 +209,12 @@ body {
 }
 
 #schedule-dropdown-add-text {
-  margin: .25em 0 .25em 0;
+  margin: 0.25em 0 0.25em 0;
   padding: 0 0;
 }
 
 #schedule-dropdown-add {
-  margin: .25em 1em .25em 0;
+  margin: 0.25em 1em 0.25em 0;
   padding: 0 0;
 }
 
