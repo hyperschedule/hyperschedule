@@ -54,8 +54,10 @@
 .change-dropdown-color:focus,
 .change-dropdown-color:active,
 .change-dropdown-color.active,
-.open > .dropdown-toggle.change-dropdown-color
-.show > .dropdown-toggle.change-dropdown-color {
+.open
+  > .dropdown-toggle.change-dropdown-color
+  .show
+  > .dropdown-toggle.change-dropdown-color {
   box-shadow: none;
   outline: none;
   background-color: #71ff33;
