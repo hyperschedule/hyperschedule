@@ -1519,6 +1519,7 @@ function handleGlobalStateUpdate() {
   updateConflictCoursesRadio();
   updateScheduleMenu();
   updateScheduleTabTitle();
+  updateScheduleColor();
 
   // Update course displays.
   updateCourseDisplays();
@@ -1986,6 +1987,12 @@ function updateScheduleTabTitle() {
       scheduleToggle.textContent = sched.name;
     }
   }
+}
+
+function updateScheduleColor() {
+  newColor = gLastScheduleSelected.color;
+  const hoverColor = shadeColor(newColor, -3);
+  changeCSSColors(mainSheetRules, newColor, hoverColor);
 }
 
 function updateCourseDisplays() {
