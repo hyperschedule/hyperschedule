@@ -133,7 +133,7 @@ let gLastScheduleSelected = {
   color: "#007bff"
 };
 let gLastScheduleId = 1;
-let gSchedulesChecked = [gLastScheduleSelected];
+let gSchedulesChecked = [gLastScheduleSelected.id];
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
@@ -1540,16 +1540,16 @@ function addCourse(course) {
 
 function addToSchedules(course) {
   for (const schedule of gSchedulesChecked) {
-    if (schedule !== gLastScheduleSelected) {
+    if (schedule !== gLastScheduleSelected.id) {
       let oldSchedule = readFromLocalStorage(
-        `selectedCourses-${schedule.id}`,
+        `selectedCourses-${schedule}`,
         _.isArray,
         []
       );
       if (!courseAlreadyAdded(course, oldSchedule)) {
         oldSchedule.push(course);
         localStorage.setItem(
-          `selectedCourses-${schedule.id}`,
+          `selectedCourses-${schedule}`,
           JSON.stringify(oldSchedule)
         );
       }
@@ -1732,8 +1732,8 @@ function handleCurrentScheduleRemoval() {
   defaultRow.classList.add("schedule-active");
   defaultRow.classList.remove("schedule-inactive");
   // check
-  if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
-    gSchedulesChecked.push(gLastScheduleSelected);
+  if (!gSchedulesChecked.includes(gLastScheduleSelected.id)) {
+    gSchedulesChecked.push(gLastScheduleSelected.id);
     const checkBox = defaultRow.children[0].children[0].children[1];
     checkBox.classList.remove("ion-android-checkbox-outline-blank");
     checkBox.classList.add("ion-android-checkbox");
@@ -1995,8 +1995,8 @@ function defaultCheckSchedule(event) {
     event.target.className === "schedule-element btn"
   ) {
     // Only check if not already checked
-    if (!gSchedulesChecked.includes(gLastScheduleSelected)) {
-      gSchedulesChecked.push(gLastScheduleSelected);
+    if (!gSchedulesChecked.includes(gLastScheduleSelected.id)) {
+      gSchedulesChecked.push(gLastScheduleSelected.id);
       const checkBox = event.target.children[0].children[0].children[1];
       checkBox.classList.remove("ion-android-checkbox-outline-blank");
       checkBox.classList.add("ion-android-checkbox");
@@ -2155,7 +2155,7 @@ function writeStateToLocalStorage() {
   localStorage.setItem("lastScheduleId", gLastScheduleId);
   localStorage.setItem(
     "schedulesChecked",
-    JSON.stringify([gLastScheduleSelected])
+    JSON.stringify([gLastScheduleSelected.id])
   );
   localStorage.setItem(
     `selectedCourses-${gLastScheduleSelected.id}`,
@@ -2250,7 +2250,7 @@ function readStateFromLocalStorage() {
   );
   gLastScheduleId = readFromLocalStorage("lastScheduleId", _.isNumber, 1);
   gSchedulesChecked = readFromLocalStorage("schedulesChecked", _.isArray, [
-    gLastScheduleSelected
+    gLastScheduleSelected.id
   ]);
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
