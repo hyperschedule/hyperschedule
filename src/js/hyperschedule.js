@@ -1930,7 +1930,7 @@ function updateScheduleTabDisplay(event) {
 
 function changeCSSColors(rules, newColor, hoverColor) {
   for (const rule of rules) {
-    //console.log(rule);
+    // console.log(rule);
     if (rule.selectorText === ".change-dropdown-color") {
       rule.style["border-color"] = newColor;
       rule.style.color = newColor;
@@ -1940,7 +1940,6 @@ function changeCSSColors(rules, newColor, hoverColor) {
       rule.selectorText ===
       ".change-dropdown-color:hover, .change-dropdown-color:focus, .change-dropdown-color:active, .change-dropdown-color.active, .open > .dropdown-toggle.change-dropdown-color .show > .dropdown-toggle.change-dropdown-color"
     ) {
-      console.log("correct");
       // must set these to !important somehow
       rule.style["background-color"] = newColor;
       rule.style["border-color"] = newColor;
@@ -2015,7 +2014,7 @@ function updateScheduleColor() {
     scheduleToggle.classList.remove("change-tab-color");
     scheduleDropDownButton.classList.remove("change-dropdown-color");
   } else {
-    const newColor = gLastScheduleSelected.color;
+    const newColor = rgbToHex(gLastScheduleSelected.color);
     const hoverColor = shadeColor(newColor, -3);
     changeCSSColors(mainSheetRules, newColor, hoverColor);
   }
