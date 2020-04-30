@@ -127,8 +127,14 @@ const importExportCopyButton = document.getElementById(
 // Persistent data.
 let gApiData = null;
 // [Schedule name, Unique schedule ID]
-let gScheduleList = [{ name: "Schedule (default)", id: "schedule-1" }];
-let gLastScheduleSelected = "schedule-1";
+let gScheduleList = [
+  { name: "Schedule (default)", id: "schedule-1", color: "#007bff" }
+];
+let gLastScheduleSelected = {
+  name: "Schedule (default)",
+  id: "schedule-1",
+  color: "#007bff"
+};
 let gLastScheduleId = 1;
 let gSchedulesChecked = [gLastScheduleSelected];
 let gSelectedCourses = [];
@@ -1564,9 +1570,15 @@ function addNewSchedule() {
 
   // update global var
   gLastScheduleId++;
+  newId = `schedule-${gLastScheduleId}`;
   const defaultPair = {
     name: inputName,
-    id: "schedule-" + gLastScheduleId
+    id: newId,
+    color: getRandomColor(
+      "random",
+      CryptoJS.MD5(newId + inputName).toString(),
+      "hex"
+    )
   };
   gScheduleList.push(defaultPair);
 
@@ -1600,6 +1612,7 @@ function promptName() {
 function appendScheduleRow(schedule) {
   const scheduleName = schedule.name;
   const scheduleId = schedule.id;
+  const scheduleColor = schedule.color;
 
   let newSched = document.createElement("div");
   let newName = document.createTextNode(scheduleName);
@@ -1659,19 +1672,15 @@ function appendScheduleRow(schedule) {
   newSched.addEventListener("click", selectSchedule);
   newSched.addEventListener("click", catchEvent);
 
-  if (scheduleId != "schedule-1") {
-    let hue = "random";
-    let seed = CryptoJS.MD5(scheduleId + newName).toString();
-
-    let newColor = getRandomColor(hue, seed, "hex");
-    newSched.style.backgroundColor = newColor;
+  if (scheduleId !== "schedule-1") {
+    newSched.style.backgroundColor = scheduleColor;
   } else {
     newSched.classList.add("btn-primary");
   }
 
   scheduleDropDownContent.appendChild(newSched);
 
-  if (scheduleId === gLastScheduleSelected) {
+  if (scheduleId === gLastScheduleSelected.id) {
     // highlight
     newSched.classList.add("schedule-active");
     newSched.classList.remove("schedule-inactive");
@@ -1699,7 +1708,7 @@ function removeSchedule() {
 
   // case where removing current schedule
   // change current schedule to default schedule
-  if (id === gLastScheduleSelected) {
+  if (id === gLastScheduleSelecte.id) {
     handleCurrentScheduleRemoval();
   }
 
@@ -1709,10 +1718,14 @@ function removeSchedule() {
 function handleCurrentScheduleRemoval() {
   const defaultRow = document.getElementById("schedule-1");
   // update global var
-  gLastScheduleSelected = "schedule-1";
+  gLastScheduleSelected = {
+    name: "Schedule (default)",
+    id: "schedule-1",
+    color: "#007bff"
+  };
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
-      "selectedCourses-" + gLastScheduleSelected,
+      "selectedCourses-" + gLastScheduleSelected.id,
       _.isArray,
       []
     )
@@ -1833,7 +1846,7 @@ function toggleScheduleChecked() {
     const schedId = event.target.parentNode.parentNode.parentNode.id;
 
     // cannot uncheck currently selected schedule
-    if (schedId !== gLastScheduleSelected) {
+    if (schedId !== gLastScheduleSelected.id) {
       if (checkArr[1].classList.contains("ion-android-checkbox")) {
         // One schedule must be checked
         const numChecked = gSchedulesChecked.length;
@@ -1866,7 +1879,10 @@ function selectSchedule() {
     event.target.className === "schedule-element btn"
   ) {
     // Switch current schedule
-    gLastScheduleSelected = event.target.id;
+    newId = event.target.id;
+    newColor = rgbToHex(event.target.style.backgroundColor);
+    newName = event.target.textContent;
+    gLastScheduleSelected = { name: newName, id: newId, color: newColor };
     gSelectedCourses = upgradeSelectedCourses(
       readFromLocalStorage(
         "selectedCourses-" + gLastScheduleSelected,
@@ -1887,12 +1903,13 @@ function selectSchedule() {
 
 function updateScheduleTabDisplay(event) {
   const newColor = rgbToHex(event.target.style.backgroundColor);
-  const hoverColor = shadeColor(newColor, -2);
+  const hoverColor = shadeColor(newColor, -3);
   changeCSSColors(mainSheetRules, newColor, hoverColor);
 }
 
 function changeCSSColors(rules, newColor, hoverColor) {
   for (const rule of rules) {
+    //console.log(rule);
     if (rule.selectorText === ".change-dropdown-color") {
       rule.style["border-color"] = newColor;
       rule.style.color = newColor;
@@ -1900,10 +1917,14 @@ function changeCSSColors(rules, newColor, hoverColor) {
       rule.style["background-color"] = newColor;
     } else if (
       rule.selectorText ===
-      ".change-dropdown-color:hover, .change-dropdown-color:focus, .change-dropdown-color:active, .change-dropdown-color.active, .open > .dropdown-toggle.change-dropdown-color"
+      ".change-dropdown-color:hover, .change-dropdown-color:focus, .change-dropdown-color:active, .change-dropdown-color.active, .open > .dropdown-toggle.change-dropdown-color .show > .dropdown-toggle.change-dropdown-color"
     ) {
-      rule.style.setProperty("background-color", newColor, "important");
-      rule.style["border-color"] = newColor + "important";
+      console.log("correct");
+      // must set these to !important somehow
+      rule.style["background-color"] = newColor;
+      rule.style["border-color"] = newColor;
+      rule.style["box-shadow"] = "none";
+      rule.style["outline"] = "none";
     } else if (
       rule.selectorText ===
       ".change-tab-color:hover, .change-tab-color:focus, .change-tab-color:active, .change-tab-color.active, .open > .dropdown-toggle.change-tab-color"
@@ -1961,7 +1982,7 @@ function defaultCheckSchedule(event) {
 
 function updateScheduleTabTitle() {
   for (const sched of gScheduleList) {
-    if (sched.id === gLastScheduleSelected) {
+    if (sched.id === gLastScheduleSelected.id) {
       scheduleToggle.textContent = sched.name;
     }
   }
@@ -2190,12 +2211,12 @@ function upgradeSelectedCourses(selectedCourses) {
 function readStateFromLocalStorage() {
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
   gScheduleList = readFromLocalStorage("scheduleList", _.isArray, [
-    { name: "Schedule (default)", id: "schedule-1" }
+    { name: "Schedule (default)", id: "schedule-1", color: "#007bff" }
   ]);
   gLastScheduleSelected = readFromLocalStorage(
     "lastScheduleSelected",
-    _.isString,
-    "schedule-1"
+    _.isObject,
+    { name: "Schedule (default)", id: "schedule-1", color: "#007bff" }
   );
   gLastScheduleId = readFromLocalStorage("lastScheduleId", _.isNumber, 1);
   gSchedulesChecked = readFromLocalStorage("schedulesChecked", _.isArray, [
@@ -2203,7 +2224,7 @@ function readStateFromLocalStorage() {
   ]);
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
-      "selectedCourses-" + gLastScheduleSelected,
+      "selectedCourses-" + gLastScheduleSelected.id,
       _.isArray,
       []
     )
