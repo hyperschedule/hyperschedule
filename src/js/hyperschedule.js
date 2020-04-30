@@ -43,9 +43,6 @@ const scheduleDropdownAdd = document.getElementById(
   "schedule-dropdown-add-wrapper"
 );
 const scheduleDropDownButton = document.getElementById(
-  "schedule-dropdown-toggle"
-);
-const scheduleDropDownArrow = document.getElementById(
   "schedule-dropdown-toggle-btn"
 );
 
@@ -1545,14 +1542,14 @@ function addToSchedules(course) {
   for (const schedule of gSchedulesChecked) {
     if (schedule !== gLastScheduleSelected) {
       let oldSchedule = readFromLocalStorage(
-        "selectedCourses-" + schedule,
+        `selectedCourses-${schedule.id}`,
         _.isArray,
         []
       );
       if (!courseAlreadyAdded(course, oldSchedule)) {
         oldSchedule.push(course);
         localStorage.setItem(
-          "selectedCourses-" + schedule,
+          `selectedCourses-${schedule.id}`,
           JSON.stringify(oldSchedule)
         );
       }
@@ -1726,7 +1723,7 @@ function handleCurrentScheduleRemoval() {
   };
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
-      "selectedCourses-" + gLastScheduleSelected.id,
+      `selectedCourses-${gLastScheduleSelected.id}`,
       _.isArray,
       []
     )
@@ -1880,13 +1877,20 @@ function selectSchedule() {
     event.target.className === "schedule-element btn"
   ) {
     // Switch current schedule
-    newId = event.target.id;
-    newColor = rgbToHex(event.target.style.backgroundColor);
-    newName = event.target.textContent;
-    gLastScheduleSelected = { name: newName, id: newId, color: newColor };
+    const newName = event.target.textContent;
+    const newId = event.target.id;
+    let newColor = event.target.style.backgroundColor;
+
+    // default clicked
+    if (newColor === "") {
+      gLastScheduleSelected = { name: newName, id: newId, color: "#007bff" };
+    } else {
+      newcolor = rgbToHex(newColor);
+      gLastScheduleSelected = { name: newName, id: newId, color: newColor };
+    }
     gSelectedCourses = upgradeSelectedCourses(
       readFromLocalStorage(
-        "selectedCourses-" + gLastScheduleSelected,
+        `selectedCourses-${gLastScheduleSelected.id}`,
         _.isArray,
         []
       )
@@ -1903,9 +1907,25 @@ function selectSchedule() {
 }
 
 function updateScheduleTabDisplay(event) {
-  const newColor = rgbToHex(event.target.style.backgroundColor);
-  const hoverColor = shadeColor(newColor, -3);
-  changeCSSColors(mainSheetRules, newColor, hoverColor);
+  let newColor = event.target.style.backgroundColor;
+  // default clicked
+  if (newColor === "") {
+    scheduleToggle.classList.remove("change-tab-color");
+    scheduleDropDownButton.classList.remove("change-dropdown-color");
+  } else {
+    if (!scheduleDropDownButton.classList.contains("change-dropdown-color")) {
+      scheduleDropDownButton.classList.add("change-dropdown-color");
+    }
+    if (
+      !scheduleToggle.classList.contains("change-tab-color") &&
+      gScheduleTabSelected
+    ) {
+      scheduleToggle.classList.add("change-tab-color");
+    }
+    newColor = rgbToHex(newColor);
+    const hoverColor = shadeColor(newColor, -3);
+    changeCSSColors(mainSheetRules, newColor, hoverColor);
+  }
 }
 
 function changeCSSColors(rules, newColor, hoverColor) {
@@ -2135,7 +2155,7 @@ function writeStateToLocalStorage() {
     JSON.stringify([gLastScheduleSelected])
   );
   localStorage.setItem(
-    "selectedCourses-" + gLastScheduleSelected,
+    `selectedCourses-${gLastScheduleSelected.id}`,
     JSON.stringify(gSelectedCourses)
   );
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
@@ -2231,7 +2251,7 @@ function readStateFromLocalStorage() {
   ]);
   gSelectedCourses = upgradeSelectedCourses(
     readFromLocalStorage(
-      "selectedCourses-" + gLastScheduleSelected.id,
+      `selectedCourses-${gLastScheduleSelected.id}`,
       _.isArray,
       []
     )
