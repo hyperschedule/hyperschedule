@@ -526,10 +526,10 @@ function getCourseColor(course, format = "hex") {
   return getRandomColor(hue, seed, format);
 }
 
-function getRandomColor(hue, seed, format = "hex") {
+function getRandomColor(hue, seed, format = "hex", luminosity = "light") {
   return randomColor({
     hue: hue,
-    luminosity: "light",
+    luminosity: luminosity,
     seed: seed,
     format
   });
@@ -1575,7 +1575,8 @@ function addNewSchedule() {
     color: getRandomColor(
       "random",
       CryptoJS.MD5(newId + inputName).toString(),
-      "hex"
+      "hex",
+      "dark"
     )
   };
   gScheduleList.push(defaultPair);
