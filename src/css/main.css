@@ -45,8 +45,8 @@
 
 .change-dropdown-color {
   box-shadow: none;
-  border-color: #007bff;
-  color: #007bff;
+  border-color: transparent;
+  color: transparent;
   background-color: transparent;
 }
 
