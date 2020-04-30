@@ -1706,7 +1706,7 @@ function removeSchedule() {
 
   // case where removing current schedule
   // change current schedule to default schedule
-  if (id === gLastScheduleSelecte.id) {
+  if (id === gLastScheduleSelected.id) {
     handleCurrentScheduleRemoval();
   }
 
@@ -1738,6 +1738,7 @@ function handleCurrentScheduleRemoval() {
     checkBox.classList.remove("ion-android-checkbox-outline-blank");
     checkBox.classList.add("ion-android-checkbox");
   }
+  updateScheduleColor();
   updateCourseDisplays();
   updateScheduleTabTitle();
 }
