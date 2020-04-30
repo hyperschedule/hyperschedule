@@ -1268,7 +1268,7 @@ function updateTabToggle() {
   setButtonSelected(courseSearchToggle, !gScheduleTabSelected);
 
   // Necessary for overwriting boostrap colors
-  if (gScheduleTabSelected) {
+  if (gScheduleTabSelected && gLastScheduleSelected.id !== "schedule-1") {
     scheduleToggle.classList.add("change-tab-color");
   } else {
     scheduleToggle.classList.remove("change-tab-color");
@@ -2010,9 +2010,15 @@ function updateScheduleTabTitle() {
 }
 
 function updateScheduleColor() {
-  newColor = gLastScheduleSelected.color;
-  const hoverColor = shadeColor(newColor, -3);
-  changeCSSColors(mainSheetRules, newColor, hoverColor);
+  // default schedule
+  if (gLastScheduleSelected.id === "schedule-1") {
+    scheduleToggle.classList.remove("change-tab-color");
+    scheduleDropDownButton.classList.remove("change-dropdown-color");
+  } else {
+    const newColor = gLastScheduleSelected.color;
+    const hoverColor = shadeColor(newColor, -3);
+    changeCSSColors(mainSheetRules, newColor, hoverColor);
+  }
 }
 
 function updateCourseDisplays() {
