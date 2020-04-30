@@ -1885,7 +1885,7 @@ function selectSchedule() {
     if (newColor === "") {
       gLastScheduleSelected = { name: newName, id: newId, color: "#007bff" };
     } else {
-      newcolor = rgbToHex(newColor);
+      newColor = rgbToHex(newColor);
       gLastScheduleSelected = { name: newName, id: newId, color: newColor };
     }
     gSelectedCourses = upgradeSelectedCourses(
@@ -1910,46 +1910,50 @@ function updateScheduleTabDisplay(event) {
   let newColor = event.target.style.backgroundColor;
   // default clicked
   if (newColor === "") {
-    scheduleToggle.classList.remove("change-tab-color");
-    scheduleDropDownButton.classList.remove("change-dropdown-color");
-  } else {
-    if (!scheduleDropDownButton.classList.contains("change-dropdown-color")) {
-      scheduleDropDownButton.classList.add("change-dropdown-color");
-    }
-    if (
-      !scheduleToggle.classList.contains("change-tab-color") &&
-      gScheduleTabSelected
-    ) {
-      scheduleToggle.classList.add("change-tab-color");
-    }
-    newColor = rgbToHex(newColor);
-    const hoverColor = shadeColor(newColor, -3);
-    changeCSSColors(mainSheetRules, newColor, hoverColor);
+    newColor = "#007bff";
   }
+  if (!scheduleDropDownButton.classList.contains("change-dropdown-color")) {
+    scheduleDropDownButton.classList.add("change-dropdown-color");
+  }
+  if (
+    !scheduleToggle.classList.contains("change-tab-color") &&
+    gScheduleTabSelected
+  ) {
+    scheduleToggle.classList.add("change-tab-color");
+  }
+  if (newColor.charAt(0) !== "#") newColor = rgbToHex(newColor);
+  const hoverColor = shadeColor(newColor, -3);
+  changeCSSColors(mainSheetRules, newColor, hoverColor);
 }
 
 function changeCSSColors(rules, newColor, hoverColor) {
   for (const rule of rules) {
-    // console.log(rule);
     if (rule.selectorText === ".change-dropdown-color") {
-      rule.style["border-color"] = newColor;
-      rule.style.color = newColor;
+      rule.style.setProperty("border-color", newColor, "important");
+      rule.style.setProperty("color", newColor, "important");
     } else if (rule.selectorText === ".change-tab-color") {
-      rule.style["background-color"] = newColor;
+      rule.style.setProperty("background-color", newColor, "important");
+      if (newColor === "#007bff")
+        rule.style.setProperty("color", "white", "important");
+      else rule.style.setProperty("color", "black", "important");
     } else if (
       rule.selectorText ===
       ".change-dropdown-color:hover, .change-dropdown-color:focus, .change-dropdown-color:active, .change-dropdown-color.active, .open > .dropdown-toggle.change-dropdown-color .show > .dropdown-toggle.change-dropdown-color"
     ) {
-      // must set these to !important somehow
-      rule.style["background-color"] = newColor;
-      rule.style["border-color"] = newColor;
-      rule.style["box-shadow"] = "none";
-      rule.style["outline"] = "none";
+      rule.style.setProperty("background-color", newColor, "important");
+      rule.style.setProperty("border-color", newColor, "important");
+      rule.style.setProperty("color", "white", "important");
+      rule.style.setProperty("box-shadow", "none", "important");
+      rule.style.setProperty("outline", "none", "important");
     } else if (
       rule.selectorText ===
       ".change-tab-color:hover, .change-tab-color:focus, .change-tab-color:active, .change-tab-color.active, .open > .dropdown-toggle.change-tab-color"
     ) {
-      rule.style["background-color"] = hoverColor;
+      rule.style.setProperty("background-color", hoverColor, "important");
+      rule.style.setProperty("box-shadow", "none", "important");
+      if (newColor === "#007bff")
+        rule.style.setProperty("color", "white", "important");
+      else rule.style.setProperty("color", "black", "important");
     }
   }
 }
@@ -2009,15 +2013,9 @@ function updateScheduleTabTitle() {
 }
 
 function updateScheduleColor() {
-  // default schedule
-  if (gLastScheduleSelected.id === "schedule-1") {
-    scheduleToggle.classList.remove("change-tab-color");
-    scheduleDropDownButton.classList.remove("change-dropdown-color");
-  } else {
-    const newColor = rgbToHex(gLastScheduleSelected.color);
-    const hoverColor = shadeColor(newColor, -3);
-    changeCSSColors(mainSheetRules, newColor, hoverColor);
-  }
+  const newColor = gLastScheduleSelected.color;
+  const hoverColor = shadeColor(newColor, -3);
+  changeCSSColors(mainSheetRules, newColor, hoverColor);
 }
 
 function updateCourseDisplays() {
