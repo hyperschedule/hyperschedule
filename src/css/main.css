@@ -58,10 +58,10 @@
   > .dropdown-toggle.change-dropdown-color
   .show
   > .dropdown-toggle.change-dropdown-color {
-  box-shadow: none;
-  outline: none;
-  background-color: #71ff33;
-  border-color: #71ff33;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: #71ff33 !important;
+  border-color: #71ff33 !important;
 }
 
 .change-tab-color {
@@ -71,14 +71,15 @@
   border: none;
 }
 
+/*this is somehow being overwritten by bootstrap still, so needs !important... to increase priority, make by id instead of classname?*/
 .change-tab-color:hover,
 .change-tab-color:focus,
 .change-tab-color:active,
 .change-tab-color.active,
 .open > .dropdown-toggle.change-tab-color {
-  box-shadow: none;
-  color: black;
-  background-color: #71ff33;
+  box-shadow: none !important;
+  color: black !important;
+  background-color: #71ff33 !important;
 }
 
 /** Page layout **/
