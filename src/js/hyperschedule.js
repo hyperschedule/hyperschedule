@@ -560,31 +560,46 @@ function parseCreditsInequality(inputCredits) {
 
 function parseCreditsFilter(inputCredits) {
   const rel = parseCreditsInequality(inputCredits);
-  return { rel, floatInput: parseFloat(inputCredits.substring(rel.length)) };
+  const creditArray = inputCredits.split("-");
+  // Only single credit entered
+  if (creditArray.length === 1) {
+    return {
+      rel,
+      floatInput: [parseFloat(inputCredits.substring(rel.length))]
+    };
+  } else {
+    // Credit inequality entered
+    return { rel, floatInput: creditArray };
+  }
 }
 
 function courseCreditMatch(courseCredits, inputCredits) {
   const { rel, floatInput } = parseCreditsFilter(inputCredits);
   const floatCredits = parseFloat(courseCredits);
 
-  if (!isNaN(inputCredits.substring(0, 1))) {
-    return floatInput == floatCredits;
-  }
+  if (floatInput.length === 2) {
+    return floatInput[0] <= floatCredits && floatInput[1] >= floatCredits;
+  } else if (floatInput.length === 1) {
+    if (!isNaN(inputCredits.substring(0, 1))) {
+      return floatInput[0] === floatCredits;
+    }
 
-  switch (rel) {
-    case "<=":
-      return floatCredits <= floatInput;
-    case ">=":
-      return floatCredits >= floatInput;
-    case "=":
-      return floatCredits == floatInput;
-    case "<":
-      return floatCredits < floatInput;
-    case ">":
-      return floatCredits > floatInput;
-    default:
-      return false;
+    switch (rel) {
+      case "<=":
+        return floatCredits <= floatInput[0];
+      case ">=":
+        return floatCredits >= floatInput[0];
+      case "=":
+        return floatCredits === floatInput[0];
+      case "<":
+        return floatCredits < floatInput[0];
+      case ">":
+        return floatCredits > floatInput[0];
+      default:
+        return false;
+    }
   }
+  return false;
 }
 
 ///// Course scheduling
