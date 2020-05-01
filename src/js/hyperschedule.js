@@ -336,7 +336,7 @@ function removeEntityChildren(entity) {
 ///// Course property queries
 
 function isCourseClosed(course) {
-  return course.courseEnrollmentStatus == "closed";
+  return course.courseEnrollmentStatus === "closed";
 }
 
 function courseToString(course) {
@@ -551,34 +551,39 @@ function coursePassesTextFilters(course, textFilters) {
 // timeFilters is a one or two element array
 // [start_time] or [start_time, end_time]
 function coursePassesTimeFilters(course, timeFilters) {
-  if (timeFilters[0] == "") {
+  if (timeFilters[0] === "") {
     // indicates no current time filters
     return true;
   }
 
-  for (let schedule of course.courseSchedule) {
-    const scheduleStart = schedule.scheduleStartTime.replace(":", ".");
-    const scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
-    const start = timeFilters[0].replace(":", ".");
-
-    if (timeFilters.length == 1) {
-      return parseFloat(start) == parseFloat(scheduleStart);
+  const start = timeFilters[0].replace(":", ".");
+  // if multiple start times, specified start must match at least one
+  if (timeFilters.length === 1) {
+    for (const schedule of course.courseSchedule) {
+      let scheduleStart = schedule.scheduleStartTime.replace(":", ".");
+      if (parseFloat(start) === parseFloat(scheduleStart)) {
+        return true;
+      }
     }
-
+    return false;
+  } else {
+    // if multiple start times, specified range must match all
     const end = timeFilters[1].replace(":", ".");
-
-    if (
-      // returns false if any schedule object is not within the range.
-      !(
-        parseFloat(start) <= parseFloat(scheduleStart) &&
-        parseFloat(end) >= parseFloat(scheduleEnd)
-      )
-    ) {
-      return false;
+    for (const schedule of course.courseSchedule) {
+      let scheduleStart = schedule.scheduleStartTime.replace(":", ".");
+      let scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
+      if (
+        // returns false if any schedule object is not within the range.
+        !(
+          parseFloat(start) <= parseFloat(scheduleStart) &&
+          parseFloat(end) >= parseFloat(scheduleEnd)
+        )
+      ) {
+        return false;
+      }
     }
+    return true;
   }
-
-  return true;
 }
 
 ///// Course scheduling
@@ -1103,17 +1108,16 @@ function processSearchText() {
   const query = getSearchQuery(queryText);
   const filters = getSearchTextFilters(filtersText);
   const time = getTimeFilter(timeText);
-
   return { query, filters, time };
 }
 
 function isTimeRange(searchText) {
   const timeArray = searchText.split(":");
   return (
-    (timeArray.length == 3 &&
+    (timeArray.length === 3 &&
       !isNaN(timeArray[0]) &&
       timeArray[1].includes("-")) ||
-    (timeArray.length == 2 &&
+    (timeArray.length === 2 &&
       !isNaN(timeArray[0].charAt(timeArray[0].length - 1)) &&
       !isNaN(timeArray[1].substring(0, 2)))
   );
@@ -1156,19 +1160,19 @@ function getTimeFilter(timeText) {
   timeText = timeText.toLowerCase();
   let timeArray = timeText.split("-");
   // timeArray.length = 1 when there's no "-"
-  if (timeArray.length == 1) {
+  if (timeArray.length === 1) {
     const rel = getTimeInequality(timeText);
     timeArray = getTimeRange(rel, timeText.substring(rel.length));
   }
-  timeTuple = [];
+  let timeTuple = [];
   for (let time of timeArray) {
-    if (time.substring(time.length - 2) == "am") {
+    if (time.substring(time.length - 2) === "am") {
       // remove "am"
       time = time.substring(0, time.length - 2);
       if (time.startsWith("12")) {
         time = "00:".concat(time.substring(3));
       }
-    } else if (time.substring(time.length - 2) == "pm") {
+    } else if (time.substring(time.length - 2) === "pm") {
       // remove "pm"
       time = time.substring(0, time.length - 2);
       if (!time.startsWith("12")) {
