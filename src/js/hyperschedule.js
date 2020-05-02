@@ -1889,7 +1889,6 @@ function selectSchedule() {
 
     // default clicked
     if (newColor === "") {
-      console.log("test");
       gLastScheduleSelected = { name: newName, id: newId, color: "#007bff" };
     } else {
       newColor = rgbToHex(newColor);
@@ -1919,6 +1918,7 @@ function updateScheduleTabDisplay(event) {
   if (newColor === "") {
     newColor = "#007bff";
   }
+  // Attach CSS classess for overriding Bootstrap colors
   if (!scheduleDropDownButton.classList.contains("change-dropdown-color")) {
     scheduleDropDownButton.classList.add("change-dropdown-color");
   }
@@ -1934,6 +1934,7 @@ function updateScheduleTabDisplay(event) {
 }
 
 function changeCSSColors(rules, newColor, hoverColor) {
+  // Find CSS rules and override with inputted color
   for (const rule of rules) {
     if (rule.selectorText === ".change-dropdown-color") {
       rule.style.setProperty("border-color", newColor, "important");
@@ -2012,11 +2013,7 @@ function defaultCheckSchedule(event) {
 }
 
 function updateScheduleTabTitle() {
-  for (const sched of gScheduleList) {
-    if (sched.id === gLastScheduleSelected.id) {
-      scheduleToggle.textContent = sched.name;
-    }
-  }
+  scheduleToggle.textContent = gLastScheduleSelected.name;
 }
 
 function updateScheduleColor() {
