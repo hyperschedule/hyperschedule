@@ -550,16 +550,16 @@ function shadeColor(color, percent) {
   G = G < 255 ? G : 255;
   B = B < 255 ? B : 255;
 
-  let RR = R.toString(16).length == 1 ? "0" + R.toString(16) : R.toString(16);
-  let GG = G.toString(16).length == 1 ? "0" + G.toString(16) : G.toString(16);
-  let BB = B.toString(16).length == 1 ? "0" + B.toString(16) : B.toString(16);
+  let RR = R.toString(16).length === 1 ? "0" + R.toString(16) : R.toString(16);
+  let GG = G.toString(16).length === 1 ? "0" + G.toString(16) : G.toString(16);
+  let BB = B.toString(16).length === 1 ? "0" + B.toString(16) : B.toString(16);
 
   return "#" + RR + GG + BB;
 }
 
 // https://stackoverflow.com/questions/13712697/set-background-color-in-hex
 function rgbToHex(col) {
-  if (col.charAt(0) == "r") {
+  if (col.charAt(0) === "r") {
     col = col
       .replace("rgb(", "")
       .replace(")", "")
@@ -567,9 +567,9 @@ function rgbToHex(col) {
     let r = parseInt(col[0], 10).toString(16);
     let g = parseInt(col[1], 10).toString(16);
     let b = parseInt(col[2], 10).toString(16);
-    r = r.length == 1 ? "0" + r : r;
-    g = g.length == 1 ? "0" + g : g;
-    b = b.length == 1 ? "0" + b : b;
+    r = r.length === 1 ? "0" + r : r;
+    g = g.length === 1 ? "0" + g : g;
+    b = b.length === 1 ? "0" + b : b;
     let colHex = "#" + r + g + b;
     return colHex;
   }
@@ -1757,6 +1757,9 @@ function editName() {
       sched.name = inputName;
     }
   }
+  if (gLastScheduleSelected.id === id) {
+    gLastScheduleSelected.name = inputName;
+  }
   // change UI
   const oldName = event.target.parentNode.parentNode.childNodes[1];
   oldName.nodeValue = inputName;
@@ -1876,7 +1879,8 @@ function selectSchedule() {
       "schedule-element btn btn-primary schedule-active" ||
     event.target.className ===
       "schedule-element btn btn-primary schedule-inactive" ||
-    event.target.className === "schedule-element btn"
+    event.target.className === "schedule-element btn" ||
+    event.target.className === "schedule-element btn btn-primary"
   ) {
     // Switch current schedule
     const newName = event.target.textContent;
@@ -1885,6 +1889,7 @@ function selectSchedule() {
 
     // default clicked
     if (newColor === "") {
+      console.log("test");
       gLastScheduleSelected = { name: newName, id: newId, color: "#007bff" };
     } else {
       newColor = rgbToHex(newColor);
