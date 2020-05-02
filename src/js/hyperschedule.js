@@ -1574,9 +1574,9 @@ function addNewSchedule() {
     id: newId,
     color: getRandomColor(
       "random",
-      CryptoJS.MD5(newId + inputName).toString(),
+      CryptoJS.MD5(inputName + newId).toString(),
       "hex",
-      "dark"
+      "light"
     )
   };
   gScheduleList.push(defaultPair);
