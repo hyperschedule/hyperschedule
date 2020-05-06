@@ -359,6 +359,55 @@
       </div>
     </div>
 
+    <div class="modal fade" id="upload-syllabus-modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Upload Syllabus</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+          </div>
+          <div class="modal-body" data-children-count="1">
+            <p>
+              This syllabus will be public. If you upload a new syllabus, it
+              will replace any current course syllabus
+            </p>
+            <label for="semester-select">Choose a semester:</label>
+            <select id="semester-select">
+              <option value="n/a">--N/A--</option>
+              <option value="sp20">Spring 2020</option>
+              <option value="fa19">Fall 2019</option>
+              <option value="sp19">Spring 2019</option>
+              <option value="fa18">Fall 2018</option>
+              <option value="sp18">Spring 2018</option>
+              <option value="fa17">Fall 2017</option>
+            </select>
+            <br />
+            <form action="/action_page.php">
+              <input type="file" id="myFile" name="filename" />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="upload-syllabus-button"
+              class="btn btn-primary"
+            >
+              Upload
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="import-export-modal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">

@@ -305,6 +305,14 @@ body {
   margin: 10px 0;
 }
 
+.upload-syllabus-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0rem 0.7rem;
+}
+
 /*** Schedule ***/
 
 #schedule-table {
