@@ -36,6 +36,8 @@ filterTechs = ["MATH", "CSCI", "PHYS", "ENGR", "BIOL", "CHEM", "MCBI"];
 const courseSearchToggle = document.getElementById("course-search-toggle");
 const scheduleToggle = document.getElementById("schedule-toggle");
 
+const techToggle = document.getElementById("tech-courses-toggle");
+const humToggle = document.getElementById("hum-courses-toggle");
 const closedCoursesToggle = document.getElementById("closed-courses-toggle");
 const hideAllConflictingCoursesToggle = document.getElementById(
   "all-conflicting-courses-toggle"
@@ -112,6 +114,8 @@ const importExportCopyButton = document.getElementById(
 let gApiData = null;
 let gSelectedCourses = [];
 let gScheduleTabSelected = false;
+let gShowTechCourses = false;
+let gShowHumCourses = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
@@ -340,6 +344,17 @@ function removeEntityChildren(entity) {
 
 function isCourseClosed(course) {
   return course.courseEnrollmentStatus == "closed";
+}
+
+function isCourseTech(course) {
+  const code = course.courseCode.substring(0, 4);
+  const pe = course.courseCode.substring(0, 3);
+  return filterTechs.includes(code) && pe !== "PE ";
+}
+
+function isCourseHum(course) {
+  const pe = course.courseCode.substring(0, 3);
+  return !isCourseTech(course) && pe !== "PE ";
 }
 
 function courseToString(course) {
@@ -820,6 +835,8 @@ function attachListeners() {
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
+  techToggle.addEventListener("click", toggleTechCourses);
+  humToggle.addEventListener("click", toggleHumCourses);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   hideAllConflictingCoursesToggle.addEventListener(
     "click",
@@ -1186,6 +1203,14 @@ function updateTabToggle() {
   setButtonSelected(courseSearchToggle, !gScheduleTabSelected);
 }
 
+function updateShowTechCoursesCheckbox() {
+  techToggle.checked = gShowTechCourses;
+}
+
+function updateShowHumCoursesCheckbox() {
+  humToggle.checked = gShowHumCourses;
+}
+
 function updateShowClosedCoursesCheckbox() {
   closedCoursesToggle.checked = gShowClosedCourses;
 }
@@ -1228,6 +1253,8 @@ function updateCourseSearchResults() {
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
+              (!gShowTechCourses || isCourseTech(course)) &&
+              (!gShowHumCourses || isCourseHum(course)) &&
               (gShowClosedCourses || !isCourseClosed(course)) &&
               (!gHideAllConflictingCourses ||
                 !courseConflictWithSchedule(course, false)) &&
@@ -1422,6 +1449,8 @@ function handleSelectedCoursesUpdate() {
 function handleGlobalStateUpdate() {
   // Update UI elements.
   updateTabToggle();
+  updateShowTechCoursesCheckbox();
+  updateShowHumCoursesCheckbox();
   updateShowClosedCoursesCheckbox();
   updateShowConflictingCoursesCheckbox();
   updateConflictCoursesRadio();
@@ -1485,6 +1514,18 @@ function saveImportExportModalChanges() {
 
 function toggleClosedCourses() {
   gShowClosedCourses = !gShowClosedCourses;
+  updateCourseSearchResults();
+  writeStateToLocalStorage();
+}
+
+function toggleTechCourses() {
+  gShowTechCourses = !gShowTechCourses;
+  updateCourseSearchResults();
+  writeStateToLocalStorage();
+}
+
+function toggleHumCourses() {
+  gShowHumCourses = !gShowHumCourses;
   updateCourseSearchResults();
   writeStateToLocalStorage();
 }
@@ -1647,6 +1688,8 @@ function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
   localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
+  localStorage.setItem("showTechCourses", gShowTechCourses);
+  localStorage.setItem("showHumCourses", gShowHumCourses);
   localStorage.setItem("showClosedCourses", gShowClosedCourses);
   localStorage.setItem("hideAllConflictingCourses", gHideAllConflictingCourses);
   localStorage.setItem(
@@ -1733,6 +1776,12 @@ function readStateFromLocalStorage() {
     _.isBoolean,
     false
   );
+  gShowTechCourses = readFromLocalStorage(
+    "showTechCourses",
+    _.isBoolean,
+    false
+  );
+  gShowHumCourses = readFromLocalStorage("showHumCourses", _.isBoolean, false);
   gShowClosedCourses = readFromLocalStorage(
     "showClosedCourses",
     _.isBoolean,
