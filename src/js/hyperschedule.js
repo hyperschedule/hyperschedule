@@ -29,6 +29,8 @@ const filterKeywords = {
 
 filterInequalities = ["<=", ">=", "<", ">", "="];
 
+filterTechs = ["MATH", "CSCI", "PHYS", "ENGR", "BIOL", "CHEM", "MCBI"];
+
 //// DOM elements
 
 const courseSearchToggle = document.getElementById("course-search-toggle");
