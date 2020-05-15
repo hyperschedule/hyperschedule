@@ -1520,12 +1520,16 @@ function toggleClosedCourses() {
 
 function toggleTechCourses() {
   gShowTechCourses = !gShowTechCourses;
+  if (gShowTechCourses) gShowHumCourses = false;
+  updateShowHumCoursesCheckbox();
   updateCourseSearchResults();
   writeStateToLocalStorage();
 }
 
 function toggleHumCourses() {
   gShowHumCourses = !gShowHumCourses;
+  if (gShowHumCourses) gShowTechCourses = false;
+  updateShowTechCoursesCheckbox();
   updateCourseSearchResults();
   writeStateToLocalStorage();
 }
