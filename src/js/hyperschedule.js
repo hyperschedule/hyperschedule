@@ -347,14 +347,13 @@ function isCourseClosed(course) {
 }
 
 function isCourseTech(course) {
-  const code = course.courseCode.substring(0, 4);
-  const pe = course.courseCode.substring(0, 3);
-  return filterTechs.includes(code) && pe !== "PE ";
+  const code = course.courseCode.split(" ")[0];
+  return filterTechs.includes(code) && code !== "PE";
 }
 
 function isCourseHum(course) {
-  const pe = course.courseCode.substring(0, 3);
-  return !isCourseTech(course) && pe !== "PE ";
+  const code = course.courseCode.split(" ")[0];
+  return !filterTechs.includes(code) && code !== "PE";
 }
 
 function courseToString(course) {
