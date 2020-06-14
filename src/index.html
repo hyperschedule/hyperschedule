@@ -632,10 +632,12 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/redom/3.24.1/redom.min.js"></script>
     <script src="js/hyperschedule.js"></script>
-    <script
-      src="https://cdn.usefathom.com/script.js"
-      site="SNRUMQQA"
-      defer
-    ></script>
+    <if condition="ANALYTICS">
+      <script
+        src="https://cdn.usefathom.com/script.js"
+        site="SNRUMQQA"
+        defer
+      ></script>
+    </if>
   </body>
 </html>

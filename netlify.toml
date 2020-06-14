@@ -1,4 +1,4 @@
 [build]
 
-command = "make build"
+command = "make build ANALYTICS=1"
 publish = "dist"
