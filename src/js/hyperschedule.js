@@ -956,10 +956,10 @@ function createSlotEntities(course, slot) {
   for (const slot of course.courseSchedule) {
     const startTime = timeStringToHours(slot.scheduleStartTime);
     const endTime = timeStringToHours(slot.scheduleEndTime);
-    const timeSince8am = startTime - 8;
+    const timeSince7am = startTime - 7;
     const duration = endTime - startTime;
     const text = course.courseName;
-    const verticalOffsetPercentage = ((timeSince8am + 1) / 16) * 100;
+    const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
     const heightPercentage = (duration / 16) * 100;
     for (const day of slot.scheduleDays) {
       const dayIndex = "MTWRF".indexOf(day);
@@ -1796,6 +1796,7 @@ function downloadPDF(starredOnly) {
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
       [
+        "7:00 am",
         "8:00 am",
         "9:00 am",
         "10:00 am",
@@ -1810,8 +1811,7 @@ function downloadPDF(starredOnly) {
         "7:00 pm",
         "8:00 pm",
         "9:00 pm",
-        "10:00 pm",
-        "11:00 pm"
+        "10:00 pm"
       ][i],
       "right"
     );
