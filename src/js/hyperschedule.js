@@ -4,9 +4,24 @@
 // M-x occur with the following query: ^\(///+\|const\|\(async \)?function\|let\)
 
 /// Globals
-//// Modules
 
+//// Modules
 const ics = require("/js/vendor/ics-0.2.0.min.js");
+
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyCelRaVwcwPV5sPpGYy_AGEpK4TOgA5_iQ",
+  authDomain: "hyperschedule-course-info.firebaseapp.com",
+  databaseURL: "https://hyperschedule-course-info.firebaseio.com",
+  projectId: "hyperschedule-course-info",
+  storageBucket: "hyperschedule-course-info.appspot.com",
+  messagingSenderId: "280583982425",
+  appId: "1:280583982425:web:15145198927778bc831048",
+  measurementId: "G-BMMJ3G37Y0"
+};
+
+// Database initialization
+firebase.initializeApp(firebaseConfig);
 
 //// Data constants
 
@@ -68,10 +83,16 @@ const selectedCoursesColumn = document.getElementById(
 const importExportDataButton = document.getElementById(
   "import-export-data-button"
 );
+
 const printDropdown = document.getElementById("print-dropdown");
 const printAllButton = document.getElementById("print-button-all");
 const printStarredButton = document.getElementById("print-button-starred");
+const signinButton = document.getElementById("signin-button");
+const userDropdown = document.getElementById("user-dropdown-wrapper");
+const userIcon = document.getElementById("user-button-icon");
+const signoutButton = document.getElementById("signout-btn");
 const settingsButton = document.getElementById("settings-button");
+const uploadPDFButton = document.getElementById("upload-syllabus-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
@@ -104,6 +125,15 @@ const importExportCopyButton = document.getElementById(
   "import-export-copy-button"
 );
 
+const signinModal = document.getElementById("signin-modal");
+
+let syllabusFile = document.getElementById("syllabus-file");
+let syllabusDate = document.getElementById("semester-select");
+
+const syllabusUploadInfoBar = document.getElementById(
+  "upload-syllabus-infobar"
+);
+
 //// Global state
 
 // Persistent data.
@@ -119,6 +149,7 @@ let gGreyConflictCourses = greyConflictCoursesOptions[0];
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
+let gSelectedCourseCode = null;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -331,6 +362,19 @@ function removeEntityChildren(entity) {
   while (entity.hasChildNodes()) {
     entity.removeChild(entity.lastChild);
   }
+}
+
+/*
+  setEntityParagraph creates a new p element with specified class list
+  and set it to be the only child of the eneity.
+*/
+function setEntityParagraph(entity, text, class_str) {
+  removeEntityChildren(entity);
+  const paragraph = document.createElement("p");
+  textnode = document.createTextNode(text);
+  paragraph.appendChild(textnode);
+  paragraph.classList.add(class_str);
+  syllabusUploadInfoBar.appendChild(paragraph);
 }
 
 //// Course and schedule utility functions
@@ -844,7 +888,10 @@ function attachListeners() {
   printStarredButton.addEventListener("click", () => {
     downloadPDF(true);
   });
+  signinButton.addEventListener("click", showSignInModal);
+  signoutButton.addEventListener("click", signout);
   settingsButton.addEventListener("click", showSettingsModal);
+  uploadPDFButton.addEventListener("click", uploadPDFToServer);
 
   courseDescriptionMinimize.addEventListener(
     "click",
@@ -1338,8 +1385,47 @@ function showImportExportModal() {
   $("#import-export-modal").modal("show");
 }
 
+function showSignInModal() {
+  $("#signin-modal").modal("show");
+}
+
+function showUploadModal() {
+  removeEntityChildren(syllabusUploadInfoBar);
+  $("#upload-syllabus-modal").modal("show");
+}
+
+function hideUploadModal() {
+  removeEntityChildren(syllabusUploadInfoBar);
+  $("#upload-syllabus-modal").modal("hide");
+}
+
 function showSettingsModal() {
   $("#settings-modal").modal("show");
+}
+
+function hideSigninModal() {
+  signinModal.classList.remove("fade");
+  $("#signin-modal").modal("hide");
+  signinModal.classList.add("fade");
+}
+
+function getCourseFromDB(courseCode) {
+  docRef = db.collection("courseData").doc(courseCode);
+
+  docRef
+    .get()
+    .then(function(doc) {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        return doc.data();
+      } else {
+        docRef.set({});
+      }
+    })
+    .catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  return {};
 }
 
 function setCourseDescriptionBox(course) {
@@ -1357,8 +1443,33 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
+  courseDescriptionBox.appendChild(document.createElement("hr"));
+  gSelectedCourseCode = course.courseCode;
+  createSyllabusBox(courseDescriptionBox, course["syllabus"]);
+
   minimizeArrowPointUp();
   courseDescriptionVisible();
+}
+
+function createSyllabusBox(courseDescriptionBox, syllabus) {
+  // Create a syllabus information display paragraph
+  paragraph = document.createElement("p");
+  if (syllabus !== undefined) {
+    const link = document.createElement("a");
+    link.target = "_blank"; // open in a new tab
+    link.textContent = "Syllabus (" + syllabus["semester"] + ")";
+    link.setAttribute("href", syllabus["link"]);
+    paragraph.appendChild(link);
+    paragraph.append(" | ");
+  }
+
+  // Create a syllabus upload paragraph
+  const link = document.createElement("a");
+  link.setAttribute("href", "#");
+  link.textContent = "Upload a syllabus";
+  paragraph.appendChild(link);
+  paragraph.addEventListener("click", showUploadModal);
+  courseDescriptionBox.appendChild(paragraph);
 }
 
 function minimizeCourseDescription() {
@@ -2076,9 +2187,135 @@ function downloadICalFile() {
   cal.download("hyperschedule-export");
 }
 
+/// Authentication
+
+//// Authentication Constants
+
+const ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+const uiConfig = {
+  callbacks: {
+    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+      // User successfully signed in.
+      hideSigninModal();
+      // Return type determines whether we continue the redirect automatically
+      // or whether we leave that to developer to handle.
+      return false;
+    }
+  },
+  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+  signInFlow: "popup",
+  // signInSuccessUrl: '<url-to-redirect-to-on-success>',
+  signInOptions: [
+    // Leave the lines as is for the providers you want to offer your users.
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ]
+};
+
+/* 
+  setupAuthentication() sets up everything related to authentication.
+*/
+function setupAuthentication() {
+  initializeAuthenticationUI();
+  observeUserChanged();
+}
+
+/* 
+  initializeAuthenticationUI() puts FirebaseUI into the container.
+*/
+function initializeAuthenticationUI() {
+  ui.start("#firebaseui-auth-container", uiConfig);
+}
+
+/*
+  observeUserChanged() adds a listener that triggers when the user signs in
+  or out.
+*/
+function observeUserChanged() {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      userDropdown.style.display = "inline";
+      signinButton.style.display = "none";
+      userIcon.src = user.photoURL;
+    } else {
+      userDropdown.style.display = "none";
+      signinButton.style.display = "inline";
+      initializeAuthenticationUI();
+    }
+  });
+}
+
+async function uploadPDFToServer() {
+  var user = firebase.auth().currentUser;
+  if (user) {
+    uploadSyllabusURL = apiURL + "/upload-syllabus";
+    user.getIdToken().then(async token => {
+      setEntityParagraph(
+        syllabusUploadInfoBar,
+        "Uploading syllabus",
+        "text-warning"
+      );
+
+      result = await sendSyllabusInfoToServer(uploadSyllabusURL, token);
+      console.log("Upload Syllabus result:", result);
+      if (result === undefined || result.error) {
+        setEntityParagraph(syllabusUploadInfoBar, result.error, "text-danger");
+      } else {
+        setEntityParagraph(
+          syllabusUploadInfoBar,
+          "Upload Successful",
+          "text-success"
+        );
+        setTimeout(hideUploadModal, 1000);
+      }
+    });
+  } else {
+    console.log("Cannot upload syallabus, user is not logged in");
+    setEntityParagraph(
+      syllabusUploadInfoBar,
+      "Cannot upload syallabus, user is not logged in",
+      "text-danger"
+    );
+  }
+}
+
+async function sendSyllabusInfoToServer(url, token) {
+  const formData = new FormData();
+  formData.append("token", token);
+  formData.append("courseCode", gSelectedCourseCode);
+  formData.append(
+    "syllabusDate",
+    syllabusDate.options[syllabusDate.selectedIndex].text
+  );
+  formData.append("pdf", syllabusFile.files[0]);
+
+  const response = await fetch(url, {
+    method: "PUT", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "omit", // include, *same-origin, omit
+    body: formData
+  });
+  result = await response.json();
+  return result;
+}
+
+function signout() {
+  firebase
+    .auth()
+    .signOut()
+    .then(function() {
+      console.log("Succesfully signed out");
+    })
+    .catch(function(error) {
+      console.error("Could not sign out: ", error);
+    });
+}
+
 /// Startup actions
 
 attachListeners();
+setupAuthentication();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
