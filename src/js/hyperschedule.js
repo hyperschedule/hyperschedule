@@ -11,6 +11,7 @@ const ics = require("/js/vendor/ics-0.2.0.min.js");
 //// Data constants
 
 const millisecondsPerHour = 3600 * 1000;
+const pacificTimeZoneValue = -8.0;
 
 const courseSearchPageSize = 20;
 
@@ -28,6 +29,33 @@ const filterKeywords = {
 };
 
 filterInequalities = ["<=", ">=", "<", ">", "="];
+const pacificScheduleDays = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+
+const pacificScheduleTimes = [
+  "07:00",
+  "08:00",
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+  "18:00",
+  "19:00",
+  "20:00",
+  "21:00",
+];
 
 //// DOM elements
 
@@ -74,6 +102,7 @@ const printStarredButton = document.getElementById("print-button-starred");
 const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
+const timeZoneDropdown = document.getElementById("time-zone-dropdown");
 
 const courseDescriptionMinimizeOuter = document.getElementById(
   "minimize-outer"
@@ -91,6 +120,8 @@ const selectedCoursesList = document.getElementById("selected-courses-list");
 
 const scheduleTable = document.getElementById("schedule-table");
 const scheduleTableBody = document.getElementById("schedule-table-body");
+const scheduleTableDays = document.getElementsByClassName("schedule-day");
+const scheduleTableHours = document.getElementsByClassName("schedule-hour");
 const creditCountText = document.getElementById("credit-count");
 
 const importExportTextArea = document.getElementById("import-export-text-area");
@@ -114,11 +145,13 @@ let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
 let gGreyConflictCourses = greyConflictCoursesOptions[0];
+let gTimeZoneValue = pacificTimeZoneValue;
 
 // Transient data.
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys = [];
+let gCourseSelected = null;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -255,11 +288,40 @@ function catchEvent(event) {
 
 //// Time utility functions
 
+function dayStringForSchedule(dayString) {
+  let daysOfWeek = "MTWRF";
+
+  if (gTimeZoneValue >= 8.0) {
+    let days = "";
+    for (let i = 0; i < dayString.length; i++) {
+      days += daysOfWeek.charAt(daysOfWeek.indexOf(dayString.charAt(i)) + 1);
+    }
+    return days;
+  }
+  return dayString;
+}
+
 function timeStringToHoursAndMinutes(timeString) {
-  return [
-    parseInt(timeString.substring(0, 2), 10),
-    parseInt(timeString.substring(3, 5), 10)
-  ];
+  let hours =
+    parseInt(timeString.substring(0, 2), 10) +
+    parseInt(gTimeZoneValue) -
+    pacificTimeZoneValue;
+  let minutes = parseInt(timeString.substring(3, 5), 10);
+
+  if (!gTimeZoneValue.toString().includes(".0")) {
+    const adjustMin = parseInt(
+      parseFloat("0." + gTimeZoneValue.toString().split(".")[1]) * 60,
+      10
+    );
+    minutes += adjustMin;
+
+    if (minutes >= 60) {
+      hours += 1;
+      minutes %= 60;
+    }
+  }
+
+  return [hours, minutes];
 }
 
 function timeStringToHours(timeString) {
@@ -269,7 +331,7 @@ function timeStringToHours(timeString) {
 
 function timeStringTo12HourString(timeString) {
   let [hours, minutes] = timeStringToHoursAndMinutes(timeString);
-  const pm = hours >= 12;
+  const pm = hours >= 12 && hours <= 23;
   hours -= 1;
   hours %= 12;
   hours += 1;
@@ -279,6 +341,17 @@ function timeStringTo12HourString(timeString) {
     minutes.toString().padStart(2, "0") +
     " " +
     (pm ? "PM" : "AM")
+  );
+}
+
+function timeStringForSchedule(timeString) {
+  let time = timeStringTo12HourString(timeString);
+  let pm = time.substring(6) === "PM";
+
+  return (
+    parseInt(time.substring(0, 2), 10).toString() +
+    time.substring(2, 5) +
+    (pm ? "pm" : "am")
   );
 }
 
@@ -631,8 +704,10 @@ Set.prototype.subSet = function(otherSet) {
 ///// Course scheduling
 
 function generateScheduleSlotDescription(slot) {
+  // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
+  // TODO: change if 7am
   return (
-    slot.scheduleDays +
+    dayStringForSchedule(slot.scheduleDays) +
     " " +
     timeStringTo12HourString(slot.scheduleStartTime) +
     " – " +
@@ -867,11 +942,19 @@ function attachListeners() {
     });
   }
 
+  timeZoneDropdown.addEventListener("change", () => {
+    gTimeZoneValue = parseFloat(
+      timeZoneDropdown.options[timeZoneDropdown.selectedIndex].value
+    );
+    toggleTimeZone();
+  });
+
   // DO NOT use Javascript size computations for ANYTHING ELSE!  The
   // _only_ reason we use Javascript to set the course description box
   // height is to leverage CSS transitions to animate the resizing of
   // the course description; in _all other cases_, especially for
   // static layout calculations, use CSS Flexbox!!!
+
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
 
   // Re-render virtualized list on viewport resizes.
@@ -1060,7 +1143,7 @@ function createSlotEntities(course, slot) {
   for (const slot of course.courseSchedule) {
     const startTime = timeStringToHours(slot.scheduleStartTime);
     const endTime = timeStringToHours(slot.scheduleEndTime);
-    const timeSince7am = startTime - 7;
+    const timeSince8am = startTime - timeStringToHours("07:00");
     const duration = endTime - startTime;
     const text = course.courseName;
     const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
@@ -1212,6 +1295,15 @@ function updateConflictCoursesRadio() {
   }
 }
 
+function updateTimeZoneDropDown() {
+  for (let i = 0; timeZoneDropdown.options[i]; i++) {
+    if (timeZoneDropdown.options[i].value == gTimeZoneValue) {
+      timeZoneDropdown.options[i].selected = true;
+      break;
+    }
+  }
+}
+
 function updateCourseSearchResults() {
   if (gApiData === null) {
     gFilteredCourseKeys = [];
@@ -1302,6 +1394,7 @@ function updateSelectedCoursesList() {
 }
 
 function updateSchedule() {
+  updateScheduleTimeZone();
   const schedule = computeSchedule(gSelectedCourses);
   while (scheduleTable.getElementsByClassName("schedule-slot").length > 0) {
     const element = scheduleTable.getElementsByClassName(
@@ -1314,6 +1407,24 @@ function updateSchedule() {
     _.forEach(e => scheduleTable.appendChild(e), entities);
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
+}
+
+function updateScheduleTimeZone() {
+  for (let i = 0; scheduleTableDays[i]; i++) {
+    // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
+    // TODO: change if 7am
+    if (gTimeZoneValue >= 8.0) {
+      scheduleTableDays[i].innerText = pacificScheduleDays[i + 2];
+    } else {
+      scheduleTableDays[i].innerText = pacificScheduleDays[i + 1];
+    }
+  }
+
+  for (let i = 0; scheduleTableHours[i]; i++) {
+    scheduleTableHours[i].innerText = timeStringForSchedule(
+      pacificScheduleTimes[i]
+    );
+  }
 }
 
 ///// DOM updates due to display changes
@@ -1343,6 +1454,8 @@ function showSettingsModal() {
 }
 
 function setCourseDescriptionBox(course) {
+  gCourseSelected = course;
+
   while (courseDescriptionBox.hasChildNodes()) {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
@@ -1396,6 +1509,19 @@ function minimizeArrowPointDown() {
   minimizeIcon.classList.add("ion-arrow-down-b");
 }
 
+function updateCourseDescriptionTimeZone() {
+  for (let i = 0; courseDescriptionBox.childNodes[i]; i++) {
+    if (courseDescriptionBox.childNodes[i + 2].tagName === "HR") {
+      break;
+    }
+    courseDescriptionBox.childNodes[
+      i + 2
+    ].innerText = generateScheduleSlotDescription(
+      gCourseSelected.courseSchedule[i]
+    );
+  }
+}
+
 /// Global state handling
 //// Combined update functions
 
@@ -1423,6 +1549,7 @@ function handleGlobalStateUpdate() {
   updateShowClosedCoursesCheckbox();
   updateShowConflictingCoursesCheckbox();
   updateConflictCoursesRadio();
+  updateTimeZoneDropDown();
 
   // Update course displays.
   updateCourseDisplays();
@@ -1499,6 +1626,14 @@ function toggleStarredConflictingCourses() {
 
 function toggleConflictCourses() {
   updateCourseDisplays();
+  writeStateToLocalStorage();
+}
+
+function toggleTimeZone() {
+  updateCourseDisplays();
+  if (courseDescriptionBox.hasChildNodes()) {
+    updateCourseDescriptionTimeZone();
+  }
   writeStateToLocalStorage();
 }
 
@@ -1655,6 +1790,7 @@ function writeStateToLocalStorage() {
     "greyConflictCourses",
     JSON.stringify(gGreyConflictCourses)
   );
+  localStorage.setItem("timeZoneValue", gTimeZoneValue);
 }
 
 function oldCourseToString(course) {
@@ -1751,6 +1887,11 @@ function readStateFromLocalStorage() {
     validateGGreyConflictCourses,
     greyConflictCoursesOptions[0]
   );
+  gTimeZoneValue = readFromLocalStorage(
+    "timeZoneValue",
+    _.isNumber,
+    pacificTimeZoneValue
+  );
 }
 
 function validateGGreyConflictCourses(value) {
@@ -1803,46 +1944,21 @@ function downloadPDF(starredOnly) {
     pdf.text(
       x + columnWidth / 2,
       0.5 * 72 + (0.25 * 72) / 2 + pdf.getLineHeight() / 2,
-      [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-      ][i],
+      pacificScheduleDays[i],
       "center"
     );
   }
 
   // grid rows
   pdf.setFontStyle("normal");
-  for (let i = 0; i < 16; ++i) {
+  for (let i = 0; i < 15; ++i) {
     const y = i * rowHeight + 0.75 * 72;
     pdf.line(0.5 * 72, y, 0.5 * 72 + tableWidth, y);
 
     pdf.text(
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
-      [
-        "7:00 am",
-        "8:00 am",
-        "9:00 am",
-        "10:00 am",
-        "11:00 am",
-        "12:00 pm",
-        "1:00 pm",
-        "2:00 pm",
-        "3:00 pm",
-        "4:00 pm",
-        "5:00 pm",
-        "6:00 pm",
-        "7:00 pm",
-        "8:00 pm",
-        "9:00 pm",
-        "10:00 pm"
-      ][i],
+      timeStringForSchedule(pacificScheduleTimes[i]),
       "right"
     );
   }
@@ -1873,8 +1989,15 @@ function downloadPDF(starredOnly) {
 
       for (const day of slot.scheduleDays) {
         for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
+          const weekdayAdjustment = weekdayCharToInteger(day);
+          // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
+          // TODO: change if 7am (+9 instead)
+          if (gTimeZoneValue >= 8.0) {
+            weekdayAdjustment += 1;
+          }
+
           const x =
-            weekdayCharToInteger(day) * columnWidth +
+            weekdayAdjustment * columnWidth +
             1.25 * 72 +
             columnWidth * (left / slot.scheduleTermCount);
 
@@ -1882,9 +2005,14 @@ function downloadPDF(starredOnly) {
             (columnWidth * (right - left + 1)) / slot.scheduleTermCount;
 
           const yStart =
-            (startHours - 7 + startMinutes / 60) * rowHeight + 0.75 * 72;
+            (startHours - timeStringToHours("07:00") + startMinutes / 60) *
+              rowHeight +
+            0.75 * 72;
 
-          const yEnd = (endHours - 7 + endMinutes / 60) * rowHeight + 0.75 * 72;
+          const yEnd =
+            (endHours - timeStringToHours("07:00") + endMinutes / 60) *
+              rowHeight +
+            0.75 * 72;
 
           pdf.setFillColor(...getCourseColor(course, "rgbArray"));
 
