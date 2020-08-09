@@ -22,7 +22,7 @@
 
 .dropdown-menu {
   min-width: 0;
-  padding: 0;
+  padding: 2px 0;
 }
 
 .hidden {
@@ -36,7 +36,9 @@
 .toolbar {
   display: flex;
   padding: 0;
-  margin: 0 1em;
+  margin: 1rem;
+  align-items: center;
+  whitespace: nowrap;
 }
 
 /** Page layout **/
@@ -49,29 +51,31 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  display: flex;
 }
 
 /** Column layout **/
 
 .two-column-left {
-  float: left;
-  height: 100%;
-  width: 68%;
+  flex: 1 0 50%;
+  max-width: 68%;
+  overflow: hidden;
 }
 
 .two-column-right {
-  float: right;
-  height: 100%;
-  width: 32%;
+  flex: 1 0 0;
+  overflow: hidden;
 }
 
 /*** Course search/schedule column ***/
 
 #course-search-schedule-column {
-  padding-top: 20px;
   display: flex;
   flex-direction: column;
+}
+
+#course-search-schedule-toggle-bar {
+  margin: 1rem 0 1rem 1rem;
 }
 
 #course-search-toggle-wrapper,
@@ -98,6 +102,13 @@ body {
 
 #schedule-column {
   overflow-y: auto;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+#schedule-column.hidden {
+  display: none;
 }
 
 /** Course search **/
@@ -122,50 +133,39 @@ body {
 
 #course-search-results-list {
   height: 0;
+  position: relative;
+  margin-top: -0.5rem;
 }
 
 #course-search-results-placeholder {
-  position: relative;
 }
 
 /*** Course search header bar ***/
 
 #course-search-bar {
-  table-layout: auto !important;
-  margin-top: 10px !important;
-  margin-bottom: 5px !important;
+  display: flex;
+  margin: 0 0 1rem 1rem;
 }
 
-#course-search-course-name-input-wrapper {
-  display: table-cell;
-  width: 100%;
+#course-search-course-name-input {
+  flex-grow: 1;
 }
 
 #filter-button-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  padding-left: 10px;
+  margin-left: 1rem;
 }
 
 #filter-button {
-  display: table-cell;
   margin: 0 auto;
-}
-
-#help-button-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  padding-left: 10px;
 }
 
 #help-button {
-  display: table-cell;
-  margin: 0 auto;
+  margin-left: 1rem;
 }
 
 .checkbox-menu li label {
   display: block;
-  padding: 3px 10px;
+  padding: 3px 8px;
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
@@ -178,6 +178,7 @@ body {
   margin: 0px 5px;
   top: 2px;
   position: relative;
+  cursor: pointer;
 }
 
 .checkbox-menu li label:hover,
@@ -193,7 +194,7 @@ body {
 /*** Course search end of list ***/
 
 #course-search-results-end {
-  margin: 0.5em 1em 1em 1em;
+  margin: 0.5rem 1rem 1rem 1rem;
   text-align: center;
   color: gray;
 }
@@ -201,46 +202,32 @@ body {
 /** Selected courses **/
 
 #selected-courses-column {
-  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
-  table-layout: auto;
-}
-
-.selected-courses-bar-btn {
-  display: block;
-  float: right;
-  margin: 0 auto;
 }
 
 #github-link {
-  display: table-cell;
-  text-align: left;
-  vertical-align: middle;
-  width: 100%;
+  flex-grow: 1;
 }
 
-#import-export-data-button-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  padding-left: 10px;
+#import-export-data-button {
 }
 
 #print-dropdown-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  padding-left: 10px;
+  margin-left: 1rem;
 }
 
 .print-btn {
   white-space: nowrap;
-  padding: 5px;
+  padding: 3px 8px;
   min-width: 0;
   cursor: pointer;
-  background-.color: white;
+  background-color: white;
 }
 
 .print-btn:hover {
@@ -248,10 +235,7 @@ body {
 }
 
 #settings-button-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  padding-left: 10px;
-  padding-top: 0px;
+  margin-left: 0.5rem;
 }
 
 #settings-button {
@@ -269,8 +253,22 @@ body {
 
 /*** Course description box ***/
 
+#minimize-outer {
+  margin: 0 1rem;
+  height: 0px;
+  overflow: hidden;
+  transition: 0.1s height;
+  flex-shrink: 0;
+}
+
+#course-description-minimize {
+  font-size: 1rem;
+  line-height: 1em;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+}
+
 #selected-courses-wrapper {
-  margin-top: 8px;
   overflow-y: auto;
 }
 
@@ -278,11 +276,13 @@ body {
   display: block;
   border: 1px solid transparent;
   height: 0px;
+  flex-shrink: 0;
   text-align: center;
   /*margin-top: 10px;
     margin-bottom: 5px;*/
   overflow: hidden;
   transition: height 0.2s, border 0.2s;
+  margin: 0 1rem 1rem 1rem;
 }
 
 #course-description-box-outer.course-description-box-visible {
@@ -308,40 +308,128 @@ body {
 /*** Schedule ***/
 
 #schedule-table {
-  border: none;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5px;
-  position: relative;
-  table-layout: fixed;
+  display: grid;
+  grid-template-columns: 4rem repeat(5, 1fr);
+  grid-template-rows: 2rem repeat(180, calc(4rem / 12));
+  margin: 0 1rem;
+}
+
+#schedule-table .schedule-day {
   text-align: center;
-  width: 95%;
-  border-collapse: collapse;
+  grid-row-start: 1;
+  grid-row-end: span 1;
+  font-weight: bold;
+  font-size: 0.875rem;
+  overflow-x: hidden;
 }
 
-#schedule-table th {
-  height: 60px;
+#schedule-table .schedule-day-column {
+  grid-row-start: 2;
+  grid-row-end: -1;
 }
 
-#schedule-table td {
-  border: 1px solid #bbbbbb;
-  height: 60px;
+#schedule-table .schedule-day-column.odd {
+  background-color: whitesmoke;
+}
+
+#schedule-table .monday {
+  grid-column-start: calc(1 + 1);
+}
+#schedule-table .tuesday {
+  grid-column-start: calc(2 + 1);
+}
+#schedule-table .wednesday {
+  grid-column-start: calc(3 + 1);
+}
+#schedule-table .thursday {
+  grid-column-start: calc(4 + 1);
+}
+#schedule-table .friday {
+  grid-column-start: calc(5 + 1);
+}
+
+#schedule-table .schedule-hour {
+  grid-column-start: 1;
+  text-align: right;
+  font-size: 0.75rem;
+  opacity: 0.75;
+  margin-right: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 0;
+}
+
+#schedule-table .schedule-hour-row {
+  grid-column-start: 2;
+  grid-column-end: -1;
+  border-top: 1px solid black;
+  opacity: 0.125;
+}
+
+#schedule-table .schedule-hour-1 {
+  grid-row-start: calc((1 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-2 {
+  grid-row-start: calc((2 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-3 {
+  grid-row-start: calc((3 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-4 {
+  grid-row-start: calc((4 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-5 {
+  grid-row-start: calc((5 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-6 {
+  grid-row-start: calc((6 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-7 {
+  grid-row-start: calc((7 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-8 {
+  grid-row-start: calc((8 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-9 {
+  grid-row-start: calc((9 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-10 {
+  grid-row-start: calc((10 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-11 {
+  grid-row-start: calc((11 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-12 {
+  grid-row-start: calc((12 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-13 {
+  grid-row-start: calc((13 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-14 {
+  grid-row-start: calc((14 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-15 {
+  grid-row-start: calc((15 - 1) * 12 + 2);
 }
 
 .schedule-slot-wrapper {
-  cursor: pointer;
-  overflow: hidden;
-  position: absolute;
-  width: 16.6667%;
+  z-index: 1;
+  grid-column-end: span 1;
+  display: grid;
+  overflow-y: hidden;
 }
 
 .schedule-slot {
+  overflow: hidden;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   justify-content: center;
+  text-align: center;
+  position: relative;
 }
 
 .schedule-slot-starred {
@@ -355,8 +443,8 @@ body {
   left: 0%;
   width: 0;
   height: 0;
-  border-top: solid #bbbbbb 1em;
-  border-right: solid transparent 1em;
+  border-top: solid #bbbbbb 1rem;
+  border-right: solid transparent 1rem;
   mix-blend-mode: multiply;
 }
 
@@ -378,13 +466,10 @@ body {
 /**** Credit count ****/
 
 #credit-count-box {
-  margin-bottom: 10px !important;
+  justify-content: center;
 }
 
 #credit-count {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
 }
 
 /** Course listings **/
@@ -396,7 +481,7 @@ body {
 }
 
 .course-list .course-box {
-  margin: 0px 1em;
+  margin: 0px 1rem;
 }
 
 #course-search-results-list .course-box {
@@ -404,26 +489,28 @@ body {
 }
 
 .course-box {
-  cursor: pointer;
   margin: 0 auto;
-  padding: 6px 0;
+  padding: 0.5rem 0;
   position: relative;
   width: 100%;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 .course-box-content {
-  display: block;
-  margin: 0 1em;
+  display: flex;
+  cursor: pointer;
+  margin: 0 1rem;
   position: relative;
-  padding-left: 5px;
 }
 
 .course-box-text {
-  display: inline-block;
   margin: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  flex-basis: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  padding: 0.25rem 0.5rem;
 }
 
 .course-box-text .course-box-course-code {
@@ -438,14 +525,12 @@ body {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  display: none;
+  padding: 0.25rem 0.5rem;
 }
 
 /*** Course search listing ***/
 
 #course-search-column .course-box-select-label {
-  margin-left: 5px;
-  margin-right: 5px;
   display: none;
 }
 
@@ -453,88 +538,56 @@ body {
   display: none;
 }
 
-#course-search-column .course-box-text {
-  padding-left: 5px;
-  padding-right: 30px;
+#course-search-column .course-box-add-button {
 }
 
-#course-search-column .course-box-add-button {
-  display: block;
-  height: 50px;
-  margin-top: -25px;
-  line-height: 50px;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 25px;
+#course-search-column .course-box-remove-button {
+  display: none;
 }
 
 /*** Selected courses listing ***/
 
 #selected-courses-column .course-box-select-label {
-  display: block;
-  height: 50px;
-  margin-top: -25px;
-  position: absolute;
-  line-height: 50px;
-  left: 5px;
-  top: 50%;
-  width: 25px;
-  text-align: center;
+  margin: 0;
+  padding: 0.25rem 0.5rem;
 }
 
 #selected-courses-column .course-box-select-icon {
-  cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1rem;
+  line-height: 1em;
 }
 
 #selected-courses-column .course-box-select-toggle {
-  visibility: hidden;
+  display: none;
 }
 
 #selected-courses-column .course-box-star-toggle {
-  visibility: hidden;
+  display: none;
 }
 
 #selected-courses-column .course-box-star-label {
-  visibility: hidden;
-  display: block;
-  width: 25px;
-  height: 50px;
-  left: 30px;
-  margin-top: -25px;
-  line-height: 50px;
-  position: absolute;
-  top: 50%;
-  text-align: center;
-}
-
-#selected-courses-column .course-box-star-label.star-visible {
-  visibility: visible;
+  margin: 0;
+  padding: 0.25rem 0.25rem;
+  line-height: 1em;
 }
 
 #selected-courses-column .course-box-star-icon {
-  font-size: 1.3em;
+  font-size: 1rem;
   cursor: pointer;
 }
 
-#selected-courses-column .course-box-text {
-  padding-left: 55px;
-  padding-right: 30px;
+#selected-courses-column .course-box-remove-button {
 }
 
-#selected-courses-column .course-box-remove-button {
-  display: block;
-  height: 50px;
-  margin-top: -25px;
-  line-height: 50px;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 25px;
+#selected-courses-list {
+  margin-top: -0.5rem;
 }
 
 /** Modals **/
+.modal-input-text {
+  font-family: Courier New !important;
+}
+
 /*** Import/export modal ***/
 
 #import-export-text-area {

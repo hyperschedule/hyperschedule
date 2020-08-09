@@ -2,21 +2,6 @@
 <html lang="">
   <head>
     <meta charset="utf-8" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=UA-111346837-1"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "UA-111346837-1");
-    </script>
-    <!-- End gtag.js -->
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Hyperschedule - The fast course scheduler</title>
     <meta name="description" content="" />
@@ -62,24 +47,23 @@
       </div>
       <div id="course-search-column">
         <div id="course-search-bar" class="toolbar">
-          <div id="course-search-course-name-input-wrapper">
-            <input
-              type="text"
-              id="course-search-course-name-input"
-              class="form-control"
-              placeholder="Search by name, course code, etc."
-            />
-          </div>
+          <input
+            type="text"
+            id="course-search-course-name-input"
+            class="form-control"
+            placeholder="Search by name, course code, etc."
+          />
           <div id="filter-button-wrapper" class="dropdown">
             <button
               class="btn btn-primary dropdown-toggle"
-              type="button"
               id="filter-button"
               data-toggle="dropdown"
             >
               Filters
             </button>
-            <ul class="dropdown-menu checkbox-menu allow-focus">
+            <ul
+              class="dropdown-menu dropdown-menu-right checkbox-menu allow-focus"
+            >
               <li>
                 <label id="closed-courses-toggle-label">
                   <input id="closed-courses-toggle" type="checkbox" /> Show
@@ -101,27 +85,70 @@
             </ul>
           </div>
 
-          <div id="help-button-wrapper">
-            <button
-              type="button"
-              id="help-button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#help-modal"
-            >
-              How does it work?
-            </button>
-          </div>
+          <button
+            type="button"
+            id="help-button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#help-modal"
+          >
+            How does it work?
+          </button>
         </div>
 
         <div id="course-search-results">
-          <div id="course-search-results-placeholder"></div>
           <ul id="course-search-results-list" class="courses-list"></ul>
+          <div id="course-search-results-placeholder"></div>
           <div id="course-search-results-end"></div>
         </div>
       </div>
       <div id="schedule-column" class="hidden">
-        <table id="schedule-table">
+        <div id="schedule-table">
+          <div class="schedule-day-column monday odd"></div>
+          <div class="schedule-day-column tuesday even"></div>
+          <div class="schedule-day-column wednesday odd"></div>
+          <div class="schedule-day-column thursday even"></div>
+          <div class="schedule-day-column friday odd"></div>
+
+          <div class="schedule-day monday odd">Monday</div>
+          <div class="schedule-day tuesday even">Tuesday</div>
+          <div class="schedule-day wednesday odd">Wednesday</div>
+          <div class="schedule-day thursday even">Thursday</div>
+          <div class="schedule-day friday odd">Friday</div>
+
+          <div class="schedule-hour-row schedule-hour-1"></div>
+          <div class="schedule-hour-row schedule-hour-2"></div>
+          <div class="schedule-hour-row schedule-hour-3"></div>
+          <div class="schedule-hour-row schedule-hour-4"></div>
+          <div class="schedule-hour-row schedule-hour-5"></div>
+          <div class="schedule-hour-row schedule-hour-6"></div>
+          <div class="schedule-hour-row schedule-hour-7"></div>
+          <div class="schedule-hour-row schedule-hour-8"></div>
+          <div class="schedule-hour-row schedule-hour-9"></div>
+          <div class="schedule-hour-row schedule-hour-10"></div>
+          <div class="schedule-hour-row schedule-hour-11"></div>
+          <div class="schedule-hour-row schedule-hour-12"></div>
+          <div class="schedule-hour-row schedule-hour-13"></div>
+          <div class="schedule-hour-row schedule-hour-14"></div>
+          <div class="schedule-hour-row schedule-hour-15"></div>
+
+          <div class="schedule-hour schedule-hour-1">8am</div>
+          <div class="schedule-hour schedule-hour-2">9am</div>
+          <div class="schedule-hour schedule-hour-3">10am</div>
+          <div class="schedule-hour schedule-hour-4">11am</div>
+          <div class="schedule-hour schedule-hour-5">12pm</div>
+          <div class="schedule-hour schedule-hour-6">1pm</div>
+          <div class="schedule-hour schedule-hour-7">2pm</div>
+          <div class="schedule-hour schedule-hour-8">3pm</div>
+          <div class="schedule-hour schedule-hour-9">4pm</div>
+          <div class="schedule-hour schedule-hour-10">5pm</div>
+          <div class="schedule-hour schedule-hour-11">6pm</div>
+          <div class="schedule-hour schedule-hour-12">7pm</div>
+          <div class="schedule-hour schedule-hour-13">8pm</div>
+          <div class="schedule-hour schedule-hour-14">9pm</div>
+          <div class="schedule-hour schedule-hour-15">10pm</div>
+        </div>
+        <!--table id="schedule-table">
           <thead>
             <th class="schedule-hour schedule-hour-0"></th>
             <th class="schedule-day schedule-day-1">Monday</th>
@@ -252,7 +279,7 @@
               <td></td>
             </tr>
           </tbody>
-        </table>
+        </table-->
         <div id="credit-count-box" class="toolbar">
           <p id="credit-count"></p>
         </div>
@@ -270,46 +297,49 @@
           View on GitHub
         </a>
         <div id="import-export-data-button-wrapper">
-          <button
-            type="button"
-            id="import-export-data-button"
-            class="btn btn-primary selected-courses-bar-btn"
-          >
+          <button id="import-export-data-button" class="btn btn-primary">
             Import/Export Data
           </button>
         </div>
         <div id="print-dropdown-wrapper" class="dropdown">
           <button
-            type="button"
             id="print-dropdown"
-            class="btn btn-primary dropdown-toggle selected-courses-bar-btn"
+            class="btn btn-primary dropdown-toggle"
             data-toggle="dropdown"
           >
             Print
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li class="print-btn" id="print-button-all"><a>Print All</a></li>
+            <li class="print-btn" id="print-button-all">
+              <a>Print All</a>
+            </li>
             <li class="print-btn" id="print-button-starred">
               <a>Print Starred</a>
             </li>
           </ul>
         </div>
         <div id="settings-button-wrapper">
-          <button
-            type="button"
-            id="settings-button"
-            class="btn selected-courses-bar-btn"
-          >
+          <button type="button" id="settings-button" class="btn">
             <i class="icon ion-gear-b"></i>
           </button>
         </div>
       </div>
-
+      <div id="minimize-outer">
+        <button
+          id="course-description-minimize"
+          type="button"
+          class="btn btn-light"
+        >
+          <i
+            class="icon ion-arrow-down-b course-box-text"
+            id="minimize-icon"
+          ></i>
+        </button>
+      </div>
+      <div id="course-description-box-outer">
+        <div id="course-description-box"></div>
+      </div>
       <div id="selected-courses-wrapper">
-        <div id="course-description-box-outer" class="toolbar">
-          <div id="course-description-box"></div>
-        </div>
-
         <ul id="selected-courses-list" class="sortable-list courses-list"></ul>
       </div>
     </div>
@@ -383,10 +413,30 @@
           <div class="modal-body">
             <p>
               The <b>Course Search</b> tab lists all courses for the coming
-              semester. Click on the <b>+</b> button to add a course. Each
-              section is listed separately, so make sure to get all the ones you
-              want. You can click on a course to see more information about it
-              in the upper-right panel.
+              semester. You can specify additional filters in the form of
+              <span class="modal-input-text">key:text</span> to filter on more
+              specific parameters. The following filters are supported (all case
+              insensitive):
+            </p>
+            <ul>
+              <li>
+                <span class="modal-input-text">dept</span>: filter by department
+                (e.g. MATH, CSCI)
+              </li>
+              <li>
+                <span class="modal-input-text">col</span>: filter by college
+                (e.g. HM, SC)
+              </li>
+              <li>
+                <span class="modal-input-text">days</span>: filter by class
+                meeting days (e.g. M, =TR, <=MWF, >MW)
+              </li>
+            </ul>
+            <p>
+              Click on the <b>+</b> button to add a course. Each section is
+              listed separately, so make sure to get all the ones you want. You
+              can click on a course to see more information about it in the
+              upper-right panel.
             </p>
             <p>
               On the right-hand column, you can click and drag courses to
@@ -580,7 +630,14 @@
       integrity="sha384-l7aOEgTYxgJ0nn2MziQWZCvuvJ2PtNcP05R4QwEoHW+kIS1gFpzupcQ7WhAdRKuq"
       crossorigin="anonymous"
     ></script>
-    <script src="js/vendor/ics-0.2.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redom/3.24.1/redom.min.js"></script>
     <script src="js/hyperschedule.js"></script>
+    <if condition="ANALYTICS">
+      <script
+        src="https://cdn.usefathom.com/script.js"
+        site="SNRUMQQA"
+        defer
+      ></script>
+    </if>
   </body>
 </html>

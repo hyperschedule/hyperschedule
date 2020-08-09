@@ -4,6 +4,10 @@
 // M-x occur with the following query: ^\(///+\|const\|\(async \)?function\|let\)
 
 /// Globals
+//// Modules
+
+const ics = require("/js/vendor/ics-0.2.0.min.js");
+
 //// Data constants
 
 const millisecondsPerHour = 3600 * 1000;
@@ -16,6 +20,14 @@ const extraPagesToLoad = 2;
 const apiURL = process.env.API_URL || "https://hyperschedule.herokuapp.com";
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
+
+const filterKeywords = {
+  "dept:": ["dept:", "department:"],
+  "college:": ["college", "col:", "school:", "sch:"],
+  "days:": ["days:", "day:"]
+};
+
+filterInequalities = ["<=", ">=", "<", ">", "="];
 
 //// DOM elements
 
@@ -63,6 +75,13 @@ const settingsButton = document.getElementById("settings-button");
 
 const conflictCoursesRadios = document.getElementsByName("conflict-courses");
 
+const courseDescriptionMinimizeOuter = document.getElementById(
+  "minimize-outer"
+);
+const courseDescriptionMinimize = document.getElementById(
+  "course-description-minimize"
+);
+const minimizeIcon = document.getElementById("minimize-icon");
 const courseDescriptionBox = document.getElementById("course-description-box");
 const courseDescriptionBoxOuter = document.getElementById(
   "course-description-box-outer"
@@ -517,13 +536,97 @@ function courseMatchesSearchQuery(course, query) {
 }
 
 function coursePassesTextFilters(course, textFilters) {
-  if (textFilters.department) {
-    if (!course.courseCode.split(" ")[0].match(textFilters.department)) {
-      return false;
-    }
+  const lowerCourseCode = course.courseCode.toLowerCase();
+  const dept = lowerCourseCode.split(" ")[0];
+  const col = lowerCourseCode.split(" ")[2].split("-")[0];
+
+  if (
+    (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
+    (textFilters["college:"] && !col.match(textFilters["college:"])) ||
+    (textFilters["days:"] &&
+      !coursePassesDayFilter(course, textFilters["days:"]))
+  ) {
+    return false;
   }
+
   return true;
 }
+
+function parseDaysInequality(inputDays) {
+  for (const rel of filterInequalities)
+    if (inputDays.startsWith(rel)) return rel;
+  return "";
+}
+
+function generateDayFilter(course) {
+  const scheduleList = course.courseSchedule;
+  let days = new Set();
+
+  for (let schedule of scheduleList) {
+    const str1 = schedule.scheduleDays.toLowerCase();
+    const arr1 = [...str1];
+    arr1.forEach(days.add, days);
+  }
+  return days;
+}
+
+function generateInputDays(input) {
+  let days = new Set();
+  const arr1 = [...input];
+  arr1.forEach(days.add, days);
+  return days;
+}
+
+function coursePassesDayFilter(course, inputString) {
+  const courseDays = generateDayFilter(course);
+  const rel = parseDaysInequality(inputString);
+  const inputDays = generateInputDays(
+    inputString.substring(rel.length).toLowerCase()
+  );
+
+  switch (rel) {
+    case "<=":
+      // courseDays is a subset of inputDays
+      return courseDays.subSet(inputDays);
+    case "":
+    case ">=":
+      // inputDays is a subset of courseDays
+      return inputDays.subSet(courseDays);
+    case "=":
+      // inputDays match exactly courseDays
+      const difference1 = new Set(
+        [...courseDays].filter(x => !inputDays.has(x))
+      );
+      const difference2 = new Set(
+        [...inputDays].filter(x => !courseDays.has(x))
+      );
+      return difference1.size == 0 && difference2.size == 0;
+    case "<":
+      // courseDays is a proper subset of inputDays
+      return courseDays.subSet(inputDays) && inputDays.size != courseDays.size;
+    case ">":
+      // inputDays is a proper subset of courseDays
+      return inputDays.subSet(courseDays) && inputDays.size != courseDays.size;
+    default:
+      return false;
+  }
+}
+
+Set.prototype.subSet = function(otherSet) {
+  // if size of this set is greater
+  // than otherSet then it can'nt be
+  //  a subset
+  if (this.size > otherSet.size) return false;
+  else {
+    for (var elem of this) {
+      // if any of the element of
+      // this is not present in the
+      // otherset then return false
+      if (!otherSet.has(elem)) return false;
+    }
+    return true;
+  }
+};
 
 ///// Course scheduling
 
@@ -708,8 +811,6 @@ async function retrieveAPI(endpoint) {
 //// DOM setup
 
 function attachListeners() {
-  window.onload = onResize();
-
   let ent = createCourseEntity("placeholder");
   courseSearchResultsList.appendChild(ent);
   gCourseEntityHeight = ent.clientHeight;
@@ -745,6 +846,10 @@ function attachListeners() {
   });
   settingsButton.addEventListener("click", showSettingsModal);
 
+  courseDescriptionMinimize.addEventListener(
+    "click",
+    minimizeCourseDescription
+  );
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -754,7 +859,6 @@ function attachListeners() {
   });
 
   courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
-  window.addEventListener("resize", rerenderCourseSearchResults);
 
   for (let i = 0; conflictCoursesRadios[i]; i++) {
     conflictCoursesRadios[i].addEventListener("click", () => {
@@ -763,8 +867,15 @@ function attachListeners() {
     });
   }
 
+  // DO NOT use Javascript size computations for ANYTHING ELSE!  The
+  // _only_ reason we use Javascript to set the course description box
+  // height is to leverage CSS transitions to animate the resizing of
+  // the course description; in _all other cases_, especially for
+  // static layout calculations, use CSS Flexbox!!!
   window.addEventListener("resize", updateCourseDescriptionBoxHeight);
-  window.addEventListener("resize", onResize);
+
+  // Re-render virtualized list on viewport resizes.
+  window.addEventListener("resize", rerenderCourseSearchResults);
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
@@ -781,13 +892,6 @@ function attachListeners() {
     importExportCopyButton.classList.remove("copy-button-copied");
     importExportCopyButton.classList.remove("copy-button-error");
   });
-}
-
-function onResize() {
-  updateSearchScheduleColumn();
-  updateSelectedCoursesWrapper();
-  updateSelectedCoursesBar();
-  updateCourseSearchBar();
 }
 
 //// DOM element creation
@@ -967,61 +1071,49 @@ function createSlotEntities(course, slot) {
         continue;
       }
 
-      for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
-        const horizontalOffsetPercentage =
-          ((dayIndex + 1 + left / slot.scheduleTermCount) / 6) * 100;
-        const widthPercentage =
-          ((right - left + 1) / slot.scheduleTermCount / 6) * 100;
-        const style =
-          `top: ${verticalOffsetPercentage}%; ` +
-          `left: ${horizontalOffsetPercentage}%; ` +
-          `width: ${widthPercentage}%; ` +
-          `height: ${heightPercentage}%; `;
+      const wrapper = redom.el(
+        "div.schedule-slot-wrapper",
+        {
+          style: {
+            gridColumnStart: Math.round(dayIndex + 2),
+            gridRowStart: Math.round(timeSince8am * 12 + 2),
+            gridRowEnd: "span " + Math.round(duration * 12),
+            gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)"
+          },
+          onclick: () => setCourseDescriptionBox(course)
+        },
+        getConsecutiveRanges(slot.scheduleTerms).map(([left, right]) =>
+          redom.el(
+            "div",
+            {
+              class:
+                "schedule-slot" +
+                (course.starred ? " schedule-slot-starred" : ""),
+              style: {
+                gridColumnStart: left + 1,
+                gridColumnEnd: right + 1,
+                backgroundColor: getCourseColor(course)
+              }
+            },
+            [
+              redom.el("p.schedule-slot-text-wrapper", [
+                redom.el("p.schedule-slot-course-code", course.courseCode),
+                redom.el(
+                  "p.schedule-slot-course-name",
+                  course.courseName +
+                    " (" +
+                    course.courseSeatsFilled +
+                    "/" +
+                    course.courseSeatsTotal +
+                    ")"
+                )
+              ])
+            ]
+          )
+        )
+      );
 
-        const wrapper = document.createElement("div");
-        wrapper.setAttribute("style", style);
-        wrapper.classList.add("schedule-slot-wrapper");
-
-        const div = document.createElement("div");
-        wrapper.appendChild(div);
-
-        div.classList.add("schedule-slot");
-        if (course.starred) {
-          div.classList.add("schedule-slot-starred");
-        }
-
-        div.style["background-color"] = getCourseColor(course);
-
-        wrapper.addEventListener("click", () => {
-          setCourseDescriptionBox(course);
-        });
-
-        const courseCodeContainer = document.createElement("p");
-        const courseNameContainer = document.createElement("p");
-        const courseCodeNode = document.createTextNode(course.courseCode);
-        const courseNameNode = document.createTextNode(
-          course.courseName +
-            " (" +
-            course.courseSeatsFilled +
-            "/" +
-            course.courseSeatsTotal +
-            ")"
-        );
-        courseCodeContainer.classList.add("schedule-slot-course-code");
-        courseNameContainer.classList.add("schedule-slot-course-name");
-        courseCodeContainer.appendChild(courseCodeNode);
-        courseNameContainer.appendChild(courseNameNode);
-
-        const textContainer = document.createElement("p");
-        textContainer.classList.add("schedule-slot-text-wrapper");
-
-        textContainer.appendChild(courseCodeContainer);
-        textContainer.appendChild(courseNameContainer);
-
-        div.appendChild(textContainer);
-
-        entities.push(wrapper);
-      }
+      entities.push(wrapper);
     }
   }
   return entities;
@@ -1031,14 +1123,19 @@ function createSlotEntities(course, slot) {
 
 function processSearchText() {
   const searchText = courseSearchInput.value.trim().split(/\s+/);
-  const filterKeywords = ["dept:"];
+  let filterKeywordsValues = [];
+  for (let key of Object.keys(filterKeywords)) {
+    filterKeywordsValues = filterKeywordsValues.concat(filterKeywords[key]);
+  }
   let filtersText = [];
   let queryText = [];
+
   for (let text of searchText) {
+    text = text.toLowerCase();
     if (
       _.some(filter => {
         return text.includes(filter);
-      }, filterKeywords)
+      }, filterKeywordsValues)
     ) {
       filtersText.push(text);
     } else {
@@ -1061,9 +1158,17 @@ function getSearchQuery(searchTextArray) {
 function getSearchTextFilters(filtersTextArray) {
   let filter = {};
   for (let text of filtersTextArray) {
-    if (text.slice(0, 5) == "dept:") {
-      filter.department = new RegExp(quoteRegexp(text.split(":")[1]), "i");
+    const keyword = text.split(":")[0] + ":";
+    const filterText = text.split(":")[1];
+    if (!(keyword in Object.keys(filterKeywords))) {
+      for (let key of Object.keys(filterKeywords)) {
+        if (filterKeywords[key].includes(keyword)) {
+          keyword = key;
+          break;
+        }
+      }
     }
+    filter[keyword] = filterText;
   }
   return filter;
 }
@@ -1121,7 +1226,11 @@ function updateCourseSearchResults() {
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
-              (gShowClosedCourses || !isCourseClosed(course))
+              (gShowClosedCourses || !isCourseClosed(course)) &&
+              (!gHideAllConflictingCourses ||
+                !courseConflictWithSchedule(course, false)) &&
+              (!gHideStarredConflictingCourses ||
+                !courseConflictWithSchedule(course, true))
             );
           });
   }
@@ -1185,7 +1294,9 @@ function updateSelectedCoursesList() {
   }
   for (let idx = 0; idx < gSelectedCourses.length; ++idx) {
     const course = gSelectedCourses[idx];
-    selectedCoursesList.appendChild(createCourseEntity(course, { idx }));
+    selectedCoursesList.appendChild(
+      createCourseEntity(course, { idx, alreadyAdded: true })
+    );
   }
   sortable(".sortable-list");
 }
@@ -1209,130 +1320,15 @@ function updateSchedule() {
 
 function updateCourseDescriptionBoxHeight() {
   if (
-    !courseDescriptionBoxOuter.classList.contains(
+    courseDescriptionBoxOuter.classList.contains(
       "course-description-box-visible"
     )
   ) {
-    return;
+    courseDescriptionBoxOuter.style.height =
+      "" + courseDescriptionBox.scrollHeight + "px";
+  } else {
+    courseDescriptionBoxOuter.style.height = "0px";
   }
-  courseDescriptionBoxOuter.style.height =
-    "" + courseDescriptionBox.scrollHeight + "px";
-
-  courseDescriptionBoxOuter.style.marginBottom = "9px";
-}
-
-function updateCourseSearchBar() {
-  const courseSearchInputWrapper = document.getElementById(
-    "course-search-course-name-input-wrapper"
-  );
-  const helpButtonWrapper = document.getElementById("help-button-wrapper");
-  const helpButton = document.getElementById("help-button");
-  const filterButtonWrapper = document.getElementById("filter-button-wrapper");
-  const filterButton = document.getElementById("filter-button");
-
-  // default value
-  let tableValue = "table-cell";
-  let marginValue = "0 auto";
-
-  let minSearchInputWidth = 100;
-  if (
-    courseSearchColumn.offsetWidth <
-    minSearchInputWidth + filterButton.offsetWidth + helpButton.offsetWidth
-  ) {
-    tableValue = "table-row";
-    marginValue = "5px auto";
-  }
-  courseSearchInputWrapper.style.display = tableValue;
-  courseSearchInput.style.margin = marginValue;
-  helpButtonWrapper.style.display = tableValue;
-  helpButton.style.margin = marginValue;
-  filterButtonWrapper.style.display = tableValue;
-  filterButton.style.margin = marginValue;
-}
-
-function updateSelectedCoursesBar() {
-  const githubLink = document.getElementById("github-link");
-  const importExportButtonWrapper = document.getElementById(
-    "import-export-data-button-wrapper"
-  );
-  const printDropdownWrapper = document.getElementById(
-    "print-dropdown-wrapper"
-  );
-  const settingsButtonWrapper = document.getElementById(
-    "settings-button-wrapper"
-  );
-
-  // default values
-  let tableValue = "table-cell";
-  let floatValue = "right";
-  let marginValue = "0 auto";
-  let settingsButtonMarginValue = "0 3px 0 auto";
-  let rightButtonsPaddingLeftValue = "10px";
-
-  let linkWidth = 100;
-  if (
-    selectedCoursesColumn.offsetWidth <
-    linkWidth +
-      importExportDataButton.offsetWidth +
-      printDropdown.offsetWidth +
-      settingsButton.offsetWidth
-  ) {
-    tableValue = "table-row";
-    floatValue = "left";
-    marginValue = "5px auto";
-    settingsButtonMarginValue = "0 5px 0 auto";
-    rightButtonsPaddingLeftValue = "0px";
-  }
-  githubLink.style.display = tableValue;
-  importExportButtonWrapper.style.display = tableValue;
-  importExportDataButton.style.float = floatValue;
-  importExportDataButton.style.margin = marginValue;
-  printDropdownWrapper.style.display = tableValue;
-  printDropdownWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  printDropdown.style.float = floatValue; //TODO
-  printDropdown.style.margin = marginValue;
-  settingsButtonWrapper.style.display = tableValue;
-  settingsButtonWrapper.style.paddingLeft = rightButtonsPaddingLeftValue;
-  settingsButton.style.float = floatValue;
-  settingsButton.style.margin = settingsButtonMarginValue;
-}
-
-function updateSearchScheduleColumn() {
-  const searchScheduleToggleBar = document.getElementById(
-    "course-search-schedule-toggle-bar"
-  );
-  const courseSearchBar = document.getElementById("course-search-bar");
-  const columnPaddingTop = 20;
-
-  const placeholderHeight = 50;
-  const listHeight =
-    courseSearchScheduleColumn.offsetHeight -
-    columnPaddingTop -
-    searchScheduleToggleBar.offsetHeight -
-    courseSearchBar.offsetHeight -
-    placeholderHeight;
-
-  const scheduleHeight =
-    courseSearchScheduleColumn.offsetHeight -
-    columnPaddingTop -
-    searchScheduleToggleBar.offsetHeight;
-  scheduleColumn.style.height = "" + scheduleHeight + "px";
-}
-
-function updateSelectedCoursesWrapper() {
-  const selectedCoursesWrapper = document.getElementById(
-    "selected-courses-wrapper"
-  );
-  const selectedCoursesBar = document.getElementById("selected-courses-bar");
-
-  const columnPaddingTop = 20;
-  const wrapperMarginTop = 8;
-  const wrapperHeight =
-    selectedCoursesColumn.offsetHeight -
-    columnPaddingTop -
-    selectedCoursesBar.offsetHeight -
-    wrapperMarginTop;
-  selectedCoursesWrapper.style.height = "" + wrapperHeight + "px";
 }
 
 ///// DOM updates miscellaneous
@@ -1361,16 +1357,43 @@ function setCourseDescriptionBox(course) {
     paragraph.appendChild(text);
     courseDescriptionBox.appendChild(paragraph);
   }
+  minimizeArrowPointUp();
+  courseDescriptionVisible();
+}
 
+function minimizeCourseDescription() {
   if (
-    !courseDescriptionBoxOuter.classList.contains(
+    courseDescriptionBoxOuter.classList.contains(
       "course-description-box-visible"
     )
   ) {
-    courseDescriptionBoxOuter.classList.add("course-description-box-visible");
+    courseDescriptionInvisible();
+    minimizeArrowPointDown();
+  } else {
+    courseDescriptionVisible();
+    minimizeArrowPointUp();
   }
+}
 
+function courseDescriptionInvisible() {
+  courseDescriptionBoxOuter.classList.remove("course-description-box-visible");
   updateCourseDescriptionBoxHeight();
+}
+
+function courseDescriptionVisible() {
+  courseDescriptionBoxOuter.classList.add("course-description-box-visible");
+  courseDescriptionMinimizeOuter.style.height = `${courseDescriptionMinimizeOuter.scrollHeight}px`;
+  updateCourseDescriptionBoxHeight();
+}
+
+function minimizeArrowPointUp() {
+  minimizeIcon.classList.remove("ion-arrow-down-b");
+  minimizeIcon.classList.add("ion-arrow-up-b");
+}
+
+function minimizeArrowPointDown() {
+  minimizeIcon.classList.remove("ion-arrow-up-b");
+  minimizeIcon.classList.add("ion-arrow-down-b");
 }
 
 /// Global state handling
@@ -1539,9 +1562,12 @@ function applyDiff(data, diff) {
 
 async function retrieveCourseData() {
   let apiEndpoint = "/api/v3/courses?school=hmc";
-  if (gApiData !== null) {
-    apiEndpoint += `&since=${gApiData.until}`;
-  }
+  // Hotfix for error in production that prevents course data from
+  // being updated correctly. Kills performance but should ensure data
+  // correctness.
+  // if (gApiData !== null) {
+  //   apiEndpoint += `&since=${gApiData.until}`;
+  // }
   const apiResponse = await retrieveAPI(apiEndpoint);
   if (apiResponse.error) {
     throw Error(`API error: ${apiResponse.error}`);
@@ -1549,7 +1575,8 @@ async function retrieveCourseData() {
   // Atomic update.
   let apiData = gApiData;
   let wasUpdated = false;
-  if (apiResponse.full) {
+  if (apiResponse.full || true) {
+    // hotfix
     apiData = _.pick(["data", "until"], apiResponse);
     wasUpdated = true;
   } else {
@@ -1562,7 +1589,10 @@ async function retrieveCourseData() {
   }
   for (const selectedCourse of gSelectedCourses) {
     if (_.has(selectedCourse.courseCode, apiData.data.courses)) {
-      _.assign(selectedCourse, apiData.data.courses[selectedCourse.courseCode]);
+      Object.assign(
+        selectedCourse,
+        apiData.data.courses[selectedCourse.courseCode]
+      );
     }
   }
 

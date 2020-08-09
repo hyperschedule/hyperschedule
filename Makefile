@@ -30,7 +30,10 @@ build: ## Compile JavaScript for production
 .PHONY: dev
 dev: ## Start development server and automatically recompile JavaScript
 	@[ -n "$$HYPERSCHEDULE_NO_HOOKS" ] || make -s hooks
-	$(BIN)/parcel src/index.html --port "$${PORT:-5000}"
+	$(BIN)/parcel serve src/index.html \
+		--port "$${PORT:-5000}" \
+		--hmr-port "$${HMR_PORT:-54321}"
+
 
 .PHONY: docker
 docker: ## Start shell or run command (e.g. make docker CMD="make dev")
