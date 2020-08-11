@@ -707,6 +707,8 @@ Set.prototype.subSet = function(otherSet) {
 ///// Course scheduling
 
 function generateScheduleSlotDescription(slot) {
+  // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
+  // TODO: change if 7am
   return (
     dayStringForSchedule(slot.scheduleDays) +
     " " +
