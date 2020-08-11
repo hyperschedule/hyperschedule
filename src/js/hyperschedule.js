@@ -1076,7 +1076,7 @@ function createSlotEntities(course, slot) {
         {
           style: {
             gridColumnStart: Math.round(dayIndex + 2),
-            gridRowStart: Math.round(timeSince8am * 12 + 2),
+            gridRowStart: Math.round(timeSince7am * 12 + 2),
             gridRowEnd: "span " + Math.round(duration * 12),
             gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)"
           },
