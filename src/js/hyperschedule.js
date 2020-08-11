@@ -1457,16 +1457,7 @@ function updateCourseDescriptionBoxHeight() {
 ///// DOM updates miscellaneous
 
 function showImportExportModal() {
-  let selectedCoursesAdjusted = JSON.parse(JSON.stringify(gSelectedCourses));
-  for (let course of selectedCoursesAdjusted) {
-    for (let time of course.courseSchedule) {
-      time.scheduleDays = dayStringForSchedule(time.scheduleDays);
-      time.scheduleStartTime = timeStringForAdjust(time.scheduleStartTime);
-      time.scheduleEndTime = timeStringForAdjust(time.scheduleEndTime);
-    }
-  }
-
-  importExportTextArea.value = JSON.stringify(selectedCoursesAdjusted, 2);
+  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
   $("#import-export-modal").modal("show");
 }
 
