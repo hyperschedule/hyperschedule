@@ -1060,10 +1060,10 @@ function createSlotEntities(course, slot) {
   for (const slot of course.courseSchedule) {
     const startTime = timeStringToHours(slot.scheduleStartTime);
     const endTime = timeStringToHours(slot.scheduleEndTime);
-    const timeSince8am = startTime - 8;
+    const timeSince7am = startTime - 7;
     const duration = endTime - startTime;
     const text = course.courseName;
-    const verticalOffsetPercentage = ((timeSince8am + 1) / 16) * 100;
+    const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
     const heightPercentage = (duration / 16) * 100;
     for (const day of slot.scheduleDays) {
       const dayIndex = "MTWRF".indexOf(day);
@@ -1076,7 +1076,7 @@ function createSlotEntities(course, slot) {
         {
           style: {
             gridColumnStart: Math.round(dayIndex + 2),
-            gridRowStart: Math.round(timeSince8am * 12 + 2),
+            gridRowStart: Math.round(timeSince7am * 12 + 2),
             gridRowEnd: "span " + Math.round(duration * 12),
             gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)"
           },
@@ -1826,6 +1826,7 @@ function downloadPDF(starredOnly) {
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
       [
+        "7:00 am",
         "8:00 am",
         "9:00 am",
         "10:00 am",
@@ -1840,8 +1841,7 @@ function downloadPDF(starredOnly) {
         "7:00 pm",
         "8:00 pm",
         "9:00 pm",
-        "10:00 pm",
-        "11:00 pm"
+        "10:00 pm"
       ][i],
       "right"
     );
@@ -1882,9 +1882,9 @@ function downloadPDF(starredOnly) {
             (columnWidth * (right - left + 1)) / slot.scheduleTermCount;
 
           const yStart =
-            (startHours - 8 + startMinutes / 60) * rowHeight + 0.75 * 72;
+            (startHours - 7 + startMinutes / 60) * rowHeight + 0.75 * 72;
 
-          const yEnd = (endHours - 8 + endMinutes / 60) * rowHeight + 0.75 * 72;
+          const yEnd = (endHours - 7 + endMinutes / 60) * rowHeight + 0.75 * 72;
 
           pdf.setFillColor(...getCourseColor(course, "rgbArray"));
 
