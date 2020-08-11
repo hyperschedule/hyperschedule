@@ -1882,9 +1882,9 @@ function downloadPDF(starredOnly) {
             (columnWidth * (right - left + 1)) / slot.scheduleTermCount;
 
           const yStart =
-            (startHours - 8 + startMinutes / 60) * rowHeight + 0.75 * 72;
+            (startHours - 7 + startMinutes / 60) * rowHeight + 0.75 * 72;
 
-          const yEnd = (endHours - 8 + endMinutes / 60) * rowHeight + 0.75 * 72;
+          const yEnd = (endHours - 7 + endMinutes / 60) * rowHeight + 0.75 * 72;
 
           pdf.setFillColor(...getCourseColor(course, "rgbArray"));
 
