@@ -56,6 +56,7 @@ const pacificScheduleTimes = [
   "19:00",
   "20:00",
   "21:00",
+  "22:00"
 ];
 
 //// DOM elements
@@ -706,8 +707,6 @@ Set.prototype.subSet = function(otherSet) {
 ///// Course scheduling
 
 function generateScheduleSlotDescription(slot) {
-  // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
-  // TODO: change if 7am
   return (
     dayStringForSchedule(slot.scheduleDays) +
     " " +
@@ -1148,7 +1147,7 @@ function createSlotEntities(course, slot) {
   for (const slot of course.courseSchedule) {
     const startTime = timeStringToHours(slot.scheduleStartTime);
     const endTime = timeStringToHours(slot.scheduleEndTime);
-    const timeSince8am = startTime - timeStringToHours("07:00");
+    const timeSince7am = startTime - timeStringToHours("07:00");
     const duration = endTime - startTime;
     const text = course.courseName;
     const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
@@ -1413,9 +1412,8 @@ function updateSchedule() {
 
 function updateScheduleTimeZone() {
   for (let i = 0; scheduleTableDays[i]; i++) {
-    // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
-    // TODO: change if 7am
-    if (gTimeZoneValue >= 8.0) {
+    // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
+    if (gTimeZoneValue >= 9.0) {
       scheduleTableDays[i].innerText = pacificScheduleDays[i + 2];
     } else {
       scheduleTableDays[i].innerText = pacificScheduleDays[i + 1];
@@ -1998,9 +1996,8 @@ function downloadPDF(starredOnly) {
       for (const day of slot.scheduleDays) {
         for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
           const weekdayAdjustment = weekdayCharToInteger(day);
-          // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
-          // TODO: change if 7am (+9 instead)
-          if (gTimeZoneValue >= 8.0) {
+          // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
+          if (gTimeZoneValue >= 9.0) {
             weekdayAdjustment += 1;
           }
 
