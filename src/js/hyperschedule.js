@@ -12,6 +12,7 @@ const ics = require("/js/vendor/ics-0.2.0.min.js");
 
 const millisecondsPerHour = 3600 * 1000;
 const pacificTimeZoneValue = -8.0;
+const pacificTimeZoneId = 5;
 
 const courseSearchPageSize = 20;
 
@@ -146,6 +147,7 @@ let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
 let gGreyConflictCourses = greyConflictCoursesOptions[0];
 let gTimeZoneValue = pacificTimeZoneValue;
+let gTimeZoneId = pacificTimeZoneId;
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -956,6 +958,9 @@ function attachListeners() {
     gTimeZoneValue = parseFloat(
       timeZoneDropdown.options[timeZoneDropdown.selectedIndex].value
     );
+    gTimeZoneId = parseInt(
+      timeZoneDropdown.options[timeZoneDropdown.selectedIndex].id.substring(19)
+    );
     toggleTimeZone();
   });
 
@@ -1305,13 +1310,10 @@ function updateConflictCoursesRadio() {
   }
 }
 
-function updateTimeZoneDropDown() {
-  for (let i = 0; timeZoneDropdown.options[i]; i++) {
-    if (timeZoneDropdown.options[i].value == gTimeZoneValue) {
-      timeZoneDropdown.options[i].selected = true;
-      break;
-    }
-  }
+function updateTimeZoneDropdown() {
+  document.getElementById(
+    "time-zone-dropdown-" + gTimeZoneId.toString()
+  ).selected = true;
 }
 
 function updateCourseSearchResults() {
@@ -1568,7 +1570,7 @@ function handleGlobalStateUpdate() {
   updateShowClosedCoursesCheckbox();
   updateShowConflictingCoursesCheckbox();
   updateConflictCoursesRadio();
-  updateTimeZoneDropDown();
+  updateTimeZoneDropdown();
 
   // Update course displays.
   updateCourseDisplays();
@@ -1810,6 +1812,7 @@ function writeStateToLocalStorage() {
     JSON.stringify(gGreyConflictCourses)
   );
   localStorage.setItem("timeZoneValue", gTimeZoneValue);
+  localStorage.setItem("timeZoneId", gTimeZoneId);
 }
 
 function oldCourseToString(course) {
@@ -1910,6 +1913,11 @@ function readStateFromLocalStorage() {
     "timeZoneValue",
     _.isNumber,
     pacificTimeZoneValue
+  );
+  gTimeZoneId = readFromLocalStorage(
+    "timeZoneId",
+    _.isNumber,
+    pacificTimeZoneId
   );
 }
 
