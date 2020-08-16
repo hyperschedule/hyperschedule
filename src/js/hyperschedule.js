@@ -11,8 +11,12 @@ const ics = require("/js/vendor/ics-0.2.0.min.js");
 //// Data constants
 
 const millisecondsPerHour = 3600 * 1000;
-const pacificTimeZoneValue = -8.0;
+const pacificTimeZoneValues = [-8.0, -7.0];
 const pacificTimeZoneId = 5;
+// const euSavingTimeZoneDates = [
+//   nthSundayOfMonth(9, -1, 1, 0),   // starts: last Sunday in Oct, 1am UTC
+//   nthSundayOfMonth(2, -1, 1, 0)    // ends: last Sunday in Mar, 1am UTC
+// ];
 
 const courseSearchPageSize = 20;
 
@@ -147,8 +151,10 @@ let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
 let gGreyConflictCourses = greyConflictCoursesOptions[0];
-let gTimeZoneValue = pacificTimeZoneValue;
-let gTimeZoneId = pacificTimeZoneId;
+let gTimeZoneValues = pacificTimeZoneValues; // time zone values of selected time zone
+let gTimeZoneId = pacificTimeZoneId; // time zone id of selected time zone
+let gTimeZoneSavings = 0; // 0 if savings time, 1 if daylight time (for selected time zone)
+let gPacificTimeSavings = 0; // 0 if PST, 1 if PDT
 
 // Transient data.
 let gCurrentlySorting = false;
@@ -291,10 +297,10 @@ function catchEvent(event) {
 
 //// Time utility functions
 
-function dayStringForSchedule(dayString) {
-  let daysOfWeek = "MTWRF";
+function dayStringForSchedule(dayString, startTime) {
+  let daysOfWeek = "MTWRFSU";
 
-  if (gTimeZoneValue >= 8.0) {
+  if (timeStringToHours(startTime) >= 24) {
     let days = "";
     for (let i = 0; i < dayString.length; i++) {
       days += daysOfWeek.charAt(daysOfWeek.indexOf(dayString.charAt(i)) + 1);
@@ -307,13 +313,15 @@ function dayStringForSchedule(dayString) {
 function timeStringToHoursAndMinutes(timeString) {
   let hours =
     parseInt(timeString.substring(0, 2), 10) +
-    parseInt(gTimeZoneValue) -
-    pacificTimeZoneValue;
+    parseInt(gTimeZoneValues[gTimeZoneSavings]) -
+    pacificTimeZoneValues[gPacificTimeSavings];
   let minutes = parseInt(timeString.substring(3, 5), 10);
 
-  if (!gTimeZoneValue.toString().includes(".0")) {
+  if (!gTimeZoneValues[gTimeZoneSavings].toString().includes(".0")) {
     const adjustMin = parseInt(
-      parseFloat("0." + gTimeZoneValue.toString().split(".")[1]) * 60,
+      parseFloat(
+        "0." + gTimeZoneValues[gTimeZoneSavings].toString().split(".")[1]
+      ) * 60,
       10
     );
     minutes += adjustMin;
@@ -334,7 +342,7 @@ function timeStringToHours(timeString) {
 
 function timeStringTo12HourString(timeString) {
   let [hours, minutes] = timeStringToHoursAndMinutes(timeString);
-  const pm = hours >= 12 && hours <= 23;
+  const pm = hours % 24 >= 12 && hours % 24 <= 23;
   hours -= 1;
   hours %= 12;
   hours += 1;
@@ -356,6 +364,173 @@ function timeStringForSchedule(timeString) {
     time.substring(2, 5) +
     (pm ? "pm" : "am")
   );
+}
+
+function checkPST() {
+  let today = new Date();
+  let start = nthSundayOfMonth(
+    10,
+    1,
+    2,
+    0,
+    pacificTimeZoneValues[gPacificTimeSavings]
+  );
+  let end = nthSundayOfMonth(
+    2,
+    2,
+    2,
+    0,
+    pacificTimeZoneValues[gPacificTimeSavings]
+  );
+  return today > start || today < end ? 0 : 1;
+}
+
+function checkTimeZoneSavings() {
+  let selectedTimeZoneClassList =
+    timeZoneDropdown.options[timeZoneDropdown.selectedIndex].classList;
+
+  if (selectedTimeZoneClassList.length == 0) {
+    return 0;
+  }
+
+  let savingTimeZone = selectedTimeZoneClassList[0].substring(
+    0,
+    selectedTimeZoneClassList[0].indexOf("-")
+  );
+  let start, end;
+  let timeZoneValue = gTimeZoneValues[0];
+
+  switch (savingTimeZone) {
+    case "nz":
+      start = nthSundayOfMonth(8, -1, 2, 0, timeZoneValue);
+      end = nthSundayOfMonth(3, 1, 3, 0, timeZoneValue);
+      break;
+
+    case "us":
+      start = nthSundayOfMonth(10, 1, 2, 0, timeZoneValue);
+      end = nthSundayOfMonth(2, 2, 2, 0, timeZoneValue);
+      break;
+
+    case "mex":
+      start = nthSundayOfMonth(9, -1, 2, 0, timeZoneValue);
+      end = nthSundayOfMonth(3, 1, 2, 0, timeZoneValue);
+      break;
+
+    case "chile":
+      start = nthSundayOfMonth(8, 1, 1, 0, timeZoneValue);
+      end = nthSundayOfMonth(3, 1, 1, 0, timeZoneValue);
+      break;
+
+    case "eu":
+      start = nthSundayOfMonth(9, -1, 1, 0, 0);
+      end = nthSundayOfMonth(2, -1, 1, 0, 0);
+      break;
+
+    case "amman":
+      start = nthSundayOfMonth(9, -1, 1, 5, timeZoneValue);
+      end = nthSundayOfMonth(2, -1, 1, 5, timeZoneValue);
+      break;
+
+    case "israel":
+      start = nthSundayOfMonth(9, -1, 2, 0, timeZoneValue);
+      end = nthSundayOfMonth(2, -1, 1, 0, timeZoneValue);
+      end.setDate(end.getDate() - 2);
+      break;
+
+    case "iran":
+      let year = new Date().getFullYear();
+      let [timeZoneSign, timeZoneString] = getTimeZoneString(timeZoneValue);
+      start = new Date(
+        year.toString() + "-09-22T00:00:00.000" + timeZoneSign + timeZoneString
+      );
+      end = new Date(
+        year.toString() + "-03-22T00:00:00.000" + timeZoneSign + timeZoneString
+      );
+      break;
+
+    case "aus":
+      start = nthSundayOfMonth(9, 1, 2, 0, timeZoneValue);
+      end = nthSundayOfMonth(3, 1, 2, 0, timeZoneValue);
+      break;
+
+    case "fiji":
+      start = nthSundayOfMonth(10, 2, 2, 0, timeZoneValue);
+      end = nthSundayOfMonth(0, 2, 2, 0, timeZoneValue);
+      break;
+
+    default:
+      return 0;
+  }
+
+  let today = new Date();
+  return today > start || today < end ? 0 : 1;
+}
+
+// month = January (0) to December (11)
+// n = 1st (1) ... last (-1)
+// dayOfWeek = Sunday (0) to Saturday (6)
+function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
+  let fullDate = new Date();
+  let year = fullDate.getFullYear();
+  let date;
+
+  // https://rosettacode.org/wiki/Find_the_last_Sunday_of_each_month#JavaScript
+  var lastDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
+    lastDay[2] = 29;
+  }
+
+  if (n === -1) {
+    fullDate.setFullYear(year, month, lastDay[month]);
+    if (fullDate.getDay() < dayOfWeek) {
+      fullDate.setDate(fullDate.getDate() - 7);
+    }
+    fullDate.setDate(fullDate.getDate() - (fullDate.getDay() - dayOfWeek));
+  } else {
+    fullDate.setFullYear(year, month, 1);
+    fullDate.setDate(
+      ((1 + dayOfWeek + 7 - fullDate.getDay()) % 7) + 7 * (n - 1)
+    );
+  }
+
+  year = year.toString();
+  month = (month + 1).toString().padStart(2, "0");
+  date = fullDate
+    .getDate()
+    .toString()
+    .padStart(2, "0");
+  hours = hours.toString().padStart(2, "0");
+
+  let [timeZoneSign, timeZoneString] = getTimeZoneString(timeZoneValue);
+
+  fullDate = new Date(
+    year +
+      "-" +
+      month +
+      "-" +
+      date +
+      "T" +
+      hours +
+      ":00:00.000" +
+      timeZoneSign +
+      timeZoneString
+  );
+  return fullDate;
+}
+
+function getTimeZoneString(timeZoneValue) {
+  let timeZoneSign = timeZoneValue >= 0 ? "+" : "-";
+  let timeZoneHour = Math.abs(parseInt(timeZoneValue));
+  let timeZoneMin = parseInt(
+    parseFloat("0." + timeZoneValue.toString().split(".")[1]) * 60,
+    10
+  );
+  let timeZoneString =
+    timeZoneHour.toString().padStart(2, "0") +
+    ":" +
+    timeZoneMin.toString().padEnd(2, "0");
+
+  return [timeZoneSign, timeZoneString];
 }
 
 async function runWithExponentialBackoff(
@@ -707,10 +882,8 @@ Set.prototype.subSet = function(otherSet) {
 ///// Course scheduling
 
 function generateScheduleSlotDescription(slot) {
-  // Earliest time in schedule is one day ahead if timeZoneValue is +8 or greater
-  // TODO: change if 7am
   return (
-    dayStringForSchedule(slot.scheduleDays) +
+    dayStringForSchedule(slot.scheduleDays, slot.scheduleStartTime) +
     " " +
     timeStringTo12HourString(slot.scheduleStartTime) +
     " – " +
@@ -946,12 +1119,20 @@ function attachListeners() {
   }
 
   timeZoneDropdown.addEventListener("change", () => {
-    gTimeZoneValue = parseFloat(
-      timeZoneDropdown.options[timeZoneDropdown.selectedIndex].value
-    );
-    gTimeZoneId = parseInt(
-      timeZoneDropdown.options[timeZoneDropdown.selectedIndex].id.substring(19)
-    );
+    let selectedTimeZone =
+      timeZoneDropdown.options[timeZoneDropdown.selectedIndex];
+
+    let timeZoneValue = parseFloat(selectedTimeZone.value);
+    gTimeZoneValues = [];
+    gTimeZoneValues.push(timeZoneValue);
+    if (selectedTimeZone.classList.length > 0) {
+      gTimeZoneValues.push(timeZoneValue + 1);
+    }
+
+    gTimeZoneId = parseInt(selectedTimeZone.id.substring(19));
+
+    gTimeZoneSavings = checkTimeZoneSavings();
+
     toggleTimeZone();
   });
 
@@ -1415,7 +1596,7 @@ function updateSchedule() {
 function updateScheduleTimeZone() {
   for (let i = 0; scheduleTableDays[i]; i++) {
     // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
-    if (gTimeZoneValue >= 9.0) {
+    if (gTimeZoneValues[gTimeZoneSavings] >= 9.0) {
       scheduleTableDays[i].innerText = pacificScheduleDays[i + 2];
     } else {
       scheduleTableDays[i].innerText = pacificScheduleDays[i + 1];
@@ -1792,8 +1973,9 @@ function writeStateToLocalStorage() {
     "greyConflictCourses",
     JSON.stringify(gGreyConflictCourses)
   );
-  localStorage.setItem("timeZoneValue", gTimeZoneValue);
+  localStorage.setItem("timeZoneValues", gTimeZoneValues);
   localStorage.setItem("timeZoneId", gTimeZoneId);
+  localStorage.setItem("timeZoneSavings", gTimeZoneSavings);
 }
 
 function oldCourseToString(course) {
@@ -1890,15 +2072,24 @@ function readStateFromLocalStorage() {
     validateGGreyConflictCourses,
     greyConflictCoursesOptions[0]
   );
-  gTimeZoneValue = readFromLocalStorage(
-    "timeZoneValue",
-    _.isNumber,
-    pacificTimeZoneValue
+  gTimeZoneValues = readFromLocalStorage(
+    "timeZoneValues",
+    validateGTimeZoneValues,
+    pacificTimeZoneValues
   );
+  gTimeZoneValues = _.isArray(gTimeZoneValues)
+    ? gTimeZoneValues
+    : [gTimeZoneValues];
   gTimeZoneId = readFromLocalStorage(
     "timeZoneId",
     _.isNumber,
     pacificTimeZoneId
+  );
+  gPacificTimeSavings = checkPST();
+  gTimeZoneSavings = readFromLocalStorage(
+    "timeZoneSavings",
+    _.isNumber,
+    gPacificTimeSavings
   );
 }
 
@@ -1907,6 +2098,10 @@ function validateGGreyConflictCourses(value) {
     return false;
   }
   return greyConflictCoursesOptions.includes(value);
+}
+
+function validateGTimeZoneValues(value) {
+  return _.isArray(value) || _.isNumber(value);
 }
 
 /// PDF download
@@ -1999,7 +2194,7 @@ function downloadPDF(starredOnly) {
         for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
           const weekdayAdjustment = weekdayCharToInteger(day);
           // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
-          if (gTimeZoneValue >= 9.0) {
+          if (gTimeZoneValues[gTimeZoneSavings] >= 9.0) {
             weekdayAdjustment += 1;
           }
 
