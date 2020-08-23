@@ -1486,6 +1486,7 @@ function updateTimeZoneDropdown() {
   document.getElementById(
     "time-zone-dropdown-" + gTimeZoneId.toString()
   ).selected = true;
+  timeZoneDropdown.dispatchEvent(new Event("change"));
 }
 
 function updateCourseSearchResults() {
