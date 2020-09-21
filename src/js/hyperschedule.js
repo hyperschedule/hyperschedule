@@ -1862,17 +1862,18 @@ function displayScheduleColumn() {
  * The original data object may have been mutated.
  */
 function applyDiff(data, diff) {
+  console.log("applying diff");
   if (!_.isObject(data) || !_.isObject(diff)) {
     return diff;
   }
 
   _.forEach.convert({ cap: false })((val, key) => {
     if (val === "$delete") {
-      _.unset(data, key);
-    } else if (!_.has(data, key)) {
-      _.set(data, key, val);
+      delete data[key];
+    } else if (!data.hasOwnProperty(key)) {
+      data[key] = val;
     } else {
-      _.set(data, key, applyDiff(_.get(data, key), val));
+      data[key] = applyDiff(data[key], val);
     }
   }, diff);
 
@@ -1881,12 +1882,9 @@ function applyDiff(data, diff) {
 
 async function retrieveCourseData() {
   let apiEndpoint = "/api/v3/courses?school=hmc";
-  // Hotfix for error in production that prevents course data from
-  // being updated correctly. Kills performance but should ensure data
-  // correctness.
-  // if (gApiData !== null) {
-  //   apiEndpoint += `&since=${gApiData.until}`;
-  // }
+  if (gApiData !== null && gApiData.until !== undefined) {
+    apiEndpoint += `&since=${gApiData.until}`;
+  }
   const apiResponse = await retrieveAPI(apiEndpoint);
   if (apiResponse.error) {
     throw Error(`API error: ${apiResponse.error}`);
@@ -1894,9 +1892,9 @@ async function retrieveCourseData() {
   // Atomic update.
   let apiData = gApiData;
   let wasUpdated = false;
-  if (apiResponse.full || true) {
-    // hotfix
-    apiData = _.pick(["data", "until"], apiResponse);
+  console.log(`retrieved course data, full is ${apiResponse.full}`);
+  if (apiResponse.full) {
+    apiData = { data: apiResponse.data };
     wasUpdated = true;
   } else {
     const diff = apiResponse.data;
@@ -1904,8 +1902,9 @@ async function retrieveCourseData() {
       wasUpdated = true;
       apiData.data = applyDiff(apiData.data, diff);
     }
-    apiData.until = apiResponse.until;
   }
+  apiData.until = apiResponse.until;
+
   for (const selectedCourse of gSelectedCourses) {
     if (_.has(selectedCourse.courseCode, apiData.data.courses)) {
       Object.assign(
