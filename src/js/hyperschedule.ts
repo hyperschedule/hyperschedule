@@ -6,7 +6,21 @@
 /// Globals
 //// Modules
 
-const ics = require("/js/vendor/ics-0.2.0.min.js");
+import "../css/normalize.css";
+import "../css/main.css";
+
+import ics from "./vendor/ics-0.2.0.min.js";
+import * as redom from "redom";
+import {jsPDF} from "jspdf";
+import Clipboard from "clipboard";
+import CryptoJS from "crypto-js";
+import * as math from "mathjs";
+import sortable from "html5sortable/dist/html5sortable.es";
+import $ from "jquery";
+import "bootstrap";
+import randomColor from "randomcolor";
+
+import * as _ from "lodash/fp";
 
 //// Data constants
 
@@ -33,7 +47,7 @@ const filterKeywords = {
   "days:": ["days:", "day:"]
 };
 
-filterInequalities = ["<=", ">=", "<", ">", "="];
+const filterInequalities = ["<=", ">=", "<", ">", "="];
 const pacificScheduleDays = [
   "Sunday",
   "Monday",
@@ -68,11 +82,11 @@ const pacificScheduleTimes = [
 const courseSearchToggle = document.getElementById("course-search-toggle");
 const scheduleToggle = document.getElementById("schedule-toggle");
 
-const closedCoursesToggle = document.getElementById("closed-courses-toggle");
-const hideAllConflictingCoursesToggle = document.getElementById(
+const closedCoursesToggle = <HTMLInputElement>document.getElementById("closed-courses-toggle");
+const hideAllConflictingCoursesToggle = <HTMLInputElement>document.getElementById(
   "all-conflicting-courses-toggle"
 );
-const hideStarredConflictingCoursesToggle = document.getElementById(
+const hideStarredConflictingCoursesToggle = <HTMLInputElement>document.getElementById(
   "star-conflicting-courses-toggle"
 );
 
@@ -82,7 +96,7 @@ const courseSearchScheduleColumn = document.getElementById(
 const courseSearchColumn = document.getElementById("course-search-column");
 const scheduleColumn = document.getElementById("schedule-column");
 
-const courseSearchInput = document.getElementById(
+const courseSearchInput = <HTMLInputElement>document.getElementById(
   "course-search-course-name-input"
 );
 const courseSearchResults = document.getElementById("course-search-results");
@@ -107,8 +121,8 @@ const printAllButton = document.getElementById("print-button-all");
 const printStarredButton = document.getElementById("print-button-starred");
 const settingsButton = document.getElementById("settings-button");
 
-const conflictCoursesRadios = document.getElementsByName("conflict-courses");
-const timeZoneDropdown = document.getElementById("time-zone-dropdown");
+const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>document.getElementsByName("conflict-courses");
+const timeZoneDropdown = <HTMLSelectElement>document.getElementById("time-zone-dropdown");
 
 const courseDescriptionMinimizeOuter = document.getElementById(
   "minimize-outer"
@@ -130,7 +144,7 @@ const scheduleTableDays = document.getElementsByClassName("schedule-day");
 const scheduleTableHours = document.getElementsByClassName("schedule-hour");
 const creditCountText = document.getElementById("credit-count");
 
-const importExportTextArea = document.getElementById("import-export-text-area");
+const importExportTextArea = document.getElementById("import-export-text-area") as HTMLInputElement;
 const importExportICalButton = document.getElementById(
   "import-export-ical-button"
 );
@@ -145,7 +159,7 @@ const importExportCopyButton = document.getElementById(
 
 // Persistent data.
 let gApiData = null;
-let gSelectedCourses = [];
+let gSelectedCourses: any[] = []; // TODO
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
@@ -190,7 +204,7 @@ function quoteRegexp(str) {
   return (str + "").replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 }
 
-function arraysEqual(arr1, arr2, test) {
+function arraysEqual(arr1, arr2, test?) {
   if (arr1.length !== arr2.length) {
     return false;
   }
@@ -242,13 +256,9 @@ function binarySearch(ar, el, compare_fn) {
   return -m - 1;
 }
 
-function formatList(list, none) {
+function formatList(list, none = "(none)") {
   if (list.length === 0) {
-    if (none === undefined) {
-      return "(none)";
-    } else {
-      return none || "(none)";
-    }
+    return none;
   } else if (list.length === 1) {
     return list[0];
   } else if (list.length === 2) {
@@ -311,19 +321,15 @@ function dayStringForSchedule(dayString, startTime) {
 }
 
 function timeStringToHoursAndMinutes(timeString) {
+  const zone = gTimeZoneValues[gTimeZoneSavings];
   let hours =
     parseInt(timeString.substring(0, 2), 10) +
-    parseInt(gTimeZoneValues[gTimeZoneSavings]) -
+    zone -
     pacificTimeZoneValues[gPacificTimeSavings];
   let minutes = parseInt(timeString.substring(3, 5), 10);
 
-  if (!gTimeZoneValues[gTimeZoneSavings].toString().includes(".0")) {
-    const adjustMin = parseInt(
-      parseFloat(
-        "0." + gTimeZoneValues[gTimeZoneSavings].toString().split(".")[1]
-      ) * 60,
-      10
-    );
+  if (zone % 1 !== 0) {
+    const adjustMin = Math.round(60 * (zone % 1));
     minutes += adjustMin;
 
     if (minutes >= 60) {
@@ -472,10 +478,9 @@ function checkTimeZoneSavings() {
 function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
   let fullDate = new Date();
   let year = fullDate.getFullYear();
-  let date;
 
   // https://rosettacode.org/wiki/Find_the_last_Sunday_of_each_month#JavaScript
-  var lastDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const lastDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
     lastDay[2] = 29;
   }
@@ -493,24 +498,16 @@ function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
     );
   }
 
-  year = year.toString();
-  month = (month + 1).toString().padStart(2, "0");
-  date = fullDate
-    .getDate()
-    .toString()
-    .padStart(2, "0");
-  hours = hours.toString().padStart(2, "0");
-
-  let [timeZoneSign, timeZoneString] = getTimeZoneString(timeZoneValue);
+  const [timeZoneSign, timeZoneString] = getTimeZoneString(timeZoneValue);
 
   fullDate = new Date(
-    year +
+    year.toString() +
       "-" +
-      month +
+      (month+1).toString().padStart(2, "0") +
       "-" +
-      date +
+      fullDate.getDate().toString().padStart(2, "0") +
       "T" +
-      hours +
+      hours.toString().padStart(2, "0") +
       ":00:00.000" +
       timeZoneSign +
       timeZoneString
@@ -521,10 +518,7 @@ function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
 function getTimeZoneString(timeZoneValue) {
   let timeZoneSign = timeZoneValue >= 0 ? "+" : "-";
   let timeZoneHour = Math.abs(parseInt(timeZoneValue));
-  let timeZoneMin = parseInt(
-    parseFloat("0." + timeZoneValue.toString().split(".")[1]) * 60,
-    10
-  );
+  let timeZoneMin = Math.round((timeZoneValue % 1) * 60);
   let timeZoneString =
     timeZoneHour.toString().padStart(2, "0") +
     ":" +
@@ -723,7 +717,7 @@ function generateCourseDescription(course) {
   return description;
 }
 
-function getCourseColor(course, format = "hex") {
+function getCourseColor(course, format: "hex" | "hsvArray" | "hslArray" | "hsl" | "hsla" | "rgbArray" | "rgb" | "rgba" = "hex") {
   let hue = "random";
   let seed = CryptoJS.MD5(course.courseCode).toString();
 
@@ -751,7 +745,7 @@ function getCourseColor(course, format = "hex") {
   return getRandomColor(hue, seed, format);
 }
 
-function getRandomColor(hue, seed, format = "hex") {
+function getRandomColor(hue, seed, format: "hex" | "hsvArray" | "hslArray" | "hsl" | "hsla" | "rgbArray" | "rgb" | "rgba" = "hex") {
   return randomColor({
     hue: hue,
     luminosity: "light",
@@ -838,11 +832,11 @@ function coursePassesDayFilter(course, inputString) {
   switch (rel) {
     case "<=":
       // courseDays is a subset of inputDays
-      return courseDays.subSet(inputDays);
+      return setSubset(courseDays, inputDays);
     case "":
     case ">=":
       // inputDays is a subset of courseDays
-      return inputDays.subSet(courseDays);
+      return setSubset(inputDays, courseDays);
     case "=":
       // inputDays match exactly courseDays
       const difference1 = new Set(
@@ -854,29 +848,19 @@ function coursePassesDayFilter(course, inputString) {
       return difference1.size == 0 && difference2.size == 0;
     case "<":
       // courseDays is a proper subset of inputDays
-      return courseDays.subSet(inputDays) && inputDays.size != courseDays.size;
+      return setSubset(courseDays, inputDays) && inputDays.size != courseDays.size;
     case ">":
       // inputDays is a proper subset of courseDays
-      return inputDays.subSet(courseDays) && inputDays.size != courseDays.size;
+      return setSubset(inputDays, courseDays) && inputDays.size != courseDays.size;
     default:
       return false;
   }
 }
 
-Set.prototype.subSet = function(otherSet) {
-  // if size of this set is greater
-  // than otherSet then it can'nt be
-  //  a subset
-  if (this.size > otherSet.size) return false;
-  else {
-    for (var elem of this) {
-      // if any of the element of
-      // this is not present in the
-      // otherset then return false
-      if (!otherSet.has(elem)) return false;
-    }
-    return true;
-  }
+function setSubset(a, b) {
+  if (a.size > b.size) return false;
+  for (const elem of a) if (!b.has(elem)) return false;
+  return true;
 };
 
 ///// Course scheduling
@@ -1009,7 +993,7 @@ function getConsecutiveRanges(nums) {
       group = [];
     }
     group.push(num);
-  }, _.entries(nums));
+  }, _.toPairs(nums));
   groups.push(group);
   return _.map(group => [_.min(group), _.max(group)], groups);
 }
@@ -1166,7 +1150,7 @@ function attachListeners() {
 
 //// DOM element creation
 
-function createCourseEntity(course, attrs) {
+function createCourseEntity(course, attrs?) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
@@ -1197,7 +1181,7 @@ function createCourseEntity(course, attrs) {
     selectIcon.classList.add("ion-android-checkbox-outline-blank");
   }
 
-  const selectToggle = document.createElement("input");
+  const selectToggle = document.createElement("input") as HTMLInputElement;
   selectToggle.setAttribute("type", "checkbox");
   selectToggle.classList.add("course-box-button");
   selectToggle.classList.add("course-box-toggle");
@@ -1325,7 +1309,7 @@ function createCourseEntity(course, attrs) {
   return listItem;
 }
 
-function createSlotEntities(course, slot) {
+function createSlotEntities(course) {
   const entities = [];
   for (const slot of course.courseSchedule) {
     const startTime = timeStringToHours(slot.scheduleStartTime);
@@ -1428,7 +1412,7 @@ function getSearchQuery(searchTextArray) {
 function getSearchTextFilters(filtersTextArray) {
   let filter = {};
   for (let text of filtersTextArray) {
-    const keyword = text.split(":")[0] + ":";
+    let keyword = text.split(":")[0] + ":";
     const filterText = text.split(":")[1];
     if (!(keyword in Object.keys(filterKeywords))) {
       for (let key of Object.keys(filterKeywords)) {
@@ -1483,9 +1467,9 @@ function updateConflictCoursesRadio() {
 }
 
 function updateTimeZoneDropdown() {
-  document.getElementById(
+  (document.getElementById(
     "time-zone-dropdown-" + gTimeZoneId.toString()
-  ).selected = true;
+  ) as HTMLOptionElement).selected = true;
   timeZoneDropdown.dispatchEvent(new Event("change"));
 }
 
@@ -1598,14 +1582,14 @@ function updateScheduleTimeZone() {
   for (let i = 0; scheduleTableDays[i]; i++) {
     // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
     if (gTimeZoneValues[gTimeZoneSavings] >= 9.0) {
-      scheduleTableDays[i].innerText = pacificScheduleDays[i + 2];
+      scheduleTableDays[i].textContent = pacificScheduleDays[i + 2];
     } else {
-      scheduleTableDays[i].innerText = pacificScheduleDays[i + 1];
+      scheduleTableDays[i].textContent = pacificScheduleDays[i + 1];
     }
   }
 
   for (let i = 0; scheduleTableHours[i]; i++) {
-    scheduleTableHours[i].innerText = timeStringForSchedule(
+    scheduleTableHours[i].textContent = timeStringForSchedule(
       pacificScheduleTimes[i]
     );
   }
@@ -1629,7 +1613,7 @@ function updateCourseDescriptionBoxHeight() {
 ///// DOM updates miscellaneous
 
 function showImportExportModal() {
-  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  importExportTextArea.value = JSON.stringify(gSelectedCourses);
   $("#import-export-modal").modal("show");
 }
 
@@ -1694,16 +1678,7 @@ function minimizeArrowPointDown() {
 }
 
 function updateCourseDescriptionTimeZone() {
-  for (let i = 0; courseDescriptionBox.childNodes[i]; i++) {
-    if (courseDescriptionBox.childNodes[i + 2].tagName === "HR") {
-      break;
-    }
-    courseDescriptionBox.childNodes[
-      i + 2
-    ].innerText = generateScheduleSlotDescription(
-      gCourseSelected.courseSchedule[i]
-    );
-  }
+  setCourseDescriptionBox(gCourseSelected);
 }
 
 /// Global state handling
@@ -1962,20 +1937,20 @@ async function retrieveCourseDataUntilSuccessful() {
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
-  localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
-  localStorage.setItem("showClosedCourses", gShowClosedCourses);
-  localStorage.setItem("hideAllConflictingCourses", gHideAllConflictingCourses);
+  localStorage.setItem("scheduleTabSelected", JSON.stringify(gScheduleTabSelected));
+  localStorage.setItem("showClosedCourses", JSON.stringify(gShowClosedCourses));
+  localStorage.setItem("hideAllConflictingCourses", JSON.stringify(gHideAllConflictingCourses));
   localStorage.setItem(
     "hideStarredConflictingCourses",
-    gHideStarredConflictingCourses
+    JSON.stringify(gHideStarredConflictingCourses),
   );
   localStorage.setItem(
     "greyConflictCourses",
-    JSON.stringify(gGreyConflictCourses)
+    JSON.stringify(gGreyConflictCourses),
   );
-  localStorage.setItem("timeZoneValues", gTimeZoneValues);
-  localStorage.setItem("timeZoneId", gTimeZoneId);
-  localStorage.setItem("timeZoneSavings", gTimeZoneSavings);
+  localStorage.setItem("timeZoneValues", JSON.stringify(gTimeZoneValues));
+  localStorage.setItem("timeZoneId", JSON.stringify(gTimeZoneId));
+  localStorage.setItem("timeZoneSavings", JSON.stringify(gTimeZoneSavings));
 }
 
 function oldCourseToString(course) {
@@ -2077,9 +2052,6 @@ function readStateFromLocalStorage() {
     validateGTimeZoneValues,
     pacificTimeZoneValues
   );
-  gTimeZoneValues = _.isArray(gTimeZoneValues)
-    ? gTimeZoneValues
-    : [gTimeZoneValues];
   gTimeZoneId = readFromLocalStorage(
     "timeZoneId",
     _.isNumber,
@@ -2130,7 +2102,7 @@ function downloadPDF(starredOnly) {
   pdf.setLineWidth(0.5);
 
   pdf.setDrawColor(192); // light gray
-  pdf.setFillColor(255); // white
+  pdf.setFillColor("1"); // white
 
   // white background
   pdf.rect(0, 0, 11 * 72, 8.5 * 72, "F");
@@ -2139,30 +2111,30 @@ function downloadPDF(starredOnly) {
   for (let i = 0; i < 7; ++i) {
     const x = i * columnWidth + 1.25 * 72;
 
-    pdf.setFillColor(i & 1 ? 255 : 230);
+    pdf.setFillColor(i & 1 ? "1" : (230/255).toString());
     pdf.rect(x, 0.5 * 72, columnWidth, tableHeight, "F");
 
     // column header
-    pdf.setFontStyle("bold");
+    pdf.setFont("Helvetica", "bold");
     pdf.text(
+      pacificScheduleDays[i],
       x + columnWidth / 2,
       0.5 * 72 + (0.25 * 72) / 2 + pdf.getLineHeight() / 2,
-      pacificScheduleDays[i],
-      "center"
+      {align: "center"},
     );
   }
 
   // grid rows
-  pdf.setFontStyle("normal");
+  pdf.setFont("Helvetica", "normal");
   for (let i = 0; i < 15; ++i) {
     const y = i * rowHeight + 0.75 * 72;
     pdf.line(0.5 * 72, y, 0.5 * 72 + tableWidth, y);
 
     pdf.text(
+      timeStringForSchedule(pacificScheduleTimes[i]),
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
-      timeStringForSchedule(pacificScheduleTimes[i]),
-      "right"
+      {align: "right"},
     );
   }
 
@@ -2192,11 +2164,9 @@ function downloadPDF(starredOnly) {
 
       for (const day of slot.scheduleDays) {
         for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
-          const weekdayAdjustment = weekdayCharToInteger(day);
           // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
-          if (gTimeZoneValues[gTimeZoneSavings] >= 9.0) {
-            weekdayAdjustment += 1;
-          }
+          const weekdayAdjustment = weekdayCharToInteger(day) +
+	    (gTimeZoneValues[gTimeZoneSavings] >= 9.0 ? 1 : 0);
 
           const x =
             weekdayAdjustment * columnWidth +
@@ -2216,7 +2186,7 @@ function downloadPDF(starredOnly) {
               rowHeight +
             0.75 * 72;
 
-          pdf.setFillColor(...getCourseColor(course, "rgbArray"));
+          pdf.setFillColor(...<[number, number, number]><unknown>getCourseColor(course, "rgbArray"));
 
           pdf.rect(x, yStart, width, yEnd - yStart, "F");
 
@@ -2276,14 +2246,14 @@ function downloadPDF(starredOnly) {
             (totalLength * pdf.getLineHeight()) / 2 +
             pdf.getLineHeight();
 
-          pdf.setFontStyle("bold");
-          pdf.text(xText, yText, courseCodeLines, "center");
+          pdf.setFont("Helvetica", "bold");
+          pdf.text(courseCodeLines, xText, yText, {align: "center"});
           yText += courseCodeLines.length * pdf.getLineHeight();
-          pdf.setFontStyle("normal");
+          pdf.setFont("Helvetica", "normal");
 
           for (let entry of entriesByOrder) {
             if (entriesByPreference.slice(1, numEntries).includes(entry)) {
-              pdf.text(xText, yText, entryNameToText[entry], "center");
+              pdf.text(entryNameToText[entry], xText, yText, {align: "center"});
               yText += entryNameToText[entry].length * pdf.getLineHeight();
             }
           }
@@ -2301,7 +2271,7 @@ function downloadPDF(starredOnly) {
 
 /// iCal download
 
-function convertDayToICal(weekday) {
+function convertDayToICal(weekday: "U" | "M" | "T" | "W" | "R" | "F" | "S") {
   switch (weekday) {
     case "U":
       return "SU";
@@ -2322,7 +2292,7 @@ function convertDayToICal(weekday) {
 }
 
 // See https://github.com/nwcell/ics.js/issues/26.
-function uglyHack(input) {
+function uglyHack(input: string) {
   return input.replace(/\n/g, "\\n").replace(/,/g, "\\,");
 }
 
