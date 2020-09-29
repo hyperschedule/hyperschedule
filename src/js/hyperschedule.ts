@@ -11,7 +11,7 @@ import "../css/main.css";
 
 import ics from "./vendor/ics-0.2.0.min.js";
 import * as redom from "redom";
-import {jsPDF} from "jspdf";
+import { jsPDF } from "jspdf";
 import Clipboard from "clipboard";
 import CryptoJS from "crypto-js";
 import * as math from "mathjs";
@@ -82,12 +82,14 @@ const pacificScheduleTimes = [
 const courseSearchToggle = document.getElementById("course-search-toggle");
 const scheduleToggle = document.getElementById("schedule-toggle");
 
-const closedCoursesToggle = <HTMLInputElement>document.getElementById("closed-courses-toggle");
-const hideAllConflictingCoursesToggle = <HTMLInputElement>document.getElementById(
-  "all-conflicting-courses-toggle"
+const closedCoursesToggle = <HTMLInputElement>(
+  document.getElementById("closed-courses-toggle")
 );
-const hideStarredConflictingCoursesToggle = <HTMLInputElement>document.getElementById(
-  "star-conflicting-courses-toggle"
+const hideAllConflictingCoursesToggle = <HTMLInputElement>(
+  document.getElementById("all-conflicting-courses-toggle")
+);
+const hideStarredConflictingCoursesToggle = <HTMLInputElement>(
+  document.getElementById("star-conflicting-courses-toggle")
 );
 
 const courseSearchScheduleColumn = document.getElementById(
@@ -96,8 +98,8 @@ const courseSearchScheduleColumn = document.getElementById(
 const courseSearchColumn = document.getElementById("course-search-column");
 const scheduleColumn = document.getElementById("schedule-column");
 
-const courseSearchInput = <HTMLInputElement>document.getElementById(
-  "course-search-course-name-input"
+const courseSearchInput = <HTMLInputElement>(
+  document.getElementById("course-search-course-name-input")
 );
 const courseSearchResults = document.getElementById("course-search-results");
 const courseSearchResultsList = document.getElementById(
@@ -121,8 +123,12 @@ const printAllButton = document.getElementById("print-button-all");
 const printStarredButton = document.getElementById("print-button-starred");
 const settingsButton = document.getElementById("settings-button");
 
-const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>document.getElementsByName("conflict-courses");
-const timeZoneDropdown = <HTMLSelectElement>document.getElementById("time-zone-dropdown");
+const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>(
+  document.getElementsByName("conflict-courses")
+);
+const timeZoneDropdown = <HTMLSelectElement>(
+  document.getElementById("time-zone-dropdown")
+);
 
 const courseDescriptionMinimizeOuter = document.getElementById(
   "minimize-outer"
@@ -144,7 +150,9 @@ const scheduleTableDays = document.getElementsByClassName("schedule-day");
 const scheduleTableHours = document.getElementsByClassName("schedule-hour");
 const creditCountText = document.getElementById("credit-count");
 
-const importExportTextArea = document.getElementById("import-export-text-area") as HTMLInputElement;
+const importExportTextArea = document.getElementById(
+  "import-export-text-area"
+) as HTMLInputElement;
 const importExportICalButton = document.getElementById(
   "import-export-ical-button"
 );
@@ -503,9 +511,12 @@ function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
   fullDate = new Date(
     year.toString() +
       "-" +
-      (month+1).toString().padStart(2, "0") +
+      (month + 1).toString().padStart(2, "0") +
       "-" +
-      fullDate.getDate().toString().padStart(2, "0") +
+      fullDate
+        .getDate()
+        .toString()
+        .padStart(2, "0") +
       "T" +
       hours.toString().padStart(2, "0") +
       ":00:00.000" +
@@ -717,7 +728,18 @@ function generateCourseDescription(course) {
   return description;
 }
 
-function getCourseColor(course, format: "hex" | "hsvArray" | "hslArray" | "hsl" | "hsla" | "rgbArray" | "rgb" | "rgba" = "hex") {
+function getCourseColor(
+  course,
+  format:
+    | "hex"
+    | "hsvArray"
+    | "hslArray"
+    | "hsl"
+    | "hsla"
+    | "rgbArray"
+    | "rgb"
+    | "rgba" = "hex"
+) {
   let hue = "random";
   let seed = CryptoJS.MD5(course.courseCode).toString();
 
@@ -745,7 +767,19 @@ function getCourseColor(course, format: "hex" | "hsvArray" | "hslArray" | "hsl" 
   return getRandomColor(hue, seed, format);
 }
 
-function getRandomColor(hue, seed, format: "hex" | "hsvArray" | "hslArray" | "hsl" | "hsla" | "rgbArray" | "rgb" | "rgba" = "hex") {
+function getRandomColor(
+  hue,
+  seed,
+  format:
+    | "hex"
+    | "hsvArray"
+    | "hslArray"
+    | "hsl"
+    | "hsla"
+    | "rgbArray"
+    | "rgb"
+    | "rgba" = "hex"
+) {
   return randomColor({
     hue: hue,
     luminosity: "light",
@@ -848,10 +882,14 @@ function coursePassesDayFilter(course, inputString) {
       return difference1.size == 0 && difference2.size == 0;
     case "<":
       // courseDays is a proper subset of inputDays
-      return setSubset(courseDays, inputDays) && inputDays.size != courseDays.size;
+      return (
+        setSubset(courseDays, inputDays) && inputDays.size != courseDays.size
+      );
     case ">":
       // inputDays is a proper subset of courseDays
-      return setSubset(inputDays, courseDays) && inputDays.size != courseDays.size;
+      return (
+        setSubset(inputDays, courseDays) && inputDays.size != courseDays.size
+      );
     default:
       return false;
   }
@@ -861,7 +899,7 @@ function setSubset(a, b) {
   if (a.size > b.size) return false;
   for (const elem of a) if (!b.has(elem)) return false;
   return true;
-};
+}
 
 ///// Course scheduling
 
@@ -1937,16 +1975,22 @@ async function retrieveCourseDataUntilSuccessful() {
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
-  localStorage.setItem("scheduleTabSelected", JSON.stringify(gScheduleTabSelected));
+  localStorage.setItem(
+    "scheduleTabSelected",
+    JSON.stringify(gScheduleTabSelected)
+  );
   localStorage.setItem("showClosedCourses", JSON.stringify(gShowClosedCourses));
-  localStorage.setItem("hideAllConflictingCourses", JSON.stringify(gHideAllConflictingCourses));
+  localStorage.setItem(
+    "hideAllConflictingCourses",
+    JSON.stringify(gHideAllConflictingCourses)
+  );
   localStorage.setItem(
     "hideStarredConflictingCourses",
-    JSON.stringify(gHideStarredConflictingCourses),
+    JSON.stringify(gHideStarredConflictingCourses)
   );
   localStorage.setItem(
     "greyConflictCourses",
-    JSON.stringify(gGreyConflictCourses),
+    JSON.stringify(gGreyConflictCourses)
   );
   localStorage.setItem("timeZoneValues", JSON.stringify(gTimeZoneValues));
   localStorage.setItem("timeZoneId", JSON.stringify(gTimeZoneId));
@@ -2111,7 +2155,7 @@ function downloadPDF(starredOnly) {
   for (let i = 0; i < 7; ++i) {
     const x = i * columnWidth + 1.25 * 72;
 
-    pdf.setFillColor(i & 1 ? "1" : (230/255).toString());
+    pdf.setFillColor(i & 1 ? "1" : (230 / 255).toString());
     pdf.rect(x, 0.5 * 72, columnWidth, tableHeight, "F");
 
     // column header
@@ -2120,7 +2164,7 @@ function downloadPDF(starredOnly) {
       pacificScheduleDays[i],
       x + columnWidth / 2,
       0.5 * 72 + (0.25 * 72) / 2 + pdf.getLineHeight() / 2,
-      {align: "center"},
+      { align: "center" }
     );
   }
 
@@ -2134,7 +2178,7 @@ function downloadPDF(starredOnly) {
       timeStringForSchedule(pacificScheduleTimes[i]),
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
-      {align: "right"},
+      { align: "right" }
     );
   }
 
@@ -2165,8 +2209,9 @@ function downloadPDF(starredOnly) {
       for (const day of slot.scheduleDays) {
         for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
           // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
-          const weekdayAdjustment = weekdayCharToInteger(day) +
-	    (gTimeZoneValues[gTimeZoneSavings] >= 9.0 ? 1 : 0);
+          const weekdayAdjustment =
+            weekdayCharToInteger(day) +
+            (gTimeZoneValues[gTimeZoneSavings] >= 9.0 ? 1 : 0);
 
           const x =
             weekdayAdjustment * columnWidth +
@@ -2186,7 +2231,11 @@ function downloadPDF(starredOnly) {
               rowHeight +
             0.75 * 72;
 
-          pdf.setFillColor(...<[number, number, number]><unknown>getCourseColor(course, "rgbArray"));
+          pdf.setFillColor(
+            ...(<[number, number, number]>(
+              (<unknown>getCourseColor(course, "rgbArray"))
+            ))
+          );
 
           pdf.rect(x, yStart, width, yEnd - yStart, "F");
 
@@ -2247,13 +2296,15 @@ function downloadPDF(starredOnly) {
             pdf.getLineHeight();
 
           pdf.setFont("Helvetica", "bold");
-          pdf.text(courseCodeLines, xText, yText, {align: "center"});
+          pdf.text(courseCodeLines, xText, yText, { align: "center" });
           yText += courseCodeLines.length * pdf.getLineHeight();
           pdf.setFont("Helvetica", "normal");
 
           for (let entry of entriesByOrder) {
             if (entriesByPreference.slice(1, numEntries).includes(entry)) {
-              pdf.text(entryNameToText[entry], xText, yText, {align: "center"});
+              pdf.text(entryNameToText[entry], xText, yText, {
+                align: "center"
+              });
               yText += entryNameToText[entry].length * pdf.getLineHeight();
             }
           }

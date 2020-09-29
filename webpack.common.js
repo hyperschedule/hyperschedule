@@ -6,7 +6,7 @@ module.exports = {
     app: path.join(__dirname, "src/js/hyperschedule.ts")
   },
   output: {
-    path: path.join(__dirname, "dist/js"),
+    path: path.join(__dirname, "dist"),
     filename: "hyperschedule.js"
   },
   module: {

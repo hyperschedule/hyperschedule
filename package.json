@@ -21,7 +21,6 @@
     "lint-staged": "^9.2.4",
     "lodash": "^4.17.20",
     "mathjs": "^7.3.0",
-    "parcel-bundler": "^1.12.4",
     "popper.js": "^1.16.1",
     "posthtml-expressions": "^1.4.1",
     "prettier": "^1.18.2",
@@ -36,6 +35,16 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^5.1.4"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "setup": "npm i && ln -sf ../../scripts/pre-commit .git/hooks/pre-commit",
+    "clean": "git clean -Xf dist",
+    "clean-all": "git clean -Xdf",
+    "format": "prettier --write **/*.{ts,css}",
+    "lint": "prettier --check **/*.{ts,css}",
+    "ci": "npm run build && npm run lint"
   },
   "engines": {
     "node": ">=8.8.1"
