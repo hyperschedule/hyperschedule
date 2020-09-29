@@ -20,12 +20,17 @@ module.exports = {
         test: /\.css$/i,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: process.env.NODE_ENV === "development"
-            }
+            loader: MiniCssExtractPlugin.loader
           },
-          "css-loader"
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: ["postcss-nested", "autoprefixer", "postcss-validator"]
+              }
+            }
+          }
         ]
       }
     ]

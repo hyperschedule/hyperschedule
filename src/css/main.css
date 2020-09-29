@@ -14,10 +14,10 @@
 
 .btn {
   cursor: pointer;
-}
 
-.btn:disabled {
-  cursor: auto;
+  &:disabled {
+      cursor: auto;
+  }
 }
 
 .dropdown-menu {
@@ -38,7 +38,7 @@
   padding: 0;
   margin: 1rem;
   align-items: center;
-  whitespace: nowrap;
+  white-space: nowrap;
 }
 
 /** Page layout **/
@@ -295,7 +295,7 @@ body {
 
 #course-description-box p {
   font-size: small;
-  lpine-height: 100%;
+  line-height: 100%;
   margin: 0px 10px;
 }
 
