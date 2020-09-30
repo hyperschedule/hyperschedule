@@ -1,6 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserJsPlugin = require("terser-webpack-plugin");
 
 module.exports = (env, argv) => {
   const prod = argv.mode === "production";
@@ -9,6 +11,9 @@ module.exports = (env, argv) => {
     mode: argv.mode,
     entry: {
       app: path.join(__dirname, "src/js/hyperschedule.ts")
+    },
+    optimization: {
+      minimizer: [new TerserJsPlugin({}), new OptimizeCssAssetsPlugin({})]
     },
     output: {
       path: path.join(__dirname, "dist"),
