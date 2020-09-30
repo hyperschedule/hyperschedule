@@ -44,8 +44,8 @@
     "webpack-merge": "^5.1.4"
   },
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
     "setup": "npm i && ln -sf ../../scripts/pre-commit .git/hooks/pre-commit",
     "clean": "git clean -Xf dist",
     "clean-all": "git clean -Xdf",
