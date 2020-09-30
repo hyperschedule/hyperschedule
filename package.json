@@ -53,7 +53,8 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
-    "setup": "npm i && ln -sf ../../scripts/pre-commit .git/hooks/pre-commit",
+    "setup": "npm i && npm run setup-hooks",
+    "setup-hooks": "ln -sf ../../scripts/pre-commit .git/hooks/pre-commit",
     "clean": "git clean -Xf dist",
     "clean-all": "git clean -Xdf",
     "format": "prettier --write **/*.{ts,css}",
@@ -65,7 +66,7 @@
   },
   "license": "MIT",
   "lint-staged": {
-    "*.js": [
+    "*.{ts,css}": [
       "prettier --write",
       "git add"
     ]
