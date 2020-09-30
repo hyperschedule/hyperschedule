@@ -9,13 +9,14 @@
 import "../css/normalize.css";
 import "../css/main.css";
 
-import ics: any from "./vendor/ics-0.2.0.min.js";
+// untyped, so using require here
+const ics = require("./vendor/ics-0.2.0.min.js");
+const sortable = require("html5sortable/dist/html5sortable.cjs");
 import * as redom from "redom";
 import { jsPDF } from "jspdf";
 import Clipboard from "clipboard";
 import CryptoJS from "crypto-js";
 import * as math from "mathjs";
-import sortable from "html5sortable/dist/html5sortable.es";
 import $ from "jquery";
 import "bootstrap";
 import randomColor from "randomcolor";
@@ -1101,18 +1102,20 @@ function computeSchedule(courses: CourseV3[]) {
  * getConsecutiveRanges([0,1,2,4,5,8,10,12,13,14,15,20])
  *   => [[0,2], [4,5], [8,8], [10,10], [12,15], [20,20]]
  */
-function getConsecutiveRanges(nums: number[]) {
+function getConsecutiveRanges(nums: number[]): [number, number][] {
+  if (nums.length === 0) return [];
+  
   const groups = [];
-  let group: number[] = [];
-  _.forEach(([idx, num]: [number, number]) => {
-    if (idx > 0 && nums[idx - 1] !== nums[idx] - 1) {
+  let group: number[] = [nums[0]];
+  for (let i = 1; i < nums.length; ++i) {
+    if (nums[i] !== nums[i-1] + 1) {
       groups.push(group);
       group = [];
     }
-    group.push(num);
-  }, _.toPairs(nums));
+    group.push(nums[i]);
+  }
   groups.push(group);
-  return _.map((group: number[]) => [_.min(group), _.max(group)], groups);
+  return _.map((group: number[]): [number, number] => [_.min(group)!, _.max(group)!], groups);
 }
 
 ///// Course schedule queries
@@ -1607,7 +1610,7 @@ function updateCourseSearchResults() {
       gApiData === null
         ? []
         : Object.keys(gApiData.data.courses).filter(key => {
-            const course = gApiData.data.courses[key];
+            const course = gApiData!.data.courses[key];
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
@@ -1970,15 +1973,16 @@ function applyDiff(data: any, diff: any) {
     return diff;
   }
 
-  _.forEach.convert({ cap: false })((val: "$delete" | object, key: string) => {
+  for (const key in diff) {
+    const val = (<any>diff)[key];
     if (val === "$delete") {
-      delete data[key];
+      delete (<any>data)[key];
     } else if (!data.hasOwnProperty(key)) {
-      data[key] = val;
+      (<any>data)[key] = val;
     } else {
-      data[key] = applyDiff(data[key], val);
+      (<any>data)[key] = applyDiff((<any>data)[key], val);
     }
-  }, diff);
+  }
 
   return data;
 }
@@ -1996,7 +2000,7 @@ async function retrieveCourseData() {
   let apiData = gApiData;
   let wasUpdated = false;
   console.log(`retrieved course data, full is ${apiResponse.full}`);
-  if (apiResponse.full || apiData === null) {
+  if (apiData === null || apiResponse.full) {
     apiData = {data: apiResponse.data, until: apiResponse.until};
     wasUpdated = true;
   } else {
@@ -2012,7 +2016,7 @@ async function retrieveCourseData() {
     if (_.has(selectedCourse.courseCode, apiData.data.courses)) {
       Object.assign(
         selectedCourse,
-        apiData.data.courses[selectedCourse.courseCode]
+        apiData!.data.courses[selectedCourse.courseCode]
       );
     }
   }
@@ -2022,14 +2026,14 @@ async function retrieveCourseData() {
     terms.sort((t1: Term, t2: Term) => compareArrays(t1.termSortKey, t2.termSortKey));
     apiData.data.terms = {};
     _.forEach((t: Term) => {
-      apiData.data.terms[t.termCode] = t;
+      apiData!.data.terms[t.termCode] = t;
     }, terms);
 
     const courses = _.values(apiData.data.courses);
     courses.sort((t1: CourseV3, t2: CourseV3) => compareArrays(t1.courseSortKey, t2.courseSortKey));
     apiData.data.courses = {};
     _.forEach((c: CourseV3) => {
-      apiData.data.courses[c.courseCode] = c;
+      apiData!.data.courses[c.courseCode] = c;
     }, courses);
   }
 
