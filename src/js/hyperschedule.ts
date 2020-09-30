@@ -9,7 +9,7 @@
 import "../css/normalize.css";
 import "../css/main.css";
 
-import ics from "./vendor/ics-0.2.0.min.js";
+import ics: any from "./vendor/ics-0.2.0.min.js";
 import * as redom from "redom";
 import { jsPDF } from "jspdf";
 import Clipboard from "clipboard";
@@ -21,6 +21,89 @@ import "bootstrap";
 import randomColor from "randomcolor";
 
 import * as _ from "lodash/fp";
+
+interface Slot {
+  days: string;
+  location: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface ApiData {
+  data: {
+    terms: Record<string, Term>
+    courses: Record<string, CourseV3>
+  };
+  until: number;
+}
+
+type Primitive = string | number | boolean
+
+type SortKey = Primitive[];
+
+type Weekday = "U" | "M" | "T" | "W" | "R" | "F" | "S";
+
+interface Term {
+  termCode: string;
+  termSortKey: SortKey;
+  termName: string;
+}
+
+interface Schedule {
+  scheduleStartTime: string;
+  scheduleStartDate: string;
+  scheduleEndDate: string;
+  scheduleEndTime: string;
+  scheduleTerms: number[];
+  scheduleTermCount: number;
+  scheduleLocation: string;
+  scheduleDays: string;
+}
+
+interface CourseV3 {
+  courseCode: string;
+  courseName: string;
+  courseSortKey: SortKey;
+  courseMutualExclusionKey: SortKey;
+  courseDescription: string | null;
+  courseInstructors: string[] | null;
+  courseTerm: string;
+  courseSchedule: Schedule[];
+  courseCredits: string;
+  courseSeatsTotal: number | null;
+  courseSeatsFilled: number | null;
+  courseWaitlistLength: number | null;
+  courseEnrollmentStatus: string | null;
+  starred: boolean;
+  selected: boolean;
+}
+
+interface CourseV2 {
+  starred: boolean;
+  selected: boolean;
+  school: string;
+  section: string;
+  courseNumber: string;
+  department: string;
+  totalSeats: number;
+  openSeats: number;
+  courseCodeSuffix: string;
+  schedule: Slot[];
+  firstHalfSemester: boolean;
+  secondHalfSemester: boolean;
+  startDate: string;
+  endDate: string;
+  courseName: string;
+  faculty: string[];
+  courseStatus: string;
+  courseDescription: string;
+  quarterCredits: number;
+}
+
+interface CourseEntityAttrs {
+  alreadyAdded?: boolean;
+  idx?: number;
+}
 
 //// Data constants
 
@@ -41,7 +124,7 @@ const apiURL = process.env.API_URL || "https://hyperschedule.herokuapp.com";
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
-const filterKeywords = {
+const filterKeywords: Record<string, string[]> = {
   "dept:": ["dept:", "department:"],
   "college:": ["college", "col:", "school:", "sch:"],
   "days:": ["days:", "day:"]
@@ -79,95 +162,95 @@ const pacificScheduleTimes = [
 
 //// DOM elements
 
-const courseSearchToggle = document.getElementById("course-search-toggle");
-const scheduleToggle = document.getElementById("schedule-toggle");
+const courseSearchToggle = document.getElementById("course-search-toggle")!;
+const scheduleToggle = document.getElementById("schedule-toggle")!;
 
 const closedCoursesToggle = <HTMLInputElement>(
   document.getElementById("closed-courses-toggle")
-);
+)!;
 const hideAllConflictingCoursesToggle = <HTMLInputElement>(
   document.getElementById("all-conflicting-courses-toggle")
-);
+)!;
 const hideStarredConflictingCoursesToggle = <HTMLInputElement>(
   document.getElementById("star-conflicting-courses-toggle")
-);
+)!;
 
 const courseSearchScheduleColumn = document.getElementById(
   "course-search-schedule-column"
-);
-const courseSearchColumn = document.getElementById("course-search-column");
-const scheduleColumn = document.getElementById("schedule-column");
+)!;
+const courseSearchColumn = document.getElementById("course-search-column")!;
+const scheduleColumn = document.getElementById("schedule-column")!;
 
 const courseSearchInput = <HTMLInputElement>(
   document.getElementById("course-search-course-name-input")
-);
-const courseSearchResults = document.getElementById("course-search-results");
+)!;
+const courseSearchResults = document.getElementById("course-search-results")!;
 const courseSearchResultsList = document.getElementById(
   "course-search-results-list"
-);
+)!;
 const courseSearchResultsPlaceholder = document.getElementById(
   "course-search-results-placeholder"
-);
+)!;
 const courseSearchResultsEnd = document.getElementById(
   "course-search-results-end"
-);
+)!;
 
 const selectedCoursesColumn = document.getElementById(
   "selected-courses-column"
-);
+)!;
 const importExportDataButton = document.getElementById(
   "import-export-data-button"
-);
-const printDropdown = document.getElementById("print-dropdown");
-const printAllButton = document.getElementById("print-button-all");
-const printStarredButton = document.getElementById("print-button-starred");
-const settingsButton = document.getElementById("settings-button");
+)!;
+const printDropdown = document.getElementById("print-dropdown")!;
+const printAllButton = document.getElementById("print-button-all")!;
+const printStarredButton = document.getElementById("print-button-starred")!;
+const settingsButton = document.getElementById("settings-button")!;
 
 const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>(
   document.getElementsByName("conflict-courses")
 );
 const timeZoneDropdown = <HTMLSelectElement>(
   document.getElementById("time-zone-dropdown")
-);
+)!;
 
 const courseDescriptionMinimizeOuter = document.getElementById(
   "minimize-outer"
-);
+)!;
 const courseDescriptionMinimize = document.getElementById(
   "course-description-minimize"
-);
-const minimizeIcon = document.getElementById("minimize-icon");
-const courseDescriptionBox = document.getElementById("course-description-box");
+)!;
+const minimizeIcon = document.getElementById("minimize-icon")!;
+const courseDescriptionBox = document.getElementById("course-description-box")!;
 const courseDescriptionBoxOuter = document.getElementById(
   "course-description-box-outer"
-);
+)!;
 
-const selectedCoursesList = document.getElementById("selected-courses-list");
+const selectedCoursesList = document.getElementById("selected-courses-list")!;
 
-const scheduleTable = document.getElementById("schedule-table");
-const scheduleTableBody = document.getElementById("schedule-table-body");
+const scheduleTable = document.getElementById("schedule-table")!;
+const scheduleTableBody = document.getElementById("schedule-table-body")!;
 const scheduleTableDays = document.getElementsByClassName("schedule-day");
 const scheduleTableHours = document.getElementsByClassName("schedule-hour");
-const creditCountText = document.getElementById("credit-count");
+const creditCountText = document.getElementById("credit-count")!;
 
-const importExportTextArea = document.getElementById(
+const importExportTextArea = <HTMLInputElement>document.getElementById(
   "import-export-text-area"
-) as HTMLInputElement;
+)!;
 const importExportICalButton = document.getElementById(
   "import-export-ical-button"
-);
+)!;
 const importExportSaveChangesButton = document.getElementById(
   "import-export-save-changes-button"
-);
+)!;
 const importExportCopyButton = document.getElementById(
   "import-export-copy-button"
-);
+)!;
 
 //// Global state
 
 // Persistent data.
-let gApiData = null;
-let gSelectedCourses: any[] = []; // TODO
+let gApiData: ApiData | null = null;
+let gSelectedCourses: CourseV3[] = []; 
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
@@ -181,18 +264,14 @@ let gPacificTimeSavings = 0; // 0 if PST, 1 if PDT
 // Transient data.
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
-let gFilteredCourseKeys = [];
-let gCourseSelected = null;
+let gFilteredCourseKeys: string[] = [];
+let gCourseSelected: CourseV3 | null = null;
 
 /// Utility functions
 //// JavaScript utility functions
 
-function isString(obj) {
-  return typeof obj === "string" || obj instanceof String;
-}
-
 // Modulo operator, because % computes remainder and not modulo.
-function mod(n, m) {
+function mod(n: number, m: number) {
   let rem = n % m;
   if (rem < 0) {
     rem += m;
@@ -202,17 +281,17 @@ function mod(n, m) {
 
 // Convert YYYY-MM-DD to Date. Taken from
 // https://stackoverflow.com/a/7151607/3538165.
-function parseDate(dateStr) {
+function parseDate(dateStr: string) {
   const [year, month, day] = dateStr.split("-");
-  return new Date(year, month - 1, day);
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 }
 
 // https://stackoverflow.com/a/2593661
-function quoteRegexp(str) {
+function quoteRegexp(str: string) {
   return (str + "").replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 }
 
-function arraysEqual(arr1, arr2, test?) {
+function arraysEqual(arr1: SortKey, arr2: SortKey, test?: ((a: Primitive, b: Primitive) => boolean)) {
   if (arr1.length !== arr2.length) {
     return false;
   }
@@ -224,7 +303,7 @@ function arraysEqual(arr1, arr2, test?) {
   return true;
 }
 
-function compareArrays(arr1, arr2) {
+function compareArrays(arr1: SortKey, arr2: SortKey) {
   let idx1 = 0;
   let idx2 = 0;
   while (idx1 < arr1.length && idx2 < arr2.length) {
@@ -247,7 +326,7 @@ function compareArrays(arr1, arr2) {
 }
 
 // https://stackoverflow.com/a/29018745/3538165
-function binarySearch(ar, el, compare_fn) {
+function binarySearch<T>(ar: T[], el: T, compare_fn: ((a: T, b: T) => number)) {
   var m = 0;
   var n = ar.length - 1;
   while (m <= n) {
@@ -264,7 +343,7 @@ function binarySearch(ar, el, compare_fn) {
   return -m - 1;
 }
 
-function formatList(list, none = "(none)") {
+function formatList(list: string[], none = "(none)") {
   if (list.length === 0) {
     return none;
   } else if (list.length === 1) {
@@ -280,11 +359,11 @@ function formatList(list, none = "(none)") {
   }
 }
 
-function deepCopy(obj) {
+function deepCopy(obj: object) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-function weekdayCharToInteger(weekday) {
+function weekdayCharToInteger(weekday: string) {
   const index = "UMTWRFS".indexOf(weekday);
   if (index < 0) {
     throw Error("Invalid weekday: " + weekday);
@@ -292,7 +371,7 @@ function weekdayCharToInteger(weekday) {
   return index;
 }
 
-function readFromLocalStorage(key, pred, def) {
+function readFromLocalStorage<T>(key: string, pred: ((a: T) => boolean), def: T) {
   const jsonString = localStorage.getItem(key);
   if (!jsonString) {
     return def;
@@ -309,13 +388,13 @@ function readFromLocalStorage(key, pred, def) {
   }
 }
 
-function catchEvent(event) {
+function catchEvent(event: Event) {
   event.stopPropagation();
 }
 
 //// Time utility functions
 
-function dayStringForSchedule(dayString, startTime) {
+function dayStringForSchedule(dayString: string, startTime: string) {
   let daysOfWeek = "MTWRFSU";
 
   if (timeStringToHours(startTime) >= 24) {
@@ -328,7 +407,7 @@ function dayStringForSchedule(dayString, startTime) {
   return dayString;
 }
 
-function timeStringToHoursAndMinutes(timeString) {
+function timeStringToHoursAndMinutes(timeString: string) {
   const zone = gTimeZoneValues[gTimeZoneSavings];
   let hours =
     parseInt(timeString.substring(0, 2), 10) +
@@ -349,12 +428,12 @@ function timeStringToHoursAndMinutes(timeString) {
   return [hours, minutes];
 }
 
-function timeStringToHours(timeString) {
+function timeStringToHours(timeString: string) {
   const [hours, minutes] = timeStringToHoursAndMinutes(timeString);
   return hours + minutes / 60;
 }
 
-function timeStringTo12HourString(timeString) {
+function timeStringTo12HourString(timeString: string) {
   let [hours, minutes] = timeStringToHoursAndMinutes(timeString);
   const pm = hours % 24 >= 12 && hours % 24 <= 23;
   hours -= 1;
@@ -369,7 +448,7 @@ function timeStringTo12HourString(timeString) {
   );
 }
 
-function timeStringForSchedule(timeString) {
+function timeStringForSchedule(timeString: string) {
   let time = timeStringTo12HourString(timeString);
   let pm = time.substring(6) === "PM";
 
@@ -483,7 +562,7 @@ function checkTimeZoneSavings() {
 // month = January (0) to December (11)
 // n = 1st (1) ... last (-1)
 // dayOfWeek = Sunday (0) to Saturday (6)
-function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
+function nthSundayOfMonth(month: number, n: number, hours: number, dayOfWeek: number, timeZoneValue: number) {
   let fullDate = new Date();
   let year = fullDate.getFullYear();
 
@@ -526,9 +605,9 @@ function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
   return fullDate;
 }
 
-function getTimeZoneString(timeZoneValue) {
+function getTimeZoneString(timeZoneValue: number) {
   let timeZoneSign = timeZoneValue >= 0 ? "+" : "-";
-  let timeZoneHour = Math.abs(parseInt(timeZoneValue));
+  let timeZoneHour = Math.abs(timeZoneValue);
   let timeZoneMin = Math.round((timeZoneValue % 1) * 60);
   let timeZoneString =
     timeZoneHour.toString().padStart(2, "0") +
@@ -539,10 +618,10 @@ function getTimeZoneString(timeZoneValue) {
 }
 
 async function runWithExponentialBackoff(
-  task,
-  failureDelay,
-  backoffFactor,
-  fetchDesc
+  task: () => void,
+  failureDelay: number,
+  backoffFactor: number,
+  fetchDesc: string
 ) {
   while (true) {
     console.log(`Attempting to ${fetchDesc}...`);
@@ -560,31 +639,27 @@ async function runWithExponentialBackoff(
 
 //// DOM utility functions
 
-function hideEntity(entity) {
+function hideEntity(entity: HTMLElement) {
   entity.classList.add("hidden");
 }
 
-function showEntity(entity) {
+function showEntity(entity: HTMLElement) {
   entity.classList.remove("hidden");
 }
 
-function setEntityVisibility(entity, visible) {
-  if (visible) {
-    showEntity(entity);
-  } else {
-    hideEntity(entity);
-  }
+function setEntityVisibility(entity: HTMLElement, visible: boolean) {
+  (visible ? showEntity : hideEntity)(entity);
 }
 
-function setButtonSelected(button, selected) {
+function setButtonSelected(button: HTMLElement, selected: boolean) {
   const classAdded = selected ? "btn-primary" : "btn-light";
   const classRemoved = selected ? "btn-light" : "btn-primary";
   button.classList.add(classAdded);
   button.classList.remove(classRemoved);
 }
 
-function removeEntityChildren(entity) {
-  while (entity.hasChildNodes()) {
+function removeEntityChildren(entity: HTMLElement) {
+  while (entity.lastChild !== null) {
     entity.removeChild(entity.lastChild);
   }
 }
@@ -592,11 +667,11 @@ function removeEntityChildren(entity) {
 //// Course and schedule utility functions
 ///// Course property queries
 
-function isCourseClosed(course) {
+function isCourseClosed(course: CourseV3) {
   return course.courseEnrollmentStatus == "closed";
 }
 
-function courseToString(course) {
+function courseToString(course: CourseV3) {
   return (
     course.courseName +
     " (" +
@@ -609,17 +684,17 @@ function courseToString(course) {
   );
 }
 
-function courseToInstructorLastnames(course) {
-  return course.courseInstructors
+function courseToInstructorLastnames(course: CourseV3) {
+  return (course.courseInstructors || [])
     .map(fullName => fullName.split(",")[0])
     .join(",");
 }
 
-function coursesEqual(course1, course2) {
+function coursesEqual(course1: CourseV3, course2: CourseV3) {
   return course1.courseCode === course2.courseCode;
 }
 
-function termListDescription(terms, termCount) {
+function termListDescription(terms: number[], termCount: number) {
   if (termCount > 10) {
     return "Complicated schedule";
   }
@@ -628,7 +703,7 @@ function termListDescription(terms, termCount) {
     return "Full-semester course";
   }
 
-  const numbers = _.map(term => {
+  const numbers = _.map((term: number) => {
     switch (term) {
       case 0:
         return "first";
@@ -683,7 +758,7 @@ function termListDescription(terms, termCount) {
   return _.capitalize(`${formatList(numbers)} ${qualifier}-semester course`);
 }
 
-function generateCourseDescription(course) {
+function generateCourseDescription(course: CourseV3) {
   const description = [];
 
   const summaryLine = course.courseCode + " " + course.courseName;
@@ -694,7 +769,7 @@ function generateCourseDescription(course) {
     description.push(time);
   }
 
-  const instructors = formatList(course.courseInstructors);
+  const instructors = formatList(course.courseInstructors || []);
   description.push(instructors);
 
   let partOfYear;
@@ -715,6 +790,7 @@ function generateCourseDescription(course) {
     description.push(course.courseDescription);
   }
 
+  if (course.courseEnrollmentStatus !== null) {
   const enrollment =
     course.courseEnrollmentStatus.charAt(0).toUpperCase() +
     course.courseEnrollmentStatus.slice(1) +
@@ -724,12 +800,13 @@ function generateCourseDescription(course) {
     course.courseSeatsTotal +
     " seats filled";
   description.push(enrollment);
+  }
 
   return description;
 }
 
 function getCourseColor(
-  course,
+  course: CourseV3,
   format:
     | "hex"
     | "hsvArray"
@@ -768,8 +845,8 @@ function getCourseColor(
 }
 
 function getRandomColor(
-  hue,
-  seed,
+  hue: string,
+  seed: string,
   format:
     | "hex"
     | "hsvArray"
@@ -790,7 +867,7 @@ function getRandomColor(
 
 ///// Course search
 
-function courseMatchesSearchQuery(course, query) {
+function courseMatchesSearchQuery(course: CourseV3, query: RegExp[]) {
   for (let subquery of query) {
     if (
       course.courseCode.match(subquery) ||
@@ -800,10 +877,12 @@ function courseMatchesSearchQuery(course, query) {
       continue;
     }
     let foundMatch = false;
-    for (let instructor of course.courseInstructors) {
-      if (instructor.match(subquery)) {
-        foundMatch = true;
-        break;
+    if (course.courseInstructors !== null) {
+      for (let instructor of course.courseInstructors) {
+	if (instructor.match(subquery)) {
+          foundMatch = true;
+          break;
+	}
       }
     }
     if (foundMatch) {
@@ -814,7 +893,7 @@ function courseMatchesSearchQuery(course, query) {
   return true;
 }
 
-function coursePassesTextFilters(course, textFilters) {
+function coursePassesTextFilters(course: CourseV3, textFilters: Record<string, string>) {
   const lowerCourseCode = course.courseCode.toLowerCase();
   const dept = lowerCourseCode.split(" ")[0];
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
@@ -831,13 +910,13 @@ function coursePassesTextFilters(course, textFilters) {
   return true;
 }
 
-function parseDaysInequality(inputDays) {
+function parseDaysInequality(inputDays: string) {
   for (const rel of filterInequalities)
     if (inputDays.startsWith(rel)) return rel;
   return "";
 }
 
-function generateDayFilter(course) {
+function generateDayFilter(course: CourseV3) {
   const scheduleList = course.courseSchedule;
   let days = new Set();
 
@@ -849,14 +928,14 @@ function generateDayFilter(course) {
   return days;
 }
 
-function generateInputDays(input) {
+function generateInputDays(input: string) {
   let days = new Set();
   const arr1 = [...input];
   arr1.forEach(days.add, days);
   return days;
 }
 
-function coursePassesDayFilter(course, inputString) {
+function coursePassesDayFilter(course: CourseV3, inputString: string) {
   const courseDays = generateDayFilter(course);
   const rel = parseDaysInequality(inputString);
   const inputDays = generateInputDays(
@@ -895,7 +974,7 @@ function coursePassesDayFilter(course, inputString) {
   }
 }
 
-function setSubset(a, b) {
+function setSubset<T>(a: Set<T>, b: Set<T>) {
   if (a.size > b.size) return false;
   for (const elem of a) if (!b.has(elem)) return false;
   return true;
@@ -903,7 +982,7 @@ function setSubset(a, b) {
 
 ///// Course scheduling
 
-function generateScheduleSlotDescription(slot) {
+function generateScheduleSlotDescription(slot: Schedule) {
   return (
     dayStringForSchedule(slot.scheduleDays, slot.scheduleStartTime) +
     " " +
@@ -915,20 +994,20 @@ function generateScheduleSlotDescription(slot) {
   );
 }
 
-function coursesMutuallyExclusive(course1, course2) {
+function coursesMutuallyExclusive(course1: CourseV3, course2: CourseV3) {
   return arraysEqual(
     course1.courseMutualExclusionKey,
     course2.courseMutualExclusionKey
   );
 }
 
-function coursesConflict(course1, course2) {
+function coursesConflict(course1: CourseV3, course2: CourseV3) {
   for (let slot1 of course1.courseSchedule) {
     for (let slot2 of course2.courseSchedule) {
       const parts = math.lcm(slot1.scheduleTermCount, slot2.scheduleTermCount);
       if (
         !_.some(
-          idx =>
+          (idx: number) =>
             slot1.scheduleTerms.indexOf(idx / slot2.scheduleTermCount) != -1 &&
             slot2.scheduleTerms.indexOf(idx / slot1.scheduleTermCount) != -1,
           _.range(0, parts)
@@ -960,7 +1039,7 @@ function coursesConflict(course1, course2) {
   return false;
 }
 
-function courseConflictWithSchedule(course, starredOnly) {
+function courseConflictWithSchedule(course: CourseV3, starredOnly: boolean) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
@@ -975,7 +1054,7 @@ function courseConflictWithSchedule(course, starredOnly) {
   return false;
 }
 
-function courseInSchedule(course) {
+function courseInSchedule(course: CourseV3) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
@@ -986,7 +1065,7 @@ function courseInSchedule(course) {
   return false;
 }
 
-function computeSchedule(courses) {
+function computeSchedule(courses: CourseV3[]) {
   const schedule = [];
   for (let course of courses) {
     if (course.selected && course.starred) {
@@ -1022,10 +1101,10 @@ function computeSchedule(courses) {
  * getConsecutiveRanges([0,1,2,4,5,8,10,12,13,14,15,20])
  *   => [[0,2], [4,5], [8,8], [10,10], [12,15], [20,20]]
  */
-function getConsecutiveRanges(nums) {
+function getConsecutiveRanges(nums: number[]) {
   const groups = [];
-  let group = [];
-  _.forEach(([idx, num]) => {
+  let group: number[] = [];
+  _.forEach(([idx, num]: [number, number]) => {
     if (idx > 0 && nums[idx - 1] !== nums[idx] - 1) {
       groups.push(group);
       group = [];
@@ -1033,12 +1112,12 @@ function getConsecutiveRanges(nums) {
     group.push(num);
   }, _.toPairs(nums));
   groups.push(group);
-  return _.map(group => [_.min(group), _.max(group)], groups);
+  return _.map((group: number[]) => [_.min(group), _.max(group)], groups);
 }
 
 ///// Course schedule queries
 
-function computeCreditCountDescription(schedule) {
+function computeCreditCountDescription(schedule: CourseV3[]) {
   let totalCredits = 0;
   let starredCredits = 0;
   for (let course of schedule) {
@@ -1061,15 +1140,15 @@ function computeCreditCountDescription(schedule) {
 
 //// Global state queries
 
-function courseAlreadyAdded(course) {
-  return _.some(selectedCourse => {
+function courseAlreadyAdded(course: CourseV3) {
+  return _.some((selectedCourse: CourseV3) => {
     return selectedCourse.courseCode === course.courseCode;
   }, gSelectedCourses);
 }
 
 /// API retrieval
 
-async function retrieveAPI(endpoint) {
+async function retrieveAPI(endpoint: string) {
   const httpResponse = await fetch(apiURL + endpoint);
   if (!httpResponse.ok) {
     throw Error(
@@ -1171,12 +1250,12 @@ function attachListeners() {
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
-  clipboard.on("success", e => {
+  clipboard.on("success", () => {
     if (!importExportCopyButton.classList.contains("copy-button-copied")) {
       importExportCopyButton.classList.add("copy-button-copied");
     }
   });
-  clipboard.on("error", e => {
+  clipboard.on("error", () => {
     importExportCopyButton.classList.add("copy-button-error");
   });
 
@@ -1188,7 +1267,7 @@ function attachListeners() {
 
 //// DOM element creation
 
-function createCourseEntity(course, attrs?) {
+function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEntityAttrs) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
@@ -1199,11 +1278,11 @@ function createCourseEntity(course, attrs?) {
   const listItemContent = document.createElement("div");
   listItemContent.classList.add("course-box-content");
   if (course !== "placeholder") {
-    listItemContent.style["background-color"] = getCourseColor(course);
-  }
+    listItemContent.style.backgroundColor = getCourseColor(course);
   listItemContent.addEventListener("click", () => {
     setCourseDescriptionBox(course);
   });
+  }
   listItem.appendChild(listItemContent);
 
   const selectLabel = document.createElement("label");
@@ -1212,11 +1291,13 @@ function createCourseEntity(course, attrs?) {
   const selectIcon = document.createElement("i");
   selectIcon.classList.add("course-box-select-icon");
   selectIcon.classList.add("icon");
+  if (course !== "placeholder") {
   if (!!course.selected) {
     selectLabel.classList.add("course-selected");
     selectIcon.classList.add("ion-android-checkbox");
   } else {
     selectIcon.classList.add("ion-android-checkbox-outline-blank");
+  }
   }
 
   const selectToggle = document.createElement("input") as HTMLInputElement;
@@ -1224,6 +1305,7 @@ function createCourseEntity(course, attrs?) {
   selectToggle.classList.add("course-box-button");
   selectToggle.classList.add("course-box-toggle");
   selectToggle.classList.add("course-box-select-toggle");
+  if (course !== "placeholder") 
   selectToggle.checked = !!course.selected;
   selectToggle.addEventListener("change", () => {
     if (selectLabel.classList.contains("course-selected")) {
@@ -1236,6 +1318,7 @@ function createCourseEntity(course, attrs?) {
       selectIcon.classList.add("ion-android-checkbox");
     }
 
+  if (course !== "placeholder") 
     toggleCourseSelected(course);
   });
   selectToggle.addEventListener("click", catchEvent);
@@ -1256,16 +1339,16 @@ function createCourseEntity(course, attrs?) {
   const starIcon = document.createElement("i");
   starIcon.classList.add("course-box-star-icon");
   starIcon.classList.add("icon");
+  starLabel.classList.add("star-visible");
 
   if (course !== "placeholder") {
-    starLabel.classList.add("star-visible");
-  }
-  starToggle.checked = !!course.starred;
-  if (!!course.starred) {
-    starLabel.classList.add("star-checked");
-    starIcon.classList.add("ion-android-star");
-  } else {
-    starIcon.classList.add("ion-android-star-outline");
+    starToggle.checked = !!course.starred;
+    if (!!course.starred) {
+      starLabel.classList.add("star-checked");
+      starIcon.classList.add("ion-android-star");
+    } else {
+      starIcon.classList.add("ion-android-star-outline");
+    }
   }
   starToggle.addEventListener("change", () => {
     if (starLabel.classList.contains("star-checked")) {
@@ -1278,6 +1361,7 @@ function createCourseEntity(course, attrs?) {
       starIcon.classList.add("ion-android-star");
     }
 
+  if (course !== "placeholder") 
     toggleCourseStarred(course);
   });
   starToggle.addEventListener("click", catchEvent);
@@ -1318,7 +1402,8 @@ function createCourseEntity(course, attrs?) {
     addButton.classList.add("icon");
     addButton.classList.add("ion-plus");
 
-    addButton.addEventListener("click", () => {
+    if (course !== "placeholder")
+      addButton.addEventListener("click", () => {
       addCourse(course);
     });
     addButton.addEventListener("click", catchEvent);
@@ -1330,9 +1415,10 @@ function createCourseEntity(course, attrs?) {
   removeButton.classList.add("course-box-remove-button");
   removeButton.classList.add("icon");
   removeButton.classList.add("ion-close");
-  removeButton.addEventListener("click", () => {
-    removeCourse(course);
-  });
+  if (course !== "placeholder")
+    removeButton.addEventListener("click", () => {
+      removeCourse(course);
+    });
   removeButton.addEventListener("click", catchEvent);
   listItemContent.appendChild(removeButton);
 
@@ -1341,13 +1427,13 @@ function createCourseEntity(course, attrs?) {
   }
 
   if (idx !== undefined) {
-    listItem.setAttribute("data-course-index", idx);
+    listItem.setAttribute("data-course-index", idx.toString());
   }
 
   return listItem;
 }
 
-function createSlotEntities(course) {
+function createSlotEntities(course: CourseV3) {
   const entities = [];
   for (const slot of course.courseSchedule) {
     const startTime = timeStringToHours(slot.scheduleStartTime);
@@ -1374,7 +1460,7 @@ function createSlotEntities(course) {
           },
           onclick: () => setCourseDescriptionBox(course)
         },
-        getConsecutiveRanges(slot.scheduleTerms).map(([left, right]) =>
+        getConsecutiveRanges(slot.scheduleTerms).map(([left, right]: [number, number]) =>
           redom.el(
             "div",
             {
@@ -1415,7 +1501,7 @@ function createSlotEntities(course) {
 
 function processSearchText() {
   const searchText = courseSearchInput.value.trim().split(/\s+/);
-  let filterKeywordsValues = [];
+  let filterKeywordsValues: string[] = [];
   for (let key of Object.keys(filterKeywords)) {
     filterKeywordsValues = filterKeywordsValues.concat(filterKeywords[key]);
   }
@@ -1425,7 +1511,7 @@ function processSearchText() {
   for (let text of searchText) {
     text = text.toLowerCase();
     if (
-      _.some(filter => {
+      _.some((filter: string) => {
         return text.includes(filter);
       }, filterKeywordsValues)
     ) {
@@ -1441,14 +1527,14 @@ function processSearchText() {
   return { query, filters };
 }
 
-function getSearchQuery(searchTextArray) {
-  return searchTextArray.map(subquery => {
+function getSearchQuery(searchTextArray: string[]) {
+  return searchTextArray.map((subquery: string) => {
     return new RegExp(quoteRegexp(subquery), "i");
   });
 }
 
-function getSearchTextFilters(filtersTextArray) {
-  let filter = {};
+function getSearchTextFilters(filtersTextArray: string[]) {
+  let filter: Record<string, string> = {};
   for (let text of filtersTextArray) {
     let keyword = text.split(":")[0] + ":";
     const filterText = text.split(":")[1];
@@ -1545,7 +1631,7 @@ function rerenderCourseSearchResults() {
 
   // Remove courses that should no longer be shown (or all courses, if
   // updating non-incrementally).
-  while (courseSearchResultsList.childElementCount > 0) {
+  while (courseSearchResultsList.lastChild !== null) {
     // Make sure to remove from the end.
     courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
@@ -1582,13 +1668,16 @@ function rerenderCourseSearchResults() {
 }
 
 function updateSelectedCoursesList() {
+
+    // TODO REDOM
+
   if (gCurrentlySorting) {
     // Defer to after the user has finished sorting, otherwise we mess
     // up the drag and drop.
     setTimeout(updateSelectedCoursesList, 100);
     return;
   }
-  while (selectedCoursesList.hasChildNodes()) {
+  while (selectedCoursesList.lastChild !== null) {
     selectedCoursesList.removeChild(selectedCoursesList.lastChild);
   }
   for (let idx = 0; idx < gSelectedCourses.length; ++idx) {
@@ -1607,11 +1696,11 @@ function updateSchedule() {
     const element = scheduleTable.getElementsByClassName(
       "schedule-slot-wrapper"
     )[0];
-    element.parentNode.removeChild(element);
+    element.parentNode!.removeChild(element);
   }
   for (let course of schedule) {
     const entities = createSlotEntities(course);
-    _.forEach(e => scheduleTable.appendChild(e), entities);
+    _.forEach((e: HTMLElement) => scheduleTable.appendChild(e), entities);
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
 }
@@ -1659,10 +1748,10 @@ function showSettingsModal() {
   $("#settings-modal").modal("show");
 }
 
-function setCourseDescriptionBox(course) {
+function setCourseDescriptionBox(course: CourseV3) {
   gCourseSelected = course;
 
-  while (courseDescriptionBox.hasChildNodes()) {
+  while (courseDescriptionBox.lastChild !== null) {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
   const description = generateCourseDescription(course);
@@ -1716,7 +1805,8 @@ function minimizeArrowPointDown() {
 }
 
 function updateCourseDescriptionTimeZone() {
-  setCourseDescriptionBox(gCourseSelected);
+  if (gCourseSelected !== null)
+    setCourseDescriptionBox(gCourseSelected);
 }
 
 /// Global state handling
@@ -1757,7 +1847,7 @@ function handleGlobalStateUpdate() {
 
 //// Global state mutation
 
-function addCourse(course) {
+function addCourse(course: CourseV3) {
   if (courseAlreadyAdded(course)) {
     return;
   }
@@ -1768,7 +1858,7 @@ function addCourse(course) {
   handleSelectedCoursesUpdate();
 }
 
-function removeCourse(course) {
+function removeCourse(course: CourseV3) {
   gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
   handleSelectedCoursesUpdate();
 }
@@ -1776,7 +1866,7 @@ function removeCourse(course) {
 function readSelectedCoursesList() {
   const newSelectedCourses = [];
   for (let entity of selectedCoursesList.children) {
-    const idx = parseInt(entity.getAttribute("data-course-index"), 10);
+    const idx = parseInt(entity.getAttribute("data-course-index")!, 10);
     if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length) {
       newSelectedCourses.push(gSelectedCourses[idx]);
     } else {
@@ -1834,13 +1924,13 @@ function toggleTimeZone() {
   writeStateToLocalStorage();
 }
 
-function toggleCourseSelected(course) {
+function toggleCourseSelected(course: CourseV3) {
   course.selected = !course.selected;
   updateCourseDisplays();
   writeStateToLocalStorage();
 }
 
-function toggleCourseStarred(course) {
+function toggleCourseStarred(course: CourseV3) {
   course.starred = !course.starred;
   updateCourseDisplays();
   writeStateToLocalStorage();
@@ -1852,15 +1942,15 @@ function updateCourseDisplays() {
   updateSchedule();
 }
 
-function displayCourseSearchColumn() {
-  this.blur();
+function displayCourseSearchColumn(ev: MouseEvent) {
+  (<HTMLElement>ev.target).blur();
   gScheduleTabSelected = false;
   updateTabToggle();
   writeStateToLocalStorage();
 }
 
-function displayScheduleColumn() {
-  this.blur();
+function displayScheduleColumn(ev: MouseEvent) {
+  (<HTMLElement>ev.target).blur();
   gScheduleTabSelected = true;
   updateTabToggle();
   writeStateToLocalStorage();
@@ -1874,13 +1964,13 @@ function displayScheduleColumn() {
  * the format of diffs), apply the diff and return a new data object.
  * The original data object may have been mutated.
  */
-function applyDiff(data, diff) {
+function applyDiff(data: any, diff: any) {
   console.log("applying diff");
   if (!_.isObject(data) || !_.isObject(diff)) {
     return diff;
   }
 
-  _.forEach.convert({ cap: false })((val, key) => {
+  _.forEach.convert({ cap: false })((val: "$delete" | object, key: string) => {
     if (val === "$delete") {
       delete data[key];
     } else if (!data.hasOwnProperty(key)) {
@@ -1906,8 +1996,8 @@ async function retrieveCourseData() {
   let apiData = gApiData;
   let wasUpdated = false;
   console.log(`retrieved course data, full is ${apiResponse.full}`);
-  if (apiResponse.full) {
-    apiData = { data: apiResponse.data };
+  if (apiResponse.full || apiData === null) {
+    apiData = {data: apiResponse.data, until: apiResponse.until};
     wasUpdated = true;
   } else {
     const diff = apiResponse.data;
@@ -1929,16 +2019,16 @@ async function retrieveCourseData() {
 
   if (wasUpdated) {
     const terms = _.values(apiData.data.terms);
-    terms.sort((t1, t2) => compareArrays(t1.termSortKey, t2.termSortKey));
+    terms.sort((t1: Term, t2: Term) => compareArrays(t1.termSortKey, t2.termSortKey));
     apiData.data.terms = {};
-    _.forEach(t => {
+    _.forEach((t: Term) => {
       apiData.data.terms[t.termCode] = t;
     }, terms);
 
     const courses = _.values(apiData.data.courses);
-    courses.sort((t1, t2) => compareArrays(t1.courseSortKey, t2.courseSortKey));
+    courses.sort((t1: CourseV3, t2: CourseV3) => compareArrays(t1.courseSortKey, t2.courseSortKey));
     apiData.data.courses = {};
-    _.forEach(c => {
+    _.forEach((c: CourseV3) => {
       apiData.data.courses[c.courseCode] = c;
     }, courses);
   }
@@ -1997,7 +2087,7 @@ function writeStateToLocalStorage() {
   localStorage.setItem("timeZoneSavings", JSON.stringify(gTimeZoneSavings));
 }
 
-function oldCourseToString(course) {
+function oldCourseToString(course: CourseV2) {
   return (
     course.department +
     " " +
@@ -2010,14 +2100,22 @@ function oldCourseToString(course) {
   );
 }
 
-function upgradeSelectedCourses(selectedCourses) {
-  return _.map(course => {
-    if (!_.has("quarterCredits", course)) {
-      return course;
-    }
+function courseIsV2(course: CourseV2 | CourseV3): course is CourseV2 {
+  return course.hasOwnProperty("quarterCredits");
+}
 
-    // Course object is in old format returned by API v3. Upgrade to
-    // API v4 format.
+function courseIsV3(course: CourseV2 | CourseV3): course is CourseV3 {
+  return !courseIsV2(course);
+}
+
+function upgradeCourse(course: CourseV2 | CourseV3): CourseV3 {
+  if (courseIsV3(course)) {
+    return course;
+  }
+  
+  else {
+    // Course object is in old format returned by API v2. Upgrade to
+    // API v3 format.
     return {
       courseCode: oldCourseToString(course),
       courseCredits: _.toString(course.quarterCredits / 4),
@@ -2031,7 +2129,7 @@ function upgradeSelectedCourses(selectedCourses) {
         course.school
       ],
       courseName: course.courseName,
-      courseSchedule: _.map(slot => {
+      courseSchedule: _.map((slot: Slot) => {
         return {
           scheduleDays: slot.days,
           scheduleEndDate: course.endDate,
@@ -2040,7 +2138,7 @@ function upgradeSelectedCourses(selectedCourses) {
           scheduleStartDate: course.startDate,
           scheduleStartTime: slot.startTime,
           scheduleTermCount:
-            course.firstHalfSemester && course.secondHalfSemester ? 1 : 2,
+          course.firstHalfSemester && course.secondHalfSemester ? 1 : 2,
           scheduleTerms: !course.firstHalfSemester ? [1] : [0]
         };
       }, course.schedule),
@@ -2058,7 +2156,11 @@ function upgradeSelectedCourses(selectedCourses) {
       selected: course.selected,
       starred: course.starred
     };
-  }, selectedCourses);
+  };
+}
+
+function upgradeSelectedCourses(selectedCourses: (CourseV2 | CourseV3)[]): CourseV3[] {
+  return selectedCourses.map(upgradeCourse);
 }
 
 function readStateFromLocalStorage() {
@@ -2109,20 +2211,20 @@ function readStateFromLocalStorage() {
   );
 }
 
-function validateGGreyConflictCourses(value) {
+function validateGGreyConflictCourses(value: string) {
   if (!_.isString(value)) {
     return false;
   }
   return greyConflictCoursesOptions.includes(value);
 }
 
-function validateGTimeZoneValues(value) {
+function validateGTimeZoneValues(value: number[] | number) {
   return _.isArray(value) || _.isNumber(value);
 }
 
 /// PDF download
 
-function downloadPDF(starredOnly) {
+function downloadPDF(starredOnly: boolean) {
   // initialize PDF object
   const pdf = new jsPDF({
     unit: "pt",
@@ -2268,7 +2370,7 @@ function downloadPDF(starredOnly) {
           ];
           const entriesByOrder = ["code", "name", "instructor", "location"];
 
-          let entryNameToText = {
+          let entryNameToText: Record<string, string[]> = {
             code: courseCodeLines,
             location: courseLocationLines,
             name: courseNameLines,
@@ -2322,7 +2424,7 @@ function downloadPDF(starredOnly) {
 
 /// iCal download
 
-function convertDayToICal(weekday: "U" | "M" | "T" | "W" | "R" | "F" | "S") {
+function convertDayToICal(weekday: Weekday) {
   switch (weekday) {
     case "U":
       return "SU";
@@ -2371,7 +2473,7 @@ function downloadICalFile() {
           " " +
           course.courseName +
           "\n" +
-          formatList(course.courseInstructors)
+          formatList(course.courseInstructors || [])
       );
       for (let slot of course.courseSchedule) {
         const listedStartDay = parseDate(slot.scheduleStartDate);
@@ -2413,7 +2515,7 @@ function downloadICalFile() {
         const freq = "WEEKLY";
         const until = listedEndDay;
         const interval = 1;
-        const byday = slot.scheduleDays.split("").map(convertDayToICal);
+        const byday = (<Weekday[]>slot.scheduleDays.split("")).map(convertDayToICal);
         const rrule = {
           freq,
           until,
