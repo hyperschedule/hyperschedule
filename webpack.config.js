@@ -63,7 +63,7 @@ module.exports = (env, argv) => {
       host: "0.0.0.0",
       contentBase: path.join(__dirname, "dist"),
       port: 5000,
-      hot: true
+      hot: !prod
     }
   };
 };
