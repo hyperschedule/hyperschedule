@@ -32,13 +32,13 @@ interface Slot {
 
 interface ApiData {
   data: {
-    terms: Record<string, Term>
-    courses: Record<string, CourseV3>
+    terms: Record<string, Term>;
+    courses: Record<string, CourseV3>;
   };
   until: number;
 }
 
-type Primitive = string | number | boolean
+type Primitive = string | number | boolean;
 
 type SortKey = Primitive[];
 
@@ -167,14 +167,14 @@ const courseSearchToggle = document.getElementById("course-search-toggle")!;
 const scheduleToggle = document.getElementById("schedule-toggle")!;
 
 const closedCoursesToggle = <HTMLInputElement>(
-  document.getElementById("closed-courses-toggle")
-)!;
+  document.getElementById("closed-courses-toggle")!
+);
 const hideAllConflictingCoursesToggle = <HTMLInputElement>(
-  document.getElementById("all-conflicting-courses-toggle")
-)!;
+  document.getElementById("all-conflicting-courses-toggle")!
+);
 const hideStarredConflictingCoursesToggle = <HTMLInputElement>(
-  document.getElementById("star-conflicting-courses-toggle")
-)!;
+  document.getElementById("star-conflicting-courses-toggle")!
+);
 
 const courseSearchScheduleColumn = document.getElementById(
   "course-search-schedule-column"
@@ -183,8 +183,8 @@ const courseSearchColumn = document.getElementById("course-search-column")!;
 const scheduleColumn = document.getElementById("schedule-column")!;
 
 const courseSearchInput = <HTMLInputElement>(
-  document.getElementById("course-search-course-name-input")
-)!;
+  document.getElementById("course-search-course-name-input")!
+);
 const courseSearchResults = document.getElementById("course-search-results")!;
 const courseSearchResultsList = document.getElementById(
   "course-search-results-list"
@@ -211,8 +211,8 @@ const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>(
   document.getElementsByName("conflict-courses")
 );
 const timeZoneDropdown = <HTMLSelectElement>(
-  document.getElementById("time-zone-dropdown")
-)!;
+  document.getElementById("time-zone-dropdown")!
+);
 
 const courseDescriptionMinimizeOuter = document.getElementById(
   "minimize-outer"
@@ -234,9 +234,9 @@ const scheduleTableDays = document.getElementsByClassName("schedule-day");
 const scheduleTableHours = document.getElementsByClassName("schedule-hour");
 const creditCountText = document.getElementById("credit-count")!;
 
-const importExportTextArea = <HTMLInputElement>document.getElementById(
-  "import-export-text-area"
-)!;
+const importExportTextArea = <HTMLInputElement>(
+  document.getElementById("import-export-text-area")!
+);
 const importExportICalButton = document.getElementById(
   "import-export-ical-button"
 )!;
@@ -251,7 +251,7 @@ const importExportCopyButton = document.getElementById(
 
 // Persistent data.
 let gApiData: ApiData | null = null;
-let gSelectedCourses: CourseV3[] = []; 
+let gSelectedCourses: CourseV3[] = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
@@ -292,7 +292,11 @@ function quoteRegexp(str: string) {
   return (str + "").replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 }
 
-function arraysEqual(arr1: SortKey, arr2: SortKey, test?: ((a: Primitive, b: Primitive) => boolean)) {
+function arraysEqual(
+  arr1: SortKey,
+  arr2: SortKey,
+  test?: (a: Primitive, b: Primitive) => boolean
+) {
   if (arr1.length !== arr2.length) {
     return false;
   }
@@ -327,7 +331,7 @@ function compareArrays(arr1: SortKey, arr2: SortKey) {
 }
 
 // https://stackoverflow.com/a/29018745/3538165
-function binarySearch<T>(ar: T[], el: T, compare_fn: ((a: T, b: T) => number)) {
+function binarySearch<T>(ar: T[], el: T, compare_fn: (a: T, b: T) => number) {
   var m = 0;
   var n = ar.length - 1;
   while (m <= n) {
@@ -372,7 +376,7 @@ function weekdayCharToInteger(weekday: string) {
   return index;
 }
 
-function readFromLocalStorage<T>(key: string, pred: ((a: T) => boolean), def: T) {
+function readFromLocalStorage<T>(key: string, pred: (a: T) => boolean, def: T) {
   const jsonString = localStorage.getItem(key);
   if (!jsonString) {
     return def;
@@ -563,7 +567,13 @@ function checkTimeZoneSavings() {
 // month = January (0) to December (11)
 // n = 1st (1) ... last (-1)
 // dayOfWeek = Sunday (0) to Saturday (6)
-function nthSundayOfMonth(month: number, n: number, hours: number, dayOfWeek: number, timeZoneValue: number) {
+function nthSundayOfMonth(
+  month: number,
+  n: number,
+  hours: number,
+  dayOfWeek: number,
+  timeZoneValue: number
+) {
   let fullDate = new Date();
   let year = fullDate.getFullYear();
 
@@ -704,7 +714,7 @@ function termListDescription(terms: number[], termCount: number) {
     return "Full-semester course";
   }
 
-  const numbers = _.map((term: number) => {
+  const numbers = terms.map((term: number) => {
     switch (term) {
       case 0:
         return "first";
@@ -729,7 +739,7 @@ function termListDescription(terms: number[], termCount: number) {
       default:
         return "unknown";
     }
-  }, terms);
+  });
 
   const qualifier = (termCount => {
     switch (termCount) {
@@ -774,7 +784,7 @@ function generateCourseDescription(course: CourseV3) {
   description.push(instructors);
 
   let partOfYear;
-  if (_.isEmpty(course.courseSchedule)) {
+  if (course.courseSchedule.length === 0) {
     partOfYear = "No scheduled meetings";
   } else {
     const meeting = course.courseSchedule[0];
@@ -792,15 +802,15 @@ function generateCourseDescription(course: CourseV3) {
   }
 
   if (course.courseEnrollmentStatus !== null) {
-  const enrollment =
-    course.courseEnrollmentStatus.charAt(0).toUpperCase() +
-    course.courseEnrollmentStatus.slice(1) +
-    ", " +
-    course.courseSeatsFilled +
-    "/" +
-    course.courseSeatsTotal +
-    " seats filled";
-  description.push(enrollment);
+    const enrollment =
+      course.courseEnrollmentStatus.charAt(0).toUpperCase() +
+      course.courseEnrollmentStatus.slice(1) +
+      ", " +
+      course.courseSeatsFilled +
+      "/" +
+      course.courseSeatsTotal +
+      " seats filled";
+    description.push(enrollment);
   }
 
   return description;
@@ -880,10 +890,10 @@ function courseMatchesSearchQuery(course: CourseV3, query: RegExp[]) {
     let foundMatch = false;
     if (course.courseInstructors !== null) {
       for (let instructor of course.courseInstructors) {
-	if (instructor.match(subquery)) {
+        if (instructor.match(subquery)) {
           foundMatch = true;
           break;
-	}
+        }
       }
     }
     if (foundMatch) {
@@ -894,7 +904,10 @@ function courseMatchesSearchQuery(course: CourseV3, query: RegExp[]) {
   return true;
 }
 
-function coursePassesTextFilters(course: CourseV3, textFilters: Record<string, string>) {
+function coursePassesTextFilters(
+  course: CourseV3,
+  textFilters: Record<string, string>
+) {
   const lowerCourseCode = course.courseCode.toLowerCase();
   const dept = lowerCourseCode.split(" ")[0];
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
@@ -1007,12 +1020,15 @@ function coursesConflict(course1: CourseV3, course2: CourseV3) {
     for (let slot2 of course2.courseSchedule) {
       const parts = math.lcm(slot1.scheduleTermCount, slot2.scheduleTermCount);
       if (
-        !_.some(
-          (idx: number) =>
-            slot1.scheduleTerms.indexOf(idx / slot2.scheduleTermCount) != -1 &&
-            slot2.scheduleTerms.indexOf(idx / slot1.scheduleTermCount) != -1,
-          _.range(0, parts)
-        )
+        (() => {
+          for (let i = 0; i < parts; ++i)
+            if (
+              slot1.scheduleTerms.indexOf(i / slot2.scheduleTermCount) != -1 &&
+              slot2.scheduleTerms.indexOf(i / slot1.scheduleTermCount) != -1
+            )
+              return true;
+          return false;
+        })()
       ) {
         return false;
       }
@@ -1104,18 +1120,20 @@ function computeSchedule(courses: CourseV3[]) {
  */
 function getConsecutiveRanges(nums: number[]): [number, number][] {
   if (nums.length === 0) return [];
-  
-  const groups = [];
-  let group: number[] = [nums[0]];
+
+  const ranges: [number, number][] = [];
+  let min = nums[0];
+  let prev = nums[0];
   for (let i = 1; i < nums.length; ++i) {
-    if (nums[i] !== nums[i-1] + 1) {
-      groups.push(group);
-      group = [];
+    const num = nums[i];
+    if (num !== prev + 1) {
+      ranges.push([min, prev]);
+      min = num;
     }
-    group.push(nums[i]);
+    prev = num;
   }
-  groups.push(group);
-  return _.map((group: number[]): [number, number] => [_.min(group)!, _.max(group)!], groups);
+  ranges.push([min, prev]);
+  return ranges;
 }
 
 ///// Course schedule queries
@@ -1270,7 +1288,10 @@ function attachListeners() {
 
 //// DOM element creation
 
-function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEntityAttrs) {
+function createCourseEntity(
+  course: CourseV3 | "placeholder",
+  attrs?: CourseEntityAttrs
+) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
@@ -1282,9 +1303,9 @@ function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEnti
   listItemContent.classList.add("course-box-content");
   if (course !== "placeholder") {
     listItemContent.style.backgroundColor = getCourseColor(course);
-  listItemContent.addEventListener("click", () => {
-    setCourseDescriptionBox(course);
-  });
+    listItemContent.addEventListener("click", () => {
+      setCourseDescriptionBox(course);
+    });
   }
   listItem.appendChild(listItemContent);
 
@@ -1295,12 +1316,12 @@ function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEnti
   selectIcon.classList.add("course-box-select-icon");
   selectIcon.classList.add("icon");
   if (course !== "placeholder") {
-  if (!!course.selected) {
-    selectLabel.classList.add("course-selected");
-    selectIcon.classList.add("ion-android-checkbox");
-  } else {
-    selectIcon.classList.add("ion-android-checkbox-outline-blank");
-  }
+    if (!!course.selected) {
+      selectLabel.classList.add("course-selected");
+      selectIcon.classList.add("ion-android-checkbox");
+    } else {
+      selectIcon.classList.add("ion-android-checkbox-outline-blank");
+    }
   }
 
   const selectToggle = document.createElement("input") as HTMLInputElement;
@@ -1308,8 +1329,7 @@ function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEnti
   selectToggle.classList.add("course-box-button");
   selectToggle.classList.add("course-box-toggle");
   selectToggle.classList.add("course-box-select-toggle");
-  if (course !== "placeholder") 
-  selectToggle.checked = !!course.selected;
+  if (course !== "placeholder") selectToggle.checked = !!course.selected;
   selectToggle.addEventListener("change", () => {
     if (selectLabel.classList.contains("course-selected")) {
       selectLabel.classList.remove("course-selected");
@@ -1321,8 +1341,7 @@ function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEnti
       selectIcon.classList.add("ion-android-checkbox");
     }
 
-  if (course !== "placeholder") 
-    toggleCourseSelected(course);
+    if (course !== "placeholder") toggleCourseSelected(course);
   });
   selectToggle.addEventListener("click", catchEvent);
   selectLabel.addEventListener("click", catchEvent);
@@ -1364,8 +1383,7 @@ function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEnti
       starIcon.classList.add("ion-android-star");
     }
 
-  if (course !== "placeholder") 
-    toggleCourseStarred(course);
+    if (course !== "placeholder") toggleCourseStarred(course);
   });
   starToggle.addEventListener("click", catchEvent);
   starLabel.addEventListener("click", catchEvent);
@@ -1407,8 +1425,8 @@ function createCourseEntity(course: CourseV3 | "placeholder", attrs?: CourseEnti
 
     if (course !== "placeholder")
       addButton.addEventListener("click", () => {
-      addCourse(course);
-    });
+        addCourse(course);
+      });
     addButton.addEventListener("click", catchEvent);
     listItemContent.appendChild(addButton);
   }
@@ -1463,34 +1481,35 @@ function createSlotEntities(course: CourseV3) {
           },
           onclick: () => setCourseDescriptionBox(course)
         },
-        getConsecutiveRanges(slot.scheduleTerms).map(([left, right]: [number, number]) =>
-          redom.el(
-            "div",
-            {
-              class:
-                "schedule-slot" +
-                (course.starred ? " schedule-slot-starred" : ""),
-              style: {
-                gridColumnStart: left + 1,
-                gridColumnEnd: right + 1,
-                backgroundColor: getCourseColor(course)
-              }
-            },
-            [
-              redom.el("p.schedule-slot-text-wrapper", [
-                redom.el("p.schedule-slot-course-code", course.courseCode),
-                redom.el(
-                  "p.schedule-slot-course-name",
-                  course.courseName +
-                    " (" +
-                    course.courseSeatsFilled +
-                    "/" +
-                    course.courseSeatsTotal +
-                    ")"
-                )
-              ])
-            ]
-          )
+        getConsecutiveRanges(slot.scheduleTerms).map(
+          ([left, right]: [number, number]) =>
+            redom.el(
+              "div",
+              {
+                class:
+                  "schedule-slot" +
+                  (course.starred ? " schedule-slot-starred" : ""),
+                style: {
+                  gridColumnStart: left + 1,
+                  gridColumnEnd: right + 1,
+                  backgroundColor: getCourseColor(course)
+                }
+              },
+              [
+                redom.el("p.schedule-slot-text-wrapper", [
+                  redom.el("p.schedule-slot-course-code", course.courseCode),
+                  redom.el(
+                    "p.schedule-slot-course-name",
+                    course.courseName +
+                      " (" +
+                      course.courseSeatsFilled +
+                      "/" +
+                      course.courseSeatsTotal +
+                      ")"
+                  )
+                ])
+              ]
+            )
         )
       );
 
@@ -1671,8 +1690,7 @@ function rerenderCourseSearchResults() {
 }
 
 function updateSelectedCoursesList() {
-
-    // TODO REDOM
+  // TODO REDOM
 
   if (gCurrentlySorting) {
     // Defer to after the user has finished sorting, otherwise we mess
@@ -1703,7 +1721,7 @@ function updateSchedule() {
   }
   for (let course of schedule) {
     const entities = createSlotEntities(course);
-    _.forEach((e: HTMLElement) => scheduleTable.appendChild(e), entities);
+    entities.forEach(e => scheduleTable.appendChild(e));
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
 }
@@ -1808,8 +1826,7 @@ function minimizeArrowPointDown() {
 }
 
 function updateCourseDescriptionTimeZone() {
-  if (gCourseSelected !== null)
-    setCourseDescriptionBox(gCourseSelected);
+  if (gCourseSelected !== null) setCourseDescriptionBox(gCourseSelected);
 }
 
 /// Global state handling
@@ -2001,7 +2018,7 @@ async function retrieveCourseData() {
   let wasUpdated = false;
   console.log(`retrieved course data, full is ${apiResponse.full}`);
   if (apiData === null || apiResponse.full) {
-    apiData = {data: apiResponse.data, until: apiResponse.until};
+    apiData = { data: apiResponse.data, until: apiResponse.until };
     wasUpdated = true;
   } else {
     const diff = apiResponse.data;
@@ -2013,7 +2030,7 @@ async function retrieveCourseData() {
   apiData.until = apiResponse.until;
 
   for (const selectedCourse of gSelectedCourses) {
-    if (_.has(selectedCourse.courseCode, apiData.data.courses)) {
+    if (apiData.data.courses.hasOwnProperty(selectedCourse.courseCode)) {
       Object.assign(
         selectedCourse,
         apiData!.data.courses[selectedCourse.courseCode]
@@ -2022,19 +2039,23 @@ async function retrieveCourseData() {
   }
 
   if (wasUpdated) {
-    const terms = _.values(apiData.data.terms);
-    terms.sort((t1: Term, t2: Term) => compareArrays(t1.termSortKey, t2.termSortKey));
+    const terms = Object.values(apiData.data.terms);
+    terms.sort((t1: Term, t2: Term) =>
+      compareArrays(t1.termSortKey, t2.termSortKey)
+    );
     apiData.data.terms = {};
-    _.forEach((t: Term) => {
+    terms.forEach((t: Term) => {
       apiData!.data.terms[t.termCode] = t;
-    }, terms);
+    });
 
-    const courses = _.values(apiData.data.courses);
-    courses.sort((t1: CourseV3, t2: CourseV3) => compareArrays(t1.courseSortKey, t2.courseSortKey));
+    const courses = Object.values(apiData.data.courses);
+    courses.sort((t1: CourseV3, t2: CourseV3) =>
+      compareArrays(t1.courseSortKey, t2.courseSortKey)
+    );
     apiData.data.courses = {};
-    _.forEach((c: CourseV3) => {
+    courses.forEach((c: CourseV3) => {
       apiData!.data.courses[c.courseCode] = c;
-    }, courses);
+    });
   }
 
   gApiData = apiData;
@@ -2115,14 +2136,12 @@ function courseIsV3(course: CourseV2 | CourseV3): course is CourseV3 {
 function upgradeCourse(course: CourseV2 | CourseV3): CourseV3 {
   if (courseIsV3(course)) {
     return course;
-  }
-  
-  else {
+  } else {
     // Course object is in old format returned by API v2. Upgrade to
     // API v3 format.
     return {
       courseCode: oldCourseToString(course),
-      courseCredits: _.toString(course.quarterCredits / 4),
+      courseCredits: (course.quarterCredits / 4).toString(),
       courseDescription: course.courseDescription,
       courseEnrollmentStatus: course.courseStatus,
       courseInstructors: course.faculty,
@@ -2133,7 +2152,7 @@ function upgradeCourse(course: CourseV2 | CourseV3): CourseV3 {
         course.school
       ],
       courseName: course.courseName,
-      courseSchedule: _.map((slot: Slot) => {
+      courseSchedule: course.schedule.map((slot: Slot) => {
         return {
           scheduleDays: slot.days,
           scheduleEndDate: course.endDate,
@@ -2142,10 +2161,10 @@ function upgradeCourse(course: CourseV2 | CourseV3): CourseV3 {
           scheduleStartDate: course.startDate,
           scheduleStartTime: slot.startTime,
           scheduleTermCount:
-          course.firstHalfSemester && course.secondHalfSemester ? 1 : 2,
+            course.firstHalfSemester && course.secondHalfSemester ? 1 : 2,
           scheduleTerms: !course.firstHalfSemester ? [1] : [0]
         };
-      }, course.schedule),
+      }),
       courseSeatsFilled: course.openSeats,
       courseSeatsTotal: course.totalSeats,
       courseSortKey: [
@@ -2160,10 +2179,12 @@ function upgradeCourse(course: CourseV2 | CourseV3): CourseV3 {
       selected: course.selected,
       starred: course.starred
     };
-  };
+  }
 }
 
-function upgradeSelectedCourses(selectedCourses: (CourseV2 | CourseV3)[]): CourseV3[] {
+function upgradeSelectedCourses(
+  selectedCourses: (CourseV2 | CourseV3)[]
+): CourseV3[] {
   return selectedCourses.map(upgradeCourse);
 }
 
@@ -2519,7 +2540,9 @@ function downloadICalFile() {
         const freq = "WEEKLY";
         const until = listedEndDay;
         const interval = 1;
-        const byday = (<Weekday[]>slot.scheduleDays.split("")).map(convertDayToICal);
+        const byday = (<Weekday[]>slot.scheduleDays.split("")).map(
+          convertDayToICal
+        );
         const rrule = {
           freq,
           until,
