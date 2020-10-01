@@ -74,3 +74,28 @@ export function digitToStringFractional(n: number) {
       return "unknown";
   }
 }
+
+/**
+ * Given an array of integers in sorted order, determine the beginning
+ * and end of each run of consecutive integers. For example:
+ *
+ * getConsecutiveRanges([0,1,2,4,5,8,10,12,13,14,15,20])
+ *   => [[0,2], [4,5], [8,8], [10,10], [12,15], [20,20]]
+ */
+export function getConsecutiveRanges(nums: number[]): [number, number][] {
+  if (nums.length === 0) return [];
+
+  const ranges: [number, number][] = [];
+  let min = nums[0];
+  let prev = nums[0];
+  for (let i = 1; i < nums.length; ++i) {
+    const num = nums[i];
+    if (num !== prev + 1) {
+      ranges.push([min, prev]);
+      min = num;
+    }
+    prev = num;
+  }
+  ranges.push([min, prev]);
+  return ranges;
+}

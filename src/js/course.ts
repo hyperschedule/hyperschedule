@@ -1,6 +1,10 @@
 import * as SortKey from "./sort-key";
 import * as Schedule from "./schedule";
 import * as Util from "./util";
+import * as TimeString from "./time-string";
+import * as Math from "mathjs";
+import randomColor from "randomcolor";
+import CryptoJs from "crypto-js";
 
 interface Slot {
   days: string;
@@ -51,6 +55,102 @@ export interface CourseV3 {
 
 export function mutuallyExclusive(a: CourseV3, b: CourseV3) {
   return SortKey.equal(a.courseMutualExclusionKey, b.courseMutualExclusionKey);
+}
+
+export function conflict(course1: CourseV3, course2: CourseV3) {
+  for (let slot1 of course1.courseSchedule) {
+    for (let slot2 of course2.courseSchedule) {
+      const parts = Math.lcm(slot1.scheduleTermCount, slot2.scheduleTermCount);
+      if (
+        !(() => {
+          for (let i = 0; i < parts; ++i)
+            if (
+              slot1.scheduleTerms.indexOf(i / slot2.scheduleTermCount) != -1 &&
+              slot2.scheduleTerms.indexOf(i / slot1.scheduleTermCount) != -1
+            )
+              return true;
+          return false;
+        })()
+      ) {
+        return false;
+      }
+      let daysOverlap = false;
+      for (let day1 of slot1.scheduleDays) {
+        if (slot2.scheduleDays.indexOf(day1) !== -1) {
+          daysOverlap = true;
+          break;
+        }
+      }
+      if (!daysOverlap) continue;
+      const start1 = TimeString.toFractionalHours(slot1.scheduleStartTime);
+      const end1 = TimeString.toFractionalHours(slot1.scheduleEndTime);
+      const start2 = TimeString.toFractionalHours(slot2.scheduleStartTime);
+      const end2 = TimeString.toFractionalHours(slot2.scheduleEndTime);
+      if (start2 < end1 && start1 < end2) return true;
+    }
+  }
+  return false;
+}
+
+export function getColor(
+  course: CourseV3,
+  format:
+    | "hex"
+    | "hsvArray"
+    | "hslArray"
+    | "hsl"
+    | "hsla"
+    | "rgbArray"
+    | "rgb"
+    | "rgba" = "hex"
+) {
+  let hue = "random";
+  let seed = CryptoJs.MD5(course.courseCode).toString();
+
+  // TODO
+  //if (course.starred || !courseInSchedule(course)) {
+  //  switch (gGreyConflictCourses) {
+  //    case greyConflictCoursesOptions[0]:
+  //      break;
+
+  //    case greyConflictCoursesOptions[1]:
+  //      if (courseConflictWithSchedule(course, true)) {
+  //        hue = "monochrome";
+  //        seed = "-10";
+  //      }
+  //      break;
+
+  //    case greyConflictCoursesOptions[2]:
+  //      if (courseConflictWithSchedule(course, false)) {
+  //        hue = "monochrome";
+  //        seed = "-10";
+  //      }
+  //      break;
+  //  }
+  //}
+
+  return getRandomColor(hue, seed, format);
+}
+
+function getRandomColor(
+  hue: string,
+  seed: string,
+  format:
+    | "hex"
+    | "hsvArray"
+    | "hslArray"
+    | "hsl"
+    | "hsla"
+    | "rgbArray"
+    | "rgb"
+    | "rgba" = "hex"
+) {
+  return randomColor({
+    hue: hue,
+    luminosity: "light",
+    seed: seed,
+    format
+  });
 }
 
 function v2ToString(c: CourseV2) {
@@ -167,4 +267,20 @@ export function generateDescription(course: CourseV3) {
   }
 
   return description;
+}
+
+export function isClosed(c: CourseV3) {
+  return c.courseEnrollmentStatus === "closed";
+}
+
+export function toString(c: CourseV3) {
+  return `${c.courseName} (${c.courseEnrollmentStatus}, ${c.courseSeatsFilled}/${c.courseSeatsTotal} seats filled)`;
+}
+
+export function toInstructorLastNames(c: CourseV3) {
+  return (c.courseInstructors || []).map(s => s.split(",")[0]).join(",");
+}
+
+export function equal(a: CourseV3, b: CourseV3) {
+  return a.courseCode === b.courseCode;
 }
