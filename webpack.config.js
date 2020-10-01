@@ -51,6 +51,9 @@ module.exports = (env, argv) => {
         }
       ]
     },
+    resolve: {
+      extensions: [".ts", ".js"],
+    },
     plugins: [
       new HtmlWebpackPlugin({
         title: "hyperschedule",

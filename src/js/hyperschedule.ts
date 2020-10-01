@@ -21,84 +21,28 @@ import $ from "jquery";
 import "bootstrap";
 import randomColor from "randomcolor";
 
-import * as _ from "lodash/fp";
+import * as Course from "./course";
+import * as SortKey from "./sort-key";
+import * as Schedule from "./schedule";
+import * as Util from "./util";
+import * as TimeString from "./time-string";
 
-interface Slot {
-  days: string;
-  location: string;
-  startTime: string;
-  endTime: string;
-}
+import * as _ from "lodash/fp";
 
 interface ApiData {
   data: {
     terms: Record<string, Term>;
-    courses: Record<string, CourseV3>;
+    courses: Record<string, Course.CourseV3>;
   };
   until: number;
 }
-
-type Primitive = string | number | boolean;
-
-type SortKey = Primitive[];
 
 type Weekday = "U" | "M" | "T" | "W" | "R" | "F" | "S";
 
 interface Term {
   termCode: string;
-  termSortKey: SortKey;
+  termSortKey: SortKey.SortKey;
   termName: string;
-}
-
-interface Schedule {
-  scheduleStartTime: string;
-  scheduleStartDate: string;
-  scheduleEndDate: string;
-  scheduleEndTime: string;
-  scheduleTerms: number[];
-  scheduleTermCount: number;
-  scheduleLocation: string;
-  scheduleDays: string;
-}
-
-interface CourseV3 {
-  courseCode: string;
-  courseName: string;
-  courseSortKey: SortKey;
-  courseMutualExclusionKey: SortKey;
-  courseDescription: string | null;
-  courseInstructors: string[] | null;
-  courseTerm: string;
-  courseSchedule: Schedule[];
-  courseCredits: string;
-  courseSeatsTotal: number | null;
-  courseSeatsFilled: number | null;
-  courseWaitlistLength: number | null;
-  courseEnrollmentStatus: string | null;
-  starred: boolean;
-  selected: boolean;
-}
-
-interface CourseV2 {
-  starred: boolean;
-  selected: boolean;
-  school: string;
-  section: string;
-  courseNumber: string;
-  department: string;
-  totalSeats: number;
-  openSeats: number;
-  courseCodeSuffix: string;
-  schedule: Slot[];
-  firstHalfSemester: boolean;
-  secondHalfSemester: boolean;
-  startDate: string;
-  endDate: string;
-  courseName: string;
-  faculty: string[];
-  courseStatus: string;
-  courseDescription: string;
-  quarterCredits: number;
 }
 
 interface CourseEntityAttrs {
@@ -251,7 +195,7 @@ const importExportCopyButton = document.getElementById(
 
 // Persistent data.
 let gApiData: ApiData | null = null;
-let gSelectedCourses: CourseV3[] = [];
+let gSelectedCourses: Course.CourseV3[] = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
@@ -266,7 +210,7 @@ let gPacificTimeSavings = 0; // 0 if PST, 1 if PDT
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
 let gFilteredCourseKeys: string[] = [];
-let gCourseSelected: CourseV3 | null = null;
+let gCourseSelected: Course.CourseV3 | null = null;
 
 /// Utility functions
 //// JavaScript utility functions
@@ -292,44 +236,6 @@ function quoteRegexp(str: string) {
   return (str + "").replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 }
 
-function arraysEqual(
-  arr1: SortKey,
-  arr2: SortKey,
-  test?: (a: Primitive, b: Primitive) => boolean
-) {
-  if (arr1.length !== arr2.length) {
-    return false;
-  }
-  for (let idx = 0; idx < arr1.length; ++idx) {
-    if (test ? !test(arr1[idx], arr2[idx]) : arr1[idx] !== arr2[idx]) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function compareArrays(arr1: SortKey, arr2: SortKey) {
-  let idx1 = 0;
-  let idx2 = 0;
-  while (idx1 < arr1.length && idx2 < arr2.length) {
-    if (arr1[idx1] < arr2[idx2]) {
-      return -1;
-    } else if (arr1[idx1] > arr2[idx2]) {
-      return 1;
-    } else {
-      ++idx1;
-      ++idx2;
-    }
-  }
-  if (arr1.length < arr2.length) {
-    return -1;
-  } else if (arr1.length > arr2.length) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
-
 // https://stackoverflow.com/a/29018745/3538165
 function binarySearch<T>(ar: T[], el: T, compare_fn: (a: T, b: T) => number) {
   var m = 0;
@@ -346,22 +252,6 @@ function binarySearch<T>(ar: T[], el: T, compare_fn: (a: T, b: T) => number) {
     }
   }
   return -m - 1;
-}
-
-function formatList(list: string[], none = "(none)") {
-  if (list.length === 0) {
-    return none;
-  } else if (list.length === 1) {
-    return list[0];
-  } else if (list.length === 2) {
-    return list[0] + " and " + list[1];
-  } else {
-    return (
-      list.slice(0, list.length - 1).join(", ") +
-      ", and " +
-      list[list.length - 1]
-    );
-  }
 }
 
 function deepCopy(obj: object) {
@@ -398,71 +288,6 @@ function catchEvent(event: Event) {
 }
 
 //// Time utility functions
-
-function dayStringForSchedule(dayString: string, startTime: string) {
-  let daysOfWeek = "MTWRFSU";
-
-  if (timeStringToHours(startTime) >= 24) {
-    let days = "";
-    for (let i = 0; i < dayString.length; i++) {
-      days += daysOfWeek.charAt(daysOfWeek.indexOf(dayString.charAt(i)) + 1);
-    }
-    return days;
-  }
-  return dayString;
-}
-
-function timeStringToHoursAndMinutes(timeString: string) {
-  const zone = gTimeZoneValues[gTimeZoneSavings];
-  let hours =
-    parseInt(timeString.substring(0, 2), 10) +
-    zone -
-    pacificTimeZoneValues[gPacificTimeSavings];
-  let minutes = parseInt(timeString.substring(3, 5), 10);
-
-  if (zone % 1 !== 0) {
-    const adjustMin = Math.round(60 * (zone % 1));
-    minutes += adjustMin;
-
-    if (minutes >= 60) {
-      hours += 1;
-      minutes %= 60;
-    }
-  }
-
-  return [hours, minutes];
-}
-
-function timeStringToHours(timeString: string) {
-  const [hours, minutes] = timeStringToHoursAndMinutes(timeString);
-  return hours + minutes / 60;
-}
-
-function timeStringTo12HourString(timeString: string) {
-  let [hours, minutes] = timeStringToHoursAndMinutes(timeString);
-  const pm = hours % 24 >= 12 && hours % 24 <= 23;
-  hours -= 1;
-  hours %= 12;
-  hours += 1;
-  return (
-    hours.toString().padStart(2, "0") +
-    ":" +
-    minutes.toString().padStart(2, "0") +
-    " " +
-    (pm ? "PM" : "AM")
-  );
-}
-
-function timeStringForSchedule(timeString: string) {
-  let time = timeStringTo12HourString(timeString);
-  let pm = time.substring(6) === "PM";
-
-  return (
-    parseInt(time.substring(0, 2), 10).toString() +
-    time.substring(2, 5) +
-    (pm ? "pm" : "am")
-  );
-}
 
 function checkPST() {
   let today = new Date();
@@ -678,11 +503,11 @@ function removeEntityChildren(entity: HTMLElement) {
 //// Course and schedule utility functions
 ///// Course property queries
 
-function isCourseClosed(course: CourseV3) {
+function isCourseClosed(course: Course.CourseV3) {
   return course.courseEnrollmentStatus == "closed";
 }
 
-function courseToString(course: CourseV3) {
+function courseToString(course: Course.CourseV3) {
   return (
     course.courseName +
     " (" +
@@ -695,129 +520,18 @@ function courseToString(course: CourseV3) {
   );
 }
 
-function courseToInstructorLastnames(course: CourseV3) {
+function courseToInstructorLastnames(course: Course.CourseV3) {
   return (course.courseInstructors || [])
     .map(fullName => fullName.split(",")[0])
     .join(",");
 }
 
-function coursesEqual(course1: CourseV3, course2: CourseV3) {
+function coursesEqual(course1: Course.CourseV3, course2: Course.CourseV3) {
   return course1.courseCode === course2.courseCode;
 }
 
-function termListDescription(terms: number[], termCount: number) {
-  if (termCount > 10) {
-    return "Complicated schedule";
-  }
-
-  if (termCount === 1) {
-    return "Full-semester course";
-  }
-
-  const numbers = terms.map((term: number) => {
-    switch (term) {
-      case 0:
-        return "first";
-      case 1:
-        return "second";
-      case 2:
-        return "third";
-      case 3:
-        return "fourth";
-      case 4:
-        return "fifth";
-      case 5:
-        return "sixth";
-      case 6:
-        return "seventh";
-      case 7:
-        return "eighth";
-      case 8:
-        return "ninth";
-      case 9:
-        return "tenth";
-      default:
-        return "unknown";
-    }
-  });
-
-  const qualifier = (termCount => {
-    switch (termCount) {
-      case 2:
-        return "half";
-      case 3:
-        return "third";
-      case 4:
-        return "quarter";
-      case 5:
-        return "fifth";
-      case 6:
-        return "sixth";
-      case 7:
-        return "seventh";
-      case 8:
-        return "eighth";
-      case 9:
-        return "ninth";
-      case 10:
-        return "tenth";
-      default:
-        return "unknown";
-    }
-  })(termCount);
-
-  return _.capitalize(`${formatList(numbers)} ${qualifier}-semester course`);
-}
-
-function generateCourseDescription(course: CourseV3) {
-  const description = [];
-
-  const summaryLine = course.courseCode + " " + course.courseName;
-  description.push(summaryLine);
-
-  const times = course.courseSchedule.map(generateScheduleSlotDescription);
-  for (const time of times) {
-    description.push(time);
-  }
-
-  const instructors = formatList(course.courseInstructors || []);
-  description.push(instructors);
-
-  let partOfYear;
-  if (course.courseSchedule.length === 0) {
-    partOfYear = "No scheduled meetings";
-  } else {
-    const meeting = course.courseSchedule[0];
-    partOfYear = termListDescription(
-      meeting.scheduleTerms,
-      meeting.scheduleTermCount
-    );
-  }
-  const credits = parseFloat(course.courseCredits);
-  const creditsString = credits + " credit" + (credits !== 1 ? "s" : "");
-  description.push(`${partOfYear}, ${creditsString}`);
-
-  if (course.courseDescription !== null) {
-    description.push(course.courseDescription);
-  }
-
-  if (course.courseEnrollmentStatus !== null) {
-    const enrollment =
-      course.courseEnrollmentStatus.charAt(0).toUpperCase() +
-      course.courseEnrollmentStatus.slice(1) +
-      ", " +
-      course.courseSeatsFilled +
-      "/" +
-      course.courseSeatsTotal +
-      " seats filled";
-    description.push(enrollment);
-  }
-
-  return description;
-}
-
 function getCourseColor(
-  course: CourseV3,
+  course: Course.CourseV3,
   format:
     | "hex"
     | "hsvArray"
@@ -878,7 +592,7 @@ function getRandomColor(
 
 ///// Course search
 
-function courseMatchesSearchQuery(course: CourseV3, query: RegExp[]) {
+function courseMatchesSearchQuery(course: Course.CourseV3, query: RegExp[]) {
   for (let subquery of query) {
     if (
       course.courseCode.match(subquery) ||
@@ -905,7 +619,7 @@ function courseMatchesSearchQuery(course: CourseV3, query: RegExp[]) {
 }
 
 function coursePassesTextFilters(
-  course: CourseV3,
+  course: Course.CourseV3,
   textFilters: Record<string, string>
 ) {
   const lowerCourseCode = course.courseCode.toLowerCase();
@@ -930,7 +644,7 @@ function parseDaysInequality(inputDays: string) {
   return "";
 }
 
-function generateDayFilter(course: CourseV3) {
+function generateDayFilter(course: Course.CourseV3) {
   const scheduleList = course.courseSchedule;
   let days = new Set();
 
@@ -949,7 +663,7 @@ function generateInputDays(input: string) {
   return days;
 }
 
-function coursePassesDayFilter(course: CourseV3, inputString: string) {
+function coursePassesDayFilter(course: Course.CourseV3, inputString: string) {
   const courseDays = generateDayFilter(course);
   const rel = parseDaysInequality(inputString);
   const inputDays = generateInputDays(
@@ -996,26 +710,7 @@ function setSubset<T>(a: Set<T>, b: Set<T>) {
 
 ///// Course scheduling
 
-function generateScheduleSlotDescription(slot: Schedule) {
-  return (
-    dayStringForSchedule(slot.scheduleDays, slot.scheduleStartTime) +
-    " " +
-    timeStringTo12HourString(slot.scheduleStartTime) +
-    " – " +
-    timeStringTo12HourString(slot.scheduleEndTime) +
-    " at " +
-    slot.scheduleLocation
-  );
-}
-
-function coursesMutuallyExclusive(course1: CourseV3, course2: CourseV3) {
-  return arraysEqual(
-    course1.courseMutualExclusionKey,
-    course2.courseMutualExclusionKey
-  );
-}
-
-function coursesConflict(course1: CourseV3, course2: CourseV3) {
+function coursesConflict(course1: Course.CourseV3, course2: Course.CourseV3) {
   for (let slot1 of course1.courseSchedule) {
     for (let slot2 of course2.courseSchedule) {
       const parts = math.lcm(slot1.scheduleTermCount, slot2.scheduleTermCount);
@@ -1039,24 +734,21 @@ function coursesConflict(course1: CourseV3, course2: CourseV3) {
           break;
         }
       }
-      if (!daysOverlap) {
-        continue;
-      }
-      const start1 = timeStringToHours(slot1.scheduleStartTime);
-      const end1 = timeStringToHours(slot1.scheduleEndTime);
-      const start2 = timeStringToHours(slot2.scheduleStartTime);
-      const end2 = timeStringToHours(slot2.scheduleEndTime);
-      if (end1 <= start2 || start1 >= end2) {
-        continue;
-      } else {
-        return true;
-      }
+      if (!daysOverlap) continue;
+      const start1 = TimeString.toFractionalHours(slot1.scheduleStartTime);
+      const end1 = TimeString.toFractionalHours(slot1.scheduleEndTime);
+      const start2 = TimeString.toFractionalHours(slot2.scheduleStartTime);
+      const end2 = TimeString.toFractionalHours(slot2.scheduleEndTime);
+      if (start2 < end1 && start1 < end2) return true;
     }
   }
   return false;
 }
 
-function courseConflictWithSchedule(course: CourseV3, starredOnly: boolean) {
+function courseConflictWithSchedule(
+  course: Course.CourseV3,
+  starredOnly: boolean
+) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
@@ -1071,7 +763,7 @@ function courseConflictWithSchedule(course: CourseV3, starredOnly: boolean) {
   return false;
 }
 
-function courseInSchedule(course: CourseV3) {
+function courseInSchedule(course: Course.CourseV3) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
@@ -1082,7 +774,7 @@ function courseInSchedule(course: CourseV3) {
   return false;
 }
 
-function computeSchedule(courses: CourseV3[]) {
+function computeSchedule(courses: Course.CourseV3[]) {
   const schedule = [];
   for (let course of courses) {
     if (course.selected && course.starred) {
@@ -1097,7 +789,7 @@ function computeSchedule(courses: CourseV3[]) {
     let conflicts = false;
     for (let existingCourse of schedule) {
       if (
-        coursesMutuallyExclusive(course, existingCourse) ||
+        Course.mutuallyExclusive(course, existingCourse) ||
         coursesConflict(course, existingCourse)
       ) {
         conflicts = true;
@@ -1138,7 +830,7 @@ function getConsecutiveRanges(nums: number[]): [number, number][] {
 
 ///// Course schedule queries
 
-function computeCreditCountDescription(schedule: CourseV3[]) {
+function computeCreditCountDescription(schedule: Course.CourseV3[]) {
   let totalCredits = 0;
   let starredCredits = 0;
   for (let course of schedule) {
@@ -1161,8 +853,8 @@ function computeCreditCountDescription(schedule: CourseV3[]) {
 
 //// Global state queries
 
-function courseAlreadyAdded(course: CourseV3) {
-  return _.some((selectedCourse: CourseV3) => {
+function courseAlreadyAdded(course: Course.CourseV3) {
+  return _.some((selectedCourse: Course.CourseV3) => {
     return selectedCourse.courseCode === course.courseCode;
   }, gSelectedCourses);
 }
@@ -1289,15 +981,14 @@ function attachListeners() {
 //// DOM element creation
 
 function createCourseEntity(
-  course: CourseV3 | "placeholder",
+  course: Course.CourseV3 | "placeholder",
   attrs?: CourseEntityAttrs
 ) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
 
-  const listItem = document.createElement("li");
-  listItem.classList.add("course-box");
+  const listItem = redom.el("li.course-box");
 
   const listItemContent = document.createElement("div");
   listItemContent.classList.add("course-box-content");
@@ -1454,12 +1145,12 @@ function createCourseEntity(
   return listItem;
 }
 
-function createSlotEntities(course: CourseV3) {
+function createSlotEntities(course: Course.CourseV3) {
   const entities = [];
   for (const slot of course.courseSchedule) {
-    const startTime = timeStringToHours(slot.scheduleStartTime);
-    const endTime = timeStringToHours(slot.scheduleEndTime);
-    const timeSince7am = startTime - timeStringToHours("07:00");
+    const startTime = TimeString.toFractionalHours(slot.scheduleStartTime);
+    const endTime = TimeString.toFractionalHours(slot.scheduleEndTime);
+    const timeSince7am = startTime - TimeString.toFractionalHours("07:00");
     const duration = endTime - startTime;
     const text = course.courseName;
     const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
@@ -1737,7 +1428,7 @@ function updateScheduleTimeZone() {
   }
 
   for (let i = 0; scheduleTableHours[i]; i++) {
-    scheduleTableHours[i].textContent = timeStringForSchedule(
+    scheduleTableHours[i].textContent = TimeString.forSchedule(
       pacificScheduleTimes[i]
     );
   }
@@ -1769,13 +1460,13 @@ function showSettingsModal() {
   $("#settings-modal").modal("show");
 }
 
-function setCourseDescriptionBox(course: CourseV3) {
+function setCourseDescriptionBox(course: Course.CourseV3) {
   gCourseSelected = course;
 
   while (courseDescriptionBox.lastChild !== null) {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
-  const description = generateCourseDescription(course);
+  const description = Course.generateDescription(course);
   for (let idx = 0; idx < description.length; ++idx) {
     const line = description[idx];
     if (idx !== 0) {
@@ -1867,7 +1558,7 @@ function handleGlobalStateUpdate() {
 
 //// Global state mutation
 
-function addCourse(course: CourseV3) {
+function addCourse(course: Course.CourseV3) {
   if (courseAlreadyAdded(course)) {
     return;
   }
@@ -1878,7 +1569,7 @@ function addCourse(course: CourseV3) {
   handleSelectedCoursesUpdate();
 }
 
-function removeCourse(course: CourseV3) {
+function removeCourse(course: Course.CourseV3) {
   gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
   handleSelectedCoursesUpdate();
 }
@@ -1910,7 +1601,7 @@ function saveImportExportModalChanges() {
     alert("Malformed JSON. Refusing to save.");
     return;
   }
-  gSelectedCourses = upgradeSelectedCourses(obj);
+  gSelectedCourses = obj.map(Course.upgrade);
   handleSelectedCoursesUpdate();
   $("#import-export-modal").modal("hide");
 }
@@ -1944,13 +1635,13 @@ function toggleTimeZone() {
   writeStateToLocalStorage();
 }
 
-function toggleCourseSelected(course: CourseV3) {
+function toggleCourseSelected(course: Course.CourseV3) {
   course.selected = !course.selected;
   updateCourseDisplays();
   writeStateToLocalStorage();
 }
 
-function toggleCourseStarred(course: CourseV3) {
+function toggleCourseStarred(course: Course.CourseV3) {
   course.starred = !course.starred;
   updateCourseDisplays();
   writeStateToLocalStorage();
@@ -2041,7 +1732,7 @@ async function retrieveCourseData() {
   if (wasUpdated) {
     const terms = Object.values(apiData.data.terms);
     terms.sort((t1: Term, t2: Term) =>
-      compareArrays(t1.termSortKey, t2.termSortKey)
+      SortKey.compare(t1.termSortKey, t2.termSortKey)
     );
     apiData.data.terms = {};
     terms.forEach((t: Term) => {
@@ -2049,11 +1740,11 @@ async function retrieveCourseData() {
     });
 
     const courses = Object.values(apiData.data.courses);
-    courses.sort((t1: CourseV3, t2: CourseV3) =>
-      compareArrays(t1.courseSortKey, t2.courseSortKey)
+    courses.sort((t1: Course.CourseV3, t2: Course.CourseV3) =>
+      SortKey.compare(t1.courseSortKey, t2.courseSortKey)
     );
     apiData.data.courses = {};
-    courses.forEach((c: CourseV3) => {
+    courses.forEach((c: Course.CourseV3) => {
       apiData!.data.courses[c.courseCode] = c;
     });
   }
@@ -2112,86 +1803,10 @@ function writeStateToLocalStorage() {
   localStorage.setItem("timeZoneSavings", JSON.stringify(gTimeZoneSavings));
 }
 
-function oldCourseToString(course: CourseV2) {
-  return (
-    course.department +
-    " " +
-    course.courseNumber.toString().padStart(3, "0") +
-    course.courseCodeSuffix +
-    " " +
-    course.school +
-    "-" +
-    course.section.toString().padStart(2, "0")
-  );
-}
-
-function courseIsV2(course: CourseV2 | CourseV3): course is CourseV2 {
-  return course.hasOwnProperty("quarterCredits");
-}
-
-function courseIsV3(course: CourseV2 | CourseV3): course is CourseV3 {
-  return !courseIsV2(course);
-}
-
-function upgradeCourse(course: CourseV2 | CourseV3): CourseV3 {
-  if (courseIsV3(course)) {
-    return course;
-  } else {
-    // Course object is in old format returned by API v2. Upgrade to
-    // API v3 format.
-    return {
-      courseCode: oldCourseToString(course),
-      courseCredits: (course.quarterCredits / 4).toString(),
-      courseDescription: course.courseDescription,
-      courseEnrollmentStatus: course.courseStatus,
-      courseInstructors: course.faculty,
-      courseMutualExclusionKey: [
-        course.department,
-        course.courseNumber,
-        course.courseCodeSuffix,
-        course.school
-      ],
-      courseName: course.courseName,
-      courseSchedule: course.schedule.map((slot: Slot) => {
-        return {
-          scheduleDays: slot.days,
-          scheduleEndDate: course.endDate,
-          scheduleEndTime: slot.endTime,
-          scheduleLocation: slot.location,
-          scheduleStartDate: course.startDate,
-          scheduleStartTime: slot.startTime,
-          scheduleTermCount:
-            course.firstHalfSemester && course.secondHalfSemester ? 1 : 2,
-          scheduleTerms: !course.firstHalfSemester ? [1] : [0]
-        };
-      }),
-      courseSeatsFilled: course.openSeats,
-      courseSeatsTotal: course.totalSeats,
-      courseSortKey: [
-        course.department,
-        course.courseNumber,
-        course.courseCodeSuffix,
-        course.school,
-        course.section
-      ],
-      courseTerm: "Unknown",
-      courseWaitlistLength: null,
-      selected: course.selected,
-      starred: course.starred
-    };
-  }
-}
-
-function upgradeSelectedCourses(
-  selectedCourses: (CourseV2 | CourseV3)[]
-): CourseV3[] {
-  return selectedCourses.map(upgradeCourse);
-}
-
 function readStateFromLocalStorage() {
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
-  gSelectedCourses = upgradeSelectedCourses(
-    readFromLocalStorage("selectedCourses", _.isArray, [])
+  gSelectedCourses = readFromLocalStorage("selectedCourses", _.isArray, []).map(
+    Course.upgrade
   );
   gScheduleTabSelected = readFromLocalStorage(
     "scheduleTabSelected",
@@ -2302,7 +1917,7 @@ function downloadPDF(starredOnly: boolean) {
     pdf.line(0.5 * 72, y, 0.5 * 72 + tableWidth, y);
 
     pdf.text(
-      timeStringForSchedule(pacificScheduleTimes[i]),
+      TimeString.forSchedule(pacificScheduleTimes[i]),
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
       { align: "right" }
@@ -2326,10 +1941,10 @@ function downloadPDF(starredOnly: boolean) {
   // course entities
   for (const course of computeSchedule(pdfCourses)) {
     for (const slot of course.courseSchedule) {
-      const [startHours, startMinutes] = timeStringToHoursAndMinutes(
+      const [startHours, startMinutes] = TimeString.toHoursMinutes(
         slot.scheduleStartTime
       );
-      const [endHours, endMinutes] = timeStringToHoursAndMinutes(
+      const [endHours, endMinutes] = TimeString.toHoursMinutes(
         slot.scheduleEndTime
       );
 
@@ -2349,14 +1964,9 @@ function downloadPDF(starredOnly: boolean) {
             (columnWidth * (right - left + 1)) / slot.scheduleTermCount;
 
           const yStart =
-            (startHours - timeStringToHours("07:00") + startMinutes / 60) *
-              rowHeight +
-            0.75 * 72;
+            (startHours - 7 + startMinutes / 60) * rowHeight + 0.75 * 72;
 
-          const yEnd =
-            (endHours - timeStringToHours("07:00") + endMinutes / 60) *
-              rowHeight +
-            0.75 * 72;
+          const yEnd = (endHours - 7 + endMinutes / 60) * rowHeight + 0.75 * 72;
 
           pdf.setFillColor(
             ...(<[number, number, number]>(
@@ -2498,7 +2108,7 @@ function downloadICalFile() {
           " " +
           course.courseName +
           "\n" +
-          formatList(course.courseInstructors || [])
+          Util.formatList(course.courseInstructors || [])
       );
       for (let slot of course.courseSchedule) {
         const listedStartDay = parseDate(slot.scheduleStartDate);
@@ -2526,13 +2136,13 @@ function downloadICalFile() {
         // See https://stackoverflow.com/a/563442/3538165.
         const start = new Date(listedStartDay.valueOf());
         start.setDate(start.getDate() + weekdayDifference);
-        const [startHours, startMinutes] = timeStringToHoursAndMinutes(
+        const [startHours, startMinutes] = TimeString.toHoursMinutes(
           slot.scheduleStartTime
         );
         start.setHours(startHours);
         start.setMinutes(startMinutes);
         const end = new Date(start.valueOf());
-        const [endHours, endMinutes] = timeStringToHoursAndMinutes(
+        const [endHours, endMinutes] = TimeString.toHoursMinutes(
           slot.scheduleEndTime
         );
         end.setHours(endHours);
