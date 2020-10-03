@@ -33,10 +33,11 @@ export function to12HourString(ts: string) {
 
 export function tzAdjusted(ts: string, offset: number) {
   // TODO: does not account for possible day shifts
-  const [hUnadjusted, mUnadjusted, pm] = to12HoursMinutesPm(ts);
-  const frac = Util.mod(hUnadjusted + mUnadjusted / 60 + offset, 24);
-  const h = Math.floor(frac);
-  const m = Math.round(frac - h) * 60;
+  const [hUnadjusted, mUnadjusted] = toHoursMinutes(ts);
+  const m = mUnadjusted + Util.mod(offset, 1) * 60;
+  const h = Util.mod(hUnadjusted + Math.floor(offset) + Math.floor(m / 60), 24);
+  const h12 = Util.mod(h - 1, 12) + 1;
+  const pm = h >= 12;
 
-  return `${h.toString()}:${padZeroes2(m)}${pm ? "pm" : "am"}`;
+  return `${h12.toString()}:${padZeroes2(Util.mod(m, 60))}${pm ? "pm" : "am"}`;
 }
