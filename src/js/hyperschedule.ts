@@ -6,7 +6,50 @@
 /// Globals
 //// Modules
 
-const ics = require("/js/vendor/ics-0.2.0.min.js");
+import "../css/normalize.css";
+import "../css/main.css";
+
+// untyped, so using require here
+const ics = require("./vendor/ics-0.2.0.min.js");
+const sortable = require("html5sortable/dist/html5sortable.cjs");
+
+import * as redom from "redom";
+import Clipboard from "clipboard";
+import { jsPDF } from "jspdf";
+import * as math from "mathjs";
+import $ from "jquery";
+import "bootstrap";
+import randomColor from "randomcolor";
+
+import * as Course from "./course";
+import * as SortKey from "./sort-key";
+import * as Schedule from "./schedule";
+import * as Util from "./util";
+import * as TimeString from "./time-string";
+import * as Pdf from "./pdf";
+
+import * as _ from "lodash/fp";
+
+interface ApiData {
+  data: {
+    terms: Record<string, Term>;
+    courses: Record<string, Course.CourseV3>;
+  };
+  until: number;
+}
+
+type Weekday = "U" | "M" | "T" | "W" | "R" | "F" | "S";
+
+interface Term {
+  termCode: string;
+  termSortKey: SortKey.SortKey;
+  termName: string;
+}
+
+interface CourseEntityAttrs {
+  alreadyAdded?: boolean;
+  idx?: number;
+}
 
 //// Data constants
 
@@ -27,13 +70,13 @@ const apiURL = process.env.API_URL || "https://hyperschedule.herokuapp.com";
 
 const greyConflictCoursesOptions = ["none", "starred", "all"];
 
-const filterKeywords = {
+const filterKeywords: Record<string, string[]> = {
   "dept:": ["dept:", "department:"],
   "college:": ["college", "col:", "school:", "sch:"],
   "days:": ["days:", "day:"]
 };
 
-filterInequalities = ["<=", ">=", "<", ">", "="];
+const filterInequalities = ["<=", ">=", "<", ">", "="];
 const pacificScheduleDays = [
   "Sunday",
   "Monday",
@@ -65,87 +108,95 @@ const pacificScheduleTimes = [
 
 //// DOM elements
 
-const courseSearchToggle = document.getElementById("course-search-toggle");
-const scheduleToggle = document.getElementById("schedule-toggle");
+const courseSearchToggle = document.getElementById("course-search-toggle")!;
+const scheduleToggle = document.getElementById("schedule-toggle")!;
 
-const closedCoursesToggle = document.getElementById("closed-courses-toggle");
-const hideAllConflictingCoursesToggle = document.getElementById(
-  "all-conflicting-courses-toggle"
+const closedCoursesToggle = <HTMLInputElement>(
+  document.getElementById("closed-courses-toggle")!
 );
-const hideStarredConflictingCoursesToggle = document.getElementById(
-  "star-conflicting-courses-toggle"
+const hideAllConflictingCoursesToggle = <HTMLInputElement>(
+  document.getElementById("all-conflicting-courses-toggle")!
+);
+const hideStarredConflictingCoursesToggle = <HTMLInputElement>(
+  document.getElementById("star-conflicting-courses-toggle")!
 );
 
 const courseSearchScheduleColumn = document.getElementById(
   "course-search-schedule-column"
-);
-const courseSearchColumn = document.getElementById("course-search-column");
-const scheduleColumn = document.getElementById("schedule-column");
+)!;
+const courseSearchColumn = document.getElementById("course-search-column")!;
+const scheduleColumn = document.getElementById("schedule-column")!;
 
-const courseSearchInput = document.getElementById(
-  "course-search-course-name-input"
+const courseSearchInput = <HTMLInputElement>(
+  document.getElementById("course-search-course-name-input")!
 );
-const courseSearchResults = document.getElementById("course-search-results");
+const courseSearchResults = document.getElementById("course-search-results")!;
 const courseSearchResultsList = document.getElementById(
   "course-search-results-list"
-);
+)!;
 const courseSearchResultsPlaceholder = document.getElementById(
   "course-search-results-placeholder"
-);
+)!;
 const courseSearchResultsEnd = document.getElementById(
   "course-search-results-end"
-);
+)!;
 
 const selectedCoursesColumn = document.getElementById(
   "selected-courses-column"
-);
+)!;
 const importExportDataButton = document.getElementById(
   "import-export-data-button"
-);
-const printDropdown = document.getElementById("print-dropdown");
-const printAllButton = document.getElementById("print-button-all");
-const printStarredButton = document.getElementById("print-button-starred");
-const settingsButton = document.getElementById("settings-button");
+)!;
+const printDropdown = document.getElementById("print-dropdown")!;
+const printAllButton = document.getElementById("print-button-all")!;
+const printStarredButton = document.getElementById("print-button-starred")!;
+const settingsButton = document.getElementById("settings-button")!;
 
-const conflictCoursesRadios = document.getElementsByName("conflict-courses");
-const timeZoneDropdown = document.getElementById("time-zone-dropdown");
+const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>(
+  document.getElementsByName("conflict-courses")
+);
+const timeZoneDropdown = <HTMLSelectElement>(
+  document.getElementById("time-zone-dropdown")!
+);
 
 const courseDescriptionMinimizeOuter = document.getElementById(
   "minimize-outer"
-);
+)!;
 const courseDescriptionMinimize = document.getElementById(
   "course-description-minimize"
-);
-const minimizeIcon = document.getElementById("minimize-icon");
-const courseDescriptionBox = document.getElementById("course-description-box");
+)!;
+const minimizeIcon = document.getElementById("minimize-icon")!;
+const courseDescriptionBox = document.getElementById("course-description-box")!;
 const courseDescriptionBoxOuter = document.getElementById(
   "course-description-box-outer"
-);
+)!;
 
-const selectedCoursesList = document.getElementById("selected-courses-list");
+const selectedCoursesList = document.getElementById("selected-courses-list")!;
 
-const scheduleTable = document.getElementById("schedule-table");
-const scheduleTableBody = document.getElementById("schedule-table-body");
+const scheduleTable = document.getElementById("schedule-table")!;
+const scheduleTableBody = document.getElementById("schedule-table-body")!;
 const scheduleTableDays = document.getElementsByClassName("schedule-day");
 const scheduleTableHours = document.getElementsByClassName("schedule-hour");
-const creditCountText = document.getElementById("credit-count");
+const creditCountText = document.getElementById("credit-count")!;
 
-const importExportTextArea = document.getElementById("import-export-text-area");
+const importExportTextArea = <HTMLInputElement>(
+  document.getElementById("import-export-text-area")!
+);
 const importExportICalButton = document.getElementById(
   "import-export-ical-button"
-);
+)!;
 const importExportSaveChangesButton = document.getElementById(
   "import-export-save-changes-button"
-);
+)!;
 const importExportCopyButton = document.getElementById(
   "import-export-copy-button"
-);
+)!;
 
 //// Global state
 
 // Persistent data.
-let gApiData = null;
-let gSelectedCourses = [];
+let gApiData: ApiData | null = null;
+let gSelectedCourses: Course.CourseV3[] = [];
 let gScheduleTabSelected = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
@@ -159,18 +210,14 @@ let gPacificTimeSavings = 0; // 0 if PST, 1 if PDT
 // Transient data.
 let gCurrentlySorting = false;
 let gCourseEntityHeight = 0;
-let gFilteredCourseKeys = [];
-let gCourseSelected = null;
+let gFilteredCourseKeys: string[] = [];
+let gCourseSelected: Course.CourseV3 | null = null;
 
 /// Utility functions
 //// JavaScript utility functions
 
-function isString(obj) {
-  return typeof obj === "string" || obj instanceof String;
-}
-
 // Modulo operator, because % computes remainder and not modulo.
-function mod(n, m) {
+function mod(n: number, m: number) {
   let rem = n % m;
   if (rem < 0) {
     rem += m;
@@ -180,52 +227,18 @@ function mod(n, m) {
 
 // Convert YYYY-MM-DD to Date. Taken from
 // https://stackoverflow.com/a/7151607/3538165.
-function parseDate(dateStr) {
+function parseDate(dateStr: string) {
   const [year, month, day] = dateStr.split("-");
-  return new Date(year, month - 1, day);
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 }
 
 // https://stackoverflow.com/a/2593661
-function quoteRegexp(str) {
+function quoteRegexp(str: string) {
   return (str + "").replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 }
 
-function arraysEqual(arr1, arr2, test) {
-  if (arr1.length !== arr2.length) {
-    return false;
-  }
-  for (let idx = 0; idx < arr1.length; ++idx) {
-    if (test ? !test(arr1[idx], arr2[idx]) : arr1[idx] !== arr2[idx]) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function compareArrays(arr1, arr2) {
-  let idx1 = 0;
-  let idx2 = 0;
-  while (idx1 < arr1.length && idx2 < arr2.length) {
-    if (arr1[idx1] < arr2[idx2]) {
-      return -1;
-    } else if (arr1[idx1] > arr2[idx2]) {
-      return 1;
-    } else {
-      ++idx1;
-      ++idx2;
-    }
-  }
-  if (arr1.length < arr2.length) {
-    return -1;
-  } else if (arr1.length > arr2.length) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
-
 // https://stackoverflow.com/a/29018745/3538165
-function binarySearch(ar, el, compare_fn) {
+function binarySearch<T>(ar: T[], el: T, compare_fn: (a: T, b: T) => number) {
   var m = 0;
   var n = ar.length - 1;
   while (m <= n) {
@@ -242,31 +255,11 @@ function binarySearch(ar, el, compare_fn) {
   return -m - 1;
 }
 
-function formatList(list, none) {
-  if (list.length === 0) {
-    if (none === undefined) {
-      return "(none)";
-    } else {
-      return none || "(none)";
-    }
-  } else if (list.length === 1) {
-    return list[0];
-  } else if (list.length === 2) {
-    return list[0] + " and " + list[1];
-  } else {
-    return (
-      list.slice(0, list.length - 1).join(", ") +
-      ", and " +
-      list[list.length - 1]
-    );
-  }
-}
-
-function deepCopy(obj) {
+function deepCopy(obj: object) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-function weekdayCharToInteger(weekday) {
+function weekdayCharToInteger(weekday: string) {
   const index = "UMTWRFS".indexOf(weekday);
   if (index < 0) {
     throw Error("Invalid weekday: " + weekday);
@@ -274,7 +267,7 @@ function weekdayCharToInteger(weekday) {
   return index;
 }
 
-function readFromLocalStorage(key, pred, def) {
+function readFromLocalStorage<T>(key: string, pred: (a: T) => boolean, def: T) {
   const jsonString = localStorage.getItem(key);
   if (!jsonString) {
     return def;
@@ -291,80 +284,11 @@ function readFromLocalStorage(key, pred, def) {
   }
 }
 
-function catchEvent(event) {
+function catchEvent(event: Event) {
   event.stopPropagation();
 }
 
 //// Time utility functions
-
-function dayStringForSchedule(dayString, startTime) {
-  let daysOfWeek = "MTWRFSU";
-
-  if (timeStringToHours(startTime) >= 24) {
-    let days = "";
-    for (let i = 0; i < dayString.length; i++) {
-      days += daysOfWeek.charAt(daysOfWeek.indexOf(dayString.charAt(i)) + 1);
-    }
-    return days;
-  }
-  return dayString;
-}
-
-function timeStringToHoursAndMinutes(timeString) {
-  let hours =
-    parseInt(timeString.substring(0, 2), 10) +
-    parseInt(gTimeZoneValues[gTimeZoneSavings]) -
-    pacificTimeZoneValues[gPacificTimeSavings];
-  let minutes = parseInt(timeString.substring(3, 5), 10);
-
-  if (!gTimeZoneValues[gTimeZoneSavings].toString().includes(".0")) {
-    const adjustMin = parseInt(
-      parseFloat(
-        "0." + gTimeZoneValues[gTimeZoneSavings].toString().split(".")[1]
-      ) * 60,
-      10
-    );
-    minutes += adjustMin;
-
-    if (minutes >= 60) {
-      hours += 1;
-      minutes %= 60;
-    }
-  }
-
-  return [hours, minutes];
-}
-
-function timeStringToHours(timeString) {
-  const [hours, minutes] = timeStringToHoursAndMinutes(timeString);
-  return hours + minutes / 60;
-}
-
-function timeStringTo12HourString(timeString) {
-  let [hours, minutes] = timeStringToHoursAndMinutes(timeString);
-  const pm = hours % 24 >= 12 && hours % 24 <= 23;
-  hours -= 1;
-  hours %= 12;
-  hours += 1;
-  return (
-    hours.toString().padStart(2, "0") +
-    ":" +
-    minutes.toString().padStart(2, "0") +
-    " " +
-    (pm ? "PM" : "AM")
-  );
-}
-
-function timeStringForSchedule(timeString) {
-  let time = timeStringTo12HourString(timeString);
-  let pm = time.substring(6) === "PM";
-
-  return (
-    parseInt(time.substring(0, 2), 10).toString() +
-    time.substring(2, 5) +
-    (pm ? "pm" : "am")
-  );
-}
 
 function checkPST() {
   let today = new Date();
@@ -469,13 +393,18 @@ function checkTimeZoneSavings() {
 // month = January (0) to December (11)
 // n = 1st (1) ... last (-1)
 // dayOfWeek = Sunday (0) to Saturday (6)
-function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
+function nthSundayOfMonth(
+  month: number,
+  n: number,
+  hours: number,
+  dayOfWeek: number,
+  timeZoneValue: number
+) {
   let fullDate = new Date();
   let year = fullDate.getFullYear();
-  let date;
 
   // https://rosettacode.org/wiki/Find_the_last_Sunday_of_each_month#JavaScript
-  var lastDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const lastDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
     lastDay[2] = 29;
   }
@@ -493,24 +422,19 @@ function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
     );
   }
 
-  year = year.toString();
-  month = (month + 1).toString().padStart(2, "0");
-  date = fullDate
-    .getDate()
-    .toString()
-    .padStart(2, "0");
-  hours = hours.toString().padStart(2, "0");
-
-  let [timeZoneSign, timeZoneString] = getTimeZoneString(timeZoneValue);
+  const [timeZoneSign, timeZoneString] = getTimeZoneString(timeZoneValue);
 
   fullDate = new Date(
-    year +
+    year.toString() +
       "-" +
-      month +
+      (month + 1).toString().padStart(2, "0") +
       "-" +
-      date +
+      fullDate
+        .getDate()
+        .toString()
+        .padStart(2, "0") +
       "T" +
-      hours +
+      hours.toString().padStart(2, "0") +
       ":00:00.000" +
       timeZoneSign +
       timeZoneString
@@ -518,13 +442,10 @@ function nthSundayOfMonth(month, n, hours, dayOfWeek, timeZoneValue) {
   return fullDate;
 }
 
-function getTimeZoneString(timeZoneValue) {
+function getTimeZoneString(timeZoneValue: number) {
   let timeZoneSign = timeZoneValue >= 0 ? "+" : "-";
-  let timeZoneHour = Math.abs(parseInt(timeZoneValue));
-  let timeZoneMin = parseInt(
-    parseFloat("0." + timeZoneValue.toString().split(".")[1]) * 60,
-    10
-  );
+  let timeZoneHour = Math.abs(timeZoneValue);
+  let timeZoneMin = Math.round((timeZoneValue % 1) * 60);
   let timeZoneString =
     timeZoneHour.toString().padStart(2, "0") +
     ":" +
@@ -534,10 +455,10 @@ function getTimeZoneString(timeZoneValue) {
 }
 
 async function runWithExponentialBackoff(
-  task,
-  failureDelay,
-  backoffFactor,
-  fetchDesc
+  task: () => void,
+  failureDelay: number,
+  backoffFactor: number,
+  fetchDesc: string
 ) {
   while (true) {
     console.log(`Attempting to ${fetchDesc}...`);
@@ -555,31 +476,27 @@ async function runWithExponentialBackoff(
 
 //// DOM utility functions
 
-function hideEntity(entity) {
+function hideEntity(entity: HTMLElement) {
   entity.classList.add("hidden");
 }
 
-function showEntity(entity) {
+function showEntity(entity: HTMLElement) {
   entity.classList.remove("hidden");
 }
 
-function setEntityVisibility(entity, visible) {
-  if (visible) {
-    showEntity(entity);
-  } else {
-    hideEntity(entity);
-  }
+function setEntityVisibility(entity: HTMLElement, visible: boolean) {
+  (visible ? showEntity : hideEntity)(entity);
 }
 
-function setButtonSelected(button, selected) {
+function setButtonSelected(button: HTMLElement, selected: boolean) {
   const classAdded = selected ? "btn-primary" : "btn-light";
   const classRemoved = selected ? "btn-light" : "btn-primary";
   button.classList.add(classAdded);
   button.classList.remove(classRemoved);
 }
 
-function removeEntityChildren(entity) {
-  while (entity.hasChildNodes()) {
+function removeEntityChildren(entity: HTMLElement) {
+  while (entity.lastChild !== null) {
     entity.removeChild(entity.lastChild);
   }
 }
@@ -587,182 +504,9 @@ function removeEntityChildren(entity) {
 //// Course and schedule utility functions
 ///// Course property queries
 
-function isCourseClosed(course) {
-  return course.courseEnrollmentStatus == "closed";
-}
-
-function courseToString(course) {
-  return (
-    course.courseName +
-    " (" +
-    course.courseEnrollmentStatus +
-    ", " +
-    course.courseSeatsFilled +
-    "/" +
-    course.courseSeatsTotal +
-    " seats filled)"
-  );
-}
-
-function courseToInstructorLastnames(course) {
-  return course.courseInstructors
-    .map(fullName => fullName.split(",")[0])
-    .join(",");
-}
-
-function coursesEqual(course1, course2) {
-  return course1.courseCode === course2.courseCode;
-}
-
-function termListDescription(terms, termCount) {
-  if (termCount > 10) {
-    return "Complicated schedule";
-  }
-
-  if (termCount === 1) {
-    return "Full-semester course";
-  }
-
-  const numbers = _.map(term => {
-    switch (term) {
-      case 0:
-        return "first";
-      case 1:
-        return "second";
-      case 2:
-        return "third";
-      case 3:
-        return "fourth";
-      case 4:
-        return "fifth";
-      case 5:
-        return "sixth";
-      case 6:
-        return "seventh";
-      case 7:
-        return "eighth";
-      case 8:
-        return "ninth";
-      case 9:
-        return "tenth";
-      default:
-        return "unknown";
-    }
-  }, terms);
-
-  const qualifier = (termCount => {
-    switch (termCount) {
-      case 2:
-        return "half";
-      case 3:
-        return "third";
-      case 4:
-        return "quarter";
-      case 5:
-        return "fifth";
-      case 6:
-        return "sixth";
-      case 7:
-        return "seventh";
-      case 8:
-        return "eighth";
-      case 9:
-        return "ninth";
-      case 10:
-        return "tenth";
-      default:
-        return "unknown";
-    }
-  })(termCount);
-
-  return _.capitalize(`${formatList(numbers)} ${qualifier}-semester course`);
-}
-
-function generateCourseDescription(course) {
-  const description = [];
-
-  const summaryLine = course.courseCode + " " + course.courseName;
-  description.push(summaryLine);
-
-  const times = course.courseSchedule.map(generateScheduleSlotDescription);
-  for (const time of times) {
-    description.push(time);
-  }
-
-  const instructors = formatList(course.courseInstructors);
-  description.push(instructors);
-
-  let partOfYear;
-  if (_.isEmpty(course.courseSchedule)) {
-    partOfYear = "No scheduled meetings";
-  } else {
-    const meeting = course.courseSchedule[0];
-    partOfYear = termListDescription(
-      meeting.scheduleTerms,
-      meeting.scheduleTermCount
-    );
-  }
-  const credits = parseFloat(course.courseCredits);
-  const creditsString = credits + " credit" + (credits !== 1 ? "s" : "");
-  description.push(`${partOfYear}, ${creditsString}`);
-
-  if (course.courseDescription !== null) {
-    description.push(course.courseDescription);
-  }
-
-  const enrollment =
-    course.courseEnrollmentStatus.charAt(0).toUpperCase() +
-    course.courseEnrollmentStatus.slice(1) +
-    ", " +
-    course.courseSeatsFilled +
-    "/" +
-    course.courseSeatsTotal +
-    " seats filled";
-  description.push(enrollment);
-
-  return description;
-}
-
-function getCourseColor(course, format = "hex") {
-  let hue = "random";
-  let seed = CryptoJS.MD5(course.courseCode).toString();
-
-  if (course.starred || !courseInSchedule(course)) {
-    switch (gGreyConflictCourses) {
-      case greyConflictCoursesOptions[0]:
-        break;
-
-      case greyConflictCoursesOptions[1]:
-        if (courseConflictWithSchedule(course, true)) {
-          hue = "monochrome";
-          seed = "-10";
-        }
-        break;
-
-      case greyConflictCoursesOptions[2]:
-        if (courseConflictWithSchedule(course, false)) {
-          hue = "monochrome";
-          seed = "-10";
-        }
-        break;
-    }
-  }
-
-  return getRandomColor(hue, seed, format);
-}
-
-function getRandomColor(hue, seed, format = "hex") {
-  return randomColor({
-    hue: hue,
-    luminosity: "light",
-    seed: seed,
-    format
-  });
-}
-
 ///// Course search
 
-function courseMatchesSearchQuery(course, query) {
+function courseMatchesSearchQuery(course: Course.CourseV3, query: RegExp[]) {
   for (let subquery of query) {
     if (
       course.courseCode.match(subquery) ||
@@ -772,10 +516,12 @@ function courseMatchesSearchQuery(course, query) {
       continue;
     }
     let foundMatch = false;
-    for (let instructor of course.courseInstructors) {
-      if (instructor.match(subquery)) {
-        foundMatch = true;
-        break;
+    if (course.courseInstructors !== null) {
+      for (let instructor of course.courseInstructors) {
+        if (instructor.match(subquery)) {
+          foundMatch = true;
+          break;
+        }
       }
     }
     if (foundMatch) {
@@ -786,7 +532,10 @@ function courseMatchesSearchQuery(course, query) {
   return true;
 }
 
-function coursePassesTextFilters(course, textFilters) {
+function coursePassesTextFilters(
+  course: Course.CourseV3,
+  textFilters: Record<string, string>
+) {
   const lowerCourseCode = course.courseCode.toLowerCase();
   const dept = lowerCourseCode.split(" ")[0];
   const col = lowerCourseCode.split(" ")[2].split("-")[0];
@@ -803,13 +552,13 @@ function coursePassesTextFilters(course, textFilters) {
   return true;
 }
 
-function parseDaysInequality(inputDays) {
+function parseDaysInequality(inputDays: string) {
   for (const rel of filterInequalities)
     if (inputDays.startsWith(rel)) return rel;
   return "";
 }
 
-function generateDayFilter(course) {
+function generateDayFilter(course: Course.CourseV3) {
   const scheduleList = course.courseSchedule;
   let days = new Set();
 
@@ -821,14 +570,14 @@ function generateDayFilter(course) {
   return days;
 }
 
-function generateInputDays(input) {
+function generateInputDays(input: string) {
   let days = new Set();
   const arr1 = [...input];
   arr1.forEach(days.add, days);
   return days;
 }
 
-function coursePassesDayFilter(course, inputString) {
+function coursePassesDayFilter(course: Course.CourseV3, inputString: string) {
   const courseDays = generateDayFilter(course);
   const rel = parseDaysInequality(inputString);
   const inputDays = generateInputDays(
@@ -838,11 +587,11 @@ function coursePassesDayFilter(course, inputString) {
   switch (rel) {
     case "<=":
       // courseDays is a subset of inputDays
-      return courseDays.subSet(inputDays);
+      return setSubset(courseDays, inputDays);
     case "":
     case ">=":
       // inputDays is a subset of courseDays
-      return inputDays.subSet(courseDays);
+      return setSubset(inputDays, courseDays);
     case "=":
       // inputDays match exactly courseDays
       const difference1 = new Set(
@@ -854,98 +603,38 @@ function coursePassesDayFilter(course, inputString) {
       return difference1.size == 0 && difference2.size == 0;
     case "<":
       // courseDays is a proper subset of inputDays
-      return courseDays.subSet(inputDays) && inputDays.size != courseDays.size;
+      return (
+        setSubset(courseDays, inputDays) && inputDays.size != courseDays.size
+      );
     case ">":
       // inputDays is a proper subset of courseDays
-      return inputDays.subSet(courseDays) && inputDays.size != courseDays.size;
+      return (
+        setSubset(inputDays, courseDays) && inputDays.size != courseDays.size
+      );
     default:
       return false;
   }
 }
 
-Set.prototype.subSet = function(otherSet) {
-  // if size of this set is greater
-  // than otherSet then it can'nt be
-  //  a subset
-  if (this.size > otherSet.size) return false;
-  else {
-    for (var elem of this) {
-      // if any of the element of
-      // this is not present in the
-      // otherset then return false
-      if (!otherSet.has(elem)) return false;
-    }
-    return true;
-  }
-};
+function setSubset<T>(a: Set<T>, b: Set<T>) {
+  if (a.size > b.size) return false;
+  for (const elem of a) if (!b.has(elem)) return false;
+  return true;
+}
 
 ///// Course scheduling
 
-function generateScheduleSlotDescription(slot) {
-  return (
-    dayStringForSchedule(slot.scheduleDays, slot.scheduleStartTime) +
-    " " +
-    timeStringTo12HourString(slot.scheduleStartTime) +
-    " – " +
-    timeStringTo12HourString(slot.scheduleEndTime) +
-    " at " +
-    slot.scheduleLocation
-  );
-}
-
-function coursesMutuallyExclusive(course1, course2) {
-  return arraysEqual(
-    course1.courseMutualExclusionKey,
-    course2.courseMutualExclusionKey
-  );
-}
-
-function coursesConflict(course1, course2) {
-  for (let slot1 of course1.courseSchedule) {
-    for (let slot2 of course2.courseSchedule) {
-      const parts = math.lcm(slot1.scheduleTermCount, slot2.scheduleTermCount);
-      if (
-        !_.some(
-          idx =>
-            slot1.scheduleTerms.indexOf(idx / slot2.scheduleTermCount) != -1 &&
-            slot2.scheduleTerms.indexOf(idx / slot1.scheduleTermCount) != -1,
-          _.range(0, parts)
-        )
-      ) {
-        return false;
-      }
-      let daysOverlap = false;
-      for (let day1 of slot1.scheduleDays) {
-        if (slot2.scheduleDays.indexOf(day1) !== -1) {
-          daysOverlap = true;
-          break;
-        }
-      }
-      if (!daysOverlap) {
-        continue;
-      }
-      const start1 = timeStringToHours(slot1.scheduleStartTime);
-      const end1 = timeStringToHours(slot1.scheduleEndTime);
-      const start2 = timeStringToHours(slot2.scheduleStartTime);
-      const end2 = timeStringToHours(slot2.scheduleEndTime);
-      if (end1 <= start2 || start1 >= end2) {
-        continue;
-      } else {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-function courseConflictWithSchedule(course, starredOnly) {
+function courseConflictWithSchedule(
+  course: Course.CourseV3,
+  starredOnly: boolean
+) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
     if (
       (!starredOnly || existingCourse.starred === starredOnly) &&
-      !coursesEqual(existingCourse, course) &&
-      coursesConflict(course, existingCourse)
+      !Course.equal(existingCourse, course) &&
+      Course.conflict(course, existingCourse)
     ) {
       return true;
     }
@@ -953,18 +642,18 @@ function courseConflictWithSchedule(course, starredOnly) {
   return false;
 }
 
-function courseInSchedule(course) {
+function courseInSchedule(course: Course.CourseV3) {
   const schedule = computeSchedule(gSelectedCourses);
 
   for (let existingCourse of schedule) {
-    if (coursesEqual(existingCourse, course)) {
+    if (Course.equal(existingCourse, course)) {
       return true;
     }
   }
   return false;
 }
 
-function computeSchedule(courses) {
+function computeSchedule(courses: Course.CourseV3[]) {
   const schedule = [];
   for (let course of courses) {
     if (course.selected && course.starred) {
@@ -979,8 +668,8 @@ function computeSchedule(courses) {
     let conflicts = false;
     for (let existingCourse of schedule) {
       if (
-        coursesMutuallyExclusive(course, existingCourse) ||
-        coursesConflict(course, existingCourse)
+        Course.mutuallyExclusive(course, existingCourse) ||
+        Course.conflict(course, existingCourse)
       ) {
         conflicts = true;
         break;
@@ -993,30 +682,9 @@ function computeSchedule(courses) {
   return schedule;
 }
 
-/**
- * Given an array of integers in sorted order, determine the beginning
- * and end of each run of consecutive integers. For example:
- *
- * getConsecutiveRanges([0,1,2,4,5,8,10,12,13,14,15,20])
- *   => [[0,2], [4,5], [8,8], [10,10], [12,15], [20,20]]
- */
-function getConsecutiveRanges(nums) {
-  const groups = [];
-  let group = [];
-  _.forEach(([idx, num]) => {
-    if (idx > 0 && nums[idx - 1] !== nums[idx] - 1) {
-      groups.push(group);
-      group = [];
-    }
-    group.push(num);
-  }, _.entries(nums));
-  groups.push(group);
-  return _.map(group => [_.min(group), _.max(group)], groups);
-}
-
 ///// Course schedule queries
 
-function computeCreditCountDescription(schedule) {
+function computeCreditCountDescription(schedule: Course.CourseV3[]) {
   let totalCredits = 0;
   let starredCredits = 0;
   for (let course of schedule) {
@@ -1039,15 +707,15 @@ function computeCreditCountDescription(schedule) {
 
 //// Global state queries
 
-function courseAlreadyAdded(course) {
-  return _.some(selectedCourse => {
+function courseAlreadyAdded(course: Course.CourseV3) {
+  return _.some((selectedCourse: Course.CourseV3) => {
     return selectedCourse.courseCode === course.courseCode;
   }, gSelectedCourses);
 }
 
 /// API retrieval
 
-async function retrieveAPI(endpoint) {
+async function retrieveAPI(endpoint: string) {
   const httpResponse = await fetch(apiURL + endpoint);
   if (!httpResponse.ok) {
     throw Error(
@@ -1149,12 +817,12 @@ function attachListeners() {
 
   // Attach import/export copy button
   let clipboard = new Clipboard("#import-export-copy-button");
-  clipboard.on("success", e => {
+  clipboard.on("success", () => {
     if (!importExportCopyButton.classList.contains("copy-button-copied")) {
       importExportCopyButton.classList.add("copy-button-copied");
     }
   });
-  clipboard.on("error", e => {
+  clipboard.on("error", () => {
     importExportCopyButton.classList.add("copy-button-error");
   });
 
@@ -1166,100 +834,102 @@ function attachListeners() {
 
 //// DOM element creation
 
-function createCourseEntity(course, attrs) {
+function createCourseEntity(
+  course: Course.CourseV3 | "placeholder",
+  attrs?: CourseEntityAttrs
+) {
   attrs = attrs || {};
   const idx = attrs.idx;
   const alreadyAdded = attrs.alreadyAdded;
 
-  const listItem = document.createElement("li");
-  listItem.classList.add("course-box");
-
-  const listItemContent = document.createElement("div");
-  listItemContent.classList.add("course-box-content");
+  const listItemContent = redom.el("div.course-box-content");
   if (course !== "placeholder") {
-    listItemContent.style["background-color"] = getCourseColor(course);
+    listItemContent.style.backgroundColor = Course.getColor(course);
+    listItemContent.addEventListener("click", () => {
+      setCourseDescriptionBox(course);
+    });
   }
-  listItemContent.addEventListener("click", () => {
-    setCourseDescriptionBox(course);
+  const listItem = redom.el("li.course-box", [listItemContent]);
+
+  const selectLabel = redom.el("label.course-box-select-label", {
+    onclick: catchEvent
   });
-  listItem.appendChild(listItemContent);
 
-  const selectLabel = document.createElement("label");
-  selectLabel.classList.add("course-box-select-label");
-
-  const selectIcon = document.createElement("i");
-  selectIcon.classList.add("course-box-select-icon");
-  selectIcon.classList.add("icon");
-  if (!!course.selected) {
-    selectLabel.classList.add("course-selected");
-    selectIcon.classList.add("ion-android-checkbox");
-  } else {
-    selectIcon.classList.add("ion-android-checkbox-outline-blank");
-  }
-
-  const selectToggle = document.createElement("input");
-  selectToggle.setAttribute("type", "checkbox");
-  selectToggle.classList.add("course-box-button");
-  selectToggle.classList.add("course-box-toggle");
-  selectToggle.classList.add("course-box-select-toggle");
-  selectToggle.checked = !!course.selected;
-  selectToggle.addEventListener("change", () => {
-    if (selectLabel.classList.contains("course-selected")) {
-      selectLabel.classList.remove("course-selected");
-      selectIcon.classList.remove("ion-android-checkbox");
-      selectIcon.classList.add("ion-android-checkbox-outline-blank");
-    } else {
+  const selectIcon = redom.el("i.course-box-select-icon.icon");
+  if (course !== "placeholder") {
+    if (course.selected) {
       selectLabel.classList.add("course-selected");
-      selectIcon.classList.remove("ion-android-checkbox-outline-blank");
       selectIcon.classList.add("ion-android-checkbox");
+    } else {
+      selectIcon.classList.add("ion-android-checkbox-outline-blank");
     }
+  }
 
-    toggleCourseSelected(course);
+  const selectToggle = redom.el("input", {
+    type: "checkbox",
+    class: [
+      "course-box-button",
+      "course-box-toggle",
+      "course-box-select-toggle"
+    ].join(" "),
+    onchange: () => {
+      if (selectLabel.classList.contains("course-selected")) {
+        selectLabel.classList.remove("course-selected");
+        selectIcon.classList.remove("ion-android-checkbox");
+        selectIcon.classList.add("ion-android-checkbox-outline-blank");
+      } else {
+        selectLabel.classList.add("course-selected");
+        selectIcon.classList.remove("ion-android-checkbox-outline-blank");
+        selectIcon.classList.add("ion-android-checkbox");
+      }
+
+      if (course !== "placeholder") toggleCourseSelected(course);
+    },
+    onclick: catchEvent
   });
-  selectToggle.addEventListener("click", catchEvent);
-  selectLabel.addEventListener("click", catchEvent);
+  if (course !== "placeholder") selectToggle.checked = course.selected;
   selectLabel.appendChild(selectToggle);
   selectLabel.appendChild(selectIcon);
   listItemContent.appendChild(selectLabel);
 
-  const starLabel = document.createElement("label");
-  starLabel.classList.add("course-box-star-label");
+  const starLabel = redom.el("label.course-box-star-label.star-visible", {
+    onclick: catchEvent
+  });
 
-  const starToggle = document.createElement("input");
-  starToggle.setAttribute("type", "checkbox");
-  starToggle.classList.add("course-box-button");
-  starToggle.classList.add("course-box-toggle");
-  starToggle.classList.add("course-box-star-toggle");
+  const starToggle = redom.el("input", {
+    type: "checkbox",
+    class: [
+      "course-box-button",
+      "course-box-toggle",
+      "course-box-star-toggle"
+    ].join(" "),
+    onchange: () => {
+      if (starLabel.classList.contains("star-checked")) {
+        starLabel.classList.remove("star-checked");
+        starIcon.classList.remove("ion-android-star");
+        starIcon.classList.add("ion-android-star-outline");
+      } else {
+        starLabel.classList.add("star-checked");
+        starIcon.classList.remove("ion-android-star-outline");
+        starIcon.classList.add("ion-android-star");
+      }
 
-  const starIcon = document.createElement("i");
-  starIcon.classList.add("course-box-star-icon");
-  starIcon.classList.add("icon");
+      if (course !== "placeholder") toggleCourseStarred(course);
+    },
+    onclick: catchEvent
+  });
+
+  const starIcon = redom.el("i.course-box-star-icon.icon");
 
   if (course !== "placeholder") {
-    starLabel.classList.add("star-visible");
-  }
-  starToggle.checked = !!course.starred;
-  if (!!course.starred) {
-    starLabel.classList.add("star-checked");
-    starIcon.classList.add("ion-android-star");
-  } else {
-    starIcon.classList.add("ion-android-star-outline");
-  }
-  starToggle.addEventListener("change", () => {
-    if (starLabel.classList.contains("star-checked")) {
-      starLabel.classList.remove("star-checked");
-      starIcon.classList.remove("ion-android-star");
-      starIcon.classList.add("ion-android-star-outline");
-    } else {
+    starToggle.checked = course.starred;
+    if (course.starred) {
       starLabel.classList.add("star-checked");
-      starIcon.classList.remove("ion-android-star-outline");
       starIcon.classList.add("ion-android-star");
+    } else {
+      starIcon.classList.add("ion-android-star-outline");
     }
-
-    toggleCourseStarred(course);
-  });
-  starToggle.addEventListener("click", catchEvent);
-  starLabel.addEventListener("click", catchEvent);
+  }
 
   starLabel.appendChild(starToggle);
   starLabel.appendChild(starIcon);
@@ -1276,7 +946,7 @@ function createCourseEntity(course, attrs) {
     text = "placeholder";
   } else {
     courseCode = course.courseCode;
-    text = courseToString(course);
+    text = Course.toString(course);
   }
 
   const courseCodeContainer = document.createElement("span");
@@ -1296,9 +966,10 @@ function createCourseEntity(course, attrs) {
     addButton.classList.add("icon");
     addButton.classList.add("ion-plus");
 
-    addButton.addEventListener("click", () => {
-      addCourse(course);
-    });
+    if (course !== "placeholder")
+      addButton.addEventListener("click", () => {
+        addCourse(course);
+      });
     addButton.addEventListener("click", catchEvent);
     listItemContent.appendChild(addButton);
   }
@@ -1308,9 +979,10 @@ function createCourseEntity(course, attrs) {
   removeButton.classList.add("course-box-remove-button");
   removeButton.classList.add("icon");
   removeButton.classList.add("ion-close");
-  removeButton.addEventListener("click", () => {
-    removeCourse(course);
-  });
+  if (course !== "placeholder")
+    removeButton.addEventListener("click", () => {
+      removeCourse(course);
+    });
   removeButton.addEventListener("click", catchEvent);
   listItemContent.appendChild(removeButton);
 
@@ -1319,18 +991,18 @@ function createCourseEntity(course, attrs) {
   }
 
   if (idx !== undefined) {
-    listItem.setAttribute("data-course-index", idx);
+    listItem.setAttribute("data-course-index", idx.toString());
   }
 
   return listItem;
 }
 
-function createSlotEntities(course, slot) {
+function createSlotEntities(course: Course.CourseV3) {
   const entities = [];
   for (const slot of course.courseSchedule) {
-    const startTime = timeStringToHours(slot.scheduleStartTime);
-    const endTime = timeStringToHours(slot.scheduleEndTime);
-    const timeSince7am = startTime - timeStringToHours("07:00");
+    const startTime = TimeString.toFractionalHours(slot.scheduleStartTime);
+    const endTime = TimeString.toFractionalHours(slot.scheduleEndTime);
+    const timeSince7am = startTime - TimeString.toFractionalHours("07:00");
     const duration = endTime - startTime;
     const text = course.courseName;
     const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
@@ -1352,34 +1024,35 @@ function createSlotEntities(course, slot) {
           },
           onclick: () => setCourseDescriptionBox(course)
         },
-        getConsecutiveRanges(slot.scheduleTerms).map(([left, right]) =>
-          redom.el(
-            "div",
-            {
-              class:
-                "schedule-slot" +
-                (course.starred ? " schedule-slot-starred" : ""),
-              style: {
-                gridColumnStart: left + 1,
-                gridColumnEnd: right + 1,
-                backgroundColor: getCourseColor(course)
-              }
-            },
-            [
-              redom.el("p.schedule-slot-text-wrapper", [
-                redom.el("p.schedule-slot-course-code", course.courseCode),
-                redom.el(
-                  "p.schedule-slot-course-name",
-                  course.courseName +
-                    " (" +
-                    course.courseSeatsFilled +
-                    "/" +
-                    course.courseSeatsTotal +
-                    ")"
-                )
-              ])
-            ]
-          )
+        Util.getConsecutiveRanges(slot.scheduleTerms).map(
+          ([left, right]: [number, number]) =>
+            redom.el(
+              "div",
+              {
+                class:
+                  "schedule-slot" +
+                  (course.starred ? " schedule-slot-starred" : ""),
+                style: {
+                  gridColumnStart: left + 1,
+                  gridColumnEnd: right + 1,
+                  backgroundColor: Course.getColor(course)
+                }
+              },
+              [
+                redom.el("p.schedule-slot-text-wrapper", [
+                  redom.el("p.schedule-slot-course-code", course.courseCode),
+                  redom.el(
+                    "p.schedule-slot-course-name",
+                    course.courseName +
+                      " (" +
+                      course.courseSeatsFilled +
+                      "/" +
+                      course.courseSeatsTotal +
+                      ")"
+                  )
+                ])
+              ]
+            )
         )
       );
 
@@ -1393,7 +1066,7 @@ function createSlotEntities(course, slot) {
 
 function processSearchText() {
   const searchText = courseSearchInput.value.trim().split(/\s+/);
-  let filterKeywordsValues = [];
+  let filterKeywordsValues: string[] = [];
   for (let key of Object.keys(filterKeywords)) {
     filterKeywordsValues = filterKeywordsValues.concat(filterKeywords[key]);
   }
@@ -1403,7 +1076,7 @@ function processSearchText() {
   for (let text of searchText) {
     text = text.toLowerCase();
     if (
-      _.some(filter => {
+      _.some((filter: string) => {
         return text.includes(filter);
       }, filterKeywordsValues)
     ) {
@@ -1419,16 +1092,16 @@ function processSearchText() {
   return { query, filters };
 }
 
-function getSearchQuery(searchTextArray) {
-  return searchTextArray.map(subquery => {
+function getSearchQuery(searchTextArray: string[]) {
+  return searchTextArray.map((subquery: string) => {
     return new RegExp(quoteRegexp(subquery), "i");
   });
 }
 
-function getSearchTextFilters(filtersTextArray) {
-  let filter = {};
+function getSearchTextFilters(filtersTextArray: string[]) {
+  let filter: Record<string, string> = {};
   for (let text of filtersTextArray) {
-    const keyword = text.split(":")[0] + ":";
+    let keyword = text.split(":")[0] + ":";
     const filterText = text.split(":")[1];
     if (!(keyword in Object.keys(filterKeywords))) {
       for (let key of Object.keys(filterKeywords)) {
@@ -1483,9 +1156,9 @@ function updateConflictCoursesRadio() {
 }
 
 function updateTimeZoneDropdown() {
-  document.getElementById(
+  (document.getElementById(
     "time-zone-dropdown-" + gTimeZoneId.toString()
-  ).selected = true;
+  ) as HTMLOptionElement).selected = true;
   timeZoneDropdown.dispatchEvent(new Event("change"));
 }
 
@@ -1499,11 +1172,11 @@ function updateCourseSearchResults() {
       gApiData === null
         ? []
         : Object.keys(gApiData.data.courses).filter(key => {
-            const course = gApiData.data.courses[key];
+            const course = gApiData!.data.courses[key];
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
-              (gShowClosedCourses || !isCourseClosed(course)) &&
+              (gShowClosedCourses || !Course.isClosed(course)) &&
               (!gHideAllConflictingCourses ||
                 !courseConflictWithSchedule(course, false)) &&
               (!gHideStarredConflictingCourses ||
@@ -1523,7 +1196,7 @@ function rerenderCourseSearchResults() {
 
   // Remove courses that should no longer be shown (or all courses, if
   // updating non-incrementally).
-  while (courseSearchResultsList.childElementCount > 0) {
+  while (courseSearchResultsList.lastChild !== null) {
     // Make sure to remove from the end.
     courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
@@ -1560,13 +1233,15 @@ function rerenderCourseSearchResults() {
 }
 
 function updateSelectedCoursesList() {
+  // TODO REDOM
+
   if (gCurrentlySorting) {
     // Defer to after the user has finished sorting, otherwise we mess
     // up the drag and drop.
     setTimeout(updateSelectedCoursesList, 100);
     return;
   }
-  while (selectedCoursesList.hasChildNodes()) {
+  while (selectedCoursesList.lastChild !== null) {
     selectedCoursesList.removeChild(selectedCoursesList.lastChild);
   }
   for (let idx = 0; idx < gSelectedCourses.length; ++idx) {
@@ -1585,11 +1260,11 @@ function updateSchedule() {
     const element = scheduleTable.getElementsByClassName(
       "schedule-slot-wrapper"
     )[0];
-    element.parentNode.removeChild(element);
+    element.parentNode!.removeChild(element);
   }
   for (let course of schedule) {
     const entities = createSlotEntities(course);
-    _.forEach(e => scheduleTable.appendChild(e), entities);
+    entities.forEach(e => scheduleTable.appendChild(e));
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
 }
@@ -1598,15 +1273,17 @@ function updateScheduleTimeZone() {
   for (let i = 0; scheduleTableDays[i]; i++) {
     // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
     if (gTimeZoneValues[gTimeZoneSavings] >= 9.0) {
-      scheduleTableDays[i].innerText = pacificScheduleDays[i + 2];
+      scheduleTableDays[i].textContent = pacificScheduleDays[i + 2];
     } else {
-      scheduleTableDays[i].innerText = pacificScheduleDays[i + 1];
+      scheduleTableDays[i].textContent = pacificScheduleDays[i + 1];
     }
   }
 
   for (let i = 0; scheduleTableHours[i]; i++) {
-    scheduleTableHours[i].innerText = timeStringForSchedule(
-      pacificScheduleTimes[i]
+    scheduleTableHours[i].textContent = TimeString.tzAdjusted(
+      pacificScheduleTimes[i],
+      gTimeZoneValues[gTimeZoneSavings] -
+        pacificTimeZoneValues[gPacificTimeSavings]
     );
   }
 }
@@ -1629,7 +1306,7 @@ function updateCourseDescriptionBoxHeight() {
 ///// DOM updates miscellaneous
 
 function showImportExportModal() {
-  importExportTextArea.value = JSON.stringify(gSelectedCourses, 2);
+  importExportTextArea.value = JSON.stringify(gSelectedCourses);
   $("#import-export-modal").modal("show");
 }
 
@@ -1637,13 +1314,17 @@ function showSettingsModal() {
   $("#settings-modal").modal("show");
 }
 
-function setCourseDescriptionBox(course) {
+function setCourseDescriptionBox(course: Course.CourseV3) {
   gCourseSelected = course;
 
-  while (courseDescriptionBox.hasChildNodes()) {
+  while (courseDescriptionBox.lastChild !== null) {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
-  const description = generateCourseDescription(course);
+  const description = Course.generateDescription(
+    course,
+    gTimeZoneValues[gTimeZoneSavings] -
+      pacificTimeZoneValues[gPacificTimeSavings]
+  );
   for (let idx = 0; idx < description.length; ++idx) {
     const line = description[idx];
     if (idx !== 0) {
@@ -1694,16 +1375,7 @@ function minimizeArrowPointDown() {
 }
 
 function updateCourseDescriptionTimeZone() {
-  for (let i = 0; courseDescriptionBox.childNodes[i]; i++) {
-    if (courseDescriptionBox.childNodes[i + 2].tagName === "HR") {
-      break;
-    }
-    courseDescriptionBox.childNodes[
-      i + 2
-    ].innerText = generateScheduleSlotDescription(
-      gCourseSelected.courseSchedule[i]
-    );
-  }
+  if (gCourseSelected !== null) setCourseDescriptionBox(gCourseSelected);
 }
 
 /// Global state handling
@@ -1744,7 +1416,7 @@ function handleGlobalStateUpdate() {
 
 //// Global state mutation
 
-function addCourse(course) {
+function addCourse(course: Course.CourseV3) {
   if (courseAlreadyAdded(course)) {
     return;
   }
@@ -1755,7 +1427,7 @@ function addCourse(course) {
   handleSelectedCoursesUpdate();
 }
 
-function removeCourse(course) {
+function removeCourse(course: Course.CourseV3) {
   gSelectedCourses.splice(gSelectedCourses.indexOf(course), 1);
   handleSelectedCoursesUpdate();
 }
@@ -1763,7 +1435,7 @@ function removeCourse(course) {
 function readSelectedCoursesList() {
   const newSelectedCourses = [];
   for (let entity of selectedCoursesList.children) {
-    const idx = parseInt(entity.getAttribute("data-course-index"), 10);
+    const idx = parseInt(entity.getAttribute("data-course-index")!, 10);
     if (!isNaN(idx) && idx >= 0 && idx < gSelectedCourses.length) {
       newSelectedCourses.push(gSelectedCourses[idx]);
     } else {
@@ -1787,7 +1459,7 @@ function saveImportExportModalChanges() {
     alert("Malformed JSON. Refusing to save.");
     return;
   }
-  gSelectedCourses = upgradeSelectedCourses(obj);
+  gSelectedCourses = obj.map(Course.upgrade);
   handleSelectedCoursesUpdate();
   $("#import-export-modal").modal("hide");
 }
@@ -1821,13 +1493,13 @@ function toggleTimeZone() {
   writeStateToLocalStorage();
 }
 
-function toggleCourseSelected(course) {
+function toggleCourseSelected(course: Course.CourseV3) {
   course.selected = !course.selected;
   updateCourseDisplays();
   writeStateToLocalStorage();
 }
 
-function toggleCourseStarred(course) {
+function toggleCourseStarred(course: Course.CourseV3) {
   course.starred = !course.starred;
   updateCourseDisplays();
   writeStateToLocalStorage();
@@ -1839,15 +1511,15 @@ function updateCourseDisplays() {
   updateSchedule();
 }
 
-function displayCourseSearchColumn() {
-  this.blur();
+function displayCourseSearchColumn(ev: MouseEvent) {
+  (<HTMLElement>ev.target).blur();
   gScheduleTabSelected = false;
   updateTabToggle();
   writeStateToLocalStorage();
 }
 
-function displayScheduleColumn() {
-  this.blur();
+function displayScheduleColumn(ev: MouseEvent) {
+  (<HTMLElement>ev.target).blur();
   gScheduleTabSelected = true;
   updateTabToggle();
   writeStateToLocalStorage();
@@ -1861,21 +1533,22 @@ function displayScheduleColumn() {
  * the format of diffs), apply the diff and return a new data object.
  * The original data object may have been mutated.
  */
-function applyDiff(data, diff) {
+function applyDiff(data: any, diff: any) {
   console.log("applying diff");
   if (!_.isObject(data) || !_.isObject(diff)) {
     return diff;
   }
 
-  _.forEach.convert({ cap: false })((val, key) => {
+  for (const key in diff) {
+    const val = (<any>diff)[key];
     if (val === "$delete") {
-      delete data[key];
+      delete (<any>data)[key];
     } else if (!data.hasOwnProperty(key)) {
-      data[key] = val;
+      (<any>data)[key] = val;
     } else {
-      data[key] = applyDiff(data[key], val);
+      (<any>data)[key] = applyDiff((<any>data)[key], val);
     }
-  }, diff);
+  }
 
   return data;
 }
@@ -1893,8 +1566,8 @@ async function retrieveCourseData() {
   let apiData = gApiData;
   let wasUpdated = false;
   console.log(`retrieved course data, full is ${apiResponse.full}`);
-  if (apiResponse.full) {
-    apiData = { data: apiResponse.data };
+  if (apiData === null || apiResponse.full) {
+    apiData = { data: apiResponse.data, until: apiResponse.until };
     wasUpdated = true;
   } else {
     const diff = apiResponse.data;
@@ -1906,28 +1579,32 @@ async function retrieveCourseData() {
   apiData.until = apiResponse.until;
 
   for (const selectedCourse of gSelectedCourses) {
-    if (_.has(selectedCourse.courseCode, apiData.data.courses)) {
+    if (apiData.data.courses.hasOwnProperty(selectedCourse.courseCode)) {
       Object.assign(
         selectedCourse,
-        apiData.data.courses[selectedCourse.courseCode]
+        apiData!.data.courses[selectedCourse.courseCode]
       );
     }
   }
 
   if (wasUpdated) {
-    const terms = _.values(apiData.data.terms);
-    terms.sort((t1, t2) => compareArrays(t1.termSortKey, t2.termSortKey));
+    const terms = Object.values(apiData.data.terms);
+    terms.sort((t1: Term, t2: Term) =>
+      SortKey.compare(t1.termSortKey, t2.termSortKey)
+    );
     apiData.data.terms = {};
-    _.forEach(t => {
-      apiData.data.terms[t.termCode] = t;
-    }, terms);
+    terms.forEach((t: Term) => {
+      apiData!.data.terms[t.termCode] = t;
+    });
 
-    const courses = _.values(apiData.data.courses);
-    courses.sort((t1, t2) => compareArrays(t1.courseSortKey, t2.courseSortKey));
+    const courses = Object.values(apiData.data.courses);
+    courses.sort((t1: Course.CourseV3, t2: Course.CourseV3) =>
+      SortKey.compare(t1.courseSortKey, t2.courseSortKey)
+    );
     apiData.data.courses = {};
-    _.forEach(c => {
-      apiData.data.courses[c.courseCode] = c;
-    }, courses);
+    courses.forEach((c: Course.CourseV3) => {
+      apiData!.data.courses[c.courseCode] = c;
+    });
   }
 
   gApiData = apiData;
@@ -1962,90 +1639,32 @@ async function retrieveCourseDataUntilSuccessful() {
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
-  localStorage.setItem("scheduleTabSelected", gScheduleTabSelected);
-  localStorage.setItem("showClosedCourses", gShowClosedCourses);
-  localStorage.setItem("hideAllConflictingCourses", gHideAllConflictingCourses);
+  localStorage.setItem(
+    "scheduleTabSelected",
+    JSON.stringify(gScheduleTabSelected)
+  );
+  localStorage.setItem("showClosedCourses", JSON.stringify(gShowClosedCourses));
+  localStorage.setItem(
+    "hideAllConflictingCourses",
+    JSON.stringify(gHideAllConflictingCourses)
+  );
   localStorage.setItem(
     "hideStarredConflictingCourses",
-    gHideStarredConflictingCourses
+    JSON.stringify(gHideStarredConflictingCourses)
   );
   localStorage.setItem(
     "greyConflictCourses",
     JSON.stringify(gGreyConflictCourses)
   );
-  localStorage.setItem("timeZoneValues", gTimeZoneValues);
-  localStorage.setItem("timeZoneId", gTimeZoneId);
-  localStorage.setItem("timeZoneSavings", gTimeZoneSavings);
-}
-
-function oldCourseToString(course) {
-  return (
-    course.department +
-    " " +
-    course.courseNumber.toString().padStart(3, "0") +
-    course.courseCodeSuffix +
-    " " +
-    course.school +
-    "-" +
-    course.section.toString().padStart(2, "0")
-  );
-}
-
-function upgradeSelectedCourses(selectedCourses) {
-  return _.map(course => {
-    if (!_.has("quarterCredits", course)) {
-      return course;
-    }
-
-    // Course object is in old format returned by API v3. Upgrade to
-    // API v4 format.
-    return {
-      courseCode: oldCourseToString(course),
-      courseCredits: _.toString(course.quarterCredits / 4),
-      courseDescription: course.courseDescription,
-      courseEnrollmentStatus: course.courseStatus,
-      courseInstructors: course.faculty,
-      courseMutualExclusionKey: [
-        course.department,
-        course.courseNumber,
-        course.courseCodeSuffix,
-        course.school
-      ],
-      courseName: course.courseName,
-      courseSchedule: _.map(slot => {
-        return {
-          scheduleDays: slot.days,
-          scheduleEndDate: course.endDate,
-          scheduleEndTime: slot.endTime,
-          scheduleLocation: slot.location,
-          scheduleStartDate: course.startDate,
-          scheduleStartTime: slot.startTime,
-          scheduleTermCount:
-            course.firstHalfSemester && course.secondHalfSemester ? 1 : 2,
-          scheduleTerms: !course.firstHalfSemester ? [1] : [0]
-        };
-      }, course.schedule),
-      courseSeatsFilled: course.openSeats,
-      courseSeatsTotal: course.totalSeats,
-      courseSortKey: [
-        course.department,
-        course.courseNumber,
-        course.courseCodeSuffix,
-        course.school,
-        course.section
-      ],
-      courseTerm: "Unknown",
-      courseWaitlistLength: null,
-      selected: course.selected,
-      starred: course.starred
-    };
-  }, selectedCourses);
+  localStorage.setItem("timeZoneValues", JSON.stringify(gTimeZoneValues));
+  localStorage.setItem("timeZoneId", JSON.stringify(gTimeZoneId));
+  localStorage.setItem("timeZoneSavings", JSON.stringify(gTimeZoneSavings));
 }
 
 function readStateFromLocalStorage() {
   gApiData = readFromLocalStorage("apiData", _.isObject, null);
-  gSelectedCourses = upgradeSelectedCourses(
-    readFromLocalStorage("selectedCourses", _.isArray, [])
+  gSelectedCourses = readFromLocalStorage("selectedCourses", _.isArray, []).map(
+    Course.upgrade
   );
   gScheduleTabSelected = readFromLocalStorage(
     "scheduleTabSelected",
@@ -2077,9 +1696,6 @@ function readStateFromLocalStorage() {
     validateGTimeZoneValues,
     pacificTimeZoneValues
   );
-  gTimeZoneValues = _.isArray(gTimeZoneValues)
-    ? gTimeZoneValues
-    : [gTimeZoneValues];
   gTimeZoneId = readFromLocalStorage(
     "timeZoneId",
     _.isNumber,
@@ -2093,20 +1709,20 @@ function readStateFromLocalStorage() {
   );
 }
 
-function validateGGreyConflictCourses(value) {
+function validateGGreyConflictCourses(value: string) {
   if (!_.isString(value)) {
     return false;
   }
   return greyConflictCoursesOptions.includes(value);
 }
 
-function validateGTimeZoneValues(value) {
+function validateGTimeZoneValues(value: number[] | number) {
   return _.isArray(value) || _.isNumber(value);
 }
 
 /// PDF download
 
-function downloadPDF(starredOnly) {
+function downloadPDF(starredOnly: boolean) {
   // initialize PDF object
   const pdf = new jsPDF({
     unit: "pt",
@@ -2130,7 +1746,7 @@ function downloadPDF(starredOnly) {
   pdf.setLineWidth(0.5);
 
   pdf.setDrawColor(192); // light gray
-  pdf.setFillColor(255); // white
+  pdf.setFillColor("1"); // white
 
   // white background
   pdf.rect(0, 0, 11 * 72, 8.5 * 72, "F");
@@ -2139,30 +1755,34 @@ function downloadPDF(starredOnly) {
   for (let i = 0; i < 7; ++i) {
     const x = i * columnWidth + 1.25 * 72;
 
-    pdf.setFillColor(i & 1 ? 255 : 230);
+    pdf.setFillColor(i & 1 ? "1" : (230 / 255).toString());
     pdf.rect(x, 0.5 * 72, columnWidth, tableHeight, "F");
 
     // column header
-    pdf.setFontStyle("bold");
+    pdf.setFont("Helvetica", "bold");
     pdf.text(
+      pacificScheduleDays[i],
       x + columnWidth / 2,
       0.5 * 72 + (0.25 * 72) / 2 + pdf.getLineHeight() / 2,
-      pacificScheduleDays[i],
-      "center"
+      { align: "center" }
     );
   }
 
   // grid rows
-  pdf.setFontStyle("normal");
+  pdf.setFont("Helvetica", "normal");
   for (let i = 0; i < 15; ++i) {
     const y = i * rowHeight + 0.75 * 72;
     pdf.line(0.5 * 72, y, 0.5 * 72 + tableWidth, y);
 
     pdf.text(
+      TimeString.tzAdjusted(
+        pacificScheduleTimes[i],
+        gTimeZoneValues[gTimeZoneSavings] -
+          pacificTimeZoneValues[gPacificTimeSavings]
+      ),
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
-      timeStringForSchedule(pacificScheduleTimes[i]),
-      "right"
+      { align: "right" }
     );
   }
 
@@ -2183,20 +1803,21 @@ function downloadPDF(starredOnly) {
   // course entities
   for (const course of computeSchedule(pdfCourses)) {
     for (const slot of course.courseSchedule) {
-      const [startHours, startMinutes] = timeStringToHoursAndMinutes(
+      const [startHours, startMinutes] = TimeString.toHoursMinutes(
         slot.scheduleStartTime
       );
-      const [endHours, endMinutes] = timeStringToHoursAndMinutes(
+      const [endHours, endMinutes] = TimeString.toHoursMinutes(
         slot.scheduleEndTime
       );
 
       for (const day of slot.scheduleDays) {
-        for (const [left, right] of getConsecutiveRanges(slot.scheduleTerms)) {
-          const weekdayAdjustment = weekdayCharToInteger(day);
+        for (const [left, right] of Util.getConsecutiveRanges(
+          slot.scheduleTerms
+        )) {
           // Earliest time in schedule is one day ahead if timeZoneValue is +9 or greater
-          if (gTimeZoneValues[gTimeZoneSavings] >= 9.0) {
-            weekdayAdjustment += 1;
-          }
+          const weekdayAdjustment =
+            weekdayCharToInteger(day) +
+            (gTimeZoneValues[gTimeZoneSavings] >= 9.0 ? 1 : 0);
 
           const x =
             weekdayAdjustment * columnWidth +
@@ -2207,16 +1828,15 @@ function downloadPDF(starredOnly) {
             (columnWidth * (right - left + 1)) / slot.scheduleTermCount;
 
           const yStart =
-            (startHours - timeStringToHours("07:00") + startMinutes / 60) *
-              rowHeight +
-            0.75 * 72;
+            (startHours - 7 + startMinutes / 60) * rowHeight + 0.75 * 72;
 
-          const yEnd =
-            (endHours - timeStringToHours("07:00") + endMinutes / 60) *
-              rowHeight +
-            0.75 * 72;
+          const yEnd = (endHours - 7 + endMinutes / 60) * rowHeight + 0.75 * 72;
 
-          pdf.setFillColor(...getCourseColor(course, "rgbArray"));
+          pdf.setFillColor(
+            ...(<[number, number, number]>(
+              (<unknown>Course.getColor(course, "rgbArray"))
+            ))
+          );
 
           pdf.rect(x, yStart, width, yEnd - yStart, "F");
 
@@ -2233,7 +1853,7 @@ function downloadPDF(starredOnly) {
             width - 12
           );
           const courseInstructorsLines = pdf.splitTextToSize(
-            courseToInstructorLastnames(course),
+            Course.toInstructorLastNames(course),
             width - 12
           );
 
@@ -2249,7 +1869,7 @@ function downloadPDF(starredOnly) {
           ];
           const entriesByOrder = ["code", "name", "instructor", "location"];
 
-          let entryNameToText = {
+          let entryNameToText: Record<string, string[]> = {
             code: courseCodeLines,
             location: courseLocationLines,
             name: courseNameLines,
@@ -2276,14 +1896,16 @@ function downloadPDF(starredOnly) {
             (totalLength * pdf.getLineHeight()) / 2 +
             pdf.getLineHeight();
 
-          pdf.setFontStyle("bold");
-          pdf.text(xText, yText, courseCodeLines, "center");
+          pdf.setFont("Helvetica", "bold");
+          pdf.text(courseCodeLines, xText, yText, { align: "center" });
           yText += courseCodeLines.length * pdf.getLineHeight();
-          pdf.setFontStyle("normal");
+          pdf.setFont("Helvetica", "normal");
 
           for (let entry of entriesByOrder) {
             if (entriesByPreference.slice(1, numEntries).includes(entry)) {
-              pdf.text(xText, yText, entryNameToText[entry], "center");
+              pdf.text(entryNameToText[entry], xText, yText, {
+                align: "center"
+              });
               yText += entryNameToText[entry].length * pdf.getLineHeight();
             }
           }
@@ -2301,7 +1923,7 @@ function downloadPDF(starredOnly) {
 
 /// iCal download
 
-function convertDayToICal(weekday) {
+function convertDayToICal(weekday: Weekday) {
   switch (weekday) {
     case "U":
       return "SU";
@@ -2322,7 +1944,7 @@ function convertDayToICal(weekday) {
 }
 
 // See https://github.com/nwcell/ics.js/issues/26.
-function uglyHack(input) {
+function uglyHack(input: string) {
   return input.replace(/\n/g, "\\n").replace(/,/g, "\\,");
 }
 
@@ -2350,7 +1972,7 @@ function downloadICalFile() {
           " " +
           course.courseName +
           "\n" +
-          formatList(course.courseInstructors)
+          Util.formatList(course.courseInstructors || [])
       );
       for (let slot of course.courseSchedule) {
         const listedStartDay = parseDate(slot.scheduleStartDate);
@@ -2378,13 +2000,13 @@ function downloadICalFile() {
         // See https://stackoverflow.com/a/563442/3538165.
         const start = new Date(listedStartDay.valueOf());
         start.setDate(start.getDate() + weekdayDifference);
-        const [startHours, startMinutes] = timeStringToHoursAndMinutes(
+        const [startHours, startMinutes] = TimeString.toHoursMinutes(
           slot.scheduleStartTime
         );
         start.setHours(startHours);
         start.setMinutes(startMinutes);
         const end = new Date(start.valueOf());
-        const [endHours, endMinutes] = timeStringToHoursAndMinutes(
+        const [endHours, endMinutes] = TimeString.toHoursMinutes(
           slot.scheduleEndTime
         );
         end.setHours(endHours);
@@ -2392,7 +2014,9 @@ function downloadICalFile() {
         const freq = "WEEKLY";
         const until = listedEndDay;
         const interval = 1;
-        const byday = slot.scheduleDays.split("").map(convertDayToICal);
+        const byday = (<Weekday[]>slot.scheduleDays.split("")).map(
+          convertDayToICal
+        );
         const rrule = {
           freq,
           until,
