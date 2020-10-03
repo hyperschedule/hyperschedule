@@ -12,6 +12,7 @@ import "../css/main.css";
 // untyped, so using require here
 const ics = require("./vendor/ics-0.2.0.min.js");
 const sortable = require("html5sortable/dist/html5sortable.cjs");
+
 import * as redom from "redom";
 import Clipboard from "clipboard";
 import { jsPDF } from "jspdf";
@@ -1279,8 +1280,10 @@ function updateScheduleTimeZone() {
   }
 
   for (let i = 0; scheduleTableHours[i]; i++) {
-    scheduleTableHours[i].textContent = TimeString.forSchedule(
-      pacificScheduleTimes[i]
+    scheduleTableHours[i].textContent = TimeString.tzAdjusted(
+      pacificScheduleTimes[i],
+      gTimeZoneValues[gTimeZoneSavings] -
+        pacificTimeZoneValues[gPacificTimeSavings]
     );
   }
 }
@@ -1317,7 +1320,11 @@ function setCourseDescriptionBox(course: Course.CourseV3) {
   while (courseDescriptionBox.lastChild !== null) {
     courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
   }
-  const description = Course.generateDescription(course);
+  const description = Course.generateDescription(
+    course,
+    gTimeZoneValues[gTimeZoneSavings] -
+      pacificTimeZoneValues[gPacificTimeSavings]
+  );
   for (let idx = 0; idx < description.length; ++idx) {
     const line = description[idx];
     if (idx !== 0) {
@@ -1768,7 +1775,11 @@ function downloadPDF(starredOnly: boolean) {
     pdf.line(0.5 * 72, y, 0.5 * 72 + tableWidth, y);
 
     pdf.text(
-      TimeString.forSchedule(pacificScheduleTimes[i]),
+      TimeString.tzAdjusted(
+        pacificScheduleTimes[i],
+        gTimeZoneValues[gTimeZoneSavings] -
+          pacificTimeZoneValues[gPacificTimeSavings]
+      ),
       1.25 * 72 - 6,
       y + pdf.getLineHeight() + 3,
       { align: "right" }

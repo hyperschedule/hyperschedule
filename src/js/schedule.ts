@@ -11,14 +11,15 @@ export interface Schedule {
   scheduleDays: string;
 }
 
-export function generateDescription(s: Schedule) {
+export function generateDescription(s: Schedule, offset: number) {
+  console.log(offset);
   // TODO timezone adjustments
   return (
     s.scheduleDays +
     " " +
-    TimeString.to12HourString(s.scheduleStartTime) +
+    TimeString.tzAdjusted(s.scheduleStartTime, offset) +
     " – " +
-    TimeString.to12HourString(s.scheduleEndTime) +
+    TimeString.tzAdjusted(s.scheduleEndTime, offset) +
     " at " +
     s.scheduleLocation
   );

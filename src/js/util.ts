@@ -1,4 +1,4 @@
-export function modulo(a: number, b: number) {
+export function mod(a: number, b: number) {
   return a - b * Math.floor(a / b);
 }
 

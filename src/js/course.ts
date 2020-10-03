@@ -225,10 +225,12 @@ function termListDescription(terms: number[], termCount: number) {
   );
 }
 
-export function generateDescription(course: CourseV3) {
+export function generateDescription(course: CourseV3, offset: number) {
   const description = [[course.courseCode + " " + course.courseName]].flat(1);
 
-  const times = course.courseSchedule.map(Schedule.generateDescription);
+  const times = course.courseSchedule.map(s =>
+    Schedule.generateDescription(s, offset)
+  );
   for (const time of times) {
     description.push(time);
   }

@@ -14,7 +14,7 @@ export function toHoursMinutes(ts: string): [number, number] {
 
 export function to12HoursMinutesPm(ts: string): [number, number, boolean] {
   const [h, m] = toHoursMinutes(ts);
-  return [Util.modulo(h - 1, 12) + 1, m, h >= 12];
+  return [Util.mod(h - 1, 12) + 1, m, h >= 12];
 }
 
 export function toFractionalHours(timeString: string) {
@@ -31,8 +31,12 @@ export function to12HourString(ts: string) {
   return `${padZeroes2(h)}:${padZeroes2(m)} ${pm ? "PM" : "AM"}`;
 }
 
-export function forSchedule(ts: string) {
-  const [h, m, pm] = to12HoursMinutesPm(ts);
+export function tzAdjusted(ts: string, offset: number) {
+  // TODO: does not account for possible day shifts
+  const [hUnadjusted, mUnadjusted, pm] = to12HoursMinutesPm(ts);
+  const frac = Util.mod(hUnadjusted + mUnadjusted / 60 + offset, 24);
+  const h = Math.floor(frac);
+  const m = Math.round(frac - h) * 60;
 
   return `${h.toString()}:${padZeroes2(m)}${pm ? "pm" : "am"}`;
 }
