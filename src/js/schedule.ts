@@ -1,5 +1,7 @@
 import * as TimeString from "./time-string";
 
+const weekdays = "UMTWRFS";
+
 export interface Schedule {
   scheduleStartTime: string;
   scheduleStartDate: string;
@@ -12,10 +14,16 @@ export interface Schedule {
 }
 
 export function generateDescription(s: Schedule, offset: number) {
-  console.log(offset);
   // TODO timezone adjustments
+
+  // dirty hack for detecting whether we are on the next day;
+  const d = TimeString.tzDayOffset(s.scheduleStartTime, offset);
+
   return (
-    s.scheduleDays +
+    s.scheduleDays
+      .split("")
+      .map(c => weekdays.charAt((weekdays.indexOf(c) + d) % weekdays.length))
+      .join("") +
     " " +
     TimeString.tzAdjusted(s.scheduleStartTime, offset) +
     " – " +

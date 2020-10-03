@@ -17,9 +17,9 @@ export function to12HoursMinutesPm(ts: string): [number, number, boolean] {
   return [Util.mod(h - 1, 12) + 1, m, h >= 12];
 }
 
-export function toFractionalHours(timeString: string) {
-  const [hours, minutes] = toHoursMinutes(timeString);
-  return hours + minutes / 60;
+export function toFractionalHours(ts: string) {
+  const [h, m] = toHoursMinutes(ts);
+  return h + m / 60;
 }
 
 function padZeroes2(n: number) {
@@ -29,6 +29,13 @@ function padZeroes2(n: number) {
 export function to12HourString(ts: string) {
   let [h, m, pm] = to12HoursMinutesPm(ts);
   return `${padZeroes2(h)}:${padZeroes2(m)} ${pm ? "PM" : "AM"}`;
+}
+
+export function tzDayOffset(ts: string, offset: number) {
+  // this is a quick and dirty hack to account for next-day/prev-day shifts due
+  // to time zones; TODO something better, such as using JS's built-in Date
+  // object or Intl.
+  return Math.floor((toFractionalHours(ts) + offset) / 24);
 }
 
 export function tzAdjusted(ts: string, offset: number) {
