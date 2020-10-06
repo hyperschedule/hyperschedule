@@ -3,4 +3,4 @@
 set -e
 set -o pipefail
 
-node_modules/.bin/lint-staged
+npx lint-staged

@@ -14,10 +14,10 @@
 
 .btn {
   cursor: pointer;
-}
 
-.btn:disabled {
-  cursor: auto;
+  &:disabled {
+      cursor: auto;
+  }
 }
 
 .dropdown-menu {
@@ -38,7 +38,7 @@
   padding: 0;
   margin: 1rem;
   align-items: center;
-  whitespace: nowrap;
+  white-space: nowrap;
 }
 
 /** Page layout **/
@@ -295,7 +295,7 @@ body {
 
 #course-description-box p {
   font-size: small;
-  lpine-height: 100%;
+  line-height: 100%;
   margin: 0px 10px;
 }
 
@@ -310,7 +310,7 @@ body {
 #schedule-table {
   display: grid;
   grid-template-columns: 4rem repeat(5, 1fr);
-  grid-template-rows: 2rem repeat(180, calc(4rem / 12));
+  grid-template-rows: 2rem repeat(calc(12 * 16), calc(4rem / 12));
   margin: 0 1rem;
 }
 
@@ -411,6 +411,9 @@ body {
 }
 #schedule-table .schedule-hour-15 {
   grid-row-start: calc((15 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-16 {
+  grid-row-start: calc((16 - 1) * 12 + 2);
 }
 
 .schedule-slot-wrapper {
