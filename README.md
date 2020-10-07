@@ -7,43 +7,43 @@ Check out <https://hyperschedule.io>!
 
 ## See also
 
-This repository contains only the HTML, CSS, and JavaScript comprising
+This repository contains only the HTML, CSS, and TypeScript comprising
 the front-end webapp hosted on Netlify. The backend, which serves a
 single-endpoint JSON API and handles scraping information from the
 Claremont Colleges course catalog, is located [here][scraper].
 
 ## Local development
 
-Install [Docker]. Then, run
+Clone this repository on your local machine by running 
 
-    $ make docker
+    $ git clone https://github.com/MuddCreates/hyperschedule.git
+ 
+Then run,
 
-to start a shell with all of the project dependencies already
-installed. At this point you can run the webapp locally by running
+    $ npm run setup
 
-    $ make dev
+to install all of the project dependencies and set up git pre-commit hooks. 
+At this point you can run the webapp locally by running
 
-This will build the static files and serve them to `localhost:5000`;
-to use a different port, just pass e.g. `PORT=5001` as an argument to
-`make dev`. By default, the webapp expects the API to be running at
+    $ npm run dev
+
+This will build the static files and serve them to `localhost:5000`.
+By default, the webapp expects the API to be running at
 `https://hyperschedule.herokuapp.com`. If you're doing development on
 the API locally, you'll want to override this by passing e.g.
 `API_URL=http://localhost:3000` (or similar). If exporting to
 `localhost`, don't forget the `http`, since otherwise Chrome's CORS
 policy will block the request.
 
-Other Makefile targets are available:
+Other npm commands available:
 
-    $ usage:
-      make clean   Remove build artifacts
-      make hooks   Install Git hooks
-      make build   Compile JavaScript for production
-      make dev     Start development server and automatically recompile JavaScript
-      make docker  Start shell or run command (e.g. make docker CMD="make dev")
-      make format  Auto-format JavaScript
-      make lint    Verify that all code is correctly formatted
-      make ci      Run tests that CI will run
-      make help    Show this message
+      npm run build
+      npm run setup-hooks
+      npm run clean
+      npm run clean-all
+      npm run format
+      npm run lint
+      npm run ci
 
 ### Deploy
 
