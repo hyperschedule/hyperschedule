@@ -94,6 +94,8 @@ const pacificScheduleTimes = [
 
 //// DOM elements
 
+const motd = document.getElementById("motd")!;
+
 const courseSearchToggle = document.getElementById("course-search-toggle")!;
 const scheduleToggle = document.getElementById("schedule-toggle")!;
 
@@ -701,6 +703,27 @@ async function retrieveAPI(endpoint: string) {
 
 /// DOM manipulation
 //// DOM setup
+
+function setMotd() {
+  // TODO: incorporate these messages into the API, so that they can be
+  // dynamically updated and don't need to be hard-coded?  or maybe it doesn't
+  // matter...
+  motd.classList.add("visible", "priority-high");
+  motd.appendChild(
+    Redom.el("span", [
+      Redom.el("i.icon.ion-android-alert"),
+      " We are currently trying to resolve ",
+      Redom.el(
+        "a",
+        { href: "https://github.com/MuddCreates/hyperschedule/issues/158" },
+        "some Portal issues"
+      ),
+      " possibly caused by Hyperschedule's course scraper. As such, we are freezing the Hyperschedule API, and Hyperschedule data ",
+      Redom.el("em", "will not update"),
+      " for the time being; please rely on Portal instead for up-to-date information. Don't worry; we're working to fix this ASAP!"
+    ])
+  );
+}
 
 function attachListeners() {
   const ent = Course.createEntity("placeholder");
@@ -1797,6 +1820,7 @@ function downloadICalFile() {
 
 /// Startup actions
 
+setMotd();
 attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
