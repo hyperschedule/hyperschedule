@@ -99,3 +99,7 @@ export function getConsecutiveRanges(nums: number[]): [number, number][] {
   ranges.push([min, prev]);
   return ranges;
 }
+
+export function catchEvent(event: Event) {
+  event.stopPropagation();
+}

@@ -13,7 +13,7 @@ import "../css/main.css";
 const ics = require("./vendor/ics-0.2.0.min.js");
 const sortable = require("html5sortable/dist/html5sortable.cjs");
 
-import * as redom from "redom";
+import * as Redom from "redom";
 import Clipboard from "clipboard";
 import { jsPDF } from "jspdf";
 import * as math from "mathjs";
@@ -46,25 +46,11 @@ interface Term {
   termName: string;
 }
 
-interface CourseEntityAttrs {
-  alreadyAdded?: boolean;
-  idx?: number;
-}
-
 //// Data constants
 
 const millisecondsPerHour = 3600 * 1000;
 const pacificTimeZoneValues = [-8.0, -7.0];
 const pacificTimeZoneId = 5;
-// const euSavingTimeZoneDates = [
-//   nthSundayOfMonth(9, -1, 1, 0),   // starts: last Sunday in Oct, 1am UTC
-//   nthSundayOfMonth(2, -1, 1, 0)    // ends: last Sunday in Mar, 1am UTC
-// ];
-
-const courseSearchPageSize = 20;
-
-const courseSearchPagesShownStart = 3;
-const extraPagesToLoad = 2;
 
 const apiURL = process.env.API_URL || "https://hyperschedule.herokuapp.com";
 
@@ -216,15 +202,6 @@ let gCourseSelected: Course.CourseV3 | null = null;
 /// Utility functions
 //// JavaScript utility functions
 
-// Modulo operator, because % computes remainder and not modulo.
-function mod(n: number, m: number) {
-  let rem = n % m;
-  if (rem < 0) {
-    rem += m;
-  }
-  return rem;
-}
-
 // Convert YYYY-MM-DD to Date. Taken from
 // https://stackoverflow.com/a/7151607/3538165.
 function parseDate(dateStr: string) {
@@ -282,10 +259,6 @@ function readFromLocalStorage<T>(key: string, pred: (a: T) => boolean, def: T) {
   } catch (err) {
     return def;
   }
-}
-
-function catchEvent(event: Event) {
-  event.stopPropagation();
 }
 
 //// Time utility functions
@@ -730,7 +703,7 @@ async function retrieveAPI(endpoint: string) {
 //// DOM setup
 
 function attachListeners() {
-  let ent = createCourseEntity("placeholder");
+  const ent = Course.createEntity("placeholder");
   courseSearchResultsList.appendChild(ent);
   gCourseEntityHeight = ent.clientHeight;
   courseSearchResultsList.removeChild(ent);
@@ -755,7 +728,7 @@ function attachListeners() {
   );
   sortable(".sortable-list", {
     forcePlaceholderSize: true,
-    placeholder: createCourseEntity("placeholder").outerHTML
+    placeholder: Course.createEntity("placeholder").outerHTML
   });
   printAllButton.addEventListener("click", () => {
     downloadPDF(false);
@@ -833,234 +806,6 @@ function attachListeners() {
 }
 
 //// DOM element creation
-
-function createCourseEntity(
-  course: Course.CourseV3 | "placeholder",
-  attrs?: CourseEntityAttrs
-) {
-  attrs = attrs || {};
-  const idx = attrs.idx;
-  const alreadyAdded = attrs.alreadyAdded;
-
-  const listItemContent = redom.el("div.course-box-content");
-  if (course !== "placeholder") {
-    listItemContent.style.backgroundColor = Course.getColor(course);
-    listItemContent.addEventListener("click", () => {
-      setCourseDescriptionBox(course);
-    });
-  }
-  const listItem = redom.el("li.course-box", [listItemContent]);
-
-  const selectLabel = redom.el("label.course-box-select-label", {
-    onclick: catchEvent
-  });
-
-  const selectIcon = redom.el("i.course-box-select-icon.icon");
-  if (course !== "placeholder") {
-    if (course.selected) {
-      selectLabel.classList.add("course-selected");
-      selectIcon.classList.add("ion-android-checkbox");
-    } else {
-      selectIcon.classList.add("ion-android-checkbox-outline-blank");
-    }
-  }
-
-  const selectToggle = redom.el("input", {
-    type: "checkbox",
-    class: [
-      "course-box-button",
-      "course-box-toggle",
-      "course-box-select-toggle"
-    ].join(" "),
-    onchange: () => {
-      if (selectLabel.classList.contains("course-selected")) {
-        selectLabel.classList.remove("course-selected");
-        selectIcon.classList.remove("ion-android-checkbox");
-        selectIcon.classList.add("ion-android-checkbox-outline-blank");
-      } else {
-        selectLabel.classList.add("course-selected");
-        selectIcon.classList.remove("ion-android-checkbox-outline-blank");
-        selectIcon.classList.add("ion-android-checkbox");
-      }
-
-      if (course !== "placeholder") toggleCourseSelected(course);
-    },
-    onclick: catchEvent
-  });
-  if (course !== "placeholder") selectToggle.checked = course.selected;
-  selectLabel.appendChild(selectToggle);
-  selectLabel.appendChild(selectIcon);
-  listItemContent.appendChild(selectLabel);
-
-  const starLabel = redom.el("label.course-box-star-label.star-visible", {
-    onclick: catchEvent
-  });
-
-  const starToggle = redom.el("input", {
-    type: "checkbox",
-    class: [
-      "course-box-button",
-      "course-box-toggle",
-      "course-box-star-toggle"
-    ].join(" "),
-    onchange: () => {
-      if (starLabel.classList.contains("star-checked")) {
-        starLabel.classList.remove("star-checked");
-        starIcon.classList.remove("ion-android-star");
-        starIcon.classList.add("ion-android-star-outline");
-      } else {
-        starLabel.classList.add("star-checked");
-        starIcon.classList.remove("ion-android-star-outline");
-        starIcon.classList.add("ion-android-star");
-      }
-
-      if (course !== "placeholder") toggleCourseStarred(course);
-    },
-    onclick: catchEvent
-  });
-
-  const starIcon = redom.el("i.course-box-star-icon.icon");
-
-  if (course !== "placeholder") {
-    starToggle.checked = course.starred;
-    if (course.starred) {
-      starLabel.classList.add("star-checked");
-      starIcon.classList.add("ion-android-star");
-    } else {
-      starIcon.classList.add("ion-android-star-outline");
-    }
-  }
-
-  starLabel.appendChild(starToggle);
-  starLabel.appendChild(starIcon);
-  listItemContent.appendChild(starLabel);
-
-  const textBox = document.createElement("p");
-  textBox.classList.add("course-box-text");
-  listItemContent.appendChild(textBox);
-
-  let courseCode;
-  let text;
-  if (course === "placeholder") {
-    courseCode = "placeholder";
-    text = "placeholder";
-  } else {
-    courseCode = course.courseCode;
-    text = Course.toString(course);
-  }
-
-  const courseCodeContainer = document.createElement("span");
-  const courseCodeNode = document.createTextNode(courseCode);
-  courseCodeContainer.classList.add("course-box-course-code");
-  courseCodeContainer.appendChild(courseCodeNode);
-
-  const courseNameNode = document.createTextNode(text);
-
-  textBox.appendChild(courseCodeContainer);
-  textBox.appendChild(courseNameNode);
-
-  if (!alreadyAdded) {
-    const addButton = document.createElement("i");
-    addButton.classList.add("course-box-button");
-    addButton.classList.add("course-box-add-button");
-    addButton.classList.add("icon");
-    addButton.classList.add("ion-plus");
-
-    if (course !== "placeholder")
-      addButton.addEventListener("click", () => {
-        addCourse(course);
-      });
-    addButton.addEventListener("click", catchEvent);
-    listItemContent.appendChild(addButton);
-  }
-
-  const removeButton = document.createElement("i");
-  removeButton.classList.add("course-box-button");
-  removeButton.classList.add("course-box-remove-button");
-  removeButton.classList.add("icon");
-  removeButton.classList.add("ion-close");
-  if (course !== "placeholder")
-    removeButton.addEventListener("click", () => {
-      removeCourse(course);
-    });
-  removeButton.addEventListener("click", catchEvent);
-  listItemContent.appendChild(removeButton);
-
-  if (course === "placeholder") {
-    listItem.classList.add("placeholder");
-  }
-
-  if (idx !== undefined) {
-    listItem.setAttribute("data-course-index", idx.toString());
-  }
-
-  return listItem;
-}
-
-function createSlotEntities(course: Course.CourseV3) {
-  const entities = [];
-  for (const slot of course.courseSchedule) {
-    const startTime = TimeString.toFractionalHours(slot.scheduleStartTime);
-    const endTime = TimeString.toFractionalHours(slot.scheduleEndTime);
-    const timeSince7am = startTime - TimeString.toFractionalHours("07:00");
-    const duration = endTime - startTime;
-    const text = course.courseName;
-    const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
-    const heightPercentage = (duration / 16) * 100;
-    for (const day of slot.scheduleDays) {
-      const dayIndex = "MTWRF".indexOf(day);
-      if (dayIndex === -1) {
-        continue;
-      }
-
-      const wrapper = redom.el(
-        "div.schedule-slot-wrapper",
-        {
-          style: {
-            gridColumnStart: Math.round(dayIndex + 2),
-            gridRowStart: Math.round(timeSince7am * 12 + 2),
-            gridRowEnd: "span " + Math.round(duration * 12),
-            gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)"
-          },
-          onclick: () => setCourseDescriptionBox(course)
-        },
-        Util.getConsecutiveRanges(slot.scheduleTerms).map(
-          ([left, right]: [number, number]) =>
-            redom.el(
-              "div",
-              {
-                class:
-                  "schedule-slot" +
-                  (course.starred ? " schedule-slot-starred" : ""),
-                style: {
-                  gridColumnStart: left + 1,
-                  gridColumnEnd: right + 1,
-                  backgroundColor: Course.getColor(course)
-                }
-              },
-              [
-                redom.el("p.schedule-slot-text-wrapper", [
-                  redom.el("p.schedule-slot-course-code", course.courseCode),
-                  redom.el(
-                    "p.schedule-slot-course-name",
-                    course.courseName +
-                      " (" +
-                      course.courseSeatsFilled +
-                      "/" +
-                      course.courseSeatsTotal +
-                      ")"
-                  )
-                ])
-              ]
-            )
-        )
-      );
-
-      entities.push(wrapper);
-    }
-  }
-  return entities;
-}
 
 //// DOM queries
 
@@ -1201,17 +946,17 @@ function rerenderCourseSearchResults() {
     courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
 
-  let numToShow =
+  const numToShow =
     (document.documentElement.clientHeight / gCourseEntityHeight) * 3;
   const startIndex = Math.floor(
     (courseSearchResults.scrollTop - document.documentElement.clientHeight) /
       gCourseEntityHeight
   );
 
-  let numAlreadyShown = courseSearchResultsList.childElementCount;
-  let allCoursesDisplayed = true;
+  const numAlreadyShown = courseSearchResultsList.childElementCount;
+  const allCoursesDisplayed = true;
   // 0 in case of non-incremental update
-  let numAdded = numAlreadyShown;
+  const numAdded = numAlreadyShown;
 
   for (
     let index = Math.max(startIndex, 0);
@@ -1220,7 +965,17 @@ function rerenderCourseSearchResults() {
   ) {
     const course = gApiData.data.courses[gFilteredCourseKeys[index]];
     const alreadyAdded = courseAlreadyAdded(course);
-    const entity = createCourseEntity(course, { alreadyAdded });
+    const entity = Course.createEntity(
+      course,
+      {
+        add: addCourse,
+        remove: removeCourse,
+        toggleStarred: toggleCourseStarred,
+        toggleSelected: toggleCourseSelected,
+        focus: setCourseDescriptionBox
+      },
+      { alreadyAdded }
+    );
     entity.style.top = "" + gCourseEntityHeight * index + "px";
     courseSearchResultsList.appendChild(entity);
   }
@@ -1247,7 +1002,17 @@ function updateSelectedCoursesList() {
   for (let idx = 0; idx < gSelectedCourses.length; ++idx) {
     const course = gSelectedCourses[idx];
     selectedCoursesList.appendChild(
-      createCourseEntity(course, { idx, alreadyAdded: true })
+      Course.createEntity(
+        course,
+        {
+          add: addCourse,
+          remove: removeCourse,
+          toggleStarred: toggleCourseStarred,
+          toggleSelected: toggleCourseSelected,
+          focus: setCourseDescriptionBox
+        },
+        { idx, alreadyAdded: true }
+      )
     );
   }
   sortable(".sortable-list");
@@ -1262,8 +1027,8 @@ function updateSchedule() {
     )[0];
     element.parentNode!.removeChild(element);
   }
-  for (let course of schedule) {
-    const entities = createSlotEntities(course);
+  for (const course of schedule) {
+    const entities = Course.createSlotEntities(course);
     entities.forEach(e => scheduleTable.appendChild(e));
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
@@ -1988,7 +1753,7 @@ function downloadICalFile() {
         let weekdayDifference = 7;
         for (let weekday of slot.scheduleDays) {
           const possibleStartWeekday = weekdayCharToInteger(weekday);
-          const possibleWeekdayDifference = mod(
+          const possibleWeekdayDifference = Util.mod(
             possibleStartWeekday - listedStartWeekday,
             7
           );
