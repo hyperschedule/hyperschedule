@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "module": "es6",
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "strict": true,
+    "lib": [
+      "es2019", "DOM", "DOM.Iterable"
+    ]
+  }
+}
