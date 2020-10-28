@@ -1051,7 +1051,7 @@ function updateSchedule() {
     element.parentNode!.removeChild(element);
   }
   for (const course of schedule) {
-    const entities = Course.createSlotEntities(course);
+    const entities = Course.createSlotEntities(course, setCourseDescriptionBox);
     entities.forEach(e => scheduleTable.appendChild(e));
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
