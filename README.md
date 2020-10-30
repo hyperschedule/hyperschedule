@@ -14,14 +14,9 @@ Claremont Colleges course catalog, is located [here][scraper].
 
 ## Local development
 
-Install [Docker]. Then, run
+Install [Docker]. At this point you can run the webapp locally by running
 
-    $ make docker
-
-to start a shell with all of the project dependencies already
-installed. At this point you can run the webapp locally by running
-
-    $ make dev
+    $ npm run dev
 
 This will build the static files and serve them to `localhost:5000`;
 to use a different port, just pass e.g. `PORT=5001` as an argument to
@@ -32,18 +27,17 @@ the API locally, you'll want to override this by passing e.g.
 `localhost`, don't forget the `http`, since otherwise Chrome's CORS
 policy will block the request.
 
-Other Makefile targets are available:
+Other npm scripts are available:
 
     $ usage:
-      make clean   Remove build artifacts
-      make hooks   Install Git hooks
-      make build   Compile JavaScript for production
-      make dev     Start development server and automatically recompile JavaScript
-      make docker  Start shell or run command (e.g. make docker CMD="make dev")
-      make format  Auto-format JavaScript
-      make lint    Verify that all code is correctly formatted
-      make ci      Run tests that CI will run
-      make help    Show this message
+      npm run clean         Remove build artifacts
+      npm run clean-all
+      npm run setup-hooks   Install Git hooks
+      npm run build         Compile JavaScript for production
+      npm run dev           Start development server and automatically recompile JavaScript
+      npm run format        Auto-format JavaScript
+      npm run lint          Verify that all code is correctly formatted
+      npm run ci            Run tests that CI will run
 
 ### Deploy
 
