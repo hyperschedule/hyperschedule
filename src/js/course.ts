@@ -7,7 +7,20 @@ import randomColor from "randomcolor";
 import CryptoJs from "crypto-js";
 import * as Redom from "redom";
 
-const filterTechs = ["MATH", "CSCI", "PHYS", "ENGR", "BIOL", "CHEM", "MCBI"];
+const filterTechs = [
+  "ASTR",
+  "BIOL",
+  "CHEM",
+  "CSCI",
+  "CSMT",
+  "DS",
+  "ENGR",
+  "GEOL",
+  "MATH",
+  "MCBI",
+  "NEUR",
+  "PHYS"
+];
 
 interface Slot {
   days: string;
