@@ -97,12 +97,12 @@ body {
   &.priority-med {
     background-color: #fc6;
   }
-   
+
   p {
     margin: 0;
 
-    &+p {
-      margin-top: .5em;
+    & + p {
+      margin-top: 0.5em;
     }
   }
 }
