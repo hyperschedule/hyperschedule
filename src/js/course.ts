@@ -5,6 +5,7 @@ import * as TimeString from "./time-string";
 import * as Math from "mathjs";
 import randomColor from "randomcolor";
 import CryptoJs from "crypto-js";
+import * as Redom from "redom";
 
 const filterTechs = ["MATH", "CSCI", "PHYS", "ENGR", "BIOL", "CHEM", "MCBI"];
 
@@ -13,6 +14,11 @@ interface Slot {
   location: string;
   startTime: string;
   endTime: string;
+}
+
+interface CourseEntityAttrs {
+  alreadyAdded?: boolean;
+  idx?: number;
 }
 
 export interface CourseV2 {
@@ -53,6 +59,127 @@ export interface CourseV3 {
   courseEnrollmentStatus: string | null;
   starred: boolean;
   selected: boolean;
+}
+
+export function createEntity(
+  course: CourseV3 | "placeholder",
+  actions = {
+    add: (c: CourseV3) => {},
+    remove: (c: CourseV3) => {},
+    toggleStarred: (c: CourseV3) => {},
+    toggleSelected: (c: CourseV3) => {},
+    focus: (c: CourseV3) => {}
+  },
+  attrs?: CourseEntityAttrs
+) {
+  attrs = attrs || {};
+  const alreadyAdded = attrs.alreadyAdded;
+
+  const listItem = Redom.el(
+    "div.course-box",
+    Redom.el(
+      "div.course-box-content",
+      [
+        Redom.el(
+          "label.course-box-select-label",
+          [
+            Redom.el(
+              "input.course-box-button.course-box-toggle.course-box-select-toggle",
+              {
+                type: "checkbox",
+                checked: course !== "placeholder" && course.selected,
+                onchange: () => {
+                  if (course !== "placeholder") actions.toggleSelected(course);
+                },
+                onclick: Util.catchEvent
+              }
+            ),
+            Redom.el("i.course-box-select-icon.icon", {
+              class:
+                "ion-android-checkbox" +
+                (course !== "placeholder" && course.selected
+                  ? ""
+                  : "-outline-blank")
+            })
+          ],
+          {
+            onclick: Util.catchEvent
+          }
+        ),
+        Redom.el(
+          "label.course-box-star-label.star-visible",
+          [
+            Redom.el(
+              "input.course-box-button.course-box-toggle.course-box-star-toggle",
+              {
+                type: "checkbox",
+                onchange: () => {
+                  if (course !== "placeholder") actions.toggleStarred(course);
+                },
+                onclick: Util.catchEvent
+              }
+            ),
+            Redom.el("i.course-box-star-icon.icon", {
+              class:
+                "ion-android-star" +
+                (course !== "placeholder" && course.starred ? "" : "-outline")
+            })
+          ],
+          {
+            onclick: Util.catchEvent
+          }
+        ),
+        Redom.el("p.course-box-text", [
+          Redom.el(
+            "span.course-box-course-code",
+            course === "placeholder" ? "placeholder" : course.courseCode
+          ),
+          course === "placeholder" ? "placeholder" : toString(course)
+        ]),
+        !attrs.alreadyAdded &&
+          Redom.el(
+            // TODO hide if already added
+            "i.course-box-button.course-box-add-button.icon.ion-plus",
+            {
+              onclick: (e: MouseEvent) => {
+                e.stopPropagation();
+                console.log(
+                  "add button clicked",
+                  course !== "placeholder",
+                  course
+                );
+                if (course !== "placeholder") actions.add(course);
+              }
+            }
+          ),
+        Redom.el(
+          "i.course-box-button.course-box-remove-button.icon.ion-close",
+          {
+            onclick: (e: MouseEvent) => {
+              e.stopPropagation();
+              if (course !== "placeholder") actions.remove(course);
+            }
+          }
+        )
+      ],
+      {
+        style: {
+          backgroundColor:
+            course !== "placeholder" ? getColor(course) : "transparent"
+        },
+        onclick: () => {
+          if (course !== "placeholder") actions.focus(course);
+        }
+      }
+    ),
+    {
+      class: course === "placeholder" ? "placeholder" : "",
+      dataset:
+        attrs.idx !== undefined ? { courseIndex: attrs.idx.toString() } : {}
+    }
+  );
+
+  return listItem;
 }
 
 export function mutuallyExclusive(a: CourseV3, b: CourseV3) {
@@ -271,6 +398,74 @@ export function generateDescription(course: CourseV3, offset: number) {
   }
 
   return description;
+}
+
+export function createSlotEntities(
+  course: CourseV3,
+  focus = (c: CourseV3) => {}
+) {
+  const entities = [];
+  for (const slot of course.courseSchedule) {
+    const startTime = TimeString.toFractionalHours(slot.scheduleStartTime);
+    const endTime = TimeString.toFractionalHours(slot.scheduleEndTime);
+    const timeSince7am = startTime - TimeString.toFractionalHours("07:00");
+    const duration = endTime - startTime;
+    const text = course.courseName;
+    const verticalOffsetPercentage = ((timeSince7am + 1) / 16) * 100;
+    const heightPercentage = (duration / 16) * 100;
+    for (const day of slot.scheduleDays) {
+      const dayIndex = "MTWRF".indexOf(day);
+      if (dayIndex === -1) {
+        continue;
+      }
+
+      const wrapper = Redom.el(
+        "div.schedule-slot-wrapper",
+        {
+          style: {
+            gridColumnStart: Math.round(dayIndex + 2),
+            gridRowStart: Math.round(timeSince7am * 12 + 2),
+            gridRowEnd: "span " + Math.round(duration * 12),
+            gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)"
+          },
+          onclick: () => focus(course)
+        },
+        Util.getConsecutiveRanges(slot.scheduleTerms).map(
+          ([left, right]: [number, number]) =>
+            Redom.el(
+              "div",
+              {
+                class:
+                  "schedule-slot" +
+                  (course.starred ? " schedule-slot-starred" : ""),
+                style: {
+                  gridColumnStart: left + 1,
+                  gridColumnEnd: right + 1,
+                  backgroundColor: getColor(course)
+                }
+              },
+              [
+                Redom.el("p.schedule-slot-text-wrapper", [
+                  Redom.el("p.schedule-slot-course-code", course.courseCode),
+                  Redom.el(
+                    "p.schedule-slot-course-name",
+                    course.courseName +
+                      " (" +
+                      course.courseSeatsFilled +
+                      "/" +
+                      course.courseSeatsTotal +
+                      ")"
+                  )
+                ])
+              ]
+            )
+        )
+      );
+
+      entities.push(wrapper);
+    }
+  }
+  return entities;
 }
 
 export function isClosed(c: CourseV3) {
