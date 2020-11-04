@@ -14,7 +14,7 @@ Claremont Colleges course catalog, is located [here][scraper].
 
 ## Local development
 
-Install [Docker]. At this point you can run the webapp locally by running
+Install [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm). At this point you can run the webapp locally by running
 
     $ npm run dev
 
@@ -31,13 +31,14 @@ Other npm scripts are available:
 
     $ usage:
       npm run clean         Remove build artifacts
-      npm run clean-all
+      npm run clean-all     Remove all build artifacts
       npm run setup-hooks   Install Git hooks
       npm run build         Compile JavaScript for production
       npm run dev           Start development server and automatically recompile JavaScript
       npm run format        Auto-format JavaScript
       npm run lint          Verify that all code is correctly formatted
       npm run ci            Run tests that CI will run
+      npm run               Show the list of scripts available
 
 ### Deploy
 
