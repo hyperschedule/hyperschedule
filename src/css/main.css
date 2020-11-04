@@ -93,6 +93,18 @@ body {
   &.priority-high {
     background-color: #f8a;
   }
+
+  &.priority-med {
+    background-color: #fc6;
+  }
+
+  p {
+    margin: 0;
+
+    & + p {
+      margin-top: 0.5em;
+    }
+  }
 }
 
 /*** Course search/schedule column ***/
