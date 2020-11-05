@@ -36,16 +36,17 @@ the API locally, you'll want to override this by passing e.g.
 policy will block the request.
 
 Other npm commands available:
-      npm run               Show list of commands available
-      npm run dev           Start development server
-      npm run build         Compile TypeScript for production
-      npm run setup         Install dependencies and Git pre-commit hooks
-      npm run setup-hooks   Install Git pre-commit hooks
-      npm run clean         Remove files ignored by Git
-      npm run clean-all     Remove all files, even in untracked directories
-      npm run format        Auto-format TypeScript
-      npm run lint          Verify all code is formatted
-      npm run ci            Run tests that CI will run
+
+    npm run               Show list of commands available
+    npm run dev           Start development server
+    npm run build         Compile TypeScript for production
+    npm run setup         Install dependencies and Git pre-commit hooks
+    npm run setup-hooks   Install Git pre-commit hooks
+    npm run clean         Remove files ignored by Git
+    npm run clean-all     Remove all files, even in untracked directories
+    npm run format        Auto-format TypeScript
+    npm run lint          Verify all code is formatted
+    npm run ci            Run tests that CI will run
 
 ### Deploy
 
