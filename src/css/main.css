@@ -250,6 +250,7 @@ body {
 
 #selected-courses-bar {
   overflow-y: auto;
+  justify-content: space-evenly;
 }
 
 #github-link-wrapper {
