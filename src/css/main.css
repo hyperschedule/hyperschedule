@@ -250,7 +250,12 @@ body {
 
 #selected-courses-bar {
   overflow-y: auto;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+#selected-courses-bar::before,
+#selected-courses-bar::after {
+  content: "";
 }
 
 #github-link-wrapper {
