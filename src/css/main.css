@@ -64,6 +64,10 @@ body {
   flex-grow: 1;
 }
 
+#wrapper {
+  overflow: hidden;
+}
+
 /** Column layout **/
 
 .two-column-left {
