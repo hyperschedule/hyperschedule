@@ -22,6 +22,12 @@ const filterTechs = [
   "PHYS"
 ];
 
+export const enum CourseArea {
+  Tech,
+  Hum,
+  Pe
+}
+
 interface Slot {
   days: string;
   location: string;
@@ -485,14 +491,15 @@ export function isClosed(c: CourseV3) {
   return c.courseEnrollmentStatus === "closed";
 }
 
-export function isTech(c: CourseV3) {
+export function getCourseArea(c: CourseV3): CourseArea {
   const code = c.courseCode.split(" ")[0];
-  return filterTechs.includes(code) && code !== "PE";
-}
-
-export function isHum(c: CourseV3) {
-  const code = c.courseCode.split(" ")[0];
-  return !filterTechs.includes(code) && code !== "PE";
+  if (code === "PE") {
+    return CourseArea.Pe;
+  } else if (filterTechs.includes(code)) {
+    return CourseArea.Tech;
+  } else {
+    return CourseArea.Hum;
+  }
 }
 
 export function toString(c: CourseV3) {

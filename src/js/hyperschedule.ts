@@ -966,11 +966,12 @@ function updateCourseSearchResults() {
         ? []
         : Object.keys(gApiData.data.courses).filter(key => {
             const course = gApiData!.data.courses[key];
+            const area = Course.getCourseArea(course);
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
-              (!gShowTechCourses || Course.isTech(course)) &&
-              (!gShowHumCourses || Course.isHum(course)) &&
+              (!gShowTechCourses || area === Course.CourseArea.Tech) &&
+              (!gShowHumCourses || area === Course.CourseArea.Hum) &&
               (gShowClosedCourses || !Course.isClosed(course)) &&
               (!gHideAllConflictingCourses ||
                 !courseConflictWithSchedule(course, false)) &&
