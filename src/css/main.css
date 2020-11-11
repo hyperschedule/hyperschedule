@@ -247,10 +247,23 @@ body {
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
+  overflow-y: auto;
+  justify-content: space-between;
+}
+
+#selected-courses-bar::before,
+#selected-courses-bar::after {
+  content: "";
+}
+
+#github-link-wrapper {
+  margin-right: 0.5rem;
 }
 
 #github-link {
-  flex-grow: 1;
+  font-size: 30px;
+  line-height: 1;
+  padding: 0px 2px;
 }
 
 #import-export-data-button {
