@@ -1,4 +1,4 @@
 [build]
 
-command = "make build"
+command = "npm run build"
 publish = "dist"
