@@ -31,9 +31,9 @@
     <![endif]-->
     <div id="motd">
     </div>
-    <div class="columns grow">
+    <div id="columns-grow">
       <div id="course-search-schedule-column" class="two-column-left">
-	<div id="course-search-schedule-toggle-bar" class="toolbar">
+        <div id="course-search-schedule-toggle-bar" class="toolbar">
           <div id="course-search-toggle-wrapper">
             <button type="button" id="course-search-toggle" class="btn">
               Course Search
@@ -44,78 +44,84 @@
               Schedule
             </button>
           </div>
-	</div>
-	<div id="course-search-column">
+        </div>
+        <div id="course-search-column">
           <div id="course-search-bar" class="toolbar">
             <input
               type="text"
               id="course-search-course-name-input"
               class="form-control"
               placeholder="Search by name, course code, etc."
-              />
+            />
             <div id="filter-button-wrapper" class="dropdown">
               <button
-		class="btn btn-primary dropdown-toggle"
-		id="filter-button"
-		data-toggle="dropdown"
-		>
-		Filters
+                class="btn btn-primary dropdown-toggle"
+                id="filter-button"
+                data-toggle="dropdown"
+              >
+                Filters
               </button>
               <ul
-		class="dropdown-menu dropdown-menu-right checkbox-menu allow-focus"
-		>
-		<li>
+                class="dropdown-menu dropdown-menu-right checkbox-menu allow-focus"
+              >
+                <li>
                   <label id="closed-courses-toggle-label">
                     <input id="closed-courses-toggle" type="checkbox" /> Show
                     closed courses
                   </label>
-		</li>
-		<li>
+                </li>
+                <li>
                   <label id="all-conflicting-courses-toggle-label">
-                    <input id="all-conflicting-courses-toggle" type="checkbox" />
+                    <input
+                      id="all-conflicting-courses-toggle"
+                      type="checkbox"
+                    />
                     Hide courses conflicting with schedule
                   </label>
-		</li>
-		<li>
+                </li>
+                <li>
                   <label id="star-conflicting-courses-toggle-label">
-                    <input id="star-conflicting-courses-toggle" type="checkbox" />
+                    <input
+                      id="star-conflicting-courses-toggle"
+                      type="checkbox"
+                    />
                     Hide courses conflicting with starred courses
                   </label>
-		</li>
+                </li>
               </ul>
             </div>
-	    
+
             <button
               type="button"
               id="help-button"
               class="btn btn-primary"
               data-toggle="modal"
               data-target="#help-modal"
-              >
+            >
               How does it work?
             </button>
           </div>
-	  
+
           <div id="course-search-results">
             <ul id="course-search-results-list" class="courses-list"></ul>
             <div id="course-search-results-placeholder"></div>
             <div id="course-search-results-end"></div>
           </div>
-	</div>
-	<div id="schedule-column" class="hidden">
+        </div>
+        <div id="schedule-column" class="hidden">
           <div id="schedule-table">
             <div class="schedule-day-column monday odd"></div>
             <div class="schedule-day-column tuesday even"></div>
             <div class="schedule-day-column wednesday odd"></div>
             <div class="schedule-day-column thursday even"></div>
             <div class="schedule-day-column friday odd"></div>
-	    
+
             <div class="schedule-day monday odd">Monday</div>
             <div class="schedule-day tuesday even">Tuesday</div>
             <div class="schedule-day wednesday odd">Wednesday</div>
             <div class="schedule-day thursday even">Thursday</div>
             <div class="schedule-day friday odd">Friday</div>
-	    
+
             <div class="schedule-hour-row schedule-hour-1"></div>
             <div class="schedule-hour-row schedule-hour-2"></div>
             <div class="schedule-hour-row schedule-hour-3"></div>
@@ -132,7 +138,7 @@
             <div class="schedule-hour-row schedule-hour-14"></div>
             <div class="schedule-hour-row schedule-hour-15"></div>
             <div class="schedule-hour-row schedule-hour-16"></div>
-	    
+
             <div class="schedule-hour schedule-hour-1">7am</div>
             <div class="schedule-hour schedule-hour-2">8am</div>
             <div class="schedule-hour schedule-hour-3">9am</div>
@@ -153,19 +159,21 @@
           <div id="credit-count-box" class="toolbar">
             <p id="credit-count"></p>
           </div>
-	</div>
+        </div>
       </div>
-      
+
       <div id="selected-courses-column" class="two-column-right">
-	<div id="selected-courses-bar" class="toolbar">
-          <a
-            id="github-link"
-            href="https://github.com/MuddCreates/hyperschedule"
-            target="_blank"
+        <div id="selected-courses-bar" class="toolbar">
+          <div id="github-link-wrapper">
+            <a
+              id="github-link"
+              href="https://github.com/MuddCreates/hyperschedule"
+              target="_blank"
+              title="View on GitHub"
             >
-            <i class="icon ion-social-github"></i>
-            View on GitHub
-          </a>
+              <i class="icon ion-social-github"></i>
+            </a>
+          </div>
           <div id="import-export-data-button-wrapper">
             <button id="import-export-data-button" class="btn btn-primary">
               Import/Export Data
@@ -176,15 +184,15 @@
               id="print-dropdown"
               class="btn btn-primary dropdown-toggle"
               data-toggle="dropdown"
-              >
+            >
               Print
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li class="print-btn" id="print-button-all">
-		<a>Print All</a>
+                <a>Print All</a>
               </li>
               <li class="print-btn" id="print-button-starred">
-		<a>Print Starred</a>
+                <a>Print Starred</a>
               </li>
             </ul>
           </div>
@@ -193,347 +201,622 @@
               <i class="icon ion-gear-b"></i>
             </button>
           </div>
-	</div>
-	<div id="minimize-outer">
+        </div>
+        <div id="minimize-outer">
           <button
             id="course-description-minimize"
             type="button"
             class="btn btn-light"
-            >
+          >
             <i
               class="icon ion-arrow-down-b course-box-text"
               id="minimize-icon"
-              ></i>
+            ></i>
           </button>
-	</div>
-	<div id="course-description-box-outer">
+        </div>
+        <div id="course-description-box-outer">
           <div id="course-description-box"></div>
-	</div>
-	<div id="selected-courses-wrapper">
-          <ul id="selected-courses-list" class="sortable-list courses-list"></ul>
-	</div>
+        </div>
+        <div id="selected-courses-wrapper">
+          <ul
+            id="selected-courses-list"
+            class="sortable-list courses-list"
+          ></ul>
+        </div>
       </div>
-      
+
       <div class="modal fade" id="import-export-modal" tabindex="-1">
-	<div class="modal-dialog">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Import/Export Data</h5>
               <button type="button" class="close" data-dismiss="modal">
-		<span>&times;</span>
+                <span>&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <p>
-		You can edit the JSON in another application. Be warned that your
-		changes are <b>not</b> validated!
+                You can edit the JSON in another application. Be warned that
+                your changes are <b>not</b> validated!
               </p>
               <textarea
-		id="import-export-text-area"
-		class="form-control"
-		></textarea>
+                id="import-export-text-area"
+                class="form-control"
+              ></textarea>
               <br />
               <p>
-		Alternatively, use the button below to export an iCal file with
-		your starred courses.
+                Alternatively, use the button below to export an iCal file with
+                your starred courses.
               </p>
             </div>
             <div class="modal-footer">
               <button
-		type="button"
-		id="import-export-copy-button"
-		class="btn btn-info"
-		data-clipboard-target="#import-export-text-area"
-		></button>
+                type="button"
+                id="import-export-copy-button"
+                class="btn btn-info"
+                data-clipboard-target="#import-export-text-area"
+              ></button>
               <button
-		type="button"
-		id="import-export-ical-button"
-		class="btn btn-info"
-		>
-		To iCal
+                type="button"
+                id="import-export-ical-button"
+                class="btn btn-info"
+              >
+                To iCal
               </button>
               <button
-		type="button"
-		id="import-export-save-changes-button"
-		class="btn btn-primary"
-		>
-		Save changes
+                type="button"
+                id="import-export-save-changes-button"
+                class="btn btn-primary"
+              >
+                Save changes
               </button>
               <button
-		type="button"
-		class="btn btn-secondary"
-		data-dismiss="modal"
-		>
-		Close
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
               </button>
             </div>
           </div>
-	</div>
+        </div>
       </div>
-      
+
       <div class="modal fade" id="help-modal" tabindex="-1">
-	<div class="modal-dialog">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Help</h5>
               <button type="button" class="close" data-dismiss="modal">
-		<span>&times;</span>
+                <span>&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <p>
-		The <b>Course Search</b> tab lists all courses for the coming
-		semester. You can specify additional filters in the form of
-		<span class="modal-input-text">key:text</span> to filter on more
-		specific parameters. The following filters are supported (all case
-		insensitive):
+                The <b>Course Search</b> tab lists all courses for the coming
+                semester. You can specify additional filters in the form of
+                <span class="modal-input-text">key:text</span> to filter on more
+                specific parameters. The following filters are supported (all
+                case insensitive):
               </p>
               <ul>
-		<li>
-                  <span class="modal-input-text">dept</span>: filter by department
-                  (e.g. MATH, CSCI)
-		</li>
-		<li>
+                <li>
+                  <span class="modal-input-text">dept</span>: filter by
+                  department (e.g. MATH, CSCI)
+                </li>
+                <li>
                   <span class="modal-input-text">col</span>: filter by college
                   (e.g. HM, SC)
-		</li>
-		<li>
+                </li>
+                <li>
                   <span class="modal-input-text">days</span>: filter by class
                   meeting days (e.g. M, =TR, &lt;=MWF, &gt;MW)
-		</li>
+                </li>
               </ul>
               <p>
-		Click on the <b>+</b> button to add a course. Each section is
-		listed separately, so make sure to get all the ones you want. You
-		can click on a course to see more information about it in the
-		upper-right panel.
+                Click on the <b>+</b> button to add a course. Each section is
+                listed separately, so make sure to get all the ones you want.
+                You can click on a course to see more information about it in
+                the upper-right panel.
               </p>
               <p>
-		On the right-hand column, you can click and drag courses to
-		reorder them. The ones at the top are given the highest scheduling
-		priority. From here, you can also remove courses, star them, and
-		disable them.
+                On the right-hand column, you can click and drag courses to
+                reorder them. The ones at the top are given the highest
+                scheduling priority. From here, you can also remove courses,
+                star them, and disable them.
               </p>
               <p>
-		The <b>Schedule</b> tab is, of course, the main event. Scheduling
-		is simple: first, all of your starred courses are scheduled,
-		regardless of conflicts. Then, as many remaining courses as
-		possible are scheduled as long as they don't conflict: the
-		algorithm starts from the top of your list and goes down. Courses
-		that are disabled, however, won't be considered. So, to change
-		your schedule, just use reordering, starring, and disabling,
-		rather than paging through multiple schedules.
+                The <b>Schedule</b> tab is, of course, the main event.
+                Scheduling is simple: first, all of your starred courses are
+                scheduled, regardless of conflicts. Then, as many remaining
+                courses as possible are scheduled as long as they don't
+                conflict: the algorithm starts from the top of your list and
+                goes down. Courses that are disabled, however, won't be
+                considered. So, to change your schedule, just use reordering,
+                starring, and disabling, rather than paging through multiple
+                schedules.
               </p>
               <p>
-		Hyperschedule was created by Radon Rosborough
-		<a
+                Hyperschedule was created by Radon Rosborough
+                <a
                   href="https://github.com/MuddCreates/hyperschedule/graphs/contributors"
                   target="_blank"
                   >and friends</a
-				>
-		during Fall 2017 registration.
+                >
+                during Fall 2017 registration.
               </p>
             </div>
             <div class="modal-footer">
               <button
-		type="button"
-		class="btn btn-secondary"
-		data-dismiss="modal"
-		>
-		Close
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
               </button>
             </div>
           </div>
-	</div>
+        </div>
       </div>
-      
+
       <div class="modal fade" id="malformed-courses-modal" tabindex="-1">
-	<div class="modal-dialog">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Malformed Courses</h5>
               <button type="button" class="close" data-dismiss="modal">
-		<span>&times;</span>
+                <span>&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <p>
-		Occasionally, the registrar adds malformed data to Portal: for
-		example, a course with no name, invalid start and end dates, or
-		other such nonsense. This shouldn't be possible, but because
-		Portal is poorly designed, it is. Hyperschedule keeps track of
-		these courses since they appear in the Portal search results, even
-		though they cannot be parsed into valid course data to be used in
-		scheduling. These courses are displayed below:
+                Occasionally, the registrar adds malformed data to Portal: for
+                example, a course with no name, invalid start and end dates, or
+                other such nonsense. This shouldn't be possible, but because
+                Portal is poorly designed, it is. Hyperschedule keeps track of
+                these courses since they appear in the Portal search results,
+                even though they cannot be parsed into valid course data to be
+                used in scheduling. These courses are displayed below:
               </p>
               <div id="malformed-courses-list"></div>
             </div>
             <div class="modal-footer">
               <button
-		type="button"
-		class="btn btn-secondary"
-		data-dismiss="modal"
-		>
-		Close
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
               </button>
             </div>
           </div>
-	</div>
+        </div>
       </div>
-      
+
       <div class="modal fade" id="settings-modal" tabindex="-1">
-	<div class="modal-dialog">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Settings</h5>
               <button type="button" class="close" data-dismiss="modal">
-		<span>&times;</span>
+                <span>&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <div id="conflict-courses-toggle-wrapper">
-		<label id="conflict-courses-toggle-heading"
-                       >Gray out courses conflicting with schedule</label
-								    >
-		<label id="conflict-courses-toggle-label1"
-                       ><input
-			  id="conflict-courses1"
-			  name="conflict-courses"
-			  type="radio"
-			  />
+                <label id="conflict-courses-toggle-heading"
+                  >Gray out courses conflicting with schedule</label
+                >
+                <label id="conflict-courses-toggle-label1"
+                  ><input
+                    id="conflict-courses1"
+                    name="conflict-courses"
+                    type="radio"
+                  />
                   Don't gray out any conflicting courses</label
-							  >
-		<label id="conflict-courses-toggle-label2"
-                       ><input
-			  id="conflict-courses2"
-			  name="conflict-courses"
-			  type="radio"
-			  />
+                >
+                <label id="conflict-courses-toggle-label2"
+                  ><input
+                    id="conflict-courses2"
+                    name="conflict-courses"
+                    type="radio"
+                  />
                   Only gray out courses conflicting with starred courses</label
-									  >
-		<label id="conflict-courses-toggle-label3"
-                       ><input
-			  id="conflict-courses3"
-			  name="conflict-courses"
-			  type="radio"
-			  />
+                >
+                <label id="conflict-courses-toggle-label3"
+                  ><input
+                    id="conflict-courses3"
+                    name="conflict-courses"
+                    type="radio"
+                  />
                   Gray out courses conflicting with any course</label
-								>
+                >
               </div>
-              <br>
+              <br />
               <div id="time-zone-dropdown-wrapper">
-		<label id="time-zone-dropdown-heading"
-                       >Choose time zone to display schedule</label
-							      >
-		<select id="time-zone-dropdown">
-                  <option id="time-zone-dropdown-0" value="-12.0">(GMT-12:00) International Date Line West</option>
-                  <option id="time-zone-dropdown-1" class="nz-daylight-time" value="-11.0">(GMT-11:00) Samoa</option>
-                  <option id="time-zone-dropdown-2" value="-11.0">(GMT-11:00) Midway Island, Samoa</option>
-                  <option id="time-zone-dropdown-3" value="-10.0">(GMT-10:00) Hawaii</option>
-                  <option id="time-zone-dropdown-4" class="us-daylight-time" value="-9.0">(GMT-09:00) Alaska</option>
-                  <option id="time-zone-dropdown-5" class="us-daylight-time" value="-8.0">(GMT-08:00) Pacific Time (US & Canada)</option>
-                  <option id="time-zone-dropdown-6" class="us-daylight-time" value="-8.0">(GMT-08:00) Tijuana, Baja California</option>
-                  <option id="time-zone-dropdown-7" value="-7.0">(GMT-07:00) Arizona</option>
-                  <option id="time-zone-dropdown-8" class="mex-daylight-time" value="-7.0">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
-                  <option id="time-zone-dropdown-9" class="us-daylight-time" value="-7.0">(GMT-07:00) Mountain Time (US & Canada)</option>
-                  <option id="time-zone-dropdown-10" value="-6.0">(GMT-06:00) Central America</option>
-                  <option id="time-zone-dropdown-11" class="us-daylight-time" value="-6.0">(GMT-06:00) Central Time (US & Canada)</option>
-                  <option id="time-zone-dropdown-12" class="mex-daylight-time" value="-6.0">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
-                  <option id="time-zone-dropdown-13" value="-6.0">(GMT-06:00) Saskatchewan</option>
-                  <option id="time-zone-dropdown-14" value="-5.0">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
-                  <option id="time-zone-dropdown-15" class="us-daylight-time" value="-5.0">(GMT-05:00) Eastern Time (US & Canada)</option>
-                  <option id="time-zone-dropdown-16" class="us-daylight-time" value="-5.0">(GMT-05:00) Indiana (East)</option>
-                  <option id="time-zone-dropdown-17" class="us-daylight-time" value="-4.0">(GMT-04:00) Atlantic Time (Canada)</option>
-                  <option id="time-zone-dropdown-18" value="-4.0">(GMT-04:00) Caracas, La Paz</option>
-                  <option id="time-zone-dropdown-19" value="-4.0">(GMT-04:00) Manaus</option>
-                  <option id="time-zone-dropdown-20" class="chile-daylight-time" value="-4.0">(GMT-04:00) Santiago</option>
-                  <option id="time-zone-dropdown-21" class="us-daylight-time" value="-3.5">(GMT-03:30) Newfoundland</option>
-                  <option id="time-zone-dropdown-22" value="-3.0">(GMT-03:00) Brasilia</option>
-                  <option id="time-zone-dropdown-23" value="-3.0">(GMT-03:00) Buenos Aires, Georgetown</option>
-                  <option id="time-zone-dropdown-24" class="eu-daylight-time" value="-3.0">(GMT-03:00) Greenland</option>
-                  <option id="time-zone-dropdown-25" value="-3.0">(GMT-03:00) Montevideo</option>
-                  <option id="time-zone-dropdown-26" class="us-daylight-time" value="-2.0">(GMT-02:00) Mid-Atlantic</option>
-                  <option id="time-zone-dropdown-27" value="-1.0">(GMT-01:00) Cape Verde Is.</option>
-                  <option id="time-zone-dropdown-28" class="eu-daylight-time" value="-1.0">(GMT-01:00) Azores</option>
-                  <option id="time-zone-dropdown-29" value="0.0">(GMT+00:00) Casablanca, Monrovia, Reykjavik</option>
-                  <option id="time-zone-dropdown-30" class="eu-daylight-time" value="0.0">(GMT+00:00) Dublin, Edinburgh, Lisbon, London</option>
-                  <option id="time-zone-dropdown-31" class="eu-daylight-time" value="1.0">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm</option>
-                  <option id="time-zone-dropdown-32" class="eu-daylight-time" value="1.0">(GMT+01:00) Vienna, Belgrade, Bratislava, Budapest</option>
-                  <option id="time-zone-dropdown-33" class="eu-daylight-time" value="1.0">(GMT+01:00) Prague, Brussels, Copenhagen, Madrid, Paris</option>
-                  <option id="time-zone-dropdown-34" class="eu-daylight-time" value="1.0">(GMT+01:00) Ljubljana, Sarajevo, Skopje, Warsaw, Zagreb</option>
-                  <option id="time-zone-dropdown-35" value="1.0">(GMT+01:00) West Central Africa</option>
-                  <option id="time-zone-dropdown-36" class="amman-daylight-time" value="2.0">(GMT+02:00) Amman</option>
-                  <option id="time-zone-dropdown-37" class="eu-daylight-time" value="2.0">(GMT+02:00) Athens, Bucharest, Istanbul</option>
-                  <option id="time-zone-dropdown-38" class="eu-daylight-time" value="2.0">(GMT+02:00) Beirut</option>
-                  <option id="time-zone-dropdown-39" class="eu-daylight-time" value="2.0">(GMT+02:00) Cairo</option>
-                  <option id="time-zone-dropdown-40" value="2.0">(GMT+02:00) Harare, Pretoria</option>
-                  <option id="time-zone-dropdown-41" class="eu-daylight-time" value="2.0">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
-                  <option id="time-zone-dropdown-42" class="israel-daylight-time" value="2.0">(GMT+02:00) Jerusalem</option>
-                  <option id="time-zone-dropdown-43" class="eu-daylight-time" value="2.0">(GMT+02:00) Minsk</option>
-                  <option id="time-zone-dropdown-44" value="2.0">(GMT+02:00) Windhoek</option>
-                  <option id="time-zone-dropdown-45" value="3.0">(GMT+03:00) Kuwait, Riyadh, Baghdad</option>
-                  <option id="time-zone-dropdown-46" value="3.0">(GMT+03:00) Moscow, St. Petersburg, Volgograd</option>
-                  <option id="time-zone-dropdown-47" value="3.0">(GMT+03:00) Nairobi</option>
-                  <option id="time-zone-dropdown-48" value="3.0">(GMT+03:00) Tbilisi</option>
-                  <option id="time-zone-dropdown-49" class="iran-daylight-time" value="3.5">(GMT+03:30) Tehran</option>
-                  <option id="time-zone-dropdown-50" value="4.0">(GMT+04:00) Abu Dhabi, Muscat</option>
-                  <option id="time-zone-dropdown-51" value="4.0">(GMT+04:00) Baku</option>
-                  <option id="time-zone-dropdown-52" value="4.0">(GMT+04:00) Yerevan</option>
-                  <option id="time-zone-dropdown-53" value="4.5">(GMT+04:30) Kabul</option>
-                  <option id="time-zone-dropdown-54" value="5.0">(GMT+05:00) Yekaterinburg</option>
-                  <option id="time-zone-dropdown-55" value="5.0">(GMT+05:00) Islamabad, Karachi, Tashkent</option>
-                  <option id="time-zone-dropdown-56" value="5.5">(GMT+05:30) Sri Jayawardenapura</option>
-                  <option id="time-zone-dropdown-57" value="5.5">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
-                  <option id="time-zone-dropdown-58" value="5.75">(GMT+05:45) Kathmandu</option>
-                  <option id="time-zone-dropdown-59" value="6.0">(GMT+06:00) Almaty, Novosibirsk</option>
-                  <option id="time-zone-dropdown-60" value="6.0">(GMT+06:00) Astana, Dhaka</option>
-                  <option id="time-zone-dropdown-61" value="6.5">(GMT+06:30) Yangon (Rangoon)</option>
-                  <option id="time-zone-dropdown-62" value="7.0">(GMT+07:00) Bangkok, Hanoi, Jakarta</option>
-                  <option id="time-zone-dropdown-63" value="7.0">(GMT+07:00) Krasnoyarsk</option>
-                  <option id="time-zone-dropdown-64" value="8.0">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
-                  <option id="time-zone-dropdown-65" value="8.0">(GMT+08:00) Kuala Lumpur, Singapore</option>
-                  <option id="time-zone-dropdown-66" value="8.0">(GMT+08:00) Irkutsk, Ulaan Bataar</option>
-                  <option id="time-zone-dropdown-67" value="8.0">(GMT+08:00) Perth</option>
-                  <option id="time-zone-dropdown-68" value="8.0">(GMT+08:00) Taipei</option>
-                  <option id="time-zone-dropdown-69" value="9.0">(GMT+09:00) Osaka, Sapporo, Tokyo</option>
-                  <option id="time-zone-dropdown-70" value="9.0">(GMT+09:00) Seoul</option>
-                  <option id="time-zone-dropdown-71" value="9.0">(GMT+09:00) Yakutsk</option>
-                  <option id="time-zone-dropdown-72" value="9.5">(GMT+09:30) Adelaide</option>
-                  <option id="time-zone-dropdown-73" value="9.5">(GMT+09:30) Darwin</option>
-                  <option id="time-zone-dropdown-74" value="10.0">(GMT+10:00) Brisbane</option>
-                  <option id="time-zone-dropdown-75" class="aus-daylight-time" value="10.0">(GMT+10:00) Canberra, Melbourne, Sydney</option>
-                  <option id="time-zone-dropdown-76" class="aus-daylight-time" value="10.0">(GMT+10:00) Hobart</option>
-                  <option id="time-zone-dropdown-77" value="10.0">(GMT+10:00) Guam, Port Moresby</option>
-                  <option id="time-zone-dropdown-78" value="10.0">(GMT+10:00) Vladivostok</option>
-                  <option id="time-zone-dropdown-79" value="11.0">(GMT+11:00) Magadan, Solomon Is., New Caledonia</option>
-                  <option id="time-zone-dropdown-80" class="nz-daylight-time" value="12.0">(GMT+12:00) Auckland, Wellington</option>
-                  <option id="time-zone-dropdown-81" class="fiji-daylight-time" value="12.0">(GMT+12:00) Fiji</option>
-                  <option id="time-zone-dropdown-82" value="12.0">(GMT+12:00) Kamchatka, Marshall Is.</option>
-                  <option id="time-zone-dropdown-83" value="13.0">(GMT+13:00) Nuku'alofa</option>
-		</select>	
+                <label id="time-zone-dropdown-heading"
+                  >Choose time zone to display schedule</label
+                >
+                <select id="time-zone-dropdown">
+                  <option id="time-zone-dropdown-0" value="-12.0"
+                    >(GMT-12:00) International Date Line West</option
+                  >
+                  <option
+                    id="time-zone-dropdown-1"
+                    class="nz-daylight-time"
+                    value="-11.0"
+                    >(GMT-11:00) Samoa</option
+                  >
+                  <option id="time-zone-dropdown-2" value="-11.0"
+                    >(GMT-11:00) Midway Island, Samoa</option
+                  >
+                  <option id="time-zone-dropdown-3" value="-10.0"
+                    >(GMT-10:00) Hawaii</option
+                  >
+                  <option
+                    id="time-zone-dropdown-4"
+                    class="us-daylight-time"
+                    value="-9.0"
+                    >(GMT-09:00) Alaska</option
+                  >
+                  <option
+                    id="time-zone-dropdown-5"
+                    class="us-daylight-time"
+                    value="-8.0"
+                    >(GMT-08:00) Pacific Time (US & Canada)</option
+                  >
+                  <option
+                    id="time-zone-dropdown-6"
+                    class="us-daylight-time"
+                    value="-8.0"
+                    >(GMT-08:00) Tijuana, Baja California</option
+                  >
+                  <option id="time-zone-dropdown-7" value="-7.0"
+                    >(GMT-07:00) Arizona</option
+                  >
+                  <option
+                    id="time-zone-dropdown-8"
+                    class="mex-daylight-time"
+                    value="-7.0"
+                    >(GMT-07:00) Chihuahua, La Paz, Mazatlan</option
+                  >
+                  <option
+                    id="time-zone-dropdown-9"
+                    class="us-daylight-time"
+                    value="-7.0"
+                    >(GMT-07:00) Mountain Time (US & Canada)</option
+                  >
+                  <option id="time-zone-dropdown-10" value="-6.0"
+                    >(GMT-06:00) Central America</option
+                  >
+                  <option
+                    id="time-zone-dropdown-11"
+                    class="us-daylight-time"
+                    value="-6.0"
+                    >(GMT-06:00) Central Time (US & Canada)</option
+                  >
+                  <option
+                    id="time-zone-dropdown-12"
+                    class="mex-daylight-time"
+                    value="-6.0"
+                    >(GMT-06:00) Guadalajara, Mexico City, Monterrey</option
+                  >
+                  <option id="time-zone-dropdown-13" value="-6.0"
+                    >(GMT-06:00) Saskatchewan</option
+                  >
+                  <option id="time-zone-dropdown-14" value="-5.0"
+                    >(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option
+                  >
+                  <option
+                    id="time-zone-dropdown-15"
+                    class="us-daylight-time"
+                    value="-5.0"
+                    >(GMT-05:00) Eastern Time (US & Canada)</option
+                  >
+                  <option
+                    id="time-zone-dropdown-16"
+                    class="us-daylight-time"
+                    value="-5.0"
+                    >(GMT-05:00) Indiana (East)</option
+                  >
+                  <option
+                    id="time-zone-dropdown-17"
+                    class="us-daylight-time"
+                    value="-4.0"
+                    >(GMT-04:00) Atlantic Time (Canada)</option
+                  >
+                  <option id="time-zone-dropdown-18" value="-4.0"
+                    >(GMT-04:00) Caracas, La Paz</option
+                  >
+                  <option id="time-zone-dropdown-19" value="-4.0"
+                    >(GMT-04:00) Manaus</option
+                  >
+                  <option
+                    id="time-zone-dropdown-20"
+                    class="chile-daylight-time"
+                    value="-4.0"
+                    >(GMT-04:00) Santiago</option
+                  >
+                  <option
+                    id="time-zone-dropdown-21"
+                    class="us-daylight-time"
+                    value="-3.5"
+                    >(GMT-03:30) Newfoundland</option
+                  >
+                  <option id="time-zone-dropdown-22" value="-3.0"
+                    >(GMT-03:00) Brasilia</option
+                  >
+                  <option id="time-zone-dropdown-23" value="-3.0"
+                    >(GMT-03:00) Buenos Aires, Georgetown</option
+                  >
+                  <option
+                    id="time-zone-dropdown-24"
+                    class="eu-daylight-time"
+                    value="-3.0"
+                    >(GMT-03:00) Greenland</option
+                  >
+                  <option id="time-zone-dropdown-25" value="-3.0"
+                    >(GMT-03:00) Montevideo</option
+                  >
+                  <option
+                    id="time-zone-dropdown-26"
+                    class="us-daylight-time"
+                    value="-2.0"
+                    >(GMT-02:00) Mid-Atlantic</option
+                  >
+                  <option id="time-zone-dropdown-27" value="-1.0"
+                    >(GMT-01:00) Cape Verde Is.</option
+                  >
+                  <option
+                    id="time-zone-dropdown-28"
+                    class="eu-daylight-time"
+                    value="-1.0"
+                    >(GMT-01:00) Azores</option
+                  >
+                  <option id="time-zone-dropdown-29" value="0.0"
+                    >(GMT+00:00) Casablanca, Monrovia, Reykjavik</option
+                  >
+                  <option
+                    id="time-zone-dropdown-30"
+                    class="eu-daylight-time"
+                    value="0.0"
+                    >(GMT+00:00) Dublin, Edinburgh, Lisbon, London</option
+                  >
+                  <option
+                    id="time-zone-dropdown-31"
+                    class="eu-daylight-time"
+                    value="1.0"
+                    >(GMT+01:00) Amsterdam, Berlin, Bern, Rome,
+                    Stockholm</option
+                  >
+                  <option
+                    id="time-zone-dropdown-32"
+                    class="eu-daylight-time"
+                    value="1.0"
+                    >(GMT+01:00) Vienna, Belgrade, Bratislava, Budapest</option
+                  >
+                  <option
+                    id="time-zone-dropdown-33"
+                    class="eu-daylight-time"
+                    value="1.0"
+                    >(GMT+01:00) Prague, Brussels, Copenhagen, Madrid,
+                    Paris</option
+                  >
+                  <option
+                    id="time-zone-dropdown-34"
+                    class="eu-daylight-time"
+                    value="1.0"
+                    >(GMT+01:00) Ljubljana, Sarajevo, Skopje, Warsaw,
+                    Zagreb</option
+                  >
+                  <option id="time-zone-dropdown-35" value="1.0"
+                    >(GMT+01:00) West Central Africa</option
+                  >
+                  <option
+                    id="time-zone-dropdown-36"
+                    class="amman-daylight-time"
+                    value="2.0"
+                    >(GMT+02:00) Amman</option
+                  >
+                  <option
+                    id="time-zone-dropdown-37"
+                    class="eu-daylight-time"
+                    value="2.0"
+                    >(GMT+02:00) Athens, Bucharest, Istanbul</option
+                  >
+                  <option
+                    id="time-zone-dropdown-38"
+                    class="eu-daylight-time"
+                    value="2.0"
+                    >(GMT+02:00) Beirut</option
+                  >
+                  <option
+                    id="time-zone-dropdown-39"
+                    class="eu-daylight-time"
+                    value="2.0"
+                    >(GMT+02:00) Cairo</option
+                  >
+                  <option id="time-zone-dropdown-40" value="2.0"
+                    >(GMT+02:00) Harare, Pretoria</option
+                  >
+                  <option
+                    id="time-zone-dropdown-41"
+                    class="eu-daylight-time"
+                    value="2.0"
+                    >(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn,
+                    Vilnius</option
+                  >
+                  <option
+                    id="time-zone-dropdown-42"
+                    class="israel-daylight-time"
+                    value="2.0"
+                    >(GMT+02:00) Jerusalem</option
+                  >
+                  <option
+                    id="time-zone-dropdown-43"
+                    class="eu-daylight-time"
+                    value="2.0"
+                    >(GMT+02:00) Minsk</option
+                  >
+                  <option id="time-zone-dropdown-44" value="2.0"
+                    >(GMT+02:00) Windhoek</option
+                  >
+                  <option id="time-zone-dropdown-45" value="3.0"
+                    >(GMT+03:00) Kuwait, Riyadh, Baghdad</option
+                  >
+                  <option id="time-zone-dropdown-46" value="3.0"
+                    >(GMT+03:00) Moscow, St. Petersburg, Volgograd</option
+                  >
+                  <option id="time-zone-dropdown-47" value="3.0"
+                    >(GMT+03:00) Nairobi</option
+                  >
+                  <option id="time-zone-dropdown-48" value="3.0"
+                    >(GMT+03:00) Tbilisi</option
+                  >
+                  <option
+                    id="time-zone-dropdown-49"
+                    class="iran-daylight-time"
+                    value="3.5"
+                    >(GMT+03:30) Tehran</option
+                  >
+                  <option id="time-zone-dropdown-50" value="4.0"
+                    >(GMT+04:00) Abu Dhabi, Muscat</option
+                  >
+                  <option id="time-zone-dropdown-51" value="4.0"
+                    >(GMT+04:00) Baku</option
+                  >
+                  <option id="time-zone-dropdown-52" value="4.0"
+                    >(GMT+04:00) Yerevan</option
+                  >
+                  <option id="time-zone-dropdown-53" value="4.5"
+                    >(GMT+04:30) Kabul</option
+                  >
+                  <option id="time-zone-dropdown-54" value="5.0"
+                    >(GMT+05:00) Yekaterinburg</option
+                  >
+                  <option id="time-zone-dropdown-55" value="5.0"
+                    >(GMT+05:00) Islamabad, Karachi, Tashkent</option
+                  >
+                  <option id="time-zone-dropdown-56" value="5.5"
+                    >(GMT+05:30) Sri Jayawardenapura</option
+                  >
+                  <option id="time-zone-dropdown-57" value="5.5"
+                    >(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</option
+                  >
+                  <option id="time-zone-dropdown-58" value="5.75"
+                    >(GMT+05:45) Kathmandu</option
+                  >
+                  <option id="time-zone-dropdown-59" value="6.0"
+                    >(GMT+06:00) Almaty, Novosibirsk</option
+                  >
+                  <option id="time-zone-dropdown-60" value="6.0"
+                    >(GMT+06:00) Astana, Dhaka</option
+                  >
+                  <option id="time-zone-dropdown-61" value="6.5"
+                    >(GMT+06:30) Yangon (Rangoon)</option
+                  >
+                  <option id="time-zone-dropdown-62" value="7.0"
+                    >(GMT+07:00) Bangkok, Hanoi, Jakarta</option
+                  >
+                  <option id="time-zone-dropdown-63" value="7.0"
+                    >(GMT+07:00) Krasnoyarsk</option
+                  >
+                  <option id="time-zone-dropdown-64" value="8.0"
+                    >(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option
+                  >
+                  <option id="time-zone-dropdown-65" value="8.0"
+                    >(GMT+08:00) Kuala Lumpur, Singapore</option
+                  >
+                  <option id="time-zone-dropdown-66" value="8.0"
+                    >(GMT+08:00) Irkutsk, Ulaan Bataar</option
+                  >
+                  <option id="time-zone-dropdown-67" value="8.0"
+                    >(GMT+08:00) Perth</option
+                  >
+                  <option id="time-zone-dropdown-68" value="8.0"
+                    >(GMT+08:00) Taipei</option
+                  >
+                  <option id="time-zone-dropdown-69" value="9.0"
+                    >(GMT+09:00) Osaka, Sapporo, Tokyo</option
+                  >
+                  <option id="time-zone-dropdown-70" value="9.0"
+                    >(GMT+09:00) Seoul</option
+                  >
+                  <option id="time-zone-dropdown-71" value="9.0"
+                    >(GMT+09:00) Yakutsk</option
+                  >
+                  <option id="time-zone-dropdown-72" value="9.5"
+                    >(GMT+09:30) Adelaide</option
+                  >
+                  <option id="time-zone-dropdown-73" value="9.5"
+                    >(GMT+09:30) Darwin</option
+                  >
+                  <option id="time-zone-dropdown-74" value="10.0"
+                    >(GMT+10:00) Brisbane</option
+                  >
+                  <option
+                    id="time-zone-dropdown-75"
+                    class="aus-daylight-time"
+                    value="10.0"
+                    >(GMT+10:00) Canberra, Melbourne, Sydney</option
+                  >
+                  <option
+                    id="time-zone-dropdown-76"
+                    class="aus-daylight-time"
+                    value="10.0"
+                    >(GMT+10:00) Hobart</option
+                  >
+                  <option id="time-zone-dropdown-77" value="10.0"
+                    >(GMT+10:00) Guam, Port Moresby</option
+                  >
+                  <option id="time-zone-dropdown-78" value="10.0"
+                    >(GMT+10:00) Vladivostok</option
+                  >
+                  <option id="time-zone-dropdown-79" value="11.0"
+                    >(GMT+11:00) Magadan, Solomon Is., New Caledonia</option
+                  >
+                  <option
+                    id="time-zone-dropdown-80"
+                    class="nz-daylight-time"
+                    value="12.0"
+                    >(GMT+12:00) Auckland, Wellington</option
+                  >
+                  <option
+                    id="time-zone-dropdown-81"
+                    class="fiji-daylight-time"
+                    value="12.0"
+                    >(GMT+12:00) Fiji</option
+                  >
+                  <option id="time-zone-dropdown-82" value="12.0"
+                    >(GMT+12:00) Kamchatka, Marshall Is.</option
+                  >
+                  <option id="time-zone-dropdown-83" value="13.0"
+                    >(GMT+13:00) Nuku'alofa</option
+                  >
+                </select>
               </div>
             </div>
             <div class="modal-footer">
               <button
-		type="button"
-		class="btn btn-secondary"
-		data-dismiss="modal"
-		>
-		Close
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
               </button>
             </div>
           </div>
-	</div>
+        </div>
       </div>
     </div>
-      
-      <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
-	<if condition="ANALYTICS">
-	  <script
-            src="https://cdn.usefathom.com/script.js"
-            site="SNRUMQQA"
-            defer
-	    ></script>
-	</if>
+
+    <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
+    <if condition="ANALYTICS">
+      <script
+        src="https://cdn.usefathom.com/script.js"
+        site="SNRUMQQA"
+        defer
+      ></script>
+    </if>
   </body>
 </html>
