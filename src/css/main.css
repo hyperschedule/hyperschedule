@@ -14,10 +14,10 @@
 
 .btn {
   cursor: pointer;
-}
 
-.btn:disabled {
-  cursor: auto;
+  &:disabled {
+    cursor: auto;
+  }
 }
 
 .dropdown-menu {
@@ -38,7 +38,7 @@
   padding: 0;
   margin: 1rem;
   align-items: center;
-  whitespace: nowrap;
+  white-space: nowrap;
 }
 
 /** Page layout **/
@@ -52,6 +52,14 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column;
+}
+
+#columns-grow {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
 }
 
 /** Column layout **/
@@ -65,6 +73,36 @@ body {
 .two-column-right {
   flex: 1 0 0;
   overflow: hidden;
+}
+
+/** motd **/
+
+#motd {
+  display: none;
+  padding: 0.5rem 20%;
+  text-align: center;
+  font-size: 0.875em;
+  font-weight: bold;
+
+  &.visible {
+    display: block;
+  }
+
+  &.priority-high {
+    background-color: #f8a;
+  }
+
+  &.priority-med {
+    background-color: #fc6;
+  }
+
+  p {
+    margin: 0;
+
+    & + p {
+      margin-top: 0.5em;
+    }
+  }
 }
 
 /*** Course search/schedule column ***/
@@ -209,10 +247,23 @@ body {
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
+  overflow-y: auto;
+  justify-content: space-between;
+}
+
+#selected-courses-bar::before,
+#selected-courses-bar::after {
+  content: "";
+}
+
+#github-link-wrapper {
+  margin-right: 0.5rem;
 }
 
 #github-link {
-  flex-grow: 1;
+  font-size: 30px;
+  line-height: 1;
+  padding: 0px 2px;
 }
 
 #import-export-data-button {
@@ -295,7 +346,7 @@ body {
 
 #course-description-box p {
   font-size: small;
-  lpine-height: 100%;
+  line-height: 100%;
   margin: 0px 10px;
 }
 
@@ -310,7 +361,7 @@ body {
 #schedule-table {
   display: grid;
   grid-template-columns: 4rem repeat(5, 1fr);
-  grid-template-rows: 2rem repeat(180, calc(4rem / 12));
+  grid-template-rows: 2rem repeat(calc(12 * 16), calc(4rem / 12));
   margin: 0 1rem;
 }
 
@@ -411,6 +462,9 @@ body {
 }
 #schedule-table .schedule-hour-15 {
   grid-row-start: calc((15 - 1) * 12 + 2);
+}
+#schedule-table .schedule-hour-16 {
+  grid-row-start: calc((16 - 1) * 12 + 2);
 }
 
 .schedule-slot-wrapper {

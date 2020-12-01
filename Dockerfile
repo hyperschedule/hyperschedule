@@ -1,4 +1,4 @@
-FROM ubuntu:19.04
+FROM ubuntu:focal
 
 ARG UID
 
