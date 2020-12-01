@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserJsPlugin = require("terser-webpack-plugin");
+const Webpack = require("webpack");
 
 module.exports = (env, argv) => {
   const prod = argv.mode === "production";
@@ -55,6 +56,9 @@ module.exports = (env, argv) => {
       extensions: [".ts", ".js"],
     },
     plugins: [
+      new Webpack.EnvironmentPlugin({
+        API_URL: "https://hyperschedule-api.kshi.xyz"
+      }), 
       new HtmlWebpackPlugin({
         title: "hyperschedule",
         template: "src/index.html"
