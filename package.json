@@ -1,23 +1,78 @@
 {
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@types/bootstrap": "^4.5.0",
+    "@types/clipboard": "^2.0.1",
+    "@types/crypto-js": "^3.1.47",
+    "@types/jquery": "^3.5.1",
+    "@types/lodash": "^4.14.161",
+    "@types/mathjs": "^6.0.5",
+    "@types/node": "^14.11.2",
+    "@types/randomcolor": "^0.5.5",
+    "@types/redom": "^3.23.1",
+    "@types/webpack": "^4.41.22",
+    "@types/webpack-dev-server": "^3.11.0",
+    "autoprefixer": "^10.0.1",
     "babel-preset-env": "^1.7.0",
+    "bootstrap": "^4.5.2",
+    "clipboard": "^2.0.6",
+    "crypto-js": "^4.0.0",
+    "css-loader": "^4.3.0",
     "express": "^4.16.3",
+    "file-loader": "^6.1.0",
+    "html-webpack-plugin": "^4.5.0",
+    "html5sortable": "^0.9.18",
+    "jquery": "^3.5.1",
+    "jspdf": "^2.1.1",
     "lint-staged": "^9.2.4",
-    "parcel-bundler": "^1.12.3",
-    "prettier": "^1.18.2"
+    "lodash": "^4.17.20",
+    "mathjs": "^7.3.0",
+    "mini-css-extract-plugin": "^0.11.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "popper.js": "^1.16.1",
+    "postcss": "^8.1.1",
+    "postcss-loader": "^4.0.2",
+    "postcss-nested": "^5.0.1",
+    "postcss-validator": "^0.2.0",
+    "posthtml-expressions": "^1.4.1",
+    "precss": "^4.0.0",
+    "prettier": "^1.18.2",
+    "randomcolor": "^0.6.2",
+    "redom": "^3.27.1",
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^4.2.2",
+    "ts-loader": "^8.0.4",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.1.4"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "setup": "npm i && npm run setup-hooks",
+    "setup-hooks": "ln -sf ../../scripts/pre-commit .git/hooks/pre-commit",
+    "clean": "git clean -Xf dist",
+    "clean-all": "git clean -Xdf",
+    "format": "prettier --write **/*.{ts,css}",
+    "lint": "prettier --check **/*.{ts,css}",
+    "ci": "npm run build && npm run lint"
   },
   "engines": {
     "node": ">=8.8.1"
   },
   "license": "MIT",
   "lint-staged": {
-    "*.js": [
+    "*.{ts,css}": [
       "prettier --write",
       "git add"
     ]
   },
   "name": "hyperschedule-frontend",
   "private": true,
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "dependencies": {}
 }
