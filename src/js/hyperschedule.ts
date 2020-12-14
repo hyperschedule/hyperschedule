@@ -1290,7 +1290,7 @@ function toggleClosedCourses() {
 
 function toggleTechCourses() {
   gShowTechCourses = !gShowTechCourses;
-  if (gShowTechCourses) gShowHumCourses = false;
+  gShowHumCourses = gShowHumCourses && !gShowTechCourses;
   updateShowHumCoursesCheckbox();
   updateCourseSearchResults();
   writeStateToLocalStorage();
@@ -1298,7 +1298,7 @@ function toggleTechCourses() {
 
 function toggleHumCourses() {
   gShowHumCourses = !gShowHumCourses;
-  if (gShowHumCourses) gShowTechCourses = false;
+  gShowTechCourses = gShowTechCourses && !gShowHumCourses;
   updateShowTechCoursesCheckbox();
   updateCourseSearchResults();
   writeStateToLocalStorage();

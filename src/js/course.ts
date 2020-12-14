@@ -7,7 +7,7 @@ import randomColor from "randomcolor";
 import CryptoJs from "crypto-js";
 import * as Redom from "redom";
 
-const filterTechs = [
+const filterTechs = new Set([
   "ASTR",
   "BIOL",
   "CHEM",
@@ -20,7 +20,7 @@ const filterTechs = [
   "MCBI",
   "NEUR",
   "PHYS"
-];
+]);
 
 export const enum CourseArea {
   Tech,
@@ -492,14 +492,12 @@ export function isClosed(c: CourseV3) {
 }
 
 export function getCourseArea(c: CourseV3): CourseArea {
-  const code = c.courseCode.split(" ")[0];
-  if (code === "PE") {
-    return CourseArea.Pe;
-  } else if (filterTechs.includes(code)) {
-    return CourseArea.Tech;
-  } else {
-    return CourseArea.Hum;
-  }
+  const code = c.courseCode.match(/^[A-Z]+/)![0];
+  return code === "PE"
+    ? CourseArea.Pe
+    : filterTechs.has(code)
+    ? CourseArea.Tech
+    : CourseArea.Hum;
 }
 
 export function toString(c: CourseV3) {
