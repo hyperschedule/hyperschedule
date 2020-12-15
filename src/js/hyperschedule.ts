@@ -527,39 +527,41 @@ function coursePassesTextFilters(
   return true;
 }
 
+function timeToMinutes(time: string): number {
+  const [hour, mins] = time.split(":");
+  return parseInt(hour, 10) * 60 + parseInt(mins, 10);
+}
+
 // timeFilters is a one or two element array
 // [start_time] or [start_time, end_time]
 function coursePassesTimeFilters(
   course: Course.CourseV3,
-  timeFilters: string[]
+  timeFilters: [string] | [string, string]
 ) {
   // indicates no current time filters
   if (timeFilters[0] === "") {
     return true;
   }
 
-  const startTime = parseFloat(timeFilters[0].replace(":", "."));
   // if multiple start times, specified start must match at least one
   if (timeFilters.length === 1) {
     for (const schedule of course.courseSchedule) {
-      let scheduleStart = schedule.scheduleStartTime.replace(":", ".");
-      if (startTime === parseFloat(scheduleStart)) {
+      if (timeFilters[0] === schedule.scheduleStartTime) {
         return true;
       }
     }
     return false;
   } else {
     // if multiple start times, specified range must match all
-    const endTime = parseFloat(timeFilters[1].replace(":", "."));
+    const startMins = timeToMinutes(timeFilters[0]);
+    const endMins = timeToMinutes(timeFilters[1]);
+
     for (const schedule of course.courseSchedule) {
-      let scheduleStart = schedule.scheduleStartTime.replace(":", ".");
-      let scheduleEnd = schedule.scheduleEndTime.replace(":", ".");
+      const schedStartMins = timeToMinutes(schedule.scheduleStartTime);
+      const schedEndMins = timeToMinutes(schedule.scheduleEndTime);
       if (
         // returns false if any schedule object is not within the range.
-        !(
-          startTime <= parseFloat(scheduleStart) &&
-          endTime >= parseFloat(scheduleEnd)
-        )
+        !(startMins <= schedStartMins && endMins >= schedEndMins)
       ) {
         return false;
       }
@@ -912,16 +914,11 @@ function processSearchText() {
 }
 
 function isTimeRange(searchText: string) {
-  const timeArray = searchText.split(":");
-  // Time can be singular or a range
-  // Ex: 3:00PM or 3:00PM-4:00PM
-  return (
-    (timeArray.length === 3 &&
-      !isNaN(+timeArray[0]) &&
-      timeArray[1].includes("-")) ||
-    (timeArray.length === 2 &&
-      !isNaN(+timeArray[0].charAt(timeArray[0].length - 1)) &&
-      !isNaN(+timeArray[1].substring(0, 2)))
+  const timeArray = searchText.split("-");
+  // Time can be singular or a range (ex: 3:00PM or 3:00PM-4:00PM)
+  // Using 24 hr time regex
+  return timeArray.every(time =>
+    /^([01]?[0-9]|2[0-3]):([0-5][0-9]$)|([ap][m]$)/.test(time)
   );
 }
 
@@ -949,7 +946,7 @@ function getTimeRange(rel: string, timeText: string) {
 
 // Returns an array containing either the start time
 // and end time or the start time alone
-function getTimeFilter(timeText: string) {
+function getTimeFilter(timeText: string): [string] | [string, string] {
   timeText = timeText.toLowerCase();
   let inputArr = timeText.split("-");
   // Single time value (ex: 1:00 PM)
@@ -959,24 +956,28 @@ function getTimeFilter(timeText: string) {
   }
   let timeArr = [];
   for (let time of inputArr) {
-    if (time.substring(time.length - 2) === "am") {
-      // remove "am"
-      time = time.substring(0, time.length - 2);
-      if (time.startsWith("12")) {
-        time = "00:".concat(time.substring(3));
-      }
-    } else if (time.substring(time.length - 2) === "pm") {
-      // remove "pm"
-      time = time.substring(0, time.length - 2);
-      let [hour, min] = time.split(":");
-      if (!time.startsWith("12")) {
-        let hourNum = parseInt(hour) + 12;
+    let [hour, min] = time.split(":");
+    const sufPresent = /[ap][m]$/.test(time);
+    // Must remove am/pm
+    if (sufPresent) {
+      const suf = time.substring(time.length - 2);
+      min = min.substring(0, min.length - 2);
+      time = `${hour}:${min}`;
+
+      if (suf === "am" && time.startsWith("12")) {
+        time = "00:".concat(min);
+      } else if (suf === "pm" && !time.startsWith("12")) {
+        const hourNum = parseInt(hour, 10) + 12;
         time = hourNum.toString().concat(":" + min);
+      }
+    } else {
+      if (time.startsWith("12")) {
+        time = "00:".concat(min);
       }
     }
     timeArr.push(time);
   }
-  return timeArr;
+  return timeArr as [string] | [string, string];
 }
 
 function getSearchQuery(searchTextArray: string[]) {
