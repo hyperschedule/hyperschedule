@@ -708,26 +708,26 @@ function setMotd() {
   // TODO: incorporate these messages into the API, so that they can be
   // dynamically updated and don't need to be hard-coded?  or maybe it doesn't
   // matter...
-  motd.classList.add("visible", "priority-med");
-  motd.appendChild(
-    Redom.el("div", [
-      Redom.el("p", [
-        Redom.el("i.icon.ion-android-alert"),
-        " Heads up! To address some ",
-        Redom.el(
-          "a",
-          { href: "https://github.com/MuddCreates/hyperschedule/issues/158" },
-          "some Portal issues"
-        ),
-        " related to Hyperschedule's course scraper, we've lowered the rate at which Hyperschedule data is updated.",
-      ]),
-      Redom.el("p", [
-        "This means you ",
-        Redom.el("em", "can still use"),
-        " Hyperschedule to plan your courses for the upcoming semester (Spring 2021), but beware that our data may not be fully up to date! For the latest and most accurate information, please refer to Portal.",
-      ]),
-    ])
-  );
+  //motd.classList.add("visible", "priority-med");
+  //motd.appendChild(
+  //  Redom.el("div", [
+  //    Redom.el("p", [
+  //      Redom.el("i.icon.ion-android-alert"),
+  //      " Heads up! To address some ",
+  //      Redom.el(
+  //        "a",
+  //        { href: "https://github.com/MuddCreates/hyperschedule/issues/158" },
+  //        "some Portal issues"
+  //      ),
+  //      " related to Hyperschedule's course scraper, we've lowered the rate at which Hyperschedule data is updated.",
+  //    ]),
+  //    Redom.el("p", [
+  //      "This means you ",
+  //      Redom.el("em", "can still use"),
+  //      " Hyperschedule to plan your courses for the upcoming semester (Spring 2021), but beware that our data may not be fully up to date! For the latest and most accurate information, please refer to Portal.",
+  //    ]),
+  //  ])
+  //);
 }
 
 function attachListeners() {
