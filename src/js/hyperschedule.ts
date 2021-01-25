@@ -59,7 +59,7 @@ const greyConflictCoursesOptions = ["none", "starred", "all"];
 const filterKeywords: Record<string, string[]> = {
   "dept:": ["dept:", "department:"],
   "college:": ["college", "col:", "school:", "sch:"],
-  "days:": ["days:", "day:"]
+  "days:": ["days:", "day:"],
 };
 
 const filterInequalities = ["<=", ">=", "<", ">", "="];
@@ -70,7 +70,7 @@ const pacificScheduleDays = [
   "Wednesday",
   "Thursday",
   "Friday",
-  "Saturday"
+  "Saturday",
 ];
 
 const pacificScheduleTimes = [
@@ -89,7 +89,7 @@ const pacificScheduleTimes = [
   "19:00",
   "20:00",
   "21:00",
-  "22:00"
+  "22:00",
 ];
 
 //// DOM elements
@@ -443,7 +443,7 @@ async function runWithExponentialBackoff(
     } catch (err) {
       console.error(err);
       console.log(`Trying again to ${fetchDesc} in ${failureDelay}ms`);
-      await new Promise(resolve => setTimeout(resolve, failureDelay));
+      await new Promise((resolve) => setTimeout(resolve, failureDelay));
       failureDelay *= backoffFactor;
     }
   }
@@ -512,8 +512,8 @@ function coursePassesTextFilters(
   textFilters: Record<string, string>
 ) {
   const lowerCourseCode = course.courseCode.toLowerCase();
-  const dept = lowerCourseCode.split(" ")[0];
-  const col = lowerCourseCode.split(" ")[2].split("-")[0];
+  const dept = lowerCourseCode.slice(0, 4).trim();
+  const col = lowerCourseCode.split("-")[0].slice(-2);
 
   if (
     (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
@@ -570,10 +570,10 @@ function coursePassesDayFilter(course: Course.CourseV3, inputString: string) {
     case "=":
       // inputDays match exactly courseDays
       const difference1 = new Set(
-        [...courseDays].filter(x => !inputDays.has(x))
+        [...courseDays].filter((x) => !inputDays.has(x))
       );
       const difference2 = new Set(
-        [...inputDays].filter(x => !courseDays.has(x))
+        [...inputDays].filter((x) => !courseDays.has(x))
       );
       return difference1.size == 0 && difference2.size == 0;
     case "<":
@@ -719,13 +719,13 @@ function setMotd() {
           { href: "https://github.com/MuddCreates/hyperschedule/issues/158" },
           "some Portal issues"
         ),
-        " related to Hyperschedule's course scraper, we've lowered the rate at which Hyperschedule data is updated."
+        " related to Hyperschedule's course scraper, we've lowered the rate at which Hyperschedule data is updated.",
       ]),
       Redom.el("p", [
         "This means you ",
         Redom.el("em", "can still use"),
-        " Hyperschedule to plan your courses for the upcoming semester (Spring 2021), but beware that our data may not be fully up to date! For the latest and most accurate information, please refer to Portal."
-      ])
+        " Hyperschedule to plan your courses for the upcoming semester (Spring 2021), but beware that our data may not be fully up to date! For the latest and most accurate information, please refer to Portal.",
+      ]),
     ])
   );
 }
@@ -756,7 +756,7 @@ function attachListeners() {
   );
   sortable(".sortable-list", {
     forcePlaceholderSize: true,
-    placeholder: Course.createEntity("placeholder").outerHTML
+    placeholder: Course.createEntity("placeholder").outerHTML,
   });
   printAllButton.addEventListener("click", () => {
     downloadPDF(false);
@@ -944,7 +944,7 @@ function updateCourseSearchResults() {
     gFilteredCourseKeys =
       gApiData === null
         ? []
-        : Object.keys(gApiData.data.courses).filter(key => {
+        : Object.keys(gApiData.data.courses).filter((key) => {
             const course = gApiData!.data.courses[key];
             return (
               courseMatchesSearchQuery(course, query) &&
@@ -1000,7 +1000,7 @@ function rerenderCourseSearchResults() {
         remove: removeCourse,
         toggleStarred: toggleCourseStarred,
         toggleSelected: toggleCourseSelected,
-        focus: setCourseDescriptionBox
+        focus: setCourseDescriptionBox,
       },
       { alreadyAdded }
     );
@@ -1037,7 +1037,7 @@ function updateSelectedCoursesList() {
           remove: removeCourse,
           toggleStarred: toggleCourseStarred,
           toggleSelected: toggleCourseSelected,
-          focus: setCourseDescriptionBox
+          focus: setCourseDescriptionBox,
         },
         { idx, alreadyAdded: true }
       )
@@ -1057,7 +1057,7 @@ function updateSchedule() {
   }
   for (const course of schedule) {
     const entities = Course.createSlotEntities(course, setCourseDescriptionBox);
-    entities.forEach(e => scheduleTable.appendChild(e));
+    entities.forEach((e) => scheduleTable.appendChild(e));
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
 }
@@ -1520,7 +1520,7 @@ function downloadPDF(starredOnly: boolean) {
   const pdf = new jsPDF({
     unit: "pt",
     format: "letter",
-    orientation: "l"
+    orientation: "l",
   });
 
   // calculate some basic dimensions
@@ -1658,7 +1658,7 @@ function downloadPDF(starredOnly: boolean) {
             "code",
             "location",
             "name",
-            "instructor"
+            "instructor",
           ];
           const entriesByOrder = ["code", "name", "instructor", "location"];
 
@@ -1666,7 +1666,7 @@ function downloadPDF(starredOnly: boolean) {
             code: courseCodeLines,
             location: courseLocationLines,
             name: courseNameLines,
-            instructor: courseInstructorsLines
+            instructor: courseInstructorsLines,
           };
 
           // Limits size of text to ensure some white space at top and bottom
@@ -1697,7 +1697,7 @@ function downloadPDF(starredOnly: boolean) {
           for (let entry of entriesByOrder) {
             if (entriesByPreference.slice(1, numEntries).includes(entry)) {
               pdf.text(entryNameToText[entry], xText, yText, {
-                align: "center"
+                align: "center",
               });
               yText += entryNameToText[entry].length * pdf.getLineHeight();
             }
@@ -1814,7 +1814,7 @@ function downloadICalFile() {
           freq,
           until,
           interval,
-          byday
+          byday,
         };
         cal.addEvent(subject, description, location, start, end, rrule);
       }
