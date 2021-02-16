@@ -63,6 +63,7 @@ const filterKeywords: Record<string, string[]> = {
 };
 
 const filterInequalities = ["<=", ">=", "<", ">", "="];
+
 const pacificScheduleDays = [
   "Sunday",
   "Monday",
@@ -98,6 +99,13 @@ const motd = document.getElementById("motd")!;
 
 const courseSearchToggle = document.getElementById("course-search-toggle")!;
 const scheduleToggle = document.getElementById("schedule-toggle")!;
+
+const techToggle = <HTMLInputElement>(
+  document.getElementById("tech-courses-toggle")
+);
+const humToggle = <HTMLInputElement>(
+  document.getElementById("hum-courses-toggle")
+);
 
 const closedCoursesToggle = <HTMLInputElement>(
   document.getElementById("closed-courses-toggle")!
@@ -186,6 +194,8 @@ const importExportCopyButton = document.getElementById(
 let gApiData: ApiData | null = null;
 let gSelectedCourses: Course.CourseV3[] = [];
 let gScheduleTabSelected = false;
+let gShowTechCourses = false;
+let gShowHumCourses = false;
 let gShowClosedCourses = true;
 let gHideAllConflictingCourses = false;
 let gHideStarredConflictingCourses = false;
@@ -738,6 +748,8 @@ function attachListeners() {
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
+  techToggle.addEventListener("click", toggleTechCourses);
+  humToggle.addEventListener("click", toggleHumCourses);
   closedCoursesToggle.addEventListener("click", toggleClosedCourses);
   hideAllConflictingCoursesToggle.addEventListener(
     "click",
@@ -900,6 +912,14 @@ function updateTabToggle() {
   setButtonSelected(courseSearchToggle, !gScheduleTabSelected);
 }
 
+function updateShowTechCoursesCheckbox() {
+  techToggle.checked = gShowTechCourses;
+}
+
+function updateShowHumCoursesCheckbox() {
+  humToggle.checked = gShowHumCourses;
+}
+
 function updateShowClosedCoursesCheckbox() {
   closedCoursesToggle.checked = gShowClosedCourses;
 }
@@ -946,9 +966,12 @@ function updateCourseSearchResults() {
         ? []
         : Object.keys(gApiData.data.courses).filter((key) => {
             const course = gApiData!.data.courses[key];
+            const area = Course.getCourseArea(course);
             return (
               courseMatchesSearchQuery(course, query) &&
               coursePassesTextFilters(course, filters) &&
+              (!gShowTechCourses || area === Course.CourseArea.Tech) &&
+              (!gShowHumCourses || area === Course.CourseArea.Hum) &&
               (gShowClosedCourses || !Course.isClosed(course)) &&
               (!gHideAllConflictingCourses ||
                 !courseConflictWithSchedule(course, false)) &&
@@ -1195,6 +1218,8 @@ function handleSelectedCoursesUpdate() {
 function handleGlobalStateUpdate() {
   // Update UI elements.
   updateTabToggle();
+  updateShowTechCoursesCheckbox();
+  updateShowHumCoursesCheckbox();
   updateShowClosedCoursesCheckbox();
   updateShowConflictingCoursesCheckbox();
   updateConflictCoursesRadio();
@@ -1259,6 +1284,22 @@ function saveImportExportModalChanges() {
 
 function toggleClosedCourses() {
   gShowClosedCourses = !gShowClosedCourses;
+  updateCourseSearchResults();
+  writeStateToLocalStorage();
+}
+
+function toggleTechCourses() {
+  gShowTechCourses = !gShowTechCourses;
+  gShowHumCourses = gShowHumCourses && !gShowTechCourses;
+  updateShowHumCoursesCheckbox();
+  updateCourseSearchResults();
+  writeStateToLocalStorage();
+}
+
+function toggleHumCourses() {
+  gShowHumCourses = !gShowHumCourses;
+  gShowTechCourses = gShowTechCourses && !gShowHumCourses;
+  updateShowTechCoursesCheckbox();
   updateCourseSearchResults();
   writeStateToLocalStorage();
 }
@@ -1464,6 +1505,12 @@ function readStateFromLocalStorage() {
     _.isBoolean,
     false
   );
+  gShowTechCourses = readFromLocalStorage(
+    "showTechCourses",
+    _.isBoolean,
+    false
+  );
+  gShowHumCourses = readFromLocalStorage("showHumCourses", _.isBoolean, false);
   gShowClosedCourses = readFromLocalStorage(
     "showClosedCourses",
     _.isBoolean,

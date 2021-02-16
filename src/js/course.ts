@@ -7,6 +7,27 @@ import randomColor from "randomcolor";
 import CryptoJs from "crypto-js";
 import * as Redom from "redom";
 
+const filterTechs = new Set([
+  "ASTR",
+  "BIOL",
+  "CHEM",
+  "CSCI",
+  "CSMT",
+  "DS",
+  "ENGR",
+  "GEOL",
+  "MATH",
+  "MCBI",
+  "NEUR",
+  "PHYS"
+]);
+
+export const enum CourseArea {
+  Tech,
+  Hum,
+  Pe
+}
+
 interface Slot {
   days: string;
   location: string;
@@ -468,6 +489,15 @@ export function createSlotEntities(
 
 export function isClosed(c: CourseV3) {
   return c.courseEnrollmentStatus === "closed";
+}
+
+export function getCourseArea(c: CourseV3): CourseArea {
+  const code = c.courseCode.match(/^[A-Z]+/)![0];
+  return code === "PE"
+    ? CourseArea.Pe
+    : filterTechs.has(code)
+    ? CourseArea.Tech
+    : CourseArea.Hum;
 }
 
 export function toString(c: CourseV3) {

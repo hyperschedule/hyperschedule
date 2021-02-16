@@ -36,7 +36,7 @@
     "postcss-validator": "^0.2.0",
     "posthtml-expressions": "^1.4.1",
     "precss": "^4.0.0",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "randomcolor": "^0.6.2",
     "redom": "^3.27.1",
     "style-loader": "^1.2.1",
