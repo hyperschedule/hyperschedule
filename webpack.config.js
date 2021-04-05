@@ -57,7 +57,7 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new Webpack.EnvironmentPlugin({
-        API_URL: "https://api.hyperschedule.kshi.xyz"
+        API_URL: "https://hyperschedule.herokuapp.com"
       }), 
       new HtmlWebpackPlugin({
         title: "hyperschedule",
