@@ -25,6 +25,8 @@ import * as TimeString from "./time-string";
 
 import * as _ from "lodash/fp";
 
+import "./sidebar.ts";
+
 interface ApiData {
   data: {
     terms: Record<string, Term>;
