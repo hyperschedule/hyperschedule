@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+//const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserJsPlugin = require("terser-webpack-plugin");
 const Webpack = require("webpack");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
       app: path.join(__dirname, "src/js/hyperschedule.ts"),
     },
     optimization: {
-      minimizer: [new TerserJsPlugin({}), new OptimizeCssAssetsPlugin({})],
+      //minimizer: [new TerserJsPlugin({})],
     },
     output: {
       path: path.join(__dirname, "dist"),
@@ -59,7 +59,7 @@ module.exports = (env, argv) => {
       host: "0.0.0.0",
       contentBase: path.join(__dirname, "dist"),
       port: 5000,
-      liveReload: true,
+      liveReload: !prod,
     },
   };
 };

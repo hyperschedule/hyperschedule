@@ -51,7 +51,7 @@
 /** Page layout **/
 
 main {
-  @apply absolute inset-0 grid overflow-hidden;
+  @apply absolute left-0 top-0 h-screen w-screen grid overflow-hidden;
   grid-template-rows: 100vh;
 
   #sidebar-open {

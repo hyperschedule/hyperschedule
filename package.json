@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "webpack serve --mode development",
-    "build": "webpack --mode production",
+    "build": "webpack build --mode production",
     "setup": "npm i && npm run setup-hooks",
     "setup-hooks": "ln -sf ../../scripts/pre-commit .git/hooks/pre-commit",
     "clean": "git clean -Xf dist",
