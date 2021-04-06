@@ -11,6 +11,13 @@
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 
+body.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+
 .btn {
   @apply bg-gray-100 py-1 px-2 text-sm;
   &.btn-primary {

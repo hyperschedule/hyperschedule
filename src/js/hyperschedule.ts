@@ -754,7 +754,7 @@ const attachModal = ({
   }
 };
 
-function attachListeners() {
+async function attachListeners() {
   const ent = Course.createEntity("placeholder");
   courseSearchResultsList.appendChild(ent);
   gCourseEntityHeight = ent.clientHeight;
@@ -1451,7 +1451,7 @@ async function retrieveCourseData() {
 }
 
 async function retrieveCourseDataUntilSuccessful() {
-  const pollInterval = 500 * 1000;
+  const pollInterval = 5 * 1000;
   await runWithExponentialBackoff(
     async () => {
       await retrieveCourseData();
