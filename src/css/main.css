@@ -5,19 +5,22 @@
 
 /** General styling **/
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 
-* {
-  font-family: "Roboto", sans-serif !important;
-  border-radius: 0 !important;
-}
-
 .btn {
-  cursor: pointer;
-
-  &:disabled {
-    cursor: auto;
+  @apply bg-gray-100 py-1 px-2 text-sm;
+  &.btn-primary {
+    @apply bg-blue-500 text-white;
   }
+  //cursor: pointer;
+
+  //&:disabled {
+  //  cursor: auto;
+  //}
 }
 
 .dropdown-menu {
@@ -34,45 +37,72 @@
 }
 
 .toolbar {
-  display: flex;
-  padding: 0;
-  margin: 1rem;
-  align-items: center;
-  white-space: nowrap;
+  @apply flex flex-row items-center;
+
+  button {
+    @apply bg-gray-100 py-1 px-2 text-sm;
+    &.btn-primary {
+      @apply bg-blue-500 text-white;
+    }
+  }
+
+  .icon {
+    @apply bg-blue-500 text-white text-xl px-1 py-0 ml-4
+    transition-colors
+    hover:bg-blue-600;
+  }
 }
 
 /** Page layout **/
 
-html {
-  height: 100%;
-}
+main {
+  @apply absolute inset-0 grid gap-x-4;
+  grid-template-areas: "content sidebar";
+  grid-template-columns: 1fr minmax(24rem, 16rem);
 
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
+  #modal-layer {
+    @apply absolute invisible inset-0 overflow-hidden bg-black bg-opacity-25
+    grid place-items-center opacity-0 transition-all;
+    // TODO remove overflow hidden
 
-#columns-grow {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  min-height: 0;
-}
+    &.show {
+      @apply visible opacity-100;
+    }
 
-/** Column layout **/
+    .modal {
+      @apply hidden bg-white shadow-lg w-1/2 rounded text-sm;
 
-.two-column-left {
-  flex: 1 0 50%;
-  max-width: 68%;
-  overflow: hidden;
-}
+      header {
+        @apply flex justify-between font-bold text-lg px-4 py-2;
+      }
 
-.two-column-right {
-  flex: 1 0 0;
-  overflow: hidden;
+      .body {
+        @apply px-4;
+
+        p,
+        ul {
+          @apply my-2;
+        }
+        ul {
+          @apply list-disc ml-4;
+        }
+        code {
+          @apply bg-gray-100 rounded-sm px-1;
+        }
+      }
+
+      footer {
+        @apply flex justify-end px-4 pb-4 pt-2;
+        button + button {
+          @apply ml-4;
+        }
+      }
+
+      &.show {
+        @apply block;
+      }
+    }
+  }
 }
 
 /** motd **/
@@ -108,12 +138,9 @@ body {
 /*** Course search/schedule column ***/
 
 #course-search-schedule-column {
-  display: flex;
-  flex-direction: column;
-}
-
-#course-search-schedule-toggle-bar {
-  margin: 1rem 0 1rem 1rem;
+  @apply grid gap-y-4 min-h-0 pt-4 pl-4;
+  grid-area: content;
+  grid-template-rows: auto 1fr;
 }
 
 #course-search-toggle-wrapper,
@@ -152,10 +179,8 @@ body {
 /** Course search **/
 
 #course-search-column {
-  flex-basis: 0;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+  @apply grid gap-y-4 min-h-0;
+  grid-template-rows: auto 1fr;
 }
 
 #course-search-column.hidden {
@@ -163,7 +188,8 @@ body {
 }
 
 #course-search-results {
-  overflow-y: auto;
+  @apply overflow-y-auto;
+  min-height: 0;
   flex-basis: 0;
   flex-grow: 1;
   position: relative;
@@ -181,52 +207,48 @@ body {
 /*** Course search header bar ***/
 
 #course-search-bar {
-  display: flex;
-  margin: 0 0 1rem 1rem;
 }
 
 #course-search-course-name-input {
-  flex-grow: 1;
+  @apply flex-grow border border-solid border-gray-200 py-1 px-2 text-sm transition-all;
+  outline: 0.25rem solid transparent;
+  &:focus {
+    @apply border-blue-400;
+    outline-color: theme(colors.blue.200);
+  }
 }
 
-#filter-button-wrapper {
-  margin-left: 1rem;
-}
+#filter-button-wrapper,
+#print-dropdown-wrapper {
+  @apply ml-4 relative;
 
-#filter-button {
-  margin: 0 auto;
+  ul {
+    @apply absolute top-full right-0 invisible z-10 bg-white shadow p-0 text-xs transition-all opacity-0;
+
+    li {
+      @apply px-2 py-1 whitespace-nowrap cursor-pointer transition-colors;
+
+      &:hover,
+      &:focus {
+        background-color: #f5f5f5;
+      }
+    }
+
+    li label {
+      @apply block grid gap-x-1;
+      grid-template-columns: auto 1fr;
+    }
+    li input {
+    }
+  }
+
+  &.show ul {
+    @apply opacity-100 visible;
+  }
 }
 
 #help-button {
   margin-left: 1rem;
-}
-
-.checkbox-menu li label {
-  display: block;
-  padding: 3px 8px;
-  clear: both;
-  font-weight: normal;
-  line-height: 1.42857143;
-  color: #333;
-  white-space: nowrap;
-  margin: 0;
-  transition: background-color 0.4s ease;
-}
-.checkbox-menu li input {
-  margin: 0px 5px;
-  top: 2px;
-  position: relative;
-  cursor: pointer;
-}
-
-.checkbox-menu li label:hover,
-.checkbox-menu li label:focus {
-  background-color: #f5f5f5;
-}
-
-.checkbox-menu li.active label:hover,
-.checkbox-menu li.active label:focus {
-  background-color: #b8b8ff;
 }
 
 /*** Course search end of list ***/
@@ -240,30 +262,15 @@ body {
 /** Selected courses **/
 
 #selected-courses-column {
-  display: flex;
-  flex-direction: column;
+  @apply grid gap-y-4;
+  grid-area: sidebar;
+  grid-template-rows: auto 1fr auto;
 }
 
 /*** Selected courses header bar ***/
 
 #selected-courses-bar {
-  overflow-y: auto;
-  justify-content: space-between;
-}
-
-#selected-courses-bar::before,
-#selected-courses-bar::after {
-  content: "";
-}
-
-#github-link-wrapper {
-  margin-right: 0.5rem;
-}
-
-#github-link {
-  font-size: 30px;
-  line-height: 1;
-  padding: 0px 2px;
+  @apply justify-end pt-4 pr-4;
 }
 
 #import-export-data-button {
@@ -273,67 +280,42 @@ body {
   margin-left: 1rem;
 }
 
-.print-btn {
-  white-space: nowrap;
-  padding: 3px 8px;
-  min-width: 0;
-  cursor: pointer;
-  background-color: white;
-}
-
-.print-btn:hover {
-  background-color: #e9ecef;
-}
-
-#settings-button-wrapper {
-  margin-left: 0.5rem;
-}
+//.print-btn {
+//  white-space: nowrap;
+//  padding: 3px 8px;
+//  min-width: 0;
+//  cursor: pointer;
+//  background-color: white;
+//}
+//
+//.print-btn:hover {
+//  background-color: #e9ecef;
+//}
 
 #settings-button {
-  margin-right: 3px;
-  background-color: transparent;
-  color: #007bff;
-  font-size: 30px;
-  line-height: 1;
-  padding: 0px 2px;
 }
 
 #settings-button:hover {
-  color: #0069d9;
 }
 
 /*** Course description box ***/
 
 #minimize-outer {
-  margin: 0 1rem;
+  @apply transition-all;
   height: 0px;
   overflow: hidden;
-  transition: 0.1s height;
   flex-shrink: 0;
 }
 
 #course-description-minimize {
-  font-size: 1rem;
-  line-height: 1em;
-  width: 100%;
-  padding: 0.25rem 0.5rem;
 }
 
 #selected-courses-wrapper {
-  overflow-y: auto;
+  @apply overflow-y-scroll;
 }
 
 #course-description-box-outer {
-  display: block;
-  border: 1px solid transparent;
-  height: 0px;
-  flex-shrink: 0;
-  text-align: center;
-  /*margin-top: 10px;
-    margin-bottom: 5px;*/
-  overflow: hidden;
-  transition: height 0.2s, border 0.2s;
-  margin: 0 1rem 1rem 1rem;
+  @apply block transition-all border border-solid border-transparent h-0 text-center overflow-y-hidden mr-4 mb-4;
 }
 
 #course-description-box-outer.course-description-box-visible {
@@ -346,13 +328,11 @@ body {
 
 #course-description-box p {
   font-size: small;
-  line-height: 100%;
   margin: 0px 10px;
 }
 
 #course-description-box hr {
   font-size: small;
-  line-height: 100%;
   margin: 10px 0;
 }
 
@@ -468,7 +448,6 @@ body {
 }
 
 .schedule-slot-wrapper {
-  z-index: 1;
   grid-column-end: span 1;
   display: grid;
   overflow-y: hidden;
@@ -504,7 +483,6 @@ body {
 
 .schedule-slot-text-wrapper {
   font-size: 75%;
-  line-height: 125%;
   margin: 0;
   padding: 5px 5px;
 }
@@ -534,112 +512,20 @@ body {
   padding: 0;
 }
 
-.course-list .course-box {
-  margin: 0px 1rem;
-}
-
 #course-search-results-list .course-box {
   position: absolute;
 }
 
-.course-box {
-  margin: 0 auto;
-  padding: 0.5rem 0;
-  position: relative;
-  width: 100%;
-  font-size: 0.8rem;
-}
-
-.course-box-content {
-  display: flex;
-  cursor: pointer;
-  margin: 0 1rem;
-  position: relative;
-}
-
-.course-box-text {
-  margin: 0;
-  flex-basis: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-grow: 1;
-  padding: 0.25rem 0.5rem;
-}
-
-.course-box-text .course-box-course-code {
-  font-weight: bold;
-}
-
-.course-box-text .course-box-course-code::after {
-  content: " ";
-}
-
-.course-box-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-}
-
 /*** Course search listing ***/
-
-#course-search-column .course-box-select-label {
-  display: none;
-}
-
-#course-search-column .course-box-star-label {
-  display: none;
-}
-
-#course-search-column .course-box-add-button {
-}
-
-#course-search-column .course-box-remove-button {
-  display: none;
-}
 
 /*** Selected courses listing ***/
 
-#selected-courses-column .course-box-select-label {
-  margin: 0;
-  padding: 0.25rem 0.5rem;
-}
-
-#selected-courses-column .course-box-select-icon {
-  font-size: 1rem;
-  line-height: 1em;
-}
-
-#selected-courses-column .course-box-select-toggle {
-  display: none;
-}
-
-#selected-courses-column .course-box-star-toggle {
-  display: none;
-}
-
-#selected-courses-column .course-box-star-label {
-  margin: 0;
-  padding: 0.25rem 0.25rem;
-  line-height: 1em;
-}
-
-#selected-courses-column .course-box-star-icon {
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-#selected-courses-column .course-box-remove-button {
+#selected-courses-column {
+  @apply min-h-0;
 }
 
 #selected-courses-list {
-  margin-top: -0.5rem;
-}
-
-/** Modals **/
-.modal-input-text {
-  font-family: Courier New !important;
+  @apply -mt-2;
 }
 
 /*** Import/export modal ***/

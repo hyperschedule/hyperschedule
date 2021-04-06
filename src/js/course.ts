@@ -4,7 +4,7 @@ import * as Util from "./util";
 import * as TimeString from "./time-string";
 import * as Math from "mathjs";
 import randomColor from "randomcolor";
-import CryptoJs from "crypto-js";
+import md5 from "md5";
 import * as Redom from "redom";
 
 interface Slot {
@@ -66,7 +66,7 @@ export function createEntity(
     remove: (c: CourseV3) => {},
     toggleStarred: (c: CourseV3) => {},
     toggleSelected: (c: CourseV3) => {},
-    focus: (c: CourseV3) => {}
+    focus: (c: CourseV3) => {},
   },
   attrs?: CourseEntityAttrs
 ) {
@@ -80,6 +80,10 @@ export function createEntity(
       [
         Redom.el(
           "label.course-box-select-label",
+          {
+            class:
+              course !== "placeholder" && course.selected ? "selected" : "",
+          },
           [
             Redom.el(
               "input.course-box-button.course-box-toggle.course-box-select-toggle",
@@ -89,19 +93,13 @@ export function createEntity(
                 onchange: () => {
                   if (course !== "placeholder") actions.toggleSelected(course);
                 },
-                onclick: Util.catchEvent
+                onclick: Util.catchEvent,
               }
             ),
-            Redom.el("i.course-box-select-icon.icon", {
-              class:
-                "ion-android-checkbox" +
-                (course !== "placeholder" && course.selected
-                  ? ""
-                  : "-outline-blank")
-            })
+            Redom.el("i.course-box-select-icon.las.la-check", {}),
           ],
           {
-            onclick: Util.catchEvent
+            onclick: Util.catchEvent,
           }
         ),
         Redom.el(
@@ -114,17 +112,15 @@ export function createEntity(
                 onchange: () => {
                   if (course !== "placeholder") actions.toggleStarred(course);
                 },
-                onclick: Util.catchEvent
+                onclick: Util.catchEvent,
               }
             ),
-            Redom.el("i.course-box-star-icon.icon", {
-              class:
-                "ion-android-star" +
-                (course !== "placeholder" && course.starred ? "" : "-outline")
-            })
+            Redom.el("i.course-box-star-icon.icon.la-star", {
+              class: course !== "placeholder" && course.starred ? "las" : "lar",
+            }),
           ],
           {
-            onclick: Util.catchEvent
+            onclick: Util.catchEvent,
           }
         ),
         Redom.el("p.course-box-text", [
@@ -132,12 +128,12 @@ export function createEntity(
             "span.course-box-course-code",
             course === "placeholder" ? "placeholder" : course.courseCode
           ),
-          course === "placeholder" ? "placeholder" : toString(course)
+          course === "placeholder" ? "placeholder" : toString(course),
         ]),
         !attrs.alreadyAdded &&
           Redom.el(
             // TODO hide if already added
-            "i.course-box-button.course-box-add-button.icon.ion-plus",
+            "i.course-box-button.course-box-add-button.icon.las.la-plus",
             {
               onclick: (e: MouseEvent) => {
                 e.stopPropagation();
@@ -147,33 +143,33 @@ export function createEntity(
                   course
                 );
                 if (course !== "placeholder") actions.add(course);
-              }
+              },
             }
           ),
         Redom.el(
-          "i.course-box-button.course-box-remove-button.icon.ion-close",
+          "i.course-box-button.course-box-remove-button.icon.las.la-times",
           {
             onclick: (e: MouseEvent) => {
               e.stopPropagation();
               if (course !== "placeholder") actions.remove(course);
-            }
+            },
           }
-        )
+        ),
       ],
       {
         style: {
           backgroundColor:
-            course !== "placeholder" ? getColor(course) : "transparent"
+            course !== "placeholder" ? getColor(course) : "transparent",
         },
         onclick: () => {
           if (course !== "placeholder") actions.focus(course);
-        }
+        },
       }
     ),
     {
       class: course === "placeholder" ? "placeholder" : "",
       dataset:
-        attrs.idx !== undefined ? { courseIndex: attrs.idx.toString() } : {}
+        attrs.idx !== undefined ? { courseIndex: attrs.idx.toString() } : {},
     }
   );
 
@@ -232,7 +228,7 @@ export function getColor(
     | "rgba" = "hex"
 ) {
   let hue = "random";
-  let seed = CryptoJs.MD5(course.courseCode).toString();
+  let seed = md5(course.courseCode);
 
   // TODO
   //if (course.starred || !courseInSchedule(course)) {
@@ -276,7 +272,7 @@ function getRandomColor(
     hue: hue,
     luminosity: "light",
     seed: seed,
-    format
+    format,
   });
 }
 
@@ -284,7 +280,7 @@ function v2ToString(c: CourseV2) {
   return [
     c.department,
     c.courseNumber.toString().padStart(3, "0") + c.courseCodeSuffix,
-    `${c.school}-${c.section.toString().padStart(2, "0")}`
+    `${c.school}-${c.section.toString().padStart(2, "0")}`,
   ].join(" ");
 }
 
@@ -304,7 +300,7 @@ export function upgrade(c: CourseV2 | CourseV3): CourseV3 {
       c.department,
       c.courseNumber,
       c.courseCodeSuffix,
-      c.school
+      c.school,
     ],
     courseName: c.courseName,
     courseSchedule: c.schedule.map((slot: Slot) => {
@@ -316,7 +312,7 @@ export function upgrade(c: CourseV2 | CourseV3): CourseV3 {
         scheduleStartDate: c.startDate,
         scheduleStartTime: slot.startTime,
         scheduleTermCount: c.firstHalfSemester && c.secondHalfSemester ? 1 : 2,
-        scheduleTerms: !c.firstHalfSemester ? [1] : [0]
+        scheduleTerms: !c.firstHalfSemester ? [1] : [0],
       };
     }),
     courseSeatsFilled: c.openSeats,
@@ -326,12 +322,12 @@ export function upgrade(c: CourseV2 | CourseV3): CourseV3 {
       c.courseNumber,
       c.courseCodeSuffix,
       c.school,
-      c.section
+      c.section,
     ],
     courseTerm: "Unknown",
     courseWaitlistLength: null,
     selected: c.selected,
-    starred: c.starred
+    starred: c.starred,
   };
 }
 function termListDescription(terms: number[], termCount: number) {
@@ -355,7 +351,7 @@ function termListDescription(terms: number[], termCount: number) {
 export function generateDescription(course: CourseV3, offset: number) {
   const description = [[course.courseCode + " " + course.courseName]].flat(1);
 
-  const times = course.courseSchedule.map(s =>
+  const times = course.courseSchedule.map((s) =>
     Schedule.generateDescription(s, offset)
   );
   for (const time of times) {
@@ -424,9 +420,9 @@ export function createSlotEntities(
             gridColumnStart: Math.round(dayIndex + 2),
             gridRowStart: Math.round(timeSince7am * 12 + 2),
             gridRowEnd: "span " + Math.round(duration * 12),
-            gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)"
+            gridTemplateColumns: "repeat(" + slot.scheduleTermCount + ", 1fr)",
           },
-          onclick: () => focus(course)
+          onclick: () => focus(course),
         },
         Util.getConsecutiveRanges(slot.scheduleTerms).map(
           ([left, right]: [number, number]) =>
@@ -439,8 +435,8 @@ export function createSlotEntities(
                 style: {
                   gridColumnStart: left + 1,
                   gridColumnEnd: right + 1,
-                  backgroundColor: getColor(course)
-                }
+                  backgroundColor: getColor(course),
+                },
               },
               [
                 Redom.el("p.schedule-slot-text-wrapper", [
@@ -453,8 +449,8 @@ export function createSlotEntities(
                       "/" +
                       course.courseSeatsTotal +
                       ")"
-                  )
-                ])
+                  ),
+                ]),
               ]
             )
         )
@@ -475,7 +471,7 @@ export function toString(c: CourseV3) {
 }
 
 export function toInstructorLastNames(c: CourseV3) {
-  return (c.courseInstructors || []).map(s => s.split(",")[0]).join(",");
+  return (c.courseInstructors || []).map((s) => s.split(",")[0]).join(",");
 }
 
 export function equal(a: CourseV3, b: CourseV3) {

@@ -6,27 +6,22 @@
 /// Globals
 //// Modules
 
-import "../css/normalize.css";
+//import "../css/normalize.css";
 import "../css/main.css";
+import "../css/course.pcss";
 
 // untyped, so using require here
 const ics = require("./vendor/ics-0.2.0.min.js");
 const sortable = require("html5sortable/dist/html5sortable.cjs");
 
-import * as Redom from "redom";
 import Clipboard from "clipboard";
 import { jsPDF } from "jspdf";
-import * as math from "mathjs";
 import $ from "jquery";
-import "bootstrap";
-import randomColor from "randomcolor";
 
 import * as Course from "./course";
 import * as SortKey from "./sort-key";
-import * as Schedule from "./schedule";
 import * as Util from "./util";
 import * as TimeString from "./time-string";
-import * as Pdf from "./pdf";
 
 import * as _ from "lodash/fp";
 
@@ -404,10 +399,7 @@ function nthSundayOfMonth(
       "-" +
       (month + 1).toString().padStart(2, "0") +
       "-" +
-      fullDate
-        .getDate()
-        .toString()
-        .padStart(2, "0") +
+      fullDate.getDate().toString().padStart(2, "0") +
       "T" +
       hours.toString().padStart(2, "0") +
       ":00:00.000" +
@@ -730,11 +722,49 @@ function setMotd() {
   //);
 }
 
+const attachModal = ({
+  button,
+  modal,
+  pre,
+}: {
+  button: string;
+  modal: string;
+  pre?: () => void;
+}) => {
+  const btnEl = document.getElementById(button)!;
+  const modalEl = document.getElementById(modal)!;
+  const layerEl = document.getElementById("modal-layer")!;
+  btnEl.addEventListener("click", () => {
+    if (pre) pre();
+    layerEl.classList.add("show");
+    modalEl.classList.add("show");
+  });
+  layerEl.addEventListener("click", () => {
+    layerEl.classList.remove("show");
+    modalEl.classList.remove("show");
+  });
+  modalEl.addEventListener("click", (e) => e.stopPropagation());
+  for (const close of modalEl.getElementsByClassName("close")) {
+    close.addEventListener("click", () => {
+      layerEl.classList.remove("show");
+      modalEl.classList.remove("show");
+    });
+  }
+};
+
 function attachListeners() {
   const ent = Course.createEntity("placeholder");
   courseSearchResultsList.appendChild(ent);
   gCourseEntityHeight = ent.clientHeight;
   courseSearchResultsList.removeChild(ent);
+
+  attachModal({ button: "help-button", modal: "help-modal" });
+  attachModal({ button: "settings-button", modal: "settings-modal" });
+  attachModal({
+    button: "import-export-data-button",
+    modal: "import-export-modal",
+    pre: showImportExportModal,
+  });
 
   courseSearchToggle.addEventListener("click", displayCourseSearchColumn);
   scheduleToggle.addEventListener("click", displayScheduleColumn);
@@ -748,7 +778,6 @@ function attachListeners() {
     toggleStarredConflictingCourses
   );
   courseSearchInput.addEventListener("keyup", handleCourseSearchInputUpdate);
-  importExportDataButton.addEventListener("click", showImportExportModal);
   importExportICalButton.addEventListener("click", downloadICalFile);
   importExportSaveChangesButton.addEventListener(
     "click",
@@ -764,7 +793,6 @@ function attachListeners() {
   printStarredButton.addEventListener("click", () => {
     downloadPDF(true);
   });
-  settingsButton.addEventListener("click", showSettingsModal);
 
   courseDescriptionMinimize.addEventListener(
     "click",
@@ -776,6 +804,19 @@ function attachListeners() {
   });
   selectedCoursesList.addEventListener("sortstop", () => {
     gCurrentlySorting = false;
+  });
+
+  const filterButton = document.getElementById("filter-button")!;
+  const filterButtonWrapper = document.getElementById("filter-button-wrapper")!;
+  //filterButtonWrapper.classList.add("show");
+  filterButton.addEventListener("click", () => {
+    filterButtonWrapper.classList.toggle("show");
+  });
+
+  const printBtn = document.getElementById("print-dropdown")!;
+  const printBtnWrapper = document.getElementById("print-dropdown-wrapper")!;
+  printBtn.addEventListener("click", () => {
+    printBtnWrapper.classList.toggle("show");
   });
 
   courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
@@ -1100,11 +1141,6 @@ function updateCourseDescriptionBoxHeight() {
 
 function showImportExportModal() {
   importExportTextArea.value = JSON.stringify(gSelectedCourses);
-  $("#import-export-modal").modal("show");
-}
-
-function showSettingsModal() {
-  $("#settings-modal").modal("show");
 }
 
 function setCourseDescriptionBox(course: Course.CourseV3) {
@@ -1413,7 +1449,7 @@ async function retrieveCourseData() {
 }
 
 async function retrieveCourseDataUntilSuccessful() {
-  const pollInterval = 5 * 1000;
+  const pollInterval = 500 * 1000;
   await runWithExponentialBackoff(
     async () => {
       await retrieveCourseData();
