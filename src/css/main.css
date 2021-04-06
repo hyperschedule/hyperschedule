@@ -220,7 +220,7 @@ main {
 
 #filter-button-wrapper,
 #print-dropdown-wrapper {
-  @apply ml-4 relative;
+  @apply relative;
 
   ul {
     @apply absolute top-full right-0 invisible z-10 bg-white shadow p-0 text-xs transition-all opacity-0;
@@ -277,7 +277,6 @@ main {
 }
 
 #print-dropdown-wrapper {
-  margin-left: 1rem;
 }
 
 //.print-btn {
