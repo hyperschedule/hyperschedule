@@ -20,6 +20,7 @@
     "crypto-js": "^4.0.0",
     "css-loader": "^5.2.0",
     "express": "^4.17.1",
+    "favicons": "^6.2.1",
     "favicons-webpack-plugin": "^5.0.2",
     "file-loader": "^6.2.0",
     "html-loader": "^2.1.2",
