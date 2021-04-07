@@ -80,7 +80,7 @@ main {
     @apply grid gap-y-4 absolute right-0 top-0 h-screen bg-white w-full z-20
     transform translate-x-full lg:translate-x-0 transition-all duration-300;
     max-width: 24rem;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto 1fr;
 
     @media (min-width: theme(screens.lg)) {
       grid-area: sidebar;
@@ -349,7 +349,7 @@ main {
 }
 
 #course-description-box-outer {
-  @apply block transition-all border border-solid border-transparent h-0 text-center overflow-y-hidden mx-4 mb-4;
+  @apply block transition-all border border-solid border-transparent h-0 text-center overflow-y-hidden mx-4;
 }
 
 #course-description-box-outer.course-description-box-visible {
