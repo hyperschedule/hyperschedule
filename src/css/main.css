@@ -72,7 +72,7 @@ main {
   #sidebar-overlay {
     @apply absolute top-0 left-0 w-screen h-screen z-20 bg-black opacity-0 invisible transition-all;
     &.show {
-      @apply visible opacity-25;
+      @apply visible opacity-25 lg:invisible lg:opacity-0;
     }
   }
 
@@ -231,7 +231,7 @@ main {
   flex-grow: 1;
   position: relative;
   &.inactive {
-    @apply overflow-y-hidden;
+    @apply overflow-y-hidden lg:overflow-y-auto;
   }
 }
 

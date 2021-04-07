@@ -10,11 +10,12 @@ const hide = () => {
   results.classList.remove("inactive");
 };
 
-showBtn.addEventListener("click", () => {
+export const show = () => {
   overlay.classList.add("show");
   sidebar.classList.add("show");
   results.classList.add("inactive");
-});
+};
 
+showBtn.addEventListener("click", show);
 overlay.addEventListener("click", hide);
 backBtn.addEventListener("click", hide);

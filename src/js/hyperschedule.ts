@@ -16,16 +16,14 @@ const sortable = require("html5sortable/dist/html5sortable.cjs");
 
 import Clipboard from "clipboard";
 import { jsPDF } from "jspdf";
-import $ from "jquery";
 
 import * as Course from "./course";
 import * as SortKey from "./sort-key";
 import * as Util from "./util";
 import * as TimeString from "./time-string";
+import * as Sidebar from "./sidebar";
 
 import * as _ from "lodash/fp";
-
-import "./sidebar.ts";
 
 interface ApiData {
   data: {
@@ -858,10 +856,10 @@ async function attachListeners() {
     importExportCopyButton.classList.add("copy-button-error");
   });
 
-  $("#import-export-modal").on("hidden.bs.modal", () => {
-    importExportCopyButton.classList.remove("copy-button-copied");
-    importExportCopyButton.classList.remove("copy-button-error");
-  });
+  //$("#import-export-modal").on("hidden.bs.modal", () => {
+  //  importExportCopyButton.classList.remove("copy-button-copied");
+  //  importExportCopyButton.classList.remove("copy-button-error");
+  //});
 }
 
 //// DOM element creation
@@ -1178,6 +1176,8 @@ function courseDescriptionInvisible() {
 }
 
 function courseDescriptionVisible() {
+  Sidebar.show();
+
   courseDescriptionBoxOuter.classList.add("course-description-box-visible");
   courseDescriptionMinimizeOuter.style.height = `${courseDescriptionMinimizeOuter.scrollHeight}px`;
   updateCourseDescriptionBoxHeight();
@@ -1280,7 +1280,6 @@ function saveImportExportModalChanges() {
   }
   gSelectedCourses = obj.map(Course.upgrade);
   handleSelectedCoursesUpdate();
-  $("#import-export-modal").modal("hide");
 }
 
 function toggleClosedCourses() {
