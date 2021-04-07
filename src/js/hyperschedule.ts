@@ -213,24 +213,6 @@ function quoteRegexp(str: string) {
   return (str + "").replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 }
 
-// https://stackoverflow.com/a/29018745/3538165
-function binarySearch<T>(ar: T[], el: T, compare_fn: (a: T, b: T) => number) {
-  var m = 0;
-  var n = ar.length - 1;
-  while (m <= n) {
-    var k = (n + m) >> 1;
-    var cmp = compare_fn(el, ar[k]);
-    if (cmp > 0) {
-      m = k + 1;
-    } else if (cmp < 0) {
-      n = k - 1;
-    } else {
-      return k;
-    }
-  }
-  return -m - 1;
-}
-
 function deepCopy(obj: object) {
   return JSON.parse(JSON.stringify(obj));
 }
