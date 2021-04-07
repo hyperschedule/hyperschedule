@@ -658,9 +658,15 @@ function computeCreditCountDescription(schedule: Course.CourseV3[]) {
   let starredCredits = 0;
   for (let course of schedule) {
     let credits = parseFloat(course.courseCredits);
-    totalCredits += credits;
+    const nonMuddMultiplier =
+      course.courseCode.match(
+        /[A-Z]* *[0-9A-Z ]*? *([A-Z]{2})-[0-9]{2}/
+      )?.[1] === "HM"
+        ? 1
+        : 3;
+    totalCredits += nonMuddMultiplier * credits;
     if (course.starred) {
-      starredCredits += credits;
+      starredCredits += nonMuddMultiplier * credits;
     }
   }
   return (
