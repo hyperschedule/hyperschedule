@@ -7,8 +7,12 @@
     "allowSyntheticDefaultImports": true,
     "target": "es6",
     "strict": true,
-    "lib": [
-      "es2019", "DOM", "DOM.Iterable"
-    ]
+    "lib": ["es2019", "DOM", "DOM.Iterable"],
+    "baseUrl": ".",
+    "paths": {
+      "@hyperschedule/lib/*": ["src/js/lib/*"],
+      "@hyperschedule/view/*": ["src/js/view/*"],
+      "@hyperschedule/css/*": ["src/css/*"]
+    }
   }
 }

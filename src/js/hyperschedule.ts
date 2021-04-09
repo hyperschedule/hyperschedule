@@ -17,12 +17,12 @@ const sortable = require("html5sortable/dist/html5sortable.cjs");
 import Clipboard from "clipboard";
 import { jsPDF } from "jspdf";
 
-import * as Course from "./course";
-import * as SortKey from "./sort-key";
-import * as Util from "./util";
-import * as TimeString from "./time-string";
-import * as Sidebar from "./sidebar";
-import * as CourseDetails from "./components/course-details";
+import * as Course from "./lib/course";
+import * as SortKey from "./lib/sort-key";
+import * as Util from "./lib/util";
+import * as TimeString from "./lib/time-string";
+import * as Sidebar from "./view/sidebar";
+import * as CourseDetails from "./view/course-details";
 
 import * as _ from "lodash/fp";
 

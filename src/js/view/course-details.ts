@@ -1,7 +1,7 @@
-import * as Course from "../course";
-import * as Schedule from "../schedule";
-import * as Util from "../util";
-import * as Sidebar from "../sidebar";
+import * as Course from "@hyperschedule/lib/course";
+import * as Schedule from "@hyperschedule/lib/schedule";
+import * as Util from "@hyperschedule/lib/util";
+import * as Sidebar from "@hyperschedule/view/sidebar";
 
 const dom = (() => {
   const container = document.getElementById("course-details")!;

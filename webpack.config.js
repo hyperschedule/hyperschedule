@@ -1,4 +1,5 @@
 const path = require("path");
+const Path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -42,6 +43,11 @@ module.exports = (env, argv) => {
     },
     resolve: {
       extensions: [".ts", ".js"],
+      alias: {
+        "@hyperschedule/lib": Path.join(__dirname, "src/js/lib"),
+        "@hyperschedule/view": Path.join(__dirname, "src/js/view"),
+        "@hyperschedule/css": Path.join(__dirname, "src/css"),
+      },
     },
     plugins: [
       new Webpack.EnvironmentPlugin({
