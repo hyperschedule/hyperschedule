@@ -1,0 +1,92 @@
+<div class="modal" id="import-export-modal">
+  <header>
+    <h5 class="modal-title">Import/Export Data</h5>
+    <button type="button" class="close">
+      <i class="las la-times"></i>
+    </button>
+  </header>
+  <div class="body">
+    <p>
+      You can edit the JSON in another application. Be warned that your changes
+      are <b>not</b> validated!
+    </p>
+    <textarea id="import-export-text-area" class="form-control"></textarea>
+    <br />
+    <p>
+      Alternatively, use the button below to export an iCal file with your
+      starred courses.
+    </p>
+  </div>
+  <footer>
+    <button
+      type="button"
+      id="import-export-copy-button"
+      class="btn btn-info"
+      data-clipboard-target="#import-export-text-area"
+    ></button>
+    <button type="button" id="import-export-ical-button" class="btn btn-info">
+      To iCal
+    </button>
+    <button
+      type="button"
+      id="import-export-save-changes-button"
+      class="btn btn-primary"
+    >
+      Save changes
+    </button>
+    <button type="button" class="close">Close</button>
+  </footer>
+</div>
+
+<div class="modal" id="help-modal">
+  <header>
+    <h5 class="modal-title">Help</h5>
+    <button type="button" class="close">
+      <i class="las la-times"></i>
+    </button>
+  </header>
+  <div class="body"><include src="modal/help.html" /></div>
+  <footer>
+    <button type="button" class="close">Close</button>
+  </footer>
+</div>
+
+<div class="modal" id="malformed-courses-modal" tabindex="-1">
+  <header>
+    <h5>Malformed Courses</h5>
+    <button type="button" class="close">
+      <i class="las la-times"></i>
+    </button>
+  </header>
+  <div class="body">
+    <p>
+      Occasionally, the registrar adds malformed data to Portal: for example, a
+      course with no name, invalid start and end dates, or other such nonsense.
+      This shouldn't be possible, but because Portal is poorly designed, it is.
+      Hyperschedule keeps track of these courses since they appear in the Portal
+      search results, even though they cannot be parsed into valid course data
+      to be used in scheduling. These courses are displayed below:
+    </p>
+    <div id="malformed-courses-list"></div>
+  </div>
+  <footer>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+      Close
+    </button>
+  </footer>
+</div>
+
+<div class="modal" id="settings-modal">
+  <header>
+    <h5>Settings</h5>
+    <button type="button" class="close">
+      <i class="las la-times"></i>
+    </button>
+  </header>
+  <div class="body">
+    <include src="modal/settings.html"></include>
+  </div>
+  <footer>
+    <button type="button" class="close">Close</button>
+  </footer>
+</div>

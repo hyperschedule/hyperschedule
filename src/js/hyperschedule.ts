@@ -22,6 +22,7 @@ import * as SortKey from "./sort-key";
 import * as Util from "./util";
 import * as TimeString from "./time-string";
 import * as Sidebar from "./sidebar";
+import * as CourseDetails from "./components/course-details";
 
 import * as _ from "lodash/fp";
 
@@ -142,18 +143,6 @@ const timeZoneDropdown = <HTMLSelectElement>(
   document.getElementById("time-zone-dropdown")!
 );
 
-const courseDescriptionMinimizeOuter = document.getElementById(
-  "minimize-outer"
-)!;
-const courseDescriptionMinimize = document.getElementById(
-  "course-description-minimize"
-)!;
-const minimizeIcon = document.getElementById("minimize-icon")!;
-const courseDescriptionBox = document.getElementById("course-description-box")!;
-const courseDescriptionBoxOuter = document.getElementById(
-  "course-description-box-outer"
-)!;
-
 const selectedCoursesList = document.getElementById("selected-courses-list")!;
 
 const scheduleTable = document.getElementById("schedule-table")!;
@@ -174,6 +163,8 @@ const importExportSaveChangesButton = document.getElementById(
 const importExportCopyButton = document.getElementById(
   "import-export-copy-button"
 )!;
+
+const courseDetails = document.getElementById("course-details")!;
 
 //// Global state
 
@@ -637,7 +628,8 @@ function computeCreditCountDescription(schedule: Course.CourseV3[]) {
   let totalCredits = 0;
   let starredCredits = 0;
   for (let course of schedule) {
-    let credits = parseFloat(course.courseCredits);
+    //let credits = parseFloat(course.courseCredits);
+    let credits = course.courseCredits;
     const nonMuddMultiplier =
       course.courseCode.match(
         /[A-Z]* *[0-9A-Z ]*? *([A-Z]{2})-[0-9]{2}/
@@ -782,10 +774,6 @@ async function attachListeners() {
     downloadPDF(true);
   });
 
-  courseDescriptionMinimize.addEventListener(
-    "click",
-    minimizeCourseDescription
-  );
   selectedCoursesList.addEventListener("sortupdate", readSelectedCoursesList);
   selectedCoursesList.addEventListener("sortstart", () => {
     gCurrentlySorting = true;
@@ -839,8 +827,6 @@ async function attachListeners() {
   // height is to leverage CSS transitions to animate the resizing of
   // the course description; in _all other cases_, especially for
   // static layout calculations, use CSS Flexbox!!!
-
-  window.addEventListener("resize", updateCourseDescriptionBoxHeight);
 
   // Re-render virtualized list on viewport resizes.
   window.addEventListener("resize", rerenderCourseSearchResults);
@@ -1029,7 +1015,7 @@ function rerenderCourseSearchResults() {
         remove: removeCourse,
         toggleStarred: toggleCourseStarred,
         toggleSelected: toggleCourseSelected,
-        focus: setCourseDescriptionBox,
+        focus: CourseDetails.setCourse,
       },
       { alreadyAdded }
     );
@@ -1066,7 +1052,7 @@ function updateSelectedCoursesList() {
           remove: removeCourse,
           toggleStarred: toggleCourseStarred,
           toggleSelected: toggleCourseSelected,
-          focus: setCourseDescriptionBox,
+          focus: CourseDetails.setCourse,
         },
         { idx, alreadyAdded: true }
       )
@@ -1085,7 +1071,7 @@ function updateSchedule() {
     element.parentNode!.removeChild(element);
   }
   for (const course of schedule) {
-    const entities = Course.createSlotEntities(course, setCourseDescriptionBox);
+    const entities = Course.createSlotEntities(course, CourseDetails.setCourse);
     entities.forEach((e) => scheduleTable.appendChild(e));
   }
   creditCountText.textContent = computeCreditCountDescription(schedule);
@@ -1110,91 +1096,14 @@ function updateScheduleTimeZone() {
   }
 }
 
-///// DOM updates due to display changes
-
-function updateCourseDescriptionBoxHeight() {
-  if (
-    courseDescriptionBoxOuter.classList.contains(
-      "course-description-box-visible"
-    )
-  ) {
-    courseDescriptionBoxOuter.style.height =
-      "" + courseDescriptionBox.scrollHeight + "px";
-  } else {
-    courseDescriptionBoxOuter.style.height = "0px";
-  }
-}
-
 ///// DOM updates miscellaneous
 
 function showImportExportModal() {
   importExportTextArea.value = JSON.stringify(gSelectedCourses);
 }
 
-function setCourseDescriptionBox(course: Course.CourseV3) {
-  gCourseSelected = course;
-
-  while (courseDescriptionBox.lastChild !== null) {
-    courseDescriptionBox.removeChild(courseDescriptionBox.lastChild);
-  }
-  const description = Course.generateDescription(
-    course,
-    gTimeZoneValues[gTimeZoneSavings] -
-      pacificTimeZoneValues[gPacificTimeSavings]
-  );
-  for (let idx = 0; idx < description.length; ++idx) {
-    const line = description[idx];
-    if (idx !== 0) {
-      courseDescriptionBox.appendChild(document.createElement("hr"));
-    }
-    const paragraph = document.createElement("p");
-    const text = document.createTextNode(line);
-    paragraph.appendChild(text);
-    courseDescriptionBox.appendChild(paragraph);
-  }
-  minimizeArrowPointUp();
-  courseDescriptionVisible();
-}
-
-function minimizeCourseDescription() {
-  if (
-    courseDescriptionBoxOuter.classList.contains(
-      "course-description-box-visible"
-    )
-  ) {
-    courseDescriptionInvisible();
-    minimizeArrowPointDown();
-  } else {
-    courseDescriptionVisible();
-    minimizeArrowPointUp();
-  }
-}
-
-function courseDescriptionInvisible() {
-  courseDescriptionBoxOuter.classList.remove("course-description-box-visible");
-  updateCourseDescriptionBoxHeight();
-}
-
-function courseDescriptionVisible() {
-  Sidebar.show();
-
-  courseDescriptionBoxOuter.classList.add("course-description-box-visible");
-  courseDescriptionMinimizeOuter.style.height = `${courseDescriptionMinimizeOuter.scrollHeight}px`;
-  updateCourseDescriptionBoxHeight();
-}
-
-function minimizeArrowPointUp() {
-  minimizeIcon.classList.remove("ion-arrow-down-b");
-  minimizeIcon.classList.add("ion-arrow-up-b");
-}
-
-function minimizeArrowPointDown() {
-  minimizeIcon.classList.remove("ion-arrow-up-b");
-  minimizeIcon.classList.add("ion-arrow-down-b");
-}
-
 function updateCourseDescriptionTimeZone() {
-  if (gCourseSelected !== null) setCourseDescriptionBox(gCourseSelected);
+  if (gCourseSelected !== null) CourseDetails.setCourse(gCourseSelected);
 }
 
 /// Global state handling
@@ -1305,9 +1214,6 @@ function toggleConflictCourses() {
 
 function toggleTimeZone() {
   updateCourseDisplays();
-  if (courseDescriptionBox.hasChildNodes()) {
-    updateCourseDescriptionTimeZone();
-  }
   writeStateToLocalStorage();
 }
 

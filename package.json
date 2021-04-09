@@ -37,6 +37,7 @@
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.3.1",
     "html5sortable": "^0.11.1",
+    "hybrids": "^5.2.0",
     "jquery": "^3.6.0",
     "jspdf": "^2.3.1",
     "lint-staged": "^10.5.4",
@@ -48,6 +49,7 @@
     "popper.js": "^1.16.1",
     "postcss": "^8.2.9",
     "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.1",
     "postcss-loader": "^5.2.0",
     "postcss-nested": "^5.0.5",
     "postcss-scss": "^3.0.5",
@@ -73,13 +75,15 @@
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3"
   },
-
   "engines": {
     "node": ">=8.8.1"
   },
   "license": "MIT",
   "lint-staged": {
-    "*.{ts,css}": ["prettier --write", "git add"]
+    "*.{ts,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "name": "hyperschedule-frontend",
   "private": true,

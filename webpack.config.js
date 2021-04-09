@@ -50,7 +50,7 @@ module.exports = (env, argv) => {
       new FaviconsWebpackPlugin("src/icon.png"),
       new HtmlWebpackPlugin({
         title: "hyperschedule",
-        template: "src/index.html",
+        template: "src/html/index.html",
       }),
       new MiniCssExtractPlugin(),
     ],

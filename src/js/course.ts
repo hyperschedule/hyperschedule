@@ -50,7 +50,7 @@ export interface CourseV3 {
   courseInstructors: string[] | null;
   courseTerm: string;
   courseSchedule: Schedule.Schedule[];
-  courseCredits: string;
+  courseCredits: number; // docs says string but hotfix
   courseSeatsTotal: number | null;
   courseSeatsFilled: number | null;
   courseWaitlistLength: number | null;
@@ -292,7 +292,8 @@ export function upgrade(c: CourseV2 | CourseV3): CourseV3 {
   if (courseIsV3(c)) return c;
   return {
     courseCode: v2ToString(c),
-    courseCredits: (c.quarterCredits / 4).toString(),
+    //courseCredits: (c.quarterCredits / 4).toString(),
+    courseCredits: c.quarterCredits / 4,
     courseDescription: c.courseDescription,
     courseEnrollmentStatus: c.courseStatus,
     courseInstructors: c.faculty,
@@ -330,7 +331,7 @@ export function upgrade(c: CourseV2 | CourseV3): CourseV3 {
     starred: c.starred,
   };
 }
-function termListDescription(terms: number[], termCount: number) {
+export function termListDescription(terms: number[], termCount: number) {
   if (termCount > 10) {
     return "Complicated schedule";
   }
@@ -371,7 +372,8 @@ export function generateDescription(course: CourseV3, offset: number) {
       meeting.scheduleTermCount
     );
   }
-  const credits = parseFloat(course.courseCredits);
+  //const credits = parseFloat(course.courseCredits);
+  const credits = course.courseCredits;
   const creditsString = credits + " credit" + (credits !== 1 ? "s" : "");
   description.push(`${partOfYear}, ${creditsString}`);
 
