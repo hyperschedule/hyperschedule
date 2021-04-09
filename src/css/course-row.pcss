@@ -1,0 +1,16 @@
+// vi: ft=scss
+.course-row {
+  @apply grid text-sm gap-x-1 bg-blue-100 mx-4 my-2;
+  grid-template-columns: repeat(3, max-content) 1fr;
+
+  .code {
+    @apply font-bold;
+  }
+
+  .status {
+    @apply grid gap-x-1;
+    grid-template-columns: repeat(2, auto);
+    .badge {
+    }
+  }
+}

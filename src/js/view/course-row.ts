@@ -46,3 +46,7 @@ export const update = (dom: Dom, course: Course.CourseV3) => {
   dom.statusBadge.textContent = course.courseEnrollmentStatus;
   dom.statusSeats.textContent = `${course.courseSeatsFilled}/${course.courseSeatsTotal}`;
 };
+
+export const append = (parent: HTMLElement, dom: Dom) => {
+  parent.appendChild(dom.root);
+};

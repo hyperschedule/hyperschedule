@@ -23,6 +23,7 @@ import * as Util from "./lib/util";
 import * as TimeString from "./lib/time-string";
 import * as Sidebar from "./view/sidebar";
 import * as CourseDetails from "./view/course-details";
+import * as SearchResults from "./view/search-results";
 
 import * as _ from "lodash/fp";
 
@@ -105,9 +106,6 @@ const hideStarredConflictingCoursesToggle = <HTMLInputElement>(
   document.getElementById("star-conflicting-courses-toggle")!
 );
 
-const courseSearchScheduleColumn = document.getElementById(
-  "course-search-schedule-column"
-)!;
 const courseSearchColumn = document.getElementById("course-search-column")!;
 const scheduleColumn = document.getElementById("schedule-column")!;
 
@@ -125,16 +123,8 @@ const courseSearchResultsEnd = document.getElementById(
   "course-search-results-end"
 )!;
 
-const selectedCoursesColumn = document.getElementById(
-  "selected-courses-column"
-)!;
-const importExportDataButton = document.getElementById(
-  "import-export-data-button"
-)!;
-const printDropdown = document.getElementById("print-dropdown")!;
 const printAllButton = document.getElementById("print-button-all")!;
 const printStarredButton = document.getElementById("print-button-starred")!;
-const settingsButton = document.getElementById("settings-button")!;
 
 const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>(
   document.getElementsByName("conflict-courses")
@@ -146,7 +136,6 @@ const timeZoneDropdown = <HTMLSelectElement>(
 const selectedCoursesList = document.getElementById("selected-courses-list")!;
 
 const scheduleTable = document.getElementById("schedule-table")!;
-const scheduleTableBody = document.getElementById("schedule-table-body")!;
 const scheduleTableDays = document.getElementsByClassName("schedule-day");
 const scheduleTableHours = document.getElementsByClassName("schedule-hour");
 const creditCountText = document.getElementById("credit-count")!;
@@ -163,8 +152,6 @@ const importExportSaveChangesButton = document.getElementById(
 const importExportCopyButton = document.getElementById(
   "import-export-copy-button"
 )!;
-
-const courseDetails = document.getElementById("course-details")!;
 
 //// Global state
 
@@ -988,6 +975,12 @@ function rerenderCourseSearchResults() {
     // Make sure to remove from the end.
     courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
   }
+
+  const apiData = gApiData.data;
+  SearchResults.update(
+    gFilteredCourseKeys.length,
+    (i) => apiData.courses[gFilteredCourseKeys[i]]
+  );
 
   const numToShow =
     (document.documentElement.clientHeight / gCourseEntityHeight) * 3;
