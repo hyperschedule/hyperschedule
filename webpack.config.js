@@ -46,6 +46,7 @@ module.exports = (env, argv) => {
       alias: {
         "@hyperschedule/lib": Path.join(__dirname, "src/js/lib"),
         "@hyperschedule/view": Path.join(__dirname, "src/js/view"),
+        "@hyperschedule/model": Path.join(__dirname, "src/js/model"),
         "@hyperschedule/css": Path.join(__dirname, "src/css"),
       },
     },

@@ -1,0 +1,65 @@
+// vi: ft=scss
+.course-row {
+  @apply grid text-sm bg-blue-100 mb-2 mx-4 rounded-sm overflow-hidden cursor-pointer select-none;
+  &.result {
+    grid-template-areas: "code status add" "name status add";
+    grid-template-columns: 1fr auto auto;
+  @media (min-width: theme(screens.sm)) {
+    grid-template-areas: "code name status add";
+    grid-template-columns: auto 1fr auto auto;
+  }
+  }
+  &.selected {
+    grid-template-areas: "toggles code status remove" "toggles name status remove";
+    grid-template-columns: auto 1fr auto auto;
+  }
+
+  button {
+    @apply px-1 py-1 hover:bg-black hover:bg-opacity-10 duration-150;
+    transition-property: visibility, background-color, opacity;
+
+    &[disabled] {
+      @apply opacity-0 invisible;
+    }
+
+    &.add {
+      grid-area: add;
+    }
+    &.remove {
+      grid-area: remove;
+    }
+  }
+
+  .code {
+    @apply font-bold text-xs opacity-75 pl-2 pt-1 sm:pt-0 sm:self-center;
+    grid-area: code;
+  }
+
+  .name {
+    @apply whitespace-nowrap overflow-ellipsis overflow-x-hidden pb-1 pl-2 sm:py-1;
+    grid-area: name;
+  }
+
+  .status {
+    @apply grid self-center justify-items-end text-xs gap-x-1 px-1;
+    grid-area: status;
+
+    grid-template-areas: "badge" "seats";
+    @media (min-width: theme(screens.sm)) {
+      grid-template-areas: "badge seats";
+    }
+
+    .badge {
+      @apply rounded-full text-white font-bold px-2 uppercase;
+      &[data-status="open"] {
+        @apply bg-green-500;
+      }
+      &[data-status="closed"] {
+        @apply bg-red-400;
+      }
+      &[data-status="reopened"] {
+        @apply bg-yellow-500;
+      }
+    }
+  }
+}

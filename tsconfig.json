@@ -12,6 +12,7 @@
     "paths": {
       "@hyperschedule/lib/*": ["src/js/lib/*"],
       "@hyperschedule/view/*": ["src/js/view/*"],
+      "@hyperschedule/model/*": ["src/js/model/*"],
       "@hyperschedule/css/*": ["src/css/*"]
     }
   }

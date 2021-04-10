@@ -7,6 +7,9 @@
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 @import "./course-details.pcss";
+@import "./course-row.pcss";
+@import "./search-results.pcss";
+@import "./status-badge.pcss";
 
 @tailwind base;
 @tailwind components;

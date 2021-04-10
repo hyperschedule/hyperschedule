@@ -23,6 +23,7 @@ import * as Util from "./lib/util";
 import * as TimeString from "./lib/time-string";
 import * as Sidebar from "./view/sidebar";
 import * as CourseDetails from "./view/course-details";
+import * as SearchResults from "./view/search-results";
 
 import * as _ from "lodash/fp";
 
@@ -105,36 +106,25 @@ const hideStarredConflictingCoursesToggle = <HTMLInputElement>(
   document.getElementById("star-conflicting-courses-toggle")!
 );
 
-const courseSearchScheduleColumn = document.getElementById(
-  "course-search-schedule-column"
-)!;
 const courseSearchColumn = document.getElementById("course-search-column")!;
 const scheduleColumn = document.getElementById("schedule-column")!;
 
 const courseSearchInput = <HTMLInputElement>(
   document.getElementById("course-search-course-name-input")!
 );
-const courseSearchResults = document.getElementById("course-search-results")!;
-const courseSearchResultsList = document.getElementById(
-  "course-search-results-list"
-)!;
-const courseSearchResultsPlaceholder = document.getElementById(
-  "course-search-results-placeholder"
-)!;
-const courseSearchResultsEnd = document.getElementById(
-  "course-search-results-end"
-)!;
+//const courseSearchResults = document.getElementById("course-search-results")!;
+//const courseSearchResultsList = document.getElementById(
+//  "course-search-results-list"
+//)!;
+//const courseSearchResultsPlaceholder = document.getElementById(
+//  "course-search-results-placeholder"
+//)!;
+//const courseSearchResultsEnd = document.getElementById(
+//  "course-search-results-end"
+//)!;
 
-const selectedCoursesColumn = document.getElementById(
-  "selected-courses-column"
-)!;
-const importExportDataButton = document.getElementById(
-  "import-export-data-button"
-)!;
-const printDropdown = document.getElementById("print-dropdown")!;
 const printAllButton = document.getElementById("print-button-all")!;
 const printStarredButton = document.getElementById("print-button-starred")!;
-const settingsButton = document.getElementById("settings-button")!;
 
 const conflictCoursesRadios = <NodeListOf<HTMLInputElement>>(
   document.getElementsByName("conflict-courses")
@@ -146,7 +136,6 @@ const timeZoneDropdown = <HTMLSelectElement>(
 const selectedCoursesList = document.getElementById("selected-courses-list")!;
 
 const scheduleTable = document.getElementById("schedule-table")!;
-const scheduleTableBody = document.getElementById("schedule-table-body")!;
 const scheduleTableDays = document.getElementsByClassName("schedule-day");
 const scheduleTableHours = document.getElementsByClassName("schedule-hour");
 const creditCountText = document.getElementById("credit-count")!;
@@ -163,8 +152,6 @@ const importExportSaveChangesButton = document.getElementById(
 const importExportCopyButton = document.getElementById(
   "import-export-copy-button"
 )!;
-
-const courseDetails = document.getElementById("course-details")!;
 
 //// Global state
 
@@ -733,10 +720,10 @@ const attachModal = ({
 };
 
 async function attachListeners() {
-  const ent = Course.createEntity("placeholder");
-  courseSearchResultsList.appendChild(ent);
-  gCourseEntityHeight = ent.clientHeight;
-  courseSearchResultsList.removeChild(ent);
+  //const ent = Course.createEntity("placeholder");
+  //courseSearchResultsList.appendChild(ent);
+  //gCourseEntityHeight = ent.clientHeight;
+  //courseSearchResultsList.removeChild(ent);
 
   attachModal({ button: "help-button", modal: "help-modal" });
   attachModal({ button: "settings-button", modal: "settings-modal" });
@@ -795,7 +782,7 @@ async function attachListeners() {
     printBtnWrapper.classList.toggle("show");
   });
 
-  courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
+  //courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
 
   for (let i = 0; conflictCoursesRadios[i]; i++) {
     conflictCoursesRadios[i].addEventListener("click", () => {
@@ -978,56 +965,66 @@ function updateCourseSearchResults() {
 
 function rerenderCourseSearchResults() {
   if (gApiData === null) {
-    courseSearchResultsEnd.textContent = "Fetching courses from Portal...";
+    //courseSearchResultsEnd.textContent = "Fetching courses from Portal...";
     return;
   }
 
   // Remove courses that should no longer be shown (or all courses, if
   // updating non-incrementally).
-  while (courseSearchResultsList.lastChild !== null) {
-    // Make sure to remove from the end.
-    courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
-  }
+  //while (courseSearchResultsList.lastChild !== null) {
+  //  // Make sure to remove from the end.
+  //  courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
+  //}
 
-  const numToShow =
-    (document.documentElement.clientHeight / gCourseEntityHeight) * 3;
-  const startIndex = Math.floor(
-    (courseSearchResults.scrollTop - document.documentElement.clientHeight) /
-      gCourseEntityHeight
+  const apiData = gApiData.data;
+  //SearchResults.update(gFilteredCourseKeys);
+  SearchResults.update(
+    gFilteredCourseKeys.length,
+    (i) => apiData.courses[gFilteredCourseKeys[i]],
+    courseAlreadyAdded,
+    addCourse,
+    CourseDetails.setCourse
   );
 
-  const numAlreadyShown = courseSearchResultsList.childElementCount;
-  const allCoursesDisplayed = true;
-  // 0 in case of non-incremental update
-  const numAdded = numAlreadyShown;
+  //const numToShow =
+  //  (document.documentElement.clientHeight / gCourseEntityHeight) * 3;
+  //const startIndex = Math.floor(
+  //  (courseSearchResults.scrollTop - document.documentElement.clientHeight) /
+  //    gCourseEntityHeight
+  //);
 
-  for (
-    let index = Math.max(startIndex, 0);
-    index < Math.min(startIndex + numToShow, gFilteredCourseKeys.length);
-    ++index
-  ) {
-    const course = gApiData.data.courses[gFilteredCourseKeys[index]];
-    const alreadyAdded = courseAlreadyAdded(course);
-    const entity = Course.createEntity(
-      course,
-      {
-        add: addCourse,
-        remove: removeCourse,
-        toggleStarred: toggleCourseStarred,
-        toggleSelected: toggleCourseSelected,
-        focus: CourseDetails.setCourse,
-      },
-      { alreadyAdded }
-    );
-    entity.style.top = "" + gCourseEntityHeight * index + "px";
-    courseSearchResultsList.appendChild(entity);
-  }
+  //const numAlreadyShown = courseSearchResultsList.childElementCount;
+  //const allCoursesDisplayed = true;
+  //// 0 in case of non-incremental update
+  //const numAdded = numAlreadyShown;
 
-  courseSearchResultsPlaceholder.style.height =
-    gCourseEntityHeight * gFilteredCourseKeys.length + "px";
+  //for (
+  //  let index = Math.max(startIndex, 0);
+  //  index < Math.min(startIndex + numToShow, gFilteredCourseKeys.length);
+  //  ++index
+  //) {
+  //  const course = gApiData.data.courses[gFilteredCourseKeys[index]];
+  //  const alreadyAdded = courseAlreadyAdded(course);
+  //  const entity = Course.createEntity(
+  //    course,
+  //    {
+  //      add: addCourse,
+  //      remove: removeCourse,
+  //      toggleStarred: toggleCourseStarred,
+  //      toggleSelected: toggleCourseSelected,
+  //      focus: CourseDetails.setCourse,
+  //    },
+  //    { alreadyAdded }
+  //  );
+  //  entity.style.top = "" + gCourseEntityHeight * index + "px";
+  //  courseSearchResultsList.appendChild(entity);
+  //}
 
-  courseSearchResultsEnd.textContent =
-    gFilteredCourseKeys.length != 0 ? "End of results" : "No results";
+  //courseSearchResultsPlaceholder.style.height =
+  //  gCourseEntityHeight * gFilteredCourseKeys.length + "px";
+
+  //courseSearchResultsEnd.textContent =
+  //  gFilteredCourseKeys.length != 0 ? "End of results" : "No results";
 }
 
 function updateSelectedCoursesList() {
@@ -1332,6 +1329,7 @@ async function retrieveCourseData() {
   }
 
   gApiData = apiData;
+  //SearchResults.updateAll(apiData.data.courses);
 
   if (wasUpdated) {
     updateCourseSearchResults();

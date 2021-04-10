@@ -29,7 +29,7 @@
     @apply mb-2 text-xs;
 
     .status {
-      @apply grid gap-x-1 mb-2;
+      @apply mb-2 grid gap-x-1 items-center text-xs;
       grid-template-columns: repeat(2, max-content);
 
       .badge {
@@ -46,15 +46,12 @@
       }
     }
     .credits {
-      grid-area: credits;
     }
     .instructors {
       @apply mb-1;
-      grid-area: instructors;
     }
     .schedule {
       @apply text-xs;
-      grid-area: schedule;
     }
   }
 
