@@ -5,7 +5,10 @@
 
 /** General styling **/
 
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
+// vi: ft=scss
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+//@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 @import "./course-details.pcss";
 @import "./course-row.pcss";
 @import "./search-results.pcss";

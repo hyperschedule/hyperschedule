@@ -4,10 +4,10 @@
   &.result {
     grid-template-areas: "code status add" "name status add";
     grid-template-columns: 1fr auto auto;
-  @media (min-width: theme(screens.sm)) {
-    grid-template-areas: "code name status add";
-    grid-template-columns: auto 1fr auto auto;
-  }
+    @media (min-width: theme(screens.sm)) {
+      grid-template-areas: "code name status add";
+      grid-template-columns: auto 1fr auto auto;
+    }
   }
   &.selected {
     grid-template-areas: "toggles code status remove" "toggles name status remove";
@@ -15,7 +15,7 @@
   }
 
   button {
-    @apply px-1 py-1 hover:bg-black hover:bg-opacity-10 duration-150;
+    @apply px-1 py-1 hover:bg-black hover:bg-opacity-10 duration-150 sm:px-2;
     transition-property: visibility, background-color, opacity;
 
     &[disabled] {
