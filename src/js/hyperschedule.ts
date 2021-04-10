@@ -977,9 +977,13 @@ function rerenderCourseSearchResults() {
   }
 
   const apiData = gApiData.data;
+  //SearchResults.update(gFilteredCourseKeys);
   SearchResults.update(
     gFilteredCourseKeys.length,
-    (i) => apiData.courses[gFilteredCourseKeys[i]]
+    (i) => apiData.courses[gFilteredCourseKeys[i]],
+    courseAlreadyAdded,
+    addCourse,
+    CourseDetails.setCourse
   );
 
   const numToShow =
@@ -1325,6 +1329,7 @@ async function retrieveCourseData() {
   }
 
   gApiData = apiData;
+  //SearchResults.updateAll(apiData.data.courses);
 
   if (wasUpdated) {
     updateCourseSearchResults();

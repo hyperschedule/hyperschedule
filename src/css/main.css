@@ -9,6 +9,7 @@
 @import "./course-details.pcss";
 @import "./course-row.pcss";
 @import "./search-results.pcss";
+@import "./status-badge.pcss";
 
 @tailwind base;
 @tailwind components;

@@ -2,7 +2,13 @@
 #search-results {
   @apply overflow-y-scroll relative;
 
-  .slot {
-    @apply absolute;
+  ul {
+    .slot {
+      @apply absolute top-0 w-full;
+    }
+  }
+
+  .measure {
+    @apply absolute top-0 invisible;
   }
 }
