@@ -97,6 +97,7 @@ export const update = (
   state.isAdded = isAdded;
   state.add = add;
   state.focus = focus;
+  dom.footer.textContent = "End of results";
   dom.spacer.style.height = `${length * state.height}px`;
   render();
 };

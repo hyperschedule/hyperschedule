@@ -112,16 +112,16 @@ const scheduleColumn = document.getElementById("schedule-column")!;
 const courseSearchInput = <HTMLInputElement>(
   document.getElementById("course-search-course-name-input")!
 );
-const courseSearchResults = document.getElementById("course-search-results")!;
-const courseSearchResultsList = document.getElementById(
-  "course-search-results-list"
-)!;
-const courseSearchResultsPlaceholder = document.getElementById(
-  "course-search-results-placeholder"
-)!;
-const courseSearchResultsEnd = document.getElementById(
-  "course-search-results-end"
-)!;
+//const courseSearchResults = document.getElementById("course-search-results")!;
+//const courseSearchResultsList = document.getElementById(
+//  "course-search-results-list"
+//)!;
+//const courseSearchResultsPlaceholder = document.getElementById(
+//  "course-search-results-placeholder"
+//)!;
+//const courseSearchResultsEnd = document.getElementById(
+//  "course-search-results-end"
+//)!;
 
 const printAllButton = document.getElementById("print-button-all")!;
 const printStarredButton = document.getElementById("print-button-starred")!;
@@ -720,10 +720,10 @@ const attachModal = ({
 };
 
 async function attachListeners() {
-  const ent = Course.createEntity("placeholder");
-  courseSearchResultsList.appendChild(ent);
-  gCourseEntityHeight = ent.clientHeight;
-  courseSearchResultsList.removeChild(ent);
+  //const ent = Course.createEntity("placeholder");
+  //courseSearchResultsList.appendChild(ent);
+  //gCourseEntityHeight = ent.clientHeight;
+  //courseSearchResultsList.removeChild(ent);
 
   attachModal({ button: "help-button", modal: "help-modal" });
   attachModal({ button: "settings-button", modal: "settings-modal" });
@@ -782,7 +782,7 @@ async function attachListeners() {
     printBtnWrapper.classList.toggle("show");
   });
 
-  courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
+  //courseSearchResults.addEventListener("scroll", rerenderCourseSearchResults);
 
   for (let i = 0; conflictCoursesRadios[i]; i++) {
     conflictCoursesRadios[i].addEventListener("click", () => {
@@ -965,16 +965,16 @@ function updateCourseSearchResults() {
 
 function rerenderCourseSearchResults() {
   if (gApiData === null) {
-    courseSearchResultsEnd.textContent = "Fetching courses from Portal...";
+    //courseSearchResultsEnd.textContent = "Fetching courses from Portal...";
     return;
   }
 
   // Remove courses that should no longer be shown (or all courses, if
   // updating non-incrementally).
-  while (courseSearchResultsList.lastChild !== null) {
-    // Make sure to remove from the end.
-    courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
-  }
+  //while (courseSearchResultsList.lastChild !== null) {
+  //  // Make sure to remove from the end.
+  //  courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
+  //}
 
   const apiData = gApiData.data;
   //SearchResults.update(gFilteredCourseKeys);
@@ -986,45 +986,45 @@ function rerenderCourseSearchResults() {
     CourseDetails.setCourse
   );
 
-  const numToShow =
-    (document.documentElement.clientHeight / gCourseEntityHeight) * 3;
-  const startIndex = Math.floor(
-    (courseSearchResults.scrollTop - document.documentElement.clientHeight) /
-      gCourseEntityHeight
-  );
+  //const numToShow =
+  //  (document.documentElement.clientHeight / gCourseEntityHeight) * 3;
+  //const startIndex = Math.floor(
+  //  (courseSearchResults.scrollTop - document.documentElement.clientHeight) /
+  //    gCourseEntityHeight
+  //);
 
-  const numAlreadyShown = courseSearchResultsList.childElementCount;
-  const allCoursesDisplayed = true;
-  // 0 in case of non-incremental update
-  const numAdded = numAlreadyShown;
+  //const numAlreadyShown = courseSearchResultsList.childElementCount;
+  //const allCoursesDisplayed = true;
+  //// 0 in case of non-incremental update
+  //const numAdded = numAlreadyShown;
 
-  for (
-    let index = Math.max(startIndex, 0);
-    index < Math.min(startIndex + numToShow, gFilteredCourseKeys.length);
-    ++index
-  ) {
-    const course = gApiData.data.courses[gFilteredCourseKeys[index]];
-    const alreadyAdded = courseAlreadyAdded(course);
-    const entity = Course.createEntity(
-      course,
-      {
-        add: addCourse,
-        remove: removeCourse,
-        toggleStarred: toggleCourseStarred,
-        toggleSelected: toggleCourseSelected,
-        focus: CourseDetails.setCourse,
-      },
-      { alreadyAdded }
-    );
-    entity.style.top = "" + gCourseEntityHeight * index + "px";
-    courseSearchResultsList.appendChild(entity);
-  }
+  //for (
+  //  let index = Math.max(startIndex, 0);
+  //  index < Math.min(startIndex + numToShow, gFilteredCourseKeys.length);
+  //  ++index
+  //) {
+  //  const course = gApiData.data.courses[gFilteredCourseKeys[index]];
+  //  const alreadyAdded = courseAlreadyAdded(course);
+  //  const entity = Course.createEntity(
+  //    course,
+  //    {
+  //      add: addCourse,
+  //      remove: removeCourse,
+  //      toggleStarred: toggleCourseStarred,
+  //      toggleSelected: toggleCourseSelected,
+  //      focus: CourseDetails.setCourse,
+  //    },
+  //    { alreadyAdded }
+  //  );
+  //  entity.style.top = "" + gCourseEntityHeight * index + "px";
+  //  courseSearchResultsList.appendChild(entity);
+  //}
 
-  courseSearchResultsPlaceholder.style.height =
-    gCourseEntityHeight * gFilteredCourseKeys.length + "px";
+  //courseSearchResultsPlaceholder.style.height =
+  //  gCourseEntityHeight * gFilteredCourseKeys.length + "px";
 
-  courseSearchResultsEnd.textContent =
-    gFilteredCourseKeys.length != 0 ? "End of results" : "No results";
+  //courseSearchResultsEnd.textContent =
+  //  gFilteredCourseKeys.length != 0 ? "End of results" : "No results";
 }
 
 function updateSelectedCoursesList() {
