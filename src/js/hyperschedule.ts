@@ -958,6 +958,7 @@ function updateCourseSearchResults() {
                 !courseConflictWithSchedule(course, true))
             );
           });
+    console.log(gFilteredCourseKeys);
   }
 
   rerenderCourseSearchResults();
