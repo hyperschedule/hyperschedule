@@ -45,8 +45,10 @@
     grid-area: status;
 
     grid-template-areas: "badge" "seats";
+    grid-template-columns: max-content;
     @media (min-width: theme(screens.sm)) {
       grid-template-areas: "badge seats";
+      grid-template-columns: repeat(2, max-content);
     }
 
     .badge {
