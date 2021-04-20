@@ -1292,7 +1292,11 @@ async function retrieveCourseData() {
   if (wasUpdated) {
     for (let i = 0; i < gSelectedCourses.length; ++i) {
       const old = gSelectedCourses[i];
-      gSelectedCourses[i] = apiData.data.courses[old.courseCode] || old;
+      gSelectedCourses[i] = {
+        ...(apiData.data.courses[old.courseCode] || old),
+        selected: old.selected,
+        starred: old.starred,
+      };
     }
 
     updateCourseSearchResults();
