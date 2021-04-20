@@ -104,7 +104,6 @@ export const update = (
 const render = () => {
   state.height = dom.measure.scrollHeight;
   dom.spacer.style.height = `${state.length * state.height}px`;
-  console.log("rendering", state.height, state.length);
 
   const offset = Math.min(
     Math.floor(dom.root.scrollTop / state.height),
