@@ -900,6 +900,10 @@ function updateTabToggle() {
 
   setEntityVisibility(courseSearchColumn, !gScheduleTabSelected);
   setButtonSelected(courseSearchToggle, !gScheduleTabSelected);
+
+  if (!gScheduleTabSelected) {
+    updateCourseSearchResults();
+  }
 }
 
 function updateShowClosedCoursesCheckbox() {
@@ -968,14 +972,6 @@ function rerenderCourseSearchResults() {
     //courseSearchResultsEnd.textContent = "Fetching courses from Portal...";
     return;
   }
-
-  // Remove courses that should no longer be shown (or all courses, if
-  // updating non-incrementally).
-  //while (courseSearchResultsList.lastChild !== null) {
-  //  // Make sure to remove from the end.
-  //  courseSearchResultsList.removeChild(courseSearchResultsList.lastChild);
-  //}
-
   const apiData = gApiData.data;
   //SearchResults.update(gFilteredCourseKeys);
   SearchResults.update(
@@ -985,46 +981,6 @@ function rerenderCourseSearchResults() {
     addCourse,
     CourseDetails.setCourse
   );
-
-  //const numToShow =
-  //  (document.documentElement.clientHeight / gCourseEntityHeight) * 3;
-  //const startIndex = Math.floor(
-  //  (courseSearchResults.scrollTop - document.documentElement.clientHeight) /
-  //    gCourseEntityHeight
-  //);
-
-  //const numAlreadyShown = courseSearchResultsList.childElementCount;
-  //const allCoursesDisplayed = true;
-  //// 0 in case of non-incremental update
-  //const numAdded = numAlreadyShown;
-
-  //for (
-  //  let index = Math.max(startIndex, 0);
-  //  index < Math.min(startIndex + numToShow, gFilteredCourseKeys.length);
-  //  ++index
-  //) {
-  //  const course = gApiData.data.courses[gFilteredCourseKeys[index]];
-  //  const alreadyAdded = courseAlreadyAdded(course);
-  //  const entity = Course.createEntity(
-  //    course,
-  //    {
-  //      add: addCourse,
-  //      remove: removeCourse,
-  //      toggleStarred: toggleCourseStarred,
-  //      toggleSelected: toggleCourseSelected,
-  //      focus: CourseDetails.setCourse,
-  //    },
-  //    { alreadyAdded }
-  //  );
-  //  entity.style.top = "" + gCourseEntityHeight * index + "px";
-  //  courseSearchResultsList.appendChild(entity);
-  //}
-
-  //courseSearchResultsPlaceholder.style.height =
-  //  gCourseEntityHeight * gFilteredCourseKeys.length + "px";
-
-  //courseSearchResultsEnd.textContent =
-  //  gFilteredCourseKeys.length != 0 ? "End of results" : "No results";
 }
 
 function updateSelectedCoursesList() {
@@ -1131,6 +1087,8 @@ function handleGlobalStateUpdate() {
   updateShowConflictingCoursesCheckbox();
   updateConflictCoursesRadio();
   updateTimeZoneDropdown();
+
+  updateCourseSearchResults();
 
   // Update course displays.
   updateCourseDisplays();

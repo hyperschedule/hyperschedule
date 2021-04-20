@@ -98,12 +98,13 @@ export const update = (
   state.add = add;
   state.focus = focus;
   dom.footer.textContent = "End of results";
-  dom.spacer.style.height = `${length * state.height}px`;
   render();
 };
 
 const render = () => {
   state.height = dom.measure.scrollHeight;
+  dom.spacer.style.height = `${state.length * state.height}px`;
+  console.log("rendering", state.height, state.length);
 
   const offset = Math.min(
     Math.floor(dom.root.scrollTop / state.height),
