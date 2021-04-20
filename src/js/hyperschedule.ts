@@ -1290,6 +1290,11 @@ async function retrieveCourseData() {
   //SearchResults.updateAll(apiData.data.courses);
 
   if (wasUpdated) {
+    for (let i = 0; i < gSelectedCourses.length; ++i) {
+      const old = gSelectedCourses[i];
+      gSelectedCourses[i] = apiData.data.courses[old.courseCode] || old;
+    }
+
     updateCourseSearchResults();
     updateSelectedCoursesList();
     updateSchedule();
