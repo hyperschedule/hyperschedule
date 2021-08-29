@@ -1,5 +1,5 @@
 [build]
-command = "ANALYTICS=1 npm run build"
+command = "ANALYTICS=1 npm run build && cd api && go build -o ../netlify/functions/hello ./cmd/hello"
 publish = "dist"
 
 [functions]
