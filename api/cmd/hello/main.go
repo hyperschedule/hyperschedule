@@ -42,6 +42,7 @@ func (env *env) handler(
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
+		Headers:    map[string]string{"Content-Type": "application/json"},
 		Body:       string(body),
 	}, nil
 }
