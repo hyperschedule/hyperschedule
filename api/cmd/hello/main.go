@@ -13,37 +13,32 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 )
 
 type env struct {
-	db *pgxpool.Pool
+	db         *pgxpool.Pool
+	cacheMutex *sync.RWMutex
+	cacheData  *string
 }
 
 func (env *env) handler(
 	ctx context.Context,
 	req events.APIGatewayProxyRequest,
 ) (events.APIGatewayProxyResponse, error) {
-	resp, err := env.fetchV3(ctx)
+	resp, err := env.fetchV3Cached(ctx)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusInternalServerError,
-			Body:       "sorry something went wrong",
-		}, err
-	}
-
-	body, err := json.Marshal(resp)
-	if err != nil {
-		return events.APIGatewayProxyResponse{
-			StatusCode: http.StatusInternalServerError,
-			Body:       "failed to serialize json",
+			Body:       err.Error(),
 		}, err
 	}
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Headers:    map[string]string{"Content-Type": "application/json"},
-		Body:       string(body),
+		Body:       resp,
 	}, nil
 }
 
@@ -54,7 +49,8 @@ func main() {
 	}
 
 	env := &env{
-		db: pool,
+		db:         pool,
+		cacheMutex: &sync.RWMutex{},
 	}
 
 	lambda.Start(env.handler)
@@ -110,6 +106,34 @@ func v3ScheduleLess(s1, s2 *V3Schedule) bool {
 		(s1.StartTime < s2.StartTime || s1.StartTime == s2.StartTime &&
 			(s1.EndTime < s2.EndTime || s1.EndTime == s2.EndTime &&
 				s1.Location <= s2.Location))
+}
+
+func (e *env) fetchV3Cached(ctx context.Context) (string, error) {
+	e.cacheMutex.RLock()
+	if e.cacheData != nil {
+		data := *e.cacheData
+		e.cacheMutex.RUnlock()
+		return data, nil
+	}
+
+	e.cacheMutex.RUnlock()
+
+	resp, err := e.fetchV3(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	body, err := json.Marshal(resp)
+	if err != nil {
+		return "", err
+	}
+
+	str := string(body)
+	e.cacheMutex.Lock()
+	e.cacheData = &str
+	e.cacheMutex.Unlock()
+
+	return str, nil
 }
 
 func (e *env) fetchV3(ctx context.Context) (*V3, error) {
