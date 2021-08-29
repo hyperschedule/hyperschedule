@@ -115,8 +115,9 @@ func (e *env) fetchV3Cached(ctx context.Context) (string, error) {
 		e.cacheMutex.RUnlock()
 		return data, nil
 	}
-
 	e.cacheMutex.RUnlock()
+
+	log.Printf("empty cache, generating new response")
 
 	resp, err := e.fetchV3(ctx)
 	if err != nil {
@@ -132,6 +133,8 @@ func (e *env) fetchV3Cached(ctx context.Context) (string, error) {
 	e.cacheMutex.Lock()
 	e.cacheData = &str
 	e.cacheMutex.Unlock()
+
+	log.Printf("done")
 
 	return str, nil
 }
