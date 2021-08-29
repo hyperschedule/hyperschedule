@@ -197,7 +197,7 @@ func (e *env) fetchV3(ctx context.Context) (*V3, error) {
     WHERE "term"."semester" = $1 AND "section_schedule"."deleted_at" IS NULL
   `, semester)
 
-	results := tx.Batch(ctx, batch)
+	results := e.db.SendBatch(ctx, batch)
 	defer results.Close()
 
 	rowsTerms, err := results.Query()
