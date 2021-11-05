@@ -1,7 +1,9 @@
-import * as Course from "@hyperschedule/lib/course";
-import * as Schedule from "@hyperschedule/lib/schedule";
-import * as Util from "@hyperschedule/lib/util";
-import * as Sidebar from "@hyperschedule/view/sidebar";
+import * as Course from "../lib/course";
+import * as Schedule from "../lib/schedule";
+import * as Util from "../lib/util";
+import * as Sidebar from "../view/sidebar";
+
+/*
 
 const dom = (() => {
   const container = document.getElementById("course-details")!;
@@ -80,3 +82,4 @@ const creditMultiplier = (course: Course.CourseV3) =>
   "HM"
     ? 1
     : 3;
+    */

@@ -9,7 +9,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 //@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
-@import "./course-details.pcss";
 @import "./course-row.pcss";
 @import "./search-results.pcss";
 @import "./status-badge.pcss";
@@ -35,10 +34,6 @@ body.preload * {
 .dropdown-menu {
   min-width: 0;
   padding: 2px 0;
-}
-
-.hidden {
-  display: none;
 }
 
 .placeholder {
@@ -216,19 +211,11 @@ main {
   flex-direction: column;
 }
 
-#schedule-column.hidden {
-  display: none;
-}
-
 /** Course search **/
 
 #course-search-column {
   @apply grid min-h-0;
   grid-template-rows: auto 1fr;
-}
-
-#course-search-column.hidden {
-  display: none;
 }
 
 #course-search-results {
