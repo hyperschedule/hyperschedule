@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "webpack serve --mode development",
-    "build": "webpack build --mode production",
+    "build": "svelte-kit build",
     "setup": "npm i && npm run setup-hooks",
     "setup-hooks": "ln -sf ../../scripts/pre-commit .git/hooks/pre-commit",
     "clean": "git clean -Xf dist",
@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.14",
+    "@sveltejs/adapter-netlify": "^1.0.0-next.35",
     "@sveltejs/kit": "next",
     "@tailwindcss/jit": "^0.1.18",
     "@types/bootstrap": "^5.0.12",

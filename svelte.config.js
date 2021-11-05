@@ -1,6 +1,8 @@
 import svPreprocess from "svelte-preprocess";
 import Path from "path";
 
+import svAdapterNetlify from "@sveltejs/adapter-netlify";
+
 import pcssImport from "postcss-import";
 import pcssNested from "postcss-nested";
 import pcssAutoprefixer from "autoprefixer";
@@ -21,6 +23,7 @@ export default {
     //},
   }),
   kit: {
+    adapter: svAdapterNetlify(),
     files: {
       template: "src/template.html",
     },
