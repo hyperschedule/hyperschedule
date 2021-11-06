@@ -38,8 +38,10 @@
         <i class="las la-list" />
       </button>
     </div>
-    <div class:hidden={scheduleTabSelected}><CourseSearchColumn /></div>
-    <div class:hidden={!scheduleTabSelected}><ScheduleColumn /></div>
+    <CourseSearchColumn hidden={scheduleTabSelected} />
+    <div class="tab" class:hidden={!scheduleTabSelected}>
+      <ScheduleColumn />
+    </div>
   </div>
 
   <div id="sidebar-overlay" />

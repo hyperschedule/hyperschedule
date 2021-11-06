@@ -143,16 +143,13 @@ const render = () => {
 };
 
 const init = () => {
-  dom.root.addEventListener("scroll", render);
-  window.addEventListener("resize", render);
-
-  const row = Row.create(Row.Mode.SearchResult);
-  Row.placeholder(row);
-
-  const measure = <HTMLElement>dom.root.querySelector(".measure");
-  Row.append(measure, row);
-
-  render();
+  //dom.root.addEventListener("scroll", render);
+  //window.addEventListener("resize", render);
+  //const row = Row.create(Row.Mode.SearchResult);
+  //Row.placeholder(row);
+  //const measure = <HTMLElement>dom.root.querySelector(".measure");
+  //Row.append(measure, row);
+  //render();
 };
 
-init();
+//init();

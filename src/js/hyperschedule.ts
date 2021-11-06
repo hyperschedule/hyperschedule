@@ -1153,20 +1153,6 @@ function updateCourseDisplays() {
   updateSchedule();
 }
 
-//function displayCourseSearchColumn(ev: MouseEvent) {
-//  (<HTMLElement>ev.target).blur();
-//  gScheduleTabSelected = false;
-//  updateTabToggle();
-//  writeStateToLocalStorage();
-//}
-
-//function displayScheduleColumn(ev: MouseEvent) {
-//  (<HTMLElement>ev.target).blur();
-//  gScheduleTabSelected = true;
-//  updateTabToggle();
-//  writeStateToLocalStorage();
-//}
-
 //// Course retrieval
 
 /**
@@ -1291,10 +1277,6 @@ async function retrieveCourseDataUntilSuccessful() {
 function writeStateToLocalStorage() {
   localStorage.setItem("apiData", JSON.stringify(gApiData));
   localStorage.setItem("selectedCourses", JSON.stringify(gSelectedCourses));
-  //localStorage.setItem(
-  //  "scheduleTabSelected",
-  //  JSON.stringify(gScheduleTabSelected)
-  //);
   localStorage.setItem("showClosedCourses", JSON.stringify(gShowClosedCourses));
   localStorage.setItem(
     "hideAllConflictingCourses",
@@ -1318,11 +1300,6 @@ function readStateFromLocalStorage() {
   gSelectedCourses = readFromLocalStorage("selectedCourses", _.isArray, []).map(
     Course.upgrade
   );
-  //gScheduleTabSelected = readFromLocalStorage(
-  //  "scheduleTabSelected",
-  //  _.isBoolean,
-  //  false
-  //);
   gShowClosedCourses = readFromLocalStorage(
     "showClosedCourses",
     _.isBoolean,
