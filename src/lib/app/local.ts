@@ -23,12 +23,14 @@ const make = <T>(
   def: T,
   validate: (init: unknown) => T | null
 ) => {
-  const initJson = localStorage.getItem(key);
+  const initJson =
+    typeof localStorage === "undefined" ? null : localStorage.getItem(key);
   const init = (initJson ? validate(JSON.parse(initJson)) : null) ?? def;
   const store = Store.writable(init);
   // todo maybe unsubscribe, who cares
   store.subscribe((data) => {
-    localStorage.setItem(key, JSON.stringify(data));
+    if (typeof localStorage !== "undefined")
+      localStorage.setItem(key, JSON.stringify(data));
   });
   return store;
 };

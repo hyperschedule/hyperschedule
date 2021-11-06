@@ -92,13 +92,14 @@ export const update = (
   add: State["add"],
   focus: State["focus"]
 ) => {
-  state.length = length;
-  state.get = get;
-  state.isAdded = isAdded;
-  state.add = add;
-  state.focus = focus;
-  dom.footer.textContent = "End of results";
-  render();
+  return;
+  //state.length = length;
+  //state.get = get;
+  //state.isAdded = isAdded;
+  //state.add = add;
+  //state.focus = focus;
+  //dom.footer.textContent = "End of results";
+  //render();
 };
 
 const render = () => {
