@@ -57,7 +57,9 @@ const filterKeywords: Record<string, string[]> = {
   "dept:": ["dept:", "department:"],
   "college:": ["college", "col:", "school:", "sch:"],
   "days:": ["days:", "day:"],
+  "credit:": ["cred:", "credits:", "creds:"],
 };
+const filterKeywordsValues = Object.values(filterKeywords).flat();
 
 const filterInequalities = ["<=", ">=", "<", ">", "="];
 const pacificScheduleDays = [
@@ -471,7 +473,9 @@ function coursePassesTextFilters(
     (textFilters["dept:"] && !dept.match(textFilters["dept:"])) ||
     (textFilters["college:"] && !col.match(textFilters["college:"])) ||
     (textFilters["days:"] &&
-      !coursePassesDayFilter(course, textFilters["days:"]))
+      !coursePassesDayFilter(course, textFilters["days:"])) ||
+    (textFilters["credit:"] &&
+      !coursePassesCreditFilter(course, textFilters["credit:"]))
   ) {
     return false;
   }
@@ -540,6 +544,36 @@ function coursePassesDayFilter(course: Course.CourseV3, inputString: string) {
       );
     default:
       return false;
+  }
+}
+
+function coursePassesCreditFilter(course: Course.CourseV3, filter: string) {
+  const match = filter.match(/^(<|<=|>|>=|=)?([0-9.]+)$/);
+  if (match === null) return false;
+
+  const nonMuddMultiplier =
+    course.courseCode.match(/[A-Z]* *[0-9A-Z ]*? *([A-Z]{2})-[0-9]{2}/)?.[1] ===
+    "HM"
+      ? 1
+      : 3;
+
+  const [, rel, val] = match;
+  const credits = parseFloat(val) / nonMuddMultiplier;
+  switch (rel) {
+    case "<":
+      return course.courseCredits < credits;
+    case "<=":
+      return course.courseCredits <= credits;
+    case ">":
+      return course.courseCredits > credits;
+    case ">=":
+      return course.courseCredits >= credits;
+
+    // TS doesn't recognize that omitted optional groups match as `undefined`,
+    // but they do.  This case corresponds to equality check.
+    case undefined:
+    case "=":
+      return course.courseCredits === credits;
   }
 }
 
@@ -841,23 +875,15 @@ async function attachListeners() {
 
 function processSearchText() {
   const searchText = courseSearchInput.value.trim().split(/\s+/);
-  let filterKeywordsValues: string[] = [];
-  for (let key of Object.keys(filterKeywords)) {
-    filterKeywordsValues = filterKeywordsValues.concat(filterKeywords[key]);
-  }
-  let filtersText = [];
-  let queryText = [];
+  const filtersText = [];
+  const queryText = [];
 
-  for (let text of searchText) {
-    text = text.toLowerCase();
-    if (
-      _.some((filter: string) => {
-        return text.includes(filter);
-      }, filterKeywordsValues)
-    ) {
-      filtersText.push(text);
+  for (const text of searchText) {
+    const lower = text.toLowerCase();
+    if (filterKeywordsValues.some((filter) => lower.startsWith(filter))) {
+      filtersText.push(lower);
     } else {
-      queryText.push(text);
+      queryText.push(lower);
     }
   }
 
@@ -874,12 +900,12 @@ function getSearchQuery(searchTextArray: string[]) {
 }
 
 function getSearchTextFilters(filtersTextArray: string[]) {
-  let filter: Record<string, string> = {};
+  const filter: Record<string, string> = {};
   for (let text of filtersTextArray) {
     let keyword = text.split(":")[0] + ":";
     const filterText = text.split(":")[1];
     if (!(keyword in Object.keys(filterKeywords))) {
-      for (let key of Object.keys(filterKeywords)) {
+      for (const key of Object.keys(filterKeywords)) {
         if (filterKeywords[key].includes(keyword)) {
           keyword = key;
           break;
