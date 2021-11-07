@@ -55,9 +55,9 @@ const greyConflictCoursesOptions = ["none", "starred", "all"];
 
 const filterKeywords: Record<string, string[]> = {
   "dept:": ["dept:", "department:"],
-  "college:": ["college", "col:", "school:", "sch:"],
+  "college:": ["college:", "col:", "school:", "sch:"],
   "days:": ["days:", "day:"],
-  "credit:": ["cred:", "credits:", "creds:"],
+  "credit:": ["credit:", "cred:", "credits:", "creds:"],
 };
 const filterKeywordsValues = Object.values(filterKeywords).flat();
 
@@ -914,6 +914,7 @@ function getSearchTextFilters(filtersTextArray: string[]) {
     }
     filter[keyword] = filterText;
   }
+  console.log(filter);
   return filter;
 }
 
