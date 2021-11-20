@@ -2,7 +2,6 @@ import * as Course from "@hyperschedule/lib/course";
 import * as Schedule from "@hyperschedule/lib/schedule";
 import * as Util from "@hyperschedule/lib/util";
 import * as Sidebar from "@hyperschedule/view/sidebar";
-import { string } from "mathjs";
 
 const dom = (() => {
   const container = document.getElementById("course-details")!;
