@@ -37,14 +37,6 @@ const hide = () => {
 };
 dom.close.addEventListener("click", hide);
 
-const cleanAnchorTags = (text: any) =>
-  text
-    ? text.replace(
-        /<a href=(.*? )>(.*?)<\/a>/,
-        '<a href="$1" target="blank_">$2</a>'
-      )
-    : "";
-
 export const setCourse = (course: Course.CourseV3) => {
   dom.container.classList.add("show");
   Sidebar.show();
@@ -55,7 +47,7 @@ export const setCourse = (course: Course.CourseV3) => {
   dom.credits.textContent = `${partOfYear(course)}, ${credits} credit${
     credits === 1 ? "" : "s"
   }`;
-  dom.description.innerHTML = cleanAnchorTags(course.courseDescription);
+  dom.description.innerHTML = course.courseDescription || "";
 
   if (course.courseEnrollmentStatus) {
     dom.status.dataset.status =
