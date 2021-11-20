@@ -2,6 +2,7 @@ import * as Course from "@hyperschedule/lib/course";
 import * as Schedule from "@hyperschedule/lib/schedule";
 import * as Util from "@hyperschedule/lib/util";
 import * as Sidebar from "@hyperschedule/view/sidebar";
+import { string } from "mathjs";
 
 const dom = (() => {
   const container = document.getElementById("course-details")!;
@@ -37,6 +38,14 @@ const hide = () => {
 };
 dom.close.addEventListener("click", hide);
 
+const cleanAnchorTags = (text: any) =>
+  text
+    ? text.replace(
+        /<a href=(.*? )>(.*?)<\/a>/,
+        '<a href="$1" target="blank_">$2</a>'
+      )
+    : "";
+
 export const setCourse = (course: Course.CourseV3) => {
   dom.container.classList.add("show");
   Sidebar.show();
@@ -47,10 +56,11 @@ export const setCourse = (course: Course.CourseV3) => {
   dom.credits.textContent = `${partOfYear(course)}, ${credits} credit${
     credits === 1 ? "" : "s"
   }`;
-  dom.description.textContent = course.courseDescription;
+  dom.description.innerHTML = cleanAnchorTags(course.courseDescription);
 
   if (course.courseEnrollmentStatus) {
-    dom.status.dataset.status = course.courseEnrollmentStatus.toLocaleLowerCase();
+    dom.status.dataset.status =
+      course.courseEnrollmentStatus.toLocaleLowerCase();
     dom.status.textContent = `${capitalize(course.courseEnrollmentStatus)}`;
     dom.seats.textContent = `${course.courseSeatsFilled}/${course.courseSeatsTotal} seats filled`;
   }
