@@ -47,10 +47,11 @@ export const setCourse = (course: Course.CourseV3) => {
   dom.credits.textContent = `${partOfYear(course)}, ${credits} credit${
     credits === 1 ? "" : "s"
   }`;
-  dom.description.textContent = course.courseDescription;
+  dom.description.innerHTML = course.courseDescription || "";
 
   if (course.courseEnrollmentStatus) {
-    dom.status.dataset.status = course.courseEnrollmentStatus.toLocaleLowerCase();
+    dom.status.dataset.status =
+      course.courseEnrollmentStatus.toLocaleLowerCase();
     dom.status.textContent = `${capitalize(course.courseEnrollmentStatus)}`;
     dom.seats.textContent = `${course.courseSeatsFilled}/${course.courseSeatsTotal} seats filled`;
   }
