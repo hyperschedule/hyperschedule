@@ -1,0 +1,7 @@
+parser: "postcss-scss"
+plugins:
+  postcss-import: {}
+  postcss-nested: {}
+  autoprefixer: {}
+  tailwindcss:
+    config: "./tailwind.config.cjs"

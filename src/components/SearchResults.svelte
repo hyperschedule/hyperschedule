@@ -38,7 +38,7 @@
   <div class="measure" bind:clientHeight={rowHeight}><CourseRow /></div>
 </div>
 
-<style lang="pcss">
+<style lang="postcss">
   #search-results {
     @apply overflow-y-scroll relative;
 

@@ -10,7 +10,7 @@
   let scheduleTabSelected = false;
 
   onMount(() => {
-    import("../js/hyperschedule.ts");
+    //import("../js/hyperschedule.ts");
   });
 </script>
 
@@ -53,20 +53,20 @@
 
 <!--script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script-->
 <!-- curl -s <src> | shasum -a 384 | cut -f1 -d' ' | xxd -r -p | base64 | sed 's/.*/integrity="sha384-&"/' -->
-<if condition="ANALYTICS">
+
+<!--if condition="ANALYTICS">
   <script
     src="https://cdn.usefathom.com/script.js"
     site="SNRUMQQA"
     defer></script>
-</if>
-
+</if-->
 <style lang="postcss" global>
-  @import "../css/main.pcss";
-  @import "../css/course.pcss";
+  //@import "../css/main.pcss";
+  //@import "../css/course.pcss";
 
   button.active {
-    @apply outline-none;
-    @apply bg-blue-500;
-    @apply text-white;
+    //@apply outline-none;
+    //@apply bg-blue-500;
+    //@apply text-white;
   }
 </style>

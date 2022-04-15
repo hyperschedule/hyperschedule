@@ -27,7 +27,6 @@ export default {
     files: {
       template: "src/template.html",
     },
-    ssr: false,
     vite: {
       resolve: {
         extensions: [".ts", ".js"],
