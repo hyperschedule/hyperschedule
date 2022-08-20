@@ -23,7 +23,7 @@
     "ts-node": "^10.9.1",
     "tsc": "^2.0.4",
     "typescript": "^4.7.4",
-    "backend": "file:./backend",
-    "frontend": "file:./frontend"
+    "hyperschedule-backend": "file:./backend",
+    "hyperschedule-frontend": "file:./frontend"
   }
 }
