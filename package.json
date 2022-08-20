@@ -1,0 +1,27 @@
+{
+  "name": "hyperschedule",
+  "version": "2.0.0",
+  "description": "A fast scheduler for the Claremont colleges",
+  "main": "index.js",
+  "repository": "git@github.com:MuddCreates/hyperschedule.git",
+  "author": "Mia Celeste <mia@miaceleste.dev>",
+  "contributors": [
+    {
+      "name": "Ethan Vazquez",
+      "email": "edv121@outlook.com",
+      "url": "https://github.com/IonImpulse"
+    },
+    {
+      "name": "Mia Celeste",
+      "email": "mia@miaceleste.dev",
+      "url": "https://github.com/mia1024"
+    }
+  ],
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "tsc": "^2.0.4",
+    "typescript": "^4.7.4"
+  }
+}
