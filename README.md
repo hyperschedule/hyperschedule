@@ -1,6 +1,6 @@
 # Hyperschedule v2
 
-Install
+## Install
 
 ```
 yarn
@@ -19,4 +19,3 @@ Run frontend
 cd frontend
 yarn serve
 ```
-
