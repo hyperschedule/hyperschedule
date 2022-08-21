@@ -1,3 +1,6 @@
-import {server} from "./server";
+import express, {type Router} from "express"
 
-server.get("/api/v4")
+export const router: Router = express.Router()
+router.get("/",(req,res)=>{
+    res.send("hyperschedule v4")
+})

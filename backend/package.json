@@ -32,6 +32,6 @@
     "@types/express": "^4.17.13"
   },
   "scripts": {
-    "serve": "node --loader ts-node/esm src/server.ts"
+    "serve": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts"
   }
 }
