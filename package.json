@@ -24,7 +24,8 @@
     "tsc": "^2.0.4",
     "typescript": "^4.7.4",
     "hyperschedule-backend": "file:./backend",
-    "hyperschedule-frontend": "file:./frontend"
+    "hyperschedule-frontend": "file:./frontend",
+    "hyperschedule-shared": "file:./shared"
   },
   "scripts": {
     "frontend": "cd frontend && yarn serve",

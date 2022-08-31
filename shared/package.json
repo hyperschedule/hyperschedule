@@ -1,8 +1,7 @@
 {
-  "name": "hyperschedule-frontend",
+  "name": "hyperschedule-shared",
   "version": "2.0.0",
-  "description": "A fast scheduler for the Claremont colleges (frontend)",
-  "main": "index.js",
+  "description": "A fast scheduler for the Claremont colleges (Shared)",
   "repository": "git@github.com:MuddCreates/hyperschedule.git",
   "author": "Mia Celeste <mia@miaceleste.dev>",
   "contributors": [
@@ -19,19 +18,13 @@
   ],
   "license": "MIT",
   "private": false,
-  "peerDependencies": {
+  "devDependencies": {
     "ts-node": "^10.9.1",
     "tsc": "^2.0.4",
-    "typescript": "^4.7.4",
-    "hyperschedule-shared": "file:../shared"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^2.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "vite": "^3.0.9"
+    "typescript": "^4.7.4"
   },
   "scripts": {
-    "serve": "vite"
+    "frontend": "cd frontend && yarn serve",
+    "backend": "cd backend && yarn serve"
   }
 }
