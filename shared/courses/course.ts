@@ -29,6 +29,7 @@ export type Course = {
     endDate: string
 
     notes: string
+    textbooks: string[]
 
     instructors: Instructor[]
 
@@ -42,7 +43,8 @@ export type Schedule = {
     endTime: string
 
     days: Weekday[]
-    location: Location
+    // some classes (e.g. labs) have multiple classrooms
+    locations: Location[]
 }
 
 export type Location = {
