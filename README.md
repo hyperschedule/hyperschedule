@@ -1,9 +1,15 @@
 **Hyperschedule**: webapp for scheduling Claremont Colleges courses
 quickly.
 
+## Hyperschedule V2 is currently under development at [v2 branch](https://github.com/MuddCreates/hyperschedule/tree/v2).
+
 ## Live demo
 
 Check out <https://hyperschedule.io>!
+
+API at https://github.com/MuddCreates/hyperschedule-api-go
+
+# Below contents are outdated, only retained for archival purposes. 
 
 ## See also
 
