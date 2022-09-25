@@ -32,5 +32,5 @@ cd ../frontend
 yarn link hyperschedule-shared
 
 cd ../backend
-yarn link hyperschedule-backend
+yarn link hyperschedule-shared
 ```
