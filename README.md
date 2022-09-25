@@ -3,34 +3,17 @@
 ## Install
 
 ```
-yarn
+bash setup.sh
 ```
 
 Run backend
 
 ```
-cd backend
-yarn serve
+yarn backend
 ```
 
 Run frontend
 
 ```
-cd frontend
-yarn serve
-```
-
-# Dev
-
-Link shared modules:
-
-```sh
-cd shared
-yarn link
-
-cd ../frontend
-yarn link hyperschedule-shared
-
-cd ../backend
-yarn link hyperschedule-shared
+yarn frontend
 ```
