@@ -8,7 +8,7 @@ yarn
 
 Run backend
 
-``` 
+```
 cd backend
 yarn serve
 ```
@@ -22,7 +22,7 @@ yarn serve
 
 # Dev
 
-Link shared modules: 
+Link shared modules:
 
 ```sh
 cd shared

@@ -1,2 +1,2 @@
-export * from "./course"
-export * from "./requisite"
+export * from "./course";
+export * from "./requisite";

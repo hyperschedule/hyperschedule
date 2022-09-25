@@ -1,59 +1,66 @@
-import type {Requisite} from "./requisite";
+import type { Requisite } from "./requisite";
 
-export type School = "POM" | "HMC" | "PTZ" | "CMC" | "SCR" | "KGI" | "CGU"
-export type Term = "FA" | "SU" | "SP"
-export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"
+export type School = "POM" | "HMC" | "PTZ" | "CMC" | "SCR" | "KGI" | "CGU";
+export type Term = "FA" | "SU" | "SP";
+export type Weekday =
+    | "Monday"
+    | "Tuesday"
+    | "Wednesday"
+    | "Thursday"
+    | "Friday"
+    | "Saturday"
+    | "Sunday";
 
 export type Course = {
-    title: string
-    description: string
-    courseCode: string
-    sectionNumber: number
+    title: string;
+    description: string;
+    courseCode: string;
+    sectionNumber: number;
 
-    term: Term
-    year: number
-    school: School
-    credits: number
-    permCount: number
+    term: Term;
+    year: number;
+    school: School;
+    credits: number;
+    permCount: number;
 
-    seatsTotal: number
+    seatsTotal: number;
     // seats available will be capped at 0. No negative seats
-    seatsAvailable: number
-    seatsTaken: number
+    seatsAvailable: number;
+    seatsTaken: number;
 
-    schedules: Schedule[]
+    schedules: Schedule[];
 
     // "yyyy:mm:dd"
-    startDate: string
+    startDate: string;
     // "yyyy:mm:dd"
-    endDate: string
+    endDate: string;
 
-    notes: string
-    textbooks: string[]
+    notes: string;
+    textbooks: string[];
 
-    instructors: Instructor[]
+    instructors: Instructor[];
 
-    requisite: Requisite
-}
+    requisite: Requisite;
+};
 
 export type Schedule = {
     // "hh:mm:ss"
-    startTime: string
+    startTime: string;
     // "hh:mm:ss"
-    endTime: string
+    endTime: string;
 
-    days: Weekday[]
+    days: Weekday[];
     // some classes (e.g. labs) have multiple classrooms
-    locations: Location[]
-}
+    locations: Location[];
+};
 
 export type Location = {
-    buildingName: string
-    school: School
-    roomName: string
-}
+    buildingName: string;
+    school: School;
+    roomName: string;
+};
 
 export type Instructor = {
-    name: string
-    email: string
-}
+    name: string;
+    email: string;
+};

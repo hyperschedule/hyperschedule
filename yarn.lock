@@ -276,7 +276,7 @@ http-errors@2.0.0:
   version "2.0.0"
   dependencies:
     express "^4.18.1"
-    hyperschedule-shared "file:../Library/Caches/Yarn/v6/npm-hyperschedule-backend-2.0.0-f169ab6d-fe80-4f7d-bb04-6f8ef93d7b36-1661932854649/node_modules/shared"
+    hyperschedule-shared "file:../../.cache/yarn/v6/npm-hyperschedule-backend-2.0.0-97a5afac-0f6d-41d8-87e3-2e7a943ff15c-1664096133547/node_modules/shared"
 
 "hyperschedule-frontend@file:./frontend":
   version "2.0.0"
@@ -374,6 +374,11 @@ path-to-regexp@0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
   integrity sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==
+
+prettier@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
+  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
 
 proxy-addr@~2.0.7:
   version "2.0.7"
