@@ -3,5 +3,7 @@
   "out": "api_docs",
   "cleanOutputDir": true,
   "entryPointStrategy": "expand",
-  "disableSources": true
+  "disableSources": true,
+  "theme": "oxide",
+  "plugin": ["typedoc-theme-oxide"]
 }
