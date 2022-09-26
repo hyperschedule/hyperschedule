@@ -18,16 +18,15 @@
     }
   ],
   "license": "MIT",
-  "private": false,
   "peerDependencies": {
     "typescript": "^4.7.4"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^2.0.1",
+    "hyperschedule-shared": "file:../shared",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "vite": "^3.0.9",
-    "hyperschedule-shared": "file:../shared"
+    "vite": "^3.0.9"
   },
   "scripts": {
     "serve": "vite"

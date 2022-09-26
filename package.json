@@ -18,7 +18,6 @@
     }
   ],
   "license": "MIT",
-  "private": false,
   "devDependencies": {
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
@@ -33,5 +32,11 @@
   },
   "engines": {
     "node": "^18"
-  }
+  },
+  "packageManager": "yarn@3.2.3",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ]
 }

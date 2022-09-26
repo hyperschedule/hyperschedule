@@ -19,7 +19,6 @@
     }
   ],
   "license": "MIT",
-  "private": false,
   "peerDependencies": {
     "typescript": "^4.7.4"
   },
