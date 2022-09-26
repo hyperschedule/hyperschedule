@@ -25,7 +25,11 @@
   },
   "scripts": {
     "frontend": "cd frontend && yarn serve",
-    "backend": "cd backend && yarn serve"
+    "backend": "cd backend && yarn serve",
+    "test:shared": "cd shared && yarn test",
+    "test:frontend": ":",
+    "test:backend": ":",
+    "test": "yarn test:shared && yarn test:backend && yarn test:frontend"
   },
   "engines": {
     "node": "^18"
