@@ -20,9 +20,6 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
-    "hyperschedule-backend": "file:./backend",
-    "hyperschedule-frontend": "file:./frontend",
-    "hyperschedule-shared": "file:./shared",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   },
