@@ -1,4 +1,4 @@
-import * as APIv4 from "../api_types/v4";
+import * as APIv4 from "../api/v4";
 import { describe, test } from "@jest/globals";
 describe("APIv4 type definition", () => {
     test("course instantiation", () => {

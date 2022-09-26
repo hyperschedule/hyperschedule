@@ -1,7 +1,9 @@
 /**
  * Types defined in this module represents all the data we ever wanted for
- * hyperschedule. However, due to source limitations we might not have some
- * of them.
+ * hyperschedule. However, due to limitations from our data sources, we do
+ * not have access to certain fields. Fields we cannot populate are omitted in
+ * the API.
+ *
  * @module
  */
 import type { Requisite } from "./requisite";

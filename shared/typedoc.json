@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["api_types/v4/index.ts", "courses/course.ts"],
+  "entryPoints": ["api/v4/index.ts", "courses/course.ts"],
   "out": "api_docs",
   "cleanOutputDir": true,
   "entryPointStrategy": "expand",
@@ -7,5 +7,7 @@
   "theme": "oxide",
   "plugin": ["typedoc-theme-oxide"],
   "darkHighlightTheme": "vitesse-light",
-  "lightHighlightTheme": "vitesse-light"
+  "lightHighlightTheme": "vitesse-light",
+  "name": "Hyperschedule API",
+  "readme": "API.md"
 }
