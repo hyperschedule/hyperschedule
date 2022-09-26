@@ -12,12 +12,7 @@
     "lib": ["esnext"],
     "sourceRoot": ".",
     "baseUrl": ".",
-    "rootDir": ".",
-
-    // explicitly specify vite types so that accidental dependencies on react
-    // types by other libs don't mess up IDE checking
-    // <https://github.com/johnsoncodehk/volar/discussions/592>
-    "types": ["vite/client"]
+    "rootDir": "."
   },
   "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx"]
 }

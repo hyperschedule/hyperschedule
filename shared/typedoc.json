@@ -1,0 +1,7 @@
+{
+  "entryPoints": ["api_types/v4/index.ts", "courses/course.ts"],
+  "out": "api_docs",
+  "cleanOutputDir": true,
+  "entryPointStrategy": "expand",
+  "disableSources": true
+}

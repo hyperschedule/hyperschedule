@@ -5,6 +5,7 @@ const config: Config = {
     preset: "ts-jest",
     testEnvironment: "node",
     testMatch: ["**/tests/**/*.test.ts"],
+    cache: false,
 };
 
 export default config;

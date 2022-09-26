@@ -1,4 +1,4 @@
-import type { APIv4 } from "../api_types/v4";
+import * as APIv4 from "../api_types/v4";
 import { describe, test } from "@jest/globals";
 describe("APIv4 type definition", () => {
     test("course instantiation", () => {
@@ -6,9 +6,9 @@ describe("APIv4 type definition", () => {
             identifier: {
                 courseCode: "TEST001",
                 sectionNumber: 0,
-                school: "HMC",
+                school: APIv4.School.HMC,
                 year: 1970,
-                term: "FA",
+                term: APIv4.Term.fall,
             },
             credits: 1,
             description: "test",
@@ -24,12 +24,12 @@ describe("APIv4 type definition", () => {
                 {
                     startTime: 0,
                     endTime: 3600 * 15,
-                    days: ["Monday", "Wednesday"],
+                    days: [APIv4.Weekday.friday],
                     locations: [
                         {
                             buildingName: "TBA",
                             roomName: "TBA",
-                            school: "HMC",
+                            school: APIv4.School.HMC,
                         },
                     ],
                 },
