@@ -529,6 +529,9 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+"hyperschedule-shared@file:../shared":
+  version "2.0.0"
+
 is-core-module@^2.9.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.10.0.tgz#9012ede0a91c69587e647514e1d5277019e728ed"
