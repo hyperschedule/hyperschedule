@@ -3,7 +3,9 @@
   "out": "api_docs",
   "cleanOutputDir": true,
   "entryPointStrategy": "expand",
-  "disableSources": true,
+  "disableSources": false,
   "theme": "oxide",
-  "plugin": ["typedoc-theme-oxide"]
+  "plugin": ["typedoc-theme-oxide"],
+  "darkHighlightTheme": "vitesse-light",
+  "lightHighlightTheme": "vitesse-light"
 }

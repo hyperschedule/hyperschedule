@@ -6,10 +6,10 @@ describe("APIv4 type definition", () => {
             identifier: {
                 courseCode: "TEST001",
                 sectionNumber: 0,
-                school: APIv4.School.HMC,
+                school: "HM", // enum value is fine if we have type assertion
                 year: 1970,
                 term: APIv4.Term.fall,
-            },
+            } as APIv4.CourseIdentifier,
             credits: 1,
             description: "test",
 
