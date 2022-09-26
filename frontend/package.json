@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^2.0.1",
-    "hyperschedule-shared": "file:../shared",
+    "hyperschedule-shared": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "vite": "^3.0.9"
