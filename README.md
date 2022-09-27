@@ -3,7 +3,7 @@
 ## Install
 
 ```
-bash setup.sh
+yarn install
 ```
 
 Run backend

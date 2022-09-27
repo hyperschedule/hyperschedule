@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Generate API docs and post to GH-Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -35,8 +35,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: bash setup.sh
-      - run: cd shared && yarn doc
+      - run: yarn install
+      - run: yarn --cwd shared doc
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

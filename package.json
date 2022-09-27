@@ -23,12 +23,9 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "frontend": "cd frontend && yarn serve",
-    "backend": "cd backend && yarn serve",
-    "test:shared": "cd shared && yarn test",
-    "test:frontend": ":",
-    "test:backend": ":",
-    "test": "yarn test:shared && yarn test:backend && yarn test:frontend"
+    "frontend": "yarn --cwd frontend serve",
+    "backend": "yarn --cwd backend serve",
+    "test": "FORCE_COLOR=true yarn workspaces foreach --parallel --topological-dev --verbose run test"
   },
   "engines": {
     "node": "^18"

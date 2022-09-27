@@ -17,5 +17,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: bash setup.sh
+      - run: yarn install
       - run: yarn test

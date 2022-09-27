@@ -32,6 +32,7 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "serve": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts"
+    "serve": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
+    "test": ":"
   }
 }
