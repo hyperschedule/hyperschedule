@@ -38,7 +38,7 @@ export enum Weekday {
 }
 
 /**
- * For course start and end dates, used to identify half-semester courses.
+ * For course start and end dates, used to identify half-semester types.
  */
 export interface CourseDate {
     year: number;
@@ -49,7 +49,7 @@ export interface CourseDate {
 /** CourseIdentifier is the unique identifier we need to pinpoint a course
  * from the database. We may stringify it as something like
  * `{courseCode} {school}-{sectionNumber} {year}/{term}`,
- * E.g. `TEST001 HMC-05 2022/FA`.
+ * E.g. `TEST001 HM-05 2022/FA`.
  */
 export interface CourseIdentifier {
     courseCode: string;
@@ -62,7 +62,7 @@ export interface CourseIdentifier {
 /**
  * A course can be uniquely identified by a {@link CourseIdentifier}. This
  * implies that each section is its own course. While different sections for
- * the majority of the courses are the same (i.e. only differ in time),
+ * the majority of the types are the same (i.e. only differ in time),
  * sometimes different sections are completely different, such as
  * HSA010HM and CORE001SC.
  */
@@ -91,7 +91,7 @@ export interface Course {
     endDate: CourseDate;
 
     /**
-     * Some courses have special notes.
+     * Some types have special notes.
      */
     notes: string;
     /**

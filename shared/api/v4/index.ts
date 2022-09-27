@@ -6,7 +6,7 @@
  * compatible with future APIs.
  * @module
  */
-import * as Courses from "../../courses";
+import * as Courses from "../../types";
 
 export type Instructor = Omit<Courses.Instructor, "email">;
 export type Course = Omit<

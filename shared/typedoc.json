@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["api/v4/index.ts", "courses/course.ts"],
+  "entryPoints": ["api/v4/index.ts", "types/index.ts"],
   "out": "api_docs",
   "cleanOutputDir": true,
   "entryPointStrategy": "expand",
