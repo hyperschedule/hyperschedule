@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: 18
           cache: "yarn"
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn --cwd shared doc
       - name: Setup Pages
         uses: actions/configure-pages@v2
