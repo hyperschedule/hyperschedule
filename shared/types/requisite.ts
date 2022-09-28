@@ -14,7 +14,10 @@ export enum RequisiteType {
 /**
  * The requisite for a course is effectively a tree where the {@link Requisite}
  * is the root node. We store an extra copy of the course ID for future reverse
- * course look-up by requisites. Here is an example requisite:
+ * course look-up by requisites.
+ *
+ * @remarks
+ * Here is an example requisite:
  * ```typescript
  * const example: Requisite = {
  *   courseId: {
