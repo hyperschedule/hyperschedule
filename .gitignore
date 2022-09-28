@@ -125,3 +125,4 @@ dist
 # yarn v2
 .yarn/
 .idea/
+**/.DS_Store
