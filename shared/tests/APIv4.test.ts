@@ -4,7 +4,8 @@ describe("APIv4 type definition", () => {
     test("course instantiation", () => {
         const course: APIv4.Course = {
             identifier: {
-                courseCode: "TEST001",
+                department: "TEST",
+                courseNumber: 1,
                 sectionNumber: 0,
                 school: "HM", // enum value is fine if we have type assertion
                 year: 1970,

@@ -1,4 +1,5 @@
-import type { CourseIdentifier } from "./course";
+import type { CourseCode, CourseIdentifier } from "./course";
+import { School } from "./course";
 
 export enum LogicType {
   and = "AND",
@@ -19,9 +20,11 @@ export enum RequisiteType {
  * @remarks
  * Here is an example requisite:
  * ```typescript
+ *
  * const example: Requisite = {
  *   courseId: {
- *     courseCode: "CSCI081",
+ *     department: "CSCI",
+ *     courseNumber: 1,
  *     school: School.HMC,
  *     sectionNumber: 2,
  *     year: 2022,
@@ -51,12 +54,20 @@ export enum RequisiteType {
  *               {
  *                 type: "Requisite",
  *                 requisiteType: RequisiteType.prerequisite,
- *                 courseCode: "MATH055 HM"
+ *                 courseCode: {
+ *                   department: "MATH",
+ *                   courseNumber: 55,
+ *                   school:School.HMC
+ *                 }
  *               },
  *               {
  *                 type: "Requisite",
  *                 requisiteType: RequisiteType.prerequisite,
- *                 courseCode: "CSCI060 HM"
+ *                 courseCode: {
+ *                   department: "CSCI",
+ *                   courseNumber: 60,
+ *                   school:School.HMC
+ *                 }
  *               }
  *             ]
  *           },
@@ -67,12 +78,20 @@ export enum RequisiteType {
  *               {
  *                 type: "Requisite",
  *                 requisiteType: RequisiteType.prerequisite,
- *                 courseCode: "MATH055 HM"
+ *                 courseCode: {
+ *                   department: "MATH",
+ *                   courseNumber: 55,
+ *                   school:School.HMC
+ *                 }
  *               },
  *               {
  *                 type: "Requisite",
  *                 requisiteType: RequisiteType.prerequisite,
- *                 courseCode: "CSCI042 HM"
+ *                 courseCode: {
+ *                   department: "CSCI",
+ *                   courseNumber: 42,
+ *                   school:School.HMC
+ *                 }
  *               }
  *             ]
  *           }
@@ -93,10 +112,9 @@ export interface RequisiteCourse {
   requisiteType: RequisiteType;
   /**
    * We only store the course code instead of the full course identifier because
-   * requisite conditions are applied across semesters. This is in portal format,
-   * e.g. `CSCI001 HM`.
+   * requisite conditions are applied across semesters.
    */
-  courseCode: string;
+  courseCode: CourseCode;
 }
 
 /**

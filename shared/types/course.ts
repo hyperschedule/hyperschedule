@@ -39,17 +39,27 @@ export interface CourseDate {
     day: number;
 }
 
-/** CourseIdentifier is the unique identifier we need to pinpoint a course
- * from the database. We may stringify it as something like
- * `{courseCode} {school}-{sectionNumber} {year}/{term}`,
- * E.g. `TEST001 HM-05 2022/FA`.
+/**
+ * CourseCode is what we can use to identify equivalent course offerings in
+ * different semesters. As such, there is no year or semester attached to it.
  */
-export interface CourseIdentifier {
-    courseCode: string;
+export interface CourseCode{
+    /**
+     * 2-4 letters code in all upper case, e.g. CSCI, PE, HSA
+     */
+    department: string;
+    courseNumber: number;
+    school: School;
+}
+
+/** CourseIdentifier is the unique identifier we need to pinpoint a course offering
+ * from the database. We may stringify it as something like
+ * `TEST001 SC-05 2022/FA`.
+ */
+export interface CourseIdentifier extends CourseCode{
     sectionNumber: number;
     year: number;
     term: Term;
-    school: School;
 }
 
 /**
