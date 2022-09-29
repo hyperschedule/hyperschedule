@@ -1,4 +1,11 @@
 [build]
-
-command = "ANALYTICS=1 npm run build"
+command = "ANALYTICS=1 npm run build && cd api && go build -o ../netlify/functions/hello ./cmd/hello"
 publish = "dist"
+
+[build.environment]
+GO_VERSION = '1.16'
+
+
+[functions]
+directory = "netlify/functions/"
+

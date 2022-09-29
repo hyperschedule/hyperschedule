@@ -9,11 +9,13 @@
     "strict": true,
     "lib": ["es2019", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
+    "rootDir": "./src",
     "paths": {
       "@hyperschedule/lib/*": ["src/js/lib/*"],
       "@hyperschedule/view/*": ["src/js/view/*"],
       "@hyperschedule/model/*": ["src/js/model/*"],
       "@hyperschedule/css/*": ["src/css/*"]
     }
-  }
+  },
+  "include": ["src/**/*"]
 }
