@@ -2,6 +2,7 @@ import * as APIv4 from "../api/v4";
 import { describe, test } from "@jest/globals";
 describe("APIv4 type definition", () => {
     test("course instantiation", () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const course: APIv4.Course = {
             identifier: {
                 department: "TEST",

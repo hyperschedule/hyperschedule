@@ -19,13 +19,17 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.24.0",
     "prettier": "^2.7.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.4"
   },
   "scripts": {
     "frontend": "yarn --cwd frontend serve",
     "backend": "yarn --cwd backend serve",
-    "test": "FORCE_COLOR=true yarn workspaces foreach --parallel --topological-dev --verbose run test"
+    "test": "FORCE_COLOR=true yarn workspaces foreach --parallel --topological-dev --verbose run test",
+    "lint": "eslint ."
   },
   "engines": {
     "node": "^18"
