@@ -1,14 +1,14 @@
 import type { CourseCode, CourseIdentifier } from "./course";
 
 export enum LogicType {
-  and = "AND",
-  or = "OR",
-  not = "NOT"
+    and = "AND",
+    or = "OR",
+    not = "NOT",
 }
 
 export enum RequisiteType {
-  prerequisite = "pre",
-  corequisite = "co"
+    prerequisite = "pre",
+    corequisite = "co",
 }
 
 /**
@@ -102,18 +102,18 @@ export enum RequisiteType {
  * ```
  */
 export interface Requisite {
-  courseId: CourseIdentifier;
-  logicGroup: LogicGroup | null;
+    courseId: CourseIdentifier;
+    logicGroup: LogicGroup | null;
 }
 
 export interface RequisiteCourse {
-  type: "Requisite";
-  requisiteType: RequisiteType;
-  /**
-   * We only store the course code instead of the full course identifier because
-   * requisite conditions are applied across semesters.
-   */
-  courseCode: CourseCode;
+    type: "Requisite";
+    requisiteType: RequisiteType;
+    /**
+     * We only store the course code instead of the full course identifier because
+     * requisite conditions are applied across semesters.
+     */
+    courseCode: CourseCode;
 }
 
 /**
@@ -125,8 +125,8 @@ export interface RequisiteCourse {
  * - "First year only"
  */
 export interface SectionRequirement {
-  type: "Section";
-  info: string;
+    type: "Section";
+    info: string;
 }
 
 /**
@@ -134,17 +134,15 @@ export interface SectionRequirement {
  * all `items` individually.
  */
 export interface LogicGroup {
-  type: "LogicGroup";
+    type: "LogicGroup";
 
-  condition: LogicType;
-  /**
-   * If the logic type is NOT, then there should only be one item in this array.
-   * We use an array with a single item so we don't have to define a different
-   * type -- it's gonna take an extra `if` clause anyway.
-   */
-  items: LogicGroupItem[];
-
+    condition: LogicType;
+    /**
+     * If the logic type is NOT, then there should only be one item in this array.
+     * We use an array with a single item so we don't have to define a different
+     * type -- it's gonna take an extra `if` clause anyway.
+     */
+    items: LogicGroupItem[];
 }
 
 export type LogicGroupItem = LogicGroup | RequisiteCourse | SectionRequirement;
-

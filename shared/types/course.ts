@@ -1,4 +1,3 @@
-
 import type { Requisite } from "./requisite";
 
 /**
@@ -43,7 +42,7 @@ export interface CourseDate {
  * CourseCode is what we can use to identify equivalent course offerings in
  * different semesters. As such, there is no year or semester attached to it.
  */
-export interface CourseCode{
+export interface CourseCode {
     /**
      * 2-4 letters code in all upper case, e.g. CSCI, PE, HSA
      */
@@ -56,7 +55,7 @@ export interface CourseCode{
  * from the database. We may stringify it as something like
  * `TEST001 SC-05 2022/FA`.
  */
-export interface CourseIdentifier extends CourseCode{
+export interface CourseIdentifier extends CourseCode {
     sectionNumber: number;
     year: number;
     term: Term;
