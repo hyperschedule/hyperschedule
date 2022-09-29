@@ -29,7 +29,9 @@
     "frontend": "yarn --cwd frontend serve",
     "backend": "yarn --cwd backend serve",
     "test": "FORCE_COLOR=true yarn workspaces foreach --parallel --topological-dev --verbose run test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write '**/*.ts' '**/*.json' '**/*.tsx' '**/*.html'",
+    "format-check": "prettier --check '**/*.ts' '**/*.json' '**/*.tsx' '**/*.html'"
   },
   "engines": {
     "node": "^18"
