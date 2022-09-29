@@ -8,9 +8,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        # we use matrix so we can run those in parallel
+        command: [test, lint]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 18
@@ -18,5 +20,7 @@ jobs:
         with:
           node-version: 18
           cache: "yarn"
-      - run: yarn install --frozen-lockfile
-      - run: yarn test
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run ${{matrix.command}}
+        run: yarn ${{matrix.command}}
