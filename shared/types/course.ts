@@ -48,6 +48,7 @@ export interface CourseCode {
      */
     department: string;
     courseNumber: number;
+    suffix: string;
     school: School;
 }
 
@@ -73,6 +74,12 @@ export interface Course {
 
     title: string;
     description: string;
+    /**
+     * The letter code for the course area. It is not necessarily the same as
+     * the course department. This is useful for people to filter the course
+     * on portal so they know which dropdown to select
+     */
+    courseAreas: string[];
 
     /**
      * number of credits the course has in non-hmc credit.

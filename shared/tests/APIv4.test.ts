@@ -8,13 +8,16 @@ describe("APIv4 type definition", () => {
                 department: "TEST",
                 courseNumber: 1,
                 sectionNumber: 0,
-                school: "HM", // enum value is fine if we have type assertion
+                school: "PZ", // enum value is fine if we have type assertion
                 year: 1970,
                 term: APIv4.Term.fall,
+                suffix: "",
             } as APIv4.CourseIdentifier,
             credits: 1,
             description: "test",
-
+            // TEST001 PZ-01 is a real class listed on portal in term FA/2022
+            // under course area TNDY "Transdisplinary"
+            courseAreas: ["TNDY"],
             instructors: [
                 {
                     name: "test",

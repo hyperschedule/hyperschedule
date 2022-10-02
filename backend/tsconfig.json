@@ -14,11 +14,12 @@
     "sourceRoot": "./src",
     "baseUrl": "./src",
     "rootDir": "./src",
-
+    "noEmit": true,
     // explicitly specify vite types so that accidental dependencies on react
     // types by other libs don't mess up IDE checking
     // <https://github.com/johnsoncodehk/volar/discussions/592>
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+  "files": ["src/fetch-tmp.d.ts"]
 }

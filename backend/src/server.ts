@@ -9,3 +9,7 @@ server.use("/api/v4", router);
 server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
+
+import { getAllCourses } from "./crawler";
+
+getAllCourses();

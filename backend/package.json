@@ -33,6 +33,6 @@
   },
   "scripts": {
     "serve": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
-    "test": ":"
+    "test": "jest"
   }
 }
