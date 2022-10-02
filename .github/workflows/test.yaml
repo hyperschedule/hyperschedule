@@ -1,4 +1,4 @@
-name: Run tests and lints
+name: Run all unit tests and lints
 
 on:
   push:
@@ -14,14 +14,13 @@ jobs:
         # we use matrix so we can run those in parallel
         command: [test, lint, format-check]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: "yarn"
-      - name: Install all dependencies
-        run: yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: yarn install --immutable
       - name: Run ${{matrix.command}}
         run: yarn ${{matrix.command}}

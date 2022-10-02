@@ -1,12 +1,15 @@
+# Simple workflow for deploying static content to GitHub Pages
 name: Generate API docs and post to GH-Pages
 
 on:
-  workflow_run:
-    workflows: [ "Run tests and lints" ]
-    types: [ completed ]
-    branches: [ v2 ]
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["v2"]
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
@@ -18,8 +21,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_pages:
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event.workflow_dispatch }}
+  # Single deploy job since we're just deploying
+  deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -27,20 +30,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: "yarn"
-      - name: Install all dependencies
-        run: yarn install --frozen-lockfile
-      - name: Generate doc in shared
-        run: yarn --cwd shared doc
+      - run: yarn install --frozen-lockfile
+      - run: yarn --cwd shared doc
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
+          # Upload entire repository
           path: 'shared/api_docs'
       - name: Deploy to GitHub Pages
         id: deployment
