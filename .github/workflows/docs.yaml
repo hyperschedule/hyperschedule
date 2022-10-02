@@ -3,10 +3,12 @@ name: Generate API docs and post to GH-Pages
 
 on:
   # Runs on pushes targeting the default branch
-  push:
-    branches: ["v2"]
-
-  # Allows you to run this workflow manually from the Actions tab
+  workflow_run:
+    workflows:
+      - Run tests and lints
+    types: [completed]
+    branches: [v2]
+      # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -22,22 +24,17 @@ concurrency:
 
 jobs:
   # Single deploy job since we're just deploying
-  deploy:
+  build_pages:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: "yarn"
-      - run: yarn install --frozen-lockfile
-      - run: yarn --cwd shared doc
+      - name: Set up dev environment
+        uses: MuddCreates/hyperschedule/.github/workflows/build.yaml@v2
+      - name: Generate doc in shared
+        run: yarn --cwd shared doc
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
