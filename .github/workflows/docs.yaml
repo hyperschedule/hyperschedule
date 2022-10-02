@@ -25,12 +25,20 @@ concurrency:
 jobs:
   build_pages:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: MuddCreates/hyperschedule/.github/workflows/build.yaml@v2
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "yarn"
+      - name: Install all dependencies
+        run: yarn install --frozen-lockfile
       - name: Generate doc in shared
         run: yarn --cwd shared doc
       - name: Setup Pages
