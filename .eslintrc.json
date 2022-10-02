@@ -14,7 +14,13 @@
       "files": ["**/*.ts"]
     }
   ],
-  "ignorePatterns": ["**/*.cjs","**/*.config.ts","**/*.esm","**/*.js","**/*.test.ts"],
+  "ignorePatterns": [
+    "**/*.cjs",
+    "**/*.config.ts",
+    "**/*.esm",
+    "**/*.js",
+    "**/*.test.ts"
+  ],
   "plugins": ["@typescript-eslint"],
   "root": true,
   "rules": {
