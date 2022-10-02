@@ -9,12 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    uses: MuddCreates/hyperschedule/.github/workflows/build.yaml@v2
     strategy:
       matrix:
         # we use matrix so we can run those in parallel
         command: [test, lint, format-check]
     steps:
-      - name: Set up dev environment
-        uses: MuddCreates/hyperschedule/.github/workflows/build.yaml@v2
       - name: Run ${{matrix.command}}
         run: yarn ${{matrix.command}}

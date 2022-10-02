@@ -23,16 +23,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   build_pages:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    uses: MuddCreates/hyperschedule/.github/workflows/build.yaml@v2
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Set up dev environment
-        uses: MuddCreates/hyperschedule/.github/workflows/build.yaml@v2
       - name: Generate doc in shared
         run: yarn --cwd shared doc
       - name: Setup Pages
