@@ -1,5 +1,4 @@
 import type { PomApiCourse, PomApiCourseArea, PomApiTerm } from "./pomApiTypes";
-import { mergeArrays } from "./utils";
 
 const POM_API_ENDPOINT = "https://jicsweb.pomona.edu/api/";
 
@@ -51,7 +50,7 @@ async function getCurrentTerm(): Promise<string> {
     return term.Key;
 }
 
-async function getAllCoureseAreas() {
+async function getAllCourseAreas() {
     const courseAreas = await get("CourseAreas");
     if (courseAreas.status !== 200)
         throw Error(`GET Terms returned status ${courseAreas.status}`);
@@ -76,7 +75,7 @@ async function getCourseArea(
 export async function getAllCourses() {
     const timeStart = new Date().getTime();
     const termKey = await getCurrentTerm();
-    const courseAreas = await getAllCoureseAreas();
+    const courseAreas = await getAllCourseAreas();
     let emptyCourseAreas = 0;
     const resolvedPromises = await Promise.all(
         courseAreas.map(async (courseArea) => {
@@ -85,7 +84,7 @@ export async function getAllCourses() {
             return courses;
         }),
     );
-    const courses = mergeArrays(resolvedPromises);
+    const courses = (<PomApiCourse[]>[]).concat(...resolvedPromises);
     const timeEnd = new Date().getTime();
     console.log(
         `${courses.length} sections fetched in ${
