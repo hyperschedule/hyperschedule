@@ -126,3 +126,6 @@ dist
 .yarn/
 .idea/
 **/.DS_Store
+
+.netlify/
+.svelte-kit/
