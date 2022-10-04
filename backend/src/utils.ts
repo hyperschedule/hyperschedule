@@ -62,8 +62,15 @@ export function mergeApiCourses(
         });
     }
     if (coursesWithAreas.size !== 0) {
-        console.error(`Courses found without corresponding counts`);
-        console.error(Array.from(coursesWithAreas.keys()));
+        console.warn(`Courses found without corresponding counts`);
+        for (const c of coursesWithAreas.values()) {
+            res.push({
+                ...c,
+                PermCount: NaN,
+                SeatsFilled: NaN,
+                SeatsTotal: NaN,
+            });
+        }
     }
     return res;
 }

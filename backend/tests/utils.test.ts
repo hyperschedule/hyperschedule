@@ -1,6 +1,7 @@
 import { describe, test, expect } from "@jest/globals";
 import { mergeApiCourses, mergeCourseAreaCourses } from "../src/utils";
 import { CourseWithAreas } from "../src/pomApiTypes";
+import exp = require("constants");
 
 describe("mergeCourseAreaCourses", () => {
     test("Empty course array", () => {
@@ -454,6 +455,120 @@ describe("mergeApiCourses", () => {
                 ],
                 SeatsFilled: 2,
                 SeatsTotal: 3,
+                Session: "FA",
+                SubSession: "",
+                Year: "2022",
+                courseAreas: ["A"],
+            },
+        ]);
+    });
+    test("Missing termCourse", () => {
+        const result = mergeApiCourses(
+            [],
+            new Map([
+                [
+                    "TEST002  PZ-01",
+                    {
+                        Catalog: "UG22",
+                        CourseCode: "TEST002  PZ-01",
+                        CourseStatus:
+                            "Open<p><b>Changed section</b><p><b>Added section</b>",
+                        Credits: "1.00",
+                        Department: "ZREG",
+                        Description: "",
+                        GradingStyle: "Letter Grade",
+                        Instructors: [
+                            {
+                                CxID: 50092605,
+                                EmailAddress: null,
+                                Name: "Poppins, Mary",
+                            },
+                            {
+                                CxID: 50010831,
+                                EmailAddress: "cheryl_morales@pitzer.edu",
+                                Name: "Morales, Cheryl",
+                            },
+                        ],
+                        Name: "Test Course--Disregard    ",
+                        Note: "",
+                        PermCount: null,
+                        PrimaryAssociation: "PZ",
+                        Requisites: "Y",
+                        Schedules: [
+                            {
+                                Building: "",
+                                BuildingCode: null,
+                                Campus: "PZ Campus",
+                                MeetTime: "To Be Arranged   ",
+                                Room: " ",
+                                Weekdays: "",
+                            },
+                            {
+                                Building: "",
+                                BuildingCode: null,
+                                Campus: "PZ Campus",
+                                MeetTime: "To Be Arranged   ",
+                                Room: " ",
+                                Weekdays: "",
+                            },
+                        ],
+                        SeatsFilled: null,
+                        SeatsTotal: null,
+                        Session: "FA",
+                        SubSession: "",
+                        Year: "2022",
+                        courseAreas: ["A"],
+                    },
+                ],
+            ]),
+        );
+        expect(result).toEqual([
+            {
+                Catalog: "UG22",
+                CourseCode: "TEST002  PZ-01",
+                CourseStatus:
+                    "Open<p><b>Changed section</b><p><b>Added section</b>",
+                Credits: "1.00",
+                Department: "ZREG",
+                Description: "",
+                GradingStyle: "Letter Grade",
+                Instructors: [
+                    {
+                        CxID: 50092605,
+                        EmailAddress: null,
+                        Name: "Poppins, Mary",
+                    },
+                    {
+                        CxID: 50010831,
+                        EmailAddress: "cheryl_morales@pitzer.edu",
+                        Name: "Morales, Cheryl",
+                    },
+                ],
+                Name: "Test Course--Disregard    ",
+                Note: "",
+                PermCount: NaN,
+                PrimaryAssociation: "PZ",
+                Requisites: "Y",
+                Schedules: [
+                    {
+                        Building: "",
+                        BuildingCode: null,
+                        Campus: "PZ Campus",
+                        MeetTime: "To Be Arranged   ",
+                        Room: " ",
+                        Weekdays: "",
+                    },
+                    {
+                        Building: "",
+                        BuildingCode: null,
+                        Campus: "PZ Campus",
+                        MeetTime: "To Be Arranged   ",
+                        Room: " ",
+                        Weekdays: "",
+                    },
+                ],
+                SeatsFilled: NaN,
+                SeatsTotal: NaN,
                 Session: "FA",
                 SubSession: "",
                 Year: "2022",
