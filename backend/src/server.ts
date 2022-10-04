@@ -10,6 +10,6 @@ server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
 
-import { getAllCourses } from "./crawler";
+import { getAndMergeAllCourses } from "./crawler";
 
-getAllCourses();
+getAndMergeAllCourses();

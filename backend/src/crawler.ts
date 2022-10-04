@@ -1,4 +1,10 @@
-import type { PomApiCourse, PomApiCourseArea, PomApiTerm } from "./pomApiTypes";
+import type {
+    PomApiCourseAreaCourse,
+    PomApiCourseArea,
+    PomApiTerm,
+    PomApiTermCourse,
+} from "./pomApiTypes";
+import { mergeApiCourses, mergeCourseAreaCourses } from "./utils";
 
 const POM_API_ENDPOINT = "https://jicsweb.pomona.edu/api/";
 
@@ -38,7 +44,9 @@ async function get(uri: string): Promise<{ status: number; res: any }> {
 }
 
 /* eslint-enable */
-
+/**
+ * Retrieve the most recent term according to API
+ */
 async function getCurrentTerm(): Promise<string> {
     const terms = await get("Terms");
     if (terms.status !== 200)
@@ -60,7 +68,7 @@ async function getAllCourseAreas() {
 async function getCourseArea(
     termKey: string,
     courseAreaCode: string,
-): Promise<PomApiCourse[]> {
+): Promise<PomApiCourseAreaCourse[]> {
     const courses = await get(
         `Courses/${encodeURIComponent(termKey)}/${encodeURIComponent(
             courseAreaCode,
@@ -69,28 +77,44 @@ async function getCourseArea(
     // one course area has code P/IS and always returns 404 because
     // the server thinks it's a different endpoint
     if (courses.status === 204 || courses.status === 404) return [];
-    return courses.res as PomApiCourse[];
+    return courses.res as PomApiCourseAreaCourse[];
 }
 
-export async function getAllCourses() {
+async function getAllTermCourses(termKey: string): Promise<PomApiTermCourse[]> {
+    const courses = await get(`Courses/${termKey}`);
+    if (courses.status !== 200) throw Error("No term course found");
+    return courses.res as PomApiTermCourse[];
+}
+
+async function getAllCourseAreaCourses(termKey: string) {
     const timeStart = new Date().getTime();
-    const termKey = await getCurrentTerm();
     const courseAreas = await getAllCourseAreas();
     let emptyCourseAreas = 0;
     const resolvedPromises = await Promise.all(
         courseAreas.map(async (courseArea) => {
             const courses = await getCourseArea(termKey, courseArea.Code);
             if (courses.length === 0) emptyCourseAreas += 1;
-            return courses;
+            return { area: courseArea.Code, courses };
         }),
     );
-    const courses = (<PomApiCourse[]>[]).concat(...resolvedPromises);
     const timeEnd = new Date().getTime();
     console.log(
-        `${courses.length} sections fetched in ${
+        `${courseAreas.length} course areas fetched in ${
             (timeEnd - timeStart) / 1000
-        }s across ${
-            courseAreas.length
-        } course areas with ${emptyCourseAreas} empty course areas`,
+        }s with ${emptyCourseAreas} empty areas`,
     );
+    return mergeCourseAreaCourses(resolvedPromises);
+}
+
+export async function getAndMergeAllCourses() {
+    const termKey = await getCurrentTerm();
+
+    const a = mergeApiCourses(
+        ...(await Promise.all([
+            getAllTermCourses(termKey),
+            getAllCourseAreaCourses(termKey),
+        ])),
+    );
+    console.log("done");
+    return a;
 }

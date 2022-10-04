@@ -1,17 +1,15 @@
 import { describe, test, expect } from "@jest/globals";
-import { mergeArrays } from "../src/utils";
+import { mergeCourseAreaCourses } from "../src/utils";
 
 describe("Backend utils", () => {
-    test("mergeArrays", () => {
-        const arr1 = mergeArrays([[1], [2], [3], [4]]);
-        expect(arr1).toEqual([1, 2, 3, 4]);
-
-        const arr2 = mergeArrays([
-            [1, 2],
-            [3, 4],
-            [5, 6],
-            [7, 8],
+    test("mergeCourseAreaCourses", () => {
+        const result = mergeCourseAreaCourses([
+            {
+                area: "A",
+                courses: [],
+            },
         ]);
-        expect(arr2).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+        expect(result).toEqual(new Map());
+        //
     });
 });
