@@ -71,7 +71,7 @@ export interface PomApiCourseAreaCourse {
     Description: string;
     GradingStyle: string;
     Instructors: {
-        EmailAddress: string;
+        EmailAddress: string | null;
         Name: string;
         CxID: number;
     }[];
@@ -88,8 +88,8 @@ export interface PomApiCourseAreaCourse {
         Room: string;
         Weekdays: string;
     }[];
-    SeatsFilled: string;
-    SeatsTotal: string;
+    SeatsFilled: null;
+    SeatsTotal: null;
     Session: string;
     SubSession: string;
     Year: string;
