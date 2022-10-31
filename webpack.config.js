@@ -53,7 +53,8 @@ module.exports = (env, argv) => {
     plugins: [
       new Webpack.EnvironmentPlugin({
         //API_URL: "https://hyperschedule.herokuapp.com",
-        API_URL: "http://50.116.4.62:8332",
+        //API_URL: "//50.116.4.62:8332",
+        API_URL: "//banana.hyperschedule.io",
       }),
       new FaviconsWebpackPlugin("src/icon.png"),
       new HtmlWebpackPlugin({
