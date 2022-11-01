@@ -2,3 +2,15 @@
 
 command = "ANALYTICS=1 npm run build"
 publish = "dist"
+
+[[redirects]]
+from = "https://hyperschedule.netlify.app/*"
+to = "https://hyperschedule.io/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "http://hyperschedule.netlify.app/*"
+to = "http://hyperschedule.io/:splat"
+status = 301
+force = true
