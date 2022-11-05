@@ -1260,10 +1260,7 @@ function applyDiff(data: any, diff: any) {
 }
 
 async function retrieveCourseData() {
-  let apiEndpoint = "/api/v3/courses?school=hmc";
-  if (gApiData !== null && gApiData.until !== undefined) {
-    apiEndpoint += `&since=${gApiData.until}`;
-  }
+  let apiEndpoint = "/api/v3/courses";
   const apiResponse = await retrieveAPI(apiEndpoint);
   if (apiResponse.error) {
     throw Error(`API error: ${apiResponse.error}`);
