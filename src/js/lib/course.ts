@@ -57,6 +57,7 @@ export interface CourseV3 {
   courseEnrollmentStatus: string | null;
   starred: boolean;
   selected: boolean;
+  permCount?: number;
 }
 
 export function createEntity(

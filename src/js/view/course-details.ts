@@ -54,6 +54,9 @@ export const setCourse = (course: Course.CourseV3) => {
       course.courseEnrollmentStatus.toLocaleLowerCase();
     dom.status.textContent = `${capitalize(course.courseEnrollmentStatus)}`;
     dom.seats.textContent = `${course.courseSeatsFilled}/${course.courseSeatsTotal} seats filled`;
+    if (course.permCount !== undefined && course.permCount !== 0){
+      dom.seats.textContent += `, ${course.permCount} PERMs`
+    }
   }
 
   // TODO: sanitize data on backend

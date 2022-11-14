@@ -126,6 +126,10 @@ export const update = (
   dom.statusBadge.dataset.status = course.courseEnrollmentStatus?.toLocaleLowerCase();
   dom.statusSeats.textContent = `${course.courseSeatsFilled}/${course.courseSeatsTotal} seats filled`;
 
+  if (course.permCount !== undefined && course.permCount !== 0){
+    dom.statusSeats.textContent+=`, ${course.permCount} PERMs`
+  }
+
   dom.root.style.backgroundColor = randomColor({
     hue: "random",
     luminosity: "light",
