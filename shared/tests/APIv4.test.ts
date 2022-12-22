@@ -14,6 +14,7 @@ describe("APIv4 type definition", () => {
                 suffix: "",
             } as APIv4.CourseIdentifier,
             credits: 1,
+            status: "O" as APIv4.CourseStatus,
             description: "test",
             // TEST001 PZ-01 is a real class listed on portal in term FA/2022
             // under course area TNDY "Transdisplinary"

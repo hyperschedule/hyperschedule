@@ -19,6 +19,12 @@ export enum Term {
     summer = "SU",
 }
 
+export enum CourseStatus {
+    open = "O",
+    closed = "C",
+    reopened = "R",
+}
+
 export enum Weekday {
     monday = "M",
     tuesday = "T",
@@ -93,6 +99,10 @@ export interface Course {
      */
     seatsAvailable: number;
     seatsTaken: number;
+    /**
+     * the status of the course, e.g. open, closed, reopened
+     */
+    status: CourseStatus;
 
     schedules: Schedule[];
 

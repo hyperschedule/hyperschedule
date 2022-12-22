@@ -30,3 +30,6 @@ export const Term = Courses.Term;
 
 export type Weekday = Courses.Weekday;
 export const Weekday = Courses.Weekday;
+
+export type CourseStatus = Courses.CourseStatus;
+export const CourseStatus = Courses.CourseStatus;
