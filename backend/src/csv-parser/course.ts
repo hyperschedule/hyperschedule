@@ -1,18 +1,36 @@
-import * as fs from "fs/promises";
-import { parseBssv } from "./bssv";
+/*
+ * parser for course_1.csv
+ */
+import { parse } from "./parser";
 
-async function main() {
-    const full = await fs.readFile("sample/course.bssv", "utf8");
-    const result = parseBssv(
+export function parseCourse(data: string) {
+    const result = parse(
         {
-            rawCode: "externalId",
-            title: "courseTitle",
-            campus: "institutionExternalId",
-            description: "description",
+            hasHeader: true,
+            separator: "||`||",
+            fields: {
+                code: "externalId",
+                title: "courseTitle",
+                campus: "institutionExternalId",
+                description: "description",
+            },
         },
-        full,
+        data,
     );
-    console.log(result);
-}
+    if (result.ok) {
+        for (let r of result.records) {
+            r.description = r.description.replaceAll("||``||", "\n");
+        }
+        for (let w of result.warnings) {
+            console.warn(w);
+        }
+    } else {
+        console.error(result.missingColumns);
+        throw Error(
+            "Cannot parse course, missing columns " +
+                JSON.stringify(result.missingColumns),
+        );
+    }
 
-main();
+    return result.records;
+}
