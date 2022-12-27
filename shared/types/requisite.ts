@@ -1,4 +1,4 @@
-import type { CourseCode, CourseIdentifier } from "./course";
+import type { CourseCode, SectionIdentifier } from "./course";
 
 export enum LogicType {
     and = "AND",
@@ -102,7 +102,7 @@ export enum RequisiteType {
  * ```
  */
 export interface Requisite {
-    courseId: CourseIdentifier;
+    courseId: SectionIdentifier;
     logicGroup: LogicGroup | null;
 }
 

@@ -8,21 +8,16 @@
  */
 import * as Courses from "../../types";
 
-export type Instructor = Omit<Courses.Instructor, "email">;
-export type Course = Omit<
-    Courses.Course,
-    "requisite" | "textbooks" | "instructors"
-> & {
-    instructors: Instructor[];
+export type Schedule = Omit<Courses.Schedule, "locations"> & {
+    locations: string[];
 };
-export type Schedule = Courses.Schedule;
-export type Location = Courses.Location;
-export type CourseIdentifier = Courses.CourseIdentifier;
+export type SectionIdentifier = Courses.SectionIdentifier;
 export type CourseDate = Courses.CourseDate;
+export type CourseCode = Courses.CourseCode;
 
 // have to this cursed double export because they are enums and
 // https://github.com/microsoft/TypeScript/issues/1166
-export type School = typeof Courses.School;
+export type School = Courses.School;
 export const School = Courses.School;
 
 export type Term = Courses.Term;
@@ -31,5 +26,29 @@ export const Term = Courses.Term;
 export type Weekday = Courses.Weekday;
 export const Weekday = Courses.Weekday;
 
-export type CourseStatus = Courses.CourseStatus;
-export const CourseStatus = Courses.CourseStatus;
+export type SectionStatus = Courses.SectionStatus;
+export const SectionStatus = Courses.SectionStatus;
+
+export interface Course {
+    code: CourseCode;
+    title: string;
+    description: string;
+    // the campus the course is associated with.
+    primaryAssociation: School;
+}
+
+export type Instructor = Omit<Courses.Instructor, "email">;
+export type Section = Omit<
+    Courses.Course,
+    | "requisite"
+    | "textbooks"
+    | "instructors"
+    | "title"
+    | "description"
+    | "primaryAssociation"
+    | "schedules"
+> & {
+    instructors: Instructor[];
+    course: Course;
+    schedules: Schedule[];
+};

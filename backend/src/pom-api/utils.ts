@@ -4,7 +4,7 @@ import type {
     MergedPomApiCourse,
     PomApiCourseAreaCourse,
     PomApiTermCourse,
-} from "./pomApiTypes";
+} from "./types";
 
 /**
  * Merges the result of retrieving all course areas

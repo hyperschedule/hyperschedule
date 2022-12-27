@@ -87,7 +87,7 @@ export function parse<Fields extends Record<string, string>>(
     for (let i = 1; i < lines.length; ++i) {
         const row: string[] = [];
 
-        const cells = lines[i]!.split("||`||");
+        const cells = lines[i]!.split(separator);
         for (let j = 0; j < cells.length; ++j) {
             const result = parseCell(cells[j]!);
             if (result.malformed)

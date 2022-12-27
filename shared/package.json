@@ -4,6 +4,7 @@
   "description": "A fast scheduler for the Claremont colleges (Shared)",
   "repository": "git@github.com:MuddCreates/hyperschedule.git",
   "author": "Mia Celeste <mia@miaceleste.dev>",
+  "type": "module",
   "contributors": [
     {
       "name": "Ethan Vazquez",

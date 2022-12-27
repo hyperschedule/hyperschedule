@@ -3,19 +3,30 @@ import { describe, test } from "@jest/globals";
 describe("APIv4 type definition", () => {
     test("course instantiation", () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const course: APIv4.Course = {
+        const course: APIv4.Section = {
+            course: {
+                title: "Intro to unit test",
+                description: "test",
+                primaryAssociation: APIv4.School.PTZ,
+                code: {
+                    department: "TEST",
+                    courseNumber: 1,
+                    suffix: "",
+                    affiliation: "PZ",
+                } as APIv4.CourseCode,
+            },
             identifier: {
                 department: "TEST",
                 courseNumber: 1,
                 sectionNumber: 0,
-                school: "PZ", // enum value is fine if we have type assertion
+                affiliation: "PZ",
                 year: 1970,
                 term: APIv4.Term.fall,
                 suffix: "",
-            } as APIv4.CourseIdentifier,
+                half: "",
+            } as APIv4.SectionIdentifier,
             credits: 1,
-            status: "O" as APIv4.CourseStatus,
-            description: "test",
+            status: "O" as APIv4.SectionStatus,
             // TEST001 PZ-01 is a real class listed on portal in term FA/2022
             // under course area TNDY "Transdisplinary"
             courseAreas: ["TNDY"],
@@ -31,17 +42,10 @@ describe("APIv4 type definition", () => {
                     startTime: 0,
                     endTime: 3600 * 15,
                     days: [APIv4.Weekday.friday],
-                    locations: [
-                        {
-                            buildingName: "TBA",
-                            roomName: "TBA",
-                            school: APIv4.School.HMC,
-                        },
-                    ],
+                    locations: ["TBA"],
                 },
             ] as APIv4.Schedule[],
-            seatsAvailable: 0,
-            seatsTaken: 0,
+            seatsFilled: 0,
             seatsTotal: 0,
             startDate: {
                 year: 1970,
@@ -53,7 +57,6 @@ describe("APIv4 type definition", () => {
                 month: 1,
                 day: 1,
             },
-            title: "Intro to unit test",
         };
     });
 });

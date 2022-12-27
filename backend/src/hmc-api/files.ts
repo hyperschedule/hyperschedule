@@ -1,15 +1,38 @@
 import { parse } from "./parser";
+import type { Result } from "./parser";
+
+function processResult<T>(
+    result: Result<T>,
+    filename: string,
+): Record<keyof T, string>[] {
+    if (result.ok) {
+        for (let w of result.warnings) {
+            console.warn("Warning while parsing %s, %o", filename, w);
+        }
+        return result.records;
+    } else {
+        console.error(
+            "Cannot parse %s, missing columns %o",
+            filename,
+            result.missingColumns,
+        );
+        throw Error(
+            `Cannot parse ${filename}, missing columns ` +
+                JSON.stringify(result.missingColumns),
+        );
+    }
+}
 
 /**
  * parser for coursesection_1.csv
  */
 export function parseCourseSection(data: string) {
-    return parse(
+    const result = parse(
         {
             hasHeader: true,
             separator: ",",
             fields: {
-                codeWithTerm: "externalId",
+                sectionID: "externalId",
                 code: "courseExternalId",
                 sectionNumber: "coureSectionNumber",
                 seatsTotal: "capacity",
@@ -20,19 +43,20 @@ export function parseCourseSection(data: string) {
         },
         data,
     );
+    return processResult(result, "courseSection");
 }
 
 /**
  * parser for coursesectionschedule_1.csv
  */
 export function parseCourseSectionSchedule(data: string) {
-    return parse(
+    const result = parse(
         {
             hasHeader: true,
             separator: ",",
             fields: {
                 externalId: "externalId",
-                codeWithTerm: "courseSectionExternalId",
+                sectionID: "courseSectionExternalId",
                 beginTime: "classBeginningTime",
                 endTime: "classEndingTime",
                 meetingDays: "classMeetingDays",
@@ -42,6 +66,7 @@ export function parseCourseSectionSchedule(data: string) {
         },
         data,
     );
+    return processResult(result, "courseSectionSchedule");
 }
 
 /**
@@ -61,46 +86,36 @@ export function parseCourse(data: string) {
         },
         data,
     );
-    if (result.ok) {
-        for (let r of result.records) {
-            r.description = r.description.replaceAll("||``||", "\n");
-        }
-        for (let w of result.warnings) {
-            console.warn(w);
-        }
-    } else {
-        console.error(result.missingColumns);
-        throw Error(
-            "Cannot parse course, missing columns " +
-            JSON.stringify(result.missingColumns),
-        );
+    const courses = processResult(result, "course");
+    for (let c of courses) {
+        c.description = c.description.replaceAll("||``||", "\n");
     }
-
-    return result.records;
+    return courses;
 }
 
 /**
  * parser for permcount_1.csv
  */
 export function parsePermCount(data: string) {
-    return parse(
+    const result = parse(
         {
             hasHeader: true,
             separator: ",",
             fields: {
-                codeWithTerm: "permCountExternalId",
+                sectionID: "permCountExternalId",
                 permCount: "PermCount",
             },
         },
         data,
     );
+    return processResult(result, "permCount");
 }
 
 /**
  * parser for staff_1.csv
  */
 export function parseStaff(data: string) {
-    return parse(
+    const result = parse(
         {
             hasHeader: true,
             separator: ",",
@@ -112,59 +127,87 @@ export function parseStaff(data: string) {
         },
         data,
     );
+    return processResult(result, "staff");
 }
 
 /**
  * parser for altstaff_1.csv
  */
 export function parseAltStaff(data: string) {
-    return parse(
+    const result = parse(
         {
             hasHeader: true,
             separator: ",",
             fields: {
-                cxId: "ExternalId",
+                cxId: "externalId",
                 firstname: "firstName",
                 lastname: "lastName",
                 altName: "altName",
             },
         },
-        data,
+        // manually changed the escaped comma to something else
+        // temporarily so our silly parser can work correctly
+        data.replaceAll("\\,", "|"),
     );
+    const processed = processResult(result, "altstaff");
+    for (let staff of processed) {
+        staff.altName = staff.altName.replaceAll("|", ",");
+    }
+    return processed;
 }
 
 /**
  * parser for calendarsessionsection_1.csv
  */
 export function parseCalendarSessionSection(data: string) {
-    return parse(
+    const result = parse(
         {
             hasHeader: true,
             separator: ",",
             fields: {
                 term: "calendarSessionExternalId",
-                codeWithTerm: "courseSectionExternalId",
+                sectionID: "courseSectionExternalId",
             },
         },
         data,
     );
+    return processResult(result, "calendarSessionSection");
 }
 
 /**
  * parser for calendarsession_1.csv
  */
 export function parseCalendarSession(data: string) {
-    return parse(
+    const result = parse(
         {
             hasHeader: true,
             separator: ",",
             fields: {
-                externalID: "externalId",
-                term: "designator",
+                term: "externalId",
+                designator: "designator",
                 startDate: "beginDate",
                 endDate: "EndDate",
             },
         },
         data,
     );
+    return processResult(result, "calendarSession");
+}
+
+/**
+ * parser for sectioninstructor_1.csv
+ */
+export function parsesectionInstructor(data: string) {
+    const result = parse(
+        {
+            hasHeader: true,
+            separator: ",",
+            fields: {
+                sectionID: "courseSectionExternalId",
+                cxId: "staffExternalId",
+            },
+        },
+        data,
+    );
+    return processResult(result, "sectionInstructor");
 }

@@ -19,20 +19,21 @@ export enum Term {
     summer = "SU",
 }
 
-export enum CourseStatus {
+export enum SectionStatus {
     open = "O",
     closed = "C",
     reopened = "R",
+    unknown = "U",
 }
 
 export enum Weekday {
     monday = "M",
     tuesday = "T",
     wednesday = "W",
-    thursday = "TR",
+    thursday = "R",
     friday = "F",
     saturday = "S",
-    sunday = "SN",
+    sunday = "U",
 }
 
 /**
@@ -55,31 +56,37 @@ export interface CourseCode {
     department: string;
     courseNumber: number;
     suffix: string;
-    school: School;
+    // this is the last two letters of the course code, e.g. SC, HM, JT, AS, AF
+    affiliation: string;
 }
 
 /** CourseIdentifier is the unique identifier we need to pinpoint a course offering
  * from the database. We may stringify it as something like
  * `TEST001 SC-05 2022/FA`.
  */
-export interface CourseIdentifier extends CourseCode {
+export interface SectionIdentifier extends CourseCode {
     sectionNumber: number;
     year: number;
     term: Term;
+    // first or second or fifth half of the term,
+    // e.g. F1 and F2 for fall, P1 and P2 for spring,
+    // and H1/S1 through H5/S5 for the summer
+    half: string;
 }
 
 /**
- * A course can be uniquely identified by a {@link CourseIdentifier}. This
+ * A course can be uniquely identified by a {@link SectionIdentifier}. This
  * implies that each section is its own course. While different sections for
  * the majority of the types are the same (i.e. only differ in time),
  * sometimes different sections are completely different, such as
  * HSA010HM and CORE001SC.
  */
 export interface Course {
-    identifier: CourseIdentifier;
+    identifier: SectionIdentifier;
 
     title: string;
     description: string;
+    primaryAssociation: School;
     /**
      * The letter code for the course area. It is not necessarily the same as
      * the course department. This is useful for people to filter the course
@@ -92,17 +99,12 @@ export interface Course {
      */
     credits: number;
     permCount: number;
-
     seatsTotal: number;
-    /**
-     * seats available is lower-capped at 0.
-     */
-    seatsAvailable: number;
-    seatsTaken: number;
+    seatsFilled: number;
     /**
      * the status of the course, e.g. open, closed, reopened
      */
-    status: CourseStatus;
+    status: SectionStatus;
 
     schedules: Schedule[];
 
@@ -143,6 +145,8 @@ export interface Schedule {
 
 export interface Location {
     buildingName: string;
+    // this is most likely to be the primary association of the course,
+    // but not always. PE classes are most likely to be the exception
     school: School;
     roomName: string;
 }

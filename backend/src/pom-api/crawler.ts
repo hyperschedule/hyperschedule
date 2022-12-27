@@ -3,7 +3,7 @@ import type {
     PomApiCourseArea,
     PomApiTerm,
     PomApiTermCourse,
-} from "./pomApiTypes";
+} from "./types";
 import { mergeApiCourses, mergeCourseAreaCourses } from "./utils";
 
 const POM_API_ENDPOINT = "https://jicsweb.pomona.edu/api/";
