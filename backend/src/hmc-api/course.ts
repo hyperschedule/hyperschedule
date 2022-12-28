@@ -2,7 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import {
     parseCXSectionIdentifier,
     parseCXCourseCode,
-} from "../utils/course-code";
+} from "hyperschedule-shared/api/v4/course-code";
 import {
     parseAltStaff,
     parseCalendarSession,
@@ -129,49 +129,11 @@ function parseBuildingCode(code: string): string {
     return `${building} ${room}`.trim();
 }
 
-export function linkCourseData(files: {
-    altstaff: string;
-    calendarSession: string;
-    calendarSessionSection: string;
-    course: string;
-    courseSection: string;
-    courseSectionSchedule: string;
-    permCount: string;
-    sectionInstructor: string;
-    staff: string;
-}): APIv4.Section[] {
-    const altstaffParsed = parseAltStaff(files.altstaff);
-    const calendarSessionParsed = parseCalendarSession(files.calendarSession);
-    const calendarSessionSectionParsed = parseCalendarSessionSection(
-        files.calendarSessionSection,
-    );
-    const courseParsed = parseCourse(files.course);
-    const courseSectionParsed = parseCourseSection(files.courseSection);
-    const courseSectionScheduleParsed = parseCourseSectionSchedule(
-        files.courseSectionSchedule,
-    );
-    const permCountParsed = parsePermCount(files.permCount);
-    const sectionInstructorParsed = parsesectionInstructor(
-        files.sectionInstructor,
-    );
-    const staffParsed = parseStaff(files.staff);
-
+function processCourse(
+    courseMap: Map<string, APIv4.Course>,
+    courseParsed: ReturnType<typeof parseCourse>,
+) {
     const allCampuses: string[] = Object.values(APIv4.School);
-    const allSectionStatus = ["O", "C", "R"];
-    let result: APIv4.Section[] = [];
-    // course map contains course data needed for courses of all sections
-    // whereas courseSectionMap contains section-specific information
-    let courseMap: Map<string, APIv4.Course> = new Map();
-    let courseSectionMap: Map<string, Partial<APIv4.Section>> = new Map();
-    let staffMap: Map<string, APIv4.Instructor> = new Map();
-    let calendarMap: Map<
-        string,
-        {
-            start: APIv4.CourseDate;
-            end: APIv4.CourseDate;
-        }
-    > = new Map();
-
     for (let c of courseParsed) {
         if (courseMap.get(c.code))
             console.warn(
@@ -205,8 +167,13 @@ export function linkCourseData(files: {
             code: courseCode,
         });
     }
-    // done processing courses
+}
 
+function processStaff(
+    staffMap: Map<string, APIv4.Instructor>,
+    staffParsed: ReturnType<typeof parseStaff>,
+    altstaffParsed: ReturnType<typeof parseAltStaff>,
+) {
     for (let staff of staffParsed) {
         staffMap.set(staff.cxId, {
             name: `${staff.lastname}, ${staff.firstname}`,
@@ -220,8 +187,14 @@ export function linkCourseData(files: {
             name: staff.altName,
         });
     }
+}
 
-    // done processing staff
+function processCourseSection(
+    courseSectionMap: Map<string, Partial<APIv4.Section>>,
+    courseMap: Map<string, APIv4.Course>,
+    courseSectionParsed: ReturnType<typeof parseCourseSection>,
+) {
+    const allSectionStatus = ["O", "C", "R"];
 
     for (let section of courseSectionParsed) {
         if (courseSectionMap.has(section.sectionID))
@@ -268,9 +241,16 @@ export function linkCourseData(files: {
             identifier: sid,
             seatsTotal: parseInt(section.seatsTotal, 10),
             seatsFilled: parseInt(section.seatsFilled, 10),
+            potentialError: false,
         });
     }
+}
 
+function processSectionInstructor(
+    staffMap: Map<string, APIv4.Instructor>,
+    courseSectionMap: Map<string, Partial<APIv4.Section>>,
+    sectionInstructorParsed: ReturnType<typeof parsesectionInstructor>,
+) {
     for (let instructor of sectionInstructorParsed) {
         const staff = staffMap.get(instructor.cxId);
         if (staff === undefined) {
@@ -292,7 +272,12 @@ export function linkCourseData(files: {
             );
         else section.instructors!.push(staff);
     }
+}
 
+function processPermCount(
+    courseSectionMap: Map<string, Partial<APIv4.Section>>,
+    permCountParsed: ReturnType<typeof parsePermCount>,
+) {
     for (let perm of permCountParsed) {
         const section = courseSectionMap.get(perm.sectionID);
         if (section === undefined) {
@@ -301,6 +286,22 @@ export function linkCourseData(files: {
         }
         section.permCount = parseInt(perm.permCount, 10);
     }
+}
+
+function processCalendar(
+    courseSectionMap: Map<string, Partial<APIv4.Section>>,
+    calendarSessionParsed: ReturnType<typeof parseCalendarSession>,
+    calendarSessionSectionParsed: ReturnType<
+        typeof parseCalendarSessionSection
+    >,
+) {
+    let calendarMap: Map<
+        string,
+        {
+            start: APIv4.CourseDate;
+            end: APIv4.CourseDate;
+        }
+    > = new Map();
 
     // we don't really do any real processing here, just one more layer of cross-validation
     for (let session of calendarSessionSectionParsed) {
@@ -325,7 +326,12 @@ export function linkCourseData(files: {
             end: parseCalendarDate(session.endDate),
         });
     }
+}
 
+function processSectionSchedule(
+    courseSectionMap: Map<string, Partial<APIv4.Section>>,
+    courseSectionScheduleParsed: ReturnType<typeof parseCourseSectionSchedule>,
+) {
     for (let schedule of courseSectionScheduleParsed) {
         const section = courseSectionMap.get(schedule.sectionID);
         if (section === undefined) {
@@ -368,39 +374,56 @@ export function linkCourseData(files: {
             });
         }
     }
+}
+
+export function linkCourseData(files: {
+    altstaff: string;
+    calendarSession: string;
+    calendarSessionSection: string;
+    course: string;
+    courseSection: string;
+    courseSectionSchedule: string;
+    permCount: string;
+    sectionInstructor: string;
+    staff: string;
+}): APIv4.Section[] {
+    // course map contains course data needed for courses of all sections
+    // whereas courseSectionMap contains section-specific information
+    let courseMap: Map<string, APIv4.Course> = new Map();
+    let courseSectionMap: Map<string, Partial<APIv4.Section>> = new Map();
+    let staffMap: Map<string, APIv4.Instructor> = new Map();
+
+    const altstaffParsed = parseAltStaff(files.altstaff);
+    const calendarSessionParsed = parseCalendarSession(files.calendarSession);
+    const calendarSessionSectionParsed = parseCalendarSessionSection(
+        files.calendarSessionSection,
+    );
+    const courseParsed = parseCourse(files.course);
+    const courseSectionParsed = parseCourseSection(files.courseSection);
+    const courseSectionScheduleParsed = parseCourseSectionSchedule(
+        files.courseSectionSchedule,
+    );
+    const permCountParsed = parsePermCount(files.permCount);
+    const sectionInstructorParsed = parsesectionInstructor(
+        files.sectionInstructor,
+    );
+    const staffParsed = parseStaff(files.staff);
+
+    processCourse(courseMap, courseParsed);
+    processStaff(staffMap, staffParsed, altstaffParsed);
+    processCourseSection(courseSectionMap, courseMap, courseSectionParsed);
+    processSectionInstructor(
+        staffMap,
+        courseSectionMap,
+        sectionInstructorParsed,
+    );
+    processPermCount(courseSectionMap, permCountParsed);
+    processCalendar(
+        courseSectionMap,
+        calendarSessionParsed,
+        calendarSessionSectionParsed,
+    );
+    processSectionSchedule(courseSectionMap, courseSectionScheduleParsed);
 
     return Array.from(courseSectionMap.values()) as APIv4.Section[];
 }
-
-import * as fs from "fs";
-
-let f = JSON.stringify(
-    linkCourseData(
-        //@ts-ignore
-        Object.fromEntries(
-            [
-                "altstaff",
-                "calendarSession",
-                "calendarSessionSection",
-                "course",
-                "courseSection",
-                "courseSectionSchedule",
-                "permCount",
-                "sectionInstructor",
-                "staff",
-            ].map((name) => [
-                name,
-                fs.readFileSync(
-                    `src/hmc-api/sample/${name.toLowerCase()}_1.csv`,
-                    {
-                        encoding: "utf-8",
-                    },
-                ),
-            ]),
-        ),
-    ),
-    null,
-    2,
-);
-
-fs.writeFileSync("src/hmc-api/sample/parsed-sample-v4.json", f);

@@ -4,6 +4,7 @@ describe("APIv4 type definition", () => {
     test("course instantiation", () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const course: APIv4.Section = {
+            potentialError: false,
             course: {
                 title: "Intro to unit test",
                 description: "test",

@@ -2106,6 +2106,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"compress-json@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "compress-json@npm:2.1.2"
+  checksum: 2963b29e42bf3c2e0435ae4e86466a0d57d6a07248d1709585913c85d6e6715471210001f3140aa8c301ef9644da41d7a5731bd8f7b18af77bdeede34188aa75
+  languageName: node
+  linkType: hard
+
 "concat-map@npm:0.0.1":
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
@@ -3361,6 +3368,7 @@ __metadata:
   dependencies:
     "@types/express": ^4.17.13
     "@types/node": ^18.7.21
+    compress-json: ^2.1.2
     express: ^4.18.1
     hyperschedule-shared: "workspace:*"
     jest: ^29.1.2

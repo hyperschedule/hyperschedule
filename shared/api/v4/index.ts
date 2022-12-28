@@ -51,4 +51,7 @@ export type Section = Omit<
     instructors: Instructor[];
     course: Course;
     schedules: Schedule[];
+    // used to flag whether a parsing error has occurred. we rather let the users
+    // know that some data might not be reliable than them finding out the hard way
+    potentialError: boolean;
 };

@@ -29,12 +29,13 @@
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^18.7.21",
+    "compress-json": "^2.1.2",
     "jest": "^29.1.2",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "serve": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
+    "serve": "node --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
     "test": "jest"
   }
 }

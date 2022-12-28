@@ -77,3 +77,31 @@ export function parseCXSectionIdentifier(
         half: groups.half?.trim() ?? "",
     };
 }
+
+export function stringifyCourseCode(code: Readonly<APIv4.CourseCode>): string {
+    return `${code.department} ${code.courseNumber
+        .toString()
+        .padStart(3, "0")}${code.suffix} ${code.affiliation}`;
+}
+
+const courseCodeRegex =
+    /^(?<dept>[A-Z]{1,4}) (?<number>\d{1,3})(?<suffix>[A-Z]{0,2}) (?<affiliation>[A-Z]{2})$/;
+
+export function parseCourseCode(code: string): APIv4.CourseCode {
+    const match = courseCodeRegex.exec(code);
+    if (match === null) throw Error(`Malformed course code ${code}`);
+
+    const groups = match.groups as {
+        dept: string;
+        number: string;
+        suffix: string;
+        affiliation: string;
+    };
+
+    return {
+        department: groups.dept,
+        courseNumber: parseInt(groups.number, 10),
+        suffix: groups.suffix,
+        affiliation: groups.affiliation,
+    };
+}
