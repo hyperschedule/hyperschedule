@@ -3,7 +3,6 @@ import type * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { linkCourseData } from "../src/hmc-api/course";
 import * as fs from "fs/promises";
-import exp = require("constants");
 
 const PARSED_SAMPLE_PATH = "src/hmc-api/sample/parsed-sample-v4.json";
 

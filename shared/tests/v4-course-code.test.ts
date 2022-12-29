@@ -8,7 +8,7 @@ import {
 } from "../api/v4/course-code";
 
 describe("parseCXCourseCode", () => {
-    test("course with one suffix", () => {
+    test("course with one character suffix", () => {
         expect(parseCXCourseCode("MUS 082 LPO")).toEqual({
             department: "MUS",
             courseNumber: 82,
@@ -17,7 +17,7 @@ describe("parseCXCourseCode", () => {
         } as APIv4.CourseCode);
     });
 
-    test("course with two suffix", () => {
+    test("course with two character suffix", () => {
         expect(parseCXCourseCode("AFRI121IOAF")).toEqual({
             department: "AFRI",
             courseNumber: 121,
