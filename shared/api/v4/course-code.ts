@@ -78,6 +78,10 @@ export function parseCXSectionIdentifier(
     };
 }
 
+/**
+ * converts course code to a human-friendly string form. E.g. `CSCI 005 HM`. Can be reversed by
+ * {@link parseCXCourseCode}
+ */
 export function stringifyCourseCode(code: Readonly<APIv4.CourseCode>): string {
     return `${code.department} ${code.courseNumber
         .toString()
@@ -87,6 +91,9 @@ export function stringifyCourseCode(code: Readonly<APIv4.CourseCode>): string {
 const courseCodeRegex =
     /^(?<dept>[A-Z]{1,4}) (?<number>\d{1,3})(?<suffix>[A-Z]{0,2}) (?<affiliation>[A-Z]{2})$/;
 
+/**
+ * reverse function of {@link stringifyCourseCode}
+ */
 export function parseCourseCode(code: string): APIv4.CourseCode {
     const match = courseCodeRegex.exec(code);
     if (match === null) throw Error(`Malformed course code ${code}`);
@@ -106,6 +113,10 @@ export function parseCourseCode(code: string): APIv4.CourseCode {
     };
 }
 
+/**
+ * Converts a section identifier to a short-form string without semester code, e.g. `CSCI 005 HM-01`.
+ * This conversion is not reversible due to missing information
+ */
 export function stringifySectionCode(
     sectionID: Readonly<APIv4.SectionIdentifier>,
 ): string {
@@ -116,6 +127,10 @@ export function stringifySectionCode(
     }-${sectionID.sectionNumber.toString().padStart(2, "0")}`;
 }
 
+/**
+ * Converts a section code to its long string form. e.g. `MCBI 118A HM-01 SP2023 P1`. Can be reversed by
+ * {@link parseSectionCodeLong}
+ */
 export function stringifySectionCodeLong(
     sectionID: Readonly<APIv4.SectionIdentifier>,
 ): string {
@@ -141,6 +156,9 @@ const sectionCodeLongRegex = RegExp(
         "$",
 );
 
+/**
+ * Reverse of {@link stringifySectionCodeLong}
+ */
 export function parseSectionCodeLong(code: string): APIv4.SectionIdentifier {
     const match = sectionCodeLongRegex.exec(code);
     if (match === null) throw Error(`Malformed long section code ${code}`);
