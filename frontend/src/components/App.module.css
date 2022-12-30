@@ -10,7 +10,8 @@
     background-color: var(--bg-0);
     color: var(--fg-0);
 
-    transition: background-color 200ms, color 200ms;
+    transition: background-color var(--theme-transition-duration),
+        color var(--theme-transition-duration);
 
     @media (--wide) {
         display: grid;
@@ -23,6 +24,8 @@
     --bg-2: #afaaa3;
 
     --fg-0: #2f2822;
+
+    --theme-transition-duration: 200ms;
 }
 
 .appDark {
@@ -44,7 +47,7 @@
     position: relative;
     grid-template-columns: repeat(2, 1fr);
     background-color: var(--bg-1);
-    transition: background-color 200ms;
+    transition: background-color var(--theme-transition-duration);
 
     &::before {
         content: "";
@@ -52,7 +55,8 @@
         position: absolute;
         width: 50%;
         height: 100%;
-        transition: transform 100ms, background-color 200ms;
+        transition: transform 100ms,
+            background-color var(--theme-transition-duration);
     }
 }
 
@@ -73,11 +77,16 @@
     position: relative;
 }
 
-.selectorButtonActive {
-    composes: selectorButton;
-}
-
 .sidebar {
     grid-area: sidebar;
     border-left: 1px solid var(--bg-1);
+}
+
+.minimap {
+    background-color: var(--bg-1);
+    height: 20rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+
+    transition: background-color var(--theme-transition-duration);
 }

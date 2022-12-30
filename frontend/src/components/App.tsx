@@ -1,7 +1,10 @@
 import * as React from "react";
 import * as Css from "./App.module.css";
 
-import ThemeSelector from "./ThemeSelector";
+import ThemeSlider, { Theme } from "./ThemeSlider";
+
+import CourseSearch from "./CourseSearch";
+import Schedule from "./Schedule";
 
 const enum MainTab {
     CourseSearch,
@@ -9,14 +12,11 @@ const enum MainTab {
 }
 
 export default function App() {
-    const [darkMode, setDarkMode] = React.useState(false);
+    const [theme, setTheme] = React.useState(Theme.Light);
     const [mainTab, setMainTab] = React.useState(MainTab.CourseSearch);
 
-    const selectorButtonClass = (tab: MainTab) =>
-        mainTab === tab ? Css.selectorButtonActive : Css.selectorButton;
-
     return (
-        <div className={darkMode ? Css.appDark : Css.app}>
+        <div className={theme === Theme.Dark ? Css.appDark : Css.app}>
             <div className={Css.main}>
                 <div
                     className={
@@ -26,22 +26,30 @@ export default function App() {
                     }
                 >
                     <button
-                        className={selectorButtonClass(MainTab.CourseSearch)}
+                        className={Css.selectorButton}
                         onClick={() => setMainTab(MainTab.CourseSearch)}
                     >
                         Course Search
                     </button>
                     <button
-                        className={selectorButtonClass(MainTab.Schedule)}
+                        className={Css.selectorButton}
                         onClick={() => setMainTab(MainTab.Schedule)}
                     >
                         Schedule
                     </button>
                 </div>
-                <div></div>
+                <div>
+                    {mainTab === MainTab.CourseSearch ? (
+                        <CourseSearch />
+                    ) : (
+                        <Schedule />
+                    )}
+                </div>
             </div>
-            <div className={Css.sidebar}></div>
-            <ThemeSelector dark={darkMode} setDark={setDarkMode} />
+            <div className={Css.sidebar}>
+                <div className={Css.minimap}></div>
+            </div>
+            <ThemeSlider theme={theme} setTheme={setTheme} />
         </div>
     );
 }

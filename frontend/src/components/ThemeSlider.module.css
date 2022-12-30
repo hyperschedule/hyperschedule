@@ -9,28 +9,29 @@
     padding-right: 1.25rem;
 
     background-color: var(--bg-1);
-    transition: background-color 200ms;
+    transition: background-color var(--theme-transition-duration);
     color: inherit;
 }
 
 .knob {
     background: var(--bg-0);
-    transition: background-color 200ms, transform 200ms;
+    transition: background-color var(--theme-transition-duration),
+        transform var(--theme-transition-duration);
     border-radius: 100%;
     line-height: 0;
     padding: 0.25rem;
 
     & .iconSun {
         position: absolute;
-        transition: opacity 200ms;
+        transition: opacity var(--theme-transition-duration);
     }
     & .iconMoon {
-        transition: opacity 200ms;
+        transition: opacity var(--theme-transition-duration);
         opacity: 0;
     }
 }
 .knobDark {
-    composes: themeSelectorSlider;
+    composes: knob;
     transform: translateX(1rem);
 
     & .iconSun {
