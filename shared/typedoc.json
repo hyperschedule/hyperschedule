@@ -4,7 +4,7 @@
   "cleanOutputDir": true,
   "entryPointStrategy": "expand",
   "disableSources": false,
-  "theme": "oxide",
+  "theme": "default",
   "plugin": [],
   "darkHighlightTheme": "vitesse-light",
   "lightHighlightTheme": "vitesse-light",

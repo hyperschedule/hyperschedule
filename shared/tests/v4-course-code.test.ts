@@ -8,7 +8,7 @@ import {
     stringifySectionCode,
     stringifySectionCodeLong,
     parseSectionCodeLong,
-} from "../api/v4/course-code";
+} from "../api/v4";
 
 describe("parseCXCourseCode", () => {
     test("course with one character suffix", () => {

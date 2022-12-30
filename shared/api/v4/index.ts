@@ -55,3 +55,5 @@ export type Section = Omit<
     // know that some data might not be reliable than them finding out the hard way
     potentialError: boolean;
 };
+
+export * from "./course-code";
