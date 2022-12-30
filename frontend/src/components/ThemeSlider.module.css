@@ -1,0 +1,43 @@
+.container {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 2rem;
+    padding: 0.25rem;
+    padding-right: 1.25rem;
+
+    background-color: var(--bg-1);
+    transition: background-color var(--theme-transition-duration);
+    color: inherit;
+}
+
+.knob {
+    background: var(--bg-0);
+    transition: background-color var(--theme-transition-duration),
+        transform var(--theme-transition-duration);
+    border-radius: 100%;
+    line-height: 0;
+    padding: 0.25rem;
+
+    & .iconSun {
+        position: absolute;
+        transition: opacity var(--theme-transition-duration);
+    }
+    & .iconMoon {
+        transition: opacity var(--theme-transition-duration);
+        opacity: 0;
+    }
+}
+.knobDark {
+    composes: knob;
+    transform: translateX(1rem);
+
+    & .iconSun {
+        opacity: 0;
+    }
+    & .iconMoon {
+        opacity: 1;
+    }
+}

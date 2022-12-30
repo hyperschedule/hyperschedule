@@ -1,0 +1,92 @@
+@custom-media --wide screen and (min-width: 512px);
+
+.app {
+    font-family: "Inter";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-0);
+    color: var(--fg-0);
+
+    transition: background-color var(--theme-transition-duration),
+        color var(--theme-transition-duration);
+
+    @media (--wide) {
+        display: grid;
+        grid-template-areas: "main sidebar";
+        grid-template-columns: 1fr calc(100% / 3);
+    }
+
+    --bg-0: #efeae4;
+    --bg-1: #cfcac3;
+    --bg-2: #afaaa3;
+
+    --fg-0: #2f2822;
+
+    --theme-transition-duration: 200ms;
+}
+
+.appDark {
+    composes: app;
+
+    --bg-0: #2a2824;
+    --bg-1: #4a4844;
+    --bg-2: #6a6864;
+
+    --fg-0: #efeae3;
+}
+
+.main {
+    grid-area: main;
+}
+
+.mainSelector {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(2, 1fr);
+    background-color: var(--bg-1);
+    transition: background-color var(--theme-transition-duration);
+
+    &::before {
+        content: "";
+        background-color: var(--bg-0);
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        transition: transform 100ms,
+            background-color var(--theme-transition-duration);
+    }
+}
+
+.mainSelectorAlt {
+    composes: mainSelector;
+    &::before {
+        transform: translateX(100%);
+    }
+}
+
+.selectorButton {
+    font: inherit;
+    padding: 0.5rem;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: inherit;
+    position: relative;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    border-left: 1px solid var(--bg-1);
+}
+
+.minimap {
+    background-color: var(--bg-1);
+    height: 20rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+
+    transition: background-color var(--theme-transition-duration);
+}
