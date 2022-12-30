@@ -5,6 +5,9 @@ import {
     parseCXSectionIdentifier,
     stringifyCourseCode,
     parseCourseCode,
+    stringifySectionCode,
+    stringifySectionCodeLong,
+    parseSectionCodeLong,
 } from "../api/v4/course-code";
 
 describe("parseCXCourseCode", () => {
@@ -190,5 +193,118 @@ describe("course code serialization", () => {
         for (let code of codes) {
             expect(stringifyCourseCode(parseCourseCode(code))).toEqual(code);
         }
+    });
+
+    test("stringifySectionCode", () => {
+        expect(
+            stringifySectionCode({
+                department: "AMST",
+                courseNumber: 120,
+                suffix: "",
+                affiliation: "HM",
+                sectionNumber: 1,
+                term: "SU",
+                year: 2020,
+                half: "S1",
+            } as APIv4.SectionIdentifier),
+        ).toEqual("AMST 120 HM-01");
+
+        expect(
+            stringifySectionCode({
+                department: "MCBI",
+                courseNumber: 118,
+                suffix: "A",
+                affiliation: "HM",
+                sectionNumber: 1,
+                term: "SP",
+                year: 2023,
+                half: "P1",
+            } as APIv4.SectionIdentifier),
+        ).toEqual("MCBI 118A HM-01");
+    });
+
+    test("stringifySectionCodeLong", () => {
+        expect(
+            stringifySectionCodeLong({
+                department: "AMST",
+                courseNumber: 120,
+                suffix: "",
+                affiliation: "HM",
+                sectionNumber: 1,
+                term: "SU",
+                year: 2020,
+                half: "S1",
+            } as APIv4.SectionIdentifier),
+        ).toEqual("AMST 120 HM-01 SU2020 S1");
+
+        expect(
+            stringifySectionCodeLong({
+                department: "MCBI",
+                courseNumber: 118,
+                suffix: "A",
+                affiliation: "HM",
+                sectionNumber: 1,
+                term: "SP",
+                year: 2023,
+                half: "P1",
+            } as APIv4.SectionIdentifier),
+        ).toEqual("MCBI 118A HM-01 SP2023 P1");
+
+        expect(
+            stringifySectionCodeLong({
+                department: "ASTR",
+                courseNumber: 101,
+                suffix: "L",
+                affiliation: "PO",
+                sectionNumber: 1,
+                term: "FA",
+                year: 2020,
+                half: "",
+            } as APIv4.SectionIdentifier),
+        ).toEqual("ASTR 101L PO-01 FA2020");
+    });
+
+    test("parseSectionCodeLong", () => {
+        expect(parseSectionCodeLong("THEA 053HG PO-01 SP2023")).toEqual({
+            department: "THEA",
+            courseNumber: 53,
+            suffix: "HG",
+            affiliation: "PO",
+            sectionNumber: 1,
+            term: "SP",
+            year: 2023,
+            half: "",
+        } as APIv4.SectionIdentifier);
+
+        expect(parseSectionCodeLong("ENGR 072 HM-01 SP2023 P1")).toEqual({
+            department: "ENGR",
+            courseNumber: 72,
+            suffix: "",
+            affiliation: "HM",
+            sectionNumber: 1,
+            term: "SP",
+            year: 2023,
+            half: "P1",
+        } as APIv4.SectionIdentifier);
+
+        expect(() =>
+            parseSectionCodeLong("CHEM110BLPO-01 SP2023"),
+        ).toThrowError();
+        expect(() =>
+            parseSectionCodeLong("BIOL131  KS-01 SP2023"),
+        ).toThrowError();
+    });
+
+    test("section code serialization reversible", () => {
+        const codes = [
+            "CHEM 110BL PO-01 SP2023",
+            "THEA 053HG PO-01 SP2023",
+            "AMST 120 HM-01 SU2020 S1",
+            "ENGR 072 HM-01 SP2023 P1",
+        ];
+        for (let c of codes)
+            expect(stringifySectionCodeLong(parseSectionCodeLong(c))).toEqual(
+                c,
+            );
     });
 });
