@@ -5,7 +5,7 @@
   "entryPointStrategy": "expand",
   "disableSources": false,
   "theme": "oxide",
-  "plugin": ["typedoc-theme-oxide"],
+  "plugin": [],
   "darkHighlightTheme": "vitesse-light",
   "lightHighlightTheme": "vitesse-light",
   "name": "Hyperschedule API",
