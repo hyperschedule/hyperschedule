@@ -35,6 +35,7 @@ export interface Course {
     description: string;
     // the campus the course is associated with.
     primaryAssociation: School;
+    potentialError: boolean;
 }
 
 export type Instructor = Omit<Courses.Instructor, "email">;

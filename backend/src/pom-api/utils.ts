@@ -5,7 +5,8 @@ import type {
     PomApiCourseAreaCourse,
     PomApiTermCourse,
 } from "./types";
-
+import { rootLogger } from "../logger";
+const logger = rootLogger.child({ action: "parse-pom-api" });
 /**
  * Merges the result of retrieving all course areas
  * to courses as there are a lot of duplicates
@@ -62,7 +63,7 @@ export function mergeApiCourses(
         });
     }
     if (coursesWithAreas.size !== 0) {
-        console.warn(`Courses found without corresponding counts`);
+        logger.warn(`Courses found without corresponding counts`);
         for (const c of coursesWithAreas.values()) {
             res.push({
                 ...c,

@@ -7,6 +7,7 @@ describe("APIv4 type definition", () => {
             potentialError: false,
             course: {
                 title: "Intro to unit test",
+                potentialError: false,
                 description: "test",
                 primaryAssociation: APIv4.School.PTZ,
                 code: {
