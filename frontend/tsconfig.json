@@ -5,14 +5,16 @@
     "moduleResolution": "node",
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom"],
     "sourceRoot": "src",
     "baseUrl": "src",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": { "@components/*": ["components/*"] },
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"]
 }
