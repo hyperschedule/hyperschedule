@@ -2,7 +2,7 @@ import fastify from "fastify";
 import fs from "fs";
 import { rootLogger } from "./logger";
 //@ts-ignore TS2821
-import courseSchema from "hyperschedule-shared/api/v4/schema.json" assert { type: "json" };
+import { schema as courseSchema } from "hyperschedule-shared/api/v4/schema";
 
 const server = fastify({ logger: rootLogger });
 for (let obj of courseSchema) server.addSchema(obj);

@@ -3,9 +3,10 @@
 import * as fs from "fs";
 import { resolve } from "path";
 import * as TJS from "typescript-json-schema";
+import prettier from "prettier";
 
 const v4Path = resolve(process.cwd(), "api", "v4");
-const schemaFilePath = resolve(v4Path, "schema.json");
+const schemaFilePath = resolve(v4Path, "schema.ts");
 
 const settings: TJS.PartialArgs = {
     required: true,
@@ -47,5 +48,13 @@ const schemaString = JSON.stringify(
     2,
 );
 
-fs.writeFileSync(schemaFilePath, schemaString);
+fs.writeFileSync(
+    schemaFilePath,
+    prettier.format(
+        `// this file is auto-generated, please see schema-generator.ts. To regenerate, run yarn generate-schema
+    export const schema=${schemaString}`,
+        { trailingComma: "all", parser: "typescript", tabWidth: 4 },
+    ),
+);
+
 console.log(`Schema file written to ${schemaFilePath}`);
