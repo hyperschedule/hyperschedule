@@ -16,6 +16,9 @@ import {
 } from "./files";
 
 import { buildings } from "./buildings";
+import { rootLogger } from "../logger";
+
+const logger = rootLogger.child({ action: "process-csv" });
 
 /**
  * re-serialize term to its string form from SectionIdentifier
@@ -101,7 +104,7 @@ function parseBuildingCode(code: string): string {
     if (campus === undefined || location === undefined || room === undefined) {
         // if we cannot parse the code, just return it as-is because humans might be able to
         // interpret them
-        console.warn(`Malformed location code ${code}`);
+        logger.trace(`Malformed location code ${code}`);
         return code;
     }
 
@@ -109,19 +112,19 @@ function parseBuildingCode(code: string): string {
     else if (location === "TBA") return "To be announced";
 
     if (campus === "") {
-        console.warn(`Malformed location code ${code}`);
+        logger.trace(`Malformed location code ${code}`);
         return code;
     }
 
     const dict = buildings[campus];
     if (dict === undefined) {
-        console.warn(`Malformed location code ${code}`);
+        logger.trace(`Malformed location code ${code}`);
         return code;
     }
 
     const building = dict[location];
     if (building === undefined) {
-        console.warn(`Malformed location code ${code}`);
+        logger.trace(`Malformed location code ${code}`);
         return code;
     }
 
@@ -135,28 +138,44 @@ function processCourse(
 ) {
     const allCampuses: string[] = Object.values(APIv4.School);
     for (let c of courseParsed) {
-        if (courseMap.get(c.code))
-            console.warn(
-                `Duplicate course key ${c.code}, overwriting existing data`,
-            );
+        let potentialError = courseMap.has(c.code);
 
         let campus: APIv4.School;
 
         if (allCampuses.includes(c.campus)) {
             campus = c.campus as unknown as APIv4.School;
         } else {
-            console.warn(
+            logger.trace(
                 `Course found with unknown primary association, skipping`,
             );
-            console.warn(c);
+            logger.trace(c);
             continue;
         }
         let courseCode: APIv4.CourseCode;
         try {
             courseCode = parseCXCourseCode(c.code);
         } catch (e) {
-            console.error(e);
+            logger.error(e);
             continue;
+        }
+
+        if (potentialError) {
+            const prevData = courseMap.get(c.code)!;
+            if (
+                !prevData.potentialError &&
+                prevData.description === c.description &&
+                prevData.primaryAssociation === campus &&
+                prevData.title === c.title
+            ) {
+                logger.trace(
+                    `Duplicate course key ${c.code} with no difference`,
+                );
+                potentialError = false;
+            } else {
+                logger.warn(
+                    `Duplicate course key ${c.code} with differences, overwriting existing data`,
+                );
+            }
         }
 
         courseMap.set(c.code, {
@@ -165,6 +184,7 @@ function processCourse(
             description: c.description,
             primaryAssociation: campus,
             code: courseCode,
+            potentialError,
         });
     }
 }
@@ -181,7 +201,7 @@ function processStaff(
     }
     for (let staff of altstaffParsed) {
         if (!staffMap.has(staff.cxId))
-            console.warn("Nonexistent staff %o in altstaff", staff);
+            logger.trace("Nonexistent staff %o in altstaff", staff);
         // overwrite existing staff if there is a preferred name
         staffMap.set(staff.cxId, {
             name: staff.altName,
@@ -191,18 +211,17 @@ function processStaff(
 
 function processCourseSection(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
+    dupeMap: Map<string, number>,
     courseMap: Map<string, APIv4.Course>,
     courseSectionParsed: ReturnType<typeof parseCourseSection>,
 ) {
     const allSectionStatus = ["O", "C", "R"];
 
     for (let section of courseSectionParsed) {
-        if (courseSectionMap.has(section.sectionID))
-            console.warn("Duplicate course section %o", section);
-
+        let potentialError: boolean = courseSectionMap.has(section.sectionID);
         const course = courseMap.get(section.code);
         if (course === undefined) {
-            console.warn(
+            logger.trace(
                 "Course section without course, skipping... %o",
                 section,
             );
@@ -218,59 +237,120 @@ function processCourseSection(
         try {
             sid = parseCXSectionIdentifier(section.sectionID);
         } catch (e) {
-            console.error(e);
+            logger.error(e);
             continue;
         }
 
         if (sid.sectionNumber !== parseInt(section.sectionNumber, 10))
-            console.warn(
-                "Mismatching section number, parsed section is %o, section data is %o",
-                sid,
-                section,
+            logger.info(
+                "Mismatching section number, section ID is %s, section data is %s",
+                section.sectionID,
+                section.sectionNumber,
             );
+        // TODO: handle possible NaN
+        const credits = parseFloat(section.credits);
+        const seatsTotal = parseInt(section.seatsTotal, 10);
+        const seatsFilled = parseInt(section.seatsFilled, 10);
+        if (potentialError) {
+            const n = dupeMap.get(section.sectionID);
+            if (n) dupeMap.set(section.sectionID, n + 1);
+            else dupeMap.set(section.sectionID, 1);
+            const prevData = courseSectionMap.get(section.sectionID)!;
+
+            // we double-check that two data are the same. if they are, remove the error
+            // flag. if flagged for error previously then we keep the flag
+
+            if (
+                // we don't need to compare prevData.identifier here
+                // because we know they are the same
+                !prevData.potentialError &&
+                prevData.course === course &&
+                prevData.status === status &&
+                prevData.credits === credits &&
+                prevData.seatsFilled === seatsFilled &&
+                prevData.seatsTotal === seatsTotal
+            ) {
+                potentialError = false;
+                logger.trace(
+                    "Duplicate course section for %s, no differences",
+                    section.sectionID,
+                );
+            } else {
+                logger.trace(
+                    "Duplicate course section for %s, different values ",
+                    section.sectionID,
+                );
+            }
+        }
 
         courseSectionMap.set(section.sectionID, {
             course,
             status,
-            // TODO: handle possible NaN
-            credits: parseFloat(section.credits),
+            credits,
             // TODO: link with POM API for course area
             courseAreas: [],
             instructors: [],
             schedules: [],
             identifier: sid,
-            seatsTotal: parseInt(section.seatsTotal, 10),
-            seatsFilled: parseInt(section.seatsFilled, 10),
-            potentialError: false,
+            seatsTotal,
+            seatsFilled,
+            potentialError,
         });
     }
 }
 
 function processSectionInstructor(
     staffMap: Map<string, APIv4.Instructor>,
+    dupeMap: Map<string, number>,
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
     sectionInstructorParsed: ReturnType<typeof parsesectionInstructor>,
 ) {
+    let dupesSeen: Map<string, number> = new Map();
     for (let instructor of sectionInstructorParsed) {
         const staff = staffMap.get(instructor.cxId);
-        if (staff === undefined) {
-            console.warn(
-                `Nonexistent instructor ${instructor.cxId} for ${instructor.sectionID}`,
-            );
-            continue;
-        }
         const section = courseSectionMap.get(instructor.sectionID);
         if (section === undefined) {
-            console.warn(
+            logger.trace(
                 `Nonexistent section ${instructor.sectionID} in sectioninstructor`,
             );
             continue;
         }
-        if (section.instructors!.includes(staff))
-            console.warn(
-                `duplicate instructor ${instructor.cxId} in ${instructor.sectionID}`,
+
+        if (staff === undefined) {
+            logger.trace(
+                `Nonexistent instructor ${instructor.cxId} for ${instructor.sectionID}`,
             );
-        else section.instructors!.push(staff);
+            section.potentialError = true;
+            continue;
+        }
+
+        if (section.instructors!.includes(staff)) {
+            if (!dupeMap.has(instructor.sectionID)) {
+                section.potentialError = true;
+                logger.trace(
+                    `duplicate instructor ${instructor.cxId} in ${instructor.sectionID}, no previous duplicate section`,
+                );
+            } else {
+                const prevVal = dupesSeen.get(instructor.sectionID);
+                dupesSeen.set(
+                    instructor.sectionID,
+                    prevVal === undefined ? 1 : prevVal + 1,
+                );
+            }
+        } else section.instructors!.push(staff);
+    }
+
+    for (let [id, n] of dupeMap.entries()) {
+        // if there is exactly number of copies of instructor as the course section number,
+        // n should be 0 for those courses
+
+        const section = courseSectionMap.get(id)!;
+        if (dupesSeen.get(id) !== n * section.instructors!.length) {
+            section.potentialError = true;
+            logger.trace(
+                `duplicate instructor in ${id} with mismatching duplicate section`,
+            );
+        }
     }
 }
 
@@ -281,7 +361,7 @@ function processPermCount(
     for (let perm of permCountParsed) {
         const section = courseSectionMap.get(perm.sectionID);
         if (section === undefined) {
-            console.warn(`Nonexistent section ${perm.sectionID} in permcount`);
+            logger.trace(`Nonexistent section ${perm.sectionID} in permcount`);
             continue;
         }
         section.permCount = parseInt(perm.permCount, 10);
@@ -307,14 +387,14 @@ function processCalendar(
     for (let session of calendarSessionSectionParsed) {
         const section = courseSectionMap.get(session.sectionID);
         if (section === undefined) {
-            console.warn(
+            logger.trace(
                 `Nonexistent section ID ${session.sectionID} in calendarsssionsession`,
             );
             continue;
         }
 
         if (extractSectionTerm(section.identifier!) !== session.term) {
-            console.warn(
+            logger.trace(
                 `Mismatching session term for section ${session.sectionID} in calendarsssionsession. Got ${session.term}`,
             );
         }
@@ -335,7 +415,7 @@ function processSectionSchedule(
     for (let schedule of courseSectionScheduleParsed) {
         const section = courseSectionMap.get(schedule.sectionID);
         if (section === undefined) {
-            console.warn(
+            logger.trace(
                 `Nonexistent section ID ${schedule.sectionID} in coursesectionschedule`,
             );
             continue;
@@ -349,17 +429,17 @@ function processSectionSchedule(
         let merged: boolean = false;
         for (let s of section.schedules!) {
             // merge locations if multiple
-            // console.log(s.days.toString(),weekdays.toString())
             if (
                 s.startTime === startTime &&
                 s.endTime === endTime &&
                 s.days.toString() === weekdays.toString()
             ) {
-                if (s.locations.includes(location))
-                    console.warn(
+                if (s.locations.includes(location)) {
+                    logger.trace(
                         `Duplicate location in ${schedule.sectionID} section schedule`,
                     );
-                else s.locations.push(location);
+                    section.potentialError = true;
+                } else s.locations.push(location);
                 merged = true;
                 break;
             }
@@ -392,6 +472,7 @@ export function linkCourseData(files: {
     let courseMap: Map<string, APIv4.Course> = new Map();
     let courseSectionMap: Map<string, Partial<APIv4.Section>> = new Map();
     let staffMap: Map<string, APIv4.Instructor> = new Map();
+    let dupeMap: Map<string, number> = new Map();
 
     const altstaffParsed = parseAltStaff(files.altstaff);
     const calendarSessionParsed = parseCalendarSession(files.calendarSession);
@@ -411,9 +492,15 @@ export function linkCourseData(files: {
 
     processCourse(courseMap, courseParsed);
     processStaff(staffMap, staffParsed, altstaffParsed);
-    processCourseSection(courseSectionMap, courseMap, courseSectionParsed);
+    processCourseSection(
+        courseSectionMap,
+        dupeMap,
+        courseMap,
+        courseSectionParsed,
+    );
     processSectionInstructor(
         staffMap,
+        dupeMap,
         courseSectionMap,
         sectionInstructorParsed,
     );

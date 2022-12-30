@@ -12,6 +12,13 @@
       "url": "https://github.com/IonImpulse"
     },
     {
+      "name": "Kye W. Shi",
+      "email": "shi.kye@gmail.com",
+      "url": "https://github.com/kwshi"
+    }
+  ],
+  "maintainers": [
+    {
       "name": "Mia Celeste",
       "email": "mia@miaceleste.dev",
       "url": "https://github.com/mia1024"
@@ -24,9 +31,7 @@
   "devDependencies": {
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^2.0.1",
     "classnames": "^2.3.2",
-    "hyperschedule-shared": "workspace:*",
     "postcss-comment": "^2.0.0",
     "postcss-custom-media": "^9.0.1",
     "postcss-nesting": "^10.2.0",
@@ -35,7 +40,9 @@
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "typescript-plugin-css-modules": "^4.1.1",
-    "vite": "^3.0.9"
+    "@vitejs/plugin-react": "^3.0.0",
+    "hyperschedule-shared": "workspace:^",
+    "vite": "^4.0.3"
   },
   "scripts": {
     "serve": "vite",

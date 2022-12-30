@@ -35,6 +35,7 @@ export interface Course {
     description: string;
     // the campus the course is associated with.
     primaryAssociation: School;
+    potentialError: boolean;
 }
 
 export type Instructor = Omit<Courses.Instructor, "email">;
@@ -55,3 +56,5 @@ export type Section = Omit<
     // know that some data might not be reliable than them finding out the hard way
     potentialError: boolean;
 };
+
+export * from "./course-code";

@@ -12,6 +12,13 @@
       "url": "https://github.com/IonImpulse"
     },
     {
+      "name": "Kye W. Shi",
+      "email": "shi.kye@gmail.com",
+      "url": "https://github.com/kwshi"
+    }
+  ],
+  "maintainers": [
+    {
       "name": "Mia Celeste",
       "email": "mia@miaceleste.dev",
       "url": "https://github.com/mia1024"
@@ -19,18 +26,19 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^18.7.20",
-    "jest": "^29.0.3",
-    "ts-jest": "^29.0.2",
+    "@types/node": "^18.11.18",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.22.18",
-    "typedoc-theme-oxide": "^0.1.6"
+    "typedoc": "^0.23.23",
+    "typescript-json-schema": "^0.55.0"
   },
   "peerDependencies": {
     "typescript": "^4.7.4"
   },
   "scripts": {
     "test": "jest",
-    "doc": "typedoc"
+    "doc": "typedoc",
+    "generate-schema": "node --experimental-specifier-resolution=node --loader ts-node/esm --no-warnings api/v4/schema-generator.ts"
   }
 }

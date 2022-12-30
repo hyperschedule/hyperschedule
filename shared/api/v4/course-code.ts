@@ -41,7 +41,7 @@ const sectionRegex = RegExp(
         "(?<section>\\d{2}) " +
         "(?<term>FA|SU|SP)" +
         "(?<year>\\d{4})" +
-        "(?<half>(?:[FSPH])\\d)?" +
+        "(?<half>[FSPH]\\d)?" +
         "$",
 );
 
@@ -103,5 +103,67 @@ export function parseCourseCode(code: string): APIv4.CourseCode {
         courseNumber: parseInt(groups.number, 10),
         suffix: groups.suffix,
         affiliation: groups.affiliation,
+    };
+}
+
+export function stringifySectionCode(
+    sectionID: Readonly<APIv4.SectionIdentifier>,
+): string {
+    return `${sectionID.department} ${sectionID.courseNumber
+        .toString()
+        .padStart(3, "0")}${sectionID.suffix} ${
+        sectionID.affiliation
+    }-${sectionID.sectionNumber.toString().padStart(2, "0")}`;
+}
+
+export function stringifySectionCodeLong(
+    sectionID: Readonly<APIv4.SectionIdentifier>,
+): string {
+    return `${sectionID.department} ${sectionID.courseNumber
+        .toString()
+        .padStart(3, "0")}${sectionID.suffix} ${
+        sectionID.affiliation
+    }-${sectionID.sectionNumber.toString().padStart(2, "0")} ${sectionID.term}${
+        sectionID.year
+    } ${sectionID.half}`.trim();
+}
+
+const sectionCodeLongRegex = RegExp(
+    "^" +
+        "(?<dept>[A-Z]{1,4}) " +
+        "(?<number>\\d{3})" +
+        "(?<suffix>[A-Z0-9]{0,2}) " +
+        "(?<affiliation>[A-Z]{2})-" +
+        "(?<section>\\d{2}) " +
+        "(?<term>FA|SU|SP)" +
+        "(?<year>\\d{4})" +
+        "(?: (?<half>[FSPH]\\d))?" +
+        "$",
+);
+
+export function parseSectionCodeLong(code: string): APIv4.SectionIdentifier {
+    const match = sectionCodeLongRegex.exec(code);
+    if (match === null) throw Error(`Malformed long section code ${code}`);
+
+    const groups = match.groups as {
+        dept: string;
+        number: string;
+        suffix: string;
+        affiliation: string;
+        section: string;
+        term: string;
+        year: string;
+        half?: string;
+    };
+
+    return {
+        department: groups.dept,
+        courseNumber: parseInt(groups.number, 10),
+        suffix: groups.suffix,
+        affiliation: groups.affiliation,
+        sectionNumber: parseInt(groups.section, 10),
+        term: groups.term as APIv4.Term,
+        year: parseInt(groups.year, 10),
+        half: groups.half ?? "",
     };
 }

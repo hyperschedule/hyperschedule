@@ -1,15 +1,5 @@
-import express from "express";
-import { router } from "./routes";
+import fastify from "fastify";
 
-const server = express();
-const PORT = 8080;
+const server = fastify();
 
-server.use("/api/v4", router);
-
-server.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-});
-
-import { getAndMergeAllCourses } from "./pom-api/crawler";
-
-getAndMergeAllCourses();
+server.get("courses", async (request, response) => {});
