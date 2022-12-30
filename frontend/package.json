@@ -47,5 +47,8 @@
   "scripts": {
     "serve": "vite",
     "test": ":"
+  },
+  "dependencies": {
+    "react-query": "^3.39.2"
   }
 }
