@@ -8,9 +8,24 @@
  */
 import * as Courses from "../../types";
 
-export type Schedule = Omit<Courses.Schedule, "locations"> & {
+export interface Schedule {
+    /**
+     * seconds since midnight.
+     */
+    startTime: number;
+    /**
+     * seconds since midnight.
+     */
+    endTime: number;
+
+    days: Weekday[];
+    /**
+     * Location is an array because some classes have multiple locations.
+     * This is especially common for lab classes.
+     */
     locations: string[];
-};
+}
+
 export type SectionIdentifier = Courses.SectionIdentifier;
 export type CourseDate = Courses.CourseDate;
 export type CourseCode = Courses.CourseCode;
@@ -33,28 +48,30 @@ export interface Course {
     code: CourseCode;
     title: string;
     description: string;
-    // the campus the course is associated with.
     primaryAssociation: School;
     potentialError: boolean;
 }
 
-export type Instructor = Omit<Courses.Instructor, "email">;
-export type Section = Omit<
-    Courses.Course,
-    | "requisite"
-    | "textbooks"
-    | "instructors"
-    | "title"
-    | "description"
-    | "primaryAssociation"
-    | "schedules"
-> & {
+export interface Instructor {
+    name: string;
+}
+
+export interface Section {
+    identifier: SectionIdentifier;
+    courseAreas: string[];
+    credits: number;
+    permCount: number;
+    seatsTotal: number;
+    seatsFilled: number;
+    status: SectionStatus;
+    startDate: CourseDate;
+    endDate: CourseDate;
     instructors: Instructor[];
     course: Course;
     schedules: Schedule[];
     // used to flag whether a parsing error has occurred. we rather let the users
     // know that some data might not be reliable than them finding out the hard way
     potentialError: boolean;
-};
+}
 
 export * from "./course-code";

@@ -37,7 +37,6 @@ describe("APIv4 type definition", () => {
                     name: "test",
                 },
             ],
-            notes: "",
             permCount: 0,
             schedules: [
                 {

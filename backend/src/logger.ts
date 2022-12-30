@@ -39,7 +39,7 @@ switch (env) {
                     target: "pino/file",
                     level: "trace",
                     options: {
-                        destination: "/var/log/hyperschedule.log",
+                        destination: "/var/log/hyperschedule/backend.log",
                         mkdir: true,
                     },
                 },
@@ -47,7 +47,7 @@ switch (env) {
                     target: "pino/file",
                     level: "error",
                     options: {
-                        destination: "/var/log/hyperschedule.error.log",
+                        destination: "/var/log/hyperschedule/backend.error.log",
                         mkdir: true,
                     },
                 },

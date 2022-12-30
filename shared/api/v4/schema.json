@@ -1,250 +1,238 @@
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "definitions": {
-    "Schedule": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Omit<Schedule,\"locations\">"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "locations": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": ["locations"]
+[
+  {
+    "type": "object",
+    "properties": {
+      "startTime": {
+        "description": "seconds since midnight.",
+        "type": "number"
+      },
+      "endTime": {
+        "description": "seconds since midnight.",
+        "type": "number"
+      },
+      "days": {
+        "type": "array",
+        "items": {
+          "$ref": "Weekday"
         }
-      ]
+      },
+      "locations": {
+        "description": "Location is an array because some classes have multiple locations.\nThis is especially common for lab classes.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
     },
-    "SectionIdentifier": {
-      "description": "CourseIdentifier is the unique identifier we need to pinpoint a course offering\nfrom the database. We may stringify it as something like\n`TEST001 SC-05 2022/FA`.",
-      "type": "object",
-      "properties": {
-        "sectionNumber": {
-          "type": "number"
-        },
-        "year": {
-          "type": "number"
-        },
-        "term": {
-          "$ref": "#/definitions/Term"
-        },
-        "half": {
-          "type": "string"
-        },
-        "department": {
-          "description": "2-4 letters code in all upper case, e.g. CSCI, PE, HSA",
-          "type": "string"
-        },
-        "courseNumber": {
-          "type": "number"
-        },
-        "suffix": {
-          "type": "string"
-        },
-        "affiliation": {
+    "required": ["days", "endTime", "locations", "startTime"],
+    "$id": "Schedule"
+  },
+  {
+    "description": "CourseIdentifier is the unique identifier we need to pinpoint a course offering\nfrom the database. We may stringify it as something like\n`TEST001 SC-05 2022/FA`.",
+    "type": "object",
+    "properties": {
+      "sectionNumber": {
+        "type": "number"
+      },
+      "year": {
+        "type": "number"
+      },
+      "term": {
+        "$ref": "Term"
+      },
+      "half": {
+        "type": "string"
+      },
+      "department": {
+        "description": "2-4 letters code in all upper case, e.g. CSCI, PE, HSA",
+        "type": "string"
+      },
+      "courseNumber": {
+        "type": "number"
+      },
+      "suffix": {
+        "type": "string"
+      },
+      "affiliation": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "affiliation",
+      "courseNumber",
+      "department",
+      "half",
+      "sectionNumber",
+      "suffix",
+      "term",
+      "year"
+    ],
+    "$id": "SectionIdentifier"
+  },
+  {
+    "description": "For course start and end dates, used to identify half-semester types.",
+    "type": "object",
+    "properties": {
+      "year": {
+        "type": "number"
+      },
+      "month": {
+        "type": "number"
+      },
+      "day": {
+        "type": "number"
+      }
+    },
+    "required": ["day", "month", "year"],
+    "$id": "CourseDate"
+  },
+  {
+    "description": "CourseCode is what we can use to identify equivalent course offerings in\ndifferent semesters. As such, there is no year or semester attached to it.",
+    "type": "object",
+    "properties": {
+      "department": {
+        "description": "2-4 letters code in all upper case, e.g. CSCI, PE, HSA",
+        "type": "string"
+      },
+      "courseNumber": {
+        "type": "number"
+      },
+      "suffix": {
+        "type": "string"
+      },
+      "affiliation": {
+        "type": "string"
+      }
+    },
+    "required": ["affiliation", "courseNumber", "department", "suffix"],
+    "$id": "CourseCode"
+  },
+  {
+    "description": "All school codes are three letters for consistency. According to portal\nthere is no course taught at KGI",
+    "enum": ["CG", "CM", "HM", "PO", "PZ", "SC"],
+    "type": "string",
+    "$id": "School"
+  },
+  {
+    "enum": ["FA", "SP", "SU"],
+    "type": "string",
+    "$id": "Term"
+  },
+  {
+    "enum": ["F", "M", "R", "S", "T", "U", "W"],
+    "type": "string",
+    "$id": "Weekday"
+  },
+  {
+    "enum": ["C", "O", "R", "U"],
+    "type": "string",
+    "$id": "SectionStatus"
+  },
+  {
+    "type": "object",
+    "properties": {
+      "code": {
+        "$ref": "CourseCode"
+      },
+      "title": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "primaryAssociation": {
+        "$ref": "School"
+      },
+      "potentialError": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "code",
+      "description",
+      "potentialError",
+      "primaryAssociation",
+      "title"
+    ],
+    "$id": "Course"
+  },
+  {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      }
+    },
+    "required": ["name"],
+    "$id": "Instructor"
+  },
+  {
+    "type": "object",
+    "properties": {
+      "identifier": {
+        "$ref": "SectionIdentifier"
+      },
+      "courseAreas": {
+        "type": "array",
+        "items": {
           "type": "string"
         }
       },
-      "required": [
-        "affiliation",
-        "courseNumber",
-        "department",
-        "half",
-        "sectionNumber",
-        "suffix",
-        "term",
-        "year"
-      ]
-    },
-    "CourseDate": {
-      "description": "For course start and end dates, used to identify half-semester types.",
-      "type": "object",
-      "properties": {
-        "year": {
-          "type": "number"
-        },
-        "month": {
-          "type": "number"
-        },
-        "day": {
-          "type": "number"
+      "credits": {
+        "type": "number"
+      },
+      "permCount": {
+        "type": "number"
+      },
+      "seatsTotal": {
+        "type": "number"
+      },
+      "seatsFilled": {
+        "type": "number"
+      },
+      "status": {
+        "$ref": "SectionStatus"
+      },
+      "startDate": {
+        "$ref": "CourseDate"
+      },
+      "endDate": {
+        "$ref": "CourseDate"
+      },
+      "instructors": {
+        "type": "array",
+        "items": {
+          "$ref": "Instructor"
         }
       },
-      "required": ["day", "month", "year"]
-    },
-    "CourseCode": {
-      "description": "CourseCode is what we can use to identify equivalent course offerings in\ndifferent semesters. As such, there is no year or semester attached to it.",
-      "type": "object",
-      "properties": {
-        "department": {
-          "description": "2-4 letters code in all upper case, e.g. CSCI, PE, HSA",
-          "type": "string"
-        },
-        "courseNumber": {
-          "type": "number"
-        },
-        "suffix": {
-          "type": "string"
-        },
-        "affiliation": {
-          "type": "string"
+      "course": {
+        "$ref": "Course"
+      },
+      "schedules": {
+        "type": "array",
+        "items": {
+          "$ref": "Schedule"
         }
       },
-      "required": ["affiliation", "courseNumber", "department", "suffix"]
+      "potentialError": {
+        "type": "boolean"
+      }
     },
-    "School": {
-      "description": "All school codes are three letters for consistency. According to portal\nthere is no course taught at KGI",
-      "enum": ["CG", "CM", "HM", "PO", "PZ", "SC"],
-      "type": "string"
-    },
-    "Term": {
-      "enum": ["FA", "SP", "SU"],
-      "type": "string"
-    },
-    "Weekday": {
-      "enum": ["F", "M", "R", "S", "T", "U", "W"],
-      "type": "string"
-    },
-    "SectionStatus": {
-      "enum": ["C", "O", "R", "U"],
-      "type": "string"
-    },
-    "Course": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "$ref": "#/definitions/CourseCode"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "primaryAssociation": {
-          "$ref": "#/definitions/School"
-        }
-      },
-      "required": ["code", "description", "primaryAssociation", "title"]
-    },
-    "Instructor": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["name"]
-    },
-    "Section": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Omit<Course,\"title\"|\"description\"|\"requisite\"|\"textbooks\"|\"instructors\"|\"primaryAssociation\"|\"schedules\">"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "instructors": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Instructor"
-              }
-            },
-            "course": {
-              "$ref": "#/definitions/Course"
-            },
-            "schedules": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Schedule"
-              }
-            },
-            "potentialError": {
-              "type": "boolean"
-            }
-          },
-          "required": ["course", "instructors", "potentialError", "schedules"]
-        }
-      ]
-    },
-    "Omit<Schedule,\"locations\">": {
-      "type": "object",
-      "properties": {
-        "endTime": {
-          "description": "seconds since midnight.",
-          "type": "number"
-        },
-        "startTime": {
-          "description": "seconds since midnight.",
-          "type": "number"
-        },
-        "days": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Weekday"
-          }
-        }
-      },
-      "required": ["days", "endTime", "startTime"]
-    },
-    "Omit<Course,\"title\"|\"description\"|\"requisite\"|\"textbooks\"|\"instructors\"|\"primaryAssociation\"|\"schedules\">": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "$ref": "#/definitions/SectionStatus",
-          "description": "the status of the course, e.g. open, closed, reopened"
-        },
-        "identifier": {
-          "$ref": "#/definitions/SectionIdentifier"
-        },
-        "courseAreas": {
-          "description": "The letter code for the course area. It is not necessarily the same as\nthe course department. This is useful for people to filter the course\non portal so they know which dropdown to select",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "credits": {
-          "description": "number of credits the course has in non-hmc credit.",
-          "type": "number"
-        },
-        "permCount": {
-          "type": "number"
-        },
-        "seatsTotal": {
-          "type": "number"
-        },
-        "seatsFilled": {
-          "type": "number"
-        },
-        "startDate": {
-          "$ref": "#/definitions/CourseDate"
-        },
-        "endDate": {
-          "$ref": "#/definitions/CourseDate"
-        },
-        "notes": {
-          "description": "Some types have special notes.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "courseAreas",
-        "credits",
-        "endDate",
-        "identifier",
-        "notes",
-        "permCount",
-        "seatsFilled",
-        "seatsTotal",
-        "startDate",
-        "status"
-      ]
-    }
+    "required": [
+      "course",
+      "courseAreas",
+      "credits",
+      "endDate",
+      "identifier",
+      "instructors",
+      "permCount",
+      "potentialError",
+      "schedules",
+      "seatsFilled",
+      "seatsTotal",
+      "startDate",
+      "status"
+    ],
+    "$id": "Section"
   }
-}
+]
