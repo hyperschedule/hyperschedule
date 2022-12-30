@@ -30,7 +30,8 @@
     "jest": "^29.3.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.23.23",
+    "typedoc": "^0.22.18",
+    "typedoc-theme-oxide": "^0.1.6",
     "typescript-json-schema": "^0.55.0"
   },
   "peerDependencies": {
