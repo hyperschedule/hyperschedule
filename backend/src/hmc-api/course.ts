@@ -15,6 +15,17 @@ import {
     parseStaff,
 } from "./files";
 
+import Ajv from "ajv";
+import { schema } from "hyperschedule-shared/api/v4/schema";
+
+const ajv = new Ajv();
+for (let s of schema) {
+    ajv.addSchema(s);
+}
+const sectionValidator = ajv.compile({
+    $ref: "Section",
+});
+
 import { buildings } from "./buildings";
 import { rootLogger } from "../logger";
 
@@ -383,7 +394,13 @@ function processCalendar(
         }
     > = new Map();
 
-    // we don't really do any real processing here, just one more layer of cross-validation
+    for (let session of calendarSessionParsed) {
+        calendarMap.set(session.term, {
+            start: parseCalendarDate(session.startDate),
+            end: parseCalendarDate(session.endDate),
+        });
+    }
+
     for (let session of calendarSessionSectionParsed) {
         const section = courseSectionMap.get(session.sectionID);
         if (section === undefined) {
@@ -398,13 +415,17 @@ function processCalendar(
                 `Mismatching session term for section ${session.sectionID} in calendarsssionsession. Got ${session.term}`,
             );
         }
-    }
 
-    for (let session of calendarSessionParsed) {
-        calendarMap.set(session.term, {
-            start: parseCalendarDate(session.startDate),
-            end: parseCalendarDate(session.endDate),
-        });
+        const calendar = calendarMap.get(session.term);
+        if (calendar === undefined) {
+            logger.trace("Nonexistent calendar session %s", session.term);
+            section.potentialError = true;
+            section.startDate = { year: 1970, month: 1, day: 1 };
+            section.endDate = { year: 1970, month: 1, day: 1 };
+        } else {
+            section.startDate = calendar.start;
+            section.endDate = calendar.end;
+        }
     }
 }
 
@@ -512,5 +533,19 @@ export function linkCourseData(files: {
     );
     processSectionSchedule(courseSectionMap, courseSectionScheduleParsed);
 
-    return Array.from(courseSectionMap.values()) as APIv4.Section[];
+    const res: Partial<APIv4.Section>[] = Array.from(courseSectionMap.values());
+    for (let section of res) {
+        if (section.permCount === undefined) section.permCount = 0;
+        if (!sectionValidator(section)) {
+            logger.warn(
+                "invalid section %o, reason %o",
+                section,
+                sectionValidator.errors,
+            );
+            // apparently typescript thinks section is of type never,
+            // probably because the schema check earlier
+            (section as Partial<APIv4.Section>).potentialError = true;
+        }
+    }
+    return res as APIv4.Section[];
 }
