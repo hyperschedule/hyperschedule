@@ -2,6 +2,11 @@
 
 export const schema = [
     {
+        $id: "integer",
+        $schema: "http://json-schema.org/draft-07/schema",
+        type: "integer",
+    },
+    {
         $id: "Schedule",
         $schema: "http://json-schema.org/draft-07/schema",
         type: "object",
@@ -39,10 +44,10 @@ export const schema = [
         type: "object",
         properties: {
             sectionNumber: {
-                type: "number",
+                $ref: "integer",
             },
             year: {
-                type: "number",
+                $ref: "integer",
             },
             term: {
                 $ref: "Term",
@@ -56,7 +61,7 @@ export const schema = [
                 type: "string",
             },
             courseNumber: {
-                type: "number",
+                $ref: "integer",
             },
             suffix: {
                 type: "string",
@@ -84,13 +89,13 @@ export const schema = [
         type: "object",
         properties: {
             year: {
-                type: "number",
+                $ref: "integer",
             },
             month: {
-                type: "number",
+                $ref: "integer",
             },
             day: {
-                type: "number",
+                $ref: "integer",
             },
         },
         required: ["day", "month", "year"],
@@ -108,7 +113,7 @@ export const schema = [
                 type: "string",
             },
             courseNumber: {
-                type: "number",
+                $ref: "integer",
             },
             suffix: {
                 type: "string",
@@ -203,13 +208,13 @@ export const schema = [
                 type: "number",
             },
             permCount: {
-                type: "number",
+                $ref: "integer",
             },
             seatsTotal: {
-                type: "number",
+                $ref: "integer",
             },
             seatsFilled: {
-                type: "number",
+                $ref: "integer",
             },
             status: {
                 $ref: "SectionStatus",
