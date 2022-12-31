@@ -1,6 +1,9 @@
 // this file is auto-generated, please see schema-generator.ts. To regenerate, run yarn generate-schema
+
 export const schema = [
     {
+        $id: "Schedule",
+        $schema: "http://json-schema.org/draft-07/schema",
         type: "object",
         properties: {
             startTime: {
@@ -27,9 +30,10 @@ export const schema = [
             },
         },
         required: ["days", "endTime", "locations", "startTime"],
-        $id: "Schedule",
     },
     {
+        $id: "SectionIdentifier",
+        $schema: "http://json-schema.org/draft-07/schema",
         description:
             "CourseIdentifier is the unique identifier we need to pinpoint a course offering\nfrom the database. We may stringify it as something like\n`TEST001 SC-05 2022/FA`.",
         type: "object",
@@ -71,9 +75,10 @@ export const schema = [
             "term",
             "year",
         ],
-        $id: "SectionIdentifier",
     },
     {
+        $id: "CourseDate",
+        $schema: "http://json-schema.org/draft-07/schema",
         description:
             "For course start and end dates, used to identify half-semester types.",
         type: "object",
@@ -89,9 +94,10 @@ export const schema = [
             },
         },
         required: ["day", "month", "year"],
-        $id: "CourseDate",
     },
     {
+        $id: "CourseCode",
+        $schema: "http://json-schema.org/draft-07/schema",
         description:
             "CourseCode is what we can use to identify equivalent course offerings in\ndifferent semesters. As such, there is no year or semester attached to it.",
         type: "object",
@@ -112,31 +118,36 @@ export const schema = [
             },
         },
         required: ["affiliation", "courseNumber", "department", "suffix"],
-        $id: "CourseCode",
     },
     {
+        $id: "School",
+        $schema: "http://json-schema.org/draft-07/schema",
         description:
             "All school codes are three letters for consistency. According to portal\nthere is no course taught at KGI",
         enum: ["CG", "CM", "HM", "PO", "PZ", "SC"],
         type: "string",
-        $id: "School",
     },
     {
+        $id: "Term",
+        $schema: "http://json-schema.org/draft-07/schema",
         enum: ["FA", "SP", "SU"],
         type: "string",
-        $id: "Term",
     },
     {
+        $id: "Weekday",
+        $schema: "http://json-schema.org/draft-07/schema",
         enum: ["F", "M", "R", "S", "T", "U", "W"],
         type: "string",
-        $id: "Weekday",
     },
     {
+        $id: "SectionStatus",
+        $schema: "http://json-schema.org/draft-07/schema",
         enum: ["C", "O", "R", "U"],
         type: "string",
-        $id: "SectionStatus",
     },
     {
+        $id: "Course",
+        $schema: "http://json-schema.org/draft-07/schema",
         type: "object",
         properties: {
             code: {
@@ -162,9 +173,10 @@ export const schema = [
             "primaryAssociation",
             "title",
         ],
-        $id: "Course",
     },
     {
+        $id: "Instructor",
+        $schema: "http://json-schema.org/draft-07/schema",
         type: "object",
         properties: {
             name: {
@@ -172,9 +184,10 @@ export const schema = [
             },
         },
         required: ["name"],
-        $id: "Instructor",
     },
     {
+        $id: "Section",
+        $schema: "http://json-schema.org/draft-07/schema",
         type: "object",
         properties: {
             identifier: {
@@ -241,6 +254,5 @@ export const schema = [
             "startDate",
             "status",
         ],
-        $id: "Section",
     },
 ];

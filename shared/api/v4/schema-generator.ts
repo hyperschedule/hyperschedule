@@ -34,8 +34,11 @@ const generator = TJS.buildGenerator(program, settings, [
 const symbols: string[] = generator.getMainFileSymbols(program);
 const schema = generator.getSchemaForSymbols(symbols);
 const patched = Object.entries(schema.definitions!).map(([key, obj]) => {
-    (obj as any)["$id"] = key;
-    return obj as any;
+    // using object.assign so the new fields are on top
+    return Object.assign(
+        { $id: key, $schema: "http://json-schema.org/draft-07/schema" },
+        obj,
+    );
 });
 
 const schemaString = JSON.stringify(
@@ -51,7 +54,7 @@ const schemaString = JSON.stringify(
 fs.writeFileSync(
     schemaFilePath,
     prettier.format(
-        `// this file is auto-generated, please see schema-generator.ts. To regenerate, run yarn generate-schema
+        `// this file is auto-generated, please see schema-generator.ts. To regenerate, run yarn generate-schema\n
     export const schema=${schemaString}`,
         { trailingComma: "all", parser: "typescript", tabWidth: 4 },
     ),
