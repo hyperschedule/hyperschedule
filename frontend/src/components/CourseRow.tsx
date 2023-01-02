@@ -1,10 +1,19 @@
 import { useMeasure } from "@react-hookz/web";
+import classNames from "classnames";
 
 import type * as Api from "hyperschedule-shared/api/v4";
+import * as Course from "hyperschedule-shared/types/course";
 import * as Css from "./CourseRow.module.css";
 
 import randomColor from "randomcolor";
 import md5 from "md5";
+
+const statusBadge = {
+    [Course.SectionStatus.open]: Css.badgeOpen,
+    [Course.SectionStatus.closed]: Css.badgeClosed,
+    [Course.SectionStatus.reopened]: Css.badgeReopened,
+    [Course.SectionStatus.unknown]: Css.badgeUnknown,
+};
 
 export default function CourseRow(props: {
     section: Api.Section;
@@ -17,7 +26,12 @@ export default function CourseRow(props: {
         height: props.expand ? `${detailsBounds?.height ?? 0}px` : "0",
     };
 
-    const code = `${props.section.course.code.department}${props.section.course.code.courseNumber}${props.section.course.code.suffix} ${props.section.course.code.affiliation}`;
+    const code = [
+        props.section.course.code.department,
+        props.section.course.code.courseNumber,
+        props.section.course.code.suffix,
+        props.section.course.code.affiliation,
+    ].join(" ");
 
     const color = randomColor({
         hue: "random",
@@ -27,7 +41,7 @@ export default function CourseRow(props: {
     });
 
     return (
-        <div className={Css.padder} data-height={detailsBounds?.height}>
+        <div className={Css.padder}>
             <div
                 className={Css.box}
                 style={
@@ -43,15 +57,41 @@ export default function CourseRow(props: {
                         props.onClick(detailsBounds?.height ?? 0)
                     }
                 >
-                    {props.section.course.code.department}{" "}
-                    {props.section.course.code.courseNumber
-                        .toString()
-                        .padStart(3, "0")}{" "}
-                    {props.section.course.code.affiliation}-
-                    {props.section.identifier.sectionNumber
-                        .toString()
-                        .padStart(2, "0")}{" "}
-                    {props.section.course.title}
+                    <span className={Css.department}>
+                        {props.section.course.code.department}
+                    </span>
+                    <span className={Css.courseNumber}>
+                        {props.section.course.code.courseNumber
+                            .toString()
+                            .padStart(3, "0")}
+                    </span>
+                    <span className={Css.affiliation}>
+                        {props.section.course.code.affiliation}
+                    </span>
+                    <span className={Css.sectionNumber}>
+                        {props.section.identifier.sectionNumber
+                            .toString()
+                            .padStart(2, "0")}
+                    </span>
+                    <span className={Css.title}>
+                        {props.section.course.title}
+                    </span>
+                    <span className={Css.status}>
+                        <span
+                            className={classNames(
+                                Css.badge,
+                                statusBadge[props.section.status],
+                            )}
+                        />
+                        <span className={Css.seatsFilled}>
+                            {props.section.seatsFilled}
+                        </span>
+                        /
+                        <span className={Css.seatsTotal}>
+                            {props.section.seatsTotal}
+                        </span>
+                        seats filled
+                    </span>
                 </div>
                 <div style={style} className={Css.expander}>
                     <div ref={detailsRef}>

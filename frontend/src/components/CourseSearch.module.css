@@ -25,7 +25,7 @@
 .resultsContainer {
     grid-area: results;
 
-    font-size: calc(15rem / 16);
+    font-size: calc(7rem / 8);
     overflow-y: scroll;
     min-height: 0;
     position: relative;

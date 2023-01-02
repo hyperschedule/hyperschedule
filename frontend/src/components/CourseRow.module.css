@@ -15,6 +15,77 @@
     color: black;
     padding: 0.25rem 0.5rem;
     font-weight: 500;
+    display: flex;
+
+    & .department {
+        width: 5.5ex;
+    }
+    & .courseNumber {
+        width: 3.5ex;
+        text-align: center;
+    }
+    & .affiliation {
+        width: 4ex;
+        text-align: right;
+        &::after {
+            content: "-";
+        }
+    }
+    & .sectionNumber {
+        min-width: 3ex;
+    }
+    & .title {
+    }
+    & .status {
+        margin-left: auto;
+        font-weight: normal;
+        font-size: calc(15em / 16);
+
+        & .badge {
+            text-transform: uppercase;
+            font-weight: bold;
+            color: white;
+            background-color: red;
+            border-radius: 1rem;
+            padding: 0 0.5rem;
+            display: inline-block;
+            text-align: center;
+        }
+        & .badgeOpen {
+            background-color: green;
+            &::after {
+                content: "open";
+            }
+        }
+        & .badgeClosed {
+            background-color: red;
+            &::after {
+                content: "closed";
+            }
+        }
+        & .badgeReopened {
+            background-color: orange;
+            &::after {
+                content: "reopened";
+            }
+        }
+        & .badgeUnknown {
+            background-color: gray;
+            &::after {
+                content: "unknown";
+            }
+        }
+
+        & .seatsFilled {
+            display: inline-block;
+            text-align: right;
+            min-width: 3ex;
+        }
+        & .seatsTotal {
+            display: inline-block;
+            min-width: 3ex;
+        }
+    }
 }
 
 .expander {
@@ -24,4 +95,5 @@
 
 .details {
     padding: 0.5rem 1rem;
+    line-height: 1.5em;
 }
