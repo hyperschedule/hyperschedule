@@ -7,7 +7,8 @@
  * @module
  */
 import * as Courses from "../../types";
-
+// type alias for schema generation
+type integer = number;
 export interface Schedule {
     /**
      * seconds since midnight.
@@ -60,9 +61,9 @@ export interface Section {
     identifier: SectionIdentifier;
     courseAreas: string[];
     credits: number;
-    permCount: number;
-    seatsTotal: number;
-    seatsFilled: number;
+    permCount: integer;
+    seatsTotal: integer;
+    seatsFilled: integer;
     status: SectionStatus;
     startDate: CourseDate;
     endDate: CourseDate;

@@ -1,5 +1,8 @@
 import type { Requisite } from "./requisite";
 
+// type alias for schema generation
+type integer = number;
+
 /**
  * All school codes are three letters for consistency. According to portal
  * there is no course taught at KGI
@@ -40,9 +43,9 @@ export enum Weekday {
  * For course start and end dates, used to identify half-semester types.
  */
 export interface CourseDate {
-    year: number;
-    month: number;
-    day: number;
+    year: integer;
+    month: integer;
+    day: integer;
 }
 
 /**
@@ -54,7 +57,7 @@ export interface CourseCode {
      * 2-4 letters code in all upper case, e.g. CSCI, PE, HSA
      */
     department: string;
-    courseNumber: number;
+    courseNumber: integer;
     suffix: string;
     // this is the last two letters of the course code, e.g. SC, HM, JT, AS, AF
     affiliation: string;
@@ -65,8 +68,8 @@ export interface CourseCode {
  * `TEST001 SC-05 2022/FA`.
  */
 export interface SectionIdentifier extends CourseCode {
-    sectionNumber: number;
-    year: number;
+    sectionNumber: integer;
+    year: integer;
     term: Term;
     // first or second or fifth half of the term,
     // e.g. F1 and F2 for fall, P1 and P2 for spring,
@@ -98,9 +101,9 @@ export interface Course {
      * number of credits the course has in non-hmc credit.
      */
     credits: number;
-    permCount: number;
-    seatsTotal: number;
-    seatsFilled: number;
+    permCount: integer;
+    seatsTotal: integer;
+    seatsFilled: integer;
     /**
      * the status of the course, e.g. open, closed, reopened
      */
@@ -129,11 +132,11 @@ export interface Schedule {
     /**
      * seconds since midnight.
      */
-    startTime: number;
+    startTime: integer;
     /**
      * seconds since midnight.
      */
-    endTime: number;
+    endTime: integer;
 
     days: Weekday[];
     /**

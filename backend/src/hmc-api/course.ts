@@ -28,6 +28,7 @@ const sectionValidator = ajv.compile({
 
 import { buildings } from "./buildings";
 import { rootLogger } from "../logger";
+import { stringifySectionCodeLong } from "hyperschedule-shared/api/v4";
 
 const logger = rootLogger.child({ action: "process-csv" });
 
@@ -537,11 +538,24 @@ export function linkCourseData(files: {
     for (let section of res) {
         if (section.permCount === undefined) section.permCount = 0;
         if (!sectionValidator(section)) {
-            logger.warn(
-                "invalid section %o, reason %o",
-                section,
-                sectionValidator.errors,
-            );
+            if (process.env.NODE_ENV === "production")
+                logger.warn(
+                    "invalid section %o, reason %o",
+                    section,
+                    sectionValidator.errors,
+                );
+            else {
+                logger.error(
+                    "invalid section %o, reason %o",
+                    section,
+                    sectionValidator.errors,
+                );
+                throw Error(
+                    `Invalid section ${stringifySectionCodeLong(
+                        (section as APIv4.Section).identifier,
+                    )}`,
+                );
+            }
             // apparently typescript thinks section is of type never,
             // probably because the schema check earlier
             (section as Partial<APIv4.Section>).potentialError = true;
