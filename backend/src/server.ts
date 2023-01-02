@@ -20,6 +20,7 @@ server.get(
         },
     },
     async (request, response) => {
+        response.header("Access-Control-Allow-Origin", "*");
         return courses;
     },
 );
