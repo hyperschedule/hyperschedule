@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "es2021",
     "module": "es2022",
     "moduleResolution": "node",
@@ -13,8 +14,14 @@
     "sourceRoot": "src",
     "baseUrl": "src",
     "rootDir": "src",
-    "paths": { "@components/*": ["components/*"] },
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+    "paths": {
+      "@components/*": ["components/*"],
+      "@lib/*": ["lib/*"],
+      "@hooks/*": ["hooks/*"]
+    },
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+  "references": [{ "path": "../shared" }]
 }
