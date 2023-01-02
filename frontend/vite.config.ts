@@ -8,11 +8,14 @@ import pcssCustomMedia from "postcss-custom-media";
 
 export default defineConfig({
     root: "src",
+    envDir: __dirname,
     plugins: [react()],
     resolve: {
         extensions: [".ts", ".tsx"],
         alias: {
             "@components": path.join(__dirname, "src/components"),
+            "@lib": path.join(__dirname, "src/lib"),
+            "@hooks": path.join(__dirname, "src/hooks"),
         },
     },
     css: {
@@ -21,6 +24,7 @@ export default defineConfig({
             plugins: [pcssNesting, pcssCustomMedia],
         },
     },
+    ssr: { external: ["@babel/runtime"] },
     build: {
         emptyOutDir: true,
         rollupOptions: {

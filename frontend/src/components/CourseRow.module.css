@@ -1,0 +1,27 @@
+.padder {
+    padding: 0.5rem 1rem 0 1rem;
+    background-color: transparent;
+}
+
+.box {
+    border-radius: 0.125rem;
+    border: 1px solid var(--course-color, --bg-1);
+}
+
+.titlebar {
+    cursor: pointer;
+    white-space: nowrap;
+    background-color: var(--course-color, --bg-1);
+    color: black;
+    padding: 0.25rem 0.5rem;
+    font-weight: 500;
+}
+
+.expander {
+    transition: height 200ms;
+    overflow-y: hidden;
+}
+
+.details {
+    padding: 0.5rem 1rem;
+}

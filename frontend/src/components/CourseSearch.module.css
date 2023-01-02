@@ -1,0 +1,61 @@
+.container {
+    display: grid;
+    grid-template-areas: "controls" "results";
+    grid-template-rows: auto 1fr;
+    min-height: 0;
+}
+
+.searchControls {
+    grid-area: controls;
+
+    display: grid;
+    padding: 1rem;
+    border-bottom: 1px solid var(--bg-1);
+
+    & input {
+        font: inherit;
+        border: 1px solid var(--bg-1);
+        outline: none;
+        padding: 0.5rem;
+        background-color: transparent;
+        color: inherit;
+    }
+}
+
+.resultsContainer {
+    grid-area: results;
+
+    font-size: calc(15rem / 16);
+    overflow-y: scroll;
+    min-height: 0;
+    position: relative;
+}
+
+.hiddenMeasureContainer {
+    position: absolute;
+    left: 100vw;
+}
+
+.spacer {
+    padding-bottom: 0.5rem;
+    position: relative;
+    &::after {
+        position: absolute;
+        top: 100%;
+        padding-bottom: 2rem;
+        text-align: center;
+        content: "(end of search results)";
+        color: var(--fg-1);
+        display: block;
+        left: 0;
+        right: 0;
+    }
+}
+
+.courseRowPosition {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: transform 200ms;
+}

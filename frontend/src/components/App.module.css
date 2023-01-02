@@ -7,6 +7,7 @@
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: hidden;
     background-color: var(--bg-0);
     color: var(--fg-0);
 
@@ -24,6 +25,7 @@
     --bg-2: #afaaa3;
 
     --fg-0: #2f2822;
+    --fg-1: #4f4842;
 
     --theme-transition-duration: 200ms;
 }
@@ -36,13 +38,21 @@
     --bg-2: #6a6864;
 
     --fg-0: #efeae3;
+    --fg-1: #cfcac3;
 }
 
 .main {
     grid-area: main;
+    display: grid;
+    grid-template-areas: "selector" "content";
+    grid-template-rows: auto 1fr;
+
+    min-height: 0;
 }
 
 .mainSelector {
+    grid-area: selector;
+
     display: grid;
     position: relative;
     grid-template-columns: repeat(2, 1fr);
@@ -75,6 +85,12 @@
     background-color: transparent;
     color: inherit;
     position: relative;
+}
+
+.mainContent {
+    grid-area: content;
+    display: grid;
+    min-height: 0;
 }
 
 .sidebar {
