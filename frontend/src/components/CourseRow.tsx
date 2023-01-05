@@ -95,6 +95,17 @@ export default function CourseRow(props: {
                             {props.section.seatsTotal}
                         </span>
                         seats filled
+                        <span
+                            className={classNames(Css.permCountLabel, {
+                                [Css.nonzero]: props.section.permCount !== 0,
+                            })}
+                        >
+                            ,
+                            <span className={Css.permCount}>
+                                {props.section.permCount}
+                            </span>
+                            PERMs
+                        </span>
                     </span>
                 </div>
                 <div style={style} className={Css.expander}>

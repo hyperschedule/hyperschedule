@@ -105,13 +105,27 @@
         & .seatsFilled {
             display: inline-block;
             text-align: right;
-            min-width: 3ex;
+            width: 3ex;
             font-weight: 500;
         }
         & .seatsTotal {
             display: inline-block;
-            min-width: 3ex;
+            width: 3ex;
             font-weight: 500;
+        }
+
+        & .permCountLabel {
+            visibility: hidden;
+            &.nonzero {
+                visibility: visible;
+            }
+        }
+
+        & .permCount {
+            display: inline-block;
+            text-align: center;
+            font-weight: 500;
+            width: 3ex;
         }
     }
 }
