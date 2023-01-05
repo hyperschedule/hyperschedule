@@ -11,8 +11,8 @@ import CourseSearch from "./CourseSearch";
 import Schedule from "./Schedule";
 
 const enum MainTab {
-    CourseSearch,
-    Schedule,
+    CourseSearch = 0,
+    Schedule = 1,
 }
 
 export default function App() {
