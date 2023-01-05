@@ -23,14 +23,24 @@
     --bg-0: #efeae4;
     --bg-1: #cfcac3;
     --bg-2: #afaaa3;
+    --bg-3: #8f8a83;
 
     --fg-0: #2f2822;
     --fg-1: #4f4842;
+    --fg-2: #6f6862;
+
+    /* `h` stands for highlight */
+    --hbg: #2878aa;
+    --hfg: #efeae4;
 
     --theme-transition-duration: 200ms;
 
     --font-sans: "Inter", sans-serif;
     --font-mono: "Roboto Mono", monospace;
+
+    --palette-red: #ec4202;
+    --palette-orange: #da9a03;
+    --palette-green: #58a803;
 }
 
 .appDark {

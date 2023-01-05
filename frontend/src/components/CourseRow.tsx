@@ -5,6 +5,8 @@ import type * as Api from "hyperschedule-shared/api/v4";
 import * as Course from "hyperschedule-shared/types/course";
 import * as Css from "./CourseRow.module.css";
 
+import * as Feather from "react-feather";
+
 import randomColor from "randomcolor";
 import md5 from "md5";
 
@@ -43,7 +45,7 @@ export default function CourseRow(props: {
     return (
         <div className={Css.padder}>
             <div
-                className={Css.box}
+                className={classNames(Css.box, { [Css.expand]: props.expand })}
                 style={
                     {
                         "--course-color": color,
@@ -57,6 +59,7 @@ export default function CourseRow(props: {
                         props.onClick(detailsBounds?.height ?? 0)
                     }
                 >
+                    <Feather.ChevronRight className={Css.arrow} size={12} />
                     <span className={Css.department}>
                         {props.section.course.code.department}
                     </span>

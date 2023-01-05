@@ -6,6 +6,10 @@
 .box {
     border-radius: 0.125rem;
     border: 1px solid var(--course-color, --bg-1);
+
+    &.expand .titlebar .arrow {
+        transform: rotate(90deg);
+    }
 }
 
 .titlebar {
@@ -16,6 +20,12 @@
     padding: 0.25rem 0.5rem;
     font-weight: 500;
     display: flex;
+
+    & .arrow {
+        align-self: center;
+        margin-right: 0.5rem;
+        transition: transform 200ms;
+    }
 
     & .department {
         width: 5.5ex;
@@ -52,19 +62,19 @@
             text-align: center;
         }
         & .badgeOpen {
-            background-color: green;
+            background-color: var(--palette-green);
             &::after {
                 content: "open";
             }
         }
         & .badgeClosed {
-            background-color: red;
+            background-color: var(--palette-red);
             &::after {
                 content: "closed";
             }
         }
         & .badgeReopened {
-            background-color: orange;
+            background-color: var(--palette-orange);
             &::after {
                 content: "reopened";
             }
@@ -80,10 +90,12 @@
             display: inline-block;
             text-align: right;
             min-width: 3ex;
+            font-weight: 500;
         }
         & .seatsTotal {
             display: inline-block;
             min-width: 3ex;
+            font-weight: 500;
         }
     }
 }
