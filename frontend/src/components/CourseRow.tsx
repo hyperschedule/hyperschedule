@@ -48,7 +48,8 @@ export default function CourseRow(props: {
                 className={classNames(Css.box, { [Css.expand]: props.expand })}
                 style={
                     {
-                        "--course-color": color,
+                        "--course-color-light": color,
+                        "--course-color-dark": `${color}60`,
                     } as React.CSSProperties
                 }
             >

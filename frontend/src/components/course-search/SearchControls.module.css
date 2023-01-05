@@ -8,6 +8,7 @@
 
     padding: 1rem;
     border-bottom: 1px solid var(--bg-1);
+    transition: border-bottom-color var(--theme-transition-duration);
 
     & input {
         font: inherit;
@@ -16,6 +17,7 @@
         padding: 0.5rem;
         background-color: transparent;
         color: inherit;
+        transition: border-color var(--theme-transition-duration);
     }
 
     & .filterButton {

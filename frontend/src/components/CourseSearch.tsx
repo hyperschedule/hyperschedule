@@ -48,11 +48,10 @@ function CourseSearchRow(props: {
 
     if (!show) return null;
 
-    const key = sectionKey(props.section.identifier);
     const style = { transform: `translateY(${pos}px)` };
 
     return (
-        <div key={key} style={style} className={Css.courseRowPosition}>
+        <div style={style} className={Css.courseRowPosition}>
             <CourseRow
                 section={props.section}
                 expand={props.index === props.expand?.index}
@@ -98,6 +97,7 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
                     >
                         {props.sections.map((s, i) => (
                             <CourseSearchRow
+                                key={sectionKey(s.identifier)}
                                 index={i}
                                 section={s}
                                 scroll={scroll}

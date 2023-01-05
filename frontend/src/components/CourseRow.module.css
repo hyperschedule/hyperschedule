@@ -5,21 +5,37 @@
 
 .box {
     border-radius: 0.125rem;
-    border: 1px solid var(--course-color, --bg-1);
+    border: 1px solid var(--course-color);
+    transition: border-color var(--theme-transition-duration);
 
     &.expand .titlebar .arrow {
         transform: rotate(90deg);
+    }
+
+    @nest [data-theme="dark"] & {
+        --course-color: var(--course-color-dark);
+        & .titlebar {
+            color: white;
+        }
+    }
+
+    @nest [data-theme="light"] & {
+        --course-color: var(--course-color-light);
+        & .titlebar {
+            color: black;
+        }
     }
 }
 
 .titlebar {
     cursor: pointer;
     white-space: nowrap;
-    background-color: var(--course-color, --bg-1);
-    color: black;
+    background-color: var(--course-color);
     padding: 0.25rem 0.5rem;
     font-weight: 500;
     display: flex;
+    transition: background-color var(--theme-transition-duration),
+        color var(--theme-transition-duration);
 
     & .arrow {
         align-self: center;

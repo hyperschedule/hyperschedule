@@ -23,7 +23,7 @@ export default function App() {
 
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
-            <div className={theme === Theme.Dark ? Css.appDark : Css.app}>
+            <div className={Css.app} data-theme={theme}>
                 <div className={Css.main}>
                     <div
                         className={

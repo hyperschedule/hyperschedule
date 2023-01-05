@@ -2,8 +2,8 @@ import * as Css from "./ThemeSlider.module.css";
 import * as Feather from "react-feather";
 
 export const enum Theme {
-    Light,
-    Dark,
+    Light = "light",
+    Dark = "dark",
 }
 
 export default function ThemeSlider(props: {
