@@ -5,23 +5,6 @@
     min-height: 0;
 }
 
-.searchControls {
-    grid-area: controls;
-
-    display: grid;
-    padding: 1rem;
-    border-bottom: 1px solid var(--bg-1);
-
-    & input {
-        font: inherit;
-        border: 1px solid var(--bg-1);
-        outline: none;
-        padding: 0.5rem;
-        background-color: transparent;
-        color: inherit;
-    }
-}
-
 .resultsContainer {
     grid-area: results;
 

@@ -6,6 +6,7 @@ import type * as Api from "hyperschedule-shared/api/v4";
 import type * as Course from "hyperschedule-shared/types/course";
 import { useCourses } from "@hooks/api";
 
+import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/CourseRow";
 
 function sectionKey(id: Course.SectionIdentifier) {
@@ -81,7 +82,6 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
     return (
         <>
             <div
-                data-scroll={scroll}
                 ref={viewportRef}
                 className={Css.resultsContainer}
                 onScroll={(ev) => setScroll(ev.currentTarget.scrollTop)}
@@ -129,9 +129,7 @@ export default function CourseSearch() {
 
     return (
         <div className={Css.container}>
-            <div className={Css.searchControls}>
-                <input placeholder="Search for courses..." />
-            </div>
+            <SearchControls />
             {query.data ? (
                 <CourseSearchResults sections={query.data} />
             ) : (
