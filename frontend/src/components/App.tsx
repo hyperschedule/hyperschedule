@@ -4,8 +4,9 @@ import * as Css from "./App.module.css";
 import * as ReactQuery from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-import ThemeSlider, { Theme } from "./ThemeSlider";
+import classNames from "classnames";
 
+import ThemeSlider, { Theme } from "./ThemeSlider";
 import CourseSearch from "./CourseSearch";
 import Schedule from "./Schedule";
 
@@ -44,12 +45,19 @@ export default function App() {
                             Schedule
                         </button>
                     </div>
-                    <div className={Css.mainContent}>
-                        {mainTab === MainTab.CourseSearch ? (
-                            <CourseSearch />
-                        ) : (
-                            <Schedule />
-                        )}
+                    <div
+                        className={classNames(Css.mainContent, {
+                            [Css.visible]: mainTab === MainTab.CourseSearch,
+                        })}
+                    >
+                        <CourseSearch />
+                    </div>
+                    <div
+                        className={classNames(Css.mainContent, {
+                            [Css.visible]: mainTab === MainTab.Schedule,
+                        })}
+                    >
+                        <Schedule />
                     </div>
                 </div>
                 <div className={Css.sidebar}>

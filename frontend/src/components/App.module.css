@@ -102,8 +102,13 @@
 
 .mainContent {
     grid-area: content;
-    display: grid;
+    visibility: hidden;
     min-height: 0;
+    display: grid;
+
+    &.visible {
+        visibility: visible;
+    }
 }
 
 .sidebar {
