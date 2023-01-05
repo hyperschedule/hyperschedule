@@ -28,6 +28,7 @@
 }
 
 .titlebar {
+    user-select: none;
     cursor: pointer;
     white-space: nowrap;
     background-color: var(--course-color);
