@@ -34,7 +34,7 @@
   },
   "scripts": {
     "frontend": "yarn workspace hyperschedule-frontend run serve",
-    "backend": "yarn workspace hyperschedule-backend run serve",
+    "backend": "yarn workspace hyperschedule-backend run start-db && yarn workspace hyperschedule-backend run serve",
     "test": "FORCE_COLOR=true yarn workspaces foreach --parallel --topological-dev --verbose run test",
     "lint": "eslint .",
     "format": "prettier --write '**/*.ts' '**/*.json' '**/*.tsx' '**/*.html'",
