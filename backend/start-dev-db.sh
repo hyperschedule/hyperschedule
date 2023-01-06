@@ -11,8 +11,8 @@ echo $'\e[95mChecking if container is already running\e[m'
 if [ "$(docker container inspect -f '{{.State.Status}}' hyperschedule-mongodb)" == "running" ]; then
    echo $'\e[95mDatabase is already running\e[m'
 else
-echo $'\e[95mPulling mongodb docker image\e[m'
-docker pull mongo
+#echo $'\e[95mPulling mongodb docker image\e[m'
+#docker pull mongo
 
 echo $'\e[95mStarting container with name hyperschedule-mongodb\e[m'
 docker run --name hyperschedule-mongodb --rm -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=hyperschedule -e MONGO_INITDB_ROOT_PASSWORD=local_dev mongo

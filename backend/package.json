@@ -47,7 +47,7 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "serve": "NODE_ENV=development node --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
+    "serve": "NODE_ENV=development node --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
     "test": "jest",
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",

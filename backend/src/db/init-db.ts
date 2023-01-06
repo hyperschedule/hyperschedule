@@ -10,6 +10,7 @@ set("strictQuery", true);
 console.log("Connecting to db...");
 await connect(DB_URL, {
     serverSelectionTimeoutMS: 3000,
+    dbName: "hyperschedule",
 });
 console.log("db connected");
 const data = JSON.parse(

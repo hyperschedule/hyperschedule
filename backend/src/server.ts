@@ -1,33 +1,19 @@
 import fastify from "fastify";
-import fs from "fs";
 import { rootLogger } from "./logger";
-import { schema as courseSchema } from "hyperschedule-shared/api/v4/schema";
+import { connectToDb } from "./db";
+import { registerCourseRoutes } from "./routes/courses";
 
-const server = fastify({ logger: rootLogger });
-for (let obj of courseSchema) server.addSchema(obj);
+// creating server and schemas
+export const server = fastify({ logger: rootLogger });
 
-const courses = JSON.parse(
-    fs.readFileSync("./src/hmc-api/sample/parsed-sample-v4.json", {
-        encoding: "utf-8",
-    }),
-);
+registerCourseRoutes();
 
-server.get(
-    "/v4/courses",
-    {
-        schema: {
-            response: { 200: { type: "array", items: { $ref: "Section" } } },
-        },
-    },
-    async (request, response) => {
-        response.header("Access-Control-Allow-Origin", "*");
-        return courses;
-    },
-);
+// initializing database connection
+await connectToDb();
 
 server.listen({ port: 8080 }, (err, address) => {
     if (err) {
         rootLogger.error(err);
-        process.exit(0);
+        process.exit(1);
     }
 });

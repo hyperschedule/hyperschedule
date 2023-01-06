@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "production") {
 } else if (process.env.NODE_ENV === "test") {
     DB_URL = ""; // will be set by test files
 } else {
-    DB_URL = "mongodb://hyperschedule:local_dev@127.0.0.1:27017";
+    DB_URL = "mongodb://hyperschedule:local_dev@127.0.0.1:27017/";
 }
 
 export { DB_URL };

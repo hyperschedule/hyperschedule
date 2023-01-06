@@ -15,6 +15,7 @@ export const courseSchema = new Schema<APIv4.Course>({
         affiliation: String,
     },
     primaryAssociation: String,
+    potentialError: Boolean,
 });
 export const scheduleSchema = new Schema<APIv4.Schedule>({
     startTime: Number,
@@ -51,10 +52,13 @@ export const sectionSchema = new Schema<DBSection>({
         month: Number,
         day: Number,
     },
-    instructors: {
-        name: String,
-    },
+    instructors: [
+        {
+            name: String,
+        },
+    ],
     potentialError: Boolean,
+    credits: Number,
 });
 
 export const Section = model<DBSection>("Section", sectionSchema);
