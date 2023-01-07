@@ -7,19 +7,20 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import classNames from "classnames";
 
 import ThemeSlider, { Theme } from "./ThemeSlider";
-import CourseSearch from "./CourseSearch";
+import CourseSearch from "./course-search/CourseSearch";
 import Schedule from "./Schedule";
 
-const enum MainTab {
-    CourseSearch,
-    Schedule,
-}
+import useStore, { MainTab } from "@hooks/store";
 
 export default function App() {
+    // memoize `queryClient` with empty dependency list to ensure it only gets
+    // constructed/initialized once throughout the app's lifecycle
     const queryClient = React.useMemo(() => new ReactQuery.QueryClient(), []);
 
     const [theme, setTheme] = React.useState(Theme.Light);
-    const [mainTab, setMainTab] = React.useState(MainTab.CourseSearch);
+
+    const mainTab = useStore((store) => store.mainTab);
+    const setMainTab = useStore((store) => store.setMainTab);
 
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
