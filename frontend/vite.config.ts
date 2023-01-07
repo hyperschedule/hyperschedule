@@ -18,12 +18,7 @@ export default defineConfig({
             "@hooks": path.join(__dirname, "src/hooks"),
         },
     },
-    css: {
-        postcss: {
-            parser: pcssComment,
-            plugins: [pcssNesting, pcssCustomMedia],
-        },
-    },
+    css: {},
     ssr: { external: ["@babel/runtime"] },
     build: {
         emptyOutDir: true,
