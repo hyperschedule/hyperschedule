@@ -6,9 +6,10 @@ import { ReactQueryDevtools } from "react-query/devtools";
 
 import classNames from "classnames";
 
-import ThemeSlider, { Theme } from "./ThemeSlider";
+import ThemeSlider from "./ThemeSlider";
 import CourseSearch from "./course-search/CourseSearch";
 import Schedule from "./Schedule";
+import MainSelector from "./MainSelector";
 
 import useStore, { MainTab } from "@hooks/store";
 
@@ -17,35 +18,14 @@ export default function App() {
     // constructed/initialized once throughout the app's lifecycle
     const queryClient = React.useMemo(() => new ReactQuery.QueryClient(), []);
 
-    const [theme, setTheme] = React.useState(Theme.Light);
-
+    const theme = useStore((store) => store.theme);
     const mainTab = useStore((store) => store.mainTab);
-    const setMainTab = useStore((store) => store.setMainTab);
 
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
             <div className={Css.app} data-theme={theme}>
                 <div className={Css.main}>
-                    <div
-                        className={
-                            mainTab === MainTab.Schedule
-                                ? Css.mainSelectorAlt
-                                : Css.mainSelector
-                        }
-                    >
-                        <button
-                            className={Css.selectorButton}
-                            onClick={() => setMainTab(MainTab.CourseSearch)}
-                        >
-                            Course Search
-                        </button>
-                        <button
-                            className={Css.selectorButton}
-                            onClick={() => setMainTab(MainTab.Schedule)}
-                        >
-                            Schedule
-                        </button>
-                    </div>
+                    <MainSelector />
                     <div
                         className={classNames(Css.mainContent, {
                             [Css.visible]: mainTab === MainTab.CourseSearch,
@@ -64,7 +44,7 @@ export default function App() {
                 <div className={Css.sidebar}>
                     <div className={Css.minimap}></div>
                 </div>
-                <ThemeSlider theme={theme} setTheme={setTheme} />
+                <ThemeSlider />
             </div>
             <ReactQueryDevtools initialIsOpen={false} />
         </ReactQuery.QueryClientProvider>

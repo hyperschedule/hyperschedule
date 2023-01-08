@@ -1,0 +1,33 @@
+.container {
+    grid-area: selector;
+
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(2, 1fr);
+    background-color: var(--bg-1);
+    transition: background-color var(--theme-transition-duration);
+
+    &::before {
+        content: "";
+        background-color: var(--bg-0);
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        transition: transform 100ms,
+            background-color var(--theme-transition-duration);
+    }
+
+    &.alt::before {
+        transform: translateX(100%);
+    }
+
+    & button {
+        font: inherit;
+        padding: 0.5rem;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        color: inherit;
+        position: relative;
+    }
+}

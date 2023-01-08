@@ -5,6 +5,9 @@ export interface Store {
     mainTab: MainTab;
     setMainTab: (tab: MainTab) => void;
 
+    theme: Theme;
+    toggleTheme: () => void;
+
     search: {
         text: string;
         setText: (text: string) => void;
@@ -17,13 +20,19 @@ export const enum MainTab {
     Schedule = "Schedule",
 }
 
+export const enum Theme {
+    Dark = "dark",
+    Light = "light",
+}
+
 export default createStore<Store>((set, get) => ({
-    // TODO: are nested stores a thing? check zustand docs
     mainTab: MainTab.CourseSearch,
     setMainTab: (mainTab) => set({ mainTab }),
+    theme: Theme.Dark,
+    toggleTheme: () =>
+        set({ theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark }),
     search: {
         text: "",
-        setText: (text) => set({ search: { ...get().search, text } }),
         filters: [],
     },
 }));
