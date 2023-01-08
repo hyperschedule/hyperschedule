@@ -4,9 +4,15 @@
 }
 
 .box {
+    /* TODO: two-row display on small screens (will also have to re-fiddle with
+    measure logic). question: is it possible to media query on parent container
+    size, rather than screen size?
+    */
+
     border-radius: 0.125rem;
     border: 1px solid var(--course-color);
     transition: border-color var(--theme-transition-duration);
+    font-size: calc(7rem / 8);
 
     &.expand .titlebar .arrow {
         transform: rotate(90deg);
@@ -52,7 +58,7 @@
         text-align: center;
     }
     & .affiliation {
-        width: 4ex;
+        width: 4.5ex;
         text-align: right;
         &::after {
             content: "-";
@@ -106,19 +112,19 @@
         & .seatsFilled {
             display: inline-block;
             text-align: right;
-            width: 3ex;
+            width: 4ex;
             font-weight: 500;
         }
         & .seatsTotal {
             display: inline-block;
-            width: 3ex;
+            width: 4ex;
             font-weight: 500;
         }
 
         & .permCountLabel {
             visibility: hidden;
             &.nonzero {
-                visibility: visible;
+                visibility: inherit;
             }
         }
 
