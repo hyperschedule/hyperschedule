@@ -4,7 +4,7 @@ import { apiUrl } from "@lib/config";
 import { useQuery } from "react-query";
 
 async function getCourses() {
-    const resp = await fetch(`${apiUrl}/v4/courses`);
+    const resp = await fetch(`${apiUrl}/v4/sections`);
     return (await resp.json()) as Api.Section[];
 }
 

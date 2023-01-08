@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { useMeasure } from "@react-hookz/web";
 import classNames from "classnames";
 
-import type * as Api from "hyperschedule-shared/api/v4";
-import * as Course from "hyperschedule-shared/types/course";
+import * as Api from "hyperschedule-shared/api/v4";
 import * as Css from "./CourseRow.module.css";
 
 import * as Feather from "react-feather";
@@ -13,10 +12,10 @@ import randomColor from "randomcolor";
 import md5 from "md5";
 
 const statusBadge = {
-    [Course.SectionStatus.open]: Css.badgeOpen,
-    [Course.SectionStatus.closed]: Css.badgeClosed,
-    [Course.SectionStatus.reopened]: Css.badgeReopened,
-    [Course.SectionStatus.unknown]: Css.badgeUnknown,
+    [Api.SectionStatus.open]: Css.badgeOpen,
+    [Api.SectionStatus.closed]: Css.badgeClosed,
+    [Api.SectionStatus.reopened]: Css.badgeReopened,
+    [Api.SectionStatus.unknown]: Css.badgeUnknown,
 };
 
 export default function CourseRow(props: {

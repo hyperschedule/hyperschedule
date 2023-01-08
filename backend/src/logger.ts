@@ -53,7 +53,7 @@ switch (env) {
                 },
                 {
                     target: "pino/file",
-                    level: "error",
+                    level: "info",
                     options: {
                         destination: 1, // STDOUT
                         mkdir: true,
