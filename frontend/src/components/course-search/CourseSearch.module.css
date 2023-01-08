@@ -20,18 +20,6 @@
 
 .spacer {
     padding-bottom: 0.5rem;
-    position: relative;
-    &::after {
-        position: absolute;
-        top: 100%;
-        padding-bottom: 2rem;
-        text-align: center;
-        content: "(end of search results)";
-        color: var(--fg-1);
-        display: block;
-        left: 0;
-        right: 0;
-    }
 }
 
 .courseRowPosition {
@@ -40,4 +28,14 @@
     left: 0;
     right: 0;
     transition: transform 200ms;
+}
+
+.end {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    text-align: center;
+    color: var(--fg-1);
+    display: block;
+    left: 0;
+    right: 0;
 }

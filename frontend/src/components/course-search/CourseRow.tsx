@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { useMeasure } from "@react-hookz/web";
 import classNames from "classnames";
 
@@ -21,11 +23,18 @@ export default function CourseRow(props: {
     section: Api.Section;
     expand: boolean;
     onClick?: (height: number) => void;
+    onResize?: (height: number) => void;
 }) {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
+    const height = detailsBounds?.height ?? 0;
+
+    // TODO: should props.onResize be one of the dependencies? if so, how to
+    // avoid infinite update depth? (height change => call onResize => rerender
+    // => new callback)
+    useEffect(() => props.onResize && props.onResize(height), [height]);
 
     const style = {
-        height: props.expand ? `${detailsBounds?.height ?? 0}px` : "0",
+        height: props.expand ? `${height}px` : "0",
     };
 
     const code = [
@@ -55,10 +64,7 @@ export default function CourseRow(props: {
             >
                 <div
                     className={Css.titlebar}
-                    onClick={() =>
-                        props.onClick &&
-                        props.onClick(detailsBounds?.height ?? 0)
-                    }
+                    onClick={() => props.onClick && props.onClick(height)}
                 >
                     <Feather.ChevronRight className={Css.arrow} size={12} />
                     <span className={Css.department}>
