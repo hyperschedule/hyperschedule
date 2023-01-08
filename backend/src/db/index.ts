@@ -1,1 +1,0 @@
-export { connectToDb } from "./connection";
