@@ -13,8 +13,8 @@ export interface Store {
 }
 
 export const enum MainTab {
-    CourseSearch,
-    Schedule,
+    CourseSearch = "CourseSearch",
+    Schedule = "Schedule",
 }
 
 export default createStore<Store>((set, get) => ({

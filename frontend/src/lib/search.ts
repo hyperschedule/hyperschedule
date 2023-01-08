@@ -1,12 +1,12 @@
 import type { Section } from "hyperschedule-shared/api/v4";
 
 export const enum FilterKey {
-    Department,
-    Title,
-    Description,
-    CourseCode,
-    Instructor,
-    ScheduleDays,
+    Department = "Department",
+    Title = "Department",
+    Description = "Description",
+    CourseCode = "CourseCode",
+    Instructor = "Instructor",
+    ScheduleDays = "ScheduleDays",
 }
 
 export type Filter =
