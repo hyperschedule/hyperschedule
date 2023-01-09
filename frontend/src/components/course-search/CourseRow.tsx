@@ -21,16 +21,16 @@ const statusBadge = {
 export default function CourseRow(props: {
     section: Api.Section;
     expand: boolean;
-    onClick?: (height: number) => void;
-    onResize?: (height: number) => void;
+    onClick?: () => void;
+    updateDetailsSize?: (height: number) => void;
 }) {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
     const height = detailsBounds?.height ?? 0;
 
-    // TODO: should props.onResize be one of the dependencies? if so, how to
-    // avoid infinite update depth? (height change => call onResize => rerender
-    // => new callback)
-    useEffect(() => props.onResize && props.onResize(height), [height]);
+    useEffect(
+        () => props.updateDetailsSize && props.updateDetailsSize(height),
+        [height, props.updateDetailsSize],
+    );
 
     const style = {
         height: props.expand ? `${height}px` : "0",
@@ -41,6 +41,7 @@ export default function CourseRow(props: {
         props.section.course.code.courseNumber,
         props.section.course.code.suffix,
         props.section.course.code.affiliation,
+        props.section.identifier.sectionNumber,
     ].join(" ");
 
     const color = randomColor({
@@ -61,10 +62,7 @@ export default function CourseRow(props: {
                     } as React.CSSProperties
                 }
             >
-                <div
-                    className={Css.titlebar}
-                    onClick={() => props.onClick && props.onClick(height)}
-                >
+                <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={12} />
                     <span className={Css.department}>
                         {props.section.course.code.department}

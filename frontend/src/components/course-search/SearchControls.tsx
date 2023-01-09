@@ -4,12 +4,13 @@ import * as Feather from "react-feather";
 import useStore from "@hooks/store";
 
 export default function SearchControls() {
-    const search = useStore((store) => store.search);
+    const searchText = useStore((store) => store.searchText);
+    const setSearchText = useStore((store) => store.setSearchText);
     return (
         <div className={Css.searchControls}>
             <input
-                value={search.text}
-                onChange={(ev) => search.setText(ev.currentTarget.value)}
+                value={searchText}
+                onChange={(ev) => setSearchText(ev.currentTarget.value)}
                 placeholder="Search for courses..."
             />
             <button className={Css.filterButton}>

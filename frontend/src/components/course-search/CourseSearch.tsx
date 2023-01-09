@@ -8,6 +8,7 @@ import { useCourses } from "@hooks/api";
 
 import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
+import shallow from "zustand/shallow";
 
 import useStore from "@hooks/store";
 import * as Search from "@lib/search";
@@ -25,77 +26,40 @@ function sectionKey(id: Course.SectionIdentifier) {
     ].join(" ");
 }
 
-function sectionIdEqual(
-    a: Course.SectionIdentifier,
-    b: Course.SectionIdentifier,
-) {
-    return sectionKey(a) === sectionKey(b);
-}
+export default function CourseSearch() {
+    const query = useCourses();
 
-function CourseSearchRow(props: {
-    index: number;
-    section: Api.Section;
-    expand: {
-        index: number;
-        identifier: Api.SectionIdentifier;
-        height: number;
-    } | null;
-    scroll: number;
-    rowHeight: number;
-    viewportHeight: number;
-    setExpand: (
-        expand: {
-            index: number;
-            identifier: Api.SectionIdentifier;
-            height: number;
-        } | null,
-    ) => void;
-}): JSX.Element | null {
-    const pos =
-        props.index * props.rowHeight +
-        (props.expand && props.index > props.expand.index
-            ? props.expand.height
-            : 0);
+    const search = useStore(
+        (store) => ({ text: store.searchText, filters: store.searchFilters }),
+        shallow,
+    );
+    // another TODO: maybe.... change render key whenever `search` changes so
+    // that row components are un/re-mounted rather than mutated in-place to
+    // avoid janky-looking sliding around animations from CSS transitions. the
+    // other alternative is to a store a state variable like `animate`, only
+    // enable it with `useEffect` during certain actions, and assign css
+    // transition classes conditionally. also look into what `useTransition` is.
 
-    const height =
-        props.rowHeight +
-        (props.index === props.expand?.index ? props.expand.height : 0);
-
-    const show =
-        props.index === props.expand?.index ||
-        (props.scroll - props.viewportHeight <= pos + height &&
-            pos <= props.scroll + 2 * props.viewportHeight);
-
-    if (!show) return null;
-
-    const style = { transform: `translateY(${pos}px)` };
-
-    const expand = props.index === props.expand?.index;
+    const sections = React.useMemo(() => {
+        return query.data?.filter((section) =>
+            Search.matches(section, search.text, search.filters),
+        );
+    }, [query.data, search.text, search.filters]);
 
     return (
-        <div style={style} className={Css.courseRowPosition}>
-            <CourseRow
-                section={props.section}
-                expand={expand}
-                onClick={(height: number) =>
-                    props.setExpand(
-                        props.index === props.expand?.index
-                            ? null
-                            : {
-                                  index: props.index,
-                                  height,
-                                  identifier: props.section.identifier,
-                              },
-                    )
-                }
-                onResize={(height) =>
-                    props.index === props.expand?.index
-                        ? props.setExpand({ ...props.expand, height })
-                        : undefined
-                }
-            />
+        <div className={Css.container}>
+            <SearchControls />
+            {sections !== undefined ? (
+                <CourseSearchResults sections={sections} />
+            ) : (
+                <CourseSearchEnd text="loading courses..." />
+            )}
         </div>
     );
+}
+
+function CourseSearchEnd(props: { text: string }) {
+    return <div className={Css.end}>({props.text})</div>;
 }
 
 function CourseSearchResults(props: { sections: Api.Section[] }) {
@@ -103,27 +67,30 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
     const [rowBounds, rowMeasureRef] = useMeasure<HTMLDivElement>();
     const [viewportBounds, viewportRef] = useMeasure<HTMLDivElement>();
 
-    const [expand, setExpand] = React.useState<{
-        index: number;
-        identifier: Api.SectionIdentifier;
-        height: number;
-    } | null>(null);
-
     const [scroll, setScroll] = React.useState(0);
+
+    const { setExpandIndex, expandKey, expandHeight } = useStore(
+        (store) => ({
+            setExpandIndex: store.setExpandIndex,
+            expandKey: store.expandKey,
+            expandHeight: store.expandHeight,
+        }),
+        shallow,
+    );
 
     // recompute expand index if section list changes
     React.useEffect(() => {
-        if (expand === null) return;
+        if (expandKey === null) {
+            setExpandIndex(null);
+            return;
+        }
 
-        const index = props.sections.findIndex((section) =>
-            sectionIdEqual(section.identifier, expand.identifier),
+        const key = sectionKey(expandKey);
+        const index = props.sections.findIndex(
+            (section) => sectionKey(section.identifier) === key,
         );
-        console.log("recomputing expand index", index);
-
-        setExpand(index === -1 ? null : { ...expand, index });
+        setExpandIndex(index === -1 ? null : index);
     }, [props.sections]);
-    // TODO: should `setExpand` be one of the dependencies? also consider
-    // refactoring expand state logic
 
     if (props.sections.length === 0)
         return <CourseSearchEnd text="no courses found" />;
@@ -141,7 +108,7 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
                             style={{
                                 height: `${
                                     props.sections.length * rowBounds.height +
-                                    (expand?.height ?? 0)
+                                    expandHeight
                                 }px`,
                             }}
                             className={Css.spacer}
@@ -154,8 +121,6 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
                                     scroll={scroll}
                                     rowHeight={rowBounds.height}
                                     viewportHeight={viewportBounds.height}
-                                    expand={expand}
-                                    setExpand={setExpand}
                                 />
                             ))}
                         </div>
@@ -173,33 +138,56 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
     );
 }
 
-function CourseSearchEnd(props: { text: string }) {
-    return <div className={Css.end}>({props.text})</div>;
-}
+function CourseSearchRow(props: {
+    index: number;
+    section: Api.Section;
+    scroll: number;
+    rowHeight: number;
+    viewportHeight: number;
+}): JSX.Element | null {
+    const { show, pos, expand, setExpand, setExpandHeight, clearExpand } =
+        useStore((store) => {
+            const expand = props.index === store.expandIndex;
+            const pos =
+                props.index * props.rowHeight +
+                (store.expandIndex !== null && props.index > store.expandIndex
+                    ? store.expandHeight
+                    : 0);
+            const height = props.rowHeight + (expand ? store.expandHeight : 0);
 
-export default function CourseSearch() {
-    const query = useCourses();
+            return {
+                expandIndex: store.expandIndex,
+                expandKey: store.expandIndex,
+                expandHeight: store.expandHeight,
+                setExpand: store.setExpand,
+                setExpandHeight: store.setExpandHeight,
+                clearExpand: store.clearExpand,
+                expand,
+                pos,
+                show:
+                    expand ||
+                    (props.scroll - props.viewportHeight <= pos + height &&
+                        pos <= props.scroll + 2 * props.viewportHeight),
+            };
+        }, shallow);
 
-    const search = useStore((store) => store.search);
-    // another TODO: maybe.... change render key whenever `search` changes so
-    // that row components are un/re-mounted rather than mutated in-place to
-    // avoid janky-looking sliding around animations from CSS transitions. the
-    // other alternative is to a store a state variable like `animate`, only
-    // enable it with `useEffect` during certain actions, and assign css
-    // transition classes conditionally. also look into what `useTransition` is.
+    if (!show) return null;
 
     return (
-        <div className={Css.container}>
-            <SearchControls />
-            {query.data ? (
-                <CourseSearchResults
-                    sections={query.data.filter((section) =>
-                        Search.matches(section, search),
-                    )}
-                />
-            ) : (
-                <CourseSearchEnd text="loading courses..." />
-            )}
+        <div
+            style={{ transform: `translateY(${pos}px)` }}
+            className={Css.courseRowPosition}
+        >
+            <CourseRow
+                section={props.section}
+                expand={expand}
+                onClick={
+                    expand
+                        ? clearExpand
+                        : () => setExpand(props.section.identifier, props.index)
+                }
+                updateDetailsSize={expand ? setExpandHeight : undefined}
+            />
         </div>
     );
 }

@@ -24,11 +24,6 @@ export type Filter =
           days: Set<never>; // TODO
       };
 
-export interface Search {
-    text: string;
-    filters: Filter[];
-}
-
 export function matchesFilter(section: Section, filter: Filter): boolean {
     switch (filter.key) {
         case FilterKey.Department:
@@ -59,9 +54,13 @@ export function matchesText(section: Section, text: string): boolean {
     );
 }
 
-export function matches(section: Section, search: Search): boolean {
+export function matches(
+    section: Section,
+    text: string,
+    filters: Filter[],
+): boolean {
     return (
-        matchesText(section, search.text) &&
-        search.filters.every((filter) => matchesFilter(section, filter))
+        matchesText(section, text) &&
+        filters.every((filter) => matchesFilter(section, filter))
     );
 }
