@@ -32,10 +32,6 @@ export default function CourseRow(props: {
         [height, props.updateDetailsSize],
     );
 
-    const style = {
-        height: props.expand ? `${height}px` : "0",
-    };
-
     const code = [
         props.section.course.code.department,
         props.section.course.code.courseNumber,
@@ -111,7 +107,10 @@ export default function CourseRow(props: {
                         </span>
                     </span>
                 </div>
-                <div style={style} className={Css.expander}>
+                <div
+                    style={{ height: `${props.expand ? height : 0}px` }}
+                    className={Css.expander}
+                >
                     <div ref={detailsRef}>
                         <div className={Css.details}>
                             {props.section.course.description}

@@ -1,17 +1,20 @@
 import * as React from "react";
-import * as Css from "./CourseSearch.module.css";
-import { useMeasure } from "@react-hookz/web";
+
+import { useMeasure, useRafEffect } from "@react-hookz/web";
+import classNames from "classnames";
+import shallow from "zustand/shallow";
 
 import type * as Api from "hyperschedule-shared/api/v4";
 import type * as Course from "hyperschedule-shared/types/course";
+
 import { useCourses } from "@hooks/api";
+import useStore from "@hooks/store";
+import * as Search from "@lib/search";
 
 import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
-import shallow from "zustand/shallow";
 
-import useStore from "@hooks/store";
-import * as Search from "@lib/search";
+import * as Css from "./CourseSearch.module.css";
 
 function sectionKey(id: Course.SectionIdentifier) {
     return [
@@ -30,24 +33,49 @@ export default function CourseSearch() {
     const query = useCourses();
 
     const search = useStore(
-        (store) => ({ text: store.searchText, filters: store.searchFilters }),
+        (store) => ({
+            text: store.searchText,
+            filters: store.searchFilters,
+        }),
         shallow,
     );
-    // another TODO: maybe.... change render key whenever `search` changes so
-    // that row components are un/re-mounted rather than mutated in-place to
-    // avoid janky-looking sliding around animations from CSS transitions. the
-    // other alternative is to a store a state variable like `animate`, only
-    // enable it with `useEffect` during certain actions, and assign css
-    // transition classes conditionally. also look into what `useTransition` is.
 
-    const sections = React.useMemo(() => {
+    // disable animated position transitions when section data changes; the
+    // animations look good for the accordion view but look noisy during search
+    // changes (when entries disappear, appear, and get shuffled around
+    // non-uniformly)
+    const [searchTransition, setSearchTransition] = React.useState(false);
+    const [sections, setSections] = React.useState<Api.Section[] | undefined>(
+        undefined,
+    );
+
+    const filteredSections = React.useMemo(() => {
         return query.data?.filter((section) =>
             Search.matches(section, search.text, search.filters),
         );
     }, [query.data, search.text, search.filters]);
 
+    // use requestAnimationFrame effects here to ensure renders are flushed
+    // before making the next update; otherwise disable/enable transition state
+    // updates get batched and never make it to render
+    useRafEffect(() => {
+        if (sections === filteredSections) {
+            setSearchTransition(false);
+            return;
+        }
+        if (!searchTransition) {
+            setSearchTransition(true);
+            return;
+        }
+        setSections(filteredSections);
+    }, [sections, filteredSections, searchTransition]);
+
     return (
-        <div className={Css.container}>
+        <div
+            className={classNames(Css.container, {
+                [Css.searchTransition]: searchTransition,
+            })}
+        >
             <SearchControls />
             {sections !== undefined ? (
                 <CourseSearchResults sections={sections} />
@@ -62,6 +90,27 @@ function CourseSearchEnd(props: { text: string }) {
     return <div className={Css.end}>({props.text})</div>;
 }
 
+function computeIndices(state: {
+    rowHeight: number;
+    expandHeight: number;
+    scroll: number;
+    viewportHeight: number;
+}): readonly [number, number] {
+    return [
+        Math.max(
+            Math.floor(
+                (state.scroll - state.viewportHeight - state.expandHeight) /
+                    state.rowHeight,
+            ),
+            0,
+        ),
+        Math.ceil(
+            (state.scroll + 2 * state.viewportHeight + state.expandHeight) /
+                state.rowHeight,
+        ),
+    ];
+}
+
 function CourseSearchResults(props: { sections: Api.Section[] }) {
     // https://github.com/streamich/react-use/issues/1264#issuecomment-721645100
     const [rowBounds, rowMeasureRef] = useMeasure<HTMLDivElement>();
@@ -69,8 +118,9 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
 
     const [scroll, setScroll] = React.useState(0);
 
-    const { setExpandIndex, expandKey, expandHeight } = useStore(
+    const { expandIndex, setExpandIndex, expandKey, expandHeight } = useStore(
         (store) => ({
+            expandIndex: store.expandIndex,
             setExpandIndex: store.setExpandIndex,
             expandKey: store.expandKey,
             expandHeight: store.expandHeight,
@@ -78,7 +128,17 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
         shallow,
     );
 
-    // recompute expand index if section list changes
+    const [indexStart, indexEnd] = computeIndices({
+        scroll,
+        rowHeight: rowBounds?.height ?? 1,
+        viewportHeight: viewportBounds?.height ?? 0,
+        expandHeight,
+    });
+
+    // recompute expand index if section list changes. potential optimization:
+    // pre-compute (and memoize) a key↦index mapping of all sections in the data;
+    // when updates happen due to search query changes, binary search to find
+    // the new expand index.
     React.useEffect(() => {
         if (expandKey === null) {
             setExpandIndex(null);
@@ -94,6 +154,20 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
 
     if (props.sections.length === 0)
         return <CourseSearchEnd text="no courses found" />;
+
+    // always render expanded entry even if it's outside the viewport bounds, to
+    // ensure height measurements/calculations are up-to-date
+    const sections = props.sections
+        .slice(indexStart, indexEnd)
+        .map((section, i) => ({ index: i + indexStart, section }));
+    if (
+        expandIndex !== null &&
+        !(indexStart <= expandIndex && expandIndex < indexEnd)
+    )
+        sections.push({
+            index: expandIndex,
+            section: props.sections[expandIndex]!,
+        });
 
     return (
         <>
@@ -113,11 +187,11 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
                             }}
                             className={Css.spacer}
                         >
-                            {props.sections.map((s, i) => (
+                            {sections.map(({ index, section }) => (
                                 <CourseSearchRow
-                                    key={sectionKey(s.identifier)}
-                                    index={i}
-                                    section={s}
+                                    key={sectionKey(section.identifier)}
+                                    index={index}
+                                    section={section}
                                     scroll={scroll}
                                     rowHeight={rowBounds.height}
                                     viewportHeight={viewportBounds.height}
@@ -130,7 +204,6 @@ function CourseSearchResults(props: { sections: Api.Section[] }) {
             </div>
             <div className={Css.hiddenMeasureContainer}>
                 <div ref={rowMeasureRef}>
-                    {/* TODO implement actual dummy item */}
                     <CourseRow section={props.sections[0]!} expand={false} />
                 </div>
             </div>
@@ -181,10 +254,10 @@ function CourseSearchRow(props: {
             <CourseRow
                 section={props.section}
                 expand={expand}
-                onClick={
+                onClick={() =>
                     expand
-                        ? clearExpand
-                        : () => setExpand(props.section.identifier, props.index)
+                        ? clearExpand()
+                        : setExpand(props.section.identifier, props.index)
                 }
                 updateDetailsSize={expand ? setExpandHeight : undefined}
             />

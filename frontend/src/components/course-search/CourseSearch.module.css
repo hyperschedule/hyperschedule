@@ -3,6 +3,10 @@
     grid-template-areas: "controls" "results";
     grid-template-rows: auto 1fr;
     min-height: 0;
+
+    &.searchTransition .courseRowPosition {
+        transition: none;
+    }
 }
 
 .resultsContainer {
@@ -27,7 +31,8 @@
     top: 0;
     left: 0;
     right: 0;
-    transition: transform 200ms;
+
+    transition: transform var(--misc-transition-duration);
 }
 
 .end {
