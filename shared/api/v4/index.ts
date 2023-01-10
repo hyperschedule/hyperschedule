@@ -6,9 +6,84 @@
  * compatible with future APIs.
  * @module
  */
-import * as Courses from "../../types";
+
 // type alias for schema generation
 type integer = number;
+
+/**
+ * All school codes are three letters for consistency. According to portal
+ * there is no course taught at KGI
+ */
+export enum School {
+    POM = "PO",
+    HMC = "HM",
+    PTZ = "PZ",
+    CMC = "CM",
+    SCR = "SC",
+    CGU = "CG",
+}
+
+export enum Term {
+    fall = "FA",
+    spring = "SP",
+    summer = "SU",
+}
+
+export enum SectionStatus {
+    open = "O",
+    closed = "C",
+    reopened = "R",
+    unknown = "U",
+}
+
+export enum Weekday {
+    monday = "M",
+    tuesday = "T",
+    wednesday = "W",
+    thursday = "R",
+    friday = "F",
+    saturday = "S",
+    sunday = "U",
+}
+
+/**
+ * For course start and end dates, used to identify half-semester types.
+ */
+export interface CourseDate {
+    year: integer;
+    month: integer;
+    day: integer;
+}
+
+/**
+ * CourseCode is what we can use to identify equivalent course offerings in
+ * different semesters. As such, there is no year or semester attached to it.
+ */
+export interface CourseCode {
+    /**
+     * 2-4 letters code in all upper case, e.g. CSCI, PE, HSA
+     */
+    department: string;
+    courseNumber: integer;
+    suffix: string;
+    // this is the last two letters of the course code, e.g. SC, HM, JT, AS, AF
+    affiliation: string;
+}
+
+/** CourseIdentifier is the unique identifier we need to pinpoint a course offering
+ * from the database. We may stringify it as something like
+ * `TEST001 SC-05 2022/FA`.
+ */
+export interface SectionIdentifier extends CourseCode {
+    sectionNumber: integer;
+    year: integer;
+    term: Term;
+    // first or second or fifth half of the term,
+    // e.g. F1 and F2 for fall, P1 and P2 for spring,
+    // and H1/S1 through H5/S5 for the summer
+    half: string;
+}
+
 export interface Schedule {
     /**
      * seconds since midnight.
@@ -26,24 +101,6 @@ export interface Schedule {
      */
     locations: string[];
 }
-
-export type SectionIdentifier = Courses.SectionIdentifier;
-export type CourseDate = Courses.CourseDate;
-export type CourseCode = Courses.CourseCode;
-
-// have to this cursed double export because they are enums and
-// https://github.com/microsoft/TypeScript/issues/1166
-export type School = Courses.School;
-export const School = Courses.School;
-
-export type Term = Courses.Term;
-export const Term = Courses.Term;
-
-export type Weekday = Courses.Weekday;
-export const Weekday = Courses.Weekday;
-
-export type SectionStatus = Courses.SectionStatus;
-export const SectionStatus = Courses.SectionStatus;
 
 export interface Course {
     code: CourseCode;
