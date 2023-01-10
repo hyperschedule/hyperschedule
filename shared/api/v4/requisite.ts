@@ -1,4 +1,4 @@
-import type { CourseCode, SectionIdentifier } from "./course";
+import type { CourseCode, SectionIdentifier } from "./index";
 
 export enum LogicType {
     and = "AND",
