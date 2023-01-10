@@ -13,7 +13,6 @@
     "lib": ["esnext"],
     "sourceRoot": "./src",
     "baseUrl": "./src",
-    "rootDir": "./src",
     "noEmit": true,
     // explicitly specify vite types so that accidental dependencies on react
     // types by other libs don't mess up IDE checking

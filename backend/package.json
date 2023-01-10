@@ -35,20 +35,24 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.15",
+    "@types/jsonwebtoken": "^9.0.0",
     "@types/node": "^18.11.18",
+    "@types/uuid": "^9.0.0",
     "ajv": "^8.11.2",
     "jest": "^29.3.1",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "^4.13.0",
     "mongodb-memory-server": "^8.10.2",
     "mongoose": "^6.8.2",
     "pino": "^8.8.0",
     "pino-pretty": "^9.1.1",
     "ts-jest": "^29.0.3",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "serve": "NODE_ENV=development node --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
-    "test": "jest",
+    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest",
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",
     "restart-db": "yarn stop-db && yarn start-db"
