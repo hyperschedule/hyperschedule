@@ -1,4 +1,8 @@
 import type * as APIv4 from "hyperschedule-shared/api/v4";
+import type {
+    CourseCode,
+    SectionIdentifier,
+} from "hyperschedule-shared/api/v4";
 
 const courseRegex = RegExp(
     "^" +
@@ -41,7 +45,7 @@ const sectionRegex = RegExp(
         "(?<section>\\d{2}) " +
         "(?<term>FA|SU|SP)" +
         "(?<year>\\d{4})" +
-        "(?<half>[FSPH]\\d)?" +
+        "(?<half>[FSPHZ]\\d)?" +
         "$",
 );
 
@@ -152,7 +156,7 @@ const sectionCodeLongRegex = RegExp(
         "(?<section>\\d{2}) " +
         "(?<term>FA|SU|SP)" +
         "(?<year>\\d{4})" +
-        "(?: (?<half>[FSPH]\\d))?" +
+        "(?: (?<half>[FSPHZ]\\d))?" +
         "$",
 );
 
@@ -184,4 +188,38 @@ export function parseSectionCodeLong(code: string): APIv4.SectionIdentifier {
         year: parseInt(groups.year, 10),
         half: groups.half ?? "",
     };
+}
+
+/**
+ * return true if two course codes are equal, false otherwise
+ */
+export function compareCourseCode(
+    a: Readonly<CourseCode>,
+    b: Readonly<CourseCode>,
+): boolean {
+    return (
+        a.affiliation === b.affiliation &&
+        a.department === b.department &&
+        a.courseNumber === b.courseNumber &&
+        a.suffix === b.suffix
+    );
+}
+
+/**
+ * return true if two section identifiers are equal, false otherwise
+ */
+export function compareSectionIdentifier(
+    a: Readonly<SectionIdentifier>,
+    b: Readonly<SectionIdentifier>,
+): boolean {
+    return (
+        a.year === b.year &&
+        a.term === b.term &&
+        a.half === b.half &&
+        a.sectionNumber === b.sectionNumber &&
+        a.affiliation === b.affiliation &&
+        a.department === b.department &&
+        a.courseNumber === b.courseNumber &&
+        a.suffix === b.suffix
+    );
 }

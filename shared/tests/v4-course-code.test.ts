@@ -9,6 +9,10 @@ import {
     stringifySectionCodeLong,
     parseSectionCodeLong,
 } from "../api/v4";
+import {
+    compareCourseCode,
+    compareSectionIdentifier,
+} from "hyperschedule-shared/api/v4";
 
 describe("parseCXCourseCode", () => {
     test("course with one character suffix", () => {
@@ -306,5 +310,90 @@ describe("course code serialization", () => {
             expect(stringifySectionCodeLong(parseSectionCodeLong(c))).toEqual(
                 c,
             );
+    });
+});
+
+describe("Course code comparison", () => {
+    test("compareCourseCode", () => {
+        expect(
+            compareCourseCode(
+                parseCourseCode("CSCI 005 HM"),
+                parseCourseCode("CSCI 005 HM"),
+            ),
+        ).toBeTruthy();
+        expect(
+            compareCourseCode(
+                parseCourseCode("CSCI 005 HM"),
+                parseCourseCode("CSCI 005L HM"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareCourseCode(
+                parseCourseCode("MATH 005 HM"),
+                parseCourseCode("CSCI 005 HM"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareCourseCode(
+                parseCourseCode("CSCI 005 HM"),
+                parseCourseCode("CSCI 005 PO"),
+            ),
+        ).toBeFalsy();
+    });
+    test("compareSectionIdentifier", () => {
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+            ),
+        ).toBeTruthy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 005 HM-02 FA2022"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 005 HM-01 FA2023"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 005 HM-01 SP2022"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022 F2"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 006 HM-01 FA2022"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 005L HM-01 FA2022"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("CSCI 005L PO-01 FA2022"),
+            ),
+        ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022"),
+                parseSectionCodeLong("MATH 005 PO-01 FA2022"),
+            ),
+        ).toBeFalsy();
     });
 });
