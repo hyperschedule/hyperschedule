@@ -4,6 +4,8 @@ import { Section } from "../src/db/models";
 import * as mongoose from "mongoose";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { dbToSection, sectionToDb } from "../src/db/utils";
+import { schema } from "hyperschedule-shared/api/v4/schema";
+import Ajv from "ajv";
 
 let mongod: MongoMemoryServer;
 
@@ -86,6 +88,38 @@ const testSection: APIv4.Section = {
     },
 } as APIv4.Section;
 
+describe("db/utils", () => {
+    const ajv = new Ajv();
+    for (let s of schema) {
+        ajv.addSchema(s);
+    }
+    const validator = ajv.compile({
+        $ref: "Section",
+    });
+
+    test("Section to db conversion immutable", () => {
+        expect(validator(testSection)).toBeTruthy();
+        const s = sectionToDb(testSection);
+        expect(validator(testSection)).toBeTruthy();
+        expect(validator(s)).not.toBeTruthy();
+        expect(s).not.toEqual(testSection);
+    });
+
+    test("DB to section conversion immutable", () => {
+        expect(validator(testSection)).toBeTruthy();
+        const db = sectionToDb(testSection);
+        expect(validator(testSection)).toBeTruthy();
+        const dbs = JSON.stringify(db);
+        expect(dbToSection(db)).toEqual(testSection);
+        expect(db).toEqual(JSON.parse(dbs));
+    });
+
+    test("DB to section conversion reversible", () => {
+        expect(validator(testSection)).toBeTruthy();
+        expect(dbToSection(sectionToDb(testSection))).toEqual(testSection);
+    });
+});
+
 describe("db/course", () => {
     test("Insertion and query", async () => {
         await Section.insertMany([sectionToDb(testSection)]);
@@ -96,7 +130,6 @@ describe("db/course", () => {
 
     test("Update", async () => {
         await Section.insertMany(sectionToDb(testSection));
-
         const section = await Section.findOne({})
             .where("course.code.department")
             .equals("CSCI")

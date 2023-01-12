@@ -4,61 +4,67 @@ import { Schema, model } from "mongoose";
 export type DBSection = Omit<APIv4.Section, "identifier"> & {
     _id: APIv4.SectionIdentifier;
 };
+// allows empty string
+Schema.Types.String.checkRequired((v) => v !== null);
 
 export const courseSchema = new Schema<APIv4.Course>({
-    title: String,
-    description: String,
+    title: { type: String, required: true },
+    description: { type: String, required: true },
     code: {
-        department: String,
-        courseNumber: Number,
-        suffix: String,
-        affiliation: String,
+        department: { type: String, required: true },
+        courseNumber: { type: Number, required: true },
+        suffix: { type: String, required: true },
+        affiliation: { type: String, required: true },
     },
-    primaryAssociation: String,
-    potentialError: Boolean,
-});
-export const scheduleSchema = new Schema<APIv4.Schedule>({
-    startTime: Number,
-    endTime: Number,
-    days: [String],
-    locations: [String],
+    primaryAssociation: { type: String, required: true },
+    potentialError: { type: Boolean, required: true },
 });
 
 export const sectionSchema = new Schema<DBSection>({
     _id: {
-        department: String,
-        courseNumber: Number,
-        suffix: String,
-        affiliation: String,
-        sectionNumber: Number,
-        year: Number,
-        term: String,
-        half: String,
+        department: { type: String, required: true },
+        courseNumber: { type: Number, required: true },
+        suffix: { type: String, required: true },
+        affiliation: { type: String, required: true },
+        sectionNumber: { type: Number, required: true },
+        year: { type: Number, required: true },
+        term: { type: String, required: true },
+        half: { type: String, required: true },
     },
     course: courseSchema,
-    courseAreas: [String],
-    schedules: [scheduleSchema],
-    permCount: Number,
-    seatsFilled: Number,
-    seatsTotal: Number,
-    status: String,
+    courseAreas: { type: [String], required: true },
+    schedules: [
+        {
+            type: {
+                startTime: { type: Number, required: true },
+                endTime: { type: Number, required: true },
+                days: { type: [String], required: true },
+                locations: { type: [String], required: true },
+            },
+            required: true,
+        },
+    ],
+    permCount: { type: Number, required: true },
+    seatsFilled: { type: Number, required: true },
+    seatsTotal: { type: Number, required: true },
+    status: { type: String, required: true },
     startDate: {
-        year: Number,
-        month: Number,
-        day: Number,
+        year: { type: Number, required: true },
+        month: { type: Number, required: true },
+        day: { type: Number, required: true },
     },
     endDate: {
-        year: Number,
-        month: Number,
-        day: Number,
+        year: { type: Number, required: true },
+        month: { type: Number, required: true },
+        day: { type: Number, required: true },
     },
     instructors: [
         {
-            name: String,
+            name: { type: String, required: true },
         },
     ],
-    potentialError: Boolean,
-    credits: Number,
+    potentialError: { type: Boolean, required: true },
+    credits: { type: Number, required: true },
 });
 
 export const Section = model<DBSection>("Section", sectionSchema);
