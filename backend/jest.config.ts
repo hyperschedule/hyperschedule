@@ -6,11 +6,6 @@ const config: JestConfigWithTsJest = {
     preset: "ts-jest/presets/default-esm",
     testMatch: ["**/tests/**/*.test.ts"],
     cache: false,
-    globals: {
-        "ts-jest": {
-            useESM: true,
-        },
-    },
 };
 
 export default config;
