@@ -2,7 +2,9 @@ import type * as APIv4 from "hyperschedule-shared/api/v4";
 import type {
     CourseCode,
     SectionIdentifier,
+    TermIdentifier,
 } from "hyperschedule-shared/api/v4";
+import { Term } from "hyperschedule-shared/api/v4";
 
 const courseRegex = RegExp(
     "^" +
@@ -222,4 +224,23 @@ export function compareSectionIdentifier(
         a.courseNumber === b.courseNumber &&
         a.suffix === b.suffix
     );
+}
+
+export function stringifyTermIdentifier(term: TermIdentifier): string {
+    return `${term.term}${term.year}`;
+}
+
+const termIdentifierRegex = /^(?<term>FA|SP|SU)(?<year>\d{4})$/;
+
+export function parseTermIdentifier(term: string): TermIdentifier {
+    const match = termIdentifierRegex.exec(term);
+    if (match === null) throw Error(`Malformed term identifier ${term}`);
+    const groups = match.groups as {
+        term: string;
+        year: string;
+    };
+    return {
+        term: groups.term,
+        year: parseInt(groups.year, 10),
+    } as TermIdentifier;
 }

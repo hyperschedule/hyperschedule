@@ -2,21 +2,29 @@ import type { SectionIdentifier } from "./course";
 
 export interface UserSchedule {
     name: string;
-    courses: { identifier: SectionIdentifier; selected: boolean }[];
-    selected: boolean;
+    sections: { identifier: SectionIdentifier; selected: boolean }[];
 }
 
-export interface GuestUser {
-    uuid: string;
+type TermIdentifierString = string;
+type ScheduleName = string;
+
+interface UserBase {
+    _id: string;
+    terms: Record<TermIdentifierString, Record<ScheduleName, UserSchedule>>;
+    activeTerm: TermIdentifierString;
+    activeSchedule: ScheduleName;
+}
+
+export interface GuestUser extends UserBase {
     isGuest: true;
-    schedules: Record<string, UserSchedule>;
+    // seconds since Unix epoch. used to pruning inactive users.
+    // this is only updated if the user did any modification to their schedule
+    lastModified: number;
 }
 
-export interface AuthenticatedUser {
-    uuid: string;
+export interface AuthenticatedUser extends UserBase {
     isGuest: false;
     cxid: number;
-    schedules: Record<string, UserSchedule>;
 }
 
 /**

@@ -1,11 +1,12 @@
 import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { Section } from "../src/db/models";
+import { Section, User } from "../src/db/models";
 import * as mongoose from "mongoose";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { dbToSection, sectionToDb } from "../src/db/utils";
 import { schema } from "hyperschedule-shared/api/v4/schema";
 import Ajv from "ajv";
+import { CURRENT_TERM } from "../src/current-term";
 
 let mongod: MongoMemoryServer;
 
@@ -120,7 +121,7 @@ describe("db/utils", () => {
     });
 });
 
-describe("db/course", () => {
+describe("db/models/course", () => {
     test("Insertion and query", async () => {
         await Section.insertMany([sectionToDb(testSection)]);
         expect(
@@ -145,5 +146,19 @@ describe("db/course", () => {
         expect(
             dbToSection((await Section.find({}).lean().exec())[0]!).seatsFilled,
         ).toEqual(42);
+    });
+});
+
+describe("db/models/user", () => {
+    test("Data initialization", async () => {
+        let u = new User({
+            terms: { SP2023: { name: "SP2023", schedules: {} } },
+        });
+        //@ts-ignore
+        // u.schedules.SP2023.set("schedule1",{name:"schedule1",sections:[]})
+        await u.save();
+
+        let user = await User.findOne({}).lean().exec();
+        console.log("%o", user);
     });
 });

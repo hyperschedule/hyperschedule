@@ -1,18 +1,21 @@
-import { describe, test, expect } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
-import {
-    parseCXCourseCode,
-    parseCXSectionIdentifier,
-    stringifyCourseCode,
-    parseCourseCode,
-    stringifySectionCode,
-    stringifySectionCodeLong,
-    parseSectionCodeLong,
-} from "../api/v4";
 import {
     compareCourseCode,
     compareSectionIdentifier,
+    parseTermIdentifier,
+    stringifyTermIdentifier,
+    Term,
 } from "hyperschedule-shared/api/v4";
+import {
+    parseCourseCode,
+    parseCXCourseCode,
+    parseCXSectionIdentifier,
+    parseSectionCodeLong,
+    stringifyCourseCode,
+    stringifySectionCode,
+    stringifySectionCodeLong,
+} from "../api/v4";
 
 describe("parseCXCourseCode", () => {
     test("course with one character suffix", () => {
@@ -395,5 +398,33 @@ describe("Course code comparison", () => {
                 parseSectionCodeLong("MATH 005 PO-01 FA2022"),
             ),
         ).toBeFalsy();
+    });
+
+    test("stringifyTermIdentifier", () => {
+        expect(
+            stringifyTermIdentifier({
+                year: 2022,
+                term: Term.fall,
+            }),
+        ).toEqual("FA2022");
+
+        expect(
+            stringifyTermIdentifier({
+                year: 2021,
+                term: Term.summer,
+            }),
+        ).toEqual("SU2021");
+    });
+
+    test("parseTermIdentifier", () => {
+        expect(parseTermIdentifier("FA2022")).toEqual({
+            year: 2022,
+            term: Term.fall,
+        });
+
+        expect(parseTermIdentifier("SU2021")).toEqual({
+            year: 2021,
+            term: Term.summer,
+        });
     });
 });

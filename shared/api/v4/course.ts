@@ -46,6 +46,11 @@ export enum Weekday {
     sunday = "U",
 }
 
+export interface TermIdentifier {
+    year: number;
+    term: Term;
+}
+
 /**
  * For course start and end dates, used to identify half-semester types.
  */

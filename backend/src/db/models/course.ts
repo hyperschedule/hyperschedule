@@ -7,18 +7,21 @@ export type DBSection = Omit<APIv4.Section, "identifier"> & {
 // allows empty string
 Schema.Types.String.checkRequired((v) => v !== null);
 
-export const courseSchema = new Schema<APIv4.Course>({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    code: {
-        department: { type: String, required: true },
-        courseNumber: { type: Number, required: true },
-        suffix: { type: String, required: true },
-        affiliation: { type: String, required: true },
+export const courseSchema = new Schema<APIv4.Course>(
+    {
+        title: { type: String, required: true },
+        description: { type: String, required: true },
+        code: {
+            department: { type: String, required: true },
+            courseNumber: { type: Number, required: true },
+            suffix: { type: String, required: true },
+            affiliation: { type: String, required: true },
+        },
+        primaryAssociation: { type: String, required: true },
+        potentialError: { type: Boolean, required: true },
     },
-    primaryAssociation: { type: String, required: true },
-    potentialError: { type: Boolean, required: true },
-});
+    { _id: false },
+);
 
 export const sectionSchema = new Schema<DBSection>({
     _id: {
