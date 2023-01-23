@@ -38,6 +38,6 @@ describe("src/hmc-api/course.ts", () => {
             await fs.readFile(PARSED_SAMPLE_PATH, { encoding: "utf-8" }),
         );
 
-        expect(result).toEqual(expected);
+        expect(result).toStrictEqual(expected);
     }, 2000);
 });

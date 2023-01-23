@@ -103,7 +103,7 @@ describe("db/utils", () => {
         const s = sectionToDb(testSection);
         expect(validator(testSection)).toBeTruthy();
         expect(validator(s)).not.toBeTruthy();
-        expect(s).not.toEqual(testSection);
+        expect(s).not.toStrictEqual(testSection);
     });
 
     test("DB to section conversion immutable", () => {
@@ -111,13 +111,15 @@ describe("db/utils", () => {
         const db = sectionToDb(testSection);
         expect(validator(testSection)).toBeTruthy();
         const dbs = JSON.stringify(db);
-        expect(dbToSection(db)).toEqual(testSection);
-        expect(db).toEqual(JSON.parse(dbs));
+        expect(dbToSection(db)).toStrictEqual(testSection);
+        expect(db).toStrictEqual(JSON.parse(dbs));
     });
 
     test("DB to section conversion reversible", () => {
         expect(validator(testSection)).toBeTruthy();
-        expect(dbToSection(sectionToDb(testSection))).toEqual(testSection);
+        expect(dbToSection(sectionToDb(testSection))).toStrictEqual(
+            testSection,
+        );
     });
 });
 
@@ -125,12 +127,12 @@ describe("db/models/course", () => {
     test("Basic insertion and query", async () => {
         await updateSections([testSection], testTermIdentifier);
         const sections = await getAllSections();
-        expect(sections.length).toEqual(1);
-        expect(sections[0]).toEqual(testSection);
+        expect(sections.length).toStrictEqual(1);
+        expect(sections[0]).toStrictEqual(testSection);
         expect(
             (await getAllSections({ year: 2022, term: APIv4.Term.spring }))
                 .length,
-        ).toEqual(0);
+        ).toStrictEqual(0);
     });
 
     test("updateSections() does not override previous semester", async () => {
@@ -174,7 +176,7 @@ describe("db/models/course", () => {
             { term: Term.spring, year: 2023 },
         );
         const sections = await getAllSections();
-        expect(sections.length).toEqual(2);
+        expect(sections.length).toStrictEqual(2);
     });
 
     test("updateSections() replaces everything form the same semester", async () => {
@@ -232,8 +234,8 @@ describe("db/models/course", () => {
             { term: Term.spring, year: 2023 },
         );
         const sections = await getAllSections();
-        expect(sections.length).toEqual(1);
-        expect(sections[0]).toEqual({
+        expect(sections.length).toStrictEqual(1);
+        expect(sections[0]).toStrictEqual({
             ...testSection,
             identifier: {
                 department: "CSCI",
@@ -288,13 +290,13 @@ describe("db/models/course", () => {
             { term: Term.spring, year: 2023 },
         );
 
-        expect((await getAllSections()).length).toEqual(2);
+        expect((await getAllSections()).length).toStrictEqual(2);
         const springSections = await getAllSections({
             term: Term.spring,
             year: 2023,
         });
-        expect(springSections.length).toEqual(1);
-        expect(springSections[0]).toEqual({
+        expect(springSections.length).toStrictEqual(1);
+        expect(springSections[0]).toStrictEqual({
             ...testSection,
             identifier: {
                 // spring 2023
@@ -313,8 +315,8 @@ describe("db/models/course", () => {
             term: Term.fall,
             year: 2023,
         });
-        expect(fallSections.length).toEqual(1);
-        expect(fallSections[0]).toEqual({
+        expect(fallSections.length).toStrictEqual(1);
+        expect(fallSections[0]).toStrictEqual({
             ...testSection,
             identifier: {
                 // spring 2023

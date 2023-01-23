@@ -19,7 +19,7 @@ import {
 
 describe("parseCXCourseCode", () => {
     test("course with one character suffix", () => {
-        expect(parseCXCourseCode("MUS 082 LPO")).toEqual({
+        expect(parseCXCourseCode("MUS 082 LPO")).toStrictEqual({
             department: "MUS",
             courseNumber: 82,
             suffix: "L",
@@ -28,7 +28,7 @@ describe("parseCXCourseCode", () => {
     });
 
     test("course with two character suffix", () => {
-        expect(parseCXCourseCode("AFRI121IOAF")).toEqual({
+        expect(parseCXCourseCode("AFRI121IOAF")).toStrictEqual({
             department: "AFRI",
             courseNumber: 121,
             suffix: "IO",
@@ -37,7 +37,7 @@ describe("parseCXCourseCode", () => {
     });
 
     test("course without suffix", () => {
-        expect(parseCXCourseCode("ECON196  CM")).toEqual({
+        expect(parseCXCourseCode("ECON196  CM")).toStrictEqual({
             department: "ECON",
             courseNumber: 196,
             suffix: "",
@@ -46,7 +46,7 @@ describe("parseCXCourseCode", () => {
     });
 
     test("course with incorrect space padding", () => {
-        expect(parseCXCourseCode("ASAM143 PO")).toEqual({
+        expect(parseCXCourseCode("ASAM143 PO")).toStrictEqual({
             department: "ASAM",
             courseNumber: 143,
             suffix: "",
@@ -57,55 +57,65 @@ describe("parseCXCourseCode", () => {
 
 describe("parseCXSectionIdentifier", () => {
     test("Section with suffix", () => {
-        expect(parseCXSectionIdentifier("MUS 042B PO-01 SP2023")).toEqual({
-            department: "MUS",
-            courseNumber: 42,
-            suffix: "B",
-            affiliation: "PO",
-            sectionNumber: 1,
-            term: "SP",
-            year: 2023,
-            half: "",
-        } as APIv4.SectionIdentifier);
+        expect(parseCXSectionIdentifier("MUS 042B PO-01 SP2023")).toStrictEqual(
+            {
+                department: "MUS",
+                courseNumber: 42,
+                suffix: "B",
+                affiliation: "PO",
+                sectionNumber: 1,
+                term: "SP",
+                year: 2023,
+                half: "",
+            } as APIv4.SectionIdentifier,
+        );
 
-        expect(parseCXSectionIdentifier("ASTR101 LPO-01 FA2020")).toEqual({
-            department: "ASTR",
-            courseNumber: 101,
-            suffix: "L",
-            affiliation: "PO",
-            sectionNumber: 1,
-            term: "FA",
-            year: 2020,
-            half: "",
-        } as APIv4.SectionIdentifier);
+        expect(parseCXSectionIdentifier("ASTR101 LPO-01 FA2020")).toStrictEqual(
+            {
+                department: "ASTR",
+                courseNumber: 101,
+                suffix: "L",
+                affiliation: "PO",
+                sectionNumber: 1,
+                term: "FA",
+                year: 2020,
+                half: "",
+            } as APIv4.SectionIdentifier,
+        );
     });
 
     test("Section without suffix", () => {
-        expect(parseCXSectionIdentifier("MUS 042B PO-01 SP2023")).toEqual({
-            department: "MUS",
-            courseNumber: 42,
-            suffix: "B",
-            affiliation: "PO",
-            sectionNumber: 1,
-            term: "SP",
-            year: 2023,
-            half: "",
-        } as APIv4.SectionIdentifier);
+        expect(parseCXSectionIdentifier("MUS 042B PO-01 SP2023")).toStrictEqual(
+            {
+                department: "MUS",
+                courseNumber: 42,
+                suffix: "B",
+                affiliation: "PO",
+                sectionNumber: 1,
+                term: "SP",
+                year: 2023,
+                half: "",
+            } as APIv4.SectionIdentifier,
+        );
 
-        expect(parseCXSectionIdentifier("ID  001  PO-30 FA2020")).toEqual({
-            department: "ID",
-            courseNumber: 1,
-            suffix: "",
-            affiliation: "PO",
-            sectionNumber: 30,
-            term: "FA",
-            year: 2020,
-            half: "",
-        } as APIv4.SectionIdentifier);
+        expect(parseCXSectionIdentifier("ID  001  PO-30 FA2020")).toStrictEqual(
+            {
+                department: "ID",
+                courseNumber: 1,
+                suffix: "",
+                affiliation: "PO",
+                sectionNumber: 30,
+                term: "FA",
+                year: 2020,
+                half: "",
+            } as APIv4.SectionIdentifier,
+        );
     });
 
     test("Half semester courses", () => {
-        expect(parseCXSectionIdentifier("MCBI118A HM-01 SP2023P1")).toEqual({
+        expect(
+            parseCXSectionIdentifier("MCBI118A HM-01 SP2023P1"),
+        ).toStrictEqual({
             department: "MCBI",
             courseNumber: 118,
             suffix: "A",
@@ -116,7 +126,9 @@ describe("parseCXSectionIdentifier", () => {
             half: "P1",
         } as APIv4.SectionIdentifier);
 
-        expect(parseCXSectionIdentifier("AMST120  HM-01 SU2020S1")).toEqual({
+        expect(
+            parseCXSectionIdentifier("AMST120  HM-01 SU2020S1"),
+        ).toStrictEqual({
             department: "AMST",
             courseNumber: 120,
             suffix: "",
@@ -127,7 +139,9 @@ describe("parseCXSectionIdentifier", () => {
             half: "S1",
         } as APIv4.SectionIdentifier);
 
-        expect(parseCXSectionIdentifier("HIST197D SC-01 SU2020S5")).toEqual({
+        expect(
+            parseCXSectionIdentifier("HIST197D SC-01 SU2020S5"),
+        ).toStrictEqual({
             department: "HIST",
             courseNumber: 197,
             suffix: "D",
@@ -149,7 +163,7 @@ describe("course code serialization", () => {
                 suffix: "",
                 affiliation: "HM",
             }),
-        ).toEqual("CSCI 081 HM");
+        ).toStrictEqual("CSCI 081 HM");
 
         expect(
             stringifyCourseCode({
@@ -158,7 +172,7 @@ describe("course code serialization", () => {
                 suffix: "",
                 affiliation: "HM",
             }),
-        ).toEqual("CSCI 005 HM");
+        ).toStrictEqual("CSCI 005 HM");
 
         expect(
             stringifyCourseCode({
@@ -167,7 +181,7 @@ describe("course code serialization", () => {
                 suffix: "",
                 affiliation: "CM",
             }),
-        ).toEqual("FIN 340 CM");
+        ).toStrictEqual("FIN 340 CM");
 
         expect(
             stringifyCourseCode({
@@ -176,18 +190,18 @@ describe("course code serialization", () => {
                 suffix: "IO",
                 affiliation: "AF",
             }),
-        ).toEqual("AFRI 121IO AF");
+        ).toStrictEqual("AFRI 121IO AF");
     });
 
     test("parseCourseCode", () => {
-        expect(parseCourseCode("CSCI 005 HM")).toEqual({
+        expect(parseCourseCode("CSCI 005 HM")).toStrictEqual({
             department: "CSCI",
             courseNumber: 5,
             suffix: "",
             affiliation: "HM",
         });
 
-        expect(parseCourseCode("AFRI 121IO AF")).toEqual({
+        expect(parseCourseCode("AFRI 121IO AF")).toStrictEqual({
             department: "AFRI",
             courseNumber: 121,
             suffix: "IO",
@@ -198,7 +212,9 @@ describe("course code serialization", () => {
     test("course code serialization reversible", () => {
         const codes = ["CSCI 181AI HM", "CSCI 051AL PO", "AFRI 121IO AF"];
         for (let code of codes) {
-            expect(stringifyCourseCode(parseCourseCode(code))).toEqual(code);
+            expect(stringifyCourseCode(parseCourseCode(code))).toStrictEqual(
+                code,
+            );
         }
     });
 
@@ -214,7 +230,7 @@ describe("course code serialization", () => {
                 year: 2020,
                 half: "S1",
             } as APIv4.SectionIdentifier),
-        ).toEqual("AMST 120 HM-01");
+        ).toStrictEqual("AMST 120 HM-01");
 
         expect(
             stringifySectionCode({
@@ -227,7 +243,7 @@ describe("course code serialization", () => {
                 year: 2023,
                 half: "P1",
             } as APIv4.SectionIdentifier),
-        ).toEqual("MCBI 118A HM-01");
+        ).toStrictEqual("MCBI 118A HM-01");
     });
 
     test("stringifySectionCodeLong", () => {
@@ -242,7 +258,7 @@ describe("course code serialization", () => {
                 year: 2020,
                 half: "S1",
             } as APIv4.SectionIdentifier),
-        ).toEqual("AMST 120 HM-01 SU2020 S1");
+        ).toStrictEqual("AMST 120 HM-01 SU2020 S1");
 
         expect(
             stringifySectionCodeLong({
@@ -255,7 +271,7 @@ describe("course code serialization", () => {
                 year: 2023,
                 half: "P1",
             } as APIv4.SectionIdentifier),
-        ).toEqual("MCBI 118A HM-01 SP2023 P1");
+        ).toStrictEqual("MCBI 118A HM-01 SP2023 P1");
 
         expect(
             stringifySectionCodeLong({
@@ -268,11 +284,11 @@ describe("course code serialization", () => {
                 year: 2020,
                 half: "",
             } as APIv4.SectionIdentifier),
-        ).toEqual("ASTR 101L PO-01 FA2020");
+        ).toStrictEqual("ASTR 101L PO-01 FA2020");
     });
 
     test("parseSectionCodeLong", () => {
-        expect(parseSectionCodeLong("THEA 053HG PO-01 SP2023")).toEqual({
+        expect(parseSectionCodeLong("THEA 053HG PO-01 SP2023")).toStrictEqual({
             department: "THEA",
             courseNumber: 53,
             suffix: "HG",
@@ -283,7 +299,7 @@ describe("course code serialization", () => {
             half: "",
         } as APIv4.SectionIdentifier);
 
-        expect(parseSectionCodeLong("ENGR 072 HM-01 SP2023 P1")).toEqual({
+        expect(parseSectionCodeLong("ENGR 072 HM-01 SP2023 P1")).toStrictEqual({
             department: "ENGR",
             courseNumber: 72,
             suffix: "",
@@ -310,9 +326,9 @@ describe("course code serialization", () => {
             "ENGR 072 HM-01 SP2023 P1",
         ];
         for (let c of codes)
-            expect(stringifySectionCodeLong(parseSectionCodeLong(c))).toEqual(
-                c,
-            );
+            expect(
+                stringifySectionCodeLong(parseSectionCodeLong(c)),
+            ).toStrictEqual(c);
     });
 });
 
@@ -406,23 +422,23 @@ describe("Course code comparison", () => {
                 year: 2022,
                 term: Term.fall,
             }),
-        ).toEqual("FA2022");
+        ).toStrictEqual("FA2022");
 
         expect(
             stringifyTermIdentifier({
                 year: 2021,
                 term: Term.summer,
             }),
-        ).toEqual("SU2021");
+        ).toStrictEqual("SU2021");
     });
 
     test("parseTermIdentifier", () => {
-        expect(parseTermIdentifier("FA2022")).toEqual({
+        expect(parseTermIdentifier("FA2022")).toStrictEqual({
             year: 2022,
             term: Term.fall,
         });
 
-        expect(parseTermIdentifier("SU2021")).toEqual({
+        expect(parseTermIdentifier("SU2021")).toStrictEqual({
             year: 2021,
             term: Term.summer,
         });

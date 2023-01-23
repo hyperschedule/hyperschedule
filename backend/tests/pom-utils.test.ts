@@ -10,7 +10,7 @@ describe("mergeCourseAreaCourses", () => {
                 courses: [],
             },
         ]);
-        expect(result).toEqual(new Map());
+        expect(result).toStrictEqual(new Map());
     });
 
     test("One course", () => {
@@ -59,7 +59,7 @@ describe("mergeCourseAreaCourses", () => {
                 ],
             },
         ]);
-        expect(result).toEqual(
+        expect(result).toStrictEqual(
             new Map<string, CourseWithAreas>([
                 [
                     "TEST001  PZ-01",
@@ -234,7 +234,7 @@ describe("mergeCourseAreaCourses", () => {
                 ],
             },
         ]);
-        expect(result).toEqual(
+        expect(result).toStrictEqual(
             new Map<string, CourseWithAreas>([
                 [
                     "TEST001  PZ-01",
@@ -407,7 +407,7 @@ describe("mergeApiCourses", () => {
                 ],
             ]),
         );
-        expect(result).toEqual([
+        expect(result).toStrictEqual([
             {
                 Catalog: "UG22",
                 CourseCode: "TEST002  PZ-01",
@@ -521,7 +521,7 @@ describe("mergeApiCourses", () => {
                 ],
             ]),
         );
-        expect(result).toEqual([
+        expect(result).toStrictEqual([
             {
                 Catalog: "UG22",
                 CourseCode: "TEST002  PZ-01",

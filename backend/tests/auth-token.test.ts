@@ -8,7 +8,7 @@ describe("auth/token.ts", () => {
     test("User encoding and decoding works correctly", () => {
         const uuid = uuid4();
         const sig = signUser({ uuid });
-        expect(verifyUser(sig).uuid).toEqual(uuid);
+        expect(verifyUser(sig).uuid).toStrictEqual(uuid);
     });
     test("Token expiration works correctly", () => {
         let uuid = uuid4();
@@ -24,7 +24,7 @@ describe("auth/token.ts", () => {
             // @ts-ignore forcing an iat to backdate this by a year
             iat: Math.floor(new Date().getTime() / 1000) - 364 * 24 * 60 * 60,
         });
-        expect(verifyUser(sig).uuid).toEqual(uuid);
+        expect(verifyUser(sig).uuid).toStrictEqual(uuid);
     });
     test("Signature verification works correctly", () => {
         const uuid = uuid4();
