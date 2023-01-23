@@ -39,6 +39,10 @@ export async function updateSections(
         nRemoved,
         nUpserted,
     });
+    if (!result.isOk()) {
+        logger.error(result);
+        throw Error("Database operation failed");
+    }
     return result;
 }
 
