@@ -1,3 +1,5 @@
+mongodb-version := '6.0.3'
+
 start-db:
   podman run --rm -d \
     --name hyperschedule-mongodb \
@@ -12,3 +14,8 @@ start-db:
       --experimental-specifier-resolution=node \
       --loader ts-node/esm \
       ./src/db/init-db.ts
+
+test:
+  MONGOMS_DOWNLOAD_URL='https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel80-{{mongodb-version}}.tgz' \
+  MONGOMS_VERSION='{{mongodb-version}}' \
+    yarn test
