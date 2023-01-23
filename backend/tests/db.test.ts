@@ -1,6 +1,7 @@
-import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, test } from "@jest/globals";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import * as APIv4 from "hyperschedule-shared/api/v4";
+import { Term } from "hyperschedule-shared/api/v4";
 import { dbToSection, sectionToDb } from "../src/db/utils";
 import { schema } from "hyperschedule-shared/api/v4/schema";
 import Ajv from "ajv";
@@ -121,7 +122,7 @@ describe("db/utils", () => {
 });
 
 describe("db/models/course", () => {
-    test("Insertion and query", async () => {
+    test("Basic insertion and query", async () => {
         await updateSections([testSection], testTermIdentifier);
         const sections = await getAllSections();
         expect(sections.length).toEqual(1);
@@ -130,5 +131,202 @@ describe("db/models/course", () => {
             (await getAllSections({ year: 2022, term: APIv4.Term.spring }))
                 .length,
         ).toEqual(0);
+    });
+
+    test("updateSections() does not override previous semester", async () => {
+        await updateSections(
+            [
+                {
+                    ...testSection,
+                    identifier: {
+                        // fall 2023
+                        department: "CSCI",
+                        courseNumber: 131,
+                        suffix: "",
+                        affiliation: "HM",
+                        sectionNumber: 1,
+                        term: Term.fall,
+                        year: 2023,
+                        half: "",
+                    },
+                },
+            ],
+            { term: Term.fall, year: 2023 },
+        );
+
+        await updateSections(
+            [
+                {
+                    ...testSection,
+                    identifier: {
+                        // spring 2023
+                        department: "CSCI",
+                        courseNumber: 131,
+                        suffix: "",
+                        affiliation: "HM",
+                        sectionNumber: 1,
+                        term: Term.spring,
+                        year: 2023,
+                        half: "",
+                    },
+                },
+            ],
+            { term: Term.spring, year: 2023 },
+        );
+        const sections = await getAllSections();
+        expect(sections.length).toEqual(2);
+    });
+
+    test("updateSections() replaces everything form the same semester", async () => {
+        await updateSections(
+            [
+                {
+                    ...testSection,
+                    identifier: {
+                        // sp section 1
+                        department: "CSCI",
+                        courseNumber: 131,
+                        suffix: "",
+                        affiliation: "HM",
+                        sectionNumber: 1,
+                        term: Term.spring,
+                        year: 2023,
+                        half: "",
+                    },
+                },
+                {
+                    ...testSection,
+                    identifier: {
+                        // sp section 2
+                        department: "CSCI",
+                        courseNumber: 131,
+                        suffix: "",
+                        affiliation: "HM",
+                        sectionNumber: 2,
+                        term: Term.spring,
+                        year: 2023,
+                        half: "",
+                    },
+                },
+            ],
+            { term: Term.spring, year: 2023 },
+        );
+
+        await updateSections(
+            [
+                {
+                    ...testSection,
+                    identifier: {
+                        // sp section 3
+                        department: "CSCI",
+                        courseNumber: 131,
+                        suffix: "",
+                        affiliation: "HM",
+                        sectionNumber: 3,
+                        term: Term.spring,
+                        year: 2023,
+                        half: "",
+                    },
+                },
+            ],
+            { term: Term.spring, year: 2023 },
+        );
+        const sections = await getAllSections();
+        expect(sections.length).toEqual(1);
+        expect(sections[0]).toEqual({
+            ...testSection,
+            identifier: {
+                department: "CSCI",
+                courseNumber: 131,
+                suffix: "",
+                affiliation: "HM",
+                sectionNumber: 3,
+                term: Term.spring,
+                year: 2023,
+                half: "",
+            },
+        });
+    });
+    test("getAllSections() filter works correctly", async () => {
+        await updateSections(
+            [
+                {
+                    ...testSection,
+                    identifier: {
+                        // fall 2023
+                        department: "CSCI",
+                        courseNumber: 131,
+                        suffix: "",
+                        affiliation: "HM",
+                        sectionNumber: 1,
+                        term: Term.fall,
+                        year: 2023,
+                        half: "",
+                    },
+                },
+            ],
+            { term: Term.fall, year: 2023 },
+        );
+
+        await updateSections(
+            [
+                {
+                    ...testSection,
+                    identifier: {
+                        // spring 2023
+                        department: "CSCI",
+                        courseNumber: 131,
+                        suffix: "",
+                        affiliation: "HM",
+                        sectionNumber: 1,
+                        term: Term.spring,
+                        year: 2023,
+                        half: "",
+                    },
+                },
+            ],
+            { term: Term.spring, year: 2023 },
+        );
+
+        expect((await getAllSections()).length).toEqual(2);
+        const springSections = await getAllSections({
+            term: Term.spring,
+            year: 2023,
+        });
+        expect(springSections.length).toEqual(1);
+        expect(springSections[0]).toEqual({
+            ...testSection,
+            identifier: {
+                // spring 2023
+                department: "CSCI",
+                courseNumber: 131,
+                suffix: "",
+                affiliation: "HM",
+                sectionNumber: 1,
+                term: Term.spring,
+                year: 2023,
+                half: "",
+            },
+        });
+
+        const fallSections = await getAllSections({
+            term: Term.fall,
+            year: 2023,
+        });
+        expect(fallSections.length).toEqual(1);
+        expect(fallSections[0]).toEqual({
+            ...testSection,
+            identifier: {
+                // spring 2023
+                department: "CSCI",
+                courseNumber: 131,
+                suffix: "",
+                affiliation: "HM",
+                sectionNumber: 1,
+                term: Term.fall,
+                year: 2023,
+                half: "",
+            },
+        });
     });
 });

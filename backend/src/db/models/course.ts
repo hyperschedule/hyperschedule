@@ -23,7 +23,7 @@ export async function updateSections(
     }
     bulk.find({
         $and: [
-            { _id: { term: term.term, year: term.year } },
+            { "_id.term": term.term, "_id.year": term.year },
             { $nor: dbSections.map((s) => ({ _id: s._id })) },
         ],
     }).delete();
@@ -46,7 +46,9 @@ export async function getAllSections(
     term?: TermIdentifier,
 ): Promise<APIv4.Section[]> {
     const cursor = collections.sections.find(
-        term === undefined ? {} : { _id: { term: term.term, year: term.year } },
+        term === undefined
+            ? {}
+            : { "_id.term": term.term, "_id.year": term.year },
     );
     const arr = await cursor.toArray();
     return arr.map(dbToSection);
