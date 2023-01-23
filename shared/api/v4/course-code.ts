@@ -4,7 +4,6 @@ import type {
     SectionIdentifier,
     TermIdentifier,
 } from "hyperschedule-shared/api/v4";
-import { Term } from "hyperschedule-shared/api/v4";
 
 const courseRegex = RegExp(
     "^" +

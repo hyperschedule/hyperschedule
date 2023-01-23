@@ -1,4 +1,3 @@
-import type * as APIv4 from "hyperschedule-shared/api/v4";
 import type {
     CourseWithAreas,
     MergedPomApiCourse,

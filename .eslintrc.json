@@ -10,8 +10,16 @@
     ]
   },
   "overrides": [
+    // we disable these rules until https://github.com/typescript-eslint/typescript-eslint/issues/6314 is fixed
     {
-      "files": ["**/*.ts"]
+      "files": ["**/*.ts"],
+      "rules": {
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-return": "off"
+      }
     },
     {
       "files": ["**/*.tsx"],

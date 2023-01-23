@@ -3,7 +3,6 @@ import { createLogger } from "./logger";
 import { connectToDb } from "./db";
 import { registerCourseRoutes } from "./routes/courses";
 import { DB_URL } from "./db/credentials";
-import { closeDb } from "./db/connector";
 
 const logger = createLogger("server.init");
 
