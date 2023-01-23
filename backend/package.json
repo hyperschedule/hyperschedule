@@ -52,7 +52,7 @@
   },
   "scripts": {
     "serve": "NODE_ENV=development node --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
-    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest",
+    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --onlyChanged",
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",
     "restart-db": "yarn stop-db && yarn start-db"
