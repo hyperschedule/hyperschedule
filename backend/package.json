@@ -43,7 +43,6 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^4.13.0",
     "mongodb-memory-server": "^8.10.2",
-    "mongoose": "^6.8.2",
     "pino": "^8.8.0",
     "pino-pretty": "^9.1.1",
     "ts-jest": "^29.0.3",

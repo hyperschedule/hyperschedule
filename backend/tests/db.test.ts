@@ -1,29 +1,23 @@
 import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { Section, User } from "../src/db/models";
-import * as mongoose from "mongoose";
-import type * as APIv4 from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 import { dbToSection, sectionToDb } from "../src/db/utils";
 import { schema } from "hyperschedule-shared/api/v4/schema";
 import Ajv from "ajv";
-import { CURRENT_TERM } from "../src/current-term";
+import { closeDb, connectToDb } from "../src/db/connector";
+import { getAllSections, updateSections } from "../src/db/models/course";
 
 let mongod: MongoMemoryServer;
 
 beforeEach(async () => {
     mongod = await MongoMemoryServer.create();
     const uri = mongod.getUri();
-    await mongoose.connect(uri, {
-        keepAlive: true,
-        keepAliveInitialDelay: 300000,
-        serverSelectionTimeoutMS: 5000,
-        dbName: "hyperschedule",
-    });
+    await connectToDb(uri);
 });
 
 afterEach(async () => {
+    await closeDb();
     await mongod.stop();
-    await mongoose.disconnect();
 });
 
 const testSection: APIv4.Section = {
@@ -89,6 +83,11 @@ const testSection: APIv4.Section = {
     },
 } as APIv4.Section;
 
+const testTermIdentifier = {
+    term: "SP",
+    year: 2023,
+} as APIv4.TermIdentifier;
+
 describe("db/utils", () => {
     const ajv = new Ajv();
     for (let s of schema) {
@@ -123,42 +122,13 @@ describe("db/utils", () => {
 
 describe("db/models/course", () => {
     test("Insertion and query", async () => {
-        await Section.insertMany([sectionToDb(testSection)]);
+        await updateSections([testSection], testTermIdentifier);
+        const sections = await getAllSections();
+        expect(sections.length).toEqual(1);
+        expect(sections[0]).toEqual(testSection);
         expect(
-            dbToSection((await Section.find({}).lean().exec())[0]!),
-        ).toMatchObject(testSection as any);
-    });
-
-    test("Update", async () => {
-        await Section.insertMany(sectionToDb(testSection));
-        const section = await Section.findOne({})
-            .where("course.code.department")
-            .equals("CSCI")
-            .where("course.code.courseNumber")
-            .equals(131)
-            .exec();
-
-        expect(section).not.toEqual(null);
-
-        section!.seatsFilled = 42;
-        await section!.save();
-
-        expect(
-            dbToSection((await Section.find({}).lean().exec())[0]!).seatsFilled,
-        ).toEqual(42);
-    });
-});
-
-describe("db/models/user", () => {
-    test("Data initialization", async () => {
-        let u = new User({
-            terms: { SP2023: { name: "SP2023", schedules: {} } },
-        });
-        //@ts-ignore
-        // u.schedules.SP2023.set("schedule1",{name:"schedule1",sections:[]})
-        await u.save();
-
-        let user = await User.findOne({}).lean().exec();
-        console.log("%o", user);
+            (await getAllSections({ year: 2022, term: APIv4.Term.spring }))
+                .length,
+        ).toEqual(0);
     });
 });

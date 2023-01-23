@@ -68,4 +68,8 @@ switch (env) {
 }
 
 export { rootLogger };
-// no logging if env is test
+
+// module should be a string in the format such as `db.user`
+export function createLogger(module: string) {
+    return rootLogger.child({ module });
+}

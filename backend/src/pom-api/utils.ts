@@ -5,8 +5,8 @@ import type {
     PomApiCourseAreaCourse,
     PomApiTermCourse,
 } from "./types";
-import { rootLogger } from "../logger";
-const logger = rootLogger.child({ action: "parse-pom-api" });
+import { createLogger } from "../logger";
+const logger = createLogger("parser.pom");
 /**
  * Merges the result of retrieving all course areas
  * to courses as there are a lot of duplicates

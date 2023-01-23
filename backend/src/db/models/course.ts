@@ -1,73 +1,53 @@
+import { collections } from "../collections";
+import type { DBSection } from "../collections";
+import { dbToSection, sectionToDb } from "../utils";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
-import { Schema, model } from "mongoose";
-// mongo db wants the primary key to specifically be named _id
-export type DBSection = Omit<APIv4.Section, "identifier"> & {
-    _id: APIv4.SectionIdentifier;
-};
-// allows empty string
-Schema.Types.String.checkRequired((v) => v !== null);
 
-export const courseSchema = new Schema<APIv4.Course>(
-    {
-        title: { type: String, required: true },
-        description: { type: String, required: true },
-        code: {
-            department: { type: String, required: true },
-            courseNumber: { type: Number, required: true },
-            suffix: { type: String, required: true },
-            affiliation: { type: String, required: true },
-        },
-        primaryAssociation: { type: String, required: true },
-        potentialError: { type: Boolean, required: true },
-    },
-    { _id: false },
-);
+import { createLogger } from "../../logger";
+import type { TermIdentifier } from "hyperschedule-shared/api/v4";
 
-export const sectionSchema = new Schema<DBSection>({
-    _id: {
-        department: { type: String, required: true },
-        courseNumber: { type: Number, required: true },
-        suffix: { type: String, required: true },
-        affiliation: { type: String, required: true },
-        sectionNumber: { type: Number, required: true },
-        year: { type: Number, required: true },
-        term: { type: String, required: true },
-        half: { type: String, required: true },
-    },
-    course: courseSchema,
-    courseAreas: { type: [String], required: true },
-    schedules: [
-        {
-            type: {
-                startTime: { type: Number, required: true },
-                endTime: { type: Number, required: true },
-                days: { type: [String], required: true },
-                locations: { type: [String], required: true },
-            },
-            required: true,
-        },
-    ],
-    permCount: { type: Number, required: true },
-    seatsFilled: { type: Number, required: true },
-    seatsTotal: { type: Number, required: true },
-    status: { type: String, required: true },
-    startDate: {
-        year: { type: Number, required: true },
-        month: { type: Number, required: true },
-        day: { type: Number, required: true },
-    },
-    endDate: {
-        year: { type: Number, required: true },
-        month: { type: Number, required: true },
-        day: { type: Number, required: true },
-    },
-    instructors: [
-        {
-            name: { type: String, required: true },
-        },
-    ],
-    potentialError: { type: Boolean, required: true },
-    credits: { type: Number, required: true },
-});
+const logger = createLogger("db.course");
 
-export const Section = model<DBSection>("Section", sectionSchema);
+/**
+ * Replaces the existing database collection sections with the new sections
+ */
+export async function updateSections(
+    sections: APIv4.Section[],
+    term: APIv4.TermIdentifier,
+) {
+    logger.info(`Initiating section update with ${sections.length} sections`);
+    const dbSections: DBSection[] = sections.map(sectionToDb);
+    const bulk = collections.sections.initializeUnorderedBulkOp();
+    for (let section of dbSections) {
+        bulk.find({ _id: section._id }).upsert().replaceOne(section);
+    }
+    bulk.find({
+        $and: [
+            { _id: { term: term.term, year: term.year } },
+            { $nor: dbSections.map((s) => ({ _id: s._id })) },
+        ],
+    }).delete();
+    logger.info(`Bulk operation compiled, executing...`);
+    const result = await bulk.execute();
+    const { nInserted, nMatched, nModified, nRemoved, nUpserted } = result;
+    logger.info(`Bulk operation completed`);
+    logger.info("Bulk operation result: %o", {
+        ok: result.isOk(),
+        nInserted,
+        nMatched,
+        nModified,
+        nRemoved,
+        nUpserted,
+    });
+    return result;
+}
+
+export async function getAllSections(
+    term?: TermIdentifier,
+): Promise<APIv4.Section[]> {
+    const cursor = collections.sections.find(
+        term === undefined ? {} : { _id: { term: term.term, year: term.year } },
+    );
+    const arr = await cursor.toArray();
+    return arr.map(dbToSection);
+}

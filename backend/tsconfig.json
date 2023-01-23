@@ -18,12 +18,6 @@
     // types by other libs don't mess up IDE checking
     // <https://github.com/johnsoncodehk/volar/discussions/592>
     "types": ["vite/client", "node"],
-    "paths": {
-      "@/*": ["./*"],
-      "@db/*": ["db/*"],
-      "@routes/*":["routes/*"],
-      "@auth/*": ["auth/*"]
-    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
   "files": ["src/fetch-tmp.d.ts"]

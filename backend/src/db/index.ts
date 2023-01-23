@@ -1,3 +1,2 @@
-import { Schema } from "mongoose";
-
-export { connectToDb } from "./connection";
+export { connector, connectToDb } from "./connector";
+export { collections } from "./collections";

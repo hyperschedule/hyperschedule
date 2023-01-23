@@ -14,11 +14,6 @@
     "sourceRoot": "src",
     "baseUrl": "src",
     "rootDir": "src",
-    "paths": {
-      "@components/*": ["components/*"],
-      "@lib/*": ["lib/*"],
-      "@hooks/*": ["hooks/*"]
-    },
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "types": ["vite/client"]
   },

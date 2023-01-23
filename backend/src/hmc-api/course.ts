@@ -27,10 +27,10 @@ const sectionValidator = ajv.compile({
 });
 
 import { buildings } from "./buildings";
-import { rootLogger } from "../logger";
+import { createLogger } from "../logger";
 import { stringifySectionCodeLong } from "hyperschedule-shared/api/v4";
 
-const logger = rootLogger.child({ action: "process-csv" });
+const logger = createLogger("parser.hmc");
 
 /**
  * re-serialize term to its string form from SectionIdentifier

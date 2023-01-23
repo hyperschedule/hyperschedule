@@ -1,75 +1,46 @@
-import { Schema, model } from "mongoose";
-import type {
-    User as UserType,
-    UserSchedule,
-} from "hyperschedule-shared/api/v4";
+import { collections } from "../collections";
 import { v4 as uuid4 } from "uuid";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "../../current-term";
 
-const DEFAULT_SCHEDULE_NAME = "schedule1";
+import { createLogger } from "../../logger";
 
-const scheduleSchema = new Schema(
-    {
-        name: {
-            type: String,
-            required: true,
-        },
-        sections: [
-            {
-                identifier: {
-                    department: {
-                        type: String,
-                        required: true,
-                    },
-                    courseNumber: {
-                        type: Number,
-                        required: true,
-                    },
-                    suffix: {
-                        type: String,
-                        required: true,
-                    },
-                    affiliation: {
-                        type: String,
-                        required: true,
-                    },
-                    sectionNumber: {
-                        type: Number,
-                        required: true,
-                    },
-                    year: { type: Number, required: true },
-                    term: { type: String, required: true },
-                    half: { type: String, required: true },
+const logger = createLogger("db.user");
+
+export async function getUser(uuid: string): Promise<APIv4.GenericUser | null> {
+    return collections.users.findOne({ _id: uuid });
+}
+
+export async function createGuestUser(): Promise<
+    APIv4.User<APIv4.GuestUserAuth>
+> {
+    const uuid = uuid4();
+    const user: APIv4.User<APIv4.GuestUserAuth> = {
+        _id: uuid,
+        activeTerm: CURRENT_TERM,
+        schedules: {
+            [CURRENT_TERM]: {
+                [APIv4.NoFolder]: {
+                    name: APIv4.NoFolder,
+                    hidden: false,
+                    sections: [],
                 },
-                selected: Boolean,
             },
-        ],
-    },
-    { _id: false, minimize: false },
-);
-
-const termSchema = new Schema<Record<string, Record<string, UserSchedule>>>(
-    {
-        term: { type: String, required: true },
-        schedules: { type: Map, of: scheduleSchema, required: true },
-    },
-    { _id: false, minimize: false },
-);
-
-export const userSchema = new Schema<UserType>(
-    {
-        _id: { type: String, default: uuid4 },
-        terms: {
-            type: Map,
-            of: {
-                type: termSchema,
-            },
-            required: true,
         },
-        activeSchedule: { type: String, default: DEFAULT_SCHEDULE_NAME },
-        activeTerm: { type: String, default: CURRENT_TERM },
-    },
-    { minimize: false },
-);
+        auth: {
+            isGuest: true,
+            lastModified: Math.floor(new Date().getTime() / 100),
+        },
+    };
 
-export const User = model("user", userSchema);
+    const res = await collections.users.insertOne(user);
+
+    if (res.insertedId !== uuid) {
+        logger.error(
+            `Error inserting guest user into database. Requested ID is ${uuid}, resulted id is ${res.insertedId}`,
+        );
+        throw Error(`Database error: mismatching insertion id`);
+    }
+
+    return user;
+}

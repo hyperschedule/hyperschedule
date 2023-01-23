@@ -1,9 +1,9 @@
 import { server } from "../server";
 import { schema as courseSchema } from "hyperschedule-shared/api/v4/schema";
-import { Section } from "../db/models";
-import { dbToSection } from "../db/utils";
+import type { TermIdentifier } from "hyperschedule-shared/api/v4";
 import { Term } from "hyperschedule-shared/api/v4";
 import type { SomeJSONSchema } from "ajv/dist/types/json-schema";
+import { getAllSections } from "../db/models/course";
 
 const validTerms: string[] = Object.values(Term);
 
@@ -23,9 +23,7 @@ export function registerCourseRoutes() {
         async (request, reply) => {
             server.log.info({ msg: "DB query start", reqId: request.id });
 
-            const sections = (await Section.find({}).lean().exec()).map(
-                dbToSection,
-            );
+            const sections = await getAllSections();
 
             server.log.info({ msg: "DB query end", reqId: request.id });
             return reply
@@ -73,15 +71,10 @@ export function registerCourseRoutes() {
 
             server.log.info({ msg: "DB query start", reqId: request.id });
 
-            const sections = (
-                await Section.find({})
-                    .where("_id.year")
-                    .equals(year)
-                    .where("_id.term")
-                    .equals(term)
-                    .lean()
-                    .exec()
-            ).map(dbToSection);
+            const sections = await getAllSections({
+                term,
+                year,
+            } as TermIdentifier);
 
             server.log.info({ msg: "DB query end", reqId: request.id });
             return reply

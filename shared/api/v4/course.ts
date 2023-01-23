@@ -47,7 +47,7 @@ export enum Weekday {
 }
 
 export interface TermIdentifier {
-    year: number;
+    year: integer;
     term: Term;
 }
 
