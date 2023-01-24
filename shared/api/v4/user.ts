@@ -54,3 +54,33 @@ export type LoginUser = z.infer<typeof LoginUser>;
 
 export const User = z.discriminatedUnion("isGuest", [LoginUser, GuestUser]);
 export type User = z.infer<typeof User>;
+
+export const UpdateScheduleOpAdd = z.object({
+    op: z.literal("add"),
+});
+export type UpdateScheduleOpAdd = z.infer<typeof UpdateScheduleOpAdd>;
+
+export const UpdateScheduleOpRemove = z.object({
+    op: z.literal("remove"),
+});
+export type UpdateScheduleOpRemove = z.infer<typeof UpdateScheduleOpRemove>;
+
+export const UpdateScheduleOpToggle = z.object({
+    op: z.literal("toggle"),
+    property: z.literal("visibility"),
+});
+export type UpdateScheduleOpToggle = z.infer<typeof UpdateScheduleOpToggle>;
+
+export const UpdateScheduleOpMove = z.object({
+    op: z.literal("move"),
+    dst: FolderName,
+});
+export type UpdateScheduleOpMove = z.infer<typeof UpdateScheduleOpMove>;
+
+export const UpdateScheduleOp = z.discriminatedUnion("op", [
+    UpdateScheduleOpMove,
+    UpdateScheduleOpToggle,
+    UpdateScheduleOpAdd,
+    UpdateScheduleOpRemove,
+]);
+export type UpdateScheduleOp = z.infer<typeof UpdateScheduleOp>;
