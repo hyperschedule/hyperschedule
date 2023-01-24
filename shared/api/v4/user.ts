@@ -1,44 +1,56 @@
-import type { SectionIdentifier } from "./course";
+import { SectionIdentifier } from "./course";
+import { z } from "zod";
 
 // special folder names for sections without a folder
-// this folder cannot be hidden
+// this folder cannot be hidden. This is not using zod
+// because it doesn't quite work as a computed property
+// on objects
 export const NoFolder = "__none__" as const;
 export type NoFolder = typeof NoFolder;
 
-export interface DefaultFolder {
-    name: NoFolder;
-    hidden: false;
-    sections: { identifier: SectionIdentifier; hidden: boolean }[];
-}
+export const Folder = z.object({
+    name: z.string(),
+    hidden: z.boolean(),
+    sections: z
+        .object({ identifier: SectionIdentifier, hidden: z.boolean() })
+        .array(),
+});
+export type Folder = z.infer<typeof Folder>;
 
-export interface CustomFolder {
-    name: string;
-    hidden: boolean;
-    sections: { identifier: SectionIdentifier; hidden: boolean }[];
-}
+const TermIdentifierString = z
+    .string()
+    .regex(/^(?<term>FA|SP|SU)(?<year>\d{4})$/);
+export type TermIdentifierString = z.infer<typeof TermIdentifierString>;
 
-export type Folder = DefaultFolder | CustomFolder;
+const FolderName = z.string();
+export type FolderName = z.infer<typeof FolderName>;
 
-type TermIdentifierString = string;
-type FolderName = string;
+export const UserSchedule = z.object({
+    terms: z.record(TermIdentifierString, z.record(FolderName, Folder)),
+    activeTerm: TermIdentifierString,
+});
+export type UserSchedule = z.infer<typeof UserSchedule>;
 
-export interface GuestUserAuth {
-    isGuest: true;
+export const GuestUser = z.object({
+    _id: z.string().uuid(),
+    schedule: UserSchedule,
+
+    isGuest: z.literal(true),
     // seconds since Unix epoch. used to pruning inactive users.
     // this is only updated if the user did any modification to their schedule
-    lastModified: number;
-}
+    lastModified: z.number().positive(),
+});
+export type GuestUser = z.infer<typeof GuestUser>;
 
-export interface LoginUserAuth {
-    isGuest: false;
-    cxid: number;
-}
+export const LoginUser = z.object({
+    _id: z.string().uuid(),
+    schedule: UserSchedule,
 
-export interface User<T extends GuestUserAuth | LoginUserAuth> {
-    _id: string;
-    schedules: Record<TermIdentifierString, Record<FolderName, Folder>>;
-    activeTerm: TermIdentifierString;
-    auth: T;
-}
+    isGuest: z.literal(false),
+    // pomona id starts with 1 and pitzer id starts with 5, 8 digits
+    cxid: z.number().min(10000000).max(59999999),
+});
+export type LoginUser = z.infer<typeof LoginUser>;
 
-export type GenericUser = User<GuestUserAuth | LoginUserAuth>;
+export const User = z.discriminatedUnion("isGuest", [LoginUser, GuestUser]);
+export type User = z.infer<typeof User>;

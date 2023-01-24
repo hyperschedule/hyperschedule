@@ -7,7 +7,7 @@ export type DBSection = Omit<APIv4.Section, "identifier"> & {
 };
 
 export interface DBCollections {
-    users: Collection<APIv4.GenericUser>;
+    users: Collection<APIv4.User>;
     sections: Collection<DBSection>;
 }
 
@@ -20,9 +20,9 @@ export interface DBCollections {
 let obj = {};
 Object.defineProperties(obj, {
     users: {
-        get(): Collection<APIv4.GenericUser> {
+        get(): Collection<APIv4.User> {
             if (!connector.connected) throw Error("Database not connected");
-            return connector.db.collection<APIv4.GenericUser>("users");
+            return connector.db.collection<APIv4.User>("users");
         },
     },
     sections: {

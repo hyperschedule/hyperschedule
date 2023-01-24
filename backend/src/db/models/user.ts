@@ -7,35 +7,33 @@ import { createLogger } from "../../logger";
 
 const logger = createLogger("db.user");
 
-export async function getUser(uuid: string): Promise<APIv4.GenericUser | null> {
+export async function getUser(uuid: string): Promise<APIv4.User | null> {
     return collections.users.findOne({ _id: uuid });
 }
 
-export async function createGuestUser(): Promise<
-    APIv4.User<APIv4.GuestUserAuth>
-> {
+export async function createGuestUser(): Promise<APIv4.GuestUser> {
     const uuid = uuid4();
-    const user: APIv4.User<APIv4.GuestUserAuth> = {
+    const user: APIv4.GuestUser = {
         _id: uuid,
-        activeTerm: CURRENT_TERM,
-        schedules: {
-            [CURRENT_TERM]: {
-                [APIv4.NoFolder]: {
-                    name: APIv4.NoFolder,
-                    hidden: false,
-                    sections: [],
+        isGuest: true,
+        schedule: {
+            activeTerm: CURRENT_TERM,
+            terms: {
+                [CURRENT_TERM]: {
+                    [APIv4.NoFolder]: {
+                        name: APIv4.NoFolder,
+                        hidden: false,
+                        sections: [],
+                    },
                 },
             },
         },
-        auth: {
-            isGuest: true,
-            lastModified: Math.floor(new Date().getTime() / 100),
-        },
+        lastModified: Math.floor(new Date().getTime() / 1000),
     };
 
     const res = await collections.users.insertOne(user);
 
-    if (res.insertedId !== uuid) {
+    if (res.insertedId.toString() !== uuid) {
         logger.error(
             `Error inserting guest user into database. Requested ID is ${uuid}, resulted id is ${res.insertedId}`,
         );
