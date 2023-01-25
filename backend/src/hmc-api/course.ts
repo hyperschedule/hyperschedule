@@ -15,17 +15,6 @@ import {
     parseStaff,
 } from "./files";
 
-import Ajv from "ajv";
-import { schema } from "hyperschedule-shared/api/v4/schema";
-
-const ajv = new Ajv();
-for (let s of schema) {
-    ajv.addSchema(s);
-}
-const sectionValidator = ajv.compile({
-    $ref: "Section",
-});
-
 import { buildings } from "./buildings";
 import { createLogger } from "../logger";
 import { stringifySectionCodeLong } from "hyperschedule-shared/api/v4";
@@ -537,18 +526,19 @@ export function linkCourseData(files: {
     const res: Partial<APIv4.Section>[] = Array.from(courseSectionMap.values());
     for (let section of res) {
         if (section.permCount === undefined) section.permCount = 0;
-        if (!sectionValidator(section)) {
+        const validatedResult = APIv4.Section.safeParse(section);
+        if (!validatedResult.success) {
             if (process.env.NODE_ENV === "production")
                 logger.warn(
                     "invalid section %o, reason %o",
                     section,
-                    sectionValidator.errors,
+                    validatedResult.error,
                 );
             else {
                 logger.error(
                     "invalid section %o, reason %o",
                     section,
-                    sectionValidator.errors,
+                    validatedResult.error,
                 );
                 throw Error(
                     `Invalid section ${stringifySectionCodeLong(

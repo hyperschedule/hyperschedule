@@ -83,7 +83,7 @@ export type CourseDate = z.infer<typeof CourseDate>;
 export const CourseCode = z.object({
     department: z.string().min(1).max(4),
     courseNumber: z.number().min(0).max(999), // GOVT 999 CM is a real class
-    suffix: z.string().min(1).max(2),
+    suffix: z.string().min(0).max(2),
     affiliation: z.string().length(2),
 });
 export type CourseCode = z.infer<typeof CourseCode>;
@@ -95,7 +95,7 @@ export type CourseCode = z.infer<typeof CourseCode>;
 export const SectionIdentifier = z.object({
     department: z.string().min(1).max(4),
     courseNumber: z.number().min(0).max(999), // GOVT 999 CM is a real class
-    suffix: z.string().min(1).max(2),
+    suffix: z.string().min(0).max(2),
     // this is the last two letters of the course code, e.g. SC, HM, JT, AS, AF
     affiliation: z.string().length(2),
     sectionNumber: z.number().positive(),
@@ -104,7 +104,7 @@ export const SectionIdentifier = z.object({
     // first or second or fifth half of the term,
     // e.g. F1 and F2 for fall, P1 and P2 for spring,
     // and H1/S1 through H5/S5 for the summer
-    half: z.string().length(2),
+    half: z.string().length(2).or(z.string().length(0)),
 });
 export type SectionIdentifier = z.infer<typeof SectionIdentifier>;
 
@@ -149,8 +149,9 @@ export type Instructor = z.infer<typeof Instructor>;
 export const Section = z.object({
     identifier: SectionIdentifier,
     courseAreas: z.string().array(),
-    // non-hmc credit, normally 0 to 1 but might exceed it
-    credits: z.number().min(0).max(3),
+    // credit as in the campus it was taught, normally 0 to 1 for non-hmc
+    // and 1-3 for hmc courses. The highest observed is BIOL 195 HM with 6 credits.
+    credits: z.number().min(0).max(10),
     permCount: z.number().nonnegative(),
     seatsTotal: z.number().nonnegative(),
     seatsFilled: z.number().nonnegative(),
