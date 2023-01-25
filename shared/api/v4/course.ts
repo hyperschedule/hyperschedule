@@ -63,6 +63,9 @@ export const TermIdentifier = z.object({
 });
 export type TermIdentifier = z.infer<typeof TermIdentifier>;
 
+export const TermIdentifierString = z.string().regex(/^(?:FA|SP|SU)\d{4}$/);
+export type TermIdentifierString = z.infer<typeof TermIdentifierString>;
+
 /**
  * For course start and end dates, used to identify half-semester types.
  */

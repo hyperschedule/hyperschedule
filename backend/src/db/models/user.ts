@@ -1,6 +1,6 @@
 import { collections } from "../collections";
 import { v4 as uuid4 } from "uuid";
-import * as APIv4 from "hyperschedule-shared/api/v4";
+import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "../../current-term";
 
 import { createLogger } from "../../logger";
@@ -19,13 +19,7 @@ export async function createGuestUser(): Promise<APIv4.GuestUser> {
         schedule: {
             activeTerm: CURRENT_TERM,
             terms: {
-                [CURRENT_TERM]: {
-                    [APIv4.NoFolder]: {
-                        name: APIv4.NoFolder,
-                        hidden: false,
-                        sections: [],
-                    },
-                },
+                [CURRENT_TERM]: [],
             },
         },
         lastModified: Math.floor(new Date().getTime() / 1000),
