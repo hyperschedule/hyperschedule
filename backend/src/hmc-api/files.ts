@@ -218,7 +218,7 @@ export function parseSectionInstructor(data: string) {
 const CourseAreaSource = z
     .object({
         course_code: z.string(),
-        catelog: z.string().length(4),
+        catalog: z.string().length(4),
         course_areas: z.string().min(1).max(4).array(),
     })
     .array();
