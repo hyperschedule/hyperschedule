@@ -1,5 +1,8 @@
 import { parse } from "./parser";
 import type { Result } from "./parser";
+import { z } from "zod";
+import { createLogger } from "../logger";
+const logger = createLogger("parser.hmc.file");
 
 function processResult<T>(
     result: Result<T>,
@@ -7,11 +10,11 @@ function processResult<T>(
 ): Record<keyof T, string>[] {
     if (result.ok) {
         for (let w of result.warnings) {
-            console.warn("Warning while parsing %s, %o", filename, w);
+            logger.warn("Warning while parsing %s, %o", filename, w);
         }
         return result.records;
     } else {
-        console.error(
+        logger.error(
             "Cannot parse %s, missing columns %o",
             filename,
             result.missingColumns,
@@ -197,7 +200,7 @@ export function parseCalendarSession(data: string) {
 /**
  * parser for sectioninstructor_1.csv
  */
-export function parsesectionInstructor(data: string) {
+export function parseSectionInstructor(data: string) {
     const result = parse(
         {
             hasHeader: true,
@@ -210,4 +213,24 @@ export function parsesectionInstructor(data: string) {
         data,
     );
     return processResult(result, "sectionInstructor");
+}
+
+const CourseAreaSource = z
+    .object({
+        course_code: z.string(),
+        catelog: z.string().length(4),
+        course_areas: z.string().min(1).max(4).array(),
+    })
+    .array();
+
+export function parseCourseAreas(
+    data: string,
+): z.infer<typeof CourseAreaSource> {
+    const obj = JSON.parse(data);
+    const res = CourseAreaSource.safeParse(obj);
+    if (res.success) return res.data;
+    else {
+        logger.error("Error while parsing course_areas.json. %O", res.error);
+        return [];
+    }
 }

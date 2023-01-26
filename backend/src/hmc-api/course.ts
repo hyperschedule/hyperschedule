@@ -8,10 +8,11 @@ import {
     parseCalendarSession,
     parseCalendarSessionSection,
     parseCourse,
+    parseCourseAreas,
     parseCourseSection,
     parseCourseSectionSchedule,
     parsePermCount,
-    parsesectionInstructor,
+    parseSectionInstructor,
     parseStaff,
 } from "./files";
 
@@ -19,7 +20,7 @@ import { buildings } from "./buildings";
 import { createLogger } from "../logger";
 import { stringifySectionCodeLong } from "hyperschedule-shared/api/v4";
 
-const logger = createLogger("parser.hmc");
+const logger = createLogger("parser.hmc.link");
 
 /**
  * re-serialize term to its string form from SectionIdentifier
@@ -214,6 +215,7 @@ function processCourseSection(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
     dupeMap: Map<string, number>,
     courseMap: Map<string, APIv4.Course>,
+    courseAreaMap: Map<string, string[]>,
     courseSectionParsed: ReturnType<typeof parseCourseSection>,
 ) {
     const allSectionStatus = ["O", "C", "R"];
@@ -252,6 +254,9 @@ function processCourseSection(
         const credits = parseFloat(section.credits);
         const seatsTotal = parseInt(section.seatsTotal, 10);
         const seatsFilled = parseInt(section.seatsFilled, 10);
+
+        const courseAreas: string[] = courseAreaMap.get(section.code) ?? [];
+
         if (potentialError) {
             const n = dupeMap.get(section.sectionID);
             if (n) dupeMap.set(section.sectionID, n + 1);
@@ -288,8 +293,7 @@ function processCourseSection(
             course,
             status,
             credits,
-            // TODO: link with POM API for course area
-            courseAreas: [],
+            courseAreas,
             instructors: [],
             schedules: [],
             identifier: sid,
@@ -304,7 +308,7 @@ function processSectionInstructor(
     staffMap: Map<string, APIv4.Instructor>,
     dupeMap: Map<string, number>,
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
-    sectionInstructorParsed: ReturnType<typeof parsesectionInstructor>,
+    sectionInstructorParsed: ReturnType<typeof parseSectionInstructor>,
 ) {
     let dupesSeen: Map<string, number> = new Map();
     for (let instructor of sectionInstructorParsed) {
@@ -467,6 +471,19 @@ function processSectionSchedule(
     }
 }
 
+function processCourseAreas(
+    courseAreasParsed: ReturnType<typeof parseCourseAreas>,
+    courseAreaMap: Map<string, string[]>,
+) {
+    for (let area of courseAreasParsed) {
+        if (courseAreaMap.has(area.course_code))
+            logger.trace(
+                `Duplicate course ${area.course_code} for course area`,
+            );
+        courseAreaMap.set(area.course_code, area.course_areas);
+    }
+}
+
 export function linkCourseData(files: {
     altstaff: string;
     calendarSession: string;
@@ -477,6 +494,7 @@ export function linkCourseData(files: {
     permCount: string;
     sectionInstructor: string;
     staff: string;
+    courseAreas: string;
 }): APIv4.Section[] {
     // course map contains course data needed for courses of all sections
     // whereas courseSectionMap contains section-specific information
@@ -484,6 +502,7 @@ export function linkCourseData(files: {
     let courseSectionMap: Map<string, Partial<APIv4.Section>> = new Map();
     let staffMap: Map<string, APIv4.Instructor> = new Map();
     let dupeMap: Map<string, number> = new Map();
+    let courseAreaMap: Map<string, string[]> = new Map();
 
     const altstaffParsed = parseAltStaff(files.altstaff);
     const calendarSessionParsed = parseCalendarSession(files.calendarSession);
@@ -496,17 +515,20 @@ export function linkCourseData(files: {
         files.courseSectionSchedule,
     );
     const permCountParsed = parsePermCount(files.permCount);
-    const sectionInstructorParsed = parsesectionInstructor(
+    const sectionInstructorParsed = parseSectionInstructor(
         files.sectionInstructor,
     );
     const staffParsed = parseStaff(files.staff);
+    const courseAreaParsed = parseCourseAreas(files.courseAreas);
 
     processCourse(courseMap, courseParsed);
+    processCourseAreas(courseAreaParsed, courseAreaMap);
     processStaff(staffMap, staffParsed, altstaffParsed);
     processCourseSection(
         courseSectionMap,
         dupeMap,
         courseMap,
+        courseAreaMap,
         courseSectionParsed,
     );
     processSectionInstructor(

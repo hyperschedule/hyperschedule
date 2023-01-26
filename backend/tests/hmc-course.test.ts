@@ -32,6 +32,13 @@ describe("src/hmc-api/course.ts", () => {
             ]),
         );
 
+        files.push([
+            "courseAreas",
+            await fs.readFile("src/hmc-api/sample/course_area.json", {
+                encoding: "utf-8",
+            }),
+        ]);
+
         const result = linkCourseData(Object.fromEntries(files));
 
         const expected = JSON.parse(
