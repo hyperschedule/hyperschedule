@@ -1,116 +1,15 @@
-import { afterEach, beforeEach, describe, expect, test } from "@jest/globals";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import { describe, expect, test } from "@jest/globals";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { dbToSection, sectionToDb } from "../src/db/utils";
-import { closeDb, connectToDb } from "../src/db/connector";
-import { getAllSections, updateSections } from "../src/db/models/course";
+import { getAllSections, updateSections } from "../../src/db/models/course";
+import { setupDbHooks } from "./hooks";
+import { testSection } from "./test-data";
 
-let mongod: MongoMemoryServer;
-
-beforeEach(async () => {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
-    await connectToDb(uri);
-});
-
-afterEach(async () => {
-    await closeDb();
-    await mongod.stop();
-});
-
-const testSection: APIv4.Section = {
-    course: {
-        title: "Programming Languages",
-        description:
-            "A thorough examination of issues and features in language design and implementation including language-provided data structuring and data-typing, modularity, scoping, inheritance and concurrency. Compilation and run-time issues. Introduction to formal semantics. Prerequisite: Computer Science 70 and 81.",
-        primaryAssociation: "HM",
-        code: {
-            department: "CSCI",
-            courseNumber: 131,
-            suffix: "",
-            affiliation: "HM",
-        },
-        potentialError: false,
-    },
-    status: "R",
-    credits: 3,
-    courseAreas: [],
-    instructors: [
-        {
-            name: "Wiedermann, Benjamin",
-        },
-        {
-            name: "Bang, Lucas",
-        },
-    ],
-    schedules: [
-        {
-            startTime: 34500,
-            endTime: 39000,
-            days: ["M", "W"],
-            locations: [
-                "McGregor CompSci Center 203",
-                "McGregor CompSci Center 204",
-                "McGregor CompSci Center 205",
-            ],
-        },
-    ],
-    identifier: {
-        department: "CSCI",
-        courseNumber: 131,
-        suffix: "",
-        affiliation: "HM",
-        sectionNumber: 1,
-        term: "SP",
-        year: 2023,
-        half: "",
-    },
-    seatsTotal: 30,
-    seatsFilled: 28,
-    potentialError: false,
-    permCount: 4,
-    startDate: {
-        year: 2023,
-        month: 1,
-        day: 17,
-    },
-    endDate: {
-        year: 2023,
-        month: 5,
-        day: 12,
-    },
-} as APIv4.Section;
+setupDbHooks();
 
 const testTermIdentifier = {
     term: "SP",
     year: 2023,
 } as APIv4.TermIdentifier;
-
-describe("db/utils", () => {
-    test("Section to db conversion immutable", () => {
-        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
-        const s = sectionToDb(testSection);
-        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
-        expect(APIv4.Section.safeParse(s).success).not.toBeTruthy();
-        expect(s).not.toStrictEqual(testSection);
-    });
-
-    test("DB to section conversion immutable", () => {
-        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
-        const db = sectionToDb(testSection);
-        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
-        const dbs = JSON.stringify(db);
-        expect(dbToSection(db)).toStrictEqual(testSection);
-        expect(db).toStrictEqual(JSON.parse(dbs));
-    });
-
-    test("DB to section conversion reversible", () => {
-        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
-        expect(dbToSection(sectionToDb(testSection))).toStrictEqual(
-            testSection,
-        );
-    });
-});
 
 describe("db/models/course", () => {
     test("Basic insertion and query", async () => {
