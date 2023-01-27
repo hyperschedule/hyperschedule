@@ -1,10 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "@jest/globals";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { Term } from "hyperschedule-shared/api/v4";
 import { dbToSection, sectionToDb } from "../src/db/utils";
-import { schema } from "hyperschedule-shared/api/v4/schema";
-import Ajv from "ajv";
 import { closeDb, connectToDb } from "../src/db/connector";
 import { getAllSections, updateSections } from "../src/db/models/course";
 
@@ -90,33 +87,25 @@ const testTermIdentifier = {
 } as APIv4.TermIdentifier;
 
 describe("db/utils", () => {
-    const ajv = new Ajv();
-    for (let s of schema) {
-        ajv.addSchema(s);
-    }
-    const validator = ajv.compile({
-        $ref: "Section",
-    });
-
     test("Section to db conversion immutable", () => {
-        expect(validator(testSection)).toBeTruthy();
+        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
         const s = sectionToDb(testSection);
-        expect(validator(testSection)).toBeTruthy();
-        expect(validator(s)).not.toBeTruthy();
+        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
+        expect(APIv4.Section.safeParse(s).success).not.toBeTruthy();
         expect(s).not.toStrictEqual(testSection);
     });
 
     test("DB to section conversion immutable", () => {
-        expect(validator(testSection)).toBeTruthy();
+        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
         const db = sectionToDb(testSection);
-        expect(validator(testSection)).toBeTruthy();
+        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
         const dbs = JSON.stringify(db);
         expect(dbToSection(db)).toStrictEqual(testSection);
         expect(db).toStrictEqual(JSON.parse(dbs));
     });
 
     test("DB to section conversion reversible", () => {
-        expect(validator(testSection)).toBeTruthy();
+        expect(APIv4.Section.safeParse(testSection).success).toBeTruthy();
         expect(dbToSection(sectionToDb(testSection))).toStrictEqual(
             testSection,
         );
@@ -147,13 +136,13 @@ describe("db/models/course", () => {
                         suffix: "",
                         affiliation: "HM",
                         sectionNumber: 1,
-                        term: Term.fall,
+                        term: APIv4.Term.fall,
                         year: 2023,
                         half: "",
                     },
                 },
             ],
-            { term: Term.fall, year: 2023 },
+            { term: APIv4.Term.fall, year: 2023 },
         );
 
         await updateSections(
@@ -167,13 +156,13 @@ describe("db/models/course", () => {
                         suffix: "",
                         affiliation: "HM",
                         sectionNumber: 1,
-                        term: Term.spring,
+                        term: APIv4.Term.spring,
                         year: 2023,
                         half: "",
                     },
                 },
             ],
-            { term: Term.spring, year: 2023 },
+            { term: APIv4.Term.spring, year: 2023 },
         );
         const sections = await getAllSections();
         expect(sections.length).toStrictEqual(2);
@@ -191,7 +180,7 @@ describe("db/models/course", () => {
                         suffix: "",
                         affiliation: "HM",
                         sectionNumber: 1,
-                        term: Term.spring,
+                        term: APIv4.Term.spring,
                         year: 2023,
                         half: "",
                     },
@@ -205,13 +194,13 @@ describe("db/models/course", () => {
                         suffix: "",
                         affiliation: "HM",
                         sectionNumber: 2,
-                        term: Term.spring,
+                        term: APIv4.Term.spring,
                         year: 2023,
                         half: "",
                     },
                 },
             ],
-            { term: Term.spring, year: 2023 },
+            { term: APIv4.Term.spring, year: 2023 },
         );
 
         await updateSections(
@@ -225,13 +214,13 @@ describe("db/models/course", () => {
                         suffix: "",
                         affiliation: "HM",
                         sectionNumber: 3,
-                        term: Term.spring,
+                        term: APIv4.Term.spring,
                         year: 2023,
                         half: "",
                     },
                 },
             ],
-            { term: Term.spring, year: 2023 },
+            { term: APIv4.Term.spring, year: 2023 },
         );
         const sections = await getAllSections();
         expect(sections.length).toStrictEqual(1);
@@ -243,7 +232,7 @@ describe("db/models/course", () => {
                 suffix: "",
                 affiliation: "HM",
                 sectionNumber: 3,
-                term: Term.spring,
+                term: APIv4.Term.spring,
                 year: 2023,
                 half: "",
             },
@@ -261,13 +250,13 @@ describe("db/models/course", () => {
                         suffix: "",
                         affiliation: "HM",
                         sectionNumber: 1,
-                        term: Term.fall,
+                        term: APIv4.Term.fall,
                         year: 2023,
                         half: "",
                     },
                 },
             ],
-            { term: Term.fall, year: 2023 },
+            { term: APIv4.Term.fall, year: 2023 },
         );
 
         await updateSections(
@@ -281,18 +270,18 @@ describe("db/models/course", () => {
                         suffix: "",
                         affiliation: "HM",
                         sectionNumber: 1,
-                        term: Term.spring,
+                        term: APIv4.Term.spring,
                         year: 2023,
                         half: "",
                     },
                 },
             ],
-            { term: Term.spring, year: 2023 },
+            { term: APIv4.Term.spring, year: 2023 },
         );
 
         expect((await getAllSections()).length).toStrictEqual(2);
         const springSections = await getAllSections({
-            term: Term.spring,
+            term: APIv4.Term.spring,
             year: 2023,
         });
         expect(springSections.length).toStrictEqual(1);
@@ -305,14 +294,14 @@ describe("db/models/course", () => {
                 suffix: "",
                 affiliation: "HM",
                 sectionNumber: 1,
-                term: Term.spring,
+                term: APIv4.Term.spring,
                 year: 2023,
                 half: "",
             },
         });
 
         const fallSections = await getAllSections({
-            term: Term.fall,
+            term: APIv4.Term.fall,
             year: 2023,
         });
         expect(fallSections.length).toStrictEqual(1);
@@ -325,7 +314,7 @@ describe("db/models/course", () => {
                 suffix: "",
                 affiliation: "HM",
                 sectionNumber: 1,
-                term: Term.fall,
+                term: APIv4.Term.fall,
                 year: 2023,
                 half: "",
             },
