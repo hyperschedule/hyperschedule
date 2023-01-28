@@ -45,7 +45,7 @@ export const testSection: APIv4.Section = {
         sectionNumber: 1,
         term: "SP",
         year: 2023,
-        half: "",
+        half: null,
     },
     seatsTotal: 30,
     seatsFilled: 28,

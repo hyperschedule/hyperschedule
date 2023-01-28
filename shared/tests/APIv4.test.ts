@@ -1,9 +1,9 @@
 import * as APIv4 from "../api/v4";
-import { describe, test } from "@jest/globals";
+import { describe, test, expect } from "@jest/globals";
+import * as console from "console";
 describe("APIv4 type definition", () => {
     test("course instantiation", () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const course: APIv4.Section = {
+        const section: APIv4.Section = {
             potentialError: false,
             course: {
                 title: "Intro to unit test",
@@ -20,12 +20,15 @@ describe("APIv4 type definition", () => {
             identifier: {
                 department: "TEST",
                 courseNumber: 1,
-                sectionNumber: 0,
+                sectionNumber: 1,
                 affiliation: "PZ",
-                year: 1970,
+                year: 2015,
                 term: APIv4.Term.fall,
                 suffix: "",
-                half: "",
+                half: {
+                    prefix: "Z",
+                    number: 5,
+                },
             } as APIv4.SectionIdentifier,
             credits: 1,
             status: "O" as APIv4.SectionStatus,
@@ -49,15 +52,16 @@ describe("APIv4 type definition", () => {
             seatsFilled: 0,
             seatsTotal: 0,
             startDate: {
-                year: 1970,
+                year: 2015,
                 month: 1,
                 day: 1,
             },
             endDate: {
-                year: 1970,
+                year: 2015,
                 month: 1,
                 day: 1,
             },
         };
+        APIv4.Section.parse(section);
     });
 });

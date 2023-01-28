@@ -66,6 +66,12 @@ export type TermIdentifier = z.infer<typeof TermIdentifier>;
 export const TermIdentifierString = z.string().regex(/^(?:FA|SP|SU)\d{4}$/);
 export type TermIdentifierString = z.infer<typeof TermIdentifierString>;
 
+export const Half = z.object({
+    prefix: z.string().length(1),
+    number: z.number().positive().max(9),
+});
+export type Half = z.infer<typeof Half>;
+
 /**
  * For course start and end dates, used to identify half-semester types.
  */
@@ -104,7 +110,7 @@ export const SectionIdentifier = z.object({
     // first or second or fifth half of the term,
     // e.g. F1 and F2 for fall, P1 and P2 for spring,
     // and H1/S1 through H5/S5 for the summer
-    half: z.string().length(2).or(z.string().length(0)),
+    half: Half.nullable(),
 });
 export type SectionIdentifier = z.infer<typeof SectionIdentifier>;
 

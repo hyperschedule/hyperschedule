@@ -46,7 +46,7 @@ const sectionRegex = RegExp(
         "(?<section>\\d{2}) " +
         "(?<term>FA|SU|SP)" +
         "(?<year>\\d{4})" +
-        "(?<half>[FSPHZ]\\d)?" +
+        "(?:(?<halfPrefix>[FSPHZ])(?<halfNumber>\\d))?" +
         "$",
 );
 
@@ -68,8 +68,16 @@ export function parseCXSectionIdentifier(
         section: string;
         term: string;
         year: string;
-        half?: string;
+        halfPrefix?: string;
+        halfNumber?: string;
     };
+
+    let half: APIv4.Half | null = null;
+    if (groups.halfPrefix !== undefined && groups.halfNumber !== undefined)
+        half = {
+            prefix: groups.halfPrefix,
+            number: parseInt(groups.halfNumber),
+        };
 
     return {
         department: groups.dept.trim(),
@@ -79,7 +87,7 @@ export function parseCXSectionIdentifier(
         sectionNumber: parseInt(groups.section.trim(), 10),
         term: groups.term.trim() as APIv4.Term,
         year: parseInt(groups.year.trim(), 10),
-        half: groups.half?.trim() ?? "",
+        half,
     };
 }
 
@@ -139,13 +147,18 @@ export function stringifySectionCode(
 export function stringifySectionCodeLong(
     sectionID: Readonly<APIv4.SectionIdentifier>,
 ): string {
+    const half =
+        sectionID.half === null
+            ? ""
+            : `${sectionID.half.prefix}${sectionID.half.number}`;
+
     return `${sectionID.department} ${sectionID.courseNumber
         .toString()
         .padStart(3, "0")}${sectionID.suffix} ${
         sectionID.affiliation
     }-${sectionID.sectionNumber.toString().padStart(2, "0")} ${sectionID.term}${
         sectionID.year
-    } ${sectionID.half}`.trim();
+    } ${half}`.trim();
 }
 
 const sectionCodeLongRegex = RegExp(
@@ -157,7 +170,7 @@ const sectionCodeLongRegex = RegExp(
         "(?<section>\\d{2}) " +
         "(?<term>FA|SU|SP)" +
         "(?<year>\\d{4})" +
-        "(?: (?<half>[FSPHZ]\\d))?" +
+        "(?: (?<halfPrefix>[FSPHZ])(?<halfNumber>\\d))?" +
         "$",
 );
 
@@ -176,8 +189,16 @@ export function parseSectionCodeLong(code: string): APIv4.SectionIdentifier {
         section: string;
         term: string;
         year: string;
-        half?: string;
+        halfPrefix?: string;
+        halfNumber?: string;
     };
+
+    let half: APIv4.Half | null = null;
+    if (groups.halfPrefix !== undefined && groups.halfNumber !== undefined)
+        half = {
+            prefix: groups.halfPrefix,
+            number: parseInt(groups.halfNumber),
+        };
 
     return {
         department: groups.dept,
@@ -187,7 +208,7 @@ export function parseSectionCodeLong(code: string): APIv4.SectionIdentifier {
         sectionNumber: parseInt(groups.section, 10),
         term: groups.term as APIv4.Term,
         year: parseInt(groups.year, 10),
-        half: groups.half ?? "",
+        half,
     };
 }
 

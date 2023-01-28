@@ -66,7 +66,7 @@ describe("parseCXSectionIdentifier", () => {
                 sectionNumber: 1,
                 term: "SP",
                 year: 2023,
-                half: "",
+                half: null,
             } as APIv4.SectionIdentifier,
         );
 
@@ -79,7 +79,7 @@ describe("parseCXSectionIdentifier", () => {
                 sectionNumber: 1,
                 term: "FA",
                 year: 2020,
-                half: "",
+                half: null,
             } as APIv4.SectionIdentifier,
         );
     });
@@ -94,7 +94,7 @@ describe("parseCXSectionIdentifier", () => {
                 sectionNumber: 1,
                 term: "SP",
                 year: 2023,
-                half: "",
+                half: null,
             } as APIv4.SectionIdentifier,
         );
 
@@ -107,7 +107,7 @@ describe("parseCXSectionIdentifier", () => {
                 sectionNumber: 30,
                 term: "FA",
                 year: 2020,
-                half: "",
+                half: null,
             } as APIv4.SectionIdentifier,
         );
     });
@@ -123,7 +123,10 @@ describe("parseCXSectionIdentifier", () => {
             sectionNumber: 1,
             term: "SP",
             year: 2023,
-            half: "P1",
+            half: {
+                prefix: "P",
+                number: 1,
+            },
         } as APIv4.SectionIdentifier);
 
         expect(
@@ -136,7 +139,10 @@ describe("parseCXSectionIdentifier", () => {
             sectionNumber: 1,
             term: "SU",
             year: 2020,
-            half: "S1",
+            half: {
+                prefix: "S",
+                number: 1,
+            },
         } as APIv4.SectionIdentifier);
 
         expect(
@@ -149,7 +155,10 @@ describe("parseCXSectionIdentifier", () => {
             sectionNumber: 1,
             term: "SU",
             year: 2020,
-            half: "S5",
+            half: {
+                prefix: "S",
+                number: 5,
+            },
         } as APIv4.SectionIdentifier);
     });
 });
@@ -228,7 +237,10 @@ describe("course code serialization", () => {
                 sectionNumber: 1,
                 term: "SU",
                 year: 2020,
-                half: "S1",
+                half: {
+                    prefix: "S",
+                    number: 1,
+                },
             } as APIv4.SectionIdentifier),
         ).toStrictEqual("AMST 120 HM-01");
 
@@ -241,7 +253,10 @@ describe("course code serialization", () => {
                 sectionNumber: 1,
                 term: "SP",
                 year: 2023,
-                half: "P1",
+                half: {
+                    prefix: "P",
+                    number: 1,
+                },
             } as APIv4.SectionIdentifier),
         ).toStrictEqual("MCBI 118A HM-01");
     });
@@ -256,7 +271,10 @@ describe("course code serialization", () => {
                 sectionNumber: 1,
                 term: "SU",
                 year: 2020,
-                half: "S1",
+                half: {
+                    prefix: "S",
+                    number: 1,
+                },
             } as APIv4.SectionIdentifier),
         ).toStrictEqual("AMST 120 HM-01 SU2020 S1");
 
@@ -269,7 +287,10 @@ describe("course code serialization", () => {
                 sectionNumber: 1,
                 term: "SP",
                 year: 2023,
-                half: "P1",
+                half: {
+                    prefix: "P",
+                    number: 1,
+                },
             } as APIv4.SectionIdentifier),
         ).toStrictEqual("MCBI 118A HM-01 SP2023 P1");
 
@@ -282,7 +303,7 @@ describe("course code serialization", () => {
                 sectionNumber: 1,
                 term: "FA",
                 year: 2020,
-                half: "",
+                half: null,
             } as APIv4.SectionIdentifier),
         ).toStrictEqual("ASTR 101L PO-01 FA2020");
     });
@@ -296,7 +317,7 @@ describe("course code serialization", () => {
             sectionNumber: 1,
             term: "SP",
             year: 2023,
-            half: "",
+            half: null,
         } as APIv4.SectionIdentifier);
 
         expect(parseSectionCodeLong("ENGR 072 HM-01 SP2023 P1")).toStrictEqual({
@@ -307,7 +328,10 @@ describe("course code serialization", () => {
             sectionNumber: 1,
             term: "SP",
             year: 2023,
-            half: "P1",
+            half: {
+                prefix: "P",
+                number: 1,
+            },
         } as APIv4.SectionIdentifier);
 
         expect(() =>
