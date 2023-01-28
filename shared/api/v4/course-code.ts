@@ -76,7 +76,7 @@ export function parseCXSectionIdentifier(
     if (groups.halfPrefix !== undefined && groups.halfNumber !== undefined)
         half = {
             prefix: groups.halfPrefix,
-            number: parseInt(groups.halfNumber),
+            number: parseInt(groups.halfNumber, 10),
         };
 
     return {
@@ -197,7 +197,7 @@ export function parseSectionCodeLong(code: string): APIv4.SectionIdentifier {
     if (groups.halfPrefix !== undefined && groups.halfNumber !== undefined)
         half = {
             prefix: groups.halfPrefix,
-            number: parseInt(groups.halfNumber),
+            number: parseInt(groups.halfNumber, 10),
         };
 
     return {
