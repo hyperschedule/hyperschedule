@@ -5,7 +5,6 @@ import classNames from "classnames";
 import shallow from "zustand/shallow";
 
 import type * as Api from "hyperschedule-shared/api/v4";
-import type * as Course from "hyperschedule-shared/types/course";
 
 import { useCourses } from "@hooks/api";
 import useStore from "@hooks/store";
@@ -16,7 +15,7 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import * as Css from "./CourseSearch.module.css";
 
-function sectionKey(id: Course.SectionIdentifier) {
+function sectionKey(id: Api.SectionIdentifier) {
     return [
         id.department,
         id.courseNumber,

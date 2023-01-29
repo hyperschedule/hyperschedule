@@ -15,7 +15,12 @@
     "baseUrl": "src",
     "rootDir": "src",
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "@components/*": ["components/*"],
+      "@lib/*": ["lib/*"],
+      "@hooks/*": ["hooks/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
   "references": [{ "path": "../shared" }]
