@@ -7,15 +7,10 @@ const courseApp = new App();
 
 const validTerms: string[] = Object.values(Term);
 
-courseApp.get(
-    "/sections",
-
-    async function (request, reply) {
-        const sections = await getAllSections();
-        // server.log.info({ msg: "DB query end", reqId: request.id });
-        return reply.header("Access-Control-Allow-Origin", "*").send(sections);
-    },
-);
+courseApp.get("/sections", async function (request, reply) {
+    const sections = await getAllSections();
+    return reply.send(sections);
+});
 
 courseApp.get("/sections/:year/:term", async (request, reply) => {
     const year = parseInt(request.params.year!, 10);
@@ -29,14 +24,11 @@ courseApp.get("/sections/:year/:term", async (request, reply) => {
                 `Invalid term ${request.params.term}. Options are ${validTerms}.`,
             );
 
-    // server.log.info({ msg: "DB query start", reqId: request.id });
-
     const sections = await getAllSections({
         term,
         year,
     } as TermIdentifier);
 
-    // server.log.info({ msg: "DB query end", reqId: request.id });
     return reply.header("Access-Control-Allow-Origin", "*").send(sections);
 });
 

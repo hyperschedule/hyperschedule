@@ -17,7 +17,7 @@ describe("auth/token.ts", () => {
             // @ts-ignore forcing an iat to backdate this by a year
             iat: Math.floor(new Date().getTime() / 1000) - 365 * 24 * 60 * 60,
         });
-        expect(() => verifyUser(sig)).toThrowError(jwt.TokenExpiredError);
+        expect(() => verifyUser(sig)).toThrowError();
 
         sig = signUser({
             uuid,
@@ -33,7 +33,7 @@ describe("auth/token.ts", () => {
         });
         expect(() =>
             verifyUser(sig.slice(0, sig.length - 4) + "AAAA"),
-        ).toThrowError(jwt.JsonWebTokenError);
+        ).toThrowError();
     });
 
     test("Signature algorithm cannot be modified", () => {
@@ -56,9 +56,9 @@ describe("auth/token.ts", () => {
             .replaceAll("=", "");
         let sig = `${p1}.${p2}.AAAA`;
 
-        expect(() => verifyUser(sig)).toThrowError(jwt.JsonWebTokenError);
+        expect(() => verifyUser(sig)).toThrowError();
 
         sig = jwt.sign({ uuid }, PUBKEY, { algorithm: "HS256" });
-        expect(() => verifyUser(sig)).toThrowError(jwt.JsonWebTokenError);
+        expect(() => verifyUser(sig)).toThrowError();
     });
 });

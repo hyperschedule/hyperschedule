@@ -16,28 +16,41 @@ export function signUser(uuid: UserToken) {
     });
 }
 
+export function safeVerifyUser(
+    s: string,
+): { valid: false; reason: string } | { valid: true; token: UserToken } {
+    try {
+        const { header, payload } = jwt.verify(s, PUBKEY, {
+            algorithms: [SIGNING_ALGORITHM],
+            maxAge: TOKEN_VALIDITY,
+            complete: true,
+        });
+
+        if (
+            header.alg !== SIGNING_ALGORITHM ||
+            header.typ !== "JWT" ||
+            Object.keys(header).length !== 2
+        )
+            return { valid: false, reason: "invalid token header" };
+
+        if (typeof payload === "string")
+            return { valid: false, reason: "invalid payload" };
+        if (
+            payload.iat === undefined ||
+            payload.exp === undefined ||
+            !validate(payload.uuid) ||
+            Object.keys(payload).length !== 3
+        )
+            return { valid: false, reason: "invalid payload" };
+
+        return { valid: true, token: { uuid: payload.uuid as string } };
+    } catch (e: any) {
+        return { valid: false, reason: e.message };
+    }
+}
+
 export function verifyUser(s: string): UserToken {
-    const { header, payload } = jwt.verify(s, PUBKEY, {
-        algorithms: [SIGNING_ALGORITHM],
-        maxAge: TOKEN_VALIDITY,
-        complete: true,
-    });
-
-    if (
-        header.alg !== SIGNING_ALGORITHM ||
-        header.typ !== "JWT" ||
-        Object.keys(header).length !== 2
-    )
-        throw Error("Invalid token header");
-
-    if (typeof payload === "string") throw Error("Invalid payload");
-    if (
-        payload.iat === undefined ||
-        payload.exp === undefined ||
-        !validate(payload.uuid) ||
-        Object.keys(payload).length !== 3
-    )
-        throw Error("Invalid payload");
-
-    return { uuid: payload.uuid as string };
+    const res = safeVerifyUser(s);
+    if (res.valid) return res.token;
+    throw Error(res.reason);
 }
