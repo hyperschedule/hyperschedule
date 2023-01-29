@@ -57,33 +57,12 @@
   {
     "course_code": "AFRI003  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SRP",
-      "5SRX",
-      "5WRI",
-      "AFRI",
-      "EA"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUL", "5SJT", "5SRP", "5SRX", "5WRI", "AFRI", "EA"]
   },
   {
     "course_code": "AFRI009  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5SJT",
-      "5SRP",
-      "5SRX",
-      "5WRI",
-      "AFRI",
-      "AGFS",
-      "ENGL",
-      "GFS"
-    ]
+    "course_areas": ["1A3", "5HUM", "5SJT", "5SRP", "5SRX", "5WRI", "AFRI", "AGFS", "ENGL", "GFS"]
   },
   {
     "course_code": "AFRI010A AF",
@@ -143,16 +122,7 @@
   {
     "course_code": "AFRI120  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1SIR",
-      "2LT",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SRX",
-      "AFRI"
-    ]
+    "course_areas": ["1A3", "1SIR", "2LT", "5HUM", "5IUL", "5SJT", "5SRX", "AFRI"]
   },
   {
     "course_code": "AFRI121  AF",
@@ -187,16 +157,7 @@
   {
     "course_code": "AFRI132  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUL",
-      "5WRI",
-      "AFRI",
-      "AGFS",
-      "ENGL",
-      "GFS"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUL", "5WRI", "AFRI", "AGFS", "ENGL", "GFS"]
   },
   {
     "course_code": "AFRI134  PO",
@@ -211,19 +172,7 @@
   {
     "course_code": "AFRI144A AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "AFRI", "AGFS", "AMST", "ARHI", "FGSS", "GWFS", "GWS", "MS"]
   },
   {
     "course_code": "AFRI149  AF",
@@ -563,16 +512,7 @@
   {
     "course_code": "ANTH003  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "ANTH",
-      "COGS",
-      "LGCS"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5IUL", "5SOC", "ANTH", "COGS", "LGCS"]
   },
   {
     "course_code": "ANTH004  PZ",
@@ -582,51 +522,17 @@
   {
     "course_code": "ANTH009  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "5HUM",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "ANTH",
-      "ASIA",
-      "CGS",
-      "EA",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A2", "2SS", "2WS", "5HUM", "5SJT", "5SOC", "AGFS", "ANTH", "ASIA", "CGS", "EA", "GFS", "GWFS"]
   },
   {
     "course_code": "ANTH010  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST",
-      "INDG"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "HIST", "INDG"]
   },
   {
     "course_code": "ANTH011  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST",
-      "INDG"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "HIST", "INDG"]
   },
   {
     "course_code": "ANTH012  PZ",
@@ -636,16 +542,7 @@
   {
     "course_code": "ANTH016  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "ASIA",
-      "CGS"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5SJT", "5SOC", "ANTH", "ASIA", "CGS"]
   },
   {
     "course_code": "ANTH020  PZ",
@@ -765,18 +662,7 @@
   {
     "course_code": "ANTH050  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "5SOC",
-      "AGFS",
-      "ANTH",
-      "CGS",
-      "GFS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A2", "2SS", "2WS", "5SOC", "AGFS", "ANTH", "CGS", "GFS", "GWFS", "GWS"]
   },
   {
     "course_code": "ANTH051  PZ",
@@ -896,19 +782,7 @@
   {
     "course_code": "ANTH087  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "ANTH",
-      "FGSS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A2", "2RES", "2SS", "2WS", "AGFS", "AMST", "ANTH", "FGSS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "ANTH088  PZ",
@@ -959,18 +833,7 @@
   {
     "course_code": "ANTH098  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5IUL", "5SJT", "5SOC", "ANTH", "HIST", "MENA", "MES"]
   },
   {
     "course_code": "ANTH099  PZ",
@@ -1105,17 +968,7 @@
   {
     "course_code": "ANTH112  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5SOC",
-      "5SRP",
-      "5SRX",
-      "ANTH",
-      "EA",
-      "HIST",
-      "STS"
-    ]
+    "course_areas": ["1A2", "2SS", "5SOC", "5SRP", "5SRX", "ANTH", "EA", "HIST", "STS"]
   },
   {
     "course_code": "ANTH113  PZ",
@@ -1245,18 +1098,7 @@
   {
     "course_code": "ANTH130  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "ANTH",
-      "ASIA",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A2", "2SS", "2WS", "ANTH", "ASIA", "FGSS", "GWFS", "GWS", "MENA", "MES"]
   },
   {
     "course_code": "ANTH130  PZ",
@@ -1461,18 +1303,7 @@
   {
     "course_code": "ANTH171  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "ANTH",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A2", "2SS", "2WS", "ANTH", "FGSS", "GWFS", "GWS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "ANTH178  PZ",
@@ -1932,16 +1763,7 @@
   {
     "course_code": "ARHI137  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "5HUM",
-      "5IUL",
-      "AMST",
-      "ARHI",
-      "INDG"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "5HUM", "5IUL", "AMST", "ARHI", "INDG"]
   },
   {
     "course_code": "ARHI138  PZ",
@@ -1981,20 +1803,7 @@
   {
     "course_code": "ARHI144B PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MS"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "AFRI", "AGFS", "AMST", "ARHI", "FGSS", "GWFS", "GWS", "MS"]
   },
   {
     "course_code": "ARHI144C PO",
@@ -2069,17 +1878,7 @@
   {
     "course_code": "ARHI169  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "5HUM",
-      "ARHI",
-      "ASIA",
-      "HIST",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A1", "2LT", "5HUM", "ARHI", "ASIA", "HIST", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "ARHI171  PO",
@@ -2134,20 +1933,7 @@
   {
     "course_code": "ARHI178  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MS"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "AFRI", "AGFS", "AMST", "ARHI", "FGSS", "GWFS", "GWS", "MS"]
   },
   {
     "course_code": "ARHI179  HM",
@@ -2217,17 +2003,7 @@
   {
     "course_code": "ARHI184  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1ADR",
-      "1DDP",
-      "1P5",
-      "2LT",
-      "2RES",
-      "AMST",
-      "ARHI",
-      "MS"
-    ]
+    "course_areas": ["1A1", "1ADR", "1DDP", "1P5", "2LT", "2RES", "AMST", "ARHI", "MS"]
   },
   {
     "course_code": "ARHI184  SC",
@@ -2287,21 +2063,7 @@
   {
     "course_code": "ARHI186G PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P5",
-      "1SIR",
-      "1WIR",
-      "2LT",
-      "2WS",
-      "5IUG",
-      "AGFS",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAMS"
-    ]
+    "course_areas": ["1A1", "1P5", "1SIR", "1WIR", "2LT", "2WS", "5IUG", "AGFS", "ARHI", "FGSS", "GWFS", "GWS", "LAMS"]
   },
   {
     "course_code": "ARHI186H SC",
@@ -2321,20 +2083,7 @@
   {
     "course_code": "ARHI186L PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MS"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "AFRI", "AGFS", "AMST", "ARHI", "FGSS", "GWFS", "GWS", "MS"]
   },
   {
     "course_code": "ARHI186L SC",
@@ -2359,17 +2108,7 @@
   {
     "course_code": "ARHI186P PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1DDP",
-      "1P5",
-      "2WS",
-      "AMST",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1DDP", "1P5", "2WS", "AMST", "ARHI", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ARHI186Q PO",
@@ -2379,34 +2118,12 @@
   {
     "course_code": "ARHI186T PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "ARHI",
-      "HIST"
-    ]
+    "course_areas": ["1A1", "2LT", "5HUM", "5IUG", "5IUL", "5SJT", "ARHI", "HIST"]
   },
   {
     "course_code": "ARHI186W PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MS"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "AFRI", "AGFS", "AMST", "ARHI", "FGSS", "GWFS", "GWS", "MS"]
   },
   {
     "course_code": "ARHI186Y PO",
@@ -2436,16 +2153,7 @@
   {
     "course_code": "ARHI189  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2FYA",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "ARHI",
-      "EURO",
-      "FGSS"
-    ]
+    "course_areas": ["1A1", "2FYA", "2LT", "2WS", "AGFS", "ARHI", "EURO", "FGSS"]
   },
   {
     "course_code": "ARHI189L PO",
@@ -3510,33 +3218,12 @@
   {
     "course_code": "ASAM056  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"]
   },
   {
     "course_code": "ASAM063  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "ASAM", "CHLT", "CHST"]
   },
   {
     "course_code": "ASAM077  PZ",
@@ -3556,16 +3243,7 @@
   {
     "course_code": "ASAM084  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5SJT",
-      "5SOC",
-      "5SRP",
-      "5SRX",
-      "ASAM",
-      "ONT",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "5SJT", "5SOC", "5SRP", "5SRX", "ASAM", "ONT", "SOC"]
   },
   {
     "course_code": "ASAM085  PZ",
@@ -3655,20 +3333,7 @@
   {
     "course_code": "ASAM105  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "5SRP",
-      "5SRX",
-      "AGFS",
-      "AMST",
-      "ASAM",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5HUM", "5SOC", "5SRP", "5SRX", "AGFS", "AMST", "ASAM", "GFS", "GWFS"]
   },
   {
     "course_code": "ASAM105B PZ",
@@ -3693,16 +3358,7 @@
   {
     "course_code": "ASAM110  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "AMST",
-      "ASAM"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUL", "5SJT", "5SOC", "5SRX", "AMST", "ASAM"]
   },
   {
     "course_code": "ASAM111  AA",
@@ -3732,18 +3388,7 @@
   {
     "course_code": "ASAM120  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "5SRP",
-      "AGFS",
-      "AMST",
-      "ASAM"
-    ]
+    "course_areas": ["1A3", "2WS", "5HUM", "5IUG", "5SJT", "5SOC", "5SRP", "AGFS", "AMST", "ASAM"]
   },
   {
     "course_code": "ASAM122  PZ",
@@ -3753,30 +3398,12 @@
   {
     "course_code": "ASAM125  AA",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "4HSA",
-      "5IUL",
-      "5SJT",
-      "AMST",
-      "ASAM",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2RES", "4HSA", "5IUL", "5SJT", "AMST", "ASAM", "HIST"]
   },
   {
     "course_code": "ASAM125  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1P8",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SRP",
-      "AMST",
-      "ASAM"
-    ]
+    "course_areas": ["1A3", "1P8", "5HUM", "5IUL", "5SJT", "5SRP", "AMST", "ASAM"]
   },
   {
     "course_code": "ASAM126  HM",
@@ -3791,18 +3418,7 @@
   {
     "course_code": "ASAM130  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRP",
-      "5SRX",
-      "AMST",
-      "ASAM",
-      "STS"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUL", "5SJT", "5SOC", "5SRP", "5SRX", "AMST", "ASAM", "STS"]
   },
   {
     "course_code": "ASAM134  AA",
@@ -3812,16 +3428,7 @@
   {
     "course_code": "ASAM135  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUL",
-      "5SOC",
-      "5SRP",
-      "5SRX",
-      "AMST",
-      "ASAM"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUL", "5SOC", "5SRP", "5SRX", "AMST", "ASAM"]
   },
   {
     "course_code": "ASAM135B PZ",
@@ -3876,44 +3483,17 @@
   {
     "course_code": "ASAM156  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT"
-    ]
+    "course_areas": ["5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT"]
   },
   {
     "course_code": "ASAM160  AA",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "ASAM",
-      "FGSS"
-    ]
+    "course_areas": ["1A3", "2FYA", "2RES", "2WS", "AGFS", "AMST", "ASAM", "FGSS"]
   },
   {
     "course_code": "ASAM160  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "ASAM"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5IUL", "5SJT", "5SOC", "AGFS", "ASAM"]
   },
   {
     "course_code": "ASAM171  PZ",
@@ -4388,20 +3968,7 @@
   {
     "course_code": "BIOL002A PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A4",
-      "1ADR",
-      "1P7",
-      "2NS",
-      "2WS",
-      "3SCI",
-      "5NAT",
-      "AGFS",
-      "BIOL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A4", "1ADR", "1P7", "2NS", "2WS", "3SCI", "5NAT", "AGFS", "BIOL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "BIOL002ALPO",
@@ -5266,17 +4833,7 @@
   {
     "course_code": "BIOL175  KS",
     "catalog": "UG22",
-    "course_areas": [
-      "1A5",
-      "2MTH",
-      "5NAT",
-      "5QUA",
-      "BIOL",
-      "DSCI",
-      "EA",
-      "NEUR",
-      "SCPB"
-    ]
+    "course_areas": ["1A5", "2MTH", "5NAT", "5QUA", "BIOL", "DSCI", "EA", "NEUR", "SCPB"]
   },
   {
     "course_code": "BIOL176  KS",
@@ -5681,35 +5238,12 @@
   {
     "course_code": "CASA101  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "AMST",
-      "CASA",
-      "CGS",
-      "EA",
-      "ONT",
-      "ORST",
-      "SOC"
-    ]
+    "course_areas": ["5IUL", "5SJT", "5SOC", "5SRX", "AMST", "CASA", "CGS", "EA", "ONT", "ORST", "SOC"]
   },
   {
     "course_code": "CASA105  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5IUL",
-      "5SJT",
-      "5SRX",
-      "AMST",
-      "CASA",
-      "CGS",
-      "EA",
-      "ONT",
-      "ORST",
-      "SOC"
-    ]
+    "course_areas": ["5IUL", "5SJT", "5SRX", "AMST", "CASA", "CGS", "EA", "ONT", "ORST", "SOC"]
   },
   {
     "course_code": "CASA170  PZ",
@@ -5844,17 +5378,7 @@
   {
     "course_code": "CGS 060  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "CGS",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["2WS", "5HUM", "5IUG", "5SJT", "5SOC", "AGFS", "CGS", "GFS", "GWFS"]
   },
   {
     "course_code": "CGS 067  PZ",
@@ -5869,17 +5393,7 @@
   {
     "course_code": "CGS 075  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2WS",
-      "5HUM",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "ASIA",
-      "CGS",
-      "GFS",
-      "RLST"
-    ]
+    "course_areas": ["2WS", "5HUM", "5SJT", "5SOC", "AGFS", "ASIA", "CGS", "GFS", "RLST"]
   },
   {
     "course_code": "CGS 080  PZ",
@@ -6904,65 +6418,22 @@
   {
     "course_code": "CHLT040  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "CHLT",
-      "CHST",
-      "INSO"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUL", "5SJT", "5SOC", "CHLT", "CHST", "INSO"]
   },
   {
     "course_code": "CHLT055  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "CHLT",
-      "CHST"
-    ]
+    "course_areas": ["5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "5SRX", "CHLT", "CHST"]
   },
   {
     "course_code": "CHLT056  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"]
   },
   {
     "course_code": "CHLT060  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "GWFS",
-      "GWS",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5HUM", "5SJT", "5SOC", "AGFS", "CHLT", "CHST", "GFS", "GWFS", "GWS", "SOC"]
   },
   {
     "course_code": "CHLT060  PZ",
@@ -6972,18 +6443,7 @@
   {
     "course_code": "CHLT061  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "AGFS",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5HUM", "5SOC", "AGFS", "CHLT", "CHST", "GFS", "GWFS"]
   },
   {
     "course_code": "CHLT062  CH",
@@ -6993,30 +6453,12 @@
   {
     "course_code": "CHLT063  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ]
+    "course_areas": ["5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "ASAM", "CHLT", "CHST"]
   },
   {
     "course_code": "CHLT067  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "ART",
-      "CHLT",
-      "CHST",
-      "INSO"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUL", "5SJT", "ART", "CHLT", "CHST", "INSO"]
   },
   {
     "course_code": "CHLT068  CH",
@@ -7026,50 +6468,17 @@
   {
     "course_code": "CHLT072  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SRX",
-      "AMST",
-      "CGS",
-      "CHLT",
-      "CHST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "5SRX", "AMST", "CGS", "CHLT", "CHST", "HIST"]
   },
   {
     "course_code": "CHLT079  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "5HUM",
-      "5WRI",
-      "CHLT",
-      "GFS",
-      "GWFS",
-      "GWS",
-      "HIST",
-      "IIS"
-    ]
+    "course_areas": ["1A3", "2WS", "5HUM", "5WRI", "CHLT", "GFS", "GWFS", "GWS", "HIST", "IIS"]
   },
   {
     "course_code": "CHLT081  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "2WS",
-      "5HUM",
-      "5IUL",
-      "5SOC",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "SOC",
-      "STS"
-    ]
+    "course_areas": ["2WS", "5HUM", "5IUL", "5SOC", "CHLT", "CHST", "GFS", "SOC", "STS"]
   },
   {
     "course_code": "CHLT082  PZ",
@@ -7116,20 +6525,7 @@
   {
     "course_code": "CHLT110  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SRP",
-      "5SRX",
-      "AGFS",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "2WS", "5IUG", "5IUL", "5SJT", "5SRP", "5SRX", "AGFS", "CHLT", "CHST", "GFS", "SOC"]
   },
   {
     "course_code": "CHLT112  CH",
@@ -7160,16 +6556,7 @@
   {
     "course_code": "CHLT116  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5WRI",
-      "CHLT",
-      "CHST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUG", "5SJT", "5WRI", "CHLT", "CHST", "HIST"]
   },
   {
     "course_code": "CHLT120  CH",
@@ -7179,182 +6566,57 @@
   {
     "course_code": "CHLT148  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SRX",
-      "5WRI",
-      "AMST",
-      "CGS",
-      "CHLT",
-      "CHST",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["5HUM", "5IUG", "5IUL", "5SJT", "5SRX", "5WRI", "AMST", "CGS", "CHLT", "CHST", "HIST", "LAST"]
   },
   {
     "course_code": "CHLT153  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "CHLT",
-      "CHST",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "2RES", "5IUL", "5SJT", "5SOC", "5SRX", "CHLT", "CHST", "SOC"]
   },
   {
     "course_code": "CHLT153  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRP",
-      "5SRX",
-      "CHLT",
-      "CHST",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "5IUL", "5SJT", "5SOC", "5SRP", "5SRX", "CHLT", "CHST", "SOC"]
   },
   {
     "course_code": "CHLT154  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5SJT",
-      "5SOC",
-      "5SRP",
-      "AGFS",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "GWFS",
-      "GWS",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5SJT", "5SOC", "5SRP", "AGFS", "CHLT", "CHST", "GFS", "GWFS", "GWS", "SOC"]
   },
   {
     "course_code": "CHLT155  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "CHLT",
-      "CHST",
-      "FGSS",
-      "GFS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5HUM", "5SOC", "CHLT", "CHST", "FGSS", "GFS", "GWFS", "GWS"]
   },
   {
     "course_code": "CHLT155  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ]
+    "course_areas": ["5HUM", "5IUG", "5IUL", "5SJT", "AMST", "ASAM", "CHLT", "CHST"]
   },
   {
     "course_code": "CHLT156  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ]
+    "course_areas": ["5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"]
   },
   {
     "course_code": "CHLT157  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "GWFS",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5IUL", "5SJT", "5SOC", "AGFS", "CHLT", "CHST", "GFS", "GWFS", "SOC"]
   },
   {
     "course_code": "CHLT160  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "AMST",
-      "CHLT",
-      "CHST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "5SRX", "AMST", "CHLT", "CHST", "LAST"]
   },
   {
     "course_code": "CHLT166  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "5HUM",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "CHLT",
-      "CHST",
-      "GFS"
-    ]
+    "course_areas": ["1A3", "2WS", "5HUM", "5SJT", "5SOC", "AGFS", "CHLT", "CHST", "GFS"]
   },
   {
     "course_code": "CHLT170  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SRX",
-      "AMST",
-      "CHLT",
-      "CHST",
-      "EA",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "5SRX", "AMST", "CHLT", "CHST", "EA", "LAST"]
   },
   {
     "course_code": "CHLT171  PZ",
@@ -7374,16 +6636,7 @@
   {
     "course_code": "CHNT164  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P1",
-      "1WIR",
-      "ALNT",
-      "ASIA",
-      "CHNT",
-      "CLIT",
-      "FLNT"
-    ]
+    "course_areas": ["1A1", "1P1", "1WIR", "ALNT", "ASIA", "CHNT", "CLIT", "FLNT"]
   },
   {
     "course_code": "CHNT166  PO",
@@ -7393,16 +6646,7 @@
   {
     "course_code": "CHNT167  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P1",
-      "2LT",
-      "ALNT",
-      "ASIA",
-      "CHNT",
-      "CLIT",
-      "FLNT"
-    ]
+    "course_areas": ["1A1", "1P1", "2LT", "ALNT", "ASIA", "CHNT", "CLIT", "FLNT"]
   },
   {
     "course_code": "CHNT168  PO",
@@ -7457,32 +6701,12 @@
   {
     "course_code": "CHST064  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FA",
-      "2FYA",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "CHST",
-      "MUS"
-    ]
+    "course_areas": ["1A3", "2FA", "2FYA", "2RES", "2WS", "AGFS", "AMST", "CHST", "MUS"]
   },
   {
     "course_code": "CHST066  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FA",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "CHST",
-      "LAST",
-      "MUS"
-    ]
+    "course_areas": ["1A3", "2FA", "2RES", "2WS", "AGFS", "AMST", "CHST", "LAST", "MUS"]
   },
   {
     "course_code": "CHST067  CH",
@@ -7497,17 +6721,7 @@
   {
     "course_code": "CHST077  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "CHST",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "AGFS", "AMST", "CHST", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "CHST079  CH",
@@ -7532,16 +6746,7 @@
   {
     "course_code": "CHST126B CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2RES",
-      "AMST",
-      "CHST",
-      "LAST",
-      "SPAN",
-      "SPNT"
-    ]
+    "course_areas": ["1A3", "2LT", "2RES", "AMST", "CHST", "LAST", "SPAN", "SPNT"]
   },
   {
     "course_code": "CHST128  CH",
@@ -7676,16 +6881,7 @@
   {
     "course_code": "CLAS012  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2FA",
-      "2FYA",
-      "2LT",
-      "5HUM",
-      "CLAS",
-      "HMSC",
-      "THEA"
-    ]
+    "course_areas": ["1A1", "2FA", "2FYA", "2LT", "5HUM", "CLAS", "HMSC", "THEA"]
   },
   {
     "course_code": "CLAS014  PO",
@@ -7735,17 +6931,7 @@
   {
     "course_code": "CLAS022  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1SIR",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "CLAS",
-      "ENGL",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1SIR", "2LT", "2WS", "AGFS", "CLAS", "ENGL", "GWFS", "GWS"]
   },
   {
     "course_code": "CLAS032  PZ",
@@ -7805,18 +6991,7 @@
   {
     "course_code": "CLAS113  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1SIR",
-      "2FYA",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "CLAS",
-      "GWFS",
-      "GWS",
-      "HIST"
-    ]
+    "course_areas": ["1A1", "1SIR", "2FYA", "2LT", "2WS", "AGFS", "CLAS", "GWFS", "GWS", "HIST"]
   },
   {
     "course_code": "CLAS113  SC",
@@ -7871,16 +7046,7 @@
   {
     "course_code": "CLAS121  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "5HUM",
-      "5SOC",
-      "ANTH",
-      "CLAS",
-      "LAMS",
-      "RLST"
-    ]
+    "course_areas": ["1A1", "2LT", "5HUM", "5SOC", "ANTH", "CLAS", "LAMS", "RLST"]
   },
   {
     "course_code": "CLAS121  SC",
@@ -7965,30 +7131,12 @@
   {
     "course_code": "CLAS162  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2FYA",
-      "2LT",
-      "5HUM",
-      "5IUG",
-      "ANTH",
-      "ARHI",
-      "CLAS"
-    ]
+    "course_areas": ["1A1", "2FYA", "2LT", "5HUM", "5IUG", "ANTH", "ARHI", "CLAS"]
   },
   {
     "course_code": "CLAS164  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2FYA",
-      "2LT",
-      "5HUM",
-      "ANTH",
-      "ARHI",
-      "CLAS",
-      "HIST",
-      "LAMS"
-    ]
+    "course_areas": ["2FYA", "2LT", "5HUM", "ANTH", "ARHI", "CLAS", "HIST", "LAMS"]
   },
   {
     "course_code": "CLAS164  SC",
@@ -7998,16 +7146,7 @@
   {
     "course_code": "CLAS175  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2LT",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "ANTH",
-      "ARHI",
-      "CLAS",
-      "EA"
-    ]
+    "course_areas": ["2LT", "5HUM", "5IUG", "5SJT", "ANTH", "ARHI", "CLAS", "EA"]
   },
   {
     "course_code": "CLAS181B CM",
@@ -9472,20 +8611,7 @@
   {
     "course_code": "DANC135  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1DDP",
-      "1WIR",
-      "2FA",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "DANC",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MES"
-    ]
+    "course_areas": ["1A1", "1DDP", "1WIR", "2FA", "2RES", "2WS", "AGFS", "DANC", "FGSS", "GWFS", "GWS", "MES"]
   },
   {
     "course_code": "DANC135  SC",
@@ -10275,18 +9401,7 @@
   {
     "course_code": "EA  162  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2WS",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "CGS",
-      "EA",
-      "GFS",
-      "STS"
-    ]
+    "course_areas": ["1A2", "2WS", "5IUG", "5SJT", "5SOC", "AGFS", "CGS", "EA", "GFS", "STS"]
   },
   {
     "course_code": "EA  163  PZ",
@@ -10691,16 +9806,7 @@
   {
     "course_code": "ECON109  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "3E2",
-      "3ETH",
-      "3HHR",
-      "3PPO",
-      "3PPS",
-      "ECON",
-      "LEAD"
-    ]
+    "course_areas": ["1A2", "3E2", "3ETH", "3HHR", "3PPO", "3PPS", "ECON", "LEAD"]
   },
   {
     "course_code": "ECON110  PZ",
@@ -10740,16 +9846,7 @@
   {
     "course_code": "ECON116  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "1DDP",
-      "1P9",
-      "2RES",
-      "AMST",
-      "BLCK",
-      "ECON"
-    ]
+    "course_areas": ["1A2", "1ADR", "1DDP", "1P9", "2RES", "AMST", "BLCK", "ECON"]
   },
   {
     "course_code": "ECON116  PZ",
@@ -10784,16 +9881,7 @@
   {
     "course_code": "ECON120  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A5",
-      "2MTH",
-      "3E1",
-      "3PPO",
-      "3PPS",
-      "5QUA",
-      "DSCI",
-      "ECON"
-    ]
+    "course_areas": ["1A5", "2MTH", "3E1", "3PPO", "3PPS", "5QUA", "DSCI", "ECON"]
   },
   {
     "course_code": "ECON120  PO",
@@ -10818,17 +9906,7 @@
   {
     "course_code": "ECON121  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "1DDP",
-      "2WS",
-      "AGFS",
-      "ECON",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A2", "1ADR", "1DDP", "2WS", "AGFS", "ECON", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ECON121  PZ",
@@ -11328,16 +10406,7 @@
   {
     "course_code": "ECON167  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "3E2",
-      "3HHR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "ECON",
-      "LGST"
-    ]
+    "course_areas": ["1A2", "3E2", "3HHR", "3PPB", "3PPO", "3PPS", "ECON", "LGST"]
   },
   {
     "course_code": "ECON167  PO",
@@ -11412,16 +10481,7 @@
   {
     "course_code": "ECON175  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "3E2",
-      "3HHR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "DSCI",
-      "ECON"
-    ]
+    "course_areas": ["1A2", "3E2", "3HHR", "3PPB", "3PPO", "3PPS", "DSCI", "ECON"]
   },
   {
     "course_code": "ECON175  PZ",
@@ -11981,18 +11041,7 @@
   {
     "course_code": "ENGL003  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SRP",
-      "5SRX",
-      "5WRI",
-      "EA",
-      "ENGL"
-    ]
+    "course_areas": ["1A1", "2LT", "5HUM", "5IUL", "5SJT", "5SRP", "5SRX", "5WRI", "EA", "ENGL"]
   },
   {
     "course_code": "ENGL006  PZ",
@@ -12002,32 +11051,12 @@
   {
     "course_code": "ENGL009  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "5HUM",
-      "5SRP",
-      "5WRI",
-      "AFRI",
-      "AGFS",
-      "ENGL",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A1", "2LT", "5HUM", "5SRP", "5WRI", "AFRI", "AGFS", "ENGL", "GFS", "GWFS"]
   },
   {
     "course_code": "ENGL009  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "5HUM",
-      "5SRP",
-      "AFRI",
-      "AGFS",
-      "ENGL"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "5HUM", "5SRP", "AFRI", "AGFS", "ENGL"]
   },
   {
     "course_code": "ENGL010  PO",
@@ -12052,19 +11081,7 @@
   {
     "course_code": "ENGL012  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5WRI",
-      "AFRI",
-      "AGFS",
-      "ENGL"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "5HUM", "5IUL", "5SJT", "5WRI", "AFRI", "AGFS", "ENGL"]
   },
   {
     "course_code": "ENGL012  BK",
@@ -12074,34 +11091,12 @@
   {
     "course_code": "ENGL012A AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5WRI",
-      "AFRI",
-      "ENGL"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "5HUM", "5IUL", "5SJT", "5WRI", "AFRI", "ENGL"]
   },
   {
     "course_code": "ENGL012B AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5IUL",
-      "5WRI",
-      "AFRI",
-      "AMST",
-      "ENGL",
-      "ORST"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "5HUM", "5IUL", "5WRI", "AFRI", "AMST", "ENGL", "ORST"]
   },
   {
     "course_code": "ENGL014  PZ",
@@ -12231,17 +11226,7 @@
   {
     "course_code": "ENGL044  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AMST",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "AMST", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL044  PZ",
@@ -12321,18 +11306,7 @@
   {
     "course_code": "ENGL056  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P9",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AMST",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1P9", "2LT", "2RES", "2WS", "AMST", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL057  PO",
@@ -12447,17 +11421,7 @@
   {
     "course_code": "ENGL074  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "5HUM",
-      "5WRI",
-      "AMST",
-      "ENGL",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "5HUM", "5WRI", "AMST", "ENGL", "GFS", "GWFS"]
   },
   {
     "course_code": "ENGL075  PO",
@@ -12692,17 +11656,7 @@
   {
     "course_code": "ENGL106  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1ADR",
-      "2LT",
-      "2WS",
-      "AMST",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1ADR", "2LT", "2WS", "AMST", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL107  PO",
@@ -12857,17 +11811,7 @@
   {
     "course_code": "ENGL122  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "AFRI", "AGFS", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL122  PZ",
@@ -12897,17 +11841,7 @@
   {
     "course_code": "ENGL124  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "AFRI", "AGFS", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL124  PZ",
@@ -12927,17 +11861,7 @@
   {
     "course_code": "ENGL125C AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "5IUL",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "2WS", "5IUL", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL125C BK",
@@ -12967,18 +11891,7 @@
   {
     "course_code": "ENGL128  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2WS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5WRI",
-      "AGFS",
-      "ENGL",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A1", "2WS", "5HUM", "5IUL", "5SJT", "5WRI", "AGFS", "ENGL", "GFS", "GWFS"]
   },
   {
     "course_code": "ENGL129  PO",
@@ -13083,19 +11996,7 @@
   {
     "course_code": "ENGL140  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P1",
-      "2LT",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1P1", "2LT", "2WS", "AFRI", "AGFS", "AMST", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL140  PZ",
@@ -13240,16 +12141,7 @@
   {
     "course_code": "ENGL154  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "5HUM",
-      "5SOC",
-      "5SRP",
-      "5WRI",
-      "ENGL"
-    ]
+    "course_areas": ["1A1", "2LT", "2RES", "5HUM", "5SOC", "5SRP", "5WRI", "ENGL"]
   },
   {
     "course_code": "ENGL154  PO",
@@ -13399,16 +12291,7 @@
   {
     "course_code": "ENGL167C CH",
     "catalog": "UG22",
-    "course_areas": [
-      "2LT",
-      "2RES",
-      "AGFS",
-      "AMST",
-      "CHST",
-      "ENGL",
-      "FGSS",
-      "SPNT"
-    ]
+    "course_areas": ["2LT", "2RES", "AGFS", "AMST", "CHST", "ENGL", "FGSS", "SPNT"]
   },
   {
     "course_code": "ENGL167D CH",
@@ -13483,21 +12366,7 @@
   {
     "course_code": "ENGL170J PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "BLCK",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1P1", "2LT", "2RES", "2WS", "AFRI", "AGFS", "AMST", "BLCK", "ENGL", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "ENGL170K PO",
@@ -13542,17 +12411,7 @@
   {
     "course_code": "ENGL171  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "5HUM",
-      "5WRI",
-      "AMST",
-      "ENGL",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "5HUM", "5WRI", "AMST", "ENGL", "GFS", "GWFS"]
   },
   {
     "course_code": "ENGL171S SC",
@@ -13657,16 +12516,7 @@
   {
     "course_code": "ENGL184  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5WRI",
-      "ENGL"
-    ]
+    "course_areas": ["1A1", "2LT", "5HUM", "5IUG", "5IUL", "5SJT", "5WRI", "ENGL"]
   },
   {
     "course_code": "ENGL184  SC",
@@ -14516,16 +13366,7 @@
   {
     "course_code": "FGSS026  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2RES",
-      "2WS",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "FGSS"
-    ]
+    "course_areas": ["1A3", "2FYA", "2RES", "2WS", "5IUG", "5SJT", "AGFS", "FGSS"]
   },
   {
     "course_code": "FGSS036  SC",
@@ -14645,16 +13486,7 @@
   {
     "course_code": "FGSS192  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "AMST",
-      "FGSS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5IUG", "5SJT", "AGFS", "AMST", "FGSS"]
   },
   {
     "course_code": "FGSS193  SC",
@@ -14989,17 +13821,7 @@
   {
     "course_code": "FREN124  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "EURO",
-      "FREN",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2WS", "AGFS", "ALAN", "EURO", "FREN", "GWS"]
   },
   {
     "course_code": "FREN125  SC",
@@ -15084,33 +13906,12 @@
   {
     "course_code": "FREN151  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P1",
-      "2WS",
-      "ALAN",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "1P1", "2WS", "ALAN", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN152  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P1",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "1P1", "2WS", "AGFS", "ALAN", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN156  SC",
@@ -15120,17 +13921,7 @@
   {
     "course_code": "FREN160  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2WS", "AGFS", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN161  PZ",
@@ -15145,67 +13936,22 @@
   {
     "course_code": "FREN173  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P8",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "1P8", "2WS", "AGFS", "ALAN", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN173  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "EURO",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2WS", "EURO", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN174  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1DDP",
-      "1FL",
-      "1P1",
-      "1WIR",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1DDP", "1FL", "1P1", "1WIR", "2WS", "AGFS", "ALAN", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN175  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P8",
-      "1WIR",
-      "2WS",
-      "ALAN",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "1P8", "1WIR", "2WS", "ALAN", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN178  PO",
@@ -15215,17 +13961,7 @@
   {
     "course_code": "FREN179  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "ALAN",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2WS", "ALAN", "FGSS", "FREN", "GWFS", "GWS"]
   },
   {
     "course_code": "FREN182  PO",
@@ -15900,18 +14636,7 @@
   {
     "course_code": "GERM146  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P1",
-      "2LT",
-      "2WS",
-      "EURO",
-      "FGSS",
-      "GERM",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "1P1", "2LT", "2WS", "EURO", "FGSS", "GERM", "GWFS", "GWS"]
   },
   {
     "course_code": "GERM151  PO",
@@ -15956,18 +14681,7 @@
   {
     "course_code": "GERM164  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "EURO",
-      "FGSS",
-      "GERM",
-      "GRST",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2WS", "EURO", "FGSS", "GERM", "GRST", "GWFS", "GWS"]
   },
   {
     "course_code": "GERM164H PO",
@@ -16062,17 +14776,7 @@
   {
     "course_code": "GFS 061  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "AMST",
-      "CHST",
-      "GFS",
-      "GWFS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5HUM", "5SOC", "AMST", "CHST", "GFS", "GWFS"]
   },
   {
     "course_code": "GFS 069  PZ",
@@ -16122,19 +14826,7 @@
   {
     "course_code": "GFS 115  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "CHST",
-      "GFS",
-      "GWFS",
-      "SOC"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5HUM", "5IUL", "5SJT", "5SOC", "CHST", "GFS", "GWFS", "SOC"]
   },
   {
     "course_code": "GFS 117  PZ",
@@ -16154,19 +14846,7 @@
   {
     "course_code": "GFS 154  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "5SRP",
-      "5WRI",
-      "CHST",
-      "GFS",
-      "GWFS",
-      "IIS"
-    ]
+    "course_areas": ["1A3", "2RES", "2WS", "5HUM", "5SOC", "5SRP", "5WRI", "CHST", "GFS", "GWFS", "IIS"]
   },
   {
     "course_code": "GFS 155  CH",
@@ -16276,16 +14956,7 @@
   {
     "course_code": "GOVT065  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "DSCI",
-      "GOVT"
-    ]
+    "course_areas": ["1A2", "2SS", "3PPB", "3PPO", "3PPS", "AGPL", "DSCI", "GOVT"]
   },
   {
     "course_code": "GOVT070  CM",
@@ -16315,16 +14986,7 @@
   {
     "course_code": "GOVT097  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "ECON",
-      "GOVT"
-    ]
+    "course_areas": ["1A2", "2SS", "3PPB", "3PPO", "3PPS", "AGPL", "ECON", "GOVT"]
   },
   {
     "course_code": "GOVT100  CM",
@@ -16334,16 +14996,7 @@
   {
     "course_code": "GOVT101  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "AMST",
-      "GOVT"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3PPO", "3PPS", "AGPL", "AMST", "GOVT"]
   },
   {
     "course_code": "GOVT102  CM",
@@ -16358,19 +15011,7 @@
   {
     "course_code": "GOVT105  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3HHR",
-      "3LBR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "GOVT",
-      "LEAD"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3HHR", "3LBR", "3PPB", "3PPO", "3PPS", "AGPL", "GOVT", "LEAD"]
   },
   {
     "course_code": "GOVT106  CM",
@@ -16385,18 +15026,7 @@
   {
     "course_code": "GOVT109  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "AMST",
-      "GOVT",
-      "LGST"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3PPB", "3PPO", "3PPS", "AGPL", "AMST", "GOVT", "LGST"]
   },
   {
     "course_code": "GOVT110  CM",
@@ -16411,16 +15041,7 @@
   {
     "course_code": "GOVT111C CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "AMST",
-      "GOVT"
-    ]
+    "course_areas": ["1A2", "2SS", "3PPB", "3PPO", "3PPS", "AGPL", "AMST", "GOVT"]
   },
   {
     "course_code": "GOVT112A CM",
@@ -16435,37 +15056,12 @@
   {
     "course_code": "GOVT113  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3HHR",
-      "3LBR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "GOVT",
-      "LEAD"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3HHR", "3LBR", "3PPB", "3PPO", "3PPS", "AGPL", "GOVT", "LEAD"]
   },
   {
     "course_code": "GOVT114  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3E1",
-      "3HHR",
-      "3LBR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "GOVT",
-      "LEAD",
-      "LGST"
-    ]
+    "course_areas": ["1A2", "2SS", "3E1", "3HHR", "3LBR", "3PPB", "3PPO", "3PPS", "AGPL", "GOVT", "LEAD", "LGST"]
   },
   {
     "course_code": "GOVT115  CM",
@@ -16485,18 +15081,7 @@
   {
     "course_code": "GOVT118  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3LBR",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "EA",
-      "GOVT",
-      "IR"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3LBR", "3PPO", "3PPS", "AGPL", "EA", "GOVT", "IR"]
   },
   {
     "course_code": "GOVT119  CM",
@@ -16506,18 +15091,7 @@
   {
     "course_code": "GOVT120  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "EA",
-      "GOVT",
-      "LGST"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3PPB", "3PPO", "3PPS", "AGPL", "EA", "GOVT", "LGST"]
   },
   {
     "course_code": "GOVT120E CM",
@@ -16542,16 +15116,7 @@
   {
     "course_code": "GOVT124  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3LBR",
-      "AGPL",
-      "AMST",
-      "GOVT",
-      "LEAD"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3LBR", "AGPL", "AMST", "GOVT", "LEAD"]
   },
   {
     "course_code": "GOVT124A CM",
@@ -16566,16 +15131,7 @@
   {
     "course_code": "GOVT125  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "GOVT"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3PPB", "3PPO", "3PPS", "AGPL", "GOVT"]
   },
   {
     "course_code": "GOVT126A CM",
@@ -16605,46 +15161,17 @@
   {
     "course_code": "GOVT128C CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3ETH",
-      "3PPO",
-      "AGPL",
-      "GOVT",
-      "LEAD"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3ETH", "3PPO", "AGPL", "GOVT", "LEAD"]
   },
   {
     "course_code": "GOVT129  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3ETH",
-      "3HHR",
-      "3PPO",
-      "AGPL",
-      "AMST",
-      "GOVT",
-      "LEAD"
-    ]
+    "course_areas": ["1A2", "2SS", "3AMG", "3ETH", "3HHR", "3PPO", "AGPL", "AMST", "GOVT", "LEAD"]
   },
   {
     "course_code": "GOVT129E CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3E1",
-      "3PPB",
-      "3PPS",
-      "AGPL",
-      "GOVT",
-      "LEAD"
-    ]
+    "course_areas": ["1A2", "2SS", "3E1", "3PPB", "3PPS", "AGPL", "GOVT", "LEAD"]
   },
   {
     "course_code": "GOVT130  CM",
@@ -16664,19 +15191,7 @@
   {
     "course_code": "GOVT132E CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3E2",
-      "3HHR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "ASIA",
-      "GOVT",
-      "IR"
-    ]
+    "course_areas": ["1A2", "2SS", "3E2", "3HHR", "3PPB", "3PPO", "3PPS", "AGPL", "ASIA", "GOVT", "IR"]
   },
   {
     "course_code": "GOVT133  CM",
@@ -16741,17 +15256,7 @@
   {
     "course_code": "GOVT139  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3HHR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "GOVT",
-      "IR"
-    ]
+    "course_areas": ["1A2", "2SS", "3HHR", "3PPB", "3PPO", "3PPS", "AGPL", "GOVT", "IR"]
   },
   {
     "course_code": "GOVT140  CM",
@@ -16816,17 +15321,7 @@
   {
     "course_code": "GOVT144B CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3HHR",
-      "3LBR",
-      "AGPL",
-      "GOVT",
-      "IR",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A2", "2SS", "3HHR", "3LBR", "AGPL", "GOVT", "IR", "MENA", "MES"]
   },
   {
     "course_code": "GOVT144D CM",
@@ -16896,17 +15391,7 @@
   {
     "course_code": "GOVT153  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3HHR",
-      "AGPL",
-      "GOVT",
-      "IR",
-      "LEAD",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A2", "2SS", "3HHR", "AGPL", "GOVT", "IR", "LEAD", "MENA", "MES"]
   },
   {
     "course_code": "GOVT154  CM",
@@ -17071,16 +15556,7 @@
   {
     "course_code": "GOVT181  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "GOVT",
-      "LGST"
-    ]
+    "course_areas": ["1A2", "2SS", "3PPB", "3PPO", "3PPS", "AGPL", "GOVT", "LGST"]
   },
   {
     "course_code": "GOVT182  CM",
@@ -17110,18 +15586,7 @@
   {
     "course_code": "GOVT187  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "3HHR",
-      "AGFS",
-      "AGPL",
-      "AMST",
-      "GOVT",
-      "GWFS",
-      "LGST"
-    ]
+    "course_areas": ["1A2", "2SS", "2WS", "3HHR", "AGFS", "AGPL", "AMST", "GOVT", "GWFS", "LGST"]
   },
   {
     "course_code": "GOVT189  CM",
@@ -17131,17 +15596,7 @@
   {
     "course_code": "GOVT191  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "3AMG",
-      "3LBR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "AMST",
-      "GOVT"
-    ]
+    "course_areas": ["2SS", "3AMG", "3LBR", "3PPB", "3PPO", "3PPS", "AGPL", "AMST", "GOVT"]
   },
   {
     "course_code": "GOVT192  CM",
@@ -17266,30 +15721,12 @@
   {
     "course_code": "GRMT131  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1SIR",
-      "ALNT",
-      "FLNT",
-      "GERM",
-      "GRMT",
-      "GRST",
-      "IR"
-    ]
+    "course_areas": ["1A1", "1SIR", "ALNT", "FLNT", "GERM", "GRMT", "GRST", "IR"]
   },
   {
     "course_code": "GRMT162  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1WIR",
-      "ALNT",
-      "FLNT",
-      "GERM",
-      "GRMT",
-      "GRST",
-      "IR"
-    ]
+    "course_areas": ["1A1", "1WIR", "ALNT", "FLNT", "GERM", "GRMT", "GRST", "IR"]
   },
   {
     "course_code": "GRMT164  PO",
@@ -17309,18 +15746,7 @@
   {
     "course_code": "GRMT170  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1SIR",
-      "ALNT",
-      "AMST",
-      "CLIT",
-      "EA",
-      "FLNT",
-      "GERM",
-      "GRMT",
-      "GRST"
-    ]
+    "course_areas": ["1A1", "1SIR", "ALNT", "AMST", "CLIT", "EA", "FLNT", "GERM", "GRMT", "GRST"]
   },
   {
     "course_code": "GRMT177  SC",
@@ -17350,16 +15776,7 @@
   {
     "course_code": "GWS 026  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2WS",
-      "5SJT",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A3", "1ADR", "2WS", "5SJT", "AGFS", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "GWS 070  PO",
@@ -17379,63 +15796,22 @@
   {
     "course_code": "GWS 162  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1WIR",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "ASAM",
-      "ENGL",
-      "FGSS",
-      "GWS",
-      "INDG"
-    ]
+    "course_areas": ["1A3", "1ADR", "1WIR", "2WS", "AGFS", "AMST", "ASAM", "ENGL", "FGSS", "GWS", "INDG"]
   },
   {
     "course_code": "GWS 170  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1DDP",
-      "2WS",
-      "5IUL",
-      "AGFS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A3", "1ADR", "1DDP", "2WS", "5IUL", "AGFS", "GWFS", "GWS"]
   },
   {
     "course_code": "GWS 172  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "EA",
-      "ENGL",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A3", "1ADR", "2RES", "2WS", "AGFS", "AMST", "EA", "ENGL", "GWFS", "GWS"]
   },
   {
     "course_code": "GWS 180  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1DDP",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ]
+    "course_areas": ["1A3", "1DDP", "2WS", "AGFS", "AMST", "FGSS", "GWFS", "GWS"]
   },
   {
     "course_code": "GWS 182  PO",
@@ -17525,16 +15901,7 @@
   {
     "course_code": "HIST010  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "HIST"]
   },
   {
     "course_code": "HIST010A SC",
@@ -17549,31 +15916,12 @@
   {
     "course_code": "HIST011  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1P8",
-      "2SS",
-      "5HUM",
-      "HIST",
-      "JWST",
-      "LAMS",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A3", "1P8", "2SS", "5HUM", "HIST", "JWST", "LAMS", "MENA", "MES"]
   },
   {
     "course_code": "HIST011  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "HIST"]
   },
   {
     "course_code": "HIST012  PO",
@@ -17598,17 +15946,7 @@
   {
     "course_code": "HIST017  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1DDP",
-      "1P9",
-      "2SS",
-      "AMST",
-      "CHST",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "1ADR", "1DDP", "1P9", "2SS", "AMST", "CHST", "HIST", "LAST"]
   },
   {
     "course_code": "HIST017  PZ",
@@ -17663,16 +16001,7 @@
   {
     "course_code": "HIST025  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1DDP",
-      "2RES",
-      "2SS",
-      "AMST",
-      "CHST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "1DDP", "2RES", "2SS", "AMST", "CHST", "HIST"]
   },
   {
     "course_code": "HIST025  PZ",
@@ -17697,16 +16026,7 @@
   {
     "course_code": "HIST030  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "AGFS",
-      "AMST",
-      "GFS",
-      "HIST"
-    ]
+    "course_areas": ["2SS", "5HUM", "5IUL", "5SJT", "AGFS", "AMST", "GFS", "HIST"]
   },
   {
     "course_code": "HIST031  CH",
@@ -17776,16 +16096,7 @@
   {
     "course_code": "HIST042  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["2SS", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "AMST", "HIST"]
   },
   {
     "course_code": "HIST043  PO",
@@ -17810,16 +16121,7 @@
   {
     "course_code": "HIST048  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2SS",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "2FYA", "2SS", "2WS", "AGFS", "FGSS", "HIST", "LAST"]
   },
   {
     "course_code": "HIST049  PO",
@@ -17834,34 +16136,12 @@
   {
     "course_code": "HIST050A AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2FYA",
-      "2RES",
-      "2SS",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2FYA", "2RES", "2SS", "5IUL", "5SJT", "AFRI", "AMST", "HIST"]
   },
   {
     "course_code": "HIST050B AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2RES", "2SS", "5HUM", "5IUL", "5SJT", "AFRI", "AMST", "HIST"]
   },
   {
     "course_code": "HIST051  CM",
@@ -17891,30 +16171,12 @@
   {
     "course_code": "HIST053  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "HIST",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "HIST", "MENA", "MES"]
   },
   {
     "course_code": "HIST054  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HEU",
-      "3HGE",
-      "3HPM",
-      "CLAS",
-      "HIST",
-      "LAMS"
-    ]
+    "course_areas": ["1A3", "2SS", "3HEU", "3HGE", "3HPM", "CLAS", "HIST", "LAMS"]
   },
   {
     "course_code": "HIST054  PZ",
@@ -17924,49 +16186,17 @@
   {
     "course_code": "HIST055  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3HPM",
-      "5IUG",
-      "HIST",
-      "JWST",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HNW", "3HPM", "5IUG", "HIST", "JWST", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "HIST055  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "HIST",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "HIST", "MENA", "MES"]
   },
   {
     "course_code": "HIST056  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3HPM",
-      "HIST",
-      "JWST",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HNW", "3HPM", "HIST", "JWST", "MENA", "MES"]
   },
   {
     "course_code": "HIST056  PZ",
@@ -17976,30 +16206,12 @@
   {
     "course_code": "HIST057  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "HIST",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "HIST", "MENA", "MES"]
   },
   {
     "course_code": "HIST059  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HHR",
-      "3HNW",
-      "3HPM",
-      "ASIA",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HHR", "3HNW", "3HPM", "ASIA", "HIST"]
   },
   {
     "course_code": "HIST059  PZ",
@@ -18044,18 +16256,7 @@
   {
     "course_code": "HIST065  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AMST",
-      "EA",
-      "HIST",
-      "STS"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5IUL", "5SJT", "AMST", "EA", "HIST", "STS"]
   },
   {
     "course_code": "HIST066  PZ",
@@ -18070,17 +16271,7 @@
   {
     "course_code": "HIST068  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HEU",
-      "3HGE",
-      "3HPM",
-      "ARHI",
-      "CLAS",
-      "HIST",
-      "LAMS"
-    ]
+    "course_areas": ["1A3", "2SS", "3HEU", "3HGE", "3HPM", "ARHI", "CLAS", "HIST", "LAMS"]
   },
   {
     "course_code": "HIST068  PZ",
@@ -18115,18 +16306,7 @@
   {
     "course_code": "HIST071  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1P8",
-      "2SS",
-      "CLIT",
-      "FLNT",
-      "GERM",
-      "HIST",
-      "IR",
-      "RUSS",
-      "RUST"
-    ]
+    "course_areas": ["1A3", "1P8", "2SS", "CLIT", "FLNT", "GERM", "HIST", "IR", "RUSS", "RUST"]
   },
   {
     "course_code": "HIST072  PO",
@@ -18136,16 +16316,7 @@
   {
     "course_code": "HIST072  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "FGSS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "2WS", "AGFS", "AMST", "FGSS", "HIST"]
   },
   {
     "course_code": "HIST073  CM",
@@ -18165,18 +16336,7 @@
   {
     "course_code": "HIST074  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "GFS",
-      "HIST",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "5HUM", "5IUG", "5SJT", "AGFS", "GFS", "HIST", "RLST"]
   },
   {
     "course_code": "HIST077  PZ",
@@ -18246,17 +16406,7 @@
   {
     "course_code": "HIST087  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AMST",
-      "HIST",
-      "STS"
-    ]
+    "course_areas": ["2SS", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "AMST", "HIST", "STS"]
   },
   {
     "course_code": "HIST089  PZ",
@@ -18286,17 +16436,7 @@
   {
     "course_code": "HIST091  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRP",
-      "ANTH",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUL", "5SJT", "5SOC", "5SRP", "ANTH", "HIST"]
   },
   {
     "course_code": "HIST092  PZ",
@@ -18341,32 +16481,12 @@
   {
     "course_code": "HIST098  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3HUS",
-      "AMST",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HNW", "3HUS", "AMST", "HIST", "LAST"]
   },
   {
     "course_code": "HIST098  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST",
-      "MENA"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "ANTH", "HIST", "MENA"]
   },
   {
     "course_code": "HIST099  CM",
@@ -18386,21 +16506,7 @@
   {
     "course_code": "HIST100C CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1DDP",
-      "1P8",
-      "2RES",
-      "2SS",
-      "2WS",
-      "AMST",
-      "CHST",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "1DDP", "1P8", "2RES", "2SS", "2WS", "AMST", "CHST", "FGSS", "GWFS", "GWS", "HIST", "LAST"]
   },
   {
     "course_code": "HIST100NBCH",
@@ -18440,16 +16546,7 @@
   {
     "course_code": "HIST101CVPO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1WIR",
-      "2SS",
-      "HIST",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "1WIR", "2SS", "HIST", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "HIST101D PO",
@@ -18559,31 +16656,12 @@
   {
     "course_code": "HIST103B CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2SS",
-      "3HEU",
-      "3HGE",
-      "3HPM",
-      "CLAS",
-      "HIST",
-      "LAMS"
-    ]
+    "course_areas": ["1A3", "2FYA", "2SS", "3HEU", "3HGE", "3HPM", "CLAS", "HIST", "LAMS"]
   },
   {
     "course_code": "HIST104  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HPM",
-      "CLAS",
-      "HIST",
-      "JWST",
-      "LAMS"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HPM", "CLAS", "HIST", "JWST", "LAMS"]
   },
   {
     "course_code": "HIST105  PO",
@@ -18683,17 +16761,7 @@
   {
     "course_code": "HIST112  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5SOC",
-      "5SRP",
-      "5SRX",
-      "ANTH",
-      "EA",
-      "HIST",
-      "STS"
-    ]
+    "course_areas": ["1A3", "2SS", "5SOC", "5SRP", "5SRX", "ANTH", "EA", "HIST", "STS"]
   },
   {
     "course_code": "HIST112  SC",
@@ -18723,16 +16791,7 @@
   {
     "course_code": "HIST113  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "HIST",
-      "JWST",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2SS", "HIST", "JWST", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "HIST113  SC",
@@ -18742,17 +16801,7 @@
   {
     "course_code": "HIST114  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "3HGE",
-      "3HPM",
-      "3HUS",
-      "AMST",
-      "HIST",
-      "INDG"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "3HGE", "3HPM", "3HUS", "AMST", "HIST", "INDG"]
   },
   {
     "course_code": "HIST114  PO",
@@ -18827,19 +16876,7 @@
   {
     "course_code": "HIST119  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HHR",
-      "3HUS",
-      "3LBR",
-      "AGFS",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2SS", "2WS", "3HGE", "3HHR", "3HUS", "3LBR", "AGFS", "AMST", "HIST"]
   },
   {
     "course_code": "HIST119  PO",
@@ -18859,19 +16896,7 @@
   {
     "course_code": "HIST120  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "3HGE",
-      "3HHR",
-      "3HPM",
-      "3HUS",
-      "AMST",
-      "HIST",
-      "INDG"
-    ]
+    "course_areas": ["1A3", "1ADR", "2RES", "2SS", "3HGE", "3HHR", "3HPM", "3HUS", "AMST", "HIST", "INDG"]
   },
   {
     "course_code": "HIST120  JT",
@@ -18881,16 +16906,7 @@
   {
     "course_code": "HIST120E CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HUS",
-      "3PPB",
-      "3PPO",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HUS", "3PPB", "3PPO", "AMST", "HIST"]
   },
   {
     "course_code": "HIST120IOCM",
@@ -19025,20 +17041,7 @@
   {
     "course_code": "HIST128  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HHR",
-      "3HUS",
-      "AGFS",
-      "AMST",
-      "GWFS",
-      "GWS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2SS", "2WS", "3HGE", "3HHR", "3HUS", "AGFS", "AMST", "GWFS", "GWS", "HIST"]
   },
   {
     "course_code": "HIST128  PO",
@@ -19068,33 +17071,12 @@
   {
     "course_code": "HIST130  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1CP",
-      "1SIR",
-      "1WIR",
-      "2SS",
-      "AMST",
-      "CHST",
-      "HIST",
-      "IR",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "1ADR", "1CP", "1SIR", "1WIR", "2SS", "AMST", "CHST", "HIST", "IR", "LAST"]
   },
   {
     "course_code": "HIST130  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3HPM",
-      "HIST",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HNW", "3HPM", "HIST", "MENA", "MES"]
   },
   {
     "course_code": "HIST130  PZ",
@@ -19119,30 +17101,12 @@
   {
     "course_code": "HIST131  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "HIST",
-      "PHIL",
-      "SECU"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "HIST", "PHIL", "SECU"]
   },
   {
     "course_code": "HIST131C CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3HPM",
-      "HIST",
-      "MENA",
-      "MES"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HNW", "3HPM", "HIST", "MENA", "MES"]
   },
   {
     "course_code": "HIST132  CM",
@@ -19202,17 +17166,7 @@
   {
     "course_code": "HIST134  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "5HUM",
-      "AGFS",
-      "ASAM",
-      "GFS",
-      "HIST",
-      "IIS"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "5HUM", "AGFS", "ASAM", "GFS", "HIST", "IIS"]
   },
   {
     "course_code": "HIST134  SC",
@@ -19227,18 +17181,7 @@
   {
     "course_code": "HIST135  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "2WS",
-      "AFRI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "2WS", "AFRI", "FGSS", "GWFS", "GWS", "HIST", "LAST"]
   },
   {
     "course_code": "HIST135  SC",
@@ -19253,19 +17196,7 @@
   {
     "course_code": "HIST136  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1CP",
-      "1WIR",
-      "2SS",
-      "AFRI",
-      "ANTH",
-      "CHST",
-      "HIST",
-      "IR",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "1ADR", "1CP", "1WIR", "2SS", "AFRI", "ANTH", "CHST", "HIST", "IR", "LAST"]
   },
   {
     "course_code": "HIST136  PZ",
@@ -19320,17 +17251,7 @@
   {
     "course_code": "HIST140  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "3HEU",
-      "3HGE",
-      "3HHR",
-      "3HPM",
-      "AGFS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "3HEU", "3HGE", "3HHR", "3HPM", "AGFS", "HIST"]
   },
   {
     "course_code": "HIST140  PZ",
@@ -19375,32 +17296,12 @@
   {
     "course_code": "HIST144  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HUS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HUS", "3PPB", "3PPO", "3PPS", "AMST", "HIST"]
   },
   {
     "course_code": "HIST144  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "ANTH",
-      "EA",
-      "HIST",
-      "IIS"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "ANTH", "EA", "HIST", "IIS"]
   },
   {
     "course_code": "HIST144  SC",
@@ -19445,35 +17346,12 @@
   {
     "course_code": "HIST148  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5WRI",
-      "AGFS",
-      "CGS",
-      "GFS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "5HUM", "5IUG", "5SJT", "5WRI", "AGFS", "CGS", "GFS", "HIST"]
   },
   {
     "course_code": "HIST148A PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "CGS",
-      "GFS",
-      "GWFS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "AGFS", "CGS", "GFS", "GWFS", "HIST"]
   },
   {
     "course_code": "HIST148C CM",
@@ -19503,17 +17381,7 @@
   {
     "course_code": "HIST149C SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "AFRI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "AFRI", "FGSS", "GWFS", "GWS", "HIST", "LAST"]
   },
   {
     "course_code": "HIST150  HM",
@@ -19523,18 +17391,7 @@
   {
     "course_code": "HIST150  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AMST",
-      "EA",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "AMST", "EA", "HIST"]
   },
   {
     "course_code": "HIST150E CM",
@@ -19544,16 +17401,7 @@
   {
     "course_code": "HIST151  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "3HEU",
-      "3HGE",
-      "AGFS",
-      "GWFS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "3HEU", "3HGE", "AGFS", "GWFS", "HIST"]
   },
   {
     "course_code": "HIST151  HM",
@@ -19563,18 +17411,7 @@
   {
     "course_code": "HIST151  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2RES",
-      "2SS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5WRI",
-      "AMST",
-      "HIST",
-      "STS"
-    ]
+    "course_areas": ["2RES", "2SS", "5HUM", "5IUL", "5SJT", "5SOC", "5WRI", "AMST", "HIST", "STS"]
   },
   {
     "course_code": "HIST151E CM",
@@ -19594,19 +17431,7 @@
   {
     "course_code": "HIST153  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "2WS",
-      "5SJT",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "FGSS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2RES", "2SS", "2WS", "5SJT", "AFRI", "AGFS", "AMST", "FGSS", "HIST"]
   },
   {
     "course_code": "HIST153  PZ",
@@ -19616,16 +17441,7 @@
   {
     "course_code": "HIST154  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3LBR",
-      "ASIA",
-      "HIST",
-      "LEAD"
-    ]
+    "course_areas": ["1A3", "2SS", "3HGE", "3HNW", "3LBR", "ASIA", "HIST", "LEAD"]
   },
   {
     "course_code": "HIST154  PZ",
@@ -19640,16 +17456,7 @@
   {
     "course_code": "HIST155  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "FGSS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "2WS", "AGFS", "AMST", "FGSS", "HIST"]
   },
   {
     "course_code": "HIST156  PZ",
@@ -19659,18 +17466,7 @@
   {
     "course_code": "HIST157  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HNW",
-      "AGFS",
-      "GFS",
-      "GWFS",
-      "HIST",
-      "LAST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "3HGE", "3HNW", "AGFS", "GFS", "GWFS", "HIST", "LAST"]
   },
   {
     "course_code": "HIST158  CM",
@@ -19685,17 +17481,7 @@
   {
     "course_code": "HIST158  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "5WRI",
-      "EA",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "5WRI", "EA", "HIST"]
   },
   {
     "course_code": "HIST159  PZ",
@@ -19735,18 +17521,7 @@
   {
     "course_code": "HIST162  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "5WRI",
-      "EA",
-      "HIST",
-      "STS"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "5WRI", "EA", "HIST", "STS"]
   },
   {
     "course_code": "HIST162C CM",
@@ -19806,33 +17581,12 @@
   {
     "course_code": "HIST166IOSC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "5SRX",
-      "AMST",
-      "HIST",
-      "HMSC",
-      "INSO"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "5SRX", "AMST", "HIST", "HMSC", "INSO"]
   },
   {
     "course_code": "HIST167  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HNW",
-      "AGFS",
-      "ASIA",
-      "GWFS",
-      "HIST",
-      "MES"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "2WS", "3HGE", "3HNW", "AGFS", "ASIA", "GWFS", "HIST", "MES"]
   },
   {
     "course_code": "HIST167  PO",
@@ -19872,32 +17626,12 @@
   {
     "course_code": "HIST169  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "ASAM",
-      "GFS",
-      "HIST",
-      "RLST"
-    ]
+    "course_areas": ["2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "ASAM", "GFS", "HIST", "RLST"]
   },
   {
     "course_code": "HIST169  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "FGSS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "2WS", "AGFS", "AMST", "FGSS", "HIST"]
   },
   {
     "course_code": "HIST169A CM",
@@ -19917,17 +17651,7 @@
   {
     "course_code": "HIST170  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "2WS",
-      "3HAR",
-      "3HGE",
-      "3HNW",
-      "AGFS",
-      "ASIA",
-      "GWS",
-      "HIST"
-    ]
+    "course_areas": ["2SS", "2WS", "3HAR", "3HGE", "3HNW", "AGFS", "ASIA", "GWS", "HIST"]
   },
   {
     "course_code": "HIST170  PZ",
@@ -19937,32 +17661,12 @@
   {
     "course_code": "HIST171  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "AFRI", "AGFS", "AMST", "FGSS", "GWFS", "GWS", "HIST"]
   },
   {
     "course_code": "HIST172  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HAR",
-      "3HEU",
-      "3HGE",
-      "3HPM",
-      "CLAS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2SS", "3HAR", "3HEU", "3HGE", "3HPM", "CLAS", "HIST"]
   },
   {
     "course_code": "HIST172  PO",
@@ -19977,16 +17681,7 @@
   {
     "course_code": "HIST173  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2RES", "2SS", "5SJT", "AFRI", "AMST", "HIST"]
   },
   {
     "course_code": "HIST173  CM",
@@ -20031,20 +17726,7 @@
   {
     "course_code": "HIST175  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "CGS",
-      "GFS",
-      "GWFS",
-      "HIST",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "5HUM", "5IUG", "5SJT", "AGFS", "CGS", "GFS", "GWFS", "HIST", "RLST"]
   },
   {
     "course_code": "HIST175  SC",
@@ -20054,17 +17736,7 @@
   {
     "course_code": "HIST176  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2RES", "2SS", "5IUL", "5SJT", "AFRI", "AMST", "HIST"]
   },
   {
     "course_code": "HIST176  CM",
@@ -20094,17 +17766,7 @@
   {
     "course_code": "HIST178  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "GFS",
-      "GWFS",
-      "HIST"
-    ]
+    "course_areas": ["2SS", "2WS", "5HUM", "5IUG", "5SJT", "AGFS", "GFS", "GWFS", "HIST"]
   },
   {
     "course_code": "HIST178  SC",
@@ -20189,32 +17851,12 @@
   {
     "course_code": "HIST181  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "5HUM",
-      "AGFS",
-      "AMST",
-      "GFS",
-      "GWFS",
-      "HIST",
-      "SECU"
-    ]
+    "course_areas": ["1A3", "2SS", "2WS", "5HUM", "AGFS", "AMST", "GFS", "GWFS", "HIST", "SECU"]
   },
   {
     "course_code": "HIST182  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "3HAR",
-      "3HGE",
-      "3HUS",
-      "AMST",
-      "HIST",
-      "STS"
-    ]
+    "course_areas": ["1A3", "2SS", "3HAR", "3HGE", "3HUS", "AMST", "HIST", "STS"]
   },
   {
     "course_code": "HIST182  PZ",
@@ -20249,18 +17891,7 @@
   {
     "course_code": "HIST185  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SOC",
-      "AGPL",
-      "HIST",
-      "POLI",
-      "POST",
-      "STS"
-    ]
+    "course_areas": ["1A3", "2SS", "5HUM", "5IUG", "5SOC", "AGPL", "HIST", "POLI", "POST", "STS"]
   },
   {
     "course_code": "HIST186  PO",
@@ -20325,19 +17956,7 @@
   {
     "course_code": "HIST190  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "3HAR",
-      "3HGE",
-      "3HUS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AMST",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2RES", "2SS", "3HAR", "3HGE", "3HUS", "3PPB", "3PPO", "3PPS", "AMST", "HIST"]
   },
   {
     "course_code": "HIST190  PO",
@@ -20402,16 +18021,7 @@
   {
     "course_code": "HIST197B BK",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "AMST",
-      "BLCK",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "HIST"
-    ]
+    "course_areas": ["1A3", "2WS", "AMST", "BLCK", "FGSS", "GWFS", "GWS", "HIST"]
   },
   {
     "course_code": "HIST197C SC",
@@ -21156,19 +18766,7 @@
   {
     "course_code": "IIS 075  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "ASIA",
-      "GFS",
-      "IIS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2WS", "5HUM", "5IUG", "5SJT", "5SOC", "AGFS", "ASIA", "GFS", "IIS", "RLST"]
   },
   {
     "course_code": "IIS 080  PZ",
@@ -21223,17 +18821,7 @@
   {
     "course_code": "IIS 110  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "5HUM",
-      "5SOC",
-      "AMST",
-      "ASIA",
-      "GFS",
-      "GWFS",
-      "IIS",
-      "MS"
-    ]
+    "course_areas": ["1A3", "5HUM", "5SOC", "AMST", "ASIA", "GFS", "GWFS", "IIS", "MS"]
   },
   {
     "course_code": "IIS 113  JT",
@@ -21283,20 +18871,7 @@
   {
     "course_code": "IIS 128  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SOC",
-      "AGFS",
-      "ASIA",
-      "GFS",
-      "GWFS",
-      "IIS",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2WS", "5HUM", "5IUG", "5SOC", "AGFS", "ASIA", "GFS", "GWFS", "IIS", "MES", "RLST"]
   },
   {
     "course_code": "IIS 131  BK",
@@ -21341,19 +18916,7 @@
   {
     "course_code": "IIS 160  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "GFS",
-      "GWFS",
-      "GWS",
-      "IIS"
-    ]
+    "course_areas": ["1A3", "2WS", "5HUM", "5IUG", "5SJT", "5SOC", "AGFS", "GFS", "GWFS", "GWS", "IIS"]
   },
   {
     "course_code": "IIS 167  PZ",
@@ -21818,20 +19381,7 @@
   {
     "course_code": "JAPN125  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P1",
-      "1WIR",
-      "2LT",
-      "2WS",
-      "ALAN",
-      "ASIA",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "JAPN"
-    ]
+    "course_areas": ["1A1", "1FL", "1P1", "1WIR", "2LT", "2WS", "ALAN", "ASIA", "FGSS", "GWFS", "GWS", "JAPN"]
   },
   {
     "course_code": "JAPN125H PO",
@@ -21916,16 +19466,7 @@
   {
     "course_code": "JPNT174  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P1",
-      "1SIR",
-      "ALNT",
-      "ASIA",
-      "CLIT",
-      "FLNT",
-      "JPNT"
-    ]
+    "course_areas": ["1A1", "1P1", "1SIR", "ALNT", "ASIA", "CLIT", "FLNT", "JPNT"]
   },
   {
     "course_code": "JPNT175  PO",
@@ -21935,18 +19476,7 @@
   {
     "course_code": "JPNT176  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P1",
-      "1SIR",
-      "ALNT",
-      "ASIA",
-      "CLIT",
-      "FLNT",
-      "JAPN",
-      "JPNT",
-      "MS"
-    ]
+    "course_areas": ["1A1", "1P1", "1SIR", "ALNT", "ASIA", "CLIT", "FLNT", "JAPN", "JPNT", "MS"]
   },
   {
     "course_code": "JPNT177  PO",
@@ -21975,17 +19505,7 @@
   {
     "course_code": "JPNT179  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P5",
-      "1SIR",
-      "ALNT",
-      "ASIA",
-      "CLIT",
-      "FLNT",
-      "JAPN",
-      "JPNT"
-    ]
+    "course_areas": ["1A1", "1P5", "1SIR", "ALNT", "ASIA", "CLIT", "FLNT", "JAPN", "JPNT"]
   },
   {
     "course_code": "JPNT199DRPO",
@@ -22335,18 +19855,7 @@
   {
     "course_code": "LGCS110  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "AGFS",
-      "GFS",
-      "GWFS",
-      "GWS",
-      "LGCS"
-    ]
+    "course_areas": ["1A2", "1ADR", "2WS", "5HUM", "5SOC", "AGFS", "GFS", "GWFS", "GWS", "LGCS"]
   },
   {
     "course_code": "LGCS112  JT",
@@ -22706,17 +20215,7 @@
   {
     "course_code": "LIT 072  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "3LIT",
-      "3SA",
-      "AGFS",
-      "ENGL",
-      "GWFS",
-      "LIT"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "3LIT", "3SA", "AGFS", "ENGL", "GWFS", "LIT"]
   },
   {
     "course_code": "LIT 073  CM",
@@ -22921,17 +20420,7 @@
   {
     "course_code": "LIT 111  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2SS",
-      "3LIT",
-      "3SA",
-      "CLAS",
-      "ENGL",
-      "LAMS",
-      "LIT"
-    ]
+    "course_areas": ["1A1", "2LT", "2SS", "3LIT", "3SA", "CLAS", "ENGL", "LAMS", "LIT"]
   },
   {
     "course_code": "LIT 112  HM",
@@ -22941,16 +20430,7 @@
   {
     "course_code": "LIT 114  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "3HHR",
-      "3LBR",
-      "3LIT",
-      "ENGL",
-      "LEAD",
-      "LIT"
-    ]
+    "course_areas": ["1A1", "2LT", "3HHR", "3LBR", "3LIT", "ENGL", "LEAD", "LIT"]
   },
   {
     "course_code": "LIT 115  CM",
@@ -23110,20 +20590,7 @@
   {
     "course_code": "LIT 145  HM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "4HSA",
-      "4WRT",
-      "AFRI",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LIT",
-      "WMST"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "4HSA", "4WRT", "AFRI", "AGFS", "FGSS", "GWFS", "GWS", "LIT", "WMST"]
   },
   {
     "course_code": "LIT 146  HM",
@@ -23158,17 +20625,7 @@
   {
     "course_code": "LIT 158  HM",
     "catalog": "UG22",
-    "course_areas": [
-      "2LT",
-      "2WS",
-      "4HSA",
-      "4WRT",
-      "AFRI",
-      "AMST",
-      "ANTH",
-      "FGSS",
-      "LIT"
-    ]
+    "course_areas": ["2LT", "2WS", "4HSA", "4WRT", "AFRI", "AMST", "ANTH", "FGSS", "LIT"]
   },
   {
     "course_code": "LIT 160  AF",
@@ -23188,17 +20645,7 @@
   {
     "course_code": "LIT 163  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "3LIT",
-      "5IUG",
-      "AFRI",
-      "LIT",
-      "MENA",
-      "MES",
-      "MS"
-    ]
+    "course_areas": ["1A1", "2LT", "3LIT", "5IUG", "AFRI", "LIT", "MENA", "MES", "MS"]
   },
   {
     "course_code": "LIT 165  AF",
@@ -23223,17 +20670,7 @@
   {
     "course_code": "LIT 170  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2LT",
-      "2WS",
-      "3LIT",
-      "AGFS",
-      "ENGL",
-      "GWFS",
-      "GWS",
-      "LIT"
-    ]
+    "course_areas": ["1A1", "2LT", "2WS", "3LIT", "AGFS", "ENGL", "GWFS", "GWS", "LIT"]
   },
   {
     "course_code": "LIT 175  CM",
@@ -23578,16 +21015,7 @@
   {
     "course_code": "MATH030  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A5",
-      "1P3",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "MOBI",
-      "NEUR"
-    ]
+    "course_areas": ["1A5", "1P3", "2MTH", "3MAT", "5QUA", "MATH", "MOBI", "NEUR"]
   },
   {
     "course_code": "MATH030  PZ",
@@ -23597,16 +21025,7 @@
   {
     "course_code": "MATH030  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A5",
-      "1P3",
-      "2FYA",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "NEUR"
-    ]
+    "course_areas": ["1A5", "1P3", "2FYA", "2MTH", "3MAT", "5QUA", "MATH", "NEUR"]
   },
   {
     "course_code": "MATH030A CM",
@@ -23626,16 +21045,7 @@
   {
     "course_code": "MATH031  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A5",
-      "1P3",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "MOBI",
-      "NEUR"
-    ]
+    "course_areas": ["1A5", "1P3", "2MTH", "3MAT", "5QUA", "MATH", "MOBI", "NEUR"]
   },
   {
     "course_code": "MATH031  PZ",
@@ -23645,16 +21055,7 @@
   {
     "course_code": "MATH031  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A5",
-      "1P3",
-      "2FYA",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "NEUR"
-    ]
+    "course_areas": ["1A5", "1P3", "2FYA", "2MTH", "3MAT", "5QUA", "MATH", "NEUR"]
   },
   {
     "course_code": "MATH031A CM",
@@ -25879,16 +23280,7 @@
   {
     "course_code": "MS  113  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AFRI",
-      "ANTH",
-      "MS"
-    ]
+    "course_areas": ["1A1", "5HUM", "5IUG", "5SJT", "5SOC", "AFRI", "ANTH", "MS"]
   },
   {
     "course_code": "MS  114  PZ",
@@ -25963,17 +23355,7 @@
   {
     "course_code": "MS  124  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AMST",
-      "CGS",
-      "MS"
-    ]
+    "course_areas": ["1A1", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "AMST", "CGS", "MS"]
   },
   {
     "course_code": "MS  125  PO",
@@ -27438,17 +24820,7 @@
   {
     "course_code": "MUS 130  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "2FA",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "CHST",
-      "FGSS",
-      "MUS"
-    ]
+    "course_areas": ["1A1", "2FA", "2RES", "2WS", "AGFS", "AMST", "CHST", "FGSS", "MUS"]
   },
   {
     "course_code": "MUS 132  SC",
@@ -27708,16 +25080,7 @@
   {
     "course_code": "NEUR095L JT",
     "catalog": "UG22",
-    "course_areas": [
-      "1A4",
-      "2NS",
-      "3SCI",
-      "5NAT",
-      "BIOL",
-      "NEUR",
-      "NSCI",
-      "PSYC"
-    ]
+    "course_areas": ["1A4", "2NS", "3SCI", "5NAT", "BIOL", "NEUR", "NSCI", "PSYC"]
   },
   {
     "course_code": "NEUR101A PO",
@@ -28017,18 +25380,7 @@
   {
     "course_code": "ONT 101  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "AMST",
-      "EA",
-      "IIS",
-      "ONT",
-      "ORST",
-      "SOC"
-    ]
+    "course_areas": ["5IUL", "5SJT", "5SOC", "5SRX", "AMST", "EA", "IIS", "ONT", "ORST", "SOC"]
   },
   {
     "course_code": "ONT 104  PZ",
@@ -28038,19 +25390,7 @@
   {
     "course_code": "ONT 105  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5IUL",
-      "5QUA",
-      "5SRP",
-      "5SRX",
-      "AMST",
-      "EA",
-      "IIS",
-      "MATH",
-      "ONT",
-      "ORST",
-      "SOC"
-    ]
+    "course_areas": ["5IUL", "5QUA", "5SRP", "5SRX", "AMST", "EA", "IIS", "MATH", "ONT", "ORST", "SOC"]
   },
   {
     "course_code": "ONT 106  PZ",
@@ -28190,16 +25530,7 @@
   {
     "course_code": "ORST120  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "5WRI",
-      "ORST"
-    ]
+    "course_areas": ["1A2", "5IUG", "5IUL", "5SJT", "5SOC", "5SRX", "5WRI", "ORST"]
   },
   {
     "course_code": "ORST135  PZ",
@@ -28239,16 +25570,7 @@
   {
     "course_code": "ORST161  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "5WRI",
-      "INSO",
-      "ORST"
-    ]
+    "course_areas": ["1A2", "5IUL", "5SJT", "5SOC", "5SRX", "5WRI", "INSO", "ORST"]
   },
   {
     "course_code": "ORST163  PZ",
@@ -30423,16 +27745,7 @@
   {
     "course_code": "PHIL030  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1P10",
-      "2LT",
-      "5HUM",
-      "5SJT",
-      "COGS",
-      "LGCS",
-      "PHIL"
-    ]
+    "course_areas": ["1A3", "1P10", "2LT", "5HUM", "5SJT", "COGS", "LGCS", "PHIL"]
   },
   {
     "course_code": "PHIL030H CM",
@@ -30542,17 +27855,7 @@
   {
     "course_code": "PHIL039  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1CP",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "PHIL"
-    ]
+    "course_areas": ["1A3", "1CP", "2LT", "2WS", "AGFS", "FGSS", "GWFS", "GWS", "PHIL"]
   },
   {
     "course_code": "PHIL039  PZ",
@@ -30592,18 +27895,7 @@
   {
     "course_code": "PHIL046  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1CP",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "PHIL"
-    ]
+    "course_areas": ["1A3", "1ADR", "1CP", "2LT", "2WS", "AGFS", "FGSS", "GWFS", "GWS", "PHIL"]
   },
   {
     "course_code": "PHIL047  PO",
@@ -30703,17 +27995,7 @@
   {
     "course_code": "PHIL084  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "MENA",
-      "PHIL",
-      "RLST",
-      "SECU"
-    ]
+    "course_areas": ["1A3", "2LT", "5HUM", "5IUG", "5IUL", "MENA", "PHIL", "RLST", "SECU"]
   },
   {
     "course_code": "PHIL085  PZ",
@@ -30938,16 +28220,7 @@
   {
     "course_code": "PHIL124  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2RES",
-      "5HUM",
-      "AMST",
-      "ENVS",
-      "PHIL",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "2RES", "5HUM", "AMST", "ENVS", "PHIL", "RLST"]
   },
   {
     "course_code": "PHIL124  SC",
@@ -31102,17 +28375,7 @@
   {
     "course_code": "PHIL150  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "PHIL"
-    ]
+    "course_areas": ["1A3", "2FYA", "2LT", "2WS", "AGFS", "FGSS", "GWFS", "GWS", "PHIL"]
   },
   {
     "course_code": "PHIL151  SC",
@@ -31132,17 +28395,7 @@
   {
     "course_code": "PHIL155  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "5HUM",
-      "ASIA",
-      "MENA",
-      "MES",
-      "PHIL",
-      "RLST",
-      "SECU"
-    ]
+    "course_areas": ["1A3", "2LT", "5HUM", "ASIA", "MENA", "MES", "PHIL", "RLST", "SECU"]
   },
   {
     "course_code": "PHIL155  SC",
@@ -31302,16 +28555,7 @@
   {
     "course_code": "PHIL180  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "3E1",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "ECON",
-      "PHIL"
-    ]
+    "course_areas": ["1A3", "2LT", "3E1", "3PPB", "3PPO", "3PPS", "ECON", "PHIL"]
   },
   {
     "course_code": "PHIL181  CM",
@@ -31371,16 +28615,7 @@
   {
     "course_code": "PHIL185N JT",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "5HUM",
-      "5WRI",
-      "LGCS",
-      "NEUR",
-      "PHIL",
-      "STS"
-    ]
+    "course_areas": ["1A3", "2LT", "5HUM", "5WRI", "LGCS", "NEUR", "PHIL", "STS"]
   },
   {
     "course_code": "PHIL185P PO",
@@ -31710,16 +28945,7 @@
   {
     "course_code": "PHYS030L KS",
     "catalog": "UG22",
-    "course_areas": [
-      "1A4",
-      "2FYA",
-      "2NS",
-      "3SCI",
-      "5NAT",
-      "NEUR",
-      "PHYS",
-      "SCPB"
-    ]
+    "course_areas": ["1A4", "2FYA", "2NS", "3SCI", "5NAT", "NEUR", "PHYS", "SCPB"]
   },
   {
     "course_code": "PHYS030L SC",
@@ -32444,16 +29670,7 @@
   {
     "course_code": "POLI033B PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "1WIR",
-      "2SS",
-      "AGPL",
-      "AMST",
-      "POLI",
-      "PPE"
-    ]
+    "course_areas": ["1A2", "1ADR", "1WIR", "2SS", "AGPL", "AMST", "POLI", "PPE"]
   },
   {
     "course_code": "POLI046  PO",
@@ -32463,18 +29680,7 @@
   {
     "course_code": "POLI060  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1P9",
-      "1WIR",
-      "2SS",
-      "5IUG",
-      "AGPL",
-      "EA",
-      "IR",
-      "LAST",
-      "POLI"
-    ]
+    "course_areas": ["1A2", "1P9", "1WIR", "2SS", "5IUG", "AGPL", "EA", "IR", "LAST", "POLI"]
   },
   {
     "course_code": "POLI061  PO",
@@ -32649,16 +29855,7 @@
   {
     "course_code": "POLI120  JT",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "AFRI",
-      "AGPL",
-      "AMST",
-      "POLI",
-      "WRIT"
-    ]
+    "course_areas": ["1A2", "2RES", "2SS", "AFRI", "AGPL", "AMST", "POLI", "WRIT"]
   },
   {
     "course_code": "POLI120  SC",
@@ -32803,17 +30000,7 @@
   {
     "course_code": "POLI136  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "5SRX",
-      "AGPL",
-      "EA",
-      "POLI",
-      "STS"
-    ]
+    "course_areas": ["1A2", "1ADR", "2RES", "2SS", "5SRX", "AGPL", "EA", "POLI", "STS"]
   },
   {
     "course_code": "POLI138  PO",
@@ -32868,16 +30055,7 @@
   {
     "course_code": "POLI145  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2FYA",
-      "2RES",
-      "2SS",
-      "AGPL",
-      "AMST",
-      "LGST",
-      "POLI"
-    ]
+    "course_areas": ["1A2", "2FYA", "2RES", "2SS", "AGPL", "AMST", "LGST", "POLI"]
   },
   {
     "course_code": "POLI146  SC",
@@ -32962,17 +30140,7 @@
   {
     "course_code": "POLI157  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AGPL",
-      "FGSS",
-      "POLI"
-    ]
+    "course_areas": ["1A2", "2RES", "2SS", "2WS", "AFRI", "AGFS", "AGPL", "FGSS", "POLI"]
   },
   {
     "course_code": "POLI158  PO",
@@ -33087,17 +30255,7 @@
   {
     "course_code": "POLI178  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "AGPL",
-      "EA",
-      "IR",
-      "LAST",
-      "MENA",
-      "MES",
-      "POLI"
-    ]
+    "course_areas": ["1A2", "2SS", "AGPL", "EA", "IR", "LAST", "MENA", "MES", "POLI"]
   },
   {
     "course_code": "POLI180  PO",
@@ -33437,31 +30595,12 @@
   {
     "course_code": "POST020  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AGPL",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUL", "5SJT", "5SOC", "AGPL", "POLI", "POST"]
   },
   {
     "course_code": "POST020A PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AGPL",
-      "INSO",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUL", "5SJT", "5SOC", "AGPL", "INSO", "POLI", "POST"]
   },
   {
     "course_code": "POST030  PZ",
@@ -33486,17 +30625,7 @@
   {
     "course_code": "POST050  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SOC",
-      "AGPL",
-      "CGS",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5IUG", "5SOC", "AGPL", "CGS", "POLI", "POST"]
   },
   {
     "course_code": "POST060  PZ",
@@ -33506,16 +30635,7 @@
   {
     "course_code": "POST065  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "AGPL",
-      "DSCI",
-      "POLI",
-      "POST",
-      "SECU"
-    ]
+    "course_areas": ["2SS", "5IUL", "5SOC", "AGPL", "DSCI", "POLI", "POST", "SECU"]
   },
   {
     "course_code": "POST070  PZ",
@@ -33525,16 +30645,7 @@
   {
     "course_code": "POST091  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A5",
-      "2SS",
-      "5FOR",
-      "5QUA",
-      "5SOC",
-      "AGPL",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A5", "2SS", "5FOR", "5QUA", "5SOC", "AGPL", "POLI", "POST"]
   },
   {
     "course_code": "POST091P PZ",
@@ -33569,34 +30680,12 @@
   {
     "course_code": "POST101  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "5SOC",
-      "5SRX",
-      "AGFS",
-      "AGPL",
-      "GFS",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "2WS", "5SOC", "5SRX", "AGFS", "AGPL", "GFS", "POLI", "POST"]
   },
   {
     "course_code": "POST102  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "5SOC",
-      "AGFS",
-      "AGPL",
-      "GFS",
-      "GWS",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "2WS", "5SOC", "AGFS", "AGPL", "GFS", "GWS", "POLI", "POST"]
   },
   {
     "course_code": "POST103  PZ",
@@ -33621,18 +30710,7 @@
   {
     "course_code": "POST105  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "AGPL",
-      "ORST",
-      "POLI",
-      "POST",
-      "STS"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5IUL", "5SOC", "AGPL", "ORST", "POLI", "POST", "STS"]
   },
   {
     "course_code": "POST106  PZ",
@@ -33642,20 +30720,7 @@
   {
     "course_code": "POST107  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AGPL",
-      "AMST",
-      "CHLT",
-      "CHST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2RES", "2SS", "5IUL", "5SJT", "5SOC", "AGPL", "AMST", "CHLT", "CHST", "POLI", "POST"]
   },
   {
     "course_code": "POST108  PZ",
@@ -33670,18 +30735,7 @@
   {
     "course_code": "POST110  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "5SRX",
-      "AGPL",
-      "CHLT",
-      "ORST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUL", "5SOC", "5SRX", "AGPL", "CHLT", "ORST", "POLI", "POST"]
   },
   {
     "course_code": "POST111  PZ",
@@ -33716,16 +30770,7 @@
   {
     "course_code": "POST116  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2RES", "2SS", "5IUG", "5IUL", "5SOC", "POLI", "POST"]
   },
   {
     "course_code": "POST117  PZ",
@@ -33735,16 +30780,7 @@
   {
     "course_code": "POST118  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "AGPL",
-      "CHLT",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUL", "5SOC", "AGPL", "CHLT", "POLI", "POST"]
   },
   {
     "course_code": "POST119  PZ",
@@ -33764,16 +30800,7 @@
   {
     "course_code": "POST122  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "5IUG",
-      "5SOC",
-      "5WRI",
-      "AGPL",
-      "CGS",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["2SS", "5IUG", "5SOC", "5WRI", "AGPL", "CGS", "POLI", "POST"]
   },
   {
     "course_code": "POST123  PZ",
@@ -33798,17 +30825,7 @@
   {
     "course_code": "POST128  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5SOC",
-      "AMST",
-      "GFS",
-      "GWFS",
-      "POST",
-      "RLST"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5SOC", "AMST", "GFS", "GWFS", "POST", "RLST"]
   },
   {
     "course_code": "POST129  PZ",
@@ -33843,16 +30860,7 @@
   {
     "course_code": "POST134  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5SOC",
-      "AGPL",
-      "ORST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5SOC", "AGPL", "ORST", "POLI", "POST"]
   },
   {
     "course_code": "POST135  PZ",
@@ -33912,17 +30920,7 @@
   {
     "course_code": "POST145  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGPL",
-      "CGS",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5SJT", "5SOC", "AGPL", "CGS", "POLI", "POST"]
   },
   {
     "course_code": "POST146  PZ",
@@ -33952,17 +30950,7 @@
   {
     "course_code": "POST151  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5SOC",
-      "5WRI",
-      "AGPL",
-      "IIS",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5SOC", "5WRI", "AGPL", "IIS", "POLI", "POST"]
   },
   {
     "course_code": "POST152  PZ",
@@ -34032,33 +31020,12 @@
   {
     "course_code": "POST165  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5SOC",
-      "AGPL",
-      "ORST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5SOC", "AGPL", "ORST", "POLI", "POST"]
   },
   {
     "course_code": "POST166  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGPL",
-      "ANTH",
-      "HIST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "AGPL", "ANTH", "HIST", "POLI", "POST"]
   },
   {
     "course_code": "POST167  PZ",
@@ -34103,18 +31070,7 @@
   {
     "course_code": "POST174  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "5SRX",
-      "AGPL",
-      "CHLT",
-      "CHST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUL", "5SOC", "5SRX", "AGPL", "CHLT", "CHST", "POLI", "POST"]
   },
   {
     "course_code": "POST175  CH",
@@ -34169,18 +31125,7 @@
   {
     "course_code": "POST185  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SOC",
-      "AGPL",
-      "HIST",
-      "POLI",
-      "POST",
-      "STS"
-    ]
+    "course_areas": ["1A2", "2SS", "5HUM", "5IUG", "5SOC", "AGPL", "HIST", "POLI", "POST", "STS"]
   },
   {
     "course_code": "POST185A PZ",
@@ -34190,17 +31135,7 @@
   {
     "course_code": "POST185B PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGPL",
-      "ORST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5SJT", "5SOC", "AGPL", "ORST", "POLI", "POST"]
   },
   {
     "course_code": "POST186  PZ",
@@ -34230,18 +31165,7 @@
   {
     "course_code": "POST190  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "AGPL",
-      "CGS",
-      "POLI",
-      "POST",
-      "STS"
-    ]
+    "course_areas": ["1A2", "2SS", "5IUG", "5IUL", "5SOC", "AGPL", "CGS", "POLI", "POST", "STS"]
   },
   {
     "course_code": "POST191  PZ",
@@ -34281,16 +31205,7 @@
   {
     "course_code": "POST195B PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "AGPL",
-      "CHLT",
-      "CHST",
-      "POLI",
-      "POST"
-    ]
+    "course_areas": ["2SS", "5IUL", "5SOC", "AGPL", "CHLT", "CHST", "POLI", "POST"]
   },
   {
     "course_code": "POST196  PZ",
@@ -34570,16 +31485,7 @@
   {
     "course_code": "PSYC012  AF",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AFRI",
-      "PSYC"
-    ]
+    "course_areas": ["1A2", "2RES", "2SS", "5IUL", "5SJT", "5SOC", "AFRI", "PSYC"]
   },
   {
     "course_code": "PSYC012  BK",
@@ -34664,16 +31570,7 @@
   {
     "course_code": "PSYC084  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "1P9",
-      "2RES",
-      "2SS",
-      "AMST",
-      "CHST",
-      "PSYC"
-    ]
+    "course_areas": ["1A2", "1ADR", "1P9", "2RES", "2SS", "AMST", "CHST", "PSYC"]
   },
   {
     "course_code": "PSYC091  PZ",
@@ -34913,18 +31810,7 @@
   {
     "course_code": "PSYC117  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2WS",
-      "5IUG",
-      "5SOC",
-      "5WRI",
-      "AGFS",
-      "CGS",
-      "GFS",
-      "GWFS",
-      "PSYC"
-    ]
+    "course_areas": ["1A2", "2WS", "5IUG", "5SOC", "5WRI", "AGFS", "CGS", "GFS", "GWFS", "PSYC"]
   },
   {
     "course_code": "PSYC118  CM",
@@ -35314,17 +32200,7 @@
   {
     "course_code": "PSYC153  AA",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "1DDP",
-      "1P9",
-      "2RES",
-      "2SS",
-      "AMST",
-      "ASAM",
-      "PSYC"
-    ]
+    "course_areas": ["1A2", "1ADR", "1DDP", "1P9", "2RES", "2SS", "AMST", "ASAM", "PSYC"]
   },
   {
     "course_code": "PSYC153  PZ",
@@ -35384,16 +32260,7 @@
   {
     "course_code": "PSYC157  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "FGSS",
-      "PSYC"
-    ]
+    "course_areas": ["1A2", "2RES", "2WS", "AFRI", "AGFS", "AMST", "FGSS", "PSYC"]
   },
   {
     "course_code": "PSYC157 LPO",
@@ -35933,16 +32800,7 @@
   {
     "course_code": "PSYC188  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "3HHR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AMST",
-      "LGST",
-      "PSYC"
-    ]
+    "course_areas": ["1A2", "3HHR", "3PPB", "3PPO", "3PPS", "AMST", "LGST", "PSYC"]
   },
   {
     "course_code": "PSYC188  PZ",
@@ -36637,16 +33495,7 @@
   {
     "course_code": "RLST057  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "3REL",
-      "CLAS",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "3REL", "CLAS", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST058  CM",
@@ -36661,19 +33510,7 @@
   {
     "course_code": "RLST060  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "CLAS",
-      "FGSS",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2FYA", "2LT", "2WS", "AGFS", "CLAS", "FGSS", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST061  SC",
@@ -36703,16 +33540,7 @@
   {
     "course_code": "RLST078  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2WS",
-      "3REL",
-      "AGFS",
-      "CLAS",
-      "GWFS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "2WS", "3REL", "AGFS", "CLAS", "GWFS", "RLST"]
   },
   {
     "course_code": "RLST078  PZ",
@@ -36747,17 +33575,7 @@
   {
     "course_code": "RLST084  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2LT",
-      "2RES",
-      "3HHR",
-      "3LBR",
-      "3REL",
-      "AMST",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2LT", "2RES", "3HHR", "3LBR", "3REL", "AMST", "RLST"]
   },
   {
     "course_code": "RLST085  SC",
@@ -36792,19 +33610,7 @@
   {
     "course_code": "RLST090  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "CLAS",
-      "FGSS",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2FYA", "2LT", "2WS", "AGFS", "CLAS", "FGSS", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST091  SC",
@@ -36814,16 +33620,7 @@
   {
     "course_code": "RLST092  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2LT",
-      "CLAS",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2FYA", "2LT", "CLAS", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST093  SC",
@@ -36848,17 +33645,7 @@
   {
     "course_code": "RLST096  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2FYA",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "CLAS",
-      "FGSS",
-      "LAMS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2FYA", "2LT", "2WS", "AGFS", "CLAS", "FGSS", "LAMS", "RLST"]
   },
   {
     "course_code": "RLST097  PO",
@@ -36923,18 +33710,7 @@
   {
     "course_code": "RLST106  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2WS",
-      "5HUM",
-      "AGFS",
-      "ASIA",
-      "GFS",
-      "GWFS",
-      "IIS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "2WS", "5HUM", "AGFS", "ASIA", "GFS", "GWFS", "IIS", "RLST"]
   },
   {
     "course_code": "RLST107  PO",
@@ -37004,16 +33780,7 @@
   {
     "course_code": "RLST118  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2WS",
-      "3REL",
-      "AGFS",
-      "ASIA",
-      "GWFS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "2WS", "3REL", "AGFS", "ASIA", "GWFS", "RLST"]
   },
   {
     "course_code": "RLST119  PZ",
@@ -37053,31 +33820,12 @@
   {
     "course_code": "RLST128  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1DDP",
-      "1P8",
-      "2LT",
-      "ASIA",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "1DDP", "1P8", "2LT", "ASIA", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST129  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "3REL",
-      "JWST",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "3REL", "JWST", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST130  CM",
@@ -37102,17 +33850,7 @@
   {
     "course_code": "RLST135  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "3LBR",
-      "3REL",
-      "JWST",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "3LBR", "3REL", "JWST", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST136  CM",
@@ -37222,17 +33960,7 @@
   {
     "course_code": "RLST155  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1CP",
-      "1DDP",
-      "1P10",
-      "2LT",
-      "5SRX",
-      "AMST",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "1ADR", "1CP", "1DDP", "1P10", "2LT", "5SRX", "AMST", "RLST"]
   },
   {
     "course_code": "RLST156  CM",
@@ -37277,38 +34005,12 @@
   {
     "course_code": "RLST163  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2WS",
-      "3REL",
-      "AGFS",
-      "GWFS",
-      "GWS",
-      "JWST",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "2WS", "3REL", "AGFS", "GWFS", "GWS", "JWST", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST164  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1DDP",
-      "1P7",
-      "2LT",
-      "2WS",
-      "ASIA",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAMS",
-      "MENA",
-      "MES",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "1DDP", "1P7", "2LT", "2WS", "ASIA", "FGSS", "GWFS", "GWS", "LAMS", "MENA", "MES", "RLST"]
   },
   {
     "course_code": "RLST165  CM",
@@ -37328,17 +34030,7 @@
   {
     "course_code": "RLST167  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "GFS",
-      "GWFS",
-      "IIS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "2WS", "5HUM", "5SOC", "GFS", "GWFS", "IIS", "RLST"]
   },
   {
     "course_code": "RLST167  SC",
@@ -37358,17 +34050,7 @@
   {
     "course_code": "RLST170  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "2LT",
-      "2WS",
-      "CLAS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAMS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "2LT", "2WS", "CLAS", "FGSS", "GWFS", "GWS", "LAMS", "RLST"]
   },
   {
     "course_code": "RLST171  CM",
@@ -37468,18 +34150,7 @@
   {
     "course_code": "RLST181  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "1CP",
-      "2LT",
-      "2WS",
-      "5SJT",
-      "AGFS",
-      "ENGL",
-      "GWS",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "1ADR", "1CP", "2LT", "2WS", "5SJT", "AGFS", "ENGL", "GWS", "RLST"]
   },
   {
     "course_code": "RLST182  SC",
@@ -37494,18 +34165,7 @@
   {
     "course_code": "RLST184  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A3",
-      "1ADR",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "JWST",
-      "RLST"
-    ]
+    "course_areas": ["1A3", "1ADR", "2LT", "2WS", "AGFS", "FGSS", "GWFS", "GWS", "JWST", "RLST"]
   },
   {
     "course_code": "RLST186  CM",
@@ -37785,17 +34445,7 @@
   {
     "course_code": "RUST079  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1DDP",
-      "1P1",
-      "1WIR",
-      "ALNT",
-      "CLIT",
-      "FLNT",
-      "RUSS",
-      "RUST"
-    ]
+    "course_areas": ["1A1", "1DDP", "1P1", "1WIR", "ALNT", "CLIT", "FLNT", "RUSS", "RUST"]
   },
   {
     "course_code": "RUST080  PO",
@@ -37830,20 +34480,7 @@
   {
     "course_code": "RUST112  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1P8",
-      "1SIR",
-      "2WS",
-      "ALNT",
-      "CLIT",
-      "FGSS",
-      "FLNT",
-      "GWFS",
-      "GWS",
-      "RUSS",
-      "RUST"
-    ]
+    "course_areas": ["1A1", "1P8", "1SIR", "2WS", "ALNT", "CLIT", "FGSS", "FLNT", "GWFS", "GWS", "RUSS", "RUST"]
   },
   {
     "course_code": "RUST113  PO",
@@ -37858,18 +34495,7 @@
   {
     "course_code": "RUST175  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1DDP",
-      "1WIR",
-      "ALNT",
-      "CLIT",
-      "FLNT",
-      "IR",
-      "MES",
-      "RUSS",
-      "RUST"
-    ]
+    "course_areas": ["1A1", "1DDP", "1WIR", "ALNT", "CLIT", "FLNT", "IR", "MES", "RUSS", "RUST"]
   },
   {
     "course_code": "RUST176  PO",
@@ -38009,17 +34635,7 @@
   {
     "course_code": "SOC 030  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "5SOC",
-      "AMST",
-      "CHST",
-      "LAST",
-      "SOC"
-    ]
+    "course_areas": ["1A2", "1ADR", "2RES", "2SS", "5SOC", "AMST", "CHST", "LAST", "SOC"]
   },
   {
     "course_code": "SOC 031  PZ",
@@ -38034,17 +34650,7 @@
   {
     "course_code": "SOC 035  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "5SRX",
-      "AFRI",
-      "ORST",
-      "SOC"
-    ]
+    "course_areas": ["1A2", "2RES", "2SS", "5IUL", "5SOC", "5SRX", "AFRI", "ORST", "SOC"]
   },
   {
     "course_code": "SOC 036  PZ",
@@ -38379,17 +34985,7 @@
   {
     "course_code": "SOC 108  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2WS",
-      "5IUL",
-      "5SOC",
-      "AFRI",
-      "AGFS",
-      "GFS",
-      "SOC",
-      "STS"
-    ]
+    "course_areas": ["1A2", "2WS", "5IUL", "5SOC", "AFRI", "AGFS", "GFS", "SOC", "STS"]
   },
   {
     "course_code": "SOC 109  PZ",
@@ -38509,19 +35105,7 @@
   {
     "course_code": "SOC 126  AA",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "1DDP",
-      "1SIR",
-      "1WIR",
-      "2RES",
-      "2SS",
-      "AMST",
-      "ASAM",
-      "ASIA",
-      "SOC"
-    ]
+    "course_areas": ["1A2", "1ADR", "1DDP", "1SIR", "1WIR", "2RES", "2SS", "AMST", "ASAM", "ASIA", "SOC"]
   },
   {
     "course_code": "SOC 126  PZ",
@@ -38621,21 +35205,7 @@
   {
     "course_code": "SOC 150  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "1ADR",
-      "1CP",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "CHST",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAST",
-      "SOC"
-    ]
+    "course_areas": ["1A2", "1ADR", "1CP", "2RES", "2WS", "AGFS", "AMST", "CHST", "FGSS", "GWFS", "GWS", "LAST", "SOC"]
   },
   {
     "course_code": "SOC 152  PZ",
@@ -38670,17 +35240,7 @@
   {
     "course_code": "SOC 157  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A2",
-      "2WS",
-      "5SOC",
-      "5WRI",
-      "AMST",
-      "GFS",
-      "GWFS",
-      "GWS",
-      "SOC"
-    ]
+    "course_areas": ["1A2", "2WS", "5SOC", "5WRI", "AMST", "GFS", "GWFS", "GWS", "SOC"]
   },
   {
     "course_code": "SOC 158  PZ",
@@ -39115,18 +35675,7 @@
   {
     "course_code": "SPAN100  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2RES",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "5SRX",
-      "ALAN",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2RES", "5HUM", "5IUG", "5IUL", "5SOC", "5SRX", "ALAN", "SPAN"]
   },
   {
     "course_code": "SPAN100  SC",
@@ -39201,19 +35750,7 @@
   {
     "course_code": "SPAN106  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P9",
-      "2WS",
-      "ALAN",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAST",
-      "MS",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "1P9", "2WS", "ALAN", "FGSS", "GWFS", "GWS", "LAST", "MS", "SPAN"]
   },
   {
     "course_code": "SPAN107  PO",
@@ -39323,20 +35860,7 @@
   {
     "course_code": "SPAN127  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "AMST",
-      "CHST",
-      "FGSS",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2RES", "2WS", "AGFS", "ALAN", "AMST", "CHST", "FGSS", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN127  PO",
@@ -39366,33 +35890,12 @@
   {
     "course_code": "SPAN130  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2WS",
-      "ALAN",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2WS", "ALAN", "FGSS", "GWFS", "GWS", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN131  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "CHST",
-      "FGSS",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2WS", "AGFS", "ALAN", "CHST", "FGSS", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN132  PZ",
@@ -39447,34 +35950,12 @@
   {
     "course_code": "SPAN140  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "CHST",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2WS", "AGFS", "ALAN", "CHST", "FGSS", "GWFS", "GWS", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN140  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "MS",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2WS", "AGFS", "ALAN", "FGSS", "MS", "SPAN"]
   },
   {
     "course_code": "SPAN142  CM",
@@ -39484,35 +35965,12 @@
   {
     "course_code": "SPAN142  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "1P9",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "1P9", "2RES", "2WS", "AGFS", "ALAN", "FGSS", "GWFS", "GWS", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN144  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "ALAN",
-      "EA",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "5HUM", "5IUG", "5SJT", "ALAN", "EA", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN145  PO",
@@ -39522,18 +35980,7 @@
   {
     "course_code": "SPAN146  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2WS", "AGFS", "ALAN", "FGSS", "GWFS", "GWS", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN148  CM",
@@ -39558,16 +36005,7 @@
   {
     "course_code": "SPAN152  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "GWFS",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2WS", "AGFS", "ALAN", "GWFS", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN152  PZ",
@@ -39582,16 +36020,7 @@
   {
     "course_code": "SPAN153  CM",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "3HHR",
-      "3LBR",
-      "ALAN",
-      "LAST",
-      "LEAD",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "3HHR", "3LBR", "ALAN", "LAST", "LEAD", "SPAN"]
   },
   {
     "course_code": "SPAN153  PO",
@@ -39601,17 +36030,7 @@
   {
     "course_code": "SPAN154  CH",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2RES",
-      "2WS",
-      "5HUM",
-      "5SOC",
-      "5SRP",
-      "5WRI",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2RES", "2WS", "5HUM", "5SOC", "5SRP", "5WRI", "SPAN"]
   },
   {
     "course_code": "SPAN154  CM",
@@ -39621,16 +36040,7 @@
   {
     "course_code": "SPAN154  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2RES",
-      "5SJT",
-      "CHST",
-      "LAST",
-      "SPAN"
-    ]
+    "course_areas": ["1A1", "1FL", "2LT", "2RES", "5SJT", "CHST", "LAST", "SPAN"]
   },
   {
     "course_code": "SPAN155  SC",
@@ -39700,16 +36110,7 @@
   {
     "course_code": "SPAN163  SC",
     "catalog": "UG22",
-    "course_areas": [
-      "1FL",
-      "2LT",
-      "2WS",
-      "ALAN",
-      "FGSS",
-      "HMSC",
-      "INDG",
-      "SPAN"
-    ]
+    "course_areas": ["1FL", "2LT", "2WS", "ALAN", "FGSS", "HMSC", "INDG", "SPAN"]
   },
   {
     "course_code": "SPAN164  SC",
@@ -40659,16 +37060,7 @@
   {
     "course_code": "THEA115M PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1ADR",
-      "1SIR",
-      "2FA",
-      "AFRI",
-      "ART",
-      "ASAM",
-      "THEA"
-    ]
+    "course_areas": ["1A1", "1ADR", "1SIR", "2FA", "AFRI", "ART", "ASAM", "THEA"]
   },
   {
     "course_code": "THEA115N PO",
@@ -40738,18 +37130,7 @@
   {
     "course_code": "THEA188  PO",
     "catalog": "UG22",
-    "course_areas": [
-      "1A1",
-      "1DDP",
-      "1SIR",
-      "1WIR",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "THEA"
-    ]
+    "course_areas": ["1A1", "1DDP", "1SIR", "1WIR", "2WS", "AGFS", "FGSS", "GWFS", "GWS", "THEA"]
   },
   {
     "course_code": "THEA190  PO",
@@ -40984,16 +37365,7 @@
   {
     "course_code": "WRIT031  PZ",
     "catalog": "UG22",
-    "course_areas": [
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5WRI",
-      "INSO",
-      "POST",
-      "WRIT"
-    ]
+    "course_areas": ["5HUM", "5IUL", "5SJT", "5SOC", "5WRI", "INSO", "POST", "WRIT"]
   },
   {
     "course_code": "WRIT035  PZ",

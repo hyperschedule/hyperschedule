@@ -230,16 +230,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1SIR",
-      "2LT",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SRX",
-      "AFRI"
-    ],
+    "courseAreas": ["1A3", "1SIR", "2LT", "5HUM", "5IUL", "5SJT", "5SRX", "AFRI"],
     "instructors": [
       {
         "name": "Harris, Laura"
@@ -1268,16 +1259,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "ANTH",
-      "COGS",
-      "LGCS"
-    ],
+    "courseAreas": ["1A2", "2SS", "5IUG", "5IUL", "5SOC", "ANTH", "COGS", "LGCS"],
     "instructors": [
       {
         "name": "Strauss, Claudia"
@@ -1331,21 +1313,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "5HUM",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "ANTH",
-      "ASIA",
-      "CGS",
-      "EA",
-      "GFS",
-      "GWFS"
-    ],
+    "courseAreas": ["1A2", "2SS", "2WS", "5HUM", "5SJT", "5SOC", "AGFS", "ANTH", "ASIA", "CGS", "EA", "GFS", "GWFS"],
     "instructors": [
       {
         "name": "Chao, Emily"
@@ -1399,17 +1367,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST",
-      "INDG"
-    ],
+    "courseAreas": ["1A2", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "HIST", "INDG"],
     "instructors": [
       {
         "name": "Segal, Daniel"
@@ -1679,18 +1637,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "2WS",
-      "5SOC",
-      "AGFS",
-      "ANTH",
-      "CGS",
-      "GFS",
-      "GWFS",
-      "GWS"
-    ],
+    "courseAreas": ["1A2", "2SS", "2WS", "5SOC", "AGFS", "ANTH", "CGS", "GFS", "GWFS", "GWS"],
     "instructors": [
       {
         "name": "Chao, Emily"
@@ -3379,20 +3326,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "MS"
-    ],
+    "courseAreas": ["1A1", "2LT", "2RES", "2WS", "AFRI", "AGFS", "AMST", "ARHI", "FGSS", "GWFS", "GWS", "MS"],
     "instructors": [
       {
         "name": "Jackson, Phyllis"
@@ -3716,21 +3650,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1P5",
-      "1SIR",
-      "1WIR",
-      "2LT",
-      "2WS",
-      "5IUG",
-      "AGFS",
-      "ARHI",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAMS"
-    ],
+    "courseAreas": ["1A1", "1P5", "1SIR", "1WIR", "2LT", "2WS", "5IUG", "AGFS", "ARHI", "FGSS", "GWFS", "GWS", "LAMS"],
     "instructors": [
       {
         "name": "Gorse, George"
@@ -6493,18 +6413,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ],
+    "courseAreas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"],
     "instructors": [
       {
         "name": "Patel, Soham"
@@ -6558,18 +6467,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ],
+    "courseAreas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"],
     "instructors": [
       {
         "name": "Patel, Soham"
@@ -7004,16 +6902,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT"
-    ],
+    "courseAreas": ["5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT"],
     "instructors": [
       {
         "name": "Patel, Soham"
@@ -7067,16 +6956,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2FYA",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "ASAM",
-      "FGSS"
-    ],
+    "courseAreas": ["1A3", "2FYA", "2RES", "2WS", "AGFS", "AMST", "ASAM", "FGSS"],
     "instructors": [
       {
         "name": "Yim, Rachel"
@@ -13013,17 +12893,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "2MTH",
-      "5NAT",
-      "5QUA",
-      "BIOL",
-      "DSCI",
-      "EA",
-      "NEUR",
-      "SCPB"
-    ],
+    "courseAreas": ["1A5", "2MTH", "5NAT", "5QUA", "BIOL", "DSCI", "EA", "NEUR", "SCPB"],
     "instructors": [
       {
         "name": "Ferree, Elise"
@@ -13077,17 +12947,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "2MTH",
-      "5NAT",
-      "5QUA",
-      "BIOL",
-      "DSCI",
-      "EA",
-      "NEUR",
-      "SCPB"
-    ],
+    "courseAreas": ["1A5", "2MTH", "5NAT", "5QUA", "BIOL", "DSCI", "EA", "NEUR", "SCPB"],
     "instructors": [
       {
         "name": "Kohn, Cory"
@@ -15733,19 +15593,7 @@
     },
     "status": "O",
     "credits": 1.5,
-    "courseAreas": [
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "AMST",
-      "CASA",
-      "CGS",
-      "EA",
-      "ONT",
-      "ORST",
-      "SOC"
-    ],
+    "courseAreas": ["5IUL", "5SJT", "5SOC", "5SRX", "AMST", "CASA", "CGS", "EA", "ONT", "ORST", "SOC"],
     "instructors": [
       {
         "name": "Peterson, Tessa"
@@ -15799,18 +15647,7 @@
     },
     "status": "O",
     "credits": 1.5,
-    "courseAreas": [
-      "5IUL",
-      "5SJT",
-      "5SRX",
-      "AMST",
-      "CASA",
-      "CGS",
-      "EA",
-      "ONT",
-      "ORST",
-      "SOC"
-    ],
+    "courseAreas": ["5IUL", "5SJT", "5SRX", "AMST", "CASA", "CGS", "EA", "ONT", "ORST", "SOC"],
     "instructors": [
       {
         "name": "Staff, "
@@ -15972,17 +15809,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "CGS",
-      "GFS",
-      "GWFS"
-    ],
+    "courseAreas": ["2WS", "5HUM", "5IUG", "5SJT", "5SOC", "AGFS", "CGS", "GFS", "GWFS"],
     "instructors": [
       {
         "name": "Ygarza, George"
@@ -16036,17 +15863,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "2WS",
-      "5HUM",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "ASIA",
-      "CGS",
-      "GFS",
-      "RLST"
-    ],
+    "courseAreas": ["2WS", "5HUM", "5SJT", "5SOC", "AGFS", "ASIA", "CGS", "GFS", "RLST"],
     "instructors": [
       {
         "name": "Staff, "
@@ -23993,18 +23810,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ],
+    "courseAreas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"],
     "instructors": [
       {
         "name": "Patel, Soham"
@@ -24058,18 +23864,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ],
+    "courseAreas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"],
     "instructors": [
       {
         "name": "Patel, Soham"
@@ -24123,17 +23918,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "2WS",
-      "5HUM",
-      "5IUL",
-      "5SOC",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "SOC",
-      "STS"
-    ],
+    "courseAreas": ["2WS", "5HUM", "5IUL", "5SOC", "CHLT", "CHST", "GFS", "SOC", "STS"],
     "instructors": [
       {
         "name": "Miranda, Magally"
@@ -24311,17 +24096,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2RES",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "CHLT",
-      "CHST",
-      "SOC"
-    ],
+    "courseAreas": ["1A3", "2RES", "5IUL", "5SJT", "5SOC", "5SRX", "CHLT", "CHST", "SOC"],
     "instructors": [
       {
         "name": "Calderon, Jose"
@@ -24375,17 +24150,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "AFRI",
-      "AMST",
-      "ASAM",
-      "CHLT",
-      "CHST"
-    ],
+    "courseAreas": ["5HUM", "5IUG", "5IUL", "5SJT", "AFRI", "AMST", "ASAM", "CHLT", "CHST"],
     "instructors": [
       {
         "name": "Patel, Soham"
@@ -24439,20 +24204,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AGFS",
-      "CHLT",
-      "CHST",
-      "GFS",
-      "GWFS",
-      "SOC"
-    ],
+    "courseAreas": ["1A3", "2RES", "2WS", "5IUL", "5SJT", "5SOC", "AGFS", "CHLT", "CHST", "GFS", "GWFS", "SOC"],
     "instructors": [
       {
         "name": "Miranda, Kimberly"
@@ -24506,19 +24258,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5SRX",
-      "AMST",
-      "CHLT",
-      "CHST",
-      "LAST"
-    ],
+    "courseAreas": ["1A3", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "5SRX", "AMST", "CHLT", "CHST", "LAST"],
     "instructors": [
       {
         "name": "Rivas, Carlos"
@@ -24788,17 +24528,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2FA",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "CHST",
-      "LAST",
-      "MUS"
-    ],
+    "courseAreas": ["1A3", "2FA", "2RES", "2WS", "AGFS", "AMST", "CHST", "LAST", "MUS"],
     "instructors": [
       {
         "name": "Gonzalez, Martha"
@@ -26094,16 +25824,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "2FYA",
-      "2LT",
-      "5HUM",
-      "5IUG",
-      "ANTH",
-      "ARHI",
-      "CLAS"
-    ],
+    "courseAreas": ["1A1", "2FYA", "2LT", "5HUM", "5IUG", "ANTH", "ARHI", "CLAS"],
     "instructors": [
       {
         "name": "Berenfeld, Michelle"
@@ -26157,16 +25878,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "2LT",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "ANTH",
-      "ARHI",
-      "CLAS",
-      "EA"
-    ],
+    "courseAreas": ["2LT", "5HUM", "5IUG", "5SJT", "ANTH", "ARHI", "CLAS", "EA"],
     "instructors": [
       {
         "name": "Berenfeld, Michelle"
@@ -28541,10 +28253,7 @@
         "startTime": 53100,
         "endTime": 60300,
         "days": ["W"],
-        "locations": [
-          "McGregor CompSci Center 203",
-          "McGregor CompSci Center 204"
-        ]
+        "locations": ["McGregor CompSci Center 203", "McGregor CompSci Center 204"]
       }
     ],
     "identifier": {
@@ -29860,11 +29569,7 @@
         "startTime": 47700,
         "endTime": 52200,
         "days": ["F"],
-        "locations": [
-          "McGregor CompSci Center 203",
-          "McGregor CompSci Center 204",
-          "McGregor CompSci Center 205"
-        ]
+        "locations": ["McGregor CompSci Center 203", "McGregor CompSci Center 204", "McGregor CompSci Center 205"]
       }
     ],
     "identifier": {
@@ -29924,11 +29629,7 @@
         "startTime": 47700,
         "endTime": 52200,
         "days": ["F"],
-        "locations": [
-          "McGregor CompSci Center 203",
-          "McGregor CompSci Center 204",
-          "McGregor CompSci Center 205"
-        ]
+        "locations": ["McGregor CompSci Center 203", "McGregor CompSci Center 204", "McGregor CompSci Center 205"]
       }
     ],
     "identifier": {
@@ -30147,11 +29848,7 @@
         "startTime": 34500,
         "endTime": 39000,
         "days": ["M", "W"],
-        "locations": [
-          "McGregor CompSci Center 203",
-          "McGregor CompSci Center 204",
-          "McGregor CompSci Center 205"
-        ]
+        "locations": ["McGregor CompSci Center 203", "McGregor CompSci Center 204", "McGregor CompSci Center 205"]
       }
     ],
     "identifier": {
@@ -30208,11 +29905,7 @@
         "startTime": 39600,
         "endTime": 44100,
         "days": ["M", "W"],
-        "locations": [
-          "McGregor CompSci Center 203",
-          "McGregor CompSci Center 204",
-          "McGregor CompSci Center 205"
-        ]
+        "locations": ["McGregor CompSci Center 203", "McGregor CompSci Center 204", "McGregor CompSci Center 205"]
       }
     ],
     "identifier": {
@@ -32069,11 +31762,7 @@
         "startTime": 58500,
         "endTime": 63000,
         "days": ["R"],
-        "locations": [
-          "Galileo Hall MCAL",
-          "Galileo Hall PRYN",
-          "Galileo Hall EDW"
-        ]
+        "locations": ["Galileo Hall MCAL", "Galileo Hall PRYN", "Galileo Hall EDW"]
       }
     ],
     "identifier": {
@@ -39789,10 +39478,7 @@
         "startTime": 53100,
         "endTime": 57600,
         "days": ["M", "W"],
-        "locations": [
-          "Hahn Social Science Bldg 108",
-          "Hahn Social Science Bldg 204"
-        ]
+        "locations": ["Hahn Social Science Bldg 108", "Hahn Social Science Bldg 204"]
       }
     ],
     "identifier": {
@@ -39943,16 +39629,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "2MTH",
-      "3E1",
-      "3PPO",
-      "3PPS",
-      "5QUA",
-      "DSCI",
-      "ECON"
-    ],
+    "courseAreas": ["1A5", "2MTH", "3E1", "3PPO", "3PPS", "5QUA", "DSCI", "ECON"],
     "instructors": [
       {
         "name": "Raviv, Yaron"
@@ -40006,16 +39683,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "2MTH",
-      "3E1",
-      "3PPO",
-      "3PPS",
-      "5QUA",
-      "DSCI",
-      "ECON"
-    ],
+    "courseAreas": ["1A5", "2MTH", "3E1", "3PPO", "3PPS", "5QUA", "DSCI", "ECON"],
     "instructors": [
       {
         "name": "Raviv, Yaron"
@@ -40069,16 +39737,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "2MTH",
-      "3E1",
-      "3PPO",
-      "3PPS",
-      "5QUA",
-      "DSCI",
-      "ECON"
-    ],
+    "courseAreas": ["1A5", "2MTH", "3E1", "3PPO", "3PPS", "5QUA", "DSCI", "ECON"],
     "instructors": [
       {
         "name": "Raviv, Yaron"
@@ -40132,16 +39791,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "2MTH",
-      "3E1",
-      "3PPO",
-      "3PPS",
-      "5QUA",
-      "DSCI",
-      "ECON"
-    ],
+    "courseAreas": ["1A5", "2MTH", "3E1", "3PPO", "3PPS", "5QUA", "DSCI", "ECON"],
     "instructors": [
       {
         "name": "Keskinel, Meric"
@@ -44572,17 +44222,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "5IUL",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ],
+    "courseAreas": ["1A1", "2LT", "2RES", "2WS", "5IUL", "ENGL", "FGSS", "GWFS", "GWS"],
     "instructors": [
       {
         "name": "Thomas, Valorie"
@@ -45122,21 +44762,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1P1",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AFRI",
-      "AGFS",
-      "AMST",
-      "BLCK",
-      "ENGL",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ],
+    "courseAreas": ["1A1", "1P1", "2LT", "2RES", "2WS", "AFRI", "AGFS", "AMST", "BLCK", "ENGL", "FGSS", "GWFS", "GWS"],
     "instructors": [
       {
         "name": "Thomas, Valorie"
@@ -49009,16 +48635,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2RES",
-      "2WS",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "AMST",
-      "FGSS"
-    ],
+    "courseAreas": ["1A3", "2RES", "2WS", "5IUG", "5SJT", "AGFS", "AMST", "FGSS"],
     "instructors": [
       {
         "name": "Chatterjee, Piya"
@@ -51616,18 +51233,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1FL",
-      "1P8",
-      "1WIR",
-      "2WS",
-      "ALAN",
-      "FGSS",
-      "FREN",
-      "GWFS",
-      "GWS"
-    ],
+    "courseAreas": ["1A1", "1FL", "1P8", "1WIR", "2WS", "ALAN", "FGSS", "FREN", "GWFS", "GWS"],
     "instructors": [
       {
         "name": "Waller, Margaret"
@@ -54795,16 +54401,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "DSCI",
-      "GOVT"
-    ],
+    "courseAreas": ["1A2", "2SS", "3PPB", "3PPO", "3PPS", "AGPL", "DSCI", "GOVT"],
     "instructors": [
       {
         "name": "Sinclair, John"
@@ -55293,16 +54890,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3PPO",
-      "3PPS",
-      "AGPL",
-      "AMST",
-      "GOVT"
-    ],
+    "courseAreas": ["1A2", "2SS", "3AMG", "3PPO", "3PPS", "AGPL", "AMST", "GOVT"],
     "instructors": [
       {
         "name": "Pitney, John"
@@ -55626,16 +55214,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "3AMG",
-      "3LBR",
-      "AGPL",
-      "AMST",
-      "GOVT",
-      "LEAD"
-    ],
+    "courseAreas": ["1A2", "2SS", "3AMG", "3LBR", "AGPL", "AMST", "GOVT", "LEAD"],
     "instructors": [
       {
         "name": "Busch, Andrew"
@@ -56772,16 +56351,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "2WS",
-      "5SJT",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ],
+    "courseAreas": ["1A3", "1ADR", "2WS", "5SJT", "AGFS", "FGSS", "GWFS", "GWS"],
     "instructors": [
       {
         "name": "Torralba, Stefan"
@@ -56835,16 +56405,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "2WS",
-      "5SJT",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS"
-    ],
+    "courseAreas": ["1A3", "1ADR", "2WS", "5SJT", "AGFS", "FGSS", "GWFS", "GWS"],
     "instructors": [
       {
         "name": "Staff, Registrar"
@@ -56898,19 +56459,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "1WIR",
-      "2WS",
-      "AGFS",
-      "AMST",
-      "ASAM",
-      "ENGL",
-      "FGSS",
-      "GWS",
-      "INDG"
-    ],
+    "courseAreas": ["1A3", "1ADR", "1WIR", "2WS", "AGFS", "AMST", "ASAM", "ENGL", "FGSS", "GWS", "INDG"],
     "instructors": [
       {
         "name": "Bahng, Aimee"
@@ -57180,16 +56729,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "HIST"
-    ],
+    "courseAreas": ["1A3", "2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "HIST"],
     "instructors": [
       {
         "name": "Segal, Daniel"
@@ -57351,16 +56891,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "1DDP",
-      "2RES",
-      "2SS",
-      "AMST",
-      "CHST",
-      "HIST"
-    ],
+    "courseAreas": ["1A3", "1ADR", "1DDP", "2RES", "2SS", "AMST", "CHST", "HIST"],
     "instructors": [
       {
         "name": "Summers Sandoval, Tomas"
@@ -57576,16 +57107,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AMST",
-      "HIST"
-    ],
+    "courseAreas": ["2SS", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "AMST", "HIST"],
     "instructors": [
       {
         "name": "Willoughby, Christopher"
@@ -57693,16 +57215,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2FYA",
-      "2SS",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "HIST",
-      "LAST"
-    ],
+    "courseAreas": ["1A3", "2FYA", "2SS", "2WS", "AGFS", "FGSS", "HIST", "LAST"],
     "instructors": [
       {
         "name": "Forster, Cindy"
@@ -57756,16 +57269,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2SS",
-      "3HEU",
-      "3HGE",
-      "3HPM",
-      "CLAS",
-      "HIST",
-      "LAMS"
-    ],
+    "courseAreas": ["1A3", "2SS", "3HEU", "3HGE", "3HPM", "CLAS", "HIST", "LAMS"],
     "instructors": [
       {
         "name": "Bjornlie, Michael"
@@ -57819,17 +57323,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3HPM",
-      "HIST",
-      "JWST",
-      "MENA",
-      "MES"
-    ],
+    "courseAreas": ["1A3", "2SS", "3HGE", "3HNW", "3HPM", "HIST", "JWST", "MENA", "MES"],
     "instructors": [
       {
         "name": "Ferguson, Heather"
@@ -57883,17 +57377,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HNW",
-      "3HPM",
-      "HIST",
-      "JWST",
-      "MENA",
-      "MES"
-    ],
+    "courseAreas": ["1A3", "2SS", "3HGE", "3HNW", "3HPM", "HIST", "JWST", "MENA", "MES"],
     "instructors": [
       {
         "name": "Ferguson, Heather"
@@ -57947,16 +57431,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2SS",
-      "3HGE",
-      "3HHR",
-      "3HNW",
-      "3HPM",
-      "ASIA",
-      "HIST"
-    ],
+    "courseAreas": ["1A3", "2SS", "3HGE", "3HHR", "3HNW", "3HPM", "ASIA", "HIST"],
     "instructors": [
       {
         "name": "Wang, Chelsea"
@@ -58172,18 +57647,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1P8",
-      "2SS",
-      "CLIT",
-      "FLNT",
-      "GERM",
-      "HIST",
-      "IR",
-      "RUSS",
-      "RUST"
-    ],
+    "courseAreas": ["1A3", "1P8", "2SS", "CLIT", "FLNT", "GERM", "HIST", "IR", "RUSS", "RUST"],
     "instructors": [
       {
         "name": "Chu, Pey-Yi"
@@ -58291,17 +57755,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AMST",
-      "HIST",
-      "STS"
-    ],
+    "courseAreas": ["2SS", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "AMST", "HIST", "STS"],
     "instructors": [
       {
         "name": "Willoughby, Christopher"
@@ -58898,20 +58352,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HHR",
-      "3HUS",
-      "AGFS",
-      "AMST",
-      "GWFS",
-      "GWS",
-      "HIST"
-    ],
+    "courseAreas": ["1A3", "1ADR", "2SS", "2WS", "3HGE", "3HHR", "3HUS", "AGFS", "AMST", "GWFS", "GWS", "HIST"],
     "instructors": [
       {
         "name": "Selig, Diana"
@@ -58965,20 +58406,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HHR",
-      "3HUS",
-      "AGFS",
-      "AMST",
-      "GWFS",
-      "GWS",
-      "HIST"
-    ],
+    "courseAreas": ["1A3", "1ADR", "2SS", "2WS", "3HGE", "3HHR", "3HUS", "AGFS", "AMST", "GWFS", "GWS", "HIST"],
     "instructors": [
       {
         "name": "Selig, Diana"
@@ -59629,18 +59057,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "2RES",
-      "2SS",
-      "5HUM",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "5WRI",
-      "AMST",
-      "HIST",
-      "STS"
-    ],
+    "courseAreas": ["2RES", "2SS", "5HUM", "5IUL", "5SJT", "5SOC", "5WRI", "AMST", "HIST", "STS"],
     "instructors": [
       {
         "name": "Willoughby, Christopher"
@@ -59748,18 +59165,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HNW",
-      "AGFS",
-      "GFS",
-      "GWFS",
-      "HIST",
-      "LAST"
-    ],
+    "courseAreas": ["1A3", "2SS", "2WS", "3HGE", "3HNW", "AGFS", "GFS", "GWFS", "HIST", "LAST"],
     "instructors": [
       {
         "name": "Sarzynski, Sarah"
@@ -59975,19 +59381,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "2WS",
-      "3HGE",
-      "3HNW",
-      "AGFS",
-      "ASIA",
-      "GWFS",
-      "HIST",
-      "MES"
-    ],
+    "courseAreas": ["1A3", "2RES", "2SS", "2WS", "3HGE", "3HNW", "AGFS", "ASIA", "GWFS", "HIST", "MES"],
     "instructors": [
       {
         "name": "Panda, Ahona"
@@ -60041,18 +59435,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "5SOC",
-      "ANTH",
-      "ASAM",
-      "GFS",
-      "HIST",
-      "RLST"
-    ],
+    "courseAreas": ["2SS", "5HUM", "5IUG", "5SJT", "5SOC", "ANTH", "ASAM", "GFS", "HIST", "RLST"],
     "instructors": [
       {
         "name": "Johnson, Carina"
@@ -60106,17 +59489,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "2SS",
-      "2WS",
-      "3HAR",
-      "3HGE",
-      "3HNW",
-      "AGFS",
-      "ASIA",
-      "GWS",
-      "HIST"
-    ],
+    "courseAreas": ["2SS", "2WS", "3HAR", "3HGE", "3HNW", "AGFS", "ASIA", "GWS", "HIST"],
     "instructors": [
       {
         "name": "Panda, Ahona"
@@ -60278,17 +59651,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "2SS",
-      "2WS",
-      "5HUM",
-      "5IUG",
-      "5SJT",
-      "AGFS",
-      "GFS",
-      "GWFS",
-      "HIST"
-    ],
+    "courseAreas": ["2SS", "2WS", "5HUM", "5IUG", "5SJT", "AGFS", "GFS", "GWFS", "HIST"],
     "instructors": [
       {
         "name": "Johnson, Carina"
@@ -60774,19 +60137,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "2RES",
-      "2SS",
-      "3HAR",
-      "3HGE",
-      "3HUS",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AMST",
-      "HIST"
-    ],
+    "courseAreas": ["1A3", "2RES", "2SS", "3HAR", "3HGE", "3HUS", "3PPB", "3PPO", "3PPS", "AMST", "HIST"],
     "instructors": [
       {
         "name": "Geismer, Lily"
@@ -63921,18 +63272,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1P1",
-      "1SIR",
-      "ALNT",
-      "ASIA",
-      "CLIT",
-      "FLNT",
-      "JAPN",
-      "JPNT",
-      "MS"
-    ],
+    "courseAreas": ["1A1", "1P1", "1SIR", "ALNT", "ASIA", "CLIT", "FLNT", "JAPN", "JPNT", "MS"],
     "instructors": [
       {
         "name": "Kurita, Kyoko"
@@ -66746,17 +66086,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "2LT",
-      "3LIT",
-      "5IUG",
-      "AFRI",
-      "LIT",
-      "MENA",
-      "MES",
-      "MS"
-    ],
+    "courseAreas": ["1A1", "2LT", "3LIT", "5IUG", "AFRI", "LIT", "MENA", "MES", "MS"],
     "instructors": [
       {
         "name": "Aitel, Fazia"
@@ -66810,17 +66140,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "2LT",
-      "3LIT",
-      "5IUG",
-      "AFRI",
-      "LIT",
-      "MENA",
-      "MES",
-      "MS"
-    ],
+    "courseAreas": ["1A1", "2LT", "3LIT", "5IUG", "AFRI", "LIT", "MENA", "MES", "MS"],
     "instructors": [
       {
         "name": "Aitel, Fazia"
@@ -67312,16 +66632,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "1P3",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "MOBI",
-      "NEUR"
-    ],
+    "courseAreas": ["1A5", "1P3", "2MTH", "3MAT", "5QUA", "MATH", "MOBI", "NEUR"],
     "instructors": [
       {
         "name": "Tamagawa, Sherilyn"
@@ -67429,16 +66740,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "1P3",
-      "2FYA",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "NEUR"
-    ],
+    "courseAreas": ["1A5", "1P3", "2FYA", "2MTH", "3MAT", "5QUA", "MATH", "NEUR"],
     "instructors": [
       {
         "name": "Swift, Randall"
@@ -67600,16 +66902,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "1P3",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "MOBI",
-      "NEUR"
-    ],
+    "courseAreas": ["1A5", "1P3", "2MTH", "3MAT", "5QUA", "MATH", "MOBI", "NEUR"],
     "instructors": [
       {
         "name": "Garcia, Stephan"
@@ -67663,16 +66956,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "1P3",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "MOBI",
-      "NEUR"
-    ],
+    "courseAreas": ["1A5", "1P3", "2MTH", "3MAT", "5QUA", "MATH", "MOBI", "NEUR"],
     "instructors": [
       {
         "name": "Chavez, Angel"
@@ -67780,16 +67064,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "1A5",
-      "1P3",
-      "2FYA",
-      "2MTH",
-      "3MAT",
-      "5QUA",
-      "MATH",
-      "NEUR"
-    ],
+    "courseAreas": ["1A5", "1P3", "2FYA", "2MTH", "3MAT", "5QUA", "MATH", "NEUR"],
     "instructors": [
       {
         "name": "Chaderjian, Anie"
@@ -76144,17 +75419,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AMST",
-      "CGS",
-      "MS"
-    ],
+    "courseAreas": ["1A1", "5HUM", "5IUG", "5IUL", "5SJT", "5SOC", "AMST", "CGS", "MS"],
     "instructors": [
       {
         "name": "Esmaeli, Kouross"
@@ -80282,16 +79547,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A4",
-      "2NS",
-      "3SCI",
-      "5NAT",
-      "BIOL",
-      "NEUR",
-      "NSCI",
-      "PSYC"
-    ],
+    "courseAreas": ["1A4", "2NS", "3SCI", "5NAT", "BIOL", "NEUR", "NSCI", "PSYC"],
     "instructors": [
       {
         "name": "Scott-Kakures, Dion"
@@ -92141,18 +91397,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "1CP",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "PHIL"
-    ],
+    "courseAreas": ["1A3", "1ADR", "1CP", "2LT", "2WS", "AGFS", "FGSS", "GWFS", "GWS", "PHIL"],
     "instructors": [
       {
         "name": "Castagnetto, Susan"
@@ -99718,18 +98963,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "1P9",
-      "1WIR",
-      "2SS",
-      "5IUG",
-      "AGPL",
-      "EA",
-      "IR",
-      "LAST",
-      "POLI"
-    ],
+    "courseAreas": ["1A2", "1P9", "1WIR", "2SS", "5IUG", "AGPL", "EA", "IR", "LAST", "POLI"],
     "instructors": [
       {
         "name": "Williams, Heather"
@@ -101838,17 +101072,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "5HUM",
-      "5IUG",
-      "5SOC",
-      "AGPL",
-      "CGS",
-      "POLI",
-      "POST"
-    ],
+    "courseAreas": ["1A2", "2SS", "5HUM", "5IUG", "5SOC", "AGPL", "CGS", "POLI", "POST"],
     "instructors": [
       {
         "name": "Snowiss, Sharon"
@@ -102010,20 +101234,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "5IUL",
-      "5SJT",
-      "5SOC",
-      "AGPL",
-      "AMST",
-      "CHLT",
-      "CHST",
-      "POLI",
-      "POST"
-    ],
+    "courseAreas": ["1A2", "2RES", "2SS", "5IUL", "5SJT", "5SOC", "AGPL", "AMST", "CHLT", "CHST", "POLI", "POST"],
     "instructors": [
       {
         "name": "Pringle, Lisa"
@@ -102239,18 +101450,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "5SRX",
-      "AGPL",
-      "CHLT",
-      "CHST",
-      "POLI",
-      "POST"
-    ],
+    "courseAreas": ["1A2", "2SS", "5IUL", "5SOC", "5SRX", "AGPL", "CHLT", "CHST", "POLI", "POST"],
     "instructors": [
       {
         "name": "Pringle, Lisa"
@@ -102412,18 +101612,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2SS",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "AGPL",
-      "CGS",
-      "POLI",
-      "POST",
-      "STS"
-    ],
+    "courseAreas": ["1A2", "2SS", "5IUG", "5IUL", "5SOC", "AGPL", "CGS", "POLI", "POST", "STS"],
     "instructors": [
       {
         "name": "Snowiss, Sharon"
@@ -105297,18 +104486,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2WS",
-      "5IUG",
-      "5SOC",
-      "5WRI",
-      "AGFS",
-      "CGS",
-      "GFS",
-      "GWFS",
-      "PSYC"
-    ],
+    "courseAreas": ["1A2", "2WS", "5IUG", "5SOC", "5WRI", "AGFS", "CGS", "GFS", "GWFS", "PSYC"],
     "instructors": [
       {
         "name": "Banerjee, Mita"
@@ -106943,16 +106121,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "3HHR",
-      "3PPB",
-      "3PPO",
-      "3PPS",
-      "AMST",
-      "LGST",
-      "PSYC"
-    ],
+    "courseAreas": ["1A2", "3HHR", "3PPB", "3PPO", "3PPS", "AMST", "LGST", "PSYC"],
     "instructors": [
       {
         "name": "Costanzo, Mark"
@@ -108734,17 +107903,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A3",
-      "1ADR",
-      "2LT",
-      "2RES",
-      "3HHR",
-      "3LBR",
-      "3REL",
-      "AMST",
-      "RLST"
-    ],
+    "courseAreas": ["1A3", "1ADR", "2LT", "2RES", "3HHR", "3LBR", "3REL", "AMST", "RLST"],
     "instructors": [
       {
         "name": "Espinosa, Gaston"
@@ -110274,17 +109433,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "1ADR",
-      "2RES",
-      "2SS",
-      "5SOC",
-      "AMST",
-      "CHST",
-      "LAST",
-      "SOC"
-    ],
+    "courseAreas": ["1A2", "1ADR", "2RES", "2SS", "5SOC", "AMST", "CHST", "LAST", "SOC"],
     "instructors": [
       {
         "name": "Marquez, Oscar"
@@ -110338,17 +109487,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "2RES",
-      "2SS",
-      "5IUL",
-      "5SOC",
-      "5SRX",
-      "AFRI",
-      "ORST",
-      "SOC"
-    ],
+    "courseAreas": ["1A2", "2RES", "2SS", "5IUL", "5SOC", "5SRX", "AFRI", "ORST", "SOC"],
     "instructors": [
       {
         "name": "Kizer, Jessica"
@@ -111050,19 +110189,7 @@
     },
     "status": "C",
     "credits": 1,
-    "courseAreas": [
-      "1A2",
-      "1ADR",
-      "1DDP",
-      "1SIR",
-      "1WIR",
-      "2RES",
-      "2SS",
-      "AMST",
-      "ASAM",
-      "ASIA",
-      "SOC"
-    ],
+    "courseAreas": ["1A2", "1ADR", "1DDP", "1SIR", "1WIR", "2RES", "2SS", "AMST", "ASAM", "ASIA", "SOC"],
     "instructors": [
       {
         "name": "Thai, Hung"
@@ -114173,18 +113300,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1FL",
-      "2RES",
-      "5HUM",
-      "5IUG",
-      "5IUL",
-      "5SOC",
-      "5SRX",
-      "ALAN",
-      "SPAN"
-    ],
+    "courseAreas": ["1A1", "1FL", "2RES", "5HUM", "5IUG", "5IUL", "5SOC", "5SRX", "ALAN", "SPAN"],
     "instructors": [
       {
         "name": "Alfaro-Porras, Arianna"
@@ -114724,20 +113840,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "AMST",
-      "CHST",
-      "FGSS",
-      "LAST",
-      "SPAN"
-    ],
+    "courseAreas": ["1A1", "1FL", "2LT", "2RES", "2WS", "AGFS", "ALAN", "AMST", "CHST", "FGSS", "LAST", "SPAN"],
     "instructors": [
       {
         "name": "Alcala, Rita"
@@ -115061,17 +114164,7 @@
     },
     "status": "R",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1FL",
-      "2LT",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "MS",
-      "SPAN"
-    ],
+    "courseAreas": ["1A1", "1FL", "2LT", "2WS", "AGFS", "ALAN", "FGSS", "MS", "SPAN"],
     "instructors": [
       {
         "name": "Sanjuan, Carmen"
@@ -115125,20 +114218,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1FL",
-      "1P9",
-      "2RES",
-      "2WS",
-      "AGFS",
-      "ALAN",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "LAST",
-      "SPAN"
-    ],
+    "courseAreas": ["1A1", "1FL", "1P9", "2RES", "2WS", "AGFS", "ALAN", "FGSS", "GWFS", "GWS", "LAST", "SPAN"],
     "instructors": [
       {
         "name": "Chavez Silverman, Suzanne"
@@ -117625,18 +116705,7 @@
     },
     "status": "O",
     "credits": 1,
-    "courseAreas": [
-      "1A1",
-      "1DDP",
-      "1SIR",
-      "1WIR",
-      "2WS",
-      "AGFS",
-      "FGSS",
-      "GWFS",
-      "GWS",
-      "THEA"
-    ],
+    "courseAreas": ["1A1", "1DDP", "1SIR", "1WIR", "2WS", "AGFS", "FGSS", "GWFS", "GWS", "THEA"],
     "instructors": [
       {
         "name": "Jenkins, Lindsay"
