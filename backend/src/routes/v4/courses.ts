@@ -1,0 +1,43 @@
+import type { TermIdentifier } from "hyperschedule-shared/api/v4";
+import { Term } from "hyperschedule-shared/api/v4";
+import { getAllSections } from "../../db/models/course";
+import { App } from "@tinyhttp/app";
+
+const courseApp = new App();
+
+const validTerms: string[] = Object.values(Term);
+
+courseApp.get(
+    "/sections",
+
+    async function (request, reply) {
+        const sections = await getAllSections();
+        // server.log.info({ msg: "DB query end", reqId: request.id });
+        return reply.header("Access-Control-Allow-Origin", "*").send(sections);
+    },
+);
+
+courseApp.get("/sections/:year/:term", async (request, reply) => {
+    const year = parseInt(request.params.year!, 10);
+    if (isNaN(year))
+        return reply.status(400).send(`Invalid year ${request.params.year}`);
+    const term = request.params.term!.toUpperCase();
+    if (!validTerms.includes(term))
+        return reply
+            .status(400)
+            .send(
+                `Invalid term ${request.params.term}. Options are ${validTerms}.`,
+            );
+
+    // server.log.info({ msg: "DB query start", reqId: request.id });
+
+    const sections = await getAllSections({
+        term,
+        year,
+    } as TermIdentifier);
+
+    // server.log.info({ msg: "DB query end", reqId: request.id });
+    return reply.header("Access-Control-Allow-Origin", "*").send(sections);
+});
+
+export { courseApp };

@@ -1,21 +1,36 @@
-import fastify from "fastify";
+import { App } from "@tinyhttp/app";
 import { createLogger } from "./logger";
-import { connectToDb } from "./db";
-import { registerCourseRoutes } from "./routes/courses";
-import { DB_URL } from "./db/credentials";
+import type { Request, Response, NextFunction } from "@tinyhttp/app";
+import { cookieParser } from "@tinyhttp/cookie-parser";
+import { v4App } from "./routes/v4";
 
-const logger = createLogger("server.init");
+const logger = createLogger("server.base");
 
-// creating server and schemas
-export const server = fastify({ logger: createLogger("server.routes") });
-
-registerCourseRoutes();
-
-try {
-    // initializing database connection
-    await connectToDb(DB_URL);
-    const addr = await server.listen({ port: 8080 });
-    logger.info(`server listening on ${addr}`);
-} catch (e) {
-    logger.error(`Error starting server: ${e}`);
+export interface HSExtendedRequest extends Request {
+    id: number;
 }
+
+const server = new App().use(cookieParser());
+let counter = 1;
+
+server
+    .use("", (req: Request, res: Response, next: NextFunction) => {
+        const reqId = counter++;
+        logger.info(
+            {
+                "user-agent": req.headers["user-agent"],
+            },
+            "[%d] %s %s",
+            reqId,
+            req.method,
+            req.path,
+        );
+        (req as HSExtendedRequest).id = reqId;
+        next();
+        res.on("finish", () =>
+            logger.info("[%d] Completed %d", reqId, res.statusCode, res),
+        );
+    })
+    .use("/v4", v4App);
+
+export { server };
