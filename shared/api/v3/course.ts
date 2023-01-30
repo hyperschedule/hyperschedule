@@ -1,4 +1,5 @@
 import * as APIv4 from "../v4";
+import { z } from "zod";
 
 type integer = number;
 
@@ -77,7 +78,15 @@ export function courseListFromV4SectionList(sections: APIv4.Section[]): {
 } {
     return {
         terms: [],
-        courses: sections.map(courseFromV4Section),
+        courses: sections.flatMap((section) => {
+            try {
+                const course = courseFromV4Section(section);
+                return [course];
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        }),
     };
 }
 
@@ -98,10 +107,10 @@ function stringifyTime(secs: integer): string {
     const hours = Math.floor(total_minutes / 60);
     const minutes = total_minutes % 60;
 
-    const hours_string = hours.toString().padStart(2, "0");
-    const minutes_string = minutes.toString().padStart(2, "0");
+    const hoursString = hours.toString().padStart(2, "0");
+    const minutesString = minutes.toString().padStart(2, "0");
 
-    return `${hours_string}:${minutes_string}`;
+    return `${hoursString}:${minutesString}`;
 }
 
 function stringifyCourseDate(date: APIv4.CourseDate): string {

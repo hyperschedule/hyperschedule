@@ -129,15 +129,7 @@ const v3Course: APIv3.Course = {
 };
 
 function compareSchedules(x: APIv3.Schedule, y: APIv3.Schedule): number {
-    const xString = JSON.stringify(x);
-    const yString = JSON.stringify(y);
-    if (xString < yString) {
-        return -1;
-    } else if (xString > yString) {
-        return +1;
-    } else {
-        return 0;
-    }
+    return JSON.stringify(x).localeCompare(JSON.stringify(y));
 }
 
 describe("APIv3", () => {
