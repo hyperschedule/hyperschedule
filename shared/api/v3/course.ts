@@ -71,6 +71,16 @@ export function courseFromV4Section(s: APIv4.Section): Course {
     };
 }
 
+export function courseListFromV4SectionList(sections: APIv4.Section[]): {
+    terms: [];
+    courses: Course[];
+} {
+    return {
+        terms: [],
+        courses: sections.map(courseFromV4Section),
+    };
+}
+
 function stringifyWeekdayEnumArray(arr: APIv4.WeekdayEnum[]): string {
     return arr.join("");
 }
