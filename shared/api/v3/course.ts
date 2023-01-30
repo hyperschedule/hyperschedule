@@ -37,11 +37,11 @@ export const Course = z.object({
     courseTerm: z.string(),
     courseSchedule: Schedule.array(),
     courseCredits: z.number().nonnegative(),
-    courseSeatsTotal: z.number().int(),
-    courseSeatsFilled: z.number().int(),
+    courseSeatsTotal: z.number().int().nonnegative(),
+    courseSeatsFilled: z.number().int().nonnegative(),
     courseWaitlistLength: z.null(),
     courseEnrollmentStatus: EnrollmentStatusEnum,
-    permCount: z.number().int(),
+    permCount: z.number().int().nonnegative(),
 });
 export type Course = z.infer<typeof Course>;
 
