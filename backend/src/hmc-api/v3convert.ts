@@ -69,14 +69,16 @@ function stringifyWeekdayEnumArray(arr: APIv4.WeekdayEnum[]): string {
 function stringifyTime(secs: number): string {
     if (secs < 0 || secs >= 24 * 60 * 60) {
         logger.error({ seconds: secs }, "Time out of range");
+        secs = 0;
     }
-    const total_minutes = secs / 60;
+    let total_minutes = secs / 60;
 
     if (!Number.isInteger(total_minutes)) {
         logger.error(
             { seconds: secs },
             "Time too precise to fit in hours:minutes format",
         );
+        total_minutes = Math.floor(total_minutes);
     }
 
     const hours = Math.floor(total_minutes / 60);
