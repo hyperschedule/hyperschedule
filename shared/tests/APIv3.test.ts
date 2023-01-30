@@ -3,73 +3,7 @@ import * as APIv3 from "../api/v3";
 
 import { describe, test } from "@jest/globals";
 
-const v4Section: APIv4.Section = APIv4.Section.parse({
-    course: {
-        title: "Computer Systems",
-        description:
-            "An introduction to computer systems. In particular the course investigates data representations, machine level representations of programs, processor architecture, program optimizations, the memory hierarchy, linking, exceptional control flow (exceptions, interrupts, processes and Unix signals), performance measurement, virtual memory, system-level I/O and basic concurrent programming. These concepts are supported by a series of hands-on lab assignments. Prerequisite: Computer Science 70.",
-        primaryAssociation: "HM",
-        code: {
-            department: "CSCI",
-            courseNumber: 105,
-            suffix: "",
-            affiliation: "HM",
-        },
-        potentialError: false,
-    },
-    status: "R",
-    credits: 3,
-    courseAreas: ["1A5", "CSCI"],
-    instructors: [
-        {
-            name: "Geoffrey Kuenning",
-        },
-    ],
-    schedules: [
-        {
-            startTime: 47700,
-            endTime: 52200,
-            days: ["T", "R"],
-            locations: ["Beckman Hall B126"],
-        },
-        {
-            startTime: 47700,
-            endTime: 52200,
-            days: ["F"],
-            locations: [
-                "McGregor CompSci Center 203",
-                "McGregor CompSci Center 204",
-                "McGregor CompSci Center 205",
-            ],
-        },
-    ],
-    identifier: {
-        department: "CSCI",
-        courseNumber: 105,
-        suffix: "",
-        affiliation: "HM",
-        sectionNumber: 1,
-        term: "SP",
-        year: 2023,
-        half: null,
-    },
-    seatsTotal: 30,
-    seatsFilled: 28,
-    potentialError: false,
-    startDate: {
-        year: 2023,
-        month: 1,
-        day: 17,
-    },
-    endDate: {
-        year: 2023,
-        month: 5,
-        day: 12,
-    },
-    permCount: 2,
-});
-
-const v3Course: APIv3.Course = APIv3.Course.parse({
+const v3Course: APIv3.Course = {
     courseCode: "CSCI 105 HM-01",
     courseName: "Computer Systems",
     courseSortKey: ["CSCI 105 HM-01"],
@@ -124,9 +58,9 @@ const v3Course: APIv3.Course = APIv3.Course.parse({
     courseSeatsTotal: 30,
     courseSeatsFilled: 28,
     courseWaitlistLength: null,
-    courseEnrollmentStatus: "reopened",
+    courseEnrollmentStatus: "reopened" as APIv3.EnrollmentStatus,
     permCount: 2,
-});
+};
 
 describe("APIv3", () => {
     test("Instantiate course", () => {
