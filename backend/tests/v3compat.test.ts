@@ -1,7 +1,12 @@
-import * as APIv4 from "../api/v4";
-import * as APIv3 from "../api/v3";
+import { test, describe, expect } from "@jest/globals";
+import * as APIv4 from "hyperschedule-shared/api/v4";
+import * as APIv3 from "hyperschedule-shared/api/v3";
 
-import { describe, test } from "@jest/globals";
+import { v3CourseFromV4Section } from "../src/hmc-api/v3compat";
+
+function compareV3Schedules(x: APIv3.Schedule, y: APIv3.Schedule): number {
+    return JSON.stringify(x).localeCompare(JSON.stringify(y));
+}
 
 const v4Section: APIv4.Section = APIv4.Section.parse({
     course: {
@@ -119,7 +124,7 @@ const v3Course: APIv3.Course = APIv3.Course.parse({
             scheduleTerms: [0],
             scheduleLocation: "Beckman Hall B126",
         },
-    ],
+    ].sort(compareV3Schedules),
     courseCredits: 3,
     courseSeatsTotal: 30,
     courseSeatsFilled: 28,
@@ -128,8 +133,11 @@ const v3Course: APIv3.Course = APIv3.Course.parse({
     permCount: 2,
 });
 
-describe("APIv3", () => {
-    test("Instantiate course", () => {
-        APIv3.Course.parse(v3Course);
+describe("APIv3 backwards compatibility", () => {
+    test("Convert v4 section to v3 course", () => {
+        const convertedCourse = v3CourseFromV4Section(v4Section);
+        convertedCourse.courseSchedule.sort(compareV3Schedules);
+        expect(v3Course).toStrictEqual(convertedCourse);
+        APIv3.Course.parse(convertedCourse);
     });
 });
