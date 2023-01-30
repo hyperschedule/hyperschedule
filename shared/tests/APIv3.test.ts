@@ -1,4 +1,3 @@
-import * as APIv4 from "../api/v4";
 import * as APIv3 from "../api/v3";
 
 import { describe, test } from "@jest/globals";
