@@ -3,23 +3,6 @@ import { z } from "zod";
 
 type integer = number;
 
-// export interface Course {
-//     courseCode: string;
-//     courseName: string;
-//     courseSortKey: string[];
-//     courseMutualExclusionKey: string[];
-//     courseDescription: string;
-//     courseInstructors: string[];
-//     courseTerm: string;
-//     courseSchedule: Schedule[];
-//     courseCredits: number;
-//     courseSeatsTotal: integer;
-//     courseSeatsFilled: integer;
-//     courseWaitlistLength: null;
-//     courseEnrollmentStatus: string;
-//     permCount: integer;
-// }
-
 const timeRegex = /\d{2}:\d{2}/;
 const dateRegex = /\d{4}-\d{2}-\d{2}/;
 
@@ -61,17 +44,6 @@ export const Course = z.object({
     permCount: z.number().int(),
 });
 export type Course = z.infer<typeof Course>;
-
-// export interface Schedule {
-//     scheduleDays: string;
-//     scheduleStartTime: string;
-//     scheduleEndTime: string;
-//     scheduleStartDate: string;
-//     scheduleEndDate: string;
-//     scheduleTermCount: integer;
-//     scheduleTerms: integer[];
-//     scheduleLocation: string;
-// }
 
 export function courseFromV4Section(s: APIv4.Section): Course {
     const sectionCodeString = APIv4.stringifySectionCode(s.identifier);
