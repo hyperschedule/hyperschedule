@@ -1,5 +1,8 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import * as APIv3 from "hyperschedule-shared/api/v3";
+import { createLogger } from "../logger";
+
+const logger = createLogger("api.v3convert");
 
 export function v3CourseFromV4Section(s: APIv4.Section): APIv3.Course {
     const startDate = stringifyCourseDate(s.startDate);
@@ -65,13 +68,14 @@ function stringifyWeekdayEnumArray(arr: APIv4.WeekdayEnum[]): string {
 
 function stringifyTime(secs: number): string {
     if (secs < 0 || secs >= 24 * 60 * 60) {
-        console.error(Error(`Time out of range: ${secs}`));
+        logger.error({ seconds: secs }, "Time out of range");
     }
     const total_minutes = secs / 60;
 
     if (!Number.isInteger(total_minutes)) {
-        console.error(
-            Error(`Time too precise to fit in hours:minutes format: ${secs}`),
+        logger.error(
+            { seconds: secs },
+            "Time too precise to fit in hours:minutes format",
         );
     }
 
@@ -108,10 +112,9 @@ function getSectionTermFractions(identifier: APIv4.SectionIdentifier): {
         };
     } else if (half.prefix === "F" || half.prefix === "P") {
         if (half.number > 2) {
-            console.error(
-                Error(
-                    `Fall/Spring semester divided into too many parts: ${half.number}`,
-                ),
+            logger.error(
+                { semesterHalf: half.number },
+                "Semester fraction out of bounds",
             );
         }
         return {
