@@ -2,7 +2,7 @@ import { test, describe, expect } from "@jest/globals";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import * as APIv3 from "hyperschedule-shared/api/v3";
 
-import { v3CourseFromV4Section } from "../src/hmc-api/v3compat";
+import { v3CourseFromV4Section } from "../src/hmc-api/v3convert";
 
 function compareV3Schedules(x: APIv3.Schedule, y: APIv3.Schedule): number {
     return JSON.stringify(x).localeCompare(JSON.stringify(y));
