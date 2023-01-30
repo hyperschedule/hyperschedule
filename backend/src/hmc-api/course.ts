@@ -198,15 +198,20 @@ function processStaff(
 ) {
     for (let staff of staffParsed) {
         staffMap.set(staff.cxId, {
-            name: `${staff.lastname}, ${staff.firstname}`,
+            name: `${staff.firstname} ${staff.lastname}`,
         });
     }
     for (let staff of altstaffParsed) {
         if (!staffMap.has(staff.cxId))
             logger.trace("Nonexistent staff %o in altstaff", staff);
         // overwrite existing staff if there is a preferred name
+        const altArr = staff.altName.split(",").map((s) => s.trim());
+        if (altArr.length !== 2) {
+            logger.trace(`Malformed staff altname for ${staff.cxId}`);
+            continue;
+        }
         staffMap.set(staff.cxId, {
-            name: staff.altName,
+            name: `${altArr[1]} ${altArr[0]}`,
         });
     }
 }

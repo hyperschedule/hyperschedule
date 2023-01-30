@@ -19,10 +19,10 @@ export const testSection: APIv4.Section = {
     courseAreas: [],
     instructors: [
         {
-            name: "Wiedermann, Benjamin",
+            name: "Benjamin Wiedermann",
         },
         {
-            name: "Bang, Lucas",
+            name: "Lucas Bang",
         },
     ],
     schedules: [
