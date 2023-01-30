@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "@tinyhttp/app";
 import { createLogger } from "./logger";
 import { safeVerifyUser } from "./auth/token";
+import * as process from "process";
 
 const logger = createLogger("server.request");
 
@@ -39,7 +40,27 @@ export function middleware(req: Request, res: Response, next: NextFunction) {
         req.userToken = null;
     }
 
-    res.header("Access-Control-Allow-Origin", "*");
+    // process and set appropriate CORS header
+    // ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+    const origin = req.headers.origin;
+    if (origin === undefined || origin === "null") {
+        // same origin request, do nothing
+    } else {
+        const parsed = new URL(origin);
+        switch (parsed.hostname) {
+            case "localhost":
+            case "127.0.0.1":
+                if (process.env.NODE_ENV !== "production")
+                    res.header("Access-Control-Allow-Origin", parsed.origin);
+                break;
+            case "hyperschedule.io":
+            case "www.hyperschedule.io":
+            case "hyperschedule.github.io":
+                res.header("Access-Control-Allow-Origin", parsed.origin);
+                res.header("Vary", "Origin");
+                break;
+        }
+    }
 
     next();
     res.on("finish", () =>
