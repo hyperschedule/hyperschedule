@@ -1,9 +1,10 @@
 import * as APIv4 from "../api/v4";
 import * as APIv3 from "../api/v3";
+import { z } from "zod";
 
 import { describe, test, expect } from "@jest/globals";
 
-const v4Section: APIv4.Section = {
+const v4Section: APIv4.Section = APIv4.Section.parse({
     course: {
         title: "Computer Systems",
         description:
@@ -67,9 +68,9 @@ const v4Section: APIv4.Section = {
         day: 12,
     },
     permCount: 2,
-} as APIv4.Section;
+});
 
-const v3Course: APIv3.Course = {
+const v3Course: APIv3.Course = APIv3.Course.parse({
     courseCode: "CSCI 105 HM-01",
     courseName: "Computer Systems",
     courseSortKey: ["CSCI 105 HM-01"],
@@ -126,7 +127,7 @@ const v3Course: APIv3.Course = {
     courseWaitlistLength: null,
     courseEnrollmentStatus: "reopened",
     permCount: 2,
-};
+});
 
 function compareSchedules(x: APIv3.Schedule, y: APIv3.Schedule): number {
     return JSON.stringify(x).localeCompare(JSON.stringify(y));
@@ -137,5 +138,6 @@ describe("APIv3", () => {
         const convertedCourse = APIv3.courseFromV4Section(v4Section);
         convertedCourse.courseSchedule.sort(compareSchedules);
         expect(convertedCourse).toStrictEqual(v3Course);
+        APIv3.Course.parse(convertedCourse);
     });
 });

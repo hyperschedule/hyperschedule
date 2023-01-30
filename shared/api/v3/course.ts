@@ -3,33 +3,75 @@ import { z } from "zod";
 
 type integer = number;
 
-export interface Course {
-    courseCode: string;
-    courseName: string;
-    courseSortKey: string[];
-    courseMutualExclusionKey: string[];
-    courseDescription: string;
-    courseInstructors: string[];
-    courseTerm: string;
-    courseSchedule: Schedule[];
-    courseCredits: number;
-    courseSeatsTotal: integer;
-    courseSeatsFilled: integer;
-    courseWaitlistLength: null;
-    courseEnrollmentStatus: string;
-    permCount: integer;
-}
+// export interface Course {
+//     courseCode: string;
+//     courseName: string;
+//     courseSortKey: string[];
+//     courseMutualExclusionKey: string[];
+//     courseDescription: string;
+//     courseInstructors: string[];
+//     courseTerm: string;
+//     courseSchedule: Schedule[];
+//     courseCredits: number;
+//     courseSeatsTotal: integer;
+//     courseSeatsFilled: integer;
+//     courseWaitlistLength: null;
+//     courseEnrollmentStatus: string;
+//     permCount: integer;
+// }
 
-export interface Schedule {
-    scheduleDays: string;
-    scheduleStartTime: string;
-    scheduleEndTime: string;
-    scheduleStartDate: string;
-    scheduleEndDate: string;
-    scheduleTermCount: integer;
-    scheduleTerms: integer[];
-    scheduleLocation: string;
+const timeRegex = /\d{2}:\d{2}/;
+const dateRegex = /\d{4}-\d{2}-\d{2}/;
+
+export const Schedule = z.object({
+    scheduleDays: z.string().regex(/[MTWRFSU]*/),
+    scheduleStartTime: z.string().regex(timeRegex),
+    scheduleEndTime: z.string().regex(timeRegex),
+    scheduleStartDate: z.string().regex(dateRegex),
+    scheduleEndDate: z.string().regex(dateRegex),
+    scheduleTermCount: z.number().int().positive(),
+    scheduleTerms: z.number().int().nonnegative().array(),
+    scheduleLocation: z.string(),
+});
+export type Schedule = z.infer<typeof Schedule>;
+
+export enum EnrollmentStatus {
+    open = "open",
+    closed = "closed",
+    reopened = "reopened",
+    unknown = "unknown",
 }
+export const EnrollmentStatusEnum = z.nativeEnum(EnrollmentStatus);
+export type EnrollmentStatusEnum = z.infer<typeof EnrollmentStatusEnum>;
+
+export const Course = z.object({
+    courseCode: z.string(),
+    courseName: z.string(),
+    courseSortKey: z.string().array(),
+    courseMutualExclusionKey: z.string().array(),
+    courseDescription: z.string(),
+    courseInstructors: z.string().array(),
+    courseTerm: z.string(),
+    courseSchedule: Schedule.array(),
+    courseCredits: z.number().nonnegative(),
+    courseSeatsTotal: z.number().int(),
+    courseSeatsFilled: z.number().int(),
+    courseWaitlistLength: z.null(),
+    courseEnrollmentStatus: EnrollmentStatusEnum,
+    permCount: z.number().int(),
+});
+export type Course = z.infer<typeof Course>;
+
+// export interface Schedule {
+//     scheduleDays: string;
+//     scheduleStartTime: string;
+//     scheduleEndTime: string;
+//     scheduleStartDate: string;
+//     scheduleEndDate: string;
+//     scheduleTermCount: integer;
+//     scheduleTerms: integer[];
+//     scheduleLocation: string;
+// }
 
 export function courseFromV4Section(s: APIv4.Section): Course {
     const sectionCodeString = APIv4.stringifySectionCode(s.identifier);
@@ -67,7 +109,7 @@ export function courseFromV4Section(s: APIv4.Section): Course {
         courseSeatsTotal: s.seatsTotal,
         courseSeatsFilled: s.seatsFilled,
         courseWaitlistLength: null,
-        courseEnrollmentStatus: stringifySectionStatusEnum(s.status),
+        courseEnrollmentStatus: convertStatusEnum(s.status),
         permCount: s.permCount,
     };
 }
@@ -154,16 +196,18 @@ function getSectionTermFractions(identifier: APIv4.SectionIdentifier): {
     }
 }
 
-function stringifySectionStatusEnum(status: APIv4.SectionStatusEnum): string {
+function convertStatusEnum(
+    status: APIv4.SectionStatusEnum,
+): EnrollmentStatusEnum {
     const SectionStatus = APIv4.SectionStatus;
     switch (status) {
         case SectionStatus.open:
-            return "open";
+            return EnrollmentStatus.open;
         case SectionStatus.closed:
-            return "closed";
+            return EnrollmentStatus.closed;
         case SectionStatus.reopened:
-            return "reopened";
+            return EnrollmentStatus.reopened;
         case SectionStatus.unknown:
-            return "unknown";
+            return EnrollmentStatus.unknown;
     }
 }
