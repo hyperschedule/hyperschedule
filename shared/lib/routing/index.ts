@@ -12,20 +12,23 @@ Infer path parameter names from express-style routing path, e.g.:
 PathParamKeys<"sections/:term/:year"> = "term"|"year"
 ```
 */
-type PathParamKeys<Path extends string> = Path extends `${infer A}/${infer B}`
-    ? PathParamKeys<A> | PathParamKeys<B>
-    : Path extends `:${infer Param}`
-    ? Param
-    : never;
+export type PathParamKeys<Path extends string> =
+    Path extends `${infer A}/${infer B}`
+        ? PathParamKeys<A> | PathParamKeys<B>
+        : Path extends `:${infer Param}`
+        ? Param
+        : never;
 
-type ParamsSchema<Path extends string> = Record<
+export type ParamsSchema<Path extends string> = Record<
     PathParamKeys<Path>,
     Zod.ZodTypeAny
 >;
 
-type QuerySchema = Record<string, Zod.ZodTypeAny>;
+export type QuerySchema = Record<string, Zod.ZodTypeAny>;
 
-type OutputSchema = Record<number, Zod.ZodTypeAny> & { 200: Zod.ZodTypeAny };
+export type OutputSchema = Record<number, Zod.ZodTypeAny> & {
+    200: Zod.ZodTypeAny;
+};
 
 // TypeScript's `extends` constraint is a "one-way" subtyping constraint:
 // requiring `Params extends ParamsSchema<Path>` ensures that every parameter
@@ -73,6 +76,12 @@ export interface EndpointGet<
     readonly input: BaseInputSchema<Path, Params, Query>;
     readonly output: Output;
 }
+export type EndpointGetAny = EndpointGet<
+    string,
+    {},
+    {},
+    { 200: Zod.ZodTypeAny }
+>;
 
 export interface EndpointPostJson<
     Path extends string,
@@ -88,12 +97,17 @@ export interface EndpointPostJson<
     };
     readonly output: Output;
 }
+export type EndpointPostJsonAny = EndpointPostJson<
+    string,
+    {},
+    {},
+    Zod.ZodTypeAny,
+    { 200: Zod.ZodTypeAny }
+>;
 
-type EndpointAny =
-    | EndpointGet<string, {}, {}, { 200: Zod.ZodTypeAny }>
-    | EndpointPostJson<string, {}, {}, Zod.ZodTypeAny, { 200: Zod.ZodTypeAny }>;
+export type EndpointAny = EndpointGetAny | EndpointPostJsonAny;
 
-const enum ModuleType {
+export const enum ModuleType {
     Parent = 0,
     Endpoints = 1,
 }
@@ -102,6 +116,7 @@ export interface ModuleParent<Modules extends Record<string, ModuleAny>> {
     readonly type: ModuleType.Parent;
     readonly modules: Modules;
 }
+export type ModuleParentAny = ModuleParent<Record<string, ModuleAny>>;
 
 export interface ModuleEndpoints<
     Endpoints extends Record<string, EndpointAny>,
@@ -109,10 +124,9 @@ export interface ModuleEndpoints<
     readonly type: ModuleType.Endpoints;
     readonly endpoints: Endpoints;
 }
+export type ModuleEndpointsAny = ModuleEndpoints<Record<string, EndpointAny>>;
 
-type ModuleAny =
-    | ModuleParent<Record<string, ModuleAny>>
-    | ModuleEndpoints<Record<string, EndpointAny>>;
+export type ModuleAny = ModuleParentAny | ModuleEndpointsAny;
 
 /**
 dev API convenience: make `param` argument optional in schema if and only
@@ -215,19 +229,4 @@ export function endpoints<Endpoints extends Record<string, EndpointAny>>(
     endpoints: Endpoints,
 ): ModuleEndpoints<Endpoints> {
     return { type: ModuleType.Endpoints, endpoints };
-}
-
-export function* allEndpoints<Module extends ModuleAny>(
-    module: Module,
-): Generator<EndpointAny, void, never> {
-    switch (module.type) {
-        case ModuleType.Endpoints:
-            for (const endpoint of Object.values(module.endpoints))
-                yield endpoint;
-            return;
-        case ModuleType.Parent:
-            for (const submodule of Object.values(module.modules))
-                yield* allEndpoints(submodule);
-            return;
-    }
 }
