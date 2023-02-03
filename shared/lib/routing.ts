@@ -25,16 +25,7 @@ type ParamsSchema<Path extends string> = Record<
 
 type QuerySchema = Record<string, Zod.ZodTypeAny>;
 
-/**
-Make `params` argument optional in schema if and only if `Path` doesn't
-declare any parameter keys
-*/
-type OptionalParams<
-    Path extends string,
-    Params extends ParamsSchema<Path>,
-> = PathParamKeys<Path> extends never
-    ? { readonly params?: Params }
-    : { readonly params: Params };
+type OutputSchema = Record<number, Zod.ZodTypeAny> & { 200: Zod.ZodTypeAny };
 
 // TypeScript's `extends` constraint is a "one-way" subtyping constraint:
 // requiring `Params extends ParamsSchema<Path>` ensures that every parameter
@@ -62,18 +53,25 @@ type CheckParams<
               never,
           ];
 
+interface BaseInputSchema<
+    Path extends string,
+    Params extends ParamsSchema<Path>,
+    Query extends QuerySchema,
+> {
+    readonly param: Zod.ZodObject<CheckParams<Path, Params>>;
+    readonly query: Zod.ZodObject<Query>;
+}
+
 export interface EndpointGet<
     Path extends string,
     Params extends ParamsSchema<Path>,
     Query extends QuerySchema,
-    Response extends Zod.ZodTypeAny,
+    Output extends OutputSchema,
 > {
     readonly method: Method.Get;
     readonly path: Path;
-    readonly schema: OptionalParams<Path, CheckParams<Path, Params>> & {
-        readonly query?: Query;
-        readonly response?: Response;
-    };
+    readonly input: BaseInputSchema<Path, Params, Query>;
+    readonly output: Output;
 }
 
 export interface EndpointPostJson<
@@ -81,14 +79,76 @@ export interface EndpointPostJson<
     Params extends ParamsSchema<Path>,
     Query extends QuerySchema,
     Body extends Zod.ZodTypeAny,
-    Response extends Zod.ZodTypeAny,
+    Output extends OutputSchema,
 > {
     readonly method: Method.PostJson;
     readonly path: Path;
-    readonly schema: OptionalParams<Path, CheckParams<Path, Params>> & {
-        readonly query?: Query;
-        readonly body?: Body;
-        readonly response?: Response;
+    readonly input: BaseInputSchema<Path, Params, Query> & {
+        readonly body: Body;
+    };
+    readonly output: Output;
+}
+
+type EndpointAny =
+    | EndpointGet<string, {}, {}, { 200: Zod.ZodTypeAny }>
+    | EndpointPostJson<string, {}, {}, Zod.ZodTypeAny, { 200: Zod.ZodTypeAny }>;
+
+const enum ModuleType {
+    Parent = 0,
+    Endpoints = 1,
+}
+
+export interface ModuleParent<Modules extends Record<string, ModuleAny>> {
+    readonly type: ModuleType.Parent;
+    readonly modules: Modules;
+}
+
+export interface ModuleEndpoints<
+    Endpoints extends Record<string, EndpointAny>,
+> {
+    readonly type: ModuleType.Endpoints;
+    readonly endpoints: Endpoints;
+}
+
+type ModuleAny =
+    | ModuleParent<Record<string, ModuleAny>>
+    | ModuleEndpoints<Record<string, EndpointAny>>;
+
+/**
+dev API convenience: make `param` argument optional in schema if and only
+if `Path` doesn't declare any parameter keys
+*/
+type OptionalParams<
+    Path extends string,
+    Params extends ParamsSchema<Path>,
+> = PathParamKeys<Path> extends never
+    ? { readonly param?: Params }
+    : { readonly param: Params };
+
+/**
+dev API convenience: make `query` argument optional if and only if
+`Query` type parameter is empty record type
+*/
+type OptionalQuery<Query extends QuerySchema> = {} extends Query
+    ? { readonly query?: Query }
+    : { readonly query: Query };
+
+function compileInput<
+    Path extends string,
+    Params extends ParamsSchema<Path>,
+    Query extends QuerySchema,
+>(
+    input: OptionalParams<Path, CheckParams<Path, Params>> &
+        OptionalQuery<Query>,
+): BaseInputSchema<Path, Params, Query> {
+    return {
+        // typecast soundness: `OptionalParams` ensures that `schema.param`
+        // may be undefined only when `Path` declares no parameter keys
+        param: Zod.object(input.param ?? ({} as CheckParams<Path, Params>)),
+
+        // typecast soundness: `OptionalQuery` ensures that `schema.query`
+        // may be undefined only when `Query` is the empty record type
+        query: Zod.object(input.query ?? ({} as Query)),
     };
 }
 
@@ -96,15 +156,19 @@ export function get<
     Path extends string,
     Params extends ParamsSchema<Path>,
     Query extends QuerySchema,
-    Response extends Zod.ZodTypeAny,
+    Output extends OutputSchema,
 >(
     path: Path,
-    schema: OptionalParams<Path, CheckParams<Path, Params>> & {
-        readonly query?: Query;
-        readonly response?: Response;
-    },
-): EndpointGet<Path, Params, Query, Response> {
-    return { method: Method.Get, path, schema };
+    input: OptionalParams<Path, CheckParams<Path, Params>> &
+        OptionalQuery<Query>,
+    output: Output,
+): EndpointGet<Path, Params, Query, Output> {
+    return {
+        method: Method.Get,
+        path,
+        input: compileInput(input),
+        output,
+    };
 }
 
 export function postJson<
@@ -112,14 +176,58 @@ export function postJson<
     Params extends ParamsSchema<Path>,
     Query extends QuerySchema,
     Body extends Zod.ZodTypeAny,
-    Response extends Zod.ZodTypeAny,
+    Output extends OutputSchema,
 >(
     path: Path,
-    schema: OptionalParams<Path, CheckParams<Path, Params>> & {
-        readonly query?: Query;
-        readonly body?: Body;
-        readonly response?: Response;
-    },
-): EndpointPostJson<Path, Params, Query, Body, Response> {
-    return { method: Method.PostJson, path, schema };
+    input: OptionalParams<Path, CheckParams<Path, Params>> &
+        OptionalQuery<Query> & { readonly body: Body },
+    output: Output,
+): EndpointPostJson<Path, Params, Query, Body, Output> {
+    return {
+        method: Method.PostJson,
+        path,
+        input: { ...compileInput(input), body: input.body },
+        output,
+    };
+}
+
+export function substitutePath<Path extends string>(
+    path: Path,
+    args: Record<PathParamKeys<Path>, string>,
+): string {
+    return path
+        .split("/")
+        .map((part) =>
+            part.startsWith(":")
+                ? args[part.slice(1) as PathParamKeys<Path>]
+                : part,
+        )
+        .join("/");
+}
+
+export function modules<Modules extends Record<string, ModuleAny>>(
+    modules: Modules,
+): ModuleParent<Modules> {
+    return { type: ModuleType.Parent, modules };
+}
+
+export function endpoints<Endpoints extends Record<string, EndpointAny>>(
+    endpoints: Endpoints,
+): ModuleEndpoints<Endpoints> {
+    return { type: ModuleType.Endpoints, endpoints };
+}
+
+export function* allEndpoints<Module extends ModuleAny>(
+    module: Module,
+): Generator<EndpointAny, void, never> {
+    switch (module.type) {
+        case ModuleType.Endpoints:
+            for (const endpoint of Object.values(module.endpoints))
+                yield endpoint;
+            return;
+        case ModuleType.Parent:
+            for (const submodule of Object.values(module.modules))
+                yield* allEndpoints(submodule);
+            return;
+    }
 }
