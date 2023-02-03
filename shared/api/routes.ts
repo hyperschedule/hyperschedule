@@ -1,12 +1,15 @@
-export * as Typings from "./typings";
-import { routes, get, post } from "./typings";
+import * as Routing from "hyperschedule-shared/lib/routing";
 import * as Zod from "zod";
 
-export default routes({
-    v3: routes({
-        courses: get({}, Zod.void()),
-    }),
-    v4: routes({
-        sections: get({}, Zod.number()),
-    }),
-});
+export default {
+    v3: {},
+    v4: {
+        sections: Routing.get("v4/sections", {}),
+        sectionsBySemester: Routing.get("v4/sections/:term/:year", {
+            params: {
+                term: Zod.number(),
+                year: Zod.number(),
+            },
+        }),
+    },
+};

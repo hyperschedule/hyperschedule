@@ -5,46 +5,36 @@ export const enum Method {
     PostJson = 1,
 }
 
-type PathParams<Path extends string> = Path extends `${infer A}/${infer B}`
-    ? PathParams<A> | PathParams<B>
+/**
+Infer path parameter names from express-style routing path, e.g.:
+
+```typescript
+PathParamKeys<"sections/:term/:year"> = "term"|"year"
+```
+*/
+type PathParamKeys<Path extends string> = Path extends `${infer A}/${infer B}`
+    ? PathParamKeys<A> | PathParamKeys<B>
     : Path extends `:${infer Param}`
     ? Param
     : never;
 
 type ParamsSchema<Path extends string> = Record<
-    PathParams<Path>,
+    PathParamKeys<Path>,
     Zod.ZodTypeAny
 >;
 
-export interface EndpointGet<
-    Path extends string,
-    Params extends ParamsSchema<Path>,
-    Query extends Zod.ZodTypeAny,
-    Response extends Zod.ZodTypeAny,
-> {
-    path: Path;
-    schema: {
-        params: Params;
-        query: Query;
-        response: Response;
-    };
-}
+type QuerySchema = Record<string, Zod.ZodTypeAny>;
 
-export interface EndpointPostJson<
+/**
+Make `params` argument optional in schema if and only if `Path` doesn't
+declare any parameter keys
+*/
+type OptionalParams<
     Path extends string,
     Params extends ParamsSchema<Path>,
-    Query extends Zod.ZodTypeAny,
-    Body extends Zod.ZodTypeAny,
-    Response extends Zod.ZodTypeAny,
-> {
-    path: Path;
-    schema: {
-        params: Params;
-        query: Query;
-        body: Body;
-        response: Response;
-    };
-}
+> = PathParamKeys<Path> extends never
+    ? { readonly params?: Params }
+    : { readonly params: Params };
 
 // TypeScript's `extends` constraint is a "one-way" subtyping constraint:
 // requiring `Params extends ParamsSchema<Path>` ensures that every parameter
@@ -60,48 +50,76 @@ export interface EndpointPostJson<
 type CheckParams<
     Path extends string,
     Params extends ParamsSchema<Path>,
-> = keyof Params extends PathParams<Path>
+> = keyof Params extends PathParamKeys<Path>
     ? Params
     : Params &
           [
               {
                   typeError: "params schema contains extraneous keys not declared in path";
                   schemaKeys: keyof Params;
-                  pathKeys: PathParams<Path>;
+                  pathKeys: PathParamKeys<Path>;
               },
               never,
           ];
 
+export interface EndpointGet<
+    Path extends string,
+    Params extends ParamsSchema<Path>,
+    Query extends QuerySchema,
+    Response extends Zod.ZodTypeAny,
+> {
+    readonly method: Method.Get;
+    readonly path: Path;
+    readonly schema: OptionalParams<Path, CheckParams<Path, Params>> & {
+        readonly query?: Query;
+        readonly response?: Response;
+    };
+}
+
+export interface EndpointPostJson<
+    Path extends string,
+    Params extends ParamsSchema<Path>,
+    Query extends QuerySchema,
+    Body extends Zod.ZodTypeAny,
+    Response extends Zod.ZodTypeAny,
+> {
+    readonly method: Method.PostJson;
+    readonly path: Path;
+    readonly schema: OptionalParams<Path, CheckParams<Path, Params>> & {
+        readonly query?: Query;
+        readonly body?: Body;
+        readonly response?: Response;
+    };
+}
+
 export function get<
     Path extends string,
     Params extends ParamsSchema<Path>,
-    Query extends Zod.ZodTypeAny,
+    Query extends QuerySchema,
     Response extends Zod.ZodTypeAny,
 >(
     path: Path,
-    schema: {
-        params: CheckParams<Path, Params>;
-        query: Query;
-        response: Response;
+    schema: OptionalParams<Path, CheckParams<Path, Params>> & {
+        readonly query?: Query;
+        readonly response?: Response;
     },
 ): EndpointGet<Path, Params, Query, Response> {
-    return { path, schema };
+    return { method: Method.Get, path, schema };
 }
 
 export function postJson<
     Path extends string,
     Params extends ParamsSchema<Path>,
-    Query extends Zod.ZodTypeAny,
+    Query extends QuerySchema,
     Body extends Zod.ZodTypeAny,
     Response extends Zod.ZodTypeAny,
 >(
     path: Path,
-    schema: {
-        params: CheckParams<Path, Params>;
-        query: Query;
-        body: Body;
-        response: Response;
+    schema: OptionalParams<Path, CheckParams<Path, Params>> & {
+        readonly query?: Query;
+        readonly body?: Body;
+        readonly response?: Response;
     },
 ): EndpointPostJson<Path, Params, Query, Body, Response> {
-    return { path, schema };
+    return { method: Method.PostJson, path, schema };
 }
