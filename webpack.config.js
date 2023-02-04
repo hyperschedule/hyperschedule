@@ -55,7 +55,7 @@ module.exports = (env, argv) => {
         //API_URL: "//50.116.4.62:8332",
         API_URL: "https://banana.hyperschedule.io",
       }),
-      new FaviconsWebpackPlugin("src/icon.png"),
+      new FaviconsWebpackPlugin("src/icon.svg"),
       new HtmlWebpackPlugin({
         title: "hyperschedule",
         template: "src/html/index.html",
