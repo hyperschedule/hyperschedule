@@ -50,6 +50,7 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
+    "undici": "^5.16.0",
     "utf-8-validate": "^6.0.2",
     "uuid": "^9.0.0"
   },
