@@ -15,6 +15,7 @@ import {
     parseSectionInstructor,
     parseStaff,
 } from "./files";
+import { z } from "zod";
 
 import { buildings } from "./buildings";
 import { createLogger } from "../logger";
@@ -492,18 +493,21 @@ function processCourseAreas(
     }
 }
 
-export function linkCourseData(files: {
-    altstaff: string;
-    calendarSession: string;
-    calendarSessionSection: string;
-    course: string;
-    courseSection: string;
-    courseSectionSchedule: string;
-    permCount: string;
-    sectionInstructor: string;
-    staff: string;
-    courseAreas: string;
-}): APIv4.Section[] {
+export const CourseFiles = z.object({
+    altstaff: z.string(),
+    calendarSession: z.string(),
+    calendarSessionSection: z.string(),
+    course: z.string(),
+    courseSection: z.string(),
+    courseSectionSchedule: z.string(),
+    permCount: z.string(),
+    sectionInstructor: z.string(),
+    staff: z.string(),
+    courseAreas: z.string(),
+});
+export type CourseFiles = z.infer<typeof CourseFiles>;
+
+export function linkCourseData(files: CourseFiles): APIv4.Section[] {
     // course map contains course data needed for courses of all sections
     // whereas courseSectionMap contains section-specific information
     let courseMap: Map<string, APIv4.Course> = new Map();
