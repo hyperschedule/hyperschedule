@@ -1,7 +1,7 @@
 import { parse } from "./parser";
 import type { Result } from "./parser";
 import { z } from "zod";
-import { createLogger } from "../logger";
+import { createLogger } from "@/logger";
 const logger = createLogger("parser.hmc.file");
 
 function processResult<T>(

@@ -2,7 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { readFile } from "fs/promises";
 import { DB_URL } from "./credentials";
 import { closeDb, connectToDb } from "./connector";
-import { createLogger } from "../logger";
+import { createLogger } from "@/logger";
 import { updateSections } from "./models/course";
 
 const logger = createLogger("db.init");

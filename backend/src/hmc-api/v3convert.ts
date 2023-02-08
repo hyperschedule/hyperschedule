@@ -1,6 +1,6 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import * as APIv3 from "hyperschedule-shared/api/v3";
-import { createLogger } from "../logger";
+import { createLogger } from "@/logger";
 
 const logger = createLogger("api.v3convert");
 
