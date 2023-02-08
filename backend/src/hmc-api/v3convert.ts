@@ -49,16 +49,20 @@ export function v3CourseFromV4Section(s: APIv4.Section): APIv3.Course {
 }
 
 export function v3CourseListFromV4SectionList(sections: APIv4.Section[]): {
-    terms: [];
-    courses: APIv3.Course[];
+    data: {
+        terms: Record<string, never>;
+        courses: APIv3.Course[];
+    };
 } {
     const courses = [];
     for (const section of sections) {
         courses.push(v3CourseFromV4Section(section));
     }
     return {
-        terms: [],
-        courses,
+        data: {
+            terms: {},
+            courses,
+        },
     };
 }
 
