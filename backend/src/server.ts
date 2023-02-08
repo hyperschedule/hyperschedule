@@ -4,7 +4,7 @@ import { v4App } from "./routes/v4";
 import { v3App } from "./routes/v3";
 import { middleware } from "./middleware";
 
-const server = new App({})
+const server = new App({ settings: { xPoweredBy: false } })
     .use(cookieParser())
     .use("", middleware)
     .use("/v4", v4App)

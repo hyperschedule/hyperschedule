@@ -71,6 +71,12 @@ export function middleware(req: Request, res: Response, next: NextFunction) {
 
     next();
     res.on("finish", () =>
-        logger.info("[%d] Completed %d", reqId, res.statusCode, res),
+        logger.info(
+            { ...res.getHeaders() },
+            "[%d] Completed %d",
+            reqId,
+            res.statusCode,
+            res,
+        ),
     );
 }

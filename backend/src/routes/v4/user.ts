@@ -6,7 +6,7 @@ import { signUser } from "../../auth/token";
 
 const logger = createLogger("server.route.user");
 
-const userApp = new App();
+const userApp = new App({ settings: { xPoweredBy: false } });
 
 userApp.post(
     "/new-guest",

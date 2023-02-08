@@ -5,7 +5,7 @@ import { CURRENT_TERM } from "../current-term";
 import { parseTermIdentifier } from "hyperschedule-shared/api/v4";
 import { v3CourseListFromV4SectionList } from "../hmc-api/v3convert";
 
-export const v3App = new App();
+export const v3App = new App({ settings: { xPoweredBy: false } });
 
 v3App.get("/courses", async function (request: Request, response: Response) {
     return response
