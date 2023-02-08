@@ -9,7 +9,9 @@ const validTerms: string[] = Object.values(Term);
 
 courseApp.get("/sections", async function (request, reply) {
     const sections = await getAllSections();
-    return reply.send(sections);
+    return reply
+        .header("Content-Type", "application/json")
+        .send(JSON.stringify(sections));
 });
 
 courseApp.get("/sections/:year/:term", async (request, reply) => {
@@ -29,7 +31,9 @@ courseApp.get("/sections/:year/:term", async (request, reply) => {
         year,
     } as TermIdentifier);
 
-    return reply.header("Access-Control-Allow-Origin", "*").send(sections);
+    return reply
+        .header("Content-Type", "application/json")
+        .send(JSON.stringify(sections));
 });
 
 export { courseApp };

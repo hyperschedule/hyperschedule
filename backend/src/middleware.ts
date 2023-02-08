@@ -70,7 +70,7 @@ export function middleware(req: Request, res: Response, next: NextFunction) {
     }
 
     next();
-    res.on("finish", () =>
+    res.on("close", () =>
         logger.info(
             { ...res.getHeaders() },
             "[%d] Completed %d",
