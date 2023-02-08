@@ -1,4 +1,4 @@
-import { test, describe, expect } from "@jest/globals";
+import { test, describe, expect } from "vitest";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import * as APIv3 from "hyperschedule-shared/api/v3";
 

@@ -2,7 +2,7 @@ import type { Request, Response } from "@tinyhttp/app";
 import { App } from "@tinyhttp/app";
 import { createGuestUser } from "../../db/models/user";
 import { createLogger } from "../../logger";
-import { signUser } from "../../auth/token";
+import { signUser } from "@auth/token";
 
 const logger = createLogger("server.route.user");
 

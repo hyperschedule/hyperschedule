@@ -17,7 +17,7 @@ import {
 } from "./files";
 
 import { buildings } from "./buildings";
-import { createLogger } from "../logger";
+import { createLogger } from "@/logger";
 import { stringifySectionCodeLong } from "hyperschedule-shared/api/v4";
 
 const logger = createLogger("parser.hmc.link");

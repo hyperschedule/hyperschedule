@@ -1,9 +1,8 @@
-import { collections } from "../collections";
-import type { DBSection } from "../collections";
-import { dbToSection, sectionToDb } from "../utils";
+import { collections, dbToSection, sectionToDb } from "@/db";
+import type { DBSection } from "@/db";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { createLogger } from "../../logger";
+import { createLogger } from "@/logger";
 import type { TermIdentifier } from "hyperschedule-shared/api/v4";
 
 const logger = createLogger("db.course");

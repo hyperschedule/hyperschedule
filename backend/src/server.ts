@@ -1,7 +1,7 @@
 import { App } from "@tinyhttp/app";
 import { cookieParser } from "@tinyhttp/cookie-parser";
-import { v4App } from "./routes/v4";
-import { v3App } from "./routes/v3";
+import { v4App } from "@routes/v4";
+import { v3App } from "@routes/v3";
 import { middleware } from "./middleware";
 
 const server = new App({ settings: { xPoweredBy: false } })

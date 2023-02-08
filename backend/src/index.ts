@@ -1,5 +1,5 @@
 import { connectToDb } from "./db";
-import { DB_URL } from "./db/credentials";
+import { DB_URL } from "@db/credentials";
 import { server as app } from "./server";
 import { createLogger } from "./logger";
 
