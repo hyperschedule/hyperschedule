@@ -13,9 +13,12 @@ v3App.get("/courses", async function (request: Request, response: Response) {
             "Cache-Control",
             "public,s-max-age=30,max-age=60,proxy-revalidate,stale-while-revalidate=30",
         )
+        .header("Content-Type", "application/json")
         .send(
-            v3CourseListFromV4SectionList(
-                await getAllSections(parseTermIdentifier(CURRENT_TERM)),
+            JSON.stringify(
+                v3CourseListFromV4SectionList(
+                    await getAllSections(parseTermIdentifier(CURRENT_TERM)),
+                ),
             ),
         );
 });
