@@ -3,7 +3,7 @@ import { Term } from "hyperschedule-shared/api/v4";
 import { getAllSections } from "../../db/models/course";
 import { App } from "@tinyhttp/app";
 
-const courseApp = new App();
+const courseApp = new App({ settings: { xPoweredBy: false } });
 
 const validTerms: string[] = Object.values(Term);
 
