@@ -11,7 +11,14 @@ export function middleware(req: Request, res: Response, next: NextFunction) {
     const reqId = counter++;
     logger.info(
         {
-            "user-agent": req.headers["user-agent"],
+            // filter out things like sec-ch-ua and sec-fetch-dest
+            ...Object.fromEntries(
+                Object.entries(req.headers).filter(
+                    (a) =>
+                        !a[0].toLowerCase().startsWith("sec") &&
+                        a[0] !== "module", // idk in case someone tries to hijack our logger?
+                ),
+            ),
         },
         "[%d] %s %s",
         reqId,
