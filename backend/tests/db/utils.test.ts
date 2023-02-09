@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "@jest/globals";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { dbToSection, sectionToDb } from "../../src/db/utils";
 import { testSection } from "./test-data";

@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect } from "@jest/globals";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { linkCourseData } from "../src/hmc-api/course";

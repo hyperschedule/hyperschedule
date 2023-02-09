@@ -1,9 +1,9 @@
-import { collections } from "@/db";
+import { collections } from "../collections";
 import { v4 as uuid4 } from "uuid";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
-import { CURRENT_TERM } from "@/current-term";
+import { CURRENT_TERM } from "../../current-term";
 
-import { createLogger } from "@/logger";
+import { createLogger } from "../../logger";
 
 const logger = createLogger("db.user");
 

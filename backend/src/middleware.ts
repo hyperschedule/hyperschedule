@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "@tinyhttp/app";
 import { createLogger } from "./logger";
-import { safeVerifyUser } from "@auth/token";
+import { safeVerifyUser } from "./auth/token";
 import * as process from "process";
 
 const logger = createLogger("server.request");

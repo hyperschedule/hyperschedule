@@ -1,9 +1,9 @@
 import { App } from "@tinyhttp/app";
 import type { Request, Response } from "@tinyhttp/app";
-import { getAllSections } from "@db/models/course";
-import { CURRENT_TERM } from "@/current-term";
+import { getAllSections } from "../db/models/course";
+import { CURRENT_TERM } from "../current-term";
 import { parseTermIdentifier } from "hyperschedule-shared/api/v4";
-import { v3CourseListFromV4SectionList } from "@hmc-api/v3convert";
+import { v3CourseListFromV4SectionList } from "../hmc-api/v3convert";
 
 export const v3App = new App({ settings: { xPoweredBy: false } });
 

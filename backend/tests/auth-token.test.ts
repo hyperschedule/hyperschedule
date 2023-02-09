@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect } from "@jest/globals";
 import { signUser, verifyUser } from "../src/auth/token";
 import { PUBKEY } from "../src/auth/keys";
 import jwt from "jsonwebtoken";

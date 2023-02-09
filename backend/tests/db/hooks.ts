@@ -1,4 +1,4 @@
-import { afterEach, beforeEach } from "vitest";
+import { afterEach, beforeEach } from "@jest/globals";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { closeDb, connectToDb } from "../../src/db/connector";
 

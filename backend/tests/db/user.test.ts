@@ -1,5 +1,5 @@
 import { setupDbHooks } from "./hooks";
-import { describe, test } from "vitest";
+import { describe, test } from "@jest/globals";
 
 setupDbHooks();
 
