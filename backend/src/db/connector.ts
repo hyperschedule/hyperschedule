@@ -1,4 +1,4 @@
-import { createLogger } from "@/logger";
+import { createLogger } from "../logger";
 import { MongoClient } from "mongodb";
 import type { Db } from "mongodb";
 

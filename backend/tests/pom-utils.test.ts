@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect } from "@jest/globals";
 import { mergeApiCourses, mergeCourseAreaCourses } from "../src/pom-api/utils";
 import { CourseWithAreas } from "../src/pom-api/types";
 
