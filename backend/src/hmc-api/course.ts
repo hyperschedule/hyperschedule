@@ -25,8 +25,10 @@ const logger = createLogger("parser.hmc.link");
 /**
  * re-serialize term to its string form from SectionIdentifier
  */
-function extractSectionTerm(id: APIv4.SectionIdentifier): string {
-    return `${id.term}${id.year}${id.half}`;
+export function extractSectionTerm(id: APIv4.SectionIdentifier): string {
+    return `${id.term}${id.year}${
+        id.half === null ? "" : id.half.prefix + id.half.number.toString()
+    }`;
 }
 
 const dateRegex = /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})$/;
