@@ -125,3 +125,125 @@ export function parse<Fields extends Record<string, string>>(
 
     return { ok: true, warnings, records };
 }
+
+export const enum BoomiWarningTag {
+    ExtraneousEntryValues = "ExtraneousEntryValues",
+    InsufficientEntryValues = "InsufficientEntryValues",
+    MissingSentinel = "MissingSentinel",
+}
+
+export type BoomiWarning =
+    | {
+          tag: BoomiWarningTag.ExtraneousEntryValues;
+          fields_desired: number;
+          fields_given: number;
+      }
+    | {
+          tag: BoomiWarningTag.InsufficientEntryValues;
+          fields_desired: number;
+          fields_given: number;
+      }
+    | {
+          tag: BoomiWarningTag.MissingSentinel;
+      };
+
+export const enum BoomiError {
+    MalformedHeader = "MalformedHeader",
+}
+
+export type BoomiResult<K extends string> =
+    | {
+          ok: true;
+          records: Record<K, string>[];
+          warnings: BoomiWarning[];
+      }
+    | {
+          ok: false;
+          error: BoomiError;
+      };
+
+/**
+ *
+ * @param fields A list containing the name of each field that the columns in the
+ *  database correspond to. A null value means that the column at that index should be skipped.
+ *  SAFETY: This list must contain at least one of every possible
+ *  non-null value of the type  Fields[number].
+ * @param data A string containing a Boomi database dump.
+ * @returns If parsing was successful, a result containing the list of all valid
+ *  database entries parsed into records according to the fields parameter,
+ *  and a list of warnings. If unsuccessful, returns the fatal error.
+ */
+export function parseBoomi<K extends string, Fields extends (K | null)[]>(
+    fields: Fields,
+    data: string,
+): BoomiResult<NonNullable<Fields[number]>> {
+    type EntryRecord = Record<NonNullable<Fields[number]>, string>;
+
+    const out_start = data.match(/OUT_START\|\d+\|\@\|/);
+    if (out_start === null) {
+        return { ok: false, error: BoomiError.MalformedHeader };
+    }
+
+    const records: EntryRecord[] = [];
+    const warnings: BoomiWarning[] = [];
+
+    const data_start_index = out_start.index! + out_start[0].length;
+    const boomi_entries = data.slice(data_start_index).split("|#|");
+
+    let has_sentinel = false;
+    for (const boomi_entry of boomi_entries) {
+        // Empty entry is used as sentinel.
+        if (boomi_entry.length === 0) {
+            has_sentinel = true;
+            break;
+        }
+        const boomi_entry_values = boomi_entry.split("|^|");
+        // Check that there are enough columns to occupy each field.
+        // If not, skip this entry and go to the next one.
+        if (boomi_entry_values.length < fields.length) {
+            warnings.push({
+                tag: BoomiWarningTag.InsufficientEntryValues,
+                fields_desired: fields.length,
+                fields_given: boomi_entry_values.length,
+            });
+            continue;
+        }
+        // Check if there are extraneous columns we must ignore.
+        // If so, process only this entry's relevant values with a warning.
+        if (boomi_entry_values.length > fields.length) {
+            warnings.push({
+                tag: BoomiWarningTag.ExtraneousEntryValues,
+                fields_desired: fields.length,
+                fields_given: boomi_entry_values.length,
+            });
+        }
+        const record_kv: { [k: string]: string } = {};
+        let field_idx = 0;
+        for (const field of fields) {
+            if (field === null) {
+                ++field_idx;
+                continue;
+            }
+            // Safety: 0 <= field_idx < fields.length <= boomi_entry_values.length.
+            record_kv[field] = boomi_entry_values[field_idx]!;
+            ++field_idx;
+        }
+
+        // Safety: By assumption, `fields` contains at least one of every possible
+        // element string in the `Fields` type. We have also checked that enough
+        // columns are present so that every key has a corresponding value.
+        records.push(record_kv as EntryRecord);
+    }
+
+    if (!has_sentinel) {
+        warnings.push({
+            tag: BoomiWarningTag.MissingSentinel,
+        });
+    }
+
+    return {
+        ok: true,
+        records,
+        warnings,
+    };
+}

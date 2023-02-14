@@ -1,4 +1,4 @@
-import { parse } from "./parser";
+import { parse, parseBoomi } from "./parser";
 import type { Result } from "./parser";
 import { z } from "zod";
 import { createLogger } from "../logger";
@@ -94,6 +94,30 @@ export function parseCourse(data: string) {
         c.description = c.description.replaceAll("||``||", "\n");
     }
     return courses;
+}
+
+export function parseCourseBoomi(data: string): {
+    code: string;
+    title: string;
+    campus: string;
+    description: string;
+}[] {
+    const result = parseBoomi(
+        ["code", "title", null, null, "campus", "description"],
+        data,
+    );
+
+    if (result.ok) {
+        for (const warning of result.warnings) {
+            logger.warn(warning, "Warning parsing Boomi database dump");
+        }
+        return result.records;
+    } else {
+        logger.error(result.error, "Cannot parse Boomi database dump");
+        throw Error(
+            "Cannot parse Boomi database dump: " + JSON.stringify(result.error),
+        );
+    }
 }
 
 /**
