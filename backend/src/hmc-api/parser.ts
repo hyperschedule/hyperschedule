@@ -179,63 +179,63 @@ export function parseBoomi<K extends string, Fields extends (K | null)[]>(
 ): BoomiResult<NonNullable<Fields[number]>> {
     type EntryRecord = Record<NonNullable<Fields[number]>, string>;
 
-    const out_start = data.match(/OUT_START\|\d+\|\@\|/);
-    if (out_start === null) {
+    const outStart = data.match(/OUT_START\|\d+\|\@\|/);
+    if (outStart === null) {
         return { ok: false, error: BoomiError.MalformedHeader };
     }
 
     const records: EntryRecord[] = [];
     const warnings: BoomiWarning[] = [];
 
-    const data_start_index = out_start.index! + out_start[0].length;
-    const boomi_entries = data.slice(data_start_index).split("|#|");
+    const dataStartIndex = outStart.index! + outStart[0].length;
+    const boomiEntries = data.slice(dataStartIndex).split("|#|");
 
-    let has_sentinel = false;
-    for (const boomi_entry of boomi_entries) {
+    let hasSentinel = false;
+    for (const boomiEntry of boomiEntries) {
         // Empty entry is used as sentinel.
-        if (boomi_entry.length === 0) {
-            has_sentinel = true;
+        if (boomiEntry.length === 0) {
+            hasSentinel = true;
             break;
         }
-        const boomi_entry_values = boomi_entry.split("|^|");
+        const boomiEntryValues = boomiEntry.split("|^|");
         // Check that there are enough columns to occupy each field.
         // If not, skip this entry and go to the next one.
-        if (boomi_entry_values.length < fields.length) {
+        if (boomiEntryValues.length < fields.length) {
             warnings.push({
                 tag: BoomiWarningTag.InsufficientEntryValues,
                 fields_desired: fields.length,
-                fields_given: boomi_entry_values.length,
+                fields_given: boomiEntryValues.length,
             });
             continue;
         }
         // Check if there are extraneous columns we must ignore.
         // If so, process only this entry's relevant values with a warning.
-        if (boomi_entry_values.length > fields.length) {
+        if (boomiEntryValues.length > fields.length) {
             warnings.push({
                 tag: BoomiWarningTag.ExtraneousEntryValues,
                 fields_desired: fields.length,
-                fields_given: boomi_entry_values.length,
+                fields_given: boomiEntryValues.length,
             });
         }
-        const record_kv: { [k: string]: string } = {};
-        let field_idx = 0;
+        const recordKV: { [k: string]: string } = {};
+        let fieldIdx = 0;
         for (const field of fields) {
             if (field === null) {
-                ++field_idx;
+                ++fieldIdx;
                 continue;
             }
             // Safety: 0 <= field_idx < fields.length <= boomi_entry_values.length.
-            record_kv[field] = boomi_entry_values[field_idx]!;
-            ++field_idx;
+            recordKV[field] = boomiEntryValues[fieldIdx]!;
+            ++fieldIdx;
         }
 
         // Safety: By assumption, `fields` contains at least one of every possible
         // element string in the `Fields` type. We have also checked that enough
         // columns are present so that every key has a corresponding value.
-        records.push(record_kv as EntryRecord);
+        records.push(recordKV as EntryRecord);
     }
 
-    if (!has_sentinel) {
+    if (!hasSentinel) {
         warnings.push({
             tag: BoomiWarningTag.MissingSentinel,
         });
