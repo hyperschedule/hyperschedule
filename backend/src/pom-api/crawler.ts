@@ -5,7 +5,8 @@ import type {
     PomApiTermCourse,
 } from "./types";
 import { mergeApiCourses, mergeCourseAreaCourses } from "./utils";
-
+import { createLogger } from "../logger";
+const logger = createLogger("parser.pom.crawler");
 const POM_API_ENDPOINT = "https://jicsweb.pomona.edu/api/";
 
 // we have to wait until https://github.com/DefinitelyTyped/DefinitelyTyped/issues/60924
@@ -25,7 +26,7 @@ async function get(uri: string): Promise<{ status: number; res: any }> {
             "User-Agent": "HyperscheduleBot",
         },
     });
-    console.debug(`Crawler GET ${uri} ${res.status}`);
+    logger.debug(`Crawler GET ${uri} ${res.status}`);
     if (res.status !== 200)
         return {
             status: res.status,
@@ -98,7 +99,7 @@ async function getAllCourseAreaCourses(termKey: string) {
         }),
     );
     const timeEnd = new Date().getTime();
-    console.log(
+    logger.info(
         `${courseAreas.length} course areas fetched in ${
             (timeEnd - timeStart) / 1000
         }s with ${emptyCourseAreas} empty areas`,
@@ -115,6 +116,6 @@ export async function getAndMergeAllCourses() {
             getAllCourseAreaCourses(termKey),
         ])),
     );
-    console.log("done");
+    logger.info("done");
     return a;
 }
