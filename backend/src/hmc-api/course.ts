@@ -7,7 +7,7 @@ import {
     parseAltStaff,
     parseCalendarSession,
     parseCalendarSessionSection,
-    parseCourse,
+    parseCourseBoomi,
     parseCourseAreas,
     parseCourseSection,
     parseCourseSectionSchedule,
@@ -19,6 +19,7 @@ import {
 import { buildings } from "./buildings";
 import { createLogger } from "../logger";
 import { stringifySectionCodeLong } from "hyperschedule-shared/api/v4";
+import { fixEncoding, replaceQuotes } from "./encoding";
 
 const logger = createLogger("parser.hmc.link");
 
@@ -138,7 +139,7 @@ function parseBuildingCode(code: string): string {
 
 function processCourse(
     courseMap: Map<string, APIv4.Course>,
-    courseParsed: ReturnType<typeof parseCourse>,
+    courseParsed: ReturnType<typeof parseCourseBoomi>,
 ) {
     const allCampuses: string[] = Object.values(APIv4.School);
     for (let c of courseParsed) {
@@ -167,9 +168,10 @@ function processCourse(
             const prevData = courseMap.get(c.code)!;
             if (
                 !prevData.potentialError &&
-                prevData.description === c.description &&
-                prevData.primaryAssociation === campus &&
-                prevData.title === c.title
+                prevData.title === replaceQuotes(fixEncoding(c.title)) &&
+                prevData.description ===
+                    replaceQuotes(fixEncoding(c.description)) &&
+                prevData.primaryAssociation === campus
             ) {
                 logger.trace(
                     `Duplicate course key ${c.code} with no difference`,
@@ -183,9 +185,8 @@ function processCourse(
         }
 
         courseMap.set(c.code, {
-            title: c.title,
-            // TODO: cleanup the mixed windows-1252 encoding
-            description: c.description,
+            title: replaceQuotes(fixEncoding(c.title)),
+            description: replaceQuotes(fixEncoding(c.description)),
             primaryAssociation: campus,
             code: courseCode,
             potentialError,
@@ -516,7 +517,7 @@ export function linkCourseData(files: {
     const calendarSessionSectionParsed = parseCalendarSessionSection(
         files.calendarSessionSection,
     );
-    const courseParsed = parseCourse(files.course);
+    const courseParsed = parseCourseBoomi(files.course);
     const courseSectionParsed = parseCourseSection(files.courseSection);
     const courseSectionScheduleParsed = parseCourseSectionSchedule(
         files.courseSectionSchedule,
