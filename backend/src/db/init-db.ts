@@ -17,7 +17,7 @@ const data = JSON.parse(
     }),
 ) as APIv4.Section[];
 
-console.log("Sample data loaded");
+logger.info("Sample data loaded");
 
 await updateSections(data, { year: 2022, term: APIv4.Term.spring });
 

@@ -4,6 +4,8 @@ import pretty from "pino-pretty";
 let env = process.env.NODE_ENV;
 
 if (env === undefined) {
+    // we use console because nothing else has loaded yet
+    // eslint-disable-next-line no-console
     console.warn(
         `(logger.ts) process.env.NODE_ENV not set, assuming development...`,
     );
