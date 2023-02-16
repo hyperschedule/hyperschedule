@@ -13,7 +13,6 @@ let f = JSON.stringify(
                         "altstaff",
                         "calendarSession",
                         "calendarSessionSection",
-                        "course",
                         "courseSection",
                         "courseSectionSchedule",
                         "permCount",
@@ -34,6 +33,9 @@ let f = JSON.stringify(
                 "src/hmc-api/sample/course_area.json",
                 { encoding: "utf-8" },
             ),
+            course: fs.readFileSync("src/hmc-api/sample/course.txt", {
+                encoding: "utf-8",
+            }),
         },
     ),
     null,

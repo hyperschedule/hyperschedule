@@ -22,6 +22,15 @@ import { createLogger } from "../logger";
 
 const logger = createLogger("parser.hmc.encoding");
 
+/**
+ * replaces all the unicode quotes with ascii quotes
+ */
+export function replaceQuotes(s: string): string {
+    return s
+        .replaceAll(/[\u2018\u2019]/gu, "'")
+        .replaceAll(/[\u201c\u201d]/gu, '"');
+}
+
 export function fixEncoding(s: string): string {
     for (const char of s)
         if (char.length > 1) {

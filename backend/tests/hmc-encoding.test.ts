@@ -18,5 +18,6 @@ describe("src/hmc-api/encoding.ts", () => {
     test("some example data from actual course title/description", () => {
         expect(fixEncoding("ThÃ­ch Nháº¥t Háº¡nh")).toEqual("Thích Nhất Hạnh");
         expect(fixEncoding("âpoliticalâ")).toEqual("“political”");
+        expect(fixEncoding(""));
     });
 });

@@ -11,7 +11,6 @@ describe("src/hmc-api/course.ts", () => {
             "altstaff",
             "calendarSession",
             "calendarSessionSection",
-            "course",
             "courseSection",
             "courseSectionSchedule",
             "permCount",
@@ -34,6 +33,13 @@ describe("src/hmc-api/course.ts", () => {
         files.push([
             "courseAreas",
             await fs.readFile("src/hmc-api/sample/course_area.json", {
+                encoding: "utf-8",
+            }),
+        ]);
+
+        files.push([
+            "course",
+            await fs.readFile("src/hmc-api/sample/course.txt", {
                 encoding: "utf-8",
             }),
         ]);
@@ -80,7 +86,6 @@ describe("src/hmc-api/course.ts", () => {
 
     test("parseBoomiEquivalent", () => {
         const boomi_courses = parseCourseBoomi(BOOMI_DB_SAMPLE);
-        console.log(JSON.stringify(boomi_courses));
         expect(boomi_courses).toStrictEqual(BOOMI_DB_EXPECTED);
     });
 });
