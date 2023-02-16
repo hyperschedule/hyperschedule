@@ -137,11 +137,15 @@ export type BoomiWarning =
           tag: BoomiWarningTag.ExtraneousEntryValues;
           fields_desired: number;
           fields_given: number;
+          fields: string[];
+          entryIndex: number;
       }
     | {
           tag: BoomiWarningTag.InsufficientEntryValues;
           fields_desired: number;
           fields_given: number;
+          fields: string[];
+          entryIndex: number;
       }
     | {
           tag: BoomiWarningTag.MissingSentinel;
@@ -167,17 +171,17 @@ export type BoomiResult<K extends string> =
  * @param fields A list containing the name of each field that the columns in the
  *  database correspond to. A null value means that the column at that index should be skipped.
  *  SAFETY: This list must contain at least one of every possible
- *  non-null value of the type  Fields[number].
+ *  value of the `K` type.
  * @param data A string containing a Boomi database dump.
  * @returns If parsing was successful, a result containing the list of all valid
  *  database entries parsed into records according to the fields parameter,
  *  and a list of warnings. If unsuccessful, returns the fatal error.
  */
-export function parseBoomi<K extends string, Fields extends (K | null)[]>(
-    fields: Fields,
+export function parseBoomi<K extends string>(
+    fields: (K | null)[],
     data: string,
-): BoomiResult<NonNullable<Fields[number]>> {
-    type EntryRecord = Record<NonNullable<Fields[number]>, string>;
+): BoomiResult<K> {
+    type EntryRecord = Record<K, string>;
 
     const outStart = data.match(/OUT_START\|\d+\|\@\|/);
     if (outStart === null) {
@@ -191,7 +195,9 @@ export function parseBoomi<K extends string, Fields extends (K | null)[]>(
     const boomiEntries = data.slice(dataStartIndex).split("|#|");
 
     let hasSentinel = false;
-    for (const boomiEntry of boomiEntries) {
+    for (let entryIndex = 0; entryIndex < boomiEntries.length; ++entryIndex) {
+        const boomiEntry = boomiEntries[entryIndex]!;
+
         // Empty entry is used as sentinel.
         if (boomiEntry.length === 0) {
             hasSentinel = true;
@@ -205,6 +211,8 @@ export function parseBoomi<K extends string, Fields extends (K | null)[]>(
                 tag: BoomiWarningTag.InsufficientEntryValues,
                 fields_desired: fields.length,
                 fields_given: boomiEntryValues.length,
+                fields: boomiEntryValues,
+                entryIndex,
             });
             continue;
         }
@@ -215,24 +223,24 @@ export function parseBoomi<K extends string, Fields extends (K | null)[]>(
                 tag: BoomiWarningTag.ExtraneousEntryValues,
                 fields_desired: fields.length,
                 fields_given: boomiEntryValues.length,
+                fields: boomiEntryValues,
+                entryIndex,
             });
         }
-        const recordKV: { [k: string]: string } = {};
-        let fieldIdx = 0;
-        for (const field of fields) {
+        const parsedRecord: { [k: string]: string } = {};
+        for (let fieldIndex = 0; fieldIndex < fields.length; ++fieldIndex) {
+            const field = fields[fieldIndex];
             if (field === null) {
-                ++fieldIdx;
                 continue;
             }
             // Safety: 0 <= field_idx < fields.length <= boomi_entry_values.length.
-            recordKV[field] = boomiEntryValues[fieldIdx]!;
-            ++fieldIdx;
+            parsedRecord[field!] = boomiEntryValues[fieldIndex]!;
         }
 
         // Safety: By assumption, `fields` contains at least one of every possible
-        // element string in the `Fields` type. We have also checked that enough
+        // string variant in the `K` type. We have also checked that enough
         // columns are present so that every key has a corresponding value.
-        records.push(recordKV as EntryRecord);
+        records.push(parsedRecord as EntryRecord);
     }
 
     if (!hasSentinel) {
