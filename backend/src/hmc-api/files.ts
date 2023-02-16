@@ -72,10 +72,17 @@ export function parseCourseSectionSchedule(data: string) {
     return processResult(result, "courseSectionSchedule");
 }
 
+export interface ParsedCourse {
+    code: string;
+    title: string;
+    campus: string;
+    description: string;
+}
+
 /**
  * parser for course_1.csv
  */
-export function parseCourse(data: string) {
+export function parseCourse(data: string): ParsedCourse[] {
     const result = parse(
         {
             hasHeader: true,
@@ -96,28 +103,23 @@ export function parseCourse(data: string) {
     return courses;
 }
 
-export function parseCourseBoomi(data: string): {
-    code: string;
-    title: string;
-    campus: string;
-    description: string;
-}[] {
+export function parseCourseBoomi(data: string): ParsedCourse[] {
     const result = parseBoomi(
         ["code", "title", null, null, "campus", "description"],
         data,
     );
 
-    if (result.ok) {
-        for (const warning of result.warnings) {
-            logger.warn(warning, "Warning parsing Boomi database dump");
-        }
-        return result.records;
-    } else {
+    if (!result.ok) {
         logger.error(result.error, "Cannot parse Boomi database dump");
         throw Error(
             "Cannot parse Boomi database dump: " + JSON.stringify(result.error),
         );
     }
+
+    for (const warning of result.warnings) {
+        logger.warn(warning, "Warning parsing Boomi database dump");
+    }
+    return result.records;
 }
 
 /**
