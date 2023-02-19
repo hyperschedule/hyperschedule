@@ -1,14 +1,14 @@
 import { z } from "zod";
-import { CourseFiles } from "../course";
+import type { CourseFiles } from "../course";
 
 /**
  * defines which param an endpoint use, if any
  */
-export const Params = z.object({
-    catalog: z.boolean(),
-    year: z.boolean(),
-    session: z.boolean(),
-});
+export const Params = z.union([
+    z.literal("catalog"),
+    z.literal("session"),
+    z.literal("year"),
+]);
 export type Params = z.infer<typeof Params>;
 
 const Endpoint = z.object({
@@ -16,6 +16,10 @@ const Endpoint = z.object({
     params: Params.nullable(),
     // number of seconds between fetch
     interval: z.number().positive(),
-    for: CourseFiles.keyof(),
+    saveAs: z.string(),
 });
 export type Endpoint = z.infer<typeof Endpoint>;
+export type Endpoints = Record<
+    keyof CourseFiles | "courseAreaDescription",
+    Endpoint
+>;
