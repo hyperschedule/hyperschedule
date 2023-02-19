@@ -30,6 +30,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "hyperschedule-data": "workspace:^",
     "hyperschedule-shared": "workspace:^"
   },
   "devDependencies": {
