@@ -1,64 +1,73 @@
-import type { Endpoint } from "./types";
+import type { Endpoints } from "./types";
 
-export const endpoints: Endpoint[] = [
-    {
-        link: "permCount",
+export const endpoints: Endpoints = {
+    // fetch once per minute
+    permCount: {
+        link: "perm-count",
         params: null,
         interval: 60,
-        for: "permCount",
+        saveAs: "perm-count.json",
     },
-    {
+    courseSection: {
         link: "course-section",
         params: null,
         interval: 60,
-        for: "courseSection",
+        saveAs: "course-section.json",
     },
-    {
+    // fetch once per hour
+    staff: {
         link: "staff",
         params: null,
         interval: 3600,
-        for: "staff",
+        saveAs: "staff.json",
     },
-    {
+    altstaff: {
         link: "alt-staff",
         params: null,
         interval: 3600,
-        for: "altstaff",
+        saveAs: "alt-staff.json",
     },
-    {
+    course: {
         link: "course",
         params: null,
         interval: 3600,
-        for: "course",
+        saveAs: "course.txt",
     },
-    {
+    courseSectionSchedule: {
         link: "course-section-schedule",
         params: null,
         interval: 3600,
-        for: "courseSectionSchedule",
+        saveAs: "course-section-schedule.json",
     },
-    {
-        link: "course-session",
+    calendarSession: {
+        link: "calendar-session",
         params: null,
         interval: 3600,
-        for: "calendarSession",
+        saveAs: "calendar-session.json",
     },
-    {
+    calendarSessionSection: {
         link: "calendar-session-section",
         params: null,
         interval: 3600,
-        for: "calendarSessionSection",
+        saveAs: "calendar-session-section.json",
     },
-    {
+    sectionInstructor: {
         link: "section-instructor",
         params: null,
         interval: 3600,
-        for: "sectionInstructor",
+        saveAs: "section-instructor.json",
     },
-    {
-        link: "course-area",
+    // fetch once per day
+    courseAreas: {
+        link: "course-areas",
         params: null,
         interval: 3600 * 24,
-        for: "courseAreas",
+        saveAs: "course-areas.json",
     },
-];
+    courseAreaDescription: {
+        link: "course-areas-description",
+        params: null,
+        interval: 3600 * 24,
+        saveAs: "course-areas-description.json",
+    },
+};
