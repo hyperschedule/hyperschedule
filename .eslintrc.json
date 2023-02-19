@@ -6,7 +6,8 @@
     "project": [
       "shared/tsconfig.json",
       "frontend/tsconfig.json",
-      "backend/tsconfig.json"
+      "backend/tsconfig.json",
+      "data/tsconfig.json"
     ]
   },
   "overrides": [

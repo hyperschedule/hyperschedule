@@ -47,6 +47,7 @@
   "workspaces": [
     "backend",
     "frontend",
-    "shared"
+    "shared",
+    "data"
   ]
 }

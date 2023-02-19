@@ -1,0 +1,26 @@
+{
+  "name": "hyperschedule-data",
+  "version": "2.0.0",
+  "description": "A fast scheduler for the Claremont colleges (Shared)",
+  "repository": "git@github.com:hyperschedule/hyperschedule.git",
+  "author": "Mia Celeste <mia@miaceleste.dev>",
+  "type": "module",
+  "contributors": [
+    {
+      "name": "Kye W. Shi",
+      "email": "shi.kye@gmail.com",
+      "url": "https://github.com/kwshi"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Mia Celeste",
+      "email": "mia@miaceleste.dev",
+      "url": "https://github.com/mia1024"
+    }
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "typescript": "^4.7.4"
+  }
+}
