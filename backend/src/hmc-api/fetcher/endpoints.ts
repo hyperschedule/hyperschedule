@@ -14,4 +14,4 @@
  * on your local repository to exclude it from being modified
  */
 
-export { endpoints } from "./endpoints-dev";
+export { endpoints, endpointAuthorization } from "./endpoints-dev";
