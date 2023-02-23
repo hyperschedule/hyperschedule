@@ -1,0 +1,18 @@
+<EntityDescriptor entityID="https://hyperschedule.io/" xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+                  xmlns:assertion="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true"
+                     protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        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
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</NameIDFormat>
+        <AssertionConsumerService index="0" Binding="HTTP-Redirect"
+                                  Location="http://dragonfruit.hyperschedule.io:8080/auth/saml"></AssertionConsumerService>
+    </SPSSODescriptor>
+</EntityDescriptor>

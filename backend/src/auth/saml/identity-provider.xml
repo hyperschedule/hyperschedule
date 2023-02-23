@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://webauth.claremont.edu/idp/shibboleth"
+                  xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <IDPSSODescriptor
+            protocolSupportEnumeration="urn:mace:shibboleth:1.0 urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol">
+        <Extensions>
+            <shibmd:Scope regexp="false">cgu.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">cmc.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">cuc.claremont.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">hmc.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">kecksci.claremont.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">kgi.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">pitzer.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">pomona.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">scrippscollege.edu</shibmd:Scope>
+        </Extensions>
+        <KeyDescriptor>
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIDQDCCAiigAwIBAgIVAJEKGDeCXrId2DGnYn4LiGAX/fftMA0GCSqGSIb3DQEB
+                        BQUAMCAxHjAcBgNVBAMTFXdlYmF1dGguY2xhcmVtb250LmVkdTAeFw0xNDA5MTIy
+                        MDM2MzlaFw0zNDA5MTIyMDM2MzlaMCAxHjAcBgNVBAMTFXdlYmF1dGguY2xhcmVt
+                        b250LmVkdTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKCIhFhakzNE
+                        ECdW07k3VGnrMsQQ+wm3kFj4s4AN/0hDoysC+vc+9W6HWSckqCtNIpkr8FBcvkmd
+                        pSPIl3c2TMTJiCBUKvED+1INGeQ9EvHgAu0EDvZ5M9KGpJYi8QMuNEeczHsGVVWa
+                        4uNvOaN1qw5aydFUOCrew4u7Y5PjmWOmIDjTL2TJM9fLNWYsL/qcproVJ5fUpjpi
+                        TtOmb2p1QryY4ybvKfu+rF2ChgNzLdqxEb1T4X+6GDnaTQ9i8M29v6+4yZwk9H7L
+                        5jywrjifb92xcZYh8rCutazabLzJMvmwhmfOpDbTkyALLzg5bEpD+3ZhNBRvjApH
+                        bs7BE6DdNUkCAwEAAaNxMG8wTgYDVR0RBEcwRYIVd2ViYXV0aC5jbGFyZW1vbnQu
+                        ZWR1hixodHRwczovL3dlYmF1dGguY2xhcmVtb250LmVkdS9pZHAvc2hpYmJvbGV0
+                        aDAdBgNVHQ4EFgQUykUuSorOOJLMWbbeIU+twEL0qOswDQYJKoZIhvcNAQEFBQAD
+                        ggEBAEECe0gg1O5eMAD0GnmV7TD0gOEYKvq4BZaPjNy5KINCv5O7/jQx69lB1GRq
+                        xRyPR7Ai9fHBHlLAHyp+tCoOcmkjvMSbRmusW4JLj2rTyQF1qmWRb4duga+y5YUj
+                        j37+WxF+cWZn6ul3pR1ERdgxWJfRCfXs2FYyH/f8EQhkcgT0Rb592ABqli67wGr+
+                        pyi0UAdlT8t2WdX0Npgres2QanI0oCkeAhn/0fT+FX8kwmDZGw7U2ql2cuFUG66g
+                        sVJNLTd30owNRx+G5j7EwRcNP6TS12acJ5L30LLtvRweLiOfnO776rS8zEtMpBf0
+                        ahQPX9WX5wthjamL6n80AwHpFwo=
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding"
+                                   Location="https://webauth.claremont.edu/idp/profile/SAML1/SOAP/ArtifactResolution"
+                                   index="1"/>
+        <ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                                   Location="https://webauth.claremont.edu/idp/profile/SAML2/SOAP/ArtifactResolution"
+                                   index="2"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                             Location="https://webauth.claremont.edu/idp/profile/SAML2/Redirect/SLO"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                             Location="https://webauth.claremont.edu/idp/profile/SAML2/POST/SLO"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                             Location="https://webauth.claremont.edu/idp/profile/SAML2/SOAP/SLO"/>
+        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest"
+                             Location="https://webauth.claremont.edu/idp/profile/Shibboleth/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                             Location="https://webauth.claremont.edu/idp/profile/SAML2/POST/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+                             Location="https://webauth.claremont.edu/idp/profile/SAML2/POST-SimpleSign/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                             Location="https://webauth.claremont.edu/idp/profile/SAML2/Redirect/SSO"/>
+    </IDPSSODescriptor>
+    <AttributeAuthorityDescriptor
+            protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol">
+        <Extensions>
+            <shibmd:Scope regexp="false">cgu.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">cmc.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">cuc.claremont.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">hmc.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">kecksci.claremont.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">kgi.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">pitzer.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">pomona.edu</shibmd:Scope>
+            <shibmd:Scope regexp="false">scrippscollege.edu</shibmd:Scope>
+        </Extensions>
+        <KeyDescriptor>
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIDQDCCAiigAwIBAgIVAJEKGDeCXrId2DGnYn4LiGAX/fftMA0GCSqGSIb3DQEB
+                        BQUAMCAxHjAcBgNVBAMTFXdlYmF1dGguY2xhcmVtb250LmVkdTAeFw0xNDA5MTIy
+                        MDM2MzlaFw0zNDA5MTIyMDM2MzlaMCAxHjAcBgNVBAMTFXdlYmF1dGguY2xhcmVt
+                        b250LmVkdTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKCIhFhakzNE
+                        ECdW07k3VGnrMsQQ+wm3kFj4s4AN/0hDoysC+vc+9W6HWSckqCtNIpkr8FBcvkmd
+                        pSPIl3c2TMTJiCBUKvED+1INGeQ9EvHgAu0EDvZ5M9KGpJYi8QMuNEeczHsGVVWa
+                        4uNvOaN1qw5aydFUOCrew4u7Y5PjmWOmIDjTL2TJM9fLNWYsL/qcproVJ5fUpjpi
+                        TtOmb2p1QryY4ybvKfu+rF2ChgNzLdqxEb1T4X+6GDnaTQ9i8M29v6+4yZwk9H7L
+                        5jywrjifb92xcZYh8rCutazabLzJMvmwhmfOpDbTkyALLzg5bEpD+3ZhNBRvjApH
+                        bs7BE6DdNUkCAwEAAaNxMG8wTgYDVR0RBEcwRYIVd2ViYXV0aC5jbGFyZW1vbnQu
+                        ZWR1hixodHRwczovL3dlYmF1dGguY2xhcmVtb250LmVkdS9pZHAvc2hpYmJvbGV0
+                        aDAdBgNVHQ4EFgQUykUuSorOOJLMWbbeIU+twEL0qOswDQYJKoZIhvcNAQEFBQAD
+                        ggEBAEECe0gg1O5eMAD0GnmV7TD0gOEYKvq4BZaPjNy5KINCv5O7/jQx69lB1GRq
+                        xRyPR7Ai9fHBHlLAHyp+tCoOcmkjvMSbRmusW4JLj2rTyQF1qmWRb4duga+y5YUj
+                        j37+WxF+cWZn6ul3pR1ERdgxWJfRCfXs2FYyH/f8EQhkcgT0Rb592ABqli67wGr+
+                        pyi0UAdlT8t2WdX0Npgres2QanI0oCkeAhn/0fT+FX8kwmDZGw7U2ql2cuFUG66g
+                        sVJNLTd30owNRx+G5j7EwRcNP6TS12acJ5L30LLtvRweLiOfnO776rS8zEtMpBf0
+                        ahQPX9WX5wthjamL6n80AwHpFwo=
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <AttributeService Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding"
+                          Location="https://webauth.claremont.edu/idp/profile/SAML1/SOAP/AttributeQuery"/>
+        <AttributeService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                          Location="https://webauth.claremont.edu/idp/profile/SAML2/SOAP/AttributeQuery"/>
+        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+    </AttributeAuthorityDescriptor>
+</EntityDescriptor>
