@@ -24,12 +24,12 @@ const logger = createLogger("hmc.fetcher");
 
 async function doFetch(endpoint: Endpoint, term: APIv4.TermIdentifier) {
     const params = computeParams(term);
-    let link: string;
-    if (endpoint.param === null) link = endpoint.link;
-    else
-        link = `${endpoint.link}?${new URLSearchParams({
-            [endpoint.param.toUpperCase()]: params[endpoint.param],
-        }).toString()}`;
+    const link =
+        endpoint.param === null
+            ? endpoint.link
+            : `${endpoint.link}?${new URLSearchParams({
+                  [endpoint.param.toUpperCase()]: params[endpoint.param],
+              }).toString()}`;
 
     return fetch(link, {
         headers: {
@@ -77,9 +77,9 @@ async function fetchAndSave(
 export async function fetchAllForTerm(term: APIv4.TermIdentifier) {
     if (process.env.NODE_ENV === "production")
         throw Error("Don't fetch all data at once in production");
-    const jobs: Promise<string>[] = [];
-    for (const endpoint of Object.values(endpoints))
-        jobs.push(fetchAndSave(endpoint, term));
+    const jobs = Object.values(endpoints).map((endpoint) =>
+        fetchAndSave(endpoint, term),
+    );
     const results = await Promise.allSettled(jobs);
 
     // we don't want to log the actual return value (all the data) if fulfilled

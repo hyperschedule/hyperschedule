@@ -37,11 +37,11 @@ export function computeFilePath(
 /**
  * loads a static file from the data directory corresponding to the endpoint
  */
-export async function loadStatic(
+export function loadStatic(
     endpoint: Endpoint,
     term: APIv4.TermIdentifier,
-) {
-    return readFile(computeFilePath(endpoint, term));
+): Promise<string> {
+    return readFile(computeFilePath(endpoint, term), { encoding: "utf-8" });
 }
 
 /**
