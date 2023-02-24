@@ -493,11 +493,16 @@ function processCourseAreas(
     }
 }
 
+/**
+ * This type contains all the input data we need to {@link linkCourseData}, which will compute a list
+ * of APIv4 Sections. It is also used extensively in fetcher to make sure we have all the necessary information
+ * correctly fetched
+ */
 export const CourseFiles = z.object({
     altstaff: z.string(),
     calendarSession: z.string(),
     calendarSessionSection: z.string(),
-    course: z.string(),
+    courseRaw: z.string(),
     courseSection: z.string(),
     courseSectionSchedule: z.string(),
     permCount: z.string(),
@@ -521,7 +526,7 @@ export function linkCourseData(files: CourseFiles): APIv4.Section[] {
     const calendarSessionSectionParsed = parseCalendarSessionSection(
         files.calendarSessionSection,
     );
-    const courseParsed = parseCourseBoomi(files.course);
+    const courseParsed = parseCourseBoomi(files.courseRaw);
     const courseSectionParsed = parseCourseSection(files.courseSection);
     const courseSectionScheduleParsed = parseCourseSectionSchedule(
         files.courseSectionSchedule,

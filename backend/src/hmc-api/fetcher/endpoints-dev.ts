@@ -27,8 +27,8 @@ export const endpoints: Endpoints = {
         interval: 3600,
         saveAs: "alt-staff.json",
     },
-    course: {
-        link: "course",
+    courseRaw: {
+        link: "course-raw",
         param: null,
         interval: 3600,
         saveAs: "course.txt",

@@ -38,7 +38,7 @@ describe("src/hmc-api/course.ts", () => {
         ]);
 
         files.push([
-            "course",
+            "courseRaw",
             await fs.readFile("src/hmc-api/sample/course.txt", {
                 encoding: "utf-8",
             }),
