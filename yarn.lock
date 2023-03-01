@@ -1949,7 +1949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-hookz/web@npm:^20.1.0":
+"@react-hookz/web@npm:^20.0.3":
   version: 20.1.0
   resolution: "@react-hookz/web@npm:20.1.0"
   dependencies:
@@ -2248,7 +2248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.17":
+"@types/express@npm:^4.17.15":
   version: 4.17.17
   resolution: "@types/express@npm:4.17.17"
   dependencies:
@@ -2301,7 +2301,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^9.0.1":
+"@types/jsonwebtoken@npm:^9.0.0":
   version: 9.0.1
   resolution: "@types/jsonwebtoken@npm:9.0.1"
   dependencies:
@@ -2324,7 +2324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.14.2":
+"@types/node@npm:*, @types/node@npm:^18.11.18":
   version: 18.14.2
   resolution: "@types/node@npm:18.14.2"
   checksum: 53c07e721f6ae33de71306f6a0b75dae6066a4f55bd5484c93bd59ff25f0c5f004ceafeef509a4d0cb9e24a247efc34d50489bcc1b05a53ecc68e2fc088e65cb
@@ -2391,7 +2391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.0.11":
+"@types/react-dom@npm:^18.0.10":
   version: 18.0.11
   resolution: "@types/react-dom@npm:18.0.11"
   dependencies:
@@ -2418,7 +2418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.0.28":
+"@types/react@npm:*, @types/react@npm:^18.0.26":
   version: 18.0.28
   resolution: "@types/react@npm:18.0.28"
   dependencies:
@@ -2476,7 +2476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^9.0.1":
+"@types/uuid@npm:^9.0.0":
   version: 9.0.1
   resolution: "@types/uuid@npm:9.0.1"
   checksum: c472b8a77cbeded4bc529220b8611afa39bd64677f507838f8083d8aac8033b1f88cb9ddaa2f8589e0dcd2317291d0f6e1379f82d5ceebd6f74f3b4825288e00
@@ -2516,7 +2516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.54.0":
+"@typescript-eslint/eslint-plugin@npm:^5.48.0":
   version: 5.54.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.54.0"
   dependencies:
@@ -2540,7 +2540,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.54.0":
+"@typescript-eslint/parser@npm:^5.48.0":
   version: 5.54.0
   resolution: "@typescript-eslint/parser@npm:5.54.0"
   dependencies:
@@ -2637,7 +2637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^3.1.0":
+"@vitejs/plugin-react@npm:^3.0.0":
   version: 3.1.0
   resolution: "@vitejs/plugin-react@npm:3.1.0"
   dependencies:
@@ -3903,7 +3903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.35.0":
+"eslint@npm:^8.30.0":
   version: 8.35.0
   resolution: "eslint@npm:8.35.0"
   dependencies:
@@ -4542,25 +4542,25 @@ __metadata:
   dependencies:
     "@tinyhttp/app": ^2.0.29
     "@tinyhttp/cookie-parser": ^2.0.6
-    "@types/express": ^4.17.17
-    "@types/jsonwebtoken": ^9.0.1
-    "@types/node": ^18.14.2
+    "@types/express": ^4.17.15
+    "@types/jsonwebtoken": ^9.0.0
+    "@types/node": ^18.11.18
     "@types/utf-8-validate": ^5.0.0
-    "@types/uuid": ^9.0.1
+    "@types/uuid": ^9.0.0
     hyperschedule-data: "workspace:^"
     hyperschedule-shared: "workspace:^"
     iconv-lite: ^0.6.3
-    jest: ^29.4.3
+    jest: ^29.3.1
     jsonwebtoken: ^9.0.0
-    mongodb: ^4.14.0
-    mongodb-memory-server: ^8.11.5
-    pino: ^8.11.0
-    pino-pretty: ^9.4.0
-    ts-jest: ^29.0.5
+    mongodb: ^4.13.0
+    mongodb-memory-server: ^8.10.2
+    pino: ^8.8.0
+    pino-pretty: ^9.1.1
+    ts-jest: ^29.0.3
     ts-node: ^10.9.1
     tsconfig-paths: ^4.1.2
-    undici: ^5.20.0
-    utf-8-validate: ^6.0.3
+    undici: ^5.16.0
+    utf-8-validate: ^6.0.2
     uuid: ^9.0.0
   peerDependencies:
     typescript: ^4.7.4
@@ -4579,20 +4579,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hyperschedule-frontend@workspace:frontend"
   dependencies:
-    "@react-hookz/web": ^20.1.0
+    "@react-hookz/web": ^20.0.3
     "@types/md5": ^2.3.2
     "@types/randomcolor": ^0.5.7
-    "@types/react": ^18.0.28
-    "@types/react-dom": ^18.0.11
+    "@types/react": ^18.0.26
+    "@types/react-dom": ^18.0.10
     "@types/react-measure": ^2.0.8
     "@types/react-window": ^1.8.5
-    "@vitejs/plugin-react": ^3.1.0
+    "@vitejs/plugin-react": ^3.0.0
     classnames: ^2.3.2
     hyperschedule-shared: "workspace:^"
-    immer: ^9.0.19
+    immer: ^9.0.17
     md5: ^2.3.0
     postcss-comment: ^2.0.0
-    postcss-custom-media: ^9.1.2
+    postcss-custom-media: ^9.0.1
     postcss-nesting: ^10.2.0
     postcss-reuse: ^2.2.0
     randomcolor: ^0.6.2
@@ -4600,11 +4600,11 @@ __metadata:
     react-dom: ^18.2.0
     react-feather: ^2.0.10
     react-measure: ^2.5.2
-    react-query: ^3.39.3
+    react-query: ^3.39.2
     react-window: ^1.8.8
-    typescript-plugin-css-modules: ^4.2.2
-    vite: ^4.1.4
-    zustand: ^4.3.5
+    typescript-plugin-css-modules: ^4.1.1
+    vite: ^4.0.3
+    zustand: ^4.2.0
   peerDependencies:
     typescript: ^4.7.4
   languageName: unknown
@@ -4614,14 +4614,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hyperschedule-shared@workspace:shared"
   dependencies:
-    "@types/node": ^18.14.2
-    jest: ^29.4.3
-    ts-jest: ^29.0.5
+    "@types/node": ^18.11.18
+    jest: ^29.3.1
+    ts-jest: ^29.0.3
     ts-node: ^10.9.1
     typedoc: ^0.22.18
     typedoc-theme-oxide: ^0.1.6
     typescript-json-schema: ^0.55.0
-    zod: ^3.20.6
+    zod: ^3.20.2
   peerDependencies:
     typescript: ^4.7.4
   languageName: unknown
@@ -4631,11 +4631,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hyperschedule@workspace:."
   dependencies:
-    "@typescript-eslint/eslint-plugin": ^5.54.0
-    "@typescript-eslint/parser": ^5.54.0
-    eslint: ^8.35.0
-    prettier: ^2.8.4
-    typescript: ^4.9.5
+    "@typescript-eslint/eslint-plugin": ^5.48.0
+    "@typescript-eslint/parser": ^5.48.0
+    eslint: ^8.30.0
+    prettier: ^2.8.1
+    typescript: ^4.9.4
   languageName: unknown
   linkType: soft
 
@@ -4680,7 +4680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immer@npm:^9.0.19":
+"immer@npm:^9.0.17":
   version: 9.0.19
   resolution: "immer@npm:9.0.19"
   checksum: f02ee53989989c287cd548a3d817fccf0bfe56db919755ee94a72ea3ae78a00363fba93ee6c010fe54a664380c29c53d44ed4091c6a86cae60957ad2cfabc010
@@ -5347,7 +5347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^29.4.3":
+"jest@npm:^29.3.1":
   version: 29.4.3
   resolution: "jest@npm:29.4.3"
   dependencies:
@@ -5645,9 +5645,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^7.7.1":
-  version: 7.17.0
-  resolution: "lru-cache@npm:7.17.0"
-  checksum: 28c2a98ad313b8d61beac1f08257b6f0ca990e39d24a9bc831030b6e209447cfb11c6d9d1a774282189bfc9609d1dfd17ebe485228dd68f7b96b6b9b7740894e
+  version: 7.18.0
+  resolution: "lru-cache@npm:7.18.0"
+  checksum: 5bdf0a23658bf4a2d9f72aeaa826ad808aeb722ab87eb52554d5adb10b241331ff087ca34d85cf17e4a8a4fbce23c65b4e3475b61ba1bff19cff2a16d10396b1
   languageName: node
   linkType: hard
 
@@ -5978,7 +5978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-memory-server@npm:^8.11.5":
+"mongodb-memory-server@npm:^8.10.2":
   version: 8.11.5
   resolution: "mongodb-memory-server@npm:8.11.5"
   dependencies:
@@ -5988,7 +5988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^4.13.0, mongodb@npm:^4.14.0":
+"mongodb@npm:^4.13.0":
   version: 4.14.0
   resolution: "mongodb@npm:4.14.0"
   dependencies:
@@ -6406,7 +6406,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-pretty@npm:^9.4.0":
+"pino-pretty@npm:^9.1.1":
   version: 9.4.0
   resolution: "pino-pretty@npm:9.4.0"
   dependencies:
@@ -6437,7 +6437,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^8.11.0":
+"pino@npm:^8.8.0":
   version: 8.11.0
   resolution: "pino@npm:8.11.0"
   dependencies:
@@ -6483,7 +6483,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-custom-media@npm:^9.1.2":
+"postcss-custom-media@npm:^9.0.1":
   version: 9.1.2
   resolution: "postcss-custom-media@npm:9.1.2"
   dependencies:
@@ -6608,7 +6608,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.4":
+"prettier@npm:^2.8.1":
   version: 2.8.4
   resolution: "prettier@npm:2.8.4"
   bin:
@@ -6777,7 +6777,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.39.3":
+"react-query@npm:^3.39.2":
   version: 3.39.3
   resolution: "react-query@npm:3.39.3"
   dependencies:
@@ -7500,7 +7500,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.0.5":
+"ts-jest@npm:^29.0.3":
   version: 29.0.5
   resolution: "ts-jest@npm:29.0.5"
   dependencies:
@@ -7683,7 +7683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-plugin-css-modules@npm:^4.2.2":
+"typescript-plugin-css-modules@npm:^4.1.1":
   version: 4.2.2
   resolution: "typescript-plugin-css-modules@npm:4.2.2"
   dependencies:
@@ -7708,7 +7708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.9.5":
+"typescript@npm:^4.9.4":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -7728,7 +7728,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=a1c5e5"
   bin:
@@ -7748,7 +7748,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^5.20.0":
+"undici@npm:^5.16.0":
   version: 5.20.0
   resolution: "undici@npm:5.20.0"
   dependencies:
@@ -7817,7 +7817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utf-8-validate@npm:^6.0.3":
+"utf-8-validate@npm:^6.0.2":
   version: 6.0.3
   resolution: "utf-8-validate@npm:6.0.3"
   dependencies:
@@ -7870,7 +7870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.1.4":
+"vite@npm:^4.0.3":
   version: 4.1.4
   resolution: "vite@npm:4.1.4"
   dependencies:
@@ -8077,14 +8077,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.20.6":
+"zod@npm:^3.20.2":
   version: 3.20.6
   resolution: "zod@npm:3.20.6"
   checksum: 804b1934b8b5e2fa3750bec90043e8118b201f330b9957b8b768389a971acadf812d2060cf62921086512dab4af691d10490acb03333da58fc485c0791893c89
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.3.5":
+"zustand@npm:^4.2.0":
   version: 4.3.5
   resolution: "zustand@npm:4.3.5"
   dependencies:
