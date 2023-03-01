@@ -13,7 +13,7 @@ import * as Search from "@lib/search";
 import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
 
-import * as Css from "./CourseSearch.module.css";
+import Css from "./CourseSearch.module.css";
 
 function sectionKey(id: Api.SectionIdentifier) {
     return [

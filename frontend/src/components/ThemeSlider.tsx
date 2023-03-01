@@ -1,4 +1,4 @@
-import * as Css from "./ThemeSlider.module.css";
+import Css from "./ThemeSlider.module.css";
 import * as Feather from "react-feather";
 
 import useStore, { Theme } from "@hooks/store";

@@ -4,7 +4,7 @@ import { useMeasure } from "@react-hookz/web";
 import classNames from "classnames";
 
 import * as Api from "hyperschedule-shared/api/v4";
-import * as Css from "./CourseRow.module.css";
+import Css from "./CourseRow.module.css";
 
 import * as Feather from "react-feather";
 

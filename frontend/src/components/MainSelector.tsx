@@ -1,4 +1,4 @@
-import * as Css from "./MainSelector.module.css";
+import Css from "./MainSelector.module.css";
 
 import classNames from "classnames";
 

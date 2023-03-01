@@ -9,19 +9,46 @@
     "jsx": "react-jsx",
     "sourceMap": true,
     "resolveJsonModule": true,
+    "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "sourceRoot": "src",
     "baseUrl": "src",
     "rootDir": "src",
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
-    "types": ["vite/client"],
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "postcssOptions": {
+            "useConfig": true
+          },
+          "namedExports": false,
+          "goToDefinitions": true,
+          "allowUnknownClassnames": true
+        }
+      }
+    ],
+    "types": [
+      "vite/client"
+    ],
     "paths": {
-      "@components/*": ["components/*"],
-      "@lib/*": ["lib/*"],
-      "@hooks/*": ["hooks/*"]
+      "@components/*": [
+        "components/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
-  "references": [{ "path": "../shared" }]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx"
+  ],
 }

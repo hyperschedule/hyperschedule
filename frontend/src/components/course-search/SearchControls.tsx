@@ -1,4 +1,4 @@
-import * as Css from "./SearchControls.module.css";
+import Css from "./SearchControls.module.css";
 import * as Feather from "react-feather";
 
 import useStore from "@hooks/store";
