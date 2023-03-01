@@ -50,7 +50,8 @@
   "scripts": {
     "serve": "vite",
     "test": ":",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ci:test": ":"
   },
   "dependencies": {
     "@react-hookz/web": "^20.0.3",

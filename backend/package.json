@@ -61,6 +61,7 @@
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",
     "restart-db": "yarn stop-db && yarn start-db",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ci:test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --bail=0 --no-cache --ci"
   }
 }
