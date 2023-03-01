@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         # we use matrix so we can run those in parallel
-        command: ["test --all", lint, format-check]
+        command: ["ci:typecheck", "ci:test", "ci:lint", "ci:format"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 18
