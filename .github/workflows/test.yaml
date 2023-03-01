@@ -2,9 +2,10 @@ name: Run all unit tests and lints
 
 on:
   push:
-    branches: [ v2 ]
+    branches: [ * ]
   pull_request:
     branches: [ v2 ]
+  workflow_dispatch:
 
 jobs:
   build:
