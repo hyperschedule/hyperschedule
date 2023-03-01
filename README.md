@@ -33,3 +33,7 @@ be updated alone with our CI.
 ```shell
 ln -s $(pwd)/hooks/pre-commit .git/hooks/pre-commit
 ```
+
+# Post-checkout and post-merge hooks
+
+You can also get some other hooks to set up your environment automatically using both the `post-checkout` and `post-merge` hooks
