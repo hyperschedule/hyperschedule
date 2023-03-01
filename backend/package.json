@@ -60,6 +60,7 @@
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --onlyChanged",
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",
-    "restart-db": "yarn stop-db && yarn start-db"
+    "restart-db": "yarn stop-db && yarn start-db",
+    "typecheck": "tsc --noEmit"
   }
 }

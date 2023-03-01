@@ -1,4 +1,4 @@
-import * as Css from "./MainSelector.module.css";
+import Css from "./MainSelector.module.css";
 
 import classNames from "classnames";
 
@@ -11,7 +11,7 @@ export default function MainSelector() {
     return (
         <div
             className={classNames(Css.container, {
-                [Css.alt]: mainTab === MainTab.Schedule,
+                [Css.alt!]: mainTab === MainTab.Schedule,
             })}
         >
             <button onClick={() => setMainTab(MainTab.CourseSearch)}>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Css from "./App.module.css";
+import Css from "./App.module.css";
 
 import * as ReactQuery from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -28,14 +28,14 @@ export default function App() {
                     <MainSelector />
                     <div
                         className={classNames(Css.mainContent, {
-                            [Css.visible]: mainTab === MainTab.CourseSearch,
+                            [Css.visible!]: mainTab === MainTab.CourseSearch,
                         })}
                     >
                         <CourseSearch />
                     </div>
                     <div
                         className={classNames(Css.mainContent, {
-                            [Css.visible]: mainTab === MainTab.Schedule,
+                            [Css.visible!]: mainTab === MainTab.Schedule,
                         })}
                     >
                         <Schedule />

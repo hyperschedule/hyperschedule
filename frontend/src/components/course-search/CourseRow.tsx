@@ -4,7 +4,7 @@ import { useMeasure } from "@react-hookz/web";
 import classNames from "classnames";
 
 import * as Api from "hyperschedule-shared/api/v4";
-import * as Css from "./CourseRow.module.css";
+import Css from "./CourseRow.module.css";
 
 import * as Feather from "react-feather";
 
@@ -50,7 +50,7 @@ export default function CourseRow(props: {
     return (
         <div className={Css.padder}>
             <div
-                className={classNames(Css.box, { [Css.expand]: props.expand })}
+                className={classNames(Css.box, { [Css.expand!]: props.expand })}
                 style={
                     {
                         "--course-color-light": color,
@@ -96,7 +96,7 @@ export default function CourseRow(props: {
                         seats filled
                         <span
                             className={classNames(Css.permCountLabel, {
-                                [Css.nonzero]: props.section.permCount !== 0,
+                                [Css.nonzero!]: props.section.permCount !== 0,
                             })}
                         >
                             ,

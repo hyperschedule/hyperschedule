@@ -39,6 +39,7 @@
   },
   "scripts": {
     "test": "jest --onlyChanged",
+    "typecheck": "tsc --noEmit",
     "doc": "typedoc",
     "generate-schema": "node --experimental-specifier-resolution=node --loader ts-node/esm --no-warnings api/v4/schema-generator.ts"
   },
