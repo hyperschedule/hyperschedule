@@ -42,7 +42,7 @@
     "format-check": "prettier --check '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html'",
     "ci:test": "yarn workspaces foreach --all --verbose --topological-dev run ci:test",
     "ci:format": "prettier --loglevel warn --list-different '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html'",
-    "ci:typecheck": "yarn workspaces foreach --all run typecheck",
+    "ci:typecheck": "yarn workspaces foreach --all --verbose --topological-dev run typecheck",
     "ci:lint": "eslint . --quiet"
   },
   "engines": {
