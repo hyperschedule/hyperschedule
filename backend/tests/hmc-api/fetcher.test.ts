@@ -1,6 +1,6 @@
 import { describe, test, expect } from "@jest/globals";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { computeParams } from "../src/hmc-api/fetcher/utils";
+import { computeParams } from "../../src/hmc-api/fetcher/utils";
 
 describe("src/hmc-api/fetcher/utils.ts", () => {
     test("computeParams", () => {

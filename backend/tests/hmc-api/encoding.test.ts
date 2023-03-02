@@ -1,5 +1,5 @@
 import { describe, test, expect } from "@jest/globals";
-import { fixEncoding } from "../src/hmc-api/encoding";
+import { fixEncoding } from "../../src/hmc-api/encoding";
 
 describe("src/hmc-api/encoding.ts", () => {
     test("encoding fix works with correctly encoded data", () => {
