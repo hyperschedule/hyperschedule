@@ -1,6 +1,6 @@
-import { describe, test, expect } from "@jest/globals";
+import { describe, test, expect, afterAll } from "@jest/globals";
 import request from "supertest";
-import { server } from "../src/server";
+import { server as app } from "../src/server";
 import { updateSections } from "../src/db/models/course";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { setupDbHooks } from "./db/hooks";
@@ -9,7 +9,12 @@ import { CURRENT_TERM } from "../src/current-term";
 
 setupDbHooks();
 
-const mockServer = request(server.listen());
+const server = app.listen();
+const mockServer = request(server);
+
+afterAll(() => {
+    server.close();
+});
 
 describe("Course routes", () => {
     test("Route /v4/sections", async () => {
