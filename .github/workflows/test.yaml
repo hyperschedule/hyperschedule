@@ -10,12 +10,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         # we use matrix so we can run those in parallel
-        command: ["ci:typecheck", "ci:test", "ci:lint", "ci:format"]
+        command: ["typecheck", "test", "lint", "format"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 18
@@ -26,4 +26,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
       - name: Run ${{matrix.command}}
-        run: yarn ${{matrix.command}}
+        run: yarn ci:${{matrix.command}}
