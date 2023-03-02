@@ -2,7 +2,7 @@ import { describe, expect, test } from "@jest/globals";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { getAllSections, updateSections } from "../../src/db/models/course";
 import { setupDbHooks } from "./hooks";
-import { testSection } from "./test-data";
+import { testSectionV4 } from "../test-data";
 
 setupDbHooks();
 
@@ -13,10 +13,10 @@ const testTermIdentifier = {
 
 describe("db/models/course", () => {
     test("Basic insertion and query", async () => {
-        await updateSections([testSection], testTermIdentifier);
+        await updateSections([testSectionV4], testTermIdentifier);
         const sections = await getAllSections();
         expect(sections.length).toStrictEqual(1);
-        expect(sections[0]).toStrictEqual(testSection);
+        expect(sections[0]).toStrictEqual(testSectionV4);
         expect(
             (await getAllSections({ year: 2022, term: APIv4.Term.spring }))
                 .length,
@@ -27,7 +27,7 @@ describe("db/models/course", () => {
         await updateSections(
             [
                 {
-                    ...testSection,
+                    ...testSectionV4,
                     identifier: {
                         // fall 2023
                         department: "CSCI",
@@ -47,7 +47,7 @@ describe("db/models/course", () => {
         await updateSections(
             [
                 {
-                    ...testSection,
+                    ...testSectionV4,
                     identifier: {
                         // spring 2023
                         department: "CSCI",
@@ -71,7 +71,7 @@ describe("db/models/course", () => {
         await updateSections(
             [
                 {
-                    ...testSection,
+                    ...testSectionV4,
                     identifier: {
                         // sp section 1
                         department: "CSCI",
@@ -85,7 +85,7 @@ describe("db/models/course", () => {
                     } satisfies APIv4.SectionIdentifier,
                 },
                 {
-                    ...testSection,
+                    ...testSectionV4,
                     identifier: {
                         // sp section 2
                         department: "CSCI",
@@ -105,7 +105,7 @@ describe("db/models/course", () => {
         await updateSections(
             [
                 {
-                    ...testSection,
+                    ...testSectionV4,
                     identifier: {
                         // sp section 3
                         department: "CSCI",
@@ -124,7 +124,7 @@ describe("db/models/course", () => {
         const sections = await getAllSections();
         expect(sections.length).toStrictEqual(1);
         expect(sections[0]).toStrictEqual({
-            ...testSection,
+            ...testSectionV4,
             identifier: {
                 department: "CSCI",
                 courseNumber: 131,
@@ -141,7 +141,7 @@ describe("db/models/course", () => {
         await updateSections(
             [
                 {
-                    ...testSection,
+                    ...testSectionV4,
                     identifier: {
                         // fall 2023
                         department: "CSCI",
@@ -161,7 +161,7 @@ describe("db/models/course", () => {
         await updateSections(
             [
                 {
-                    ...testSection,
+                    ...testSectionV4,
                     identifier: {
                         // spring 2023
                         department: "CSCI",
@@ -185,7 +185,7 @@ describe("db/models/course", () => {
         });
         expect(springSections.length).toStrictEqual(1);
         expect(springSections[0]).toStrictEqual({
-            ...testSection,
+            ...testSectionV4,
             identifier: {
                 // spring 2023
                 department: "CSCI",
@@ -205,7 +205,7 @@ describe("db/models/course", () => {
         });
         expect(fallSections.length).toStrictEqual(1);
         expect(fallSections[0]).toStrictEqual({
-            ...testSection,
+            ...testSectionV4,
             identifier: {
                 // spring 2023
                 department: "CSCI",
