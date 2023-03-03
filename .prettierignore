@@ -1,3 +1,5 @@
 .svelte-kit/
 .netlify/
 data/**/*.json
+**/dist/*
+**/coverage/*
