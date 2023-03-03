@@ -12,7 +12,7 @@ describe("src/hmc-api/fetcher/utils.ts", () => {
         ).toEqual({
             year: "2023",
             catalog: "UG22",
-            session: "SP2023",
+            session: "SP",
         });
 
         expect(
@@ -23,7 +23,7 @@ describe("src/hmc-api/fetcher/utils.ts", () => {
         ).toEqual({
             year: "2023",
             catalog: "UG22",
-            session: "SU2023",
+            session: "SU",
         });
 
         expect(
@@ -34,7 +34,7 @@ describe("src/hmc-api/fetcher/utils.ts", () => {
         ).toEqual({
             year: "2023",
             catalog: "UG23",
-            session: "FA2023",
+            session: "FA",
         });
     });
 });
