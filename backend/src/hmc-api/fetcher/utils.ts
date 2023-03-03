@@ -1,6 +1,7 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
+
 import { DATA_DIR_PATH } from "hyperschedule-data";
-import type { Endpoint, Endpoints } from "./types";
+import type { Endpoint, Endpoints, ParamOptions } from "./types";
 import { Params } from "./types";
 import { resolve, dirname } from "path";
 import { readFile, writeFile, mkdir } from "fs/promises";
@@ -15,7 +16,7 @@ const logger = createLogger("hmc.fetcher.utils");
  */
 export function computeParams(term: APIv4.TermIdentifier): Params {
     return Params.parse({
-        session: APIv4.stringifyTermIdentifier(term),
+        session: term.term,
         year: term.year.toString(),
         catalog: `UG${
             (term.term === APIv4.Term.fall ? term.year : term.year - 1) % 100
@@ -85,4 +86,18 @@ export async function loadCourseFiles(
         });
     }
     return CourseFiles.parse(obj);
+}
+
+/**
+ * a convenient function to make ParamOptions by specifying used fields. e.g.
+ * setUsedParams("year", "session")
+ */
+export function setUsedParams(...args: (keyof ParamOptions)[]): ParamOptions {
+    const out: ParamOptions = {
+        session: false,
+        catalog: false,
+        year: false,
+    };
+    for (const k of args) out[k] = true;
+    return out;
 }

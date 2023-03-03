@@ -17,19 +17,29 @@ export {};
 import { createLogger } from "../../logger";
 import { endpoints, endpointAuthorization } from "./endpoints";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import type { Endpoint } from "./types";
+import type { Endpoint, Params } from "./types";
 import { computeParams, saveStatic } from "./utils";
 
 const logger = createLogger("hmc.fetcher");
 
 async function doFetch(endpoint: Endpoint, term: APIv4.TermIdentifier) {
     const params = computeParams(term);
-    const link =
-        endpoint.param === null
-            ? endpoint.link
-            : `${endpoint.link}?${new URLSearchParams({
-                  [endpoint.param.toUpperCase()]: params[endpoint.param],
-              }).toString()}`;
+
+    let link = endpoint.link;
+    if (endpoint.params !== null) {
+        /* constructs the URL query and only include parameters specified in endpoint.params. this is basically
+         * an object filter with known keys.
+         * for example, if params is {year:"2022", catalog:"UG22", term:SP} and endpoint.params is
+         * {year:true, catalog:true} then p will be {year:"2022", catalog:"UG22"}
+         */
+        const p: Partial<Record<keyof Params, string>> = {};
+        for (const key of Object.keys(params) as (keyof Params)[])
+            if (endpoint.params[key]) p[key] = params[key].toUpperCase();
+
+        const query = new URLSearchParams(p);
+        link = `${link}?${query}`;
+    }
+    logger.trace(link);
 
     return fetch(link, {
         headers: {
