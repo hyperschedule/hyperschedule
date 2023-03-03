@@ -16,6 +16,6 @@
     "noEmit": true,
     "types": ["node"],
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.test.ts"],
   "files": ["src/tiny-http-augment.d.ts"]
 }
