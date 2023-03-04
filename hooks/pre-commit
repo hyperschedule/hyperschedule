@@ -11,21 +11,33 @@ function run-script {
   fi
 }
 
+function restore-worktree() {
+  echo $'\e[95mRestoring current working directory\e[m'
+  git reset --hard --quiet
+  git stash apply --index --quiet
+  git stash drop --quiet
+}
+
 function fail {
- echo $'\e[95mRestoring current working directory\e[m'
- git stash pop -q
+ restore-worktree
  exit 1
 }
 
-echo $'\e[95mStashing current working directory\e[m'
-git stash push --include-untracked --keep-index
+echo $'\e[95mReverting current worktree to index for checks\e[m'
+# stash the files without touching work tree
+git stash push --quiet -m "pre-commit hook stash"
+git stash apply --index --quiet
+
+# restore work tree state to index
+git restore .
 
 run-script format-check || fail
 run-script typecheck || fail
 run-script lint || fail
 run-script test || fail
 
- echo $'\e[95mRestoring current working directory\e[m'
-git stash pop
+echo $'\e[95mRestoring current working directory\e[m'
+restore-worktree
 
 echo $'\e[95mPre-commit checks completed\e[m'
+git status
