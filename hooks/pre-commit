@@ -36,7 +36,6 @@ run-script typecheck || fail
 run-script lint || fail
 run-script test || fail
 
-echo $'\e[95mRestoring current working directory\e[m'
 restore-worktree
 
 echo $'\e[95mPre-commit checks completed\e[m'
