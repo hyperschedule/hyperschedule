@@ -68,6 +68,27 @@ describe("hmc-api/parser/json.ts", () => {
         });
     });
 
+    test("Single json item parsing with key rename transform", () => {
+        const out = parseJSONItem(
+            { a: 1, b: 2 },
+            z.object({ a: z.number(), c: z.string() }).strict(),
+            {
+                a: NoTransform,
+                b(v: number) {
+                    return {
+                        name: "c",
+                        value: v.toString(),
+                    };
+                },
+            },
+        );
+        expect(out.success).toBeTruthy();
+        expect((out as SafeParseSuccess<unknown>).data).toStrictEqual({
+            a: 1,
+            c: "2",
+        });
+    });
+
     test("Single json item parsing with incorrect transform", () => {
         const out = parseJSONItem(
             { a: 1, b: 2 },
