@@ -2,7 +2,21 @@
  * This module is the parser for json object we receive. The simple way to use it is to specify input, a zod validator
  * for output, and a transform object with functions for each key. parseJSON is the array equivalent of parseJSONItem.
  * For example:
- *
+ * ```ts
+ *  parseJSONItem(
+ *             {a: 1, b: 2}, // input
+ *             z.object({a: z.number(), b: z.string()}).strict(), // validator
+ *             { // transform object
+ *                 a: NoTransform,
+ *                 b(v: number) {
+ *                     return {
+ *                         name: "b",
+ *                         value: v.toString(),
+ *                     };
+ *                 },
+ *             },
+ *         )
+ * ```
  *
  */
 

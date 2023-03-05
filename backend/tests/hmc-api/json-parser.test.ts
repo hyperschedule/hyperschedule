@@ -1,6 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import {
     NoTransform,
+    parseJSON,
     parseJSONItem,
     Remove,
 } from "../../src/hmc-api/parser/json";
@@ -158,5 +159,34 @@ describe("hmc-api/parser/json.ts", () => {
             },
         );
         expect(result.success).toBeFalsy();
+    });
+
+    test("JSON array parsing", () => {
+        const testInput = [
+            {
+                a: "1",
+                b: "2",
+            },
+            { a: "3", b: "4" },
+        ];
+        const expectedOutput = [
+            {
+                a: "1",
+                b: 2,
+            },
+            { a: "3", b: 4 },
+        ];
+        const result = parseJSON(
+            testInput,
+            z.object({ a: z.string(), b: z.number() }).strict(),
+            {
+                a: NoTransform,
+                b: (v) => ({
+                    name: "b",
+                    value: parseInt(v),
+                }),
+            },
+        );
+        expect(result).toStrictEqual(expectedOutput);
     });
 });
