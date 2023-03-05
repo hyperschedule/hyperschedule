@@ -1,4 +1,4 @@
-name: Run all unit tests and lints
+name: Run all automated checks
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  run:
     runs-on: ubuntu-latest
     strategy:
       matrix:
