@@ -2,7 +2,7 @@ import { describe, test, expect } from "@jest/globals";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { linkCourseData, extractSectionTerm } from "../../src/hmc-api/course";
-import { parseCourseBoomi, ParsedCourse } from "../../src/hmc-api/files";
+import { parseCourseBoomi, ParsedCourse } from "../../src/hmc-api/files-legacy";
 import * as fs from "fs/promises";
 
 describe("src/hmc-api/course.ts", () => {

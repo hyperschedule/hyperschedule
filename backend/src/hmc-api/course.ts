@@ -14,7 +14,7 @@ import {
     parsePermCount,
     parseSectionInstructor,
     parseStaff,
-} from "./files";
+} from "./files-legacy";
 import { z } from "zod";
 
 import { buildings } from "./buildings";

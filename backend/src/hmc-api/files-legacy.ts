@@ -1,3 +1,6 @@
+/**
+ * Legacy files for processing csvs
+ */
 import { parse, parseBoomi } from "./parser";
 import type { Result } from "./parser";
 import { z } from "zod";
