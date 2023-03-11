@@ -22,7 +22,7 @@ samlApp
             const result = await sp.parseLoginResponse(idp, "post", {
                 body: request.body,
             });
-            logger.info("SAML request completed %O", result.extract);
+            logger.info(result.extract, "SAML request completed");
             return response.send(result.extract);
         } catch (e) {
             logger.error(e);

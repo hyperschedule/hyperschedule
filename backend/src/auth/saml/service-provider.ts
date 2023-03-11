@@ -1,5 +1,5 @@
 import * as samlify from "samlify";
-import { readFile } from "fs/promises";
+import { loadDataFile } from "hyperschedule-data";
 /* The source code of this package has been manually reviewed, even though it has no readme and no star on GitHub
  *  Version: 2.0.0
  *  Date: March 10, 2023
@@ -12,7 +12,8 @@ samlify.setSchemaValidator({
 });
 
 export const idp = samlify.IdentityProvider({
-    metadata: await readFile("src/auth/saml/identity-provider.xml"),
+    // this file is downloaded from https://webauth.claremont.edu/idp/shibboleth
+    metadata: await loadDataFile("saml", "identity-provider.xml"),
 });
 export const sp = samlify.ServiceProvider({
     wantAssertionsSigned: true,

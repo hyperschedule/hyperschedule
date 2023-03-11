@@ -22,5 +22,8 @@
   "license": "MIT",
   "peerDependencies": {
     "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
   }
 }
