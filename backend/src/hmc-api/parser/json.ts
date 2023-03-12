@@ -107,7 +107,6 @@ export function parseJSONItem<
             }
         }
     }
-    console.log(result);
     return outValidator.safeParse(result);
 }
 
