@@ -43,9 +43,24 @@ export type NoTransform = typeof NoTransform;
 export const Remove = Symbol();
 export type Remove = typeof Remove;
 
+export interface Rename<Output> {
+    to: keyof Output;
+}
+
+export function renameTo<T>(newName: keyof T): Rename<T> {
+    return {
+        to: newName,
+    };
+}
+
+export function isRename<T>(o: object): o is Rename<T> {
+    return o.hasOwnProperty("to");
+}
+
 export type JSONTransform<Input, Output> = Record<
     keyof Input,
     | TransformFunction<Input, keyof Input, Output, keyof Output>
+    | Rename<Output>
     | NoTransform
     | Remove
 >;
@@ -68,18 +83,31 @@ export function parseJSONItem<
 ): z.SafeParseReturnType<Output, Output> {
     const result: Partial<Output> = {};
     for (const inKey of Object.keys(transform) as (keyof Input)[]) {
-        const transformFunc = transform[inKey];
-        if (transformFunc === NoTransform) {
-            // this is fine because we also sanitize the data with zod before returning it
+        const transformObj = transform[inKey];
+        if (transformObj === NoTransform) {
+            // casting as any is fine because we also sanitize the data with zod before returning it
             (result as any)[inKey] = data[inKey];
-        } else if (transformFunc === Remove) {
+        } else if (transformObj === Remove) {
             // do nothing
+        } else if (isRename<Output>(transformObj)) {
+            // same as above, casting as any is safe
+            (result as any)[transformObj.to] = data[inKey];
         } else {
-            const { name, value } = transformFunc(data[inKey]);
-            result[name] = value;
+            try {
+                // transformFunc might throw error
+                const { name, value } = transformObj(data[inKey]);
+                result[name] = value;
+            } catch (e) {
+                // this error will propagate because the output will be missing a field
+                logger.warn(
+                    "Cannot apply transform function to object %O on field %s",
+                    data,
+                    inKey,
+                );
+            }
         }
     }
-
+    console.log(result);
     return outValidator.safeParse(result);
 }
 

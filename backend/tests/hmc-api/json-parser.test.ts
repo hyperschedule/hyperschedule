@@ -4,6 +4,7 @@ import {
     parseJSON,
     parseJSONItem,
     Remove,
+    renameTo,
 } from "../../src/hmc-api/parser/json";
 import type { SafeParseSuccess } from "zod";
 import { z } from "zod";
@@ -180,6 +181,18 @@ describe("hmc-api/parser/json.ts", () => {
             },
         );
         expect(result.success).toBeFalsy();
+    });
+
+    test("key rename", () => {
+        const result = parseJSONItem(
+            { a: 1, b: 2 },
+            z.object({ c: z.number() }).strict(),
+            {
+                a: Remove,
+                b: renameTo("c"),
+            },
+        );
+        expect(result.success).toBeTruthy();
     });
 
     test("JSON array parsing", () => {
