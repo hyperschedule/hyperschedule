@@ -16,6 +16,7 @@ import type { Endpoints } from "./types";
  *   }
  * ```
  */
+
 export const endpoints: Endpoints = {
     // fetch once per minute
     permCount: {

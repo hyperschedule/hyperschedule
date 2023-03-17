@@ -29,7 +29,7 @@ git stash push --quiet -m "pre-commit hook stash"
 git stash apply --index --quiet
 
 # restore work tree state to index
-git restore . --staged --worktree
+git restore .
 
 run-script format-check || fail
 run-script typecheck || fail

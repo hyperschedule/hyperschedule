@@ -1,26 +1,33 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import {
-    parseCXSectionIdentifier,
-    parseCXCourseCode,
-} from "hyperschedule-shared/api/v4/course-code";
+import type {
+    AltStaffOutput,
+    CalendarSessionOutput,
+    CalendarSessionSectionOutput,
+    CourseOutput,
+    CourseSectionOutput,
+    CourseSectionScheduleOutput,
+    PermCountOutput,
+    SectionInstructorOutput,
+    StaffOutput,
+    CourseAreaOutput,
+} from "./data-loader";
 import {
     parseAltStaff,
     parseCalendarSession,
     parseCalendarSessionSection,
     parseCourseBoomi,
-    parseCourseAreas,
+    parseCourseArea,
     parseCourseSection,
     parseCourseSectionSchedule,
     parsePermCount,
     parseSectionInstructor,
     parseStaff,
-} from "./files-legacy";
-import { z } from "zod";
+} from "./data-loader";
 
 import { buildings } from "./buildings";
 import { createLogger } from "../logger";
-import { stringifySectionCodeLong } from "hyperschedule-shared/api/v4";
 import { fixEncoding, replaceQuotes } from "./encoding";
+import type { HmcApiFiles } from "./fetcher/types";
 
 const logger = createLogger("parser.hmc.link");
 
@@ -33,11 +40,11 @@ export function extractSectionTerm(id: APIv4.SectionIdentifier): string {
     }`;
 }
 
-const dateRegex = /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})$/;
+const dateRegex = /^(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})$/;
 
 /**
  * converts date in string to APIv4 format
- * @param date: date in the format of yyyy-mm-dd
+ * @param date: date in the format of yyyymmdd
  */
 function parseCalendarDate(date: string): APIv4.CourseDate {
     const match = dateRegex.exec(date);
@@ -140,7 +147,7 @@ function parseBuildingCode(code: string): string {
 
 function processCourse(
     courseMap: Map<string, APIv4.Course>,
-    courseParsed: ReturnType<typeof parseCourseBoomi>,
+    courseParsed: CourseOutput[],
 ) {
     const allCampuses: string[] = Object.values(APIv4.School);
     for (let c of courseParsed) {
@@ -159,9 +166,9 @@ function processCourse(
         }
         let courseCode: APIv4.CourseCode;
         try {
-            courseCode = parseCXCourseCode(c.code);
+            courseCode = APIv4.parseCXCourseCode(c.code);
         } catch (e) {
-            logger.error(e);
+            logger.trace(`Malformed course code ${c.code}`);
             continue;
         }
 
@@ -174,9 +181,6 @@ function processCourse(
                     replaceQuotes(fixEncoding(c.description)) &&
                 prevData.primaryAssociation === campus
             ) {
-                logger.trace(
-                    `Duplicate course key ${c.code} with no difference`,
-                );
                 potentialError = false;
             } else {
                 logger.warn(
@@ -185,7 +189,7 @@ function processCourse(
             }
         }
 
-        courseMap.set(c.code, {
+        courseMap.set(APIv4.stringifyCourseCode(courseCode), {
             title: replaceQuotes(fixEncoding(c.title)),
             description: replaceQuotes(fixEncoding(c.description)),
             primaryAssociation: campus,
@@ -197,25 +201,21 @@ function processCourse(
 
 function processStaff(
     staffMap: Map<string, APIv4.Instructor>,
-    staffParsed: ReturnType<typeof parseStaff>,
-    altstaffParsed: ReturnType<typeof parseAltStaff>,
+    staffParsed: StaffOutput,
+    altstaffParsed: AltStaffOutput,
 ) {
     for (let staff of staffParsed) {
         staffMap.set(staff.cxId, {
-            name: `${staff.firstname} ${staff.lastname}`,
+            name: `${staff.firstName} ${staff.lastName}`,
         });
     }
+
     for (let staff of altstaffParsed) {
         if (!staffMap.has(staff.cxId))
-            logger.trace("Nonexistent staff %o in altstaff", staff);
+            logger.trace("Nonexistent staff %o in alt-staff.json", staff);
         // overwrite existing staff if there is a preferred name
-        const altArr = staff.altName.split(",").map((s) => s.trim());
-        if (altArr.length !== 2) {
-            logger.trace(`Malformed staff altname for ${staff.cxId}`);
-            continue;
-        }
         staffMap.set(staff.cxId, {
-            name: `${altArr[1]} ${altArr[0]}`,
+            name: staff.altName,
         });
     }
 }
@@ -225,13 +225,22 @@ function processCourseSection(
     dupeMap: Map<string, number>,
     courseMap: Map<string, APIv4.Course>,
     courseAreaMap: Map<string, string[]>,
-    courseSectionParsed: ReturnType<typeof parseCourseSection>,
+    courseSectionParsed: CourseSectionOutput,
 ) {
     const allSectionStatus = ["O", "C", "R"];
 
-    for (let section of courseSectionParsed) {
-        let potentialError: boolean = courseSectionMap.has(section.sectionID);
-        const course = courseMap.get(section.code);
+    for (const section of courseSectionParsed) {
+        const sectionIdentifierString = APIv4.stringifySectionCodeLong(
+            section.sectionId,
+        );
+        const courseCodeString = APIv4.stringifyCourseCode(section.sectionId);
+        let potentialError: boolean = courseSectionMap.has(
+            sectionIdentifierString,
+        );
+        if (potentialError) {
+            logger.trace(`Duplicate course section ${sectionIdentifierString}`);
+        }
+        const course = courseMap.get(courseCodeString);
         if (course === undefined) {
             logger.trace(
                 "Course section without course, skipping... %o",
@@ -245,70 +254,59 @@ function processCourseSection(
             status = section.status as APIv4.SectionStatus;
         else status = APIv4.SectionStatus.unknown;
 
-        let sid: APIv4.SectionIdentifier;
-        try {
-            sid = parseCXSectionIdentifier(section.sectionID);
-        } catch (e) {
-            logger.error(e);
-            continue;
-        }
-
-        if (sid.sectionNumber !== parseInt(section.sectionNumber, 10))
+        if (section.sectionNumber !== section.sectionId.sectionNumber)
             logger.info(
-                "Mismatching section number, section ID is %s, section data is %s",
-                section.sectionID,
+                "Mismatching section number, section ID is %O, section data is %d",
+                section.sectionId,
                 section.sectionNumber,
             );
-        // TODO: handle possible NaN
-        const credits = parseFloat(section.credits);
-        const seatsTotal = parseInt(section.seatsTotal, 10);
-        const seatsFilled = parseInt(section.seatsFilled, 10);
 
-        const courseAreas: string[] = courseAreaMap.get(section.code) ?? [];
+        const courseAreas: string[] = courseAreaMap.get(courseCodeString) ?? [];
 
-        if (potentialError) {
-            const n = dupeMap.get(section.sectionID);
-            if (n) dupeMap.set(section.sectionID, n + 1);
-            else dupeMap.set(section.sectionID, 1);
-            const prevData = courseSectionMap.get(section.sectionID)!;
+        // TODO: check remove
+        // if (potentialError) {
+        //     const n = dupeMap.get(section.sectionID);
+        //     if (n) dupeMap.set(section.sectionID, n + 1);
+        //     else dupeMap.set(section.sectionID, 1);
+        //     const prevData = courseSectionMap.get(section.sectionID)!;
+        //
+        //     // we double-check that two data are the same. if they are, remove the error
+        //     // flag. if flagged for error previously then we keep the flag
+        //
+        //     if (
+        //         // we don't need to compare prevData.identifier here
+        //         // because we know they are the same
+        //         !prevData.potentialError &&
+        //         prevData.course === course &&
+        //         prevData.status === status &&
+        //         prevData.credits === credits &&
+        //         prevData.seatsFilled === seatsFilled &&
+        //         prevData.seatsTotal === seatsTotal
+        //     ) {
+        //         potentialError = false;
+        //         logger.trace(
+        //             "Duplicate course section for %s, no differences",
+        //             section.sectionID,
+        //         );
+        //     } else {
+        //         logger.trace(
+        //             "Duplicate course section for %s, different values ",
+        //             section.sectionID,
+        //         );
+        //     }
+        // }
 
-            // we double-check that two data are the same. if they are, remove the error
-            // flag. if flagged for error previously then we keep the flag
-
-            if (
-                // we don't need to compare prevData.identifier here
-                // because we know they are the same
-                !prevData.potentialError &&
-                prevData.course === course &&
-                prevData.status === status &&
-                prevData.credits === credits &&
-                prevData.seatsFilled === seatsFilled &&
-                prevData.seatsTotal === seatsTotal
-            ) {
-                potentialError = false;
-                logger.trace(
-                    "Duplicate course section for %s, no differences",
-                    section.sectionID,
-                );
-            } else {
-                logger.trace(
-                    "Duplicate course section for %s, different values ",
-                    section.sectionID,
-                );
-            }
-        }
-
-        courseSectionMap.set(section.sectionID, {
+        courseSectionMap.set(sectionIdentifierString, {
             course,
             status,
-            credits,
             courseAreas,
+            potentialError,
             instructors: [],
             schedules: [],
-            identifier: sid,
-            seatsTotal,
-            seatsFilled,
-            potentialError,
+            credits: section.credits,
+            identifier: section.sectionId,
+            seatsTotal: section.seatsTotal,
+            seatsFilled: section.seatsFilled,
         });
     }
 }
@@ -317,77 +315,65 @@ function processSectionInstructor(
     staffMap: Map<string, APIv4.Instructor>,
     dupeMap: Map<string, number>,
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
-    sectionInstructorParsed: ReturnType<typeof parseSectionInstructor>,
+    sectionInstructorParsed: SectionInstructorOutput,
 ) {
-    let dupesSeen: Map<string, number> = new Map();
-    for (let instructor of sectionInstructorParsed) {
-        const staff = staffMap.get(instructor.cxId);
-        const section = courseSectionMap.get(instructor.sectionID);
+    for (let sectionInstructor of sectionInstructorParsed) {
+        const sectionIdentifierString = APIv4.stringifySectionCodeLong(
+            sectionInstructor.sectionId,
+        );
+        const section = courseSectionMap.get(sectionIdentifierString);
         if (section === undefined) {
             logger.trace(
-                `Nonexistent section ${instructor.sectionID} in sectioninstructor`,
+                `Nonexistent section ${sectionIdentifierString} in section-instructor.json`,
             );
             continue;
         }
 
-        if (staff === undefined) {
-            logger.trace(
-                `Nonexistent instructor ${instructor.cxId} for ${instructor.sectionID}`,
-            );
-            section.potentialError = true;
-            continue;
-        }
+        for (const staffId of sectionInstructor.staff) {
+            const staff = staffMap.get(staffId);
 
-        if (section.instructors!.includes(staff)) {
-            if (!dupeMap.has(instructor.sectionID)) {
-                section.potentialError = true;
+            if (staff === undefined) {
                 logger.trace(
-                    `duplicate instructor ${instructor.cxId} in ${instructor.sectionID}, no previous duplicate section`,
+                    `Nonexistent instructor ${staffId} for ${sectionIdentifierString}`,
                 );
+                section.potentialError = true;
+                continue;
+            }
+
+            if (!section.instructors!.includes(staff)) {
+                section.instructors!.push(staff);
             } else {
-                const prevVal = dupesSeen.get(instructor.sectionID);
-                dupesSeen.set(
-                    instructor.sectionID,
-                    prevVal === undefined ? 1 : prevVal + 1,
+                logger.trace(
+                    `Duplicate staff ${staffId} for ${sectionIdentifierString}`,
                 );
             }
-        } else section.instructors!.push(staff);
-    }
-
-    for (let [id, n] of dupeMap.entries()) {
-        // if there is exactly number of copies of instructor as the course section number,
-        // n should be 0 for those courses
-
-        const section = courseSectionMap.get(id)!;
-        if (dupesSeen.get(id) !== n * section.instructors!.length) {
-            section.potentialError = true;
-            logger.trace(
-                `duplicate instructor in ${id} with mismatching duplicate section`,
-            );
         }
     }
 }
 
 function processPermCount(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
-    permCountParsed: ReturnType<typeof parsePermCount>,
+    permCountParsed: PermCountOutput,
 ) {
     for (let perm of permCountParsed) {
-        const section = courseSectionMap.get(perm.sectionID);
+        const sectionIdentifierString = APIv4.stringifySectionCodeLong(
+            perm.sectionId,
+        );
+        const section = courseSectionMap.get(sectionIdentifierString);
         if (section === undefined) {
-            logger.trace(`Nonexistent section ${perm.sectionID} in permcount`);
+            logger.trace(
+                `Nonexistent section ${sectionIdentifierString} in perm-count.json`,
+            );
             continue;
         }
-        section.permCount = parseInt(perm.permCount, 10);
+        section.permCount = perm.permCount;
     }
 }
 
 function processCalendar(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
-    calendarSessionParsed: ReturnType<typeof parseCalendarSession>,
-    calendarSessionSectionParsed: ReturnType<
-        typeof parseCalendarSessionSection
-    >,
+    calendarSessionParsed: CalendarSessionOutput,
+    calendarSessionSectionParsed: CalendarSessionSectionOutput,
 ) {
     let calendarMap: Map<
         string,
@@ -398,30 +384,27 @@ function processCalendar(
     > = new Map();
 
     for (let session of calendarSessionParsed) {
-        calendarMap.set(session.term, {
+        calendarMap.set(session.session, {
             start: parseCalendarDate(session.startDate),
             end: parseCalendarDate(session.endDate),
         });
     }
 
     for (let session of calendarSessionSectionParsed) {
-        const section = courseSectionMap.get(session.sectionID);
+        const sectionIdentifierString = APIv4.stringifySectionCodeLong(
+            session.sectionId,
+        );
+        const section = courseSectionMap.get(sectionIdentifierString);
         if (section === undefined) {
             logger.trace(
-                `Nonexistent section ID ${session.sectionID} in calendarsssionsession`,
+                `Nonexistent section ID ${sectionIdentifierString} in calendar-session-section.json`,
             );
             continue;
         }
 
-        if (extractSectionTerm(section.identifier!) !== session.term) {
-            logger.trace(
-                `Mismatching session term for section ${session.sectionID} in calendarsssionsession. Got ${session.term}`,
-            );
-        }
-
-        const calendar = calendarMap.get(session.term);
+        const calendar = calendarMap.get(session.session);
         if (calendar === undefined) {
-            logger.trace("Nonexistent calendar session %s", session.term);
+            logger.trace("Nonexistent calendar session %s", session.session);
             section.potentialError = true;
             section.startDate = { year: 1970, month: 1, day: 1 };
             section.endDate = { year: 1970, month: 1, day: 1 };
@@ -434,13 +417,16 @@ function processCalendar(
 
 function processSectionSchedule(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
-    courseSectionScheduleParsed: ReturnType<typeof parseCourseSectionSchedule>,
+    courseSectionScheduleParsed: CourseSectionScheduleOutput,
 ) {
     for (let schedule of courseSectionScheduleParsed) {
-        const section = courseSectionMap.get(schedule.sectionID);
+        const sectionIdString = APIv4.stringifySectionCodeLong(
+            schedule.sectionId,
+        );
+        const section = courseSectionMap.get(sectionIdString);
         if (section === undefined) {
             logger.trace(
-                `Nonexistent section ID ${schedule.sectionID} in coursesectionschedule`,
+                `Nonexistent section ID ${sectionIdString} in course-section-schedule.json`,
             );
             continue;
         }
@@ -460,7 +446,7 @@ function processSectionSchedule(
             ) {
                 if (s.locations.includes(location)) {
                     logger.trace(
-                        `Duplicate location in ${schedule.sectionID} section schedule`,
+                        `Duplicate location in ${sectionIdString} section schedule`,
                     );
                     section.potentialError = true;
                 } else s.locations.push(location);
@@ -481,38 +467,24 @@ function processSectionSchedule(
 }
 
 function processCourseAreas(
-    courseAreasParsed: ReturnType<typeof parseCourseAreas>,
+    courseAreasParsed: CourseAreaOutput,
     courseAreaMap: Map<string, string[]>,
 ) {
     for (let area of courseAreasParsed) {
-        if (courseAreaMap.has(area.course_code))
+        // TODO: check catalog year
+        const courseCodeString = APIv4.stringifyCourseCode(area.courseCode);
+        if (courseAreaMap.has(courseCodeString))
             logger.trace(
-                `Duplicate course ${area.course_code} for course area`,
+                `Duplicate course ${courseCodeString} in course-area.json`,
             );
-        courseAreaMap.set(area.course_code, area.course_areas);
+        courseAreaMap.set(courseCodeString, area.courseAreas);
     }
 }
 
 /**
- * This type contains all the input data we need to {@link linkCourseData}, which will compute a list
- * of APIv4 Sections. It is also used extensively in fetcher to make sure we have all the necessary information
- * correctly fetched
+ * Link all data together and group to the APIv4 section. We need the term to filter out data either from the past or future
  */
-const CourseFiles = z.object({
-    altstaff: z.string(),
-    calendarSession: z.string(),
-    calendarSessionSection: z.string(),
-    courseRaw: z.string(),
-    courseSection: z.string(),
-    courseSectionSchedule: z.string(),
-    permCount: z.string(),
-    sectionInstructor: z.string(),
-    staff: z.string(),
-    courseAreas: z.string(),
-});
-export type CourseFiles = z.infer<typeof CourseFiles>;
-
-export function linkCourseData(files: CourseFiles): APIv4.Section[] {
+export function linkCourseData(files: HmcApiFiles): APIv4.Section[] {
     // course map contains course data needed for courses of all sections
     // whereas courseSectionMap contains section-specific information
     let courseMap: Map<string, APIv4.Course> = new Map();
@@ -521,22 +493,26 @@ export function linkCourseData(files: CourseFiles): APIv4.Section[] {
     let dupeMap: Map<string, number> = new Map();
     let courseAreaMap: Map<string, string[]> = new Map();
 
-    const altstaffParsed = parseAltStaff(files.altstaff);
-    const calendarSessionParsed = parseCalendarSession(files.calendarSession);
-    const calendarSessionSectionParsed = parseCalendarSessionSection(
-        files.calendarSessionSection,
+    // boring file parsing
+    const altstaffParsed: AltStaffOutput = parseAltStaff(files.altstaff);
+    const calendarSessionParsed: CalendarSessionOutput = parseCalendarSession(
+        files.calendarSession,
     );
-    const courseParsed = parseCourseBoomi(files.courseRaw);
-    const courseSectionParsed = parseCourseSection(files.courseSection);
-    const courseSectionScheduleParsed = parseCourseSectionSchedule(
-        files.courseSectionSchedule,
+    const calendarSessionSectionParsed: CalendarSessionSectionOutput =
+        parseCalendarSessionSection(files.calendarSessionSection);
+    const courseParsed: CourseOutput[] = parseCourseBoomi(files.courseRaw);
+    const courseSectionParsed: CourseSectionOutput = parseCourseSection(
+        files.courseSection,
     );
-    const permCountParsed = parsePermCount(files.permCount);
-    const sectionInstructorParsed = parseSectionInstructor(
-        files.sectionInstructor,
+    const courseSectionScheduleParsed: CourseSectionScheduleOutput =
+        parseCourseSectionSchedule(files.courseSectionSchedule);
+    const permCountParsed: PermCountOutput = parsePermCount(files.permCount);
+    const sectionInstructorParsed: SectionInstructorOutput =
+        parseSectionInstructor(files.sectionInstructor);
+    const staffParsed: StaffOutput = parseStaff(files.staff);
+    const courseAreaParsed: CourseAreaOutput = parseCourseArea(
+        files.courseAreas,
     );
-    const staffParsed = parseStaff(files.staff);
-    const courseAreaParsed = parseCourseAreas(files.courseAreas);
 
     processCourse(courseMap, courseParsed);
     processCourseAreas(courseAreaParsed, courseAreaMap);
@@ -580,7 +556,7 @@ export function linkCourseData(files: CourseFiles): APIv4.Section[] {
                     validatedResult.error,
                 );
                 throw Error(
-                    `Invalid section ${stringifySectionCodeLong(
+                    `Invalid section ${APIv4.stringifySectionCodeLong(
                         (section as APIv4.Section).identifier,
                     )}`,
                 );
@@ -592,3 +568,8 @@ export function linkCourseData(files: CourseFiles): APIv4.Section[] {
     }
     return res as APIv4.Section[];
 }
+
+import { loadCourseFiles } from "./fetcher/utils";
+
+const term = { term: APIv4.Term.spring, year: 2023 };
+linkCourseData(await loadCourseFiles(term));

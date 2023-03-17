@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { CourseFiles } from "../course";
 import { TermEnum } from "hyperschedule-shared/api/v4";
 
 /**
@@ -19,15 +18,31 @@ export const Params = z.object({
 });
 export type Params = z.infer<typeof Params>;
 
-const Endpoint = z.object({
-    link: z.string().url(),
-    params: ParamOptions.nullable(),
-    // number of seconds between fetch
-    interval: z.number().positive(),
-    saveAs: z.string(),
+export const HmcApiFiles = z.object({
+    altstaff: z.string(),
+    calendarSession: z.string(),
+    calendarSessionSection: z.string(),
+    courseRaw: z.string(),
+    courseSection: z.string(),
+    courseSectionSchedule: z.string(),
+    permCount: z.string(),
+    sectionInstructor: z.string(),
+    staff: z.string(),
+    courseAreas: z.string(),
+    courseAreaDescription: z.string(),
 });
-export type Endpoint = z.infer<typeof Endpoint>;
-export type Endpoints = Record<
-    keyof CourseFiles | "courseAreaDescription",
-    Endpoint
->;
+export type HmcApiFiles = z.infer<typeof HmcApiFiles>;
+
+export interface Endpoint {
+    link: string;
+    params: ParamOptions | null;
+    interval: number;
+    saveAs: string;
+    // we leave this to be null for courseRaw
+    dataDef?: z.ZodType | null;
+}
+
+export type Endpoints = Record<keyof HmcApiFiles, Endpoint>;
+
+export const IntString = z.string().regex(/^[0-9]+$/);
+export const DecimalString = z.string().regex(/^[0-9]+\.[0-9]+$/);

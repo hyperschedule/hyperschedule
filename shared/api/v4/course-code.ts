@@ -5,11 +5,11 @@ import type {
     TermIdentifier,
 } from "hyperschedule-shared/api/v4";
 
-const courseRegex = RegExp(
+export const CxCourseCodeRegex = RegExp(
     "^" +
         "(?<dept>[A-Z ]{4})" +
         "(?<number>\\d{3})" +
-        "(?<suffix>[A-Z0-9 ]{2}| {0,2})" +
+        "(?<suffix>[A-Z0-9 ]{2}| {0,2}) *" +
         "(?<affiliation>[A-Z]{2})" +
         "$",
 );
@@ -19,7 +19,7 @@ const courseRegex = RegExp(
  * AFRI121IOAF, ART 005  PO, BIOL044LXKS, CSCI062 LPO
  */
 export function parseCXCourseCode(code: string): APIv4.CourseCode {
-    const match = courseRegex.exec(code);
+    const match = CxCourseCodeRegex.exec(code);
     if (match === null) throw Error(`Malformed course code ${code}`);
 
     const groups = match.groups as {
@@ -37,7 +37,7 @@ export function parseCXCourseCode(code: string): APIv4.CourseCode {
     };
 }
 
-const sectionRegex = RegExp(
+export const CxSectionIdRegex = RegExp(
     "^" +
         "(?<dept>[A-Z ]{4})" +
         "(?<number>\\d{3})" +
@@ -57,7 +57,7 @@ const sectionRegex = RegExp(
 export function parseCXSectionIdentifier(
     code: string,
 ): APIv4.SectionIdentifier {
-    const match = sectionRegex.exec(code);
+    const match = CxSectionIdRegex.exec(code);
     if (match === null) throw Error(`Malformed course code ${code}`);
 
     const groups = match.groups as {

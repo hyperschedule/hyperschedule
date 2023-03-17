@@ -20,7 +20,7 @@ switch (env) {
         rootLogger = pino(
             { level: "trace" },
             pretty({
-                colorize: true,
+                // colorize: true,
                 sync: true,
                 ignore: "pid,hostname",
             }),

@@ -18,7 +18,8 @@ import { createLogger } from "../../logger";
 import { endpoints, endpointAuthorization } from "./endpoints";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import type { Endpoint, Params } from "./types";
-import { computeParams, saveStatic } from "./utils";
+import { computeParams, loadStatic, saveStatic } from "./utils";
+import { HmcApiFiles } from "./types";
 
 const logger = createLogger("hmc.fetcher");
 
@@ -32,9 +33,9 @@ async function doFetch(endpoint: Endpoint, term: APIv4.TermIdentifier) {
          * for example, if params is {year:"2022", catalog:"UG22", term:SP} and endpoint.params is
          * {year:true, catalog:true} then p will be {year:"2022", catalog:"UG22"}
          */
-        const p: Partial<Record<keyof Params, string>> = {};
+        const p: Record<string, string> = {};
         for (const key of Object.keys(params) as (keyof Params)[])
-            if (endpoint.params[key]) p[key] = params[key].toUpperCase();
+            if (endpoint.params[key]) p[key.toUpperCase()] = params[key];
 
         const query = new URLSearchParams(p);
         link = `${link}?${query}`;
@@ -96,4 +97,22 @@ export async function fetchAllForTerm(term: APIv4.TermIdentifier) {
     logger.info(
         results.map((r) => (r.status === "fulfilled" ? "fulfilled" : r.reason)),
     );
+}
+
+export async function loadAllForTerm(
+    term: APIv4.TermIdentifier,
+): Promise<HmcApiFiles> {
+    const files: Partial<HmcApiFiles> = {};
+    for (const [key, e] of Object.entries(endpoints) as [
+        keyof HmcApiFiles,
+        Endpoint,
+    ][]) {
+        /* TODO: rewrite this using promise.all instead. this should be low impact
+         *       because this function is only used during tests or server-startup
+         */
+        // eslint-disable-next-line no-await-in-loop
+        const file = await loadStatic(e, term);
+        if (key !== "courseAreaDescription") files[key] = file;
+    }
+    return HmcApiFiles.parse(files);
 }

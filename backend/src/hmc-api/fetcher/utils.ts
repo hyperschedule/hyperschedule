@@ -5,7 +5,7 @@ import type { Endpoint, Endpoints, ParamOptions } from "./types";
 import { Params } from "./types";
 import { resolve, dirname } from "path";
 import { readFile, writeFile, mkdir } from "fs/promises";
-import { CourseFiles } from "../course";
+import { HmcApiFiles } from "./types";
 import { endpoints } from "./endpoints";
 import { createLogger } from "../../logger";
 
@@ -42,7 +42,13 @@ export function loadStatic(
     endpoint: Endpoint,
     term: APIv4.TermIdentifier,
 ): Promise<string> {
-    return readFile(computeFilePath(endpoint, term), { encoding: "utf-8" });
+    const path = computeFilePath(endpoint, term);
+    try {
+        return readFile(computeFilePath(endpoint, term), { encoding: "utf-8" });
+    } catch (e) {
+        logger.error("Cannot read file %s from disk", path);
+        throw e;
+    }
 }
 
 /**
@@ -69,7 +75,7 @@ export async function saveStatic(
 
 export async function loadCourseFiles(
     term: APIv4.TermIdentifier,
-): Promise<CourseFiles> {
+): Promise<HmcApiFiles> {
     /* TODO: rewrite this function to use Promise.all for better performance. This
              should be low priority because we only really load static files during 
              server startup. 
@@ -79,13 +85,12 @@ export async function loadCourseFiles(
         keyof Endpoints,
         Endpoint,
     ][]) {
-        if (name === "courseAreaDescription") continue;
         // eslint-disable-next-line no-await-in-loop
         obj[name] = await readFile(computeFilePath(endpoint, term), {
             encoding: "utf-8",
         });
     }
-    return CourseFiles.parse(obj);
+    return HmcApiFiles.parse(obj);
 }
 
 /**
