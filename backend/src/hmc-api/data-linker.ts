@@ -566,8 +566,3 @@ export function linkCourseData(files: HmcApiFiles): APIv4.Section[] {
     }
     return res as APIv4.Section[];
 }
-
-import { loadCourseFiles } from "./fetcher/utils";
-
-const term = { term: APIv4.Term.spring, year: 2023 };
-linkCourseData(await loadCourseFiles(term));

@@ -65,7 +65,7 @@ const testData: HmcApiFiles = {
     ]),
     permCount: JSON.stringify([
         {
-            courseSectionId: "ENGR085A HM-01 SP2023",
+            courseSectionId: "ENGR085A HM-01 SP2023P1",
             permCount: "2",
         },
     ]),
@@ -120,7 +120,7 @@ const testData: HmcApiFiles = {
 };
 
 describe("data-linker.ts", () => {
-    test("data integrity", async () => {
+    test("data integrity", () => {
         const data = linkCourseData(testData);
         expect(data).toStrictEqual([
             {
@@ -205,7 +205,7 @@ describe("data-linker.ts", () => {
                 seatsFilled: 8,
                 startDate: { year: 2023, month: 1, day: 17 },
                 endDate: { year: 2023, month: 3, day: 3 },
-                permCount: 0,
+                permCount: 2,
             },
         ]);
     });
