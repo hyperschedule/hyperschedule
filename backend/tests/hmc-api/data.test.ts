@@ -1,9 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { loadAllForTerm } from "../../src/hmc-api/fetcher/fetch";
-import { Section, Term } from "hyperschedule-shared/api/v4";
 import { linkCourseData } from "../../src/hmc-api/data-linker";
-import { loadDataFile, saveDataFile } from "hyperschedule-data";
-import { readFile, writeFile } from "fs/promises";
 import { HmcApiFiles } from "../../src/hmc-api/fetcher/types";
 
 const testData: HmcApiFiles = {
