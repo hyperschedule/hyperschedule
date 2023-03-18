@@ -111,8 +111,7 @@ export async function loadAllForTerm(
          *       because this function is only used during tests or server-startup
          */
         // eslint-disable-next-line no-await-in-loop
-        const file = await loadStatic(e, term);
-        if (key !== "courseAreaDescription") files[key] = file;
+        files[key] = await loadStatic(e, term);
     }
     return HmcApiFiles.parse(files);
 }

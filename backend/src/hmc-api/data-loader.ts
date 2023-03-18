@@ -220,14 +220,14 @@ export function parsePermCount(data: string): PermCountOutput {
 
 const staffInput = z.object({
     cxId: IntString,
-    firstName: z.string().nonempty(),
-    lastName: z.string().nonempty(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
 });
 const staffOutput = z
     .object({
         cxId: IntString,
-        firstName: z.string().nonempty(),
-        lastName: z.string().nonempty(),
+        firstName: z.string(),
+        lastName: z.string(),
     })
     .strict();
 export type StaffOutput = z.infer<typeof staffOutput>[];
@@ -240,8 +240,14 @@ export function parseStaff(data: string): StaffOutput {
     );
     return parseJSON(intermediary, staffOutput, {
         cxId: NoTransform,
-        firstName: NoTransform,
-        lastName: NoTransform,
+        firstName: (v) => ({
+            name: "firstName",
+            value: v ?? "",
+        }),
+        lastName: (v) => ({
+            name: "lastName",
+            value: v ?? "",
+        }),
     });
 }
 
@@ -275,7 +281,7 @@ export function parseAltStaff(data: string): AltStaffOutput {
         lastName: Remove,
         altName: (v) => {
             // altName comes in last, first format and we want to flip it
-            const nameArr = v.split(",").map((s) => s.trim());
+            const nameArr = v.split(",").map((s) => s.trim().replace("\\", ""));
             if (nameArr.length !== 2)
                 logger.trace(`Malformed alt staff name v`);
             return {

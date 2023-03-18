@@ -561,9 +561,7 @@ export function linkCourseData(files: HmcApiFiles): APIv4.Section[] {
                     )}`,
                 );
             }
-            // apparently typescript thinks section is of type never,
-            // probably because the schema check earlier
-            (section as Partial<APIv4.Section>).potentialError = true;
+            section.potentialError = true;
         }
     }
     return res as APIv4.Section[];
