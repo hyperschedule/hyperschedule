@@ -53,7 +53,10 @@ export async function runScheduler() {
                     inMemoryFiles[e.name] = await fetchAndSave(e, CURRENT_TERM);
                     logger.info("Data for %s fetched", e.saveAs);
 
-                    const newSections = linkCourseData(inMemoryFiles);
+                    const newSections = linkCourseData(
+                        inMemoryFiles,
+                        CURRENT_TERM,
+                    );
                     logger.info("Data linking complete");
 
                     await updateSections(newSections, CURRENT_TERM);

@@ -1,6 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import { linkCourseData } from "../../src/hmc-api/data-linker";
 import { HmcApiFiles } from "../../src/hmc-api/fetcher/types";
+import { Term } from "hyperschedule-shared/api/v4";
 
 const testData: HmcApiFiles = {
     altstaff: "[]",
@@ -119,9 +120,12 @@ const testData: HmcApiFiles = {
     ]),
 };
 
-describe("data-linker.ts", () => {
+describe("src/hmc-api/data-linker.ts", () => {
     test("data integrity", () => {
-        const data = linkCourseData(testData);
+        const data = linkCourseData(testData, {
+            term: Term.spring,
+            year: 2023,
+        });
         expect(data).toStrictEqual([
             {
                 course: {
@@ -208,5 +212,15 @@ describe("data-linker.ts", () => {
                 permCount: 2,
             },
         ]);
+    });
+
+    test("term filter", () => {
+        expect(
+            linkCourseData(testData, { term: Term.fall, year: 2023 }),
+        ).toStrictEqual([]);
+
+        expect(
+            linkCourseData(testData, { term: Term.fall, year: 2022 }),
+        ).toStrictEqual([]);
     });
 });

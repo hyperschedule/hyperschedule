@@ -473,7 +473,10 @@ function processCourseAreas(
 /**
  * Link all data together and group to the APIv4 section. We need the term to filter out data either from the past or future
  */
-export function linkCourseData(files: HmcApiFiles): APIv4.Section[] {
+export function linkCourseData(
+    files: HmcApiFiles,
+    term: APIv4.TermIdentifier,
+): APIv4.Section[] {
     // course map contains course data needed for courses of all sections
     // whereas courseSectionMap contains section-specific information
     let courseMap: Map<string, APIv4.Course> = new Map();
@@ -527,11 +530,22 @@ export function linkCourseData(files: HmcApiFiles): APIv4.Section[] {
     );
     processSectionSchedule(courseSectionMap, courseSectionScheduleParsed);
 
-    const res: Partial<APIv4.Section>[] = Array.from(courseSectionMap.values());
-    for (let section of res) {
+    const linked: Partial<APIv4.Section>[] = Array.from(
+        courseSectionMap.values(),
+    );
+    const res: APIv4.Section[] = [];
+    for (let section of linked) {
         if (section.permCount === undefined) section.permCount = 0;
         const validatedResult = APIv4.Section.safeParse(section);
-        if (!validatedResult.success) {
+
+        if (validatedResult.success) {
+            const entry = validatedResult.data;
+            if (
+                entry.identifier.term === term.term &&
+                entry.identifier.year === term.year
+            )
+                res.push(entry);
+        } else {
             if (process.env.NODE_ENV === "production")
                 logger.warn(
                     "invalid section %o, reason %o",
