@@ -33,6 +33,8 @@ describe("Course routes", () => {
         expect(resp.headers["content-type"]).toMatch(/json/);
         expect(resp.body).toStrictEqual({
             data: { terms: {}, courses: [testSectionV3] },
+            error: null,
+            full: true,
         });
     });
 });
