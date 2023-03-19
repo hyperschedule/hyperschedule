@@ -50,7 +50,7 @@ async function doFetch(endpoint: Endpoint, term: APIv4.TermIdentifier) {
     });
 }
 
-async function fetchAndSave(
+export async function fetchAndSave(
     endpoint: Endpoint,
     term: APIv4.TermIdentifier,
 ): Promise<string> {

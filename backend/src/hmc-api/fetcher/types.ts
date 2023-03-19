@@ -34,12 +34,11 @@ export const HmcApiFiles = z.object({
 export type HmcApiFiles = z.infer<typeof HmcApiFiles>;
 
 export interface Endpoint {
+    name: keyof HmcApiFiles;
     link: string;
     params: ParamOptions | null;
     interval: number;
     saveAs: string;
-    // we leave this to be null for courseRaw
-    dataDef?: z.ZodType | null;
 }
 
 export type Endpoints = Record<keyof HmcApiFiles, Endpoint>;

@@ -225,12 +225,7 @@ function processCourseSection(
             section.sectionId,
         );
         const courseCodeString = APIv4.stringifyCourseCode(section.sectionId);
-        let potentialError: boolean = courseSectionMap.has(
-            sectionIdentifierString,
-        );
-        if (potentialError) {
-            logger.trace(`Duplicate course section ${sectionIdentifierString}`);
-        }
+
         const course = courseMap.get(courseCodeString);
         if (course === undefined) {
             logger.trace(
@@ -254,38 +249,39 @@ function processCourseSection(
 
         const courseAreas: string[] = courseAreaMap.get(courseCodeString) ?? [];
 
-        // TODO: check remove
-        // if (potentialError) {
-        //     const n = dupeMap.get(section.sectionID);
-        //     if (n) dupeMap.set(section.sectionID, n + 1);
-        //     else dupeMap.set(section.sectionID, 1);
-        //     const prevData = courseSectionMap.get(section.sectionID)!;
-        //
-        //     // we double-check that two data are the same. if they are, remove the error
-        //     // flag. if flagged for error previously then we keep the flag
-        //
-        //     if (
-        //         // we don't need to compare prevData.identifier here
-        //         // because we know they are the same
-        //         !prevData.potentialError &&
-        //         prevData.course === course &&
-        //         prevData.status === status &&
-        //         prevData.credits === credits &&
-        //         prevData.seatsFilled === seatsFilled &&
-        //         prevData.seatsTotal === seatsTotal
-        //     ) {
-        //         potentialError = false;
-        //         logger.trace(
-        //             "Duplicate course section for %s, no differences",
-        //             section.sectionID,
-        //         );
-        //     } else {
-        //         logger.trace(
-        //             "Duplicate course section for %s, different values ",
-        //             section.sectionID,
-        //         );
-        //     }
-        // }
+        let potentialError: boolean = courseSectionMap.has(
+            sectionIdentifierString,
+        );
+
+        if (potentialError) {
+            const prevData = courseSectionMap.get(sectionIdentifierString)!;
+
+            // we double-check that two data are the same. if they are, remove the error
+            // flag. if flagged for error previously then we keep the flag.
+            // according to the registrar, data is kept in CX by spacial-temporal uniqueness.
+            // so, if a course has multiple locations/time slots there will be duplicates
+            if (
+                // we don't need to compare prevData.identifier here
+                // because we know they are the same
+                !prevData.potentialError &&
+                prevData.course!.code === course.code &&
+                prevData.course!.title === course.title &&
+                prevData.course!.description === course.description &&
+                prevData.course!.primaryAssociation ===
+                    course.primaryAssociation &&
+                prevData.status === status &&
+                prevData.credits === section.credits &&
+                prevData.seatsFilled === section.seatsFilled &&
+                prevData.seatsTotal === section.seatsTotal
+            ) {
+                potentialError = false;
+            } else {
+                logger.trace(
+                    "Duplicate course section for %s with different values",
+                    sectionIdentifierString,
+                );
+            }
+        }
 
         courseSectionMap.set(sectionIdentifierString, {
             course,
@@ -333,10 +329,6 @@ function processSectionInstructor(
 
             if (!section.instructors!.includes(staff)) {
                 section.instructors!.push(staff);
-            } else {
-                logger.trace(
-                    `Duplicate staff ${staffId} for ${sectionIdentifierString}`,
-                );
             }
         }
     }
@@ -464,11 +456,17 @@ function processCourseAreas(
     for (let area of courseAreasParsed) {
         // TODO: check catalog year
         const courseCodeString = APIv4.stringifyCourseCode(area.courseCode);
-        if (courseAreaMap.has(courseCodeString))
+        if (courseAreaMap.has(courseCodeString)) {
             logger.trace(
-                `Duplicate course ${courseCodeString} in course-area.json`,
+                `Duplicate course ${courseCodeString} in course-area.json, merging both`,
             );
-        courseAreaMap.set(courseCodeString, area.courseAreas);
+            const oldAreas = courseAreaMap.get(courseCodeString)!;
+            for (const a of area.courseAreas) {
+                if (!oldAreas.includes(a)) oldAreas.push(a);
+            }
+        } else {
+            courseAreaMap.set(courseCodeString, area.courseAreas);
+        }
     }
 }
 

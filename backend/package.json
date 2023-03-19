@@ -61,7 +61,9 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "serve": "NODE_ENV=development node --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm ./src/index.ts",
+    "dev-node": "NODE_ENV=development node --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm",
+    "serve": "yarn dev-node ./src/index.ts",
+    "fetcher": "yarn dev-node ./src/fetcher.ts",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --onlyChanged",
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",
