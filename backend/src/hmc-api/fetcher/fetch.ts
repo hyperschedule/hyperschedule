@@ -82,12 +82,7 @@ export async function fetchAndSave(
     return content;
 }
 
-/**
- * Fetches every single resource simultaneously. This function should not be called in production.
- */
 export async function fetchAllForTerm(term: APIv4.TermIdentifier) {
-    if (process.env.NODE_ENV === "production")
-        throw Error("Don't fetch all data at once in production");
     const jobs = Object.values(endpoints).map((endpoint) =>
         fetchAndSave(endpoint, term),
     );

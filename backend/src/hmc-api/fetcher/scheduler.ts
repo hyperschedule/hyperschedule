@@ -1,6 +1,6 @@
 import { endpoints } from "./endpoints";
 import type { Endpoint, HmcApiFiles } from "./types";
-import { fetchAndSave, loadAllForTerm } from "./fetch";
+import { fetchAllForTerm, fetchAndSave, loadAllForTerm } from "./fetch";
 import { createLogger } from "../../logger";
 import { setInterval } from "node:timers/promises";
 import { CURRENT_TERM } from "../../current-term";
@@ -18,7 +18,21 @@ export async function runScheduler() {
 
     // we save a copy of everything in memory so we don't have to constantly loading them from the disk
     // if we ever run fetcher from multiple processes (don't plan to), this will cause horrible race condition
-    const inMemoryFiles: HmcApiFiles = await loadAllForTerm(CURRENT_TERM);
+    let inMemoryFiles: HmcApiFiles;
+    try {
+        logger.info("Initializing memory file store");
+        inMemoryFiles = await loadAllForTerm(CURRENT_TERM);
+    } catch (e: any) {
+        if (e.code === "ENOENT") {
+            logger.info("No initial files found, fetching all...");
+            await fetchAllForTerm(CURRENT_TERM);
+            inMemoryFiles = await loadAllForTerm(CURRENT_TERM);
+        } else {
+            logger.error("Cannot load initial data files");
+            logger.error(e);
+            process.exit(1);
+        }
+    }
 
     async function scheduleEndpoint(e: Endpoint) {
         logger.info(
