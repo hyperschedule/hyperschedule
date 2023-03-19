@@ -1,4 +1,4 @@
-import { describe, test, expect, afterAll } from "@jest/globals";
+import { describe, test, expect, afterAll, beforeAll } from "@jest/globals";
 import request from "supertest";
 import { server as app } from "../src/server";
 import { updateSections } from "../src/db/models/course";
@@ -16,6 +16,17 @@ afterAll(() => {
 });
 
 describe("Course routes", () => {
+    // routes depend on current term to return date. our test data is hard coded to be spring 2023
+    const termCopy = { ...CURRENT_TERM };
+    beforeAll(() => {
+        (CURRENT_TERM as any).year = 2023;
+        (CURRENT_TERM as any).term = "SP";
+    });
+    afterAll(() => {
+        (CURRENT_TERM as any).year = termCopy.year;
+        (CURRENT_TERM as any).term = termCopy.term;
+    });
+
     test("Route /v4/sections", async () => {
         await updateSections([testSectionV4], CURRENT_TERM);
         const resp = await mockServer.get("/v4/sections");
