@@ -69,6 +69,9 @@
     "stop-db": "docker stop hyperschedule-mongodb",
     "restart-db": "yarn stop-db && yarn start-db",
     "typecheck": "tsc --noEmit",
-    "ci:test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --bail=0 --no-cache --ci"
+    "ci:test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --bail=0 --no-cache --ci",
+    "prod-node": "NODE_ENV=production node --experimental-specifier-resolution=node --loader ts-node/esm/transpile-only",
+    "prod:serve": "yarn prod-node ./src/index.ts | yarn pino-pretty",
+    "prod:fetcher": "yarn prod-node ./src/fetcher.ts | yarn pino-pretty"
   }
 }
