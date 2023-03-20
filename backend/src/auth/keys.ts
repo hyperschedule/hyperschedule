@@ -8,4 +8,17 @@
  * inconsistent across OSes and packages.
  */
 
-export { PUBKEY, PRIVKEY } from "./dev-keys";
+import { PUBKEY as devPub, PRIVKEY as devPriv } from "./dev-keys";
+
+let pub: string, priv: string;
+
+if (process.env.NODE_ENV !== "production") {
+    pub = devPub;
+    priv = devPriv;
+} else {
+    pub = "";
+    priv = "";
+    throw Error("PUBKEY and PRIVKEY are not set in keys.ts");
+}
+
+export { pub as PUBKEY, priv as PRIVKEY };
