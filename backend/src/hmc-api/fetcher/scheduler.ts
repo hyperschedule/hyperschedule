@@ -27,6 +27,12 @@ export async function runScheduler() {
             logger.info("No initial files found, fetching all...");
             await fetchAllForTerm(CURRENT_TERM);
             inMemoryFiles = await loadAllForTerm(CURRENT_TERM);
+
+            logger.info("Initial files fetched, populating database...");
+            const data = linkCourseData(inMemoryFiles, CURRENT_TERM);
+            await updateSections(data, CURRENT_TERM);
+
+            logger.info("Initial database population completed");
         } else {
             logger.error("Cannot load initial data files");
             logger.error(e);
