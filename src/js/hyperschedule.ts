@@ -1260,6 +1260,11 @@ function applyDiff(data: any, diff: any) {
 }
 
 async function retrieveCourseData() {
+  if (document.visibilityState === "hidden"){
+    console.log("Window is not visible, skipping update")
+    return
+  }
+
   let apiEndpoint = "/v3/courses";
   const apiResponse = await retrieveAPI(apiEndpoint);
   if (apiResponse.error) {
