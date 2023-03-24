@@ -63,7 +63,7 @@ switch (env) {
                 },
             ],
         });
-        rootLogger = pino(transport);
+        rootLogger = pino({ level: "trace" }, transport);
         break;
     default:
         rootLogger = pino();
