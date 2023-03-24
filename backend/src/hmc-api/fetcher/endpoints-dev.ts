@@ -33,6 +33,27 @@ export const endpoints: Endpoints = {
         interval: 60,
         saveAs: "course-section.json",
     },
+    courseSectionSchedule: {
+        name: "courseSectionSchedule",
+        link: "course-section-schedule",
+        params: null,
+        interval: 1800,
+        saveAs: "course-section-schedule.json",
+    },
+    courseRaw: {
+        name: "courseRaw",
+        link: "course-raw",
+        params: null,
+        interval: 1800,
+        saveAs: "course.txt",
+    },
+    sectionInstructor: {
+        name: "sectionInstructor",
+        link: "section-instructor",
+        params: null,
+        interval: 1800,
+        saveAs: "section-instructor.json",
+    },
     // fetch once per hour
     staff: {
         name: "staff",
@@ -48,20 +69,6 @@ export const endpoints: Endpoints = {
         interval: 3600,
         saveAs: "alt-staff.json",
     },
-    courseRaw: {
-        name: "courseRaw",
-        link: "course-raw",
-        params: null,
-        interval: 3600,
-        saveAs: "course.txt",
-    },
-    courseSectionSchedule: {
-        name: "courseSectionSchedule",
-        link: "course-section-schedule",
-        params: null,
-        interval: 3600,
-        saveAs: "course-section-schedule.json",
-    },
     calendarSession: {
         name: "calendarSession",
         link: "calendar-session",
@@ -75,13 +82,6 @@ export const endpoints: Endpoints = {
         params: null,
         interval: 3600,
         saveAs: "calendar-session-section.json",
-    },
-    sectionInstructor: {
-        name: "sectionInstructor",
-        link: "section-instructor",
-        params: null,
-        interval: 3600,
-        saveAs: "section-instructor.json",
     },
     // fetch once per day
     courseAreas: {
