@@ -49,11 +49,13 @@ export async function updateSections(
 export async function getAllSections(
     term?: TermIdentifier,
 ): Promise<APIv4.Section[]> {
+    logger.trace("DB query start for all sections");
     const cursor = collections.sections.find(
         term === undefined
             ? {}
             : { "_id.term": term.term, "_id.year": term.year },
     );
     const arr = await cursor.toArray();
+    logger.trace("DB query completed for all sections");
     return arr.map(dbToSection);
 }
