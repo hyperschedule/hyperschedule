@@ -75,6 +75,8 @@ export function createRootLogger(processName: string) {
 export function createLogger(module: string): pino.Logger {
     if (rootLogger === null)
         if (process.env.NODE_ENV === "test") createRootLogger("test");
+        // once-off command run from console
+        else if (process.env.NODE_ENV === undefined) createRootLogger("script");
         else
             throw Error("Root logger not created. Call createRootLogger first");
     return rootLogger!.child({ module });

@@ -196,8 +196,19 @@ function processStaff(
     altstaffParsed: AltStaffOutput,
 ) {
     for (let staff of staffParsed) {
+        let name: string;
+        if (staff.firstName === "" && staff.lastName === "")
+            // some staff only have full name, and they might be in the form of "last, first middle,,suffix"
+            // no clue why there are two commas, they are just like that in the school database
+            name = staff.fullName
+                .split(",")
+                .slice(0, 2)
+                .reverse()
+                .join(" ")
+                .trim();
+        else name = `${staff.firstName} ${staff.lastName}`.trim();
         staffMap.set(staff.cxId, {
-            name: `${staff.firstName} ${staff.lastName}`,
+            name,
         });
     }
 

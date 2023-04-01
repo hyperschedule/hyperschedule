@@ -222,12 +222,14 @@ const staffInput = z.object({
     cxId: IntString,
     firstName: z.string().optional(),
     lastName: z.string().optional(),
+    fullName: z.string().optional(),
 });
 const staffOutput = z
     .object({
         cxId: IntString,
         firstName: z.string(),
         lastName: z.string(),
+        fullName: z.string(),
     })
     .strict();
 export type StaffOutput = z.infer<typeof staffOutput>[];
@@ -246,6 +248,10 @@ export function parseStaff(data: string): StaffOutput {
         }),
         lastName: (v) => ({
             name: "lastName",
+            value: v ?? "",
+        }),
+        fullName: (v) => ({
+            name: "fullName",
             value: v ?? "",
         }),
     });
