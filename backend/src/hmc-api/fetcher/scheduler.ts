@@ -2,7 +2,7 @@ import { endpoints } from "./endpoints";
 import type { Endpoint, HmcApiFiles } from "./types";
 import { fetchAllForTerm, fetchAndSave, loadAllForTerm } from "./fetch";
 import { createLogger } from "../../logger";
-import { setInterval } from "node:timers/promises";
+import { setTimeout } from "node:timers/promises";
 import { CURRENT_TERM } from "../../current-term";
 import { linkCourseData } from "../data-linker";
 import { updateSections } from "../../db/models/course";
@@ -11,9 +11,9 @@ import process from "node:process";
 // we wrap everything in this function so nothing happens on import
 export async function runScheduler() {
     const logger = createLogger("hmc.fetch.scheduler");
-    const controller = new AbortController();
-
     let endpointsScheduled: number = 0;
+    let dbWriteInProcess: number = 0;
+    let shouldExit: boolean = false;
     const totalEndpoints = Object.keys(endpoints).length;
 
     // we save a copy of everything in memory so we don't have to constantly loading them from the disk
@@ -48,56 +48,49 @@ export async function runScheduler() {
             ++endpointsScheduled,
             totalEndpoints,
         );
+        await setTimeout(e.interval * 1000);
 
-        (async function () {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            for await (const _ of setInterval(e.interval * 1000, undefined, {
-                signal: controller.signal,
-            })) {
+        /* eslint-disable no-await-in-loop, @typescript-eslint/no-unnecessary-condition */
+        while (true) {
+            try {
+                logger.info("Fetching for %s", e.saveAs);
+                inMemoryFiles[e.name] = await fetchAndSave(e, CURRENT_TERM);
+                logger.info("Data for %s fetched", e.saveAs);
+
+                const newSections = linkCourseData(inMemoryFiles, CURRENT_TERM);
+                logger.info("Data linking complete");
+
+                dbWriteInProcess++;
                 try {
-                    logger.info("Fetching for %s", e.saveAs);
-                    inMemoryFiles[e.name] = await fetchAndSave(e, CURRENT_TERM);
-                    logger.info("Data for %s fetched", e.saveAs);
-
-                    const newSections = linkCourseData(
-                        inMemoryFiles,
-                        CURRENT_TERM,
-                    );
-                    logger.info("Data linking complete");
-
                     await updateSections(newSections, CURRENT_TERM);
-                    logger.info("Database updated", e.saveAs);
-
-                    logger.info(
-                        "Scheduler flow completed for %s, running again in %ds",
-                        e.saveAs,
-                        e.interval,
-                    );
-                } catch (error) {
-                    logger.error("Error while running flow for %s", e.saveAs);
-                    logger.error(error);
+                } finally {
+                    dbWriteInProcess--;
                 }
-            }
-        })().catch((error) => {
-            if (error.name === "AbortError") {
+                logger.info("Database updated", e.saveAs);
+
                 logger.info(
-                    "Fetch schedule for %s canceled, %d/%d remain scheduled",
+                    "Scheduler flow completed for %s, running again in %ds",
                     e.saveAs,
-                    --endpointsScheduled,
-                    totalEndpoints,
+                    e.interval,
                 );
-                if (endpointsScheduled === 0) process.exit(0);
+            } catch (error) {
+                logger.error("Error while running flow for %s", e.saveAs);
+                logger.error(error);
             }
-        });
+            if (shouldExit) return;
+            await setTimeout(e.interval * 1000);
+        }
+        /* eslint-enable */
     }
 
     function signalHandler(signal: string) {
-        if (!controller.signal.aborted) {
-            logger.info(
-                "Signal %s received, cancelling all scheduled tasks",
-                signal,
-            );
-            controller.abort();
+        logger.info("Signal %s received", signal);
+        shouldExit = true;
+        if (dbWriteInProcess === 0) {
+            logger.info("No pending database write, terminating process");
+            process.exit(0);
+        } else {
+            logger.info("Waiting for pending database write...");
         }
     }
 
