@@ -368,6 +368,7 @@ function processCalendar(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
     calendarSessionParsed: CalendarSessionOutput,
     calendarSessionSectionParsed: CalendarSessionSectionOutput,
+    term: APIv4.TermIdentifier,
 ) {
     let calendarMap: Map<
         string,
@@ -406,6 +407,32 @@ function processCalendar(
             section.startDate = calendar.start;
             section.endDate = calendar.end;
         }
+    }
+    const termString = APIv4.stringifyTermIdentifier(term);
+    const defaultCalendar = calendarMap.get(termString);
+    if (defaultCalendar !== undefined) {
+        for (let section of courseSectionMap.values()) {
+            if (section.startDate === undefined) {
+                logger.trace(
+                    "Course section without calendar map for %s, using default calendar for %s",
+                    APIv4.stringifySectionCodeLong(section.identifier!),
+                    termString,
+                );
+                section.startDate = defaultCalendar.start;
+                section.potentialError = true;
+            }
+            if (section.endDate === undefined) {
+                logger.trace(
+                    "Course section without calendar map for %s, using default calendar for %s",
+                    APIv4.stringifySectionCodeLong(section.identifier!),
+                    termString,
+                );
+                section.endDate = defaultCalendar.end;
+                section.potentialError = true;
+            }
+        }
+    } else {
+        logger.warn("Cannot get default calendar session for %O", term);
     }
 }
 
@@ -538,6 +565,7 @@ export function linkCourseData(
         courseSectionMap,
         calendarSessionParsed,
         calendarSessionSectionParsed,
+        term,
     );
     processSectionSchedule(courseSectionMap, courseSectionScheduleParsed);
 
@@ -575,7 +603,6 @@ export function linkCourseData(
                     )}`,
                 );
             }
-            section.potentialError = true;
         }
     }
     return res as APIv4.Section[];
