@@ -8,7 +8,7 @@ import { createLogger } from "../../logger";
 const logger = createLogger("db.user");
 
 export async function getUser(uuid: string): Promise<APIv4.User | null> {
-    return collections.users.findOne({ _id: uuid });
+    return collections.users().findOne({ _id: uuid });
 }
 
 export async function createGuestUser(): Promise<APIv4.GuestUser> {
@@ -25,7 +25,7 @@ export async function createGuestUser(): Promise<APIv4.GuestUser> {
         lastModified: Math.floor(new Date().getTime() / 1000),
     };
 
-    const res = await collections.users.insertOne(user);
+    const res = await collections.users().insertOne(user);
 
     if (res.insertedId.toString() !== uuid) {
         logger.error(

@@ -14,7 +14,7 @@ else
   #docker pull mongo
 
   echo $'\e[95mStarting container with name hyperschedule-mongodb\e[m'
-  docker run --name hyperschedule-mongodb --rm -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=hyperschedule -e MONGO_INITDB_ROOT_PASSWORD=local_dev mongo
+  docker run --name hyperschedule-mongodb --rm -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=hyperschedule -e MONGO_INITDB_ROOT_PASSWORD=local_dev mongo --replSet rs0
   export NODE_ENV=development
 
   echo $'\e[95mWaiting 5 seconds for database to start\e[m'
