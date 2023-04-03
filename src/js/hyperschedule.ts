@@ -1352,6 +1352,19 @@ async function retrieveCourseDataUntilSuccessful() {
   );
 }
 
+function retrieveCourseDataUntilSuccessfulOnDocumentVisible() {
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      runWithExponentialBackoff(
+        retrieveCourseData,
+        500,
+        1.5,
+        "fetch course data (window made visible)"
+      );
+    }
+  });
+}
+
 //// Local storage
 
 function writeStateToLocalStorage() {
@@ -1755,6 +1768,7 @@ attachListeners();
 readStateFromLocalStorage();
 handleGlobalStateUpdate();
 retrieveCourseDataUntilSuccessful();
+retrieveCourseDataUntilSuccessfulOnDocumentVisible();
 
 /// Closing remarks
 
