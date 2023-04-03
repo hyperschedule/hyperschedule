@@ -17,5 +17,5 @@ import { Term } from "hyperschedule-shared/api/v4";
 
 export const CURRENT_TERM: Readonly<TermIdentifier> = {
     year: 2023,
-    term: Term.spring,
+    term: Term.fall,
 };
