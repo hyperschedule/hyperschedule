@@ -6,6 +6,20 @@ The intention of the fetcher mock server is so we can test various elements of t
 without having to actually send request to the school server.
 
 ---------
+CLI flags
+---------
+
+The mock server can be started with a CLI flag :code:`-d`/:code:`--delay` with an optional argument. If this flag is included without
+an argument, all request to the server that would return 200 would be delayed randomly by at least 10 seconds and at
+most 5 minutes before the first byte of response header is sent. This is to simulate the amount of time the school
+server may take to respond. The endpoint :code:`course-raw` should be delayed by at least 4 minutes and at most 4 minutes
+and 35 seconds.
+
+Optionally, this flag will take a positive integer :code:`n` and delay all response universally by :code:`n` seconds. This
+is to make debugging and unit testing slightly faster. The mock server may assume :code:`n` is a reasonable valued number
+without further checks.
+
+---------
 Endpoints
 ---------
 
