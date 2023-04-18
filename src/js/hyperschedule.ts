@@ -1338,7 +1338,7 @@ async function retrieveCourseData() {
 }
 
 async function retrieveCourseDataUntilSuccessful() {
-  const pollInterval = 60 * 1000;
+  const pollInterval = 30 * 1000;
   await runWithExponentialBackoff(
     async () => {
       await retrieveCourseData();
