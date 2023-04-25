@@ -1,0 +1,6342 @@
+[
+  {
+    "courseSectionId" : "AFRI010A AF-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "AFRI010B AF-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "AFRI116  AF-01 SP2022",
+    "permCount" : "40"
+  },
+  {
+    "courseSectionId" : "AFRI121  AF-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "AFRI128  AF-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "AFRI134  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "AMST103  JT-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "AMST191  PO-04 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "AMST191  SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ANTH001  PZ-01 SP2022",
+    "permCount" : "52"
+  },
+  {
+    "courseSectionId" : "ANTH001P PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ANTH001P PZ-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ANTH001P PZ-03 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ANTH002  PO-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ANTH002  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "ANTH002  PZ-02 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "ANTH003  PZ-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "ANTH009  PZ-01 SP2022",
+    "permCount" : "44"
+  },
+  {
+    "courseSectionId" : "ANTH009  PZ-02 SP2022",
+    "permCount" : "40"
+  },
+  {
+    "courseSectionId" : "ANTH011  PZ-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "ANTH012  PZ-01 SP2022",
+    "permCount" : "46"
+  },
+  {
+    "courseSectionId" : "ANTH025  SC-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ANTH047  PO-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ANTH053  PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "ANTH100  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ANTH105  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ANTH107  PO-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "ANTH111  HM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ANTH114  SC-01 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "ANTH115  SC-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ANTH119  SC-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ANTH121  PO-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "ANTH142  SC-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "ANTH157  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ANTH158  PO-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "ANTH185P SC-01 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "ANTH189P PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ANTH191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ANTH192  PO-04 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ARBC002  CM-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ARCN115  SC-01 SP2022",
+    "permCount" : "44"
+  },
+  {
+    "courseSectionId" : "ARHI001B PO-01 SP2022",
+    "permCount" : "42"
+  },
+  {
+    "courseSectionId" : "ARHI131  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ARHI144B PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ARHI151  SC-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "ARHI174  PO-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "ARHI177  SC-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ARHI179E HM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ARHI185  SC-01 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "ARHI186A PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ARHI186B PZ-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ARHI186C SC-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ARHI186N SC-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ARHI186O PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ARHI186W PO-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ARHI188  SC-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ARHI191  PO-04 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ARHI191  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ARHI191  PO-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ARHI191  PO-16 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ART 005  PO-01 SP2022",
+    "permCount" : "89"
+  },
+  {
+    "courseSectionId" : "ART 010  PO-01 SP2022",
+    "permCount" : "67"
+  },
+  {
+    "courseSectionId" : "ART 016  PZ-01 SP2022",
+    "permCount" : "107"
+  },
+  {
+    "courseSectionId" : "ART 016  PZ-02 SP2022",
+    "permCount" : "71"
+  },
+  {
+    "courseSectionId" : "ART 020  PO-01 SP2022",
+    "permCount" : "105"
+  },
+  {
+    "courseSectionId" : "ART 027  PO-01 SP2022",
+    "permCount" : "91"
+  },
+  {
+    "courseSectionId" : "ART 028  PO-01 SP2022",
+    "permCount" : "62"
+  },
+  {
+    "courseSectionId" : "ART 030  PZ-01 SP2022",
+    "permCount" : "42"
+  },
+  {
+    "courseSectionId" : "ART 060  HM-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "ART 101  SC-01 SP2022",
+    "permCount" : "125"
+  },
+  {
+    "courseSectionId" : "ART 105  SC-01 SP2022",
+    "permCount" : "97"
+  },
+  {
+    "courseSectionId" : "ART 105  SC-02 SP2022",
+    "permCount" : "82"
+  },
+  {
+    "courseSectionId" : "ART 105A PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ART 111  PO-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ART 112  PZ-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "ART 114  SC-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "ART 116  SC-01 SP2022",
+    "permCount" : "44"
+  },
+  {
+    "courseSectionId" : "ART 118  SC-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "ART 120  PZ-01 SP2022",
+    "permCount" : "87"
+  },
+  {
+    "courseSectionId" : "ART 121  JT-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "ART 121  SC-01 SP2022",
+    "permCount" : "123"
+  },
+  {
+    "courseSectionId" : "ART 122  SC-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ART 123  PZ-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "ART 126B PO-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ART 127  PZ-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "ART 133  PZ-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ART 134  SC-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "ART 135  SC-01 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "ART 135  SC-02 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "ART 136  SC-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "ART 141  SC-01 SP2022",
+    "permCount" : "105"
+  },
+  {
+    "courseSectionId" : "ART 141  SC-02 SP2022",
+    "permCount" : "129"
+  },
+  {
+    "courseSectionId" : "ART 142  SC-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "ART 143  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ART 147  SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 149  SC-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "ART 179I HM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ART 179J HM-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ART 181T SC-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "ART 192  PO-04 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ART 193  SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 196  PZ-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "ART 199  PZ-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ASAM056  PZ-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "ASAM056  PZ-02 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "ASAM082  PZ-01 SP2022",
+    "permCount" : "83"
+  },
+  {
+    "courseSectionId" : "ASAM086  HM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ASAM100A PZ-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ASAM105B PZ-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "ASAM115  PZ-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "ASAM125  PZ-01 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "ASAM156  PZ-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ASAM160  AA-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "ASAM175  PZ-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "ASAM179B AA-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ASAM179H AA-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ASAM191  PO-14 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ASAM191  PO-16 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ASIA191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ASTR002  PO-01 SP2022",
+    "permCount" : "144"
+  },
+  {
+    "courseSectionId" : "ASTR051  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ASTR051 LPO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ASTR066L KS-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ASTR121  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ASTR125  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL001A PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL023  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL023  HM-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL023  HM-03 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "BIOL023  HM-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL023  HM-05 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL041C PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL041C PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL041E PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL041E PO-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL042L KS-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL042L KS-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL044L KS-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "BIOL044L KS-02 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "BIOL044L KS-03 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "BIOL044L KS-04 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "BIOL044L KS-05 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-01 SP2022",
+    "permCount" : "59"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-02 SP2022",
+    "permCount" : "59"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-03 SP2022",
+    "permCount" : "46"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-04 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-05 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-06 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-07 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-08 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-09 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-10 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-11 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "BIOL047  PO-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "BIOL052  HM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "BIOL052  HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL052R HM-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL052R HM-05 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL052R HM-06 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL052R HM-07 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL054  HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL057L KS-01 SP2022",
+    "permCount" : "38"
+  },
+  {
+    "courseSectionId" : "BIOL099  KS-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "BIOL103  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL104  PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "BIOL108  HM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "BIOL111  KS-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "BIOL113L KS-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "BIOL122  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL131  KS-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL131L KS-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "BIOL143  KS-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "BIOL143  KS-02 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "BIOL148L KS-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "BIOL149  KS-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL154  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL157L KS-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL161  KS-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "BIOL164  KS-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "BIOL165A PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "BIOL167  KS-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "BIOL168L KS-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "BIOL169  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL169 LPO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL169 LPO-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL169L KS-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "BIOL170  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL173B PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL174  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL175  KS-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "BIOL176  KS-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "BIOL177  KS-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "BIOL182  HM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL184  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL191  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL191H PO-20 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL191H PO-44 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL191H PO-48 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL193  HM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL193  HM-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL193  HM-05 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL193  HM-07 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL193  HM-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL193  HM-09 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL193  HM-10 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL194B PO-28 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL194B PO-40 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL196  KS-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "BIOL197  KS-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "CASA101  PZ-01 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "CASA105  PZ-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "CGS 038  PZ-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "CGS 050  PZ-01 SP2022",
+    "permCount" : "55"
+  },
+  {
+    "courseSectionId" : "CGS 060  PZ-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CGS 070  PZ-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "CGS 090  PZ-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CGS 112  PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CGS 123  PZ-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "CGS 132  PZ-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CGS 146  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "CGS 150  PZ-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "CHEM001B PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM001B PO-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM001BLPO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-05 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-06 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-07 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-08 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CHEM015L KS-11 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM023B HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM023B HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM023B HM-03 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHEM023B HM-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM023B HM-05 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM023B HM-06 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CHEM024  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM024  HM-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM024  HM-04 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHEM024  HM-05 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM029L KS-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "CHEM058  HM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHEM058  HM-02 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CHEM106  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CHEM110  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM110B PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM110B PO-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CHEM110BLPO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CHEM110BLPO-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM110BLPO-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM110BLPO-05 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHEM112  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM115  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CHEM115 LPO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CHEM115 LPO-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CHEM117L KS-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "CHEM117L KS-03 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "CHEM117L KS-04 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "CHEM117LXKS-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CHEM117LXKS-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM117LXKS-05 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM123  KS-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CHEM147  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-03 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-06 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-07 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-09 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-13 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-14 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-15 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-16 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM177  KS-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM180  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM182  HM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CHEM184  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM191  PO-16 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM191  PO-28 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM194  PO-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM194  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM194  PO-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM194  PO-14 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM194  PO-16 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHIN001B PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CHIN001B PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHIN011  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHIN013  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHIN051B PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CHIN051B PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHIN051H PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHIN122  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHLT035  PZ-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CHLT037  PZ-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CHLT040  CH-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CHLT055  PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "CHLT056  CH-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CHLT056  CH-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHLT085  PZ-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "CHLT090  CH-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "CHLT120  CH-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "CHLT153  CH-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "CHLT156  PZ-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "CHLT157  CH-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "CHNT168  PO-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "CHNT180  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "CHST015  CH-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHST028  CH-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CHST067  CH-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "CHST121  CH-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "CHST130  CH-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHST132  CH-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "CHST182  CH-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "CHST189A PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHST191  CH-16 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHST191  CH-20 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHST192  CH-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHST192  CH-16 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHST192  CH-20 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHST192  CH-28 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CLAS001  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CLAS020  PZ-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "CLAS064  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CLAS116A PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "CLAS150BEPZ-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "CLAS164  SC-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "CLAS191  PO-04 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "CLAS192  PO-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "COGS123  PZ-01 SP2022",
+    "permCount" : "51"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-03 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-04 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-06 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-09 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-10 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-11 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-12 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-14 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-16 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-17 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-18 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-19 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CORE002  SC-20 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CORE179A HM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "CORE179A HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CORE179A HM-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CORE179A HM-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CORE179B HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CREA018  PZ-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CREA159C PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI004  PZ-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "CSCI005  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI036  CM-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "CSCI036  CM-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CSCI036  PZ-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "CSCI046  CM-01 SP2022",
+    "permCount" : "43"
+  },
+  {
+    "courseSectionId" : "CSCI051A PO-01 SP2022",
+    "permCount" : "53"
+  },
+  {
+    "courseSectionId" : "CSCI051A PO-02 SP2022",
+    "permCount" : "50"
+  },
+  {
+    "courseSectionId" : "CSCI051ALPO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CSCI051ALPO-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CSCI051ALPO-03 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI051ALPO-04 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CSCI054  PO-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "CSCI060  HM-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CSCI062 LPO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CSCI070  HM-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "CSCI070  HM-02 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "CSCI070  HM-03 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "CSCI070  HM-04 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "CSCI101  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "CSCI105  HM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CSCI105  HM-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI105  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CSCI105 LPO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CSCI124  HM-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "CSCI124  PO-01 SP2022",
+    "permCount" : "42"
+  },
+  {
+    "courseSectionId" : "CSCI132  HM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CSCI133  HM-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "CSCI133  HM-02 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "CSCI134  HM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CSCI140  HM-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "CSCI140  HM-02 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CSCI140  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CSCI143  CM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "CSCI144  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI145  CM-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "CSCI152  PO-01 SP2022",
+    "permCount" : "38"
+  },
+  {
+    "courseSectionId" : "CSCI153  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI153  HM-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CSCI158  PO-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "CSCI158  PZ-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "CSCI159  HM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CSCI159  HM-02 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CSCI181ACHM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CSCI181G PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "CSCI181ORPO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CSCI181Y HM-01 SP2022",
+    "permCount" : "98"
+  },
+  {
+    "courseSectionId" : "CSCI186  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI192  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI192  PO-16 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI195  HM-02 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "CSMT184  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "DANC010  PO-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "DANC012  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "DANC012 PPO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "DANC051  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "DANC076A SC-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "DANC076B SC-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "DANC078A SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "DANC078B SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "DANC083A SC-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "DANC100A SC-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "DANC100B SC-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "DANC103  SC-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "DANC111A SC-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "DANC111B SC-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "DANC112A SC-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "DANC112B SC-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "DANC120  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "DANC120 PPO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "DANC122  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "DANC138  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "DANC139  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "DANC142  SC-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "DANC150A PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "DANC151  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "DANC152  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "DANC152 PPO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "DANC152IOSC-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "DANC160  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "DANC162A SC-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "DANC162B SC-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "DANC176  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "DANC180  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "DANC181  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "DANC191  SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "DANC192  PO-04 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "DS  002  SC-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "EA  010  PO-01 SP2022",
+    "permCount" : "35"
+  },
+  {
+    "courseSectionId" : "EA  010  PZ-01 SP2022",
+    "permCount" : "54"
+  },
+  {
+    "courseSectionId" : "EA  010  PZ-02 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "EA  010  SC-01 SP2022",
+    "permCount" : "43"
+  },
+  {
+    "courseSectionId" : "EA  020  PO-01 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "EA  020  PO-02 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "EA  021  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "EA  030L KS-01 SP2022",
+    "permCount" : "80"
+  },
+  {
+    "courseSectionId" : "EA  031  PZ-01 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "EA  032  PZ-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "EA  034  PZ-01 SP2022",
+    "permCount" : "86"
+  },
+  {
+    "courseSectionId" : "EA  039  PZ-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "EA  045  PZ-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "EA  086  PZ-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "EA  098  PZ-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "EA  099  PO-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "EA  103  KS-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "EA  103L KS-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "EA  108  PZ-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "EA  112  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "EA  125  PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "EA  130  PZ-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "EA  131  PZ-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "EA  134  PZ-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "EA  138  PZ-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "EA  141  PZ-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "EA  144  PZ-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "EA  146  PZ-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "EA  174  JT-01 SP2022",
+    "permCount" : "44"
+  },
+  {
+    "courseSectionId" : "EA  185  PO-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "EA  191  PO-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "EA  191H PO-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "EA  197  PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON050  CM-02 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "ECON050  CM-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-02 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-03 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-04 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-05 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-06 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ECON051  PZ-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "ECON051  PZ-02 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ECON051  SC-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "ECON052  PO-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "ECON052  PO-02 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ECON052  PO-03 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "ECON052  PO-04 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "ECON052  PO-05 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ECON052  PZ-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "ECON052  PZ-02 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "ECON052  SC-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ECON057  PO-01 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "ECON057  PO-02 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ECON057B PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-03 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-04 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-05 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ECON091  PZ-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ECON091  PZ-02 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ECON097  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ECON100  CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-02 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-03 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-04 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-05 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-06 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-07 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "ECON101  PO-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-02 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-03 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-04 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-05 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ECON102  PO-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ECON102  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ECON105  PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON107  PO-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ECON117  PO-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ECON120  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON120  CM-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ECON120  CM-03 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON120  CM-04 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ECON120  SC-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ECON125  CM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ECON125  CM-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON125  CM-03 SP2022",
+    "permCount" : "35"
+  },
+  {
+    "courseSectionId" : "ECON125  CM-04 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "ECON125  PO-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ECON125  SC-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ECON126  CM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ECON126  CM-02 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ECON128  PO-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "ECON129  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON130  PO-01 SP2022",
+    "permCount" : "79"
+  },
+  {
+    "courseSectionId" : "ECON133  SC-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-02 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-03 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-04 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-05 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-06 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON134  SC-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "ECON134B CM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON138  CM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON141  CM-01 SP2022",
+    "permCount" : "54"
+  },
+  {
+    "courseSectionId" : "ECON144  SC-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ECON150  CM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON151  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON151  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON154  CM-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ECON154  CM-02 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ECON154  PO-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ECON155  CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON156  CM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON157  PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ECON160  CM-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ECON160  CM-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON165  CM-02 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ECON165  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON172  PZ-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ECON173  CM-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "ECON173  CM-02 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "ECON175  PZ-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "ECON180  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON180  CM-04 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON184  PZ-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "ECON184  PZ-02 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "ECON187  CM-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "ECON187  CM-02 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "ECON187  PZ-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "ECON190  PO-02 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ECON190  PO-03 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON190  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON191  CM-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "ECON195  PO-04 SP2022",
+    "permCount" : "44"
+  },
+  {
+    "courseSectionId" : "ECON196  CM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON197S CM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON197SACM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ECON197SBCM-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "EDUC170G CG-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "EDUC301G CG-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "EDUC301GSCG-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "EDUC302G CG-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ENGL002  PZ-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "ENGL010B PZ-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "ENGL012A AF-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "ENGL012B AF-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ENGL020  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGL023  PO-01 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "ENGL030  PZ-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ENGL030  PZ-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ENGL048  PO-01 SP2022",
+    "permCount" : "57"
+  },
+  {
+    "courseSectionId" : "ENGL048  PO-2 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ENGL064A PO-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "ENGL064B PO-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ENGL071  PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ENGL074  PO-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ENGL080  PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ENGL089A PO-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ENGL099  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL099  PZ-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "ENGL101  PZ-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "ENGL102  SC-01 SP2022",
+    "permCount" : "66"
+  },
+  {
+    "courseSectionId" : "ENGL112  SC-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ENGL118S SC-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ENGL121  PO-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ENGL125C AF-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ENGL128  PZ-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ENGL130  PZ-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ENGL131  PZ-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ENGL134  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ENGL147  SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGL164  PO-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "ENGL165  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGL170J PO-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "ENGL170K PO-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ENGL180  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ENGL191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL191  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL191  PO-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL191  PO-20 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL191  PO-24 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL191  PO-40 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL191  PO-44 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL191  SC-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ENGL193  SC-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "ENGL195  PO-04 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ENGL195  PZ-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGL197  SC-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "ENGR004  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ENGR004  HM-02 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ENGR004L HM-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGR072  HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGR080  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ENGR080  HM-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGR084  HM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ENGR085  HM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGR111  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGR113  HM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ENGR114  HM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ENGR180  HM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGR185B HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGR185B HM-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGR190AUHM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGR190AYHM-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ENGR190BAHM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGR190BBHM-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "FGSS177  SC-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "FGSS183  SC-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "FGSS188B SC-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "FGSS192  SC-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "FGSS195  SC-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-02 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-03 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-05 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-06 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-07 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-08 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-09 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-10 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "FIN 330  CM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "FIN 460  CM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FREN002  SC-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FREN002L CM-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FREN002L SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FREN002L SC-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FREN011  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FREN013  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FREN033  PO-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FREN033  PO-03 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "FREN033  PZ-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FREN033L CM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FREN033L SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FREN044  PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FREN044  SC-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "FREN101  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FREN110  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "FREN127  SC-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "FREN160  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "FREN174  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "FREN189A PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "FREN191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FREN193  PO-04 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-02 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-03 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-05 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-06 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-07 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-09 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-10 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-11 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-12 SP2022",
+    "permCount" : "38"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-13 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-14 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-15 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "FWS 010  CM-16 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "GEOG179D HM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "GEOL020A PO-01 SP2022",
+    "permCount" : "92"
+  },
+  {
+    "courseSectionId" : "GEOL020A PO-02 SP2022",
+    "permCount" : "87"
+  },
+  {
+    "courseSectionId" : "GEOL020C PO-01 SP2022",
+    "permCount" : "86"
+  },
+  {
+    "courseSectionId" : "GEOL121  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GEOL125  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "GEOL131  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "GEOL189C PO-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "GEOL189D PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GEOL189I PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "GEOL192  PO-04 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "GEOL192  PO-08 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GERM013  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GERM111  SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GERM191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GERM191  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GERM193  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GFS 026  PZ-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GFS 036  PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-01 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-02 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-03 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-04 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-05 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-06 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-07 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-08 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-09 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-10 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "GOVT041  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "GOVT041B CM-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "GOVT055  CM-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "GOVT060  CM-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "GOVT060  CM-02 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "GOVT060  CM-03 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "GOVT070  CM-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "GOVT070  CM-02 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "GOVT070H CM-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "GOVT071  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "GOVT080  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "GOVT080  CM-02 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "GOVT097  CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "GOVT100  CM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT101  CM-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "GOVT107  CM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT110  CM-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "GOVT112A CM-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "GOVT117  CM-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "GOVT119  CM-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "GOVT123  CM-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "GOVT128  JT-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "GOVT131  CM-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "GOVT134  CM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "GOVT137  CM-01 SP2022",
+    "permCount" : "43"
+  },
+  {
+    "courseSectionId" : "GOVT140  CM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "GOVT142  CM-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "GOVT142C CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "GOVT143C CM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "GOVT143C CM-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "GOVT148  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "GOVT149  CM-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "GOVT149  CM-02 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "GOVT151  CM-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "GOVT157S CM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "GOVT157SBCM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "GOVT166  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "GOVT174  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "GOVT191  CM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GREK022  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GREK104  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GRMT162  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "GWS 026  PO-01 SP2022",
+    "permCount" : "46"
+  },
+  {
+    "courseSectionId" : "GWS 026  PO-02 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "GWS 170  PO-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "GWS 180  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "GWS 186  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "GWS 190  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GWS 191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GWS 191  PO-08 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "HIST011  PO-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "HIST011  PZ-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "HIST021  PO-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "HIST024A PZ-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "HIST025  CH-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "HIST030  PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "HIST032  CH-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "HIST048  PO-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "HIST048  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "HIST050B AF-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "HIST059  CM-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "HIST059  CM-02 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "HIST060  PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "HIST062  PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "HIST065  PZ-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "HIST066  PZ-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "HIST070B SC-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "HIST071  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HIST083  PZ-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "HIST099  CM-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "HIST100  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "HIST101A PO-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "HIST101ABPO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "HIST101K PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "HIST101U PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "HIST101X PO-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "HIST105  PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "HIST108  SC-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "HIST111  CM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "HIST114  CM-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "HIST115  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "HIST120E CM-01 SP2022",
+    "permCount" : "49"
+  },
+  {
+    "courseSectionId" : "HIST120IOCM-01 SP2022",
+    "permCount" : "48"
+  },
+  {
+    "courseSectionId" : "HIST127  CH-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "HIST128  CM-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "HIST128  CM-02 SP2022",
+    "permCount" : "59"
+  },
+  {
+    "courseSectionId" : "HIST130  CH-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "HIST136C CM-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "HIST143  SC-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "HIST154  CM-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "HIST158  CM-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "HIST158  PZ-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "HIST160  CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "HIST163  PZ-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "HIST169A CM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "HIST169B CM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "HIST176  AF-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "HIST179  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "HIST179  CM-02 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "HIST180  SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "HIST189G PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "HIST189H PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "HIST191  PO-04 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "HIST191  SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HIST192  SC-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HMSC138  SC-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-06 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-07 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-08 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-09 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-10 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-11 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-13 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-15 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-16 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "HSA 010  HM-18 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HUM 196  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ID  049C HM-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ID  080  CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ID  080  CM-02 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "ID  150  JT-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ID  199P1PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "IR  100  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "IR  191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ITAL001  SC-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ITAL044  SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ITAL137  SC-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ITAL140  SC-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "JAPN001B PO-03 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "JAPN011  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "JAPN013  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "JAPN051B PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "JPNT171  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "KORE002  CM-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "KRNT130  CM-01 SP2022",
+    "permCount" : "40"
+  },
+  {
+    "courseSectionId" : "LAMS191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LAST191  PO-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "LATN022  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "LATN103  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "LEAD010  CM-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "LEAD142  CM-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "LEAD142  CM-02 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "LEAD151  HM-01 SP2022",
+    "permCount" : "62"
+  },
+  {
+    "courseSectionId" : "LEAD151  HM-02 SP2022",
+    "permCount" : "57"
+  },
+  {
+    "courseSectionId" : "LGCS010  PO-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "LGCS010  PO-02 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "LGCS010  PO-03 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "LGCS010  PZ-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "LGCS011  PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS101  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "LGCS106  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "LGCS112  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "LGCS118  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "LGCS120  PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "LGCS123  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "LGCS124  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "LGCS125  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS170  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "LGCS183  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS191  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS191  PO-20 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS191  PO-24 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "LGCS191  PO-30 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS191  PO-36 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS191  PO-38 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LGCS191  PO-40 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "LGST191  SC-05 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "LIT 035  HM-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "LIT 036  CM-01 SP2022",
+    "permCount" : "145"
+  },
+  {
+    "courseSectionId" : "LIT 037  CM-01 SP2022",
+    "permCount" : "47"
+  },
+  {
+    "courseSectionId" : "LIT 038  CM-01 SP2022",
+    "permCount" : "58"
+  },
+  {
+    "courseSectionId" : "LIT 058  CM-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "LIT 062  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "LIT 068  CM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "LIT 096  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "LIT 099  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "LIT 099  JT-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "LIT 107  CM-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "LIT 110  HM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "LIT 130  CM-01 SP2022",
+    "permCount" : "59"
+  },
+  {
+    "courseSectionId" : "LIT 131  CM-01 SP2022",
+    "permCount" : "42"
+  },
+  {
+    "courseSectionId" : "LIT 134  CM-01 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "LIT 136  CM-01 SP2022",
+    "permCount" : "43"
+  },
+  {
+    "courseSectionId" : "LIT 160  CM-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "LIT 177  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "LIT 179AFHM-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "LIT 179V HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "LIT 183  CM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "MATH001  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-03 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-04 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "MATH030  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "MATH030  PO-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "MATH030  PZ-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "MATH031  CM-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "MATH031  CM-02 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "MATH031  PO-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "MATH031  PZ-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "MATH031  PZ-02 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "MATH032  CM-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "MATH032  PO-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "MATH032  PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MATH032S PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MATH052  JT-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "MATH052  PZ-01 SP2022",
+    "permCount" : "52"
+  },
+  {
+    "courseSectionId" : "MATH055  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MATH055  HM-03 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH055  PZ-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MATH058  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MATH058 LPO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH058B PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "MATH058BLPO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MATH060  CM-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "MATH060  CM-02 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "MATH060  PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "MATH060  PO-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "MATH060  PO-03 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "MATH062  HM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "MATH062  HM-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MATH062  HM-03 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "MATH073  HM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MATH073  HM-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MATH073  HM-05 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH073  HM-06 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MATH073  HM-07 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH102  PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "MATH103  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH108B PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MATH111  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MATH119  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MATH135  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MATH147  PO-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "MATH151  CM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "MATH151  PO-01 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "MATH152  CM-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MATH153  HM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "MATH153  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MATH157  HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH158  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "MATH168  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH168  HM-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MATH171  HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH171  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH173  PO-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "MATH180  PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "MATH186  CM-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "MATH187  PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "MATH189ADHM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MATH190  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "MATH191  PO-04 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "MATH193  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH196  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-05 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-06 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-07 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-09 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-10 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-11 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-12 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-13 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-14 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-15 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH198  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH198  HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MCBI118A HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MCBI118B HM-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "MLLC144  PZ-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MLLC188  PZ-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MOBI188  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MOBI191B PO-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MOBI191B PO-60 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MOBI194B PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MOBI194B PO-12 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MOBI194B PO-20 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MOBI194B PO-34 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MOBI194B PO-40 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MOBI194B PO-42 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MOBI194B PO-48 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MS  036  SC-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "MS  040  PZ-01 SP2022",
+    "permCount" : "53"
+  },
+  {
+    "courseSectionId" : "MS  045  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "MS  049  PO-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "MS  049  PO-02 SP2022",
+    "permCount" : "48"
+  },
+  {
+    "courseSectionId" : "MS  050  PZ-01 SP2022",
+    "permCount" : "40"
+  },
+  {
+    "courseSectionId" : "MS  051  PO-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "MS  051  PO-02 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "MS  051  PZ-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "MS  054  SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MS  073  PZ-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "MS  082  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "MS  082  SC-01 SP2022",
+    "permCount" : "97"
+  },
+  {
+    "courseSectionId" : "MS  087  PZ-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MS  092  PO-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "MS  097  PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "MS  100  AA-01 SP2022",
+    "permCount" : "48"
+  },
+  {
+    "courseSectionId" : "MS  115  PZ-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "MS  120  HM-01 SP2022",
+    "permCount" : "42"
+  },
+  {
+    "courseSectionId" : "MS  121  PZ-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "MS  122  PZ-01 SP2022",
+    "permCount" : "35"
+  },
+  {
+    "courseSectionId" : "MS  125  PO-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "MS  149T PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "MS  172  HM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "MS  190  JT-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "MS  190  JT-02 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "MS  194  PZ-01 SP2022",
+    "permCount" : "46"
+  },
+  {
+    "courseSectionId" : "MS  196  PZ-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MSL 103B CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MSL 104B CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 003  HM-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "MUS 004  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 007  PO-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "MUS 007  PO-02 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "MUS 010  PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "MUS 015  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 020  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MUS 031  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 032  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MUS 033  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 035  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 037  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 040  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 041  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 042B PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MUS 049  HM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 051  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MUS 060  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 065  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MUS 072  SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 080  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 080 LPO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 080 LPO-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 085  SC-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "MUS 089  SC-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "MUS 089  SC-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 092F SC-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MUS 092F SC-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MUS 092F SC-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 092H SC-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MUS 092H SC-02 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "MUS 092H SC-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 096B PO-01 SP2022",
+    "permCount" : "37"
+  },
+  {
+    "courseSectionId" : "MUS 100  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 112  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "MUS 118  SC-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "MUS 119  SC-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "MUS 121  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 126  SC-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "MUS 140  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MUS 170F SC-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 170F SC-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MUS 170F SC-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 170H SC-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MUS 170H SC-02 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "MUS 170H SC-03 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 171F SC-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MUS 171F SC-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 171F SC-03 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 171H SC-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "MUS 171H SC-02 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "MUS 171H SC-03 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "MUS 171H SC-04 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "MUS 172  SC-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "MUS 172  SC-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 173  JM-01 SP2022",
+    "permCount" : "37"
+  },
+  {
+    "courseSectionId" : "MUS 175  JM-01 SP2022",
+    "permCount" : "52"
+  },
+  {
+    "courseSectionId" : "MUS 177H SC-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "MUS 192  PO-04 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "NEUR089A PO-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "NEUR095L JT-01 SP2022",
+    "permCount" : "52"
+  },
+  {
+    "courseSectionId" : "NEUR101BLPO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "NEUR101BLPO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "NEUR103  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "NEUR123  PO-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "NEUR168  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "NEUR168 LPO-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "NEUR191  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "NEUR191  PO-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "NEUR191  PO-20 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "NEUR192  PO-04 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "NEUR194B PO-04 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "NEUR194B PO-24 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ORST050  PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "ORST103  PZ-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "ORST114  PZ-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ORST135  PZ-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ORST135A PZ-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "ORST161  PZ-01 SP2022",
+    "permCount" : "46"
+  },
+  {
+    "courseSectionId" : "ORST170  PZ-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ORST180  PZ-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PE  002  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "PE  002  PO-02 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PE  005A JP-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  007  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PE  008  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PE  008B JP-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PE  009  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  009A PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "PE  009A PO-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PE  010  JP-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "PE  010  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PE  011A JP-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  014  JP-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PE  015  JP-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  015  JP-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  015  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PE  016  PO-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "PE  018  JP-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PE  018  JP-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PE  018  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PE  018  PO-02 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PE  021A JP-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PE  022A PO-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "PE  022A PO-02 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "PE  022A PO-03 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "PE  023  PO-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "PE  025  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PE  026  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  028  JP-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PE  028  JP-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  029  PO-02 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "PE  032  PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "PE  034  JP-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "PE  035B PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  040  JP-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "PE  040  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PE  040  PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  041  JP-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PE  043  JP-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "PE  048  JP-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "PE  050  JP-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "PE  055A PO-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "PE  056  JP-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  057B JP-01 SP2022",
+    "permCount" : "46"
+  },
+  {
+    "courseSectionId" : "PE  059  JP-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "PE  060C JP-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  060C PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PE  063  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PE  068  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  069  PO-01 SP2022",
+    "permCount" : "45"
+  },
+  {
+    "courseSectionId" : "PE  073  JP-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  073D JP-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  075A PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PE  075B PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "PE  077A PO-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "PE  077A PO-02 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "PE  077A PO-03 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "PE  077B PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "PE  077D PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PE  078A JP-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "PE  079A PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "PE  080  JP-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "PE  082  JP-01 SP2022",
+    "permCount" : "123"
+  },
+  {
+    "courseSectionId" : "PE  084  JP-01 SP2022",
+    "permCount" : "47"
+  },
+  {
+    "courseSectionId" : "PE  084  PO-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "PE  085  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PE  086  JP-01 SP2022",
+    "permCount" : "37"
+  },
+  {
+    "courseSectionId" : "PE  094  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PE  130M PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PE  140M PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  140W PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  150  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PE  155  JP-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PE  155W PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  160W PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PE  166  JP-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  170M PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PE  175M PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PE  175W PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PHIL001  PO-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "PHIL007  PZ-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "PHIL007  PZ-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PHIL030  CM-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "PHIL030  CM-02 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "PHIL030  PO-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "PHIL030  PZ-01 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "PHIL032  PO-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "PHIL033  CM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "PHIL034  CM-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "PHIL034  CM-02 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "PHIL034  PO-01 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "PHIL035  CM-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "PHIL036  CM-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "PHIL037  PO-01 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "PHIL038  CM-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "PHIL038  CM-02 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "PHIL039  PO-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "PHIL042  PO-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "PHIL043  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "PHIL072  PO-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "PHIL080  PO-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "PHIL082  PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "PHIL095  CM-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PHIL095  CM-02 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "PHIL096  JT-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "PHIL100E CM-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "PHIL100E CM-02 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "PHIL106  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PHIL129  HM-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "PHIL134  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PHIL135  CM-01 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "PHIL142  CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PHIL144  SC-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "PHIL158  CM-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "PHIL160  SC-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "PHIL185N JT-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "PHIL185P PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHIL185R PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PHIL186  CM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHIL186  CM-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHIL198  CM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS009  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS016  PO-01 SP2022",
+    "permCount" : "42"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-07 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-11 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024A HM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS031L KS-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PHYS031L KS-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS031L KS-03 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "PHYS031LXKS-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PHYS031LXKS-03 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PHYS034L KS-03 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "PHYS042  PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PHYS042  PO-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PHYS042 LPO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS042 LPO-03 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS050  HM-05 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS052  HM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS052  HM-03 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS054  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS072  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS072  PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS100  KS-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS128  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PHYS134  HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS174  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PHYS174 LPO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS191E PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS191E PO-08 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS191E PO-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS191E PO-24 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS191E PO-28 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS193  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS196  KS-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS197  KS-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS199  HM-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS199  HM-05 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS199  HM-09 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS199  HM-11 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS199  HM-12 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PHYS199  HM-13 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "POLI001B PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "POLI001B PO-02 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "POLI003  PO-01 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "POLI005  PO-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "POLI007  PO-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "POLI008  PO-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "POLI010  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "POLI020  PO-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "POLI033B PO-01 SP2022",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "POLI060  PO-01 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "POLI090  PO-01 SP2022",
+    "permCount" : "46"
+  },
+  {
+    "courseSectionId" : "POLI112  PO-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "POLI118  SC-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "POLI123  SC-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "POLI126  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "POLI130  SC-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "POLI133  PO-01 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "POLI134  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "POLI135  SC-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "POLI135L SC-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "POLI145  SC-01 SP2022",
+    "permCount" : "98"
+  },
+  {
+    "courseSectionId" : "POLI146  SC-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "POLI147  SC-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "POLI151  PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "POLI171  PO-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "POLI172  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "POLI180  SC-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "POLI187N SC-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "POLI187O SC-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "POLI189X PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "POLI190B PO-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "POLI191  PO-08 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "POLI191  PO-24 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "POLI193  PO-04 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "POLI195  PO-04 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PONT100  CM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "POST020  PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "POST030  PZ-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "POST030  PZ-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "POST070  PZ-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "POST091  PZ-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "POST091P PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "POST123  PZ-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "POST139  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "POST141  PZ-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "POST144  PZ-01 SP2022",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "POST154  PZ-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "POST166  PZ-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "POST168  HM-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "POST190  PZ-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "POST199  PZ-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PPA 001  PO-01 SP2022",
+    "permCount" : "35"
+  },
+  {
+    "courseSectionId" : "PPA 191  PO-04 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "PPE 001A CM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PPE 011B CM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PPE 100  PO-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "PPE 195  PO-04 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "PSYC010  PZ-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "PSYC010  PZ-02 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-02 SP2022",
+    "permCount" : "37"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-03 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-04 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-05 SP2022",
+    "permCount" : "44"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-06 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-07 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-01 SP2022",
+    "permCount" : "40"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-02 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-03 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-04 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-05 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "PSYC051  PO-02 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "PSYC051  PO-03 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "PSYC052  SC-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "PSYC052  SC-02 SP2022",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "PSYC070  CM-01 SP2022",
+    "permCount" : "81"
+  },
+  {
+    "courseSectionId" : "PSYC091  PZ-01 SP2022",
+    "permCount" : "61"
+  },
+  {
+    "courseSectionId" : "PSYC092  CM-01 SP2022",
+    "permCount" : "58"
+  },
+  {
+    "courseSectionId" : "PSYC092  PZ-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "PSYC092P PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "PSYC101  PZ-01 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "PSYC101  PZ-02 SP2022",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "PSYC103  SC-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "PSYC103  SC-02 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "PSYC104  SC-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "PSYC104L SC-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PSYC105  PZ-01 SP2022",
+    "permCount" : "42"
+  },
+  {
+    "courseSectionId" : "PSYC108  PO-01 SP2022",
+    "permCount" : "35"
+  },
+  {
+    "courseSectionId" : "PSYC109  CM-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PSYC110  CM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC110  SC-01 SP2022",
+    "permCount" : "37"
+  },
+  {
+    "courseSectionId" : "PSYC111L CM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC120  CM-01 SP2022",
+    "permCount" : "38"
+  },
+  {
+    "courseSectionId" : "PSYC121  PZ-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "PSYC121P PZ-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PSYC124  SC-01 SP2022",
+    "permCount" : "69"
+  },
+  {
+    "courseSectionId" : "PSYC131  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC131A CM-01 SP2022",
+    "permCount" : "70"
+  },
+  {
+    "courseSectionId" : "PSYC133  PZ-01 SP2022",
+    "permCount" : "51"
+  },
+  {
+    "courseSectionId" : "PSYC133  SC-01 SP2022",
+    "permCount" : "40"
+  },
+  {
+    "courseSectionId" : "PSYC136  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "PSYC137  PO-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "PSYC140  CM-01 SP2022",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "PSYC142  CM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PSYC143  SC-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PSYC148  PZ-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "PSYC150  AF-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "PSYC152  SC-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "PSYC153  AA-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "PSYC154  CM-01 SP2022",
+    "permCount" : "43"
+  },
+  {
+    "courseSectionId" : "PSYC156  PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "PSYC157  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PSYC158  SC-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "PSYC159  CM-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "PSYC162  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PSYC168  SC-01 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "PSYC179T HM-01 SP2022",
+    "permCount" : "53"
+  },
+  {
+    "courseSectionId" : "PSYC180  CM-01 SP2022",
+    "permCount" : "41"
+  },
+  {
+    "courseSectionId" : "PSYC180H PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "PSYC180N CH-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PSYC183  SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC188  CM-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "PSYC189T PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PSYC191  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC191  PO-16 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC191  PO-24 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC191  PO-28 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC191  PO-32 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC191  PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PSYC195  PZ-01 SP2022",
+    "permCount" : "31"
+  },
+  {
+    "courseSectionId" : "PSYC197A CM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC197A CM-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC197A CM-10 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC197B CM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RLST010  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "RLST043  CM-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "RLST058  CM-01 SP2022",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "RLST062  CM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RLST084  CM-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "RLST098  SC-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "RLST107  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "RLST110  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RLST111  PO-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "RLST113  HM-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "RLST125  CM-01 SP2022",
+    "permCount" : "53"
+  },
+  {
+    "courseSectionId" : "RLST130A CM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "RLST130B CM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RLST135  CM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "RLST142  AF-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "RLST150  AF-01 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "RLST156  CM-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RLST157  PO-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "RLST167  SC-01 SP2022",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "RLST169  CM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RLST171  CM-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "RLST180  CM-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "RLST184  PO-01 SP2022",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "RLST189D PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "RLST189K PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RLST189L PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RLST189U PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "RLST189Z PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RLST191  PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RLST191  PO-10 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RLST191  PO-12 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RUSS011  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RUSS013  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "RUSS182  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "RUSS191  PO-08 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RUST112  PO-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "SOC 001  PZ-01 SP2022",
+    "permCount" : "36"
+  },
+  {
+    "courseSectionId" : "SOC 001  PZ-02 SP2022",
+    "permCount" : "48"
+  },
+  {
+    "courseSectionId" : "SOC 001  PZ-03 SP2022",
+    "permCount" : "34"
+  },
+  {
+    "courseSectionId" : "SOC 001  PZ-04 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "SOC 001X PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "SOC 001X PZ-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "SOC 001X PZ-03 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "SOC 011  PZ-01 SP2022",
+    "permCount" : "39"
+  },
+  {
+    "courseSectionId" : "SOC 035  PZ-01 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "SOC 051  PO-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "SOC 051  PO-02 SP2022",
+    "permCount" : "28"
+  },
+  {
+    "courseSectionId" : "SOC 051  PO-03 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "SOC 051  PO-04 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "SOC 074  PZ-01 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "SOC 083  PZ-01 SP2022",
+    "permCount" : "40"
+  },
+  {
+    "courseSectionId" : "SOC 095  PZ-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "SOC 101  PZ-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "SOC 102  PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "SOC 103  JT-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "SOC 110  PZ-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "SOC 119  PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "SOC 128  JT-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "SOC 147  PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "SOC 150  CH-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "SOC 154  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SOC 189I PO-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "SOC 189J PO-03 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "SOC 189M PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SOC 191  PO-04 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "SOC 191  PO-08 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "SOC 199B PZ-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SOSC150  HM-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "SPAN002  CM-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "SPAN002  PZ-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "SPAN002  PZ-03 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "SPAN011  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "SPAN011  PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SPAN013  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "SPAN013  PO-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "SPAN022  PZ-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SPAN031  PZ-01 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "SPAN033  CM-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "SPAN033  CM-02 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "SPAN033  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "SPAN033  PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SPAN033  PZ-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "SPAN033  PZ-02 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "SPAN033  PZ-03 SP2022",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "SPAN033  SC-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "SPAN033  SC-03 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "SPAN035  PZ-01 SP2022",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "SPAN044  CM-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "SPAN044  PO-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "SPAN044  PZ-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SPAN044  PZ-02 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "SPAN044  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "SPAN055  PZ-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "SPAN055  PZ-02 SP2022",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "SPAN100  PZ-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "SPAN101  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "SPAN101  SC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "SPAN102  CM-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "SPAN102C PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SPAN127  CH-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "SPAN128  PO-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "SPAN131  SC-01 SP2022",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "SPAN132  PZ-01 SP2022",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "SPAN137  PZ-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "SPAN139  SC-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "SPAN140  SC-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "SPAN148  PZ-01 SP2022",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "SPAN179  CM-01 SP2022",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "SPAN189A PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "SPAN192  PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SPAN199  PZ-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SPCH061A CM-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "STS 080  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "TEST001  SC-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "THEA001A PO-01 SP2022",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "THEA001A PO-02 SP2022",
+    "permCount" : "32"
+  },
+  {
+    "courseSectionId" : "THEA001A PO-03 SP2022",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "THEA001A PO-04 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "THEA002  PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "THEA012  PO-01 SP2022",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "THEA012  PO-02 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "THEA013  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "THEA014  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "THEA017  PO-01 SP2022",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "THEA024  PO-01 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "THEA051C PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA051H PO-02 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA052C PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA052C PO-02 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "THEA052H PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA052H PO-02 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "THEA053CGPO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "THEA053CIPO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA053CIPO-02 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "THEA053HGPO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "THEA053HIPO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "THEA053HIPO-02 SP2022",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "THEA061  PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "THEA062  PO-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA080  PO-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "THEA081  PO-01 SP2022",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "THEA117  PO-01 SP2022",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "THEA130  PO-01 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "THEA170  PO-01 SP2022",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "THEA188  PO-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "THEA191H PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA192H PO-04 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA192H PO-12 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA192H PO-16 SP2022",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "WRIT001E HM-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "WRIT002  PZ-01 SP2022",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "WRIT101  PZ-01 SP2022",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "WRIT109  SC-01 SP2022",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "WRIT112  SC-01 SP2022",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "WRIT140  SC-01 SP2022",
+    "permCount" : "50"
+  },
+  {
+    "courseSectionId" : "WRIT140  SC-02 SP2022",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "WRIT169BIOSC-01 SP2022",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "WRIT197  SC-01 SP2022",
+    "permCount" : "9"
+  }
+]

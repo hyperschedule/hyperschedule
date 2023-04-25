@@ -263,8 +263,8 @@ export function parseStaff(data: string): StaffOutput {
 
 const altStaffInput = z.object({
     cxId: IntString,
-    firstName: z.string().nonempty(),
-    lastName: z.string().nonempty(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
     altName: z.string().nonempty(),
 });
 const altStaffOutput = z
@@ -287,7 +287,9 @@ export function parseAltStaff(data: string): AltStaffOutput {
         lastName: Remove,
         altName: (v) => {
             // altName comes in last, first format and we want to flip it
-            const nameArr = v.split(",").map((s) => s.trim().replace("\\", ""));
+            const nameArr = v!
+                .split(",")
+                .map((s) => s.trim().replace("\\", ""));
             if (nameArr.length !== 2)
                 logger.trace(`Malformed alt staff name v`);
             return {

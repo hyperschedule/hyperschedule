@@ -1,7 +1,7 @@
 import { collections } from "../collections";
 import type { DBSection } from "../collections";
 import { dbToSection, sectionToDb } from "../utils";
-import type * as APIv4 from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { createLogger } from "../../logger";
 import type { TermIdentifier } from "hyperschedule-shared/api/v4";
@@ -16,7 +16,18 @@ export async function updateSections(
     term: APIv4.TermIdentifier,
 ) {
     logger.info(`Initiating section update with ${sections.length} sections`);
-    const dbSections: DBSection[] = sections.map(sectionToDb);
+    const dbSections: DBSection[] = sections
+        .filter(
+            (s) =>
+                s.identifier.term === term.term &&
+                s.identifier.year === term.year,
+        )
+        .map(sectionToDb);
+    logger.info(
+        `Writing ${
+            dbSections.length
+        } sections for ${APIv4.stringifyTermIdentifier(term)}`,
+    );
     const bulk = collections.sections.initializeUnorderedBulkOp();
     for (let section of dbSections) {
         bulk.find({ _id: section._id }).upsert().replaceOne(section);
