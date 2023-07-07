@@ -1,4 +1,5 @@
 import type { Endpoints } from "./types";
+import { setUsedParams } from "./utils";
 
 /**
  * This is the endpoint definition. For security reasons a lot of information has been left out, and all
@@ -22,35 +23,35 @@ export const endpoints: Endpoints = {
     permCount: {
         name: "permCount",
         link: "perm-count",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 60,
         saveAs: "perm-count.json",
     },
     courseSection: {
         name: "courseSection",
         link: "course-section",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 60,
         saveAs: "course-section.json",
     },
     courseSectionSchedule: {
         name: "courseSectionSchedule",
         link: "course-section-schedule",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 1800,
         saveAs: "course-section-schedule.json",
     },
     courseRaw: {
         name: "courseRaw",
         link: "course-raw",
-        params: null,
+        params: setUsedParams("catalog"),
         interval: 1800,
         saveAs: "course.txt",
     },
     sectionInstructor: {
         name: "sectionInstructor",
         link: "section-instructor",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 1800,
         saveAs: "section-instructor.json",
     },
@@ -58,28 +59,28 @@ export const endpoints: Endpoints = {
     staff: {
         name: "staff",
         link: "staff",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 3600,
         saveAs: "staff.json",
     },
     altstaff: {
         name: "altstaff",
         link: "altstaff",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 3600,
         saveAs: "alt-staff.json",
     },
     calendarSession: {
         name: "calendarSession",
         link: "calendar-session",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 3600,
         saveAs: "calendar-session.json",
     },
     calendarSessionSection: {
         name: "calendarSessionSection",
         link: "calendar-session-section",
-        params: null,
+        params: setUsedParams("year", "session"),
         interval: 3600,
         saveAs: "calendar-session-section.json",
     },

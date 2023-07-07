@@ -30,7 +30,7 @@ async function doFetch(
 ) {
     const params = computeParams(term);
 
-    let link = endpoint.link;
+    let link = prefix + endpoint.link;
     if (endpoint.params !== null) {
         /* constructs the URL query and only include parameters specified in endpoint.params. this is basically
          * an object filter with known keys.
@@ -42,7 +42,7 @@ async function doFetch(
             if (endpoint.params[key]) p[key.toUpperCase()] = params[key];
 
         const query = new URLSearchParams(p);
-        link = `${prefix}${link}?${query}`;
+        link = `${link}?${query}`;
     }
     logger.trace(link);
 
