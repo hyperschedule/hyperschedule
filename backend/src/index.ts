@@ -1,11 +1,7 @@
-import { createRootLogger, createLogger } from "./logger";
-
-createRootLogger("server");
-
-// we use lazy import here to make sure createRootLogger can be executed first
-const { connectToDb } = await import("./db");
-const { DB_URL } = await import("./db/credentials");
-const { server: app } = await import("./server");
+import { createLogger } from "./logger";
+import { connectToDb } from "./db";
+import { DB_URL } from "./db/credentials";
+import { app } from "./server";
 
 const logger = createLogger("index");
 

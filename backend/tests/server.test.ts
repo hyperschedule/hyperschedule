@@ -1,6 +1,6 @@
 import { describe, test, expect, afterAll, beforeAll } from "@jest/globals";
 import request from "supertest";
-import { server as app } from "../src/server";
+import { app } from "../src/server";
 import { updateSections } from "../src/db/models/course";
 import { setupDbHooks } from "./db/hooks";
 import { testSectionV4, testSectionV3 } from "./test-data";

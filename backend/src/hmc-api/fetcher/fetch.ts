@@ -23,7 +23,11 @@ import { HmcApiFiles } from "./types";
 
 const logger = createLogger("hmc.fetcher");
 
-async function doFetch(endpoint: Endpoint, term: APIv4.TermIdentifier) {
+async function doFetch(
+    prefix: string,
+    endpoint: Endpoint,
+    term: APIv4.TermIdentifier,
+) {
     const params = computeParams(term);
 
     let link = endpoint.link;
@@ -38,7 +42,7 @@ async function doFetch(endpoint: Endpoint, term: APIv4.TermIdentifier) {
             if (endpoint.params[key]) p[key.toUpperCase()] = params[key];
 
         const query = new URLSearchParams(p);
-        link = `${link}?${query}`;
+        link = `${prefix}${link}?${query}`;
     }
     logger.trace(link);
 
@@ -51,12 +55,13 @@ async function doFetch(endpoint: Endpoint, term: APIv4.TermIdentifier) {
 }
 
 export async function fetchAndSave(
+    prefix: string,
     endpoint: Endpoint,
     term: APIv4.TermIdentifier,
 ): Promise<string> {
     const timeStart = new Date().getTime();
     logger.info(`Sending request for ${endpoint.saveAs}`);
-    const res = await doFetch(endpoint, term);
+    const res = await doFetch(prefix, endpoint, term);
     if (!res.ok) {
         logger.error(
             `Failed to fetch (${res.status}) for ${
@@ -82,9 +87,12 @@ export async function fetchAndSave(
     return content;
 }
 
-export async function fetchAllForTerm(term: APIv4.TermIdentifier) {
+export async function fetchAllForTerm(
+    prefix: string,
+    term: APIv4.TermIdentifier,
+) {
     const jobs = Object.values(endpoints).map((endpoint) =>
-        fetchAndSave(endpoint, term),
+        fetchAndSave(prefix, endpoint, term),
     );
     const results = await Promise.allSettled(jobs);
 

@@ -61,15 +61,15 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "dev-node": "NODE_ENV=development node --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm",
+    "dev-node": "NODE_ENV=development DOTENV_CONFIG_PATH=.env.development node -r dotenv/config --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm",
     "serve": "yarn dev-node ./src/index.ts",
     "fetcher": "yarn dev-node ./src/fetcher.ts",
-    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --onlyChanged",
+    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' DOTENV_CONFIG_PATH=.env.development jest --setupFiles dotenv/config --onlyChanged",
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",
     "restart-db": "yarn stop-db && yarn start-db",
     "typecheck": "tsc --noEmit",
-    "ci:test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --bail=0 --no-cache --ci",
+    "ci:test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' DOTENV_CONFIG_PATH=.env.development jest --setupFiles dotenv/config --bail=0 --no-cache --ci",
     "prod-node": "NODE_ENV=production node --experimental-specifier-resolution=node --loader ts-node/esm/transpile-only",
     "prod:serve": "yarn prod-node ./src/index.ts | yarn pino-pretty",
     "prod:fetcher": "yarn prod-node ./src/fetcher.ts | yarn pino-pretty"

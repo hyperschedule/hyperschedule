@@ -1,14 +1,12 @@
-import { createLogger, createRootLogger } from "../logger";
+import { createLogger } from "../logger";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-createRootLogger("init-db");
-
 // we use lazy import here to make sure createRootLogger can be executed first
-const { connectToDb, closeDb } = await import("../db/connector");
-const { DB_URL } = await import("../db/credentials");
-const { updateSections } = await import("./models/course");
-const { loadAllForTerm } = await import("../hmc-api/fetcher/fetch");
-const { linkCourseData } = await import("../hmc-api/data-linker");
+import { connectToDb, closeDb } from "./connector";
+import { DB_URL } from "./credentials";
+import { updateSections } from "./models/course";
+import { loadAllForTerm } from "../hmc-api/fetcher/fetch";
+import { linkCourseData } from "../hmc-api/data-linker";
 
 const logger = createLogger("db.init");
 

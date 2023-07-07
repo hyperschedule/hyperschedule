@@ -21,7 +21,7 @@ else
   sleep 5
 
   echo $'\e[95mInitializing database with sample data\e[m'
-  node --enable-source-maps --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm ./src/db/init-db.ts
+  yarn dev-node ./src/db/init-db.ts
 fi
 
 echo $'\e[95mDone\e[m'

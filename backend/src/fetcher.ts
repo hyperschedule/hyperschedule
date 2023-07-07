@@ -1,11 +1,10 @@
-import { createRootLogger } from "./logger";
-
-createRootLogger("fetcher");
-
-// we use lazy import here to make sure createRootLogger is executed first
-const { connectToDb } = await import("./db");
-const { DB_URL } = await import("./db/credentials");
-const { runScheduler } = await import("./hmc-api/fetcher/scheduler");
+const prefix = process.env.FETCHER_PREFIX;
+if (prefix === undefined) {
+    throw Error("FETCHER_PREFIX environment variable undefined");
+}
+import { connectToDb } from "./db";
+import { DB_URL } from "./db/credentials";
+import { runScheduler } from "./hmc-api/fetcher/scheduler";
 
 await connectToDb(DB_URL);
-await runScheduler();
+await runScheduler(prefix);

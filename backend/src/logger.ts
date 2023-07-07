@@ -2,82 +2,75 @@ import pino from "pino";
 import pretty from "pino-pretty";
 
 let rootLogger: pino.Logger | null = null;
+let env = process.env.NODE_ENV;
+let processName = process.env.PROCESS_NAME;
+if (processName === undefined) {
+    throw Error("PROCESS_NAME environment variable is undefined");
+}
 
-// processName is a string name of the process. e.g. server, fetcher, etc.
-// used to separate log files
-export function createRootLogger(processName: string) {
-    let env = process.env.NODE_ENV;
+if (env === undefined) {
+    // we use console because nothing else has loaded yet
+    // eslint-disable-next-line no-console
+    console.warn(
+        `(logger.ts) process.env.NODE_ENV not set, assuming development...`,
+    );
+    env = "development";
+}
 
-    if (env === undefined) {
-        // we use console because nothing else has loaded yet
-        // eslint-disable-next-line no-console
-        console.warn(
-            `(logger.ts) process.env.NODE_ENV not set, assuming development...`,
+switch (env) {
+    case "development":
+        rootLogger = pino(
+            { level: "trace" },
+            pretty({
+                // colorize: true,
+                sync: true,
+                ignore: "pid,hostname",
+            }),
         );
-        env = "development";
-    }
-
-    switch (env) {
-        case "development":
-            rootLogger = pino(
-                { level: "trace" },
-                pretty({
-                    // colorize: true,
-                    sync: true,
-                    ignore: "pid,hostname",
-                }),
-            );
-            break;
-        case "test":
-            rootLogger = pino(
-                pino.transport({
+        break;
+    case "test":
+        rootLogger = pino(
+            pino.transport({
+                target: "pino/file",
+                options: { destination: "/dev/null", level: "error" },
+            }),
+        );
+        break;
+    case "production":
+        const transport = pino.transport({
+            targets: [
+                {
                     target: "pino/file",
-                    options: { destination: "/dev/null", level: "error" },
-                }),
-            );
-            break;
-        case "production":
-            const transport = pino.transport({
-                targets: [
-                    {
-                        target: "pino/file",
-                        level: "trace",
-                        options: {
-                            destination: `/var/log/hyperschedule/${processName}.log`,
-                            mkdir: true,
-                        },
+                    level: "trace",
+                    options: {
+                        destination: `/var/log/hyperschedule/${processName}.log`,
+                        mkdir: true,
                     },
-                    {
-                        target: "pino/file",
-                        level: "error",
-                        options: {
-                            destination: `/var/log/hyperschedule/${processName}.error.log`,
-                            mkdir: true,
-                        },
+                },
+                {
+                    target: "pino/file",
+                    level: "error",
+                    options: {
+                        destination: `/var/log/hyperschedule/${processName}.error.log`,
+                        mkdir: true,
                     },
-                    {
-                        target: "pino/file",
-                        level: "info",
-                        options: {
-                            destination: 1, // STDOUT
-                        },
+                },
+                {
+                    target: "pino/file",
+                    level: "info",
+                    options: {
+                        destination: 1, // STDOUT
                     },
-                ],
-            });
-            rootLogger = pino({ level: "trace" }, transport);
-            break;
-        default:
-            rootLogger = pino();
-    }
+                },
+            ],
+        });
+        rootLogger = pino({ level: "trace" }, transport);
+        break;
+    default:
+        rootLogger = pino();
 }
 
 // module should be a string in the format such as `db.user`
 export function createLogger(module: string): pino.Logger {
-    if (rootLogger === null)
-        if (process.env.NODE_ENV === "test") createRootLogger("test");
-        // once-off command run from console
-        else if (process.env.NODE_ENV === undefined) createRootLogger("script");
-        else
-            throw Error("Root logger not created. Call createRootLogger first");
     return rootLogger!.child({ module });
 }

@@ -9,12 +9,14 @@ import { updateSections } from "../../db/models/course";
 import process from "node:process";
 
 // we wrap everything in this function so nothing happens on import
-export async function runScheduler() {
+export async function runScheduler(prefix: string) {
     const logger = createLogger("hmc.fetch.scheduler");
     let endpointsScheduled: number = 0;
     let dbWriteInProcess: number = 0;
     let shouldExit: boolean = false;
     const totalEndpoints = Object.keys(endpoints).length;
+
+    logger.info("Starting scheduler with prefix %s", prefix);
 
     // we save a copy of everything in memory so we don't have to constantly loading them from the disk
     // if we ever run fetcher from multiple processes (don't plan to), this will cause horrible race condition
@@ -25,7 +27,7 @@ export async function runScheduler() {
     } catch (e: any) {
         if (e.code === "ENOENT") {
             logger.info("No initial files found, fetching all...");
-            await fetchAllForTerm(CURRENT_TERM);
+            await fetchAllForTerm(prefix, CURRENT_TERM);
             inMemoryFiles = await loadAllForTerm(CURRENT_TERM);
 
             logger.info("Initial files fetched, populating database...");
@@ -54,7 +56,11 @@ export async function runScheduler() {
         while (true) {
             try {
                 logger.info("Fetching for %s", e.saveAs);
-                inMemoryFiles[e.name] = await fetchAndSave(e, CURRENT_TERM);
+                inMemoryFiles[e.name] = await fetchAndSave(
+                    prefix,
+                    e,
+                    CURRENT_TERM,
+                );
                 logger.info("Data for %s fetched", e.saveAs);
 
                 const newSections = linkCourseData(inMemoryFiles, CURRENT_TERM);
