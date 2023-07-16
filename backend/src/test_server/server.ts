@@ -1,6 +1,7 @@
-import { App, Request, Response } from "@tinyhttp/app";
+import { App } from "@tinyhttp/app";
+import type { Request, Response } from "@tinyhttp/app";
 import { endpoints, endpointAuthorization } from "../hmc-api/fetcher/endpoints";
-import { Endpoint } from "../hmc-api/fetcher/types";
+import type { Endpoint } from "../hmc-api/fetcher/types";
 import * as fetcherUtils from "../hmc-api/fetcher/utils";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "../current-term";
@@ -62,7 +63,7 @@ function loadCatalogQuery(
         if (match === null) throw new Error();
 
         // Safety: If the regex matches, then the capture group must exist.
-        const year = 2000 + parseInt(match.groups!["yearDigits"]!);
+        const year = 2000 + parseInt(match.groups!.yearDigits!);
         const session = APIv4.Term.fall; // Best guess with given info
         return APIv4.TermIdentifier.parse({ year, term: session });
     } catch {
@@ -102,7 +103,7 @@ export const server = new App().get("/:endpoint", async (req, res) => {
 
     // Safety: This function will only be called if req.params["endpoint"]
     // exists. So it is safe to assume "endpoint" is a valid key.
-    const endpointString: string = req.params["endpoint"]!;
+    const endpointString: string = req.params.endpoint!;
     const endpoint = endpointFilePaths[endpointString];
     if (endpoint === undefined) {
         res.sendStatus(HttpStatus.NotFound);
