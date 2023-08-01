@@ -1,8 +1,8 @@
 import * as React from "react";
 import Css from "./App.module.css";
 
-import * as ReactQuery from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import * as ReactQuery from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import classNames from "classnames";
 

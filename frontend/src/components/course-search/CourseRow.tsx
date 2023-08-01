@@ -11,6 +11,7 @@ import * as Feather from "react-feather";
 import randomColor from "randomcolor";
 import md5 from "md5";
 import { stringifySectionCode } from "hyperschedule-shared/api/v4";
+import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 
 const statusBadge = {
     [Api.SectionStatus.open]: Css.badgeOpen,
@@ -95,7 +96,9 @@ export default function CourseRow(props: {
                 >
                     <div ref={detailsRef}>
                         <div className={Css.details}>
-                            {props.section.course.description}
+                            <CourseDescriptionBox
+                                section={props.section}
+                            ></CourseDescriptionBox>
                         </div>
                     </div>
                 </div>
