@@ -96,9 +96,13 @@ export default function CourseRow(props: {
                 >
                     <div ref={detailsRef}>
                         <div className={Css.details}>
-                            <CourseDescriptionBox
-                                section={props.section}
-                            ></CourseDescriptionBox>
+                            {props.expand ? (
+                                <CourseDescriptionBox
+                                    section={props.section}
+                                ></CourseDescriptionBox>
+                            ) : (
+                                <></>
+                            )}
                         </div>
                     </div>
                 </div>

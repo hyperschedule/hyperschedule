@@ -30,7 +30,6 @@ function sectionKey(id: Api.SectionIdentifier) {
 
 export default function CourseSearch() {
     const query = useCourses();
-
     const search = useStore(
         (store) => ({
             text: store.searchText,
