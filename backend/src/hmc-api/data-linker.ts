@@ -320,6 +320,7 @@ function processSectionInstructor(
             sectionInstructor.sectionId,
         );
         const section = courseSectionMap.get(sectionIdentifierString);
+
         if (section === undefined) {
             logger.trace(
                 `Nonexistent section ${sectionIdentifierString} in section-instructor.json`,
@@ -329,7 +330,6 @@ function processSectionInstructor(
 
         for (const staffId of sectionInstructor.staff) {
             const staff = staffMap.get(staffId);
-
             if (staff === undefined) {
                 logger.trace(
                     `Nonexistent instructor ${staffId} for ${sectionIdentifierString}`,
@@ -337,9 +337,10 @@ function processSectionInstructor(
                 section.potentialError = true;
                 continue;
             }
-
-            if (!section.instructors!.includes(staff)) {
+            if (!section.instructors!.map((i) => i.name).includes(staff.name)) {
                 section.instructors!.push(staff);
+            } else {
+                logger.warn(`Duplicate staff ${staff.name}`);
             }
         }
     }
