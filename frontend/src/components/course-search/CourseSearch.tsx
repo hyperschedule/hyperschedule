@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { useMeasure, useRafEffect } from "@react-hookz/web";
 import classNames from "classnames";
-import shallow from "zustand/shallow";
+import { shallow } from "zustand/shallow";
 
 import type * as Api from "hyperschedule-shared/api/v4";
 

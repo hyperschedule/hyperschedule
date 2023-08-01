@@ -41,6 +41,7 @@
     padding: 0.25rem 0.5rem;
     font-weight: 500;
     display: flex;
+    align-items: baseline;
     transition: background-color var(--theme-transition-duration),
         color var(--theme-transition-duration);
 
@@ -54,8 +55,8 @@
         width: 5.5ex;
     }
     & .courseNumber {
-        width: 3.5ex;
-        text-align: center;
+        padding-right: 0.25em;
+        font-weight: 700;
     }
     & .affiliation {
         width: 4.5ex;

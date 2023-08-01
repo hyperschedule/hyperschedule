@@ -10,6 +10,7 @@ import * as Feather from "react-feather";
 
 import randomColor from "randomcolor";
 import md5 from "md5";
+import { stringifySectionCode } from "hyperschedule-shared/api/v4";
 
 const statusBadge = {
     [Api.SectionStatus.open]: Css.badgeOpen,
@@ -32,13 +33,7 @@ export default function CourseRow(props: {
         [height, props.updateDetailsSize],
     );
 
-    const code = [
-        props.section.course.code.department,
-        props.section.course.code.courseNumber,
-        props.section.course.code.suffix,
-        props.section.course.code.affiliation,
-        props.section.identifier.sectionNumber,
-    ].join(" ");
+    const code = stringifySectionCode(props.section.identifier);
 
     const color = randomColor({
         hue: "random",
@@ -60,21 +55,8 @@ export default function CourseRow(props: {
             >
                 <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={12} />
-                    <span className={Css.department}>
-                        {props.section.course.code.department}
-                    </span>
                     <span className={Css.courseNumber}>
-                        {props.section.course.code.courseNumber
-                            .toString()
-                            .padStart(3, "0")}
-                    </span>
-                    <span className={Css.affiliation}>
-                        {props.section.course.code.affiliation}
-                    </span>
-                    <span className={Css.sectionNumber}>
-                        {props.section.identifier.sectionNumber
-                            .toString()
-                            .padStart(2, "0")}
+                        {stringifySectionCode(props.section.identifier)}
                     </span>
                     <span className={Css.title}>
                         {props.section.course.title}

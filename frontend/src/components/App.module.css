@@ -30,12 +30,10 @@
     --font-sans: "Inter", sans-serif;
     --font-mono: "Roboto Mono", monospace;
 
-    --palette-red: #ec4202;
-    --palette-orange: #da9a03;
-    --palette-green: #58a803;
+
 
     &[data-theme="light"] {
-        --bg-0: #efeae4;
+        --bg-0: #ffffff;
         --bg-1: #cfcac3;
         --bg-2: #afaaa3;
         --bg-3: #8f8a83;
@@ -43,6 +41,11 @@
         --fg-0: #2f2822;
         --fg-1: #4f4842;
         --fg-2: #6f6862;
+
+        --palette-red: #f87171;
+        --palette-orange: #eab308;
+        --palette-green: #22c55e;
+
     }
 
     &[data-theme="dark"] {
@@ -52,6 +55,10 @@
 
         --fg-0: #efeae3;
         --fg-1: #cfcac3;
+
+        --palette-red: #ec4202;
+        --palette-orange: #da9a03;
+        --palette-green: #58a803;
     }
 }
 
