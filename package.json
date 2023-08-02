@@ -35,7 +35,7 @@
   "scripts": {
     "frontend": "yarn workspace hyperschedule-frontend run serve",
     "backend": "yarn workspace hyperschedule-backend run start-db && yarn workspace hyperschedule-backend run serve",
-    "nginx": " docker run --name hyperschedule-nginx --rm -d -v $(pwd)/data/nginx/cert/:/etc/nginx/cert/:ro -v $(pwd)/data/nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro -p 443:443 -p 80:80 nginx",
+    "nginx": " docker run --name hyperschedule-nginx --rm -d -v $(pwd)/data/nginx/cert/:/etc/nginx/cert/:ro -v $(pwd)/data/nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro -p 443:443 -p 80:80 nginx:1.24.0",
     "test": "FORCE_COLOR=true yarn workspaces foreach --since --parallel --interlaced --verbose run test",
     "typecheck": "yarn workspaces foreach --since --verbose --parallel run typecheck",
     "lint": "eslint . --cache --cache-strategy content",
