@@ -1,4 +1,4 @@
-@custom-media --wide screen and (min-width: 512px);
+@custom-media --viewport-large screen and (min-width: 512px);
 
 .app {
     font-family: var(--font-sans);
@@ -14,7 +14,7 @@
     transition: background-color var(--theme-transition-duration),
         color var(--theme-transition-duration);
 
-    @media (--wide) {
+    @media (--viewport-large) {
         display: grid;
         grid-template-areas: "main sidebar";
         grid-template-columns: 1fr calc(100% / 3);
@@ -30,8 +30,6 @@
     --font-sans: "Inter", sans-serif;
     --font-mono: "Roboto Mono", monospace;
 
-
-
     &[data-theme="light"] {
         --bg-0: #ffffff;
         --bg-1: #cfcac3;
@@ -45,7 +43,6 @@
         --palette-red: #f87171;
         --palette-orange: #eab308;
         --palette-green: #22c55e;
-
     }
 
     &[data-theme="dark"] {
@@ -95,4 +92,7 @@
     border-radius: 0.5rem;
 
     transition: background-color var(--theme-transition-duration);
+}
+
+.toolbar {
 }
