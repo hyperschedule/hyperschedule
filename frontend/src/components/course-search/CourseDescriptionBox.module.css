@@ -34,14 +34,13 @@
 }
 
 .areas {
-    & ul {
-        & li {
-            font-size: 0.875em;
-            font-weight: 500;
-            list-style-type: none;
-            background-color: var(--bg-1);
-            padding: 0.125em 0.5em;
-            border-radius: 0.25em;
-        }
+    & li {
+        font-size: 0.875em;
+        font-weight: 500;
+        list-style-type: none;
+        background-color: var(--bg-1);
+        padding: 0.125em 0.5em;
+        border-radius: 0.25em;
+        transition: background-color var(--theme-transition-duration);
     }
 }
