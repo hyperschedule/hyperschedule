@@ -162,9 +162,9 @@
         }
 
         & .permCountLabel {
-            display: none;
+            visibility: hidden;
             &.nonzero {
-                display: inline;
+                visibility: inherit;
             }
         }
 
