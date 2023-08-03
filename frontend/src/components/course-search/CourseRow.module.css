@@ -38,13 +38,12 @@
     cursor: pointer;
     white-space: nowrap;
     background-color: var(--course-color);
-    padding: 0.25rem 0.25rem;
     transition: background-color var(--theme-transition-duration),
         color var(--theme-transition-duration);
 
     display: grid;
     align-items: center;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr auto auto;
 
     & .summary {
         display: grid;
@@ -76,6 +75,12 @@
         align-self: center;
         margin-right: 0.25rem;
         transition: transform 200ms;
+        margin-left: 0.125rem;
+    }
+
+    & .summary,
+    & .status {
+        padding: 0.25rem 0;
     }
 
     & .summary {
@@ -174,6 +179,23 @@
             text-align: center;
             font-weight: 500;
             width: 3.5ex;
+        }
+    }
+
+    & button.add {
+        align-self: stretch;
+        background: none;
+        border: none;
+        border-left: 1px solid #0002;
+        padding: 0.25rem;
+        margin-left: 0.5rem;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: inherit;
+
+        &:hover {
+            background: #0001;
         }
     }
 }

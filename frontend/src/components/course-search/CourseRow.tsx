@@ -55,7 +55,7 @@ export default function CourseRow(props: {
                 }
             >
                 <div className={Css.titlebar} onClick={props.onClick}>
-                    <Feather.ChevronRight className={Css.arrow} size={12} />
+                    <Feather.ChevronRight className={Css.arrow} size={14} />
                     <span className={Css.summary}>
                         <span className={Css.courseNumber}>
                             {stringifySectionCode(props.section.identifier)}
@@ -93,6 +93,14 @@ export default function CourseRow(props: {
                             seats filled
                         </span>
                     </span>
+                    <button
+                        className={Css.add}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
+                        <Feather.Plus size={14} />
+                    </button>
                 </div>
                 <div
                     style={{ height: `${props.expand ? height : 0}px` }}
