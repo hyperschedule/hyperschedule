@@ -1,12 +1,7 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useCourseAreaDescription } from "@hooks/api";
 
-function mapDescriptions(
-    code: string[],
-    descriptions: Map<string, string>,
-): string[] {
-    return code.map((c) => descriptions.get(c) ?? c);
-}
+import Css from "./CourseDescriptionBox.module.css";
 
 function computeCredits(section: APIv4.Section): number {
     if (
@@ -21,32 +16,35 @@ export default function CourseDescriptionBox(props: {
     section: APIv4.Section;
 }) {
     const descriptions = useCourseAreaDescription();
-    if (!descriptions.isFetched) return <></>;
+    if (!descriptions.data) return <></>;
+
     return (
         <>
-            <p>
-                <strong>HMC credits</strong>:{computeCredits(props.section)}
+            <p className={Css.description}>
+                {props.section.course.description}
             </p>
-            <p>
-                <strong>
+            <section className={Css.credits}>
+                <h3>Credits</h3>
+                <div>{computeCredits(props.section)} (HMC)</div>
+            </section>
+            <section className={Css.instructors}>
+                <h3>
                     Instructor{props.section.instructors.length > 1 ? "s" : ""}
-                </strong>
-            </p>
-            <ul>
-                {props.section.instructors.map((i) => (
-                    <li key={i.name}>{i.name}</li>
-                ))}
-            </ul>
-            <p> {props.section.course.description}</p>
-            <strong>Course Areas</strong>:
-            <ul>
-                {mapDescriptions(
-                    props.section.courseAreas,
-                    descriptions.data!,
-                ).map((d) => (
-                    <li key={d}>{d}</li>
-                ))}
-            </ul>
+                </h3>
+                <ul>
+                    {props.section.instructors.map((i) => (
+                        <li key={i.name}>{i.name}</li>
+                    ))}
+                </ul>
+            </section>
+            <section className={Css.areas}>
+                <h3>Course Areas</h3>
+                <ul>
+                    {props.section.courseAreas.map((c) => (
+                        <li key={c}>{descriptions.data.get(c) ?? c}</li>
+                    ))}
+                </ul>
+            </section>
         </>
     );
 }

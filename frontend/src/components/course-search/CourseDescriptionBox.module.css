@@ -1,0 +1,47 @@
+.description {
+    margin: 0;
+}
+
+.credits,
+.instructors,
+.areas {
+    margin: 0.25rem 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 0.5rem;
+    align-items: baseline;
+
+    & h3 {
+        margin: 0;
+        font-size: 1em;
+    }
+    & ul {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 0.5em;
+        flex-wrap: wrap;
+    }
+}
+
+.credits {
+}
+
+.instructors {
+    & li {
+        list-style-type: none;
+    }
+}
+
+.areas {
+    & ul {
+        & li {
+            font-size: 0.875em;
+            font-weight: 500;
+            list-style-type: none;
+            background-color: var(--bg-1);
+            padding: 0.125em 0.5em;
+            border-radius: 0.25em;
+        }
+    }
+}
