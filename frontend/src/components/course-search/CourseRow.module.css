@@ -80,7 +80,6 @@
 
     & .summary {
         overflow-x: hidden;
-        text-overflow: ellipsis;
 
         & .department {
             width: 5.5ex;
@@ -103,6 +102,8 @@
         }
         & .title {
             font-weight: 500;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
         }
     }
     & .status {
@@ -161,9 +162,9 @@
         }
 
         & .permCountLabel {
-            visibility: hidden;
+            display: none;
             &.nonzero {
-                visibility: inherit;
+                display: inline;
             }
         }
 
