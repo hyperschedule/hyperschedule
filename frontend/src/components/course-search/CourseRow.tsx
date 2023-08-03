@@ -56,11 +56,13 @@ export default function CourseRow(props: {
             >
                 <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={12} />
-                    <span className={Css.courseNumber}>
-                        {stringifySectionCode(props.section.identifier)}
-                    </span>
-                    <span className={Css.title}>
-                        {props.section.course.title}
+                    <span className={Css.summary}>
+                        <span className={Css.courseNumber}>
+                            {stringifySectionCode(props.section.identifier)}
+                        </span>
+                        <span className={Css.title}>
+                            {props.section.course.title}
+                        </span>
                     </span>
                     <span className={Css.status}>
                         <span
@@ -69,24 +71,26 @@ export default function CourseRow(props: {
                                 statusBadge[props.section.status],
                             )}
                         />
-                        <span className={Css.seatsFilled}>
-                            {props.section.seatsFilled}
-                        </span>
-                        /
-                        <span className={Css.seatsTotal}>
-                            {props.section.seatsTotal}
-                        </span>
-                        seats filled
-                        <span
-                            className={classNames(Css.permCountLabel, {
-                                [Css.nonzero!]: props.section.permCount !== 0,
-                            })}
-                        >
-                            ,
-                            <span className={Css.permCount}>
-                                {props.section.permCount}
+                        <span className={Css.seats}>
+                            <span
+                                className={classNames(Css.permCountLabel, {
+                                    [Css.nonzero!]:
+                                        props.section.permCount !== 0,
+                                })}
+                            >
+                                <span className={Css.permCount}>
+                                    {props.section.permCount}
+                                </span>
+                                PERMs,
                             </span>
-                            PERMs
+                            <span className={Css.seatsFilled}>
+                                {props.section.seatsFilled}
+                            </span>
+                            /
+                            <span className={Css.seatsTotal}>
+                                {props.section.seatsTotal}
+                            </span>
+                            seats filled
                         </span>
                     </span>
                 </div>

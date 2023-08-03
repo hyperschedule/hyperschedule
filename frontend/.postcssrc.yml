@@ -1,4 +1,7 @@
 parser: postcss-comment
 plugins:
     postcss-nesting: {}
+    "@csstools/postcss-global-data":
+        files:
+            - "src/css/media.css"
     postcss-custom-media: {}

@@ -108,12 +108,16 @@ function CourseSearchResults(props: {
 
     const [expandIndex, setExpandIndex] = React.useState<number | null>(null);
 
-    const [indexStart, indexEnd] = computeIndices({
-        scroll,
-        rowHeight: rowBounds?.height ?? 1,
-        viewportHeight: viewportBounds?.height ?? 0,
-        expandHeight,
-    });
+    const [indexStart, indexEnd] = React.useMemo(
+        () =>
+            computeIndices({
+                scroll,
+                rowHeight: rowBounds?.height ?? 1,
+                viewportHeight: viewportBounds?.height ?? 0,
+                expandHeight,
+            }),
+        [rowBounds, viewportBounds, scroll, expandHeight],
+    );
 
     // recompute expand index when section list or expand key changes. potential optimization:
     // pre-compute (and memoize) a key↦index mapping of all sections in the data;

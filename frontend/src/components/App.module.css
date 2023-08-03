@@ -1,4 +1,5 @@
-@custom-media --viewport-large screen and (min-width: 512px);
+@custom-media --viewport-medium screen and (min-width: 48em);
+@custom-media --viewport-large screen and (min-width: 64em);
 
 .app {
     font-family: var(--font-sans);
@@ -14,8 +15,12 @@
     transition: background-color var(--theme-transition-duration),
         color var(--theme-transition-duration);
 
+    display: grid;
+    grid-template-areas: "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+
     @media (--viewport-large) {
-        display: grid;
         grid-template-areas: "main sidebar";
         grid-template-columns: 1fr calc(100% / 3);
     }
@@ -80,9 +85,15 @@
 }
 
 .sidebar {
-    grid-area: sidebar;
-    border-left: 1px solid var(--bg-1);
     transition: border-left-color var(--theme-transition-duration);
+    position: absolute;
+    right: 0;
+
+    @media (--viewport-large) {
+        position: relative;
+        grid-area: sidebar;
+        border-left: 1px solid var(--bg-1);
+    }
 }
 
 .minimap {

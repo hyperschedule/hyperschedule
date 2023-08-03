@@ -38,42 +38,80 @@
     cursor: pointer;
     white-space: nowrap;
     background-color: var(--course-color);
-    padding: 0.25rem 0.5rem;
-    font-weight: 500;
-    display: flex;
-    align-items: baseline;
+    padding: 0.25rem 0.25rem;
     transition: background-color var(--theme-transition-duration),
         color var(--theme-transition-duration);
 
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr 1fr;
+
+    & .summary {
+        display: grid;
+        grid-template-areas: "code" "title";
+        align-items: center;
+    }
+
+    & .status {
+        display: grid;
+        grid-template-areas: "badge" "seats";
+
+        & .badge {
+            justify-self: end;
+        }
+    }
+
+    @media (--viewport-medium) {
+        & .summary {
+            grid-template-areas: "code title";
+            justify-content: left;
+        }
+
+        & .status {
+            grid-template-areas: "badge seats";
+        }
+    }
+
     & .arrow {
         align-self: center;
-        margin-right: 0.5rem;
+        margin-right: 0.25rem;
         transition: transform 200ms;
     }
 
-    & .department {
-        width: 5.5ex;
-    }
-    & .courseNumber {
-        padding-right: 0.25em;
-        font-weight: 700;
-    }
-    & .affiliation {
-        width: 4.5ex;
-        text-align: right;
-        &::after {
-            content: "-";
+    & .summary {
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+
+        & .department {
+            width: 5.5ex;
         }
-    }
-    & .sectionNumber {
-        min-width: 3ex;
-    }
-    & .title {
+        & .courseNumber {
+            margin-right: 0.5em;
+            font-weight: 700;
+            font-size: 0.875em;
+            opacity: 0.875;
+        }
+        & .affiliation {
+            width: 4.5ex;
+            text-align: right;
+            &::after {
+                content: "-";
+            }
+        }
+        & .sectionNumber {
+            min-width: 3ex;
+        }
+        & .title {
+            font-weight: 500;
+        }
     }
     & .status {
         margin-left: auto;
         font-weight: normal;
         font-size: calc(15em / 16);
+
+        & .seats {
+        }
 
         & .badge {
             text-transform: uppercase;
@@ -113,12 +151,12 @@
         & .seatsFilled {
             display: inline-block;
             text-align: right;
-            width: 4ex;
+            width: 3.5ex;
             font-weight: 500;
         }
         & .seatsTotal {
             display: inline-block;
-            width: 4ex;
+            width: 3.5ex;
             font-weight: 500;
         }
 
@@ -133,7 +171,7 @@
             display: inline-block;
             text-align: center;
             font-weight: 500;
-            width: 3ex;
+            width: 3.5ex;
         }
     }
 }
