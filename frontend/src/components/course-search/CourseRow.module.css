@@ -139,7 +139,7 @@
 }
 
 .expander {
-    transition: height 200ms;
+    transition: height var(--misc-transition-duration);
     overflow-y: hidden;
 }
 

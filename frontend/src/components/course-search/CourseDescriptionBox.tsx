@@ -34,7 +34,7 @@ export default function CourseDescriptionBox(props: {
             </p>
             <ul>
                 {props.section.instructors.map((i) => (
-                    <li>{i.name}</li>
+                    <li key={i.name}>{i.name}</li>
                 ))}
             </ul>
             <p> {props.section.course.description}</p>

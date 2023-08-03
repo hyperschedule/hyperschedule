@@ -1,4 +1,4 @@
-import createStore from "zustand";
+import * as Zustand from "zustand";
 import type * as Search from "@lib/search";
 import type * as Api from "hyperschedule-shared/api/v4";
 
@@ -13,14 +13,11 @@ export type Store = WithSetters<{
     searchText: string;
     expandKey: Api.SectionIdentifier | null;
     expandHeight: number;
-    expandIndex: number | null;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
 
     clearExpand: () => void;
-    setExpand: (expandKey: Api.SectionIdentifier, expandIndex: number) => void;
-
     searchFilters: Search.Filter[];
 };
 
@@ -34,7 +31,7 @@ export const enum Theme {
     Light = "light",
 }
 
-export default createStore<Store>((set, get) => ({
+export default Zustand.create<Store>((set, get) => ({
     mainTab: MainTab.CourseSearch,
     setMainTab: (mainTab) => set({ mainTab }),
     theme: Theme.Light,
@@ -42,13 +39,11 @@ export default createStore<Store>((set, get) => ({
         set({ theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark }),
     searchText: "",
     searchFilters: [],
-    setSearchText: (searchText) => set({ searchText }),
+    setSearchText: (searchText) =>
+        set({ searchText, expandKey: null, expandHeight: 0 }),
     expandKey: null,
     setExpandKey: (expandKey) => set({ expandKey }),
     expandHeight: 0,
     setExpandHeight: (expandHeight) => set({ expandHeight }),
-    expandIndex: null,
-    setExpandIndex: (expandIndex) => set({ expandIndex }),
-    clearExpand: () => set({ expandKey: null, expandIndex: null }),
-    setExpand: (expandKey, expandIndex) => set({ expandKey, expandIndex }),
+    clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
 }));

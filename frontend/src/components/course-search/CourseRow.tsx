@@ -29,10 +29,10 @@ export default function CourseRow(props: {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
     const height = detailsBounds?.height ?? 0;
 
-    useEffect(
-        () => props.updateDetailsSize && props.updateDetailsSize(height),
-        [height, props.updateDetailsSize],
-    );
+    useEffect(() => {
+        if (!props.updateDetailsSize || !detailsBounds || !props.expand) return;
+        props.updateDetailsSize(detailsBounds.height);
+    }, [detailsBounds?.height, props.updateDetailsSize, props.expand]);
 
     const code = stringifySectionCode(props.section.identifier);
 
@@ -94,17 +94,33 @@ export default function CourseRow(props: {
                     style={{ height: `${props.expand ? height : 0}px` }}
                     className={Css.expander}
                 >
-                    <div ref={detailsRef}>
-                        <div className={Css.details}>
-                            {props.expand ? (
-                                <CourseDescriptionBox
-                                    section={props.section}
-                                ></CourseDescriptionBox>
-                            ) : (
-                                <></>
-                            )}
-                        </div>
-                    </div>
+                    {
+                        // It's important that the measure component (`detailsRef`) is conditionally rendered _together with_ the
+                        // actual description box; this way, the measurement is only ever non-null when the description box
+                        // exists. Otherwise, we run into split-second glitches where, upon clicking to expand
+                        // a course, first the measurement div appears, and the `detailsRef` gets attached, but
+                        // the actual description box itself _hasn't_ appeared, so the measurement div only
+                        // measures an empty box (i.e., the padding dimensions), updates that, and then screws up
+                        // a bunch of the placement/size calculations (causing elements to teleport, or
+                        // shift unexpectedly). By keeping the measurement div _together_ with the description
+                        // box, measurements are guaranteed to be valid--i.e., we are never accidentally measuring
+                        // a split-second empty container.
+
+                        // In another universe, where React render cycles/timings are more predictable, maybe this wouldn't
+                        // matter—i.e., shouldn't it be the case that, as soon as `props.expand` becomes true, the description box
+                        // gets actually rendered before any new measurements/state changes/effects are performed? Maybe, but
+                        // it's too difficult to actually reason through exactly what's going on, and easier to just do this—
+                        // which, anyway, has the advantage of being more robust/independent of actual render lifecycle timings.
+                        props.expand ? (
+                            <div ref={detailsRef}>
+                                <div className={Css.details}>
+                                    <CourseDescriptionBox
+                                        section={props.section}
+                                    ></CourseDescriptionBox>
+                                </div>
+                            </div>
+                        ) : null
+                    }
                 </div>
             </div>
         </div>
