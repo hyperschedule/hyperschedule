@@ -1,5 +1,6 @@
-import { SectionIdentifier, TermIdentifierString } from "./course";
+import { SectionIdentifier, TermIdentifier } from "./course";
 import { z } from "zod";
+import * as APIv4 from "./course-code";
 
 export const UserSection = z.object({
     // placeholder attribute for future implementation of folders
@@ -13,7 +14,7 @@ export type UserSection = z.infer<typeof UserSection>;
 export const UserSchedule = z.object({
     _id: z.string().uuid(),
     isActive: z.boolean(),
-    term: TermIdentifierString,
+    term: TermIdentifier,
     name: z.string(),
     sections: UserSection.array(),
 });
@@ -46,3 +47,26 @@ export const User = z.discriminatedUnion("isGuest", [
     GuestUser,
 ]);
 export type User = z.infer<typeof User>;
+
+export const AddScheduleRequest = z.object({
+    term: TermIdentifier,
+    name: z.string(),
+});
+export type AddScheduleRequest = z.infer<typeof AddScheduleRequest>;
+
+export const AddScheduleResponse = z.object({
+    scheduleId: z.string(),
+});
+export type AddScheduleResponse = z.infer<typeof AddScheduleResponse>;
+
+export const DeleteScheduleRequest = AddScheduleResponse;
+export type DeleteScheduleRequest = AddScheduleResponse;
+
+export const AddSectionRequest = z.object({
+    scheduleId: z.string(),
+    section: SectionIdentifier,
+});
+export type AddSectionRequest = z.infer<typeof AddSectionRequest>;
+
+export const DeleteSectionRequest = AddSectionRequest;
+export type DeleteSectionResponse = AddSectionRequest;

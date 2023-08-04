@@ -62,18 +62,26 @@ export async function getUser(userId: string): Promise<APIv4.User> {
 
 export async function addSchedule(
     userId: string,
-    term: APIv4.TermIdentifierString,
+    term: APIv4.TermIdentifier,
     scheduleName: string,
 ) {
     const user = await getUser(userId);
-    logger.info(`Adding schedule ${scheduleName} (${term}) for user ${userId}`);
+    logger.info(
+        `Adding schedule ${scheduleName} (${APIv4.stringifyTermIdentifier(
+            term,
+        )}) for user ${userId}`,
+    );
     if (user.schedules.length >= 100) {
         logger.warn(`User ${userId} reached schedule limit`);
         throw Error("Schedule limit reached");
     }
     if (
-        user.schedules.filter((s) => s.name === scheduleName && s.term === term)
-            .length > 0
+        user.schedules.filter(
+            (s) =>
+                s.name === scheduleName &&
+                s.term.term === term.term &&
+                s.term.year === term.year,
+        ).length > 0
     ) {
         throw Error("Schedule with this name and term already exists");
     }
@@ -110,7 +118,9 @@ export async function addSchedule(
         throw Error("Database operation failed");
     }
     logger.info(
-        `Addition of schedule ${scheduleName} (${term}) for user ${userId} completed. New schedule ID is ${scheduleId}`,
+        `Addition of schedule ${scheduleName} (${APIv4.stringifyTermIdentifier(
+            term,
+        )}) for user ${userId} completed. New schedule ID is ${scheduleId}`,
     );
     return scheduleId;
 }
@@ -135,8 +145,7 @@ export async function addSection(
 
     for (const s of user.schedules) {
         if (s._id === scheduleId) {
-            const term = APIv4.parseTermIdentifier(s.term);
-            if (term.term !== section.term || term.year !== section.year) {
+            if (s.term.term !== section.term || s.term.year !== section.year) {
                 logger.warn(
                     `Operation failed. Section ${APIv4.stringifySectionCodeLong(
                         section,

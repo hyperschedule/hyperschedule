@@ -24,19 +24,35 @@ describe("db/models/user", () => {
 
     test("add schedule to an user", async () => {
         const uid = await createGuestUser();
-        await addSchedule(uid, "FA2022", "test schedule 0");
+        await addSchedule(
+            uid,
+            { year: 2022, term: APIv4.Term.fall },
+            "test schedule 0",
+        );
         const updated1 = await getUser(uid);
         expect(updated1!.schedules.length).toStrictEqual(1);
 
         await expect(
-            addSchedule(uid, "FA2022", "test schedule 0"),
+            addSchedule(
+                uid,
+                { year: 2022, term: APIv4.Term.fall },
+                "test schedule 0",
+            ),
         ).rejects.toBeTruthy();
 
-        await addSchedule(uid, "SP2022", "test schedule 0");
+        await addSchedule(
+            uid,
+            { year: 2022, term: APIv4.Term.spring },
+            "test schedule 0",
+        );
         const updated2 = await getUser(uid);
         expect(updated2!.schedules.length).toStrictEqual(2);
 
-        await addSchedule(uid, "FA2022", "test schedule 1");
+        await addSchedule(
+            uid,
+            { year: 2022, term: APIv4.Term.fall },
+            "test schedule 1",
+        );
         const updated3 = await getUser(uid);
         expect(updated3.schedules.length).toStrictEqual(3);
 
@@ -44,7 +60,11 @@ describe("db/models/user", () => {
         await expect(
             Promise.all(
                 [...Array(97)].map((_, i) =>
-                    addSchedule(uid, "FA2022", `test schedule ${i + 2}`),
+                    addSchedule(
+                        uid,
+                        { year: 2022, term: APIv4.Term.fall },
+                        `test schedule ${i + 2}`,
+                    ),
                 ),
             ),
         ).resolves.toBeTruthy();
@@ -53,7 +73,11 @@ describe("db/models/user", () => {
         expect(updated4.schedules.length).toStrictEqual(100);
 
         await expect(
-            addSchedule(uid, "FA2022", "test schedule 100"),
+            addSchedule(
+                uid,
+                { year: 2022, term: APIv4.Term.fall },
+                "test schedule 100",
+            ),
         ).rejects.toBeTruthy();
     });
 
@@ -71,7 +95,11 @@ describe("db/models/user", () => {
 
         const uid = await createGuestUser();
         const uid2 = await createGuestUser();
-        const sid = await addSchedule(uid, "SP2023", "test schedule 1");
+        const sid = await addSchedule(
+            uid,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 1",
+        );
 
         await addSection(uid, sid, section);
         const updated1 = await getUser(uid);
@@ -117,8 +145,16 @@ describe("db/models/user", () => {
 
     test("delete schedule from user", async () => {
         const uid = await createGuestUser();
-        const sid0 = await addSchedule(uid, "FA2022", "test schedule 0");
-        const sid1 = await addSchedule(uid, "SP2022", "test schedule 1");
+        const sid0 = await addSchedule(
+            uid,
+            { year: 2022, term: APIv4.Term.fall },
+            "test schedule 0",
+        );
+        const sid1 = await addSchedule(
+            uid,
+            { year: 2022, term: APIv4.Term.spring },
+            "test schedule 1",
+        );
         const updated1 = await getUser(uid);
         expect(updated1.schedules.length).toStrictEqual(2);
 
@@ -128,7 +164,7 @@ describe("db/models/user", () => {
         expect(updated2.schedules[0]).toStrictEqual({
             _id: sid1,
             isActive: false,
-            term: "SP2022",
+            term: { year: 2022, term: APIv4.Term.spring },
             name: "test schedule 1",
             sections: [],
         } satisfies APIv4.UserSchedule);
@@ -150,8 +186,16 @@ describe("db/models/user", () => {
             half: null,
         };
         const uid = await createGuestUser();
-        const sid0 = await addSchedule(uid, "SP2023", "test schedule 0");
-        const sid1 = await addSchedule(uid, "SP2023", "test schedule 1");
+        const sid0 = await addSchedule(
+            uid,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 0",
+        );
+        const sid1 = await addSchedule(
+            uid,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 1",
+        );
 
         await addSection(uid, sid0, testSection);
         await addSection(uid, sid1, testSection);
