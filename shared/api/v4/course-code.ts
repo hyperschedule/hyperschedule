@@ -235,14 +235,16 @@ export function compareSectionIdentifier(
     b: Readonly<SectionIdentifier>,
 ): boolean {
     return (
-        a.year === b.year &&
-        a.term === b.term &&
-        a.half === b.half &&
-        a.sectionNumber === b.sectionNumber &&
-        a.affiliation === b.affiliation &&
         a.department === b.department &&
         a.courseNumber === b.courseNumber &&
-        a.suffix === b.suffix
+        a.suffix === b.suffix &&
+        a.affiliation === b.affiliation &&
+        a.sectionNumber === b.sectionNumber &&
+        a.year === b.year &&
+        a.term === b.term &&
+        ((a.half === null && b.half === null) ||
+            (a.half?.number === b.half?.number &&
+                a.half?.prefix === b.half?.prefix))
     );
 }
 

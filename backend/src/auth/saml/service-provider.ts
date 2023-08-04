@@ -24,7 +24,7 @@ export const idp = samlify.IdentityProvider({
 export const sp = samlify.ServiceProvider({
     wantAssertionsSigned: true,
     entityID: "https://hyperschedule.io/",
-    nameIDFormat: ["urn:oasis:names:tc:SAML:1.1:nameid-format:persistent"],
+    nameIDFormat: ["urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"],
     assertionConsumerService: [
         {
             Binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",

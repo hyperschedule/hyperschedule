@@ -18,9 +18,9 @@ userApp.post(
 
         logger.trace("[%d] Creating new guest user", request.id);
         const user = await createGuestUser();
-        logger.info("[%d] new guest user %s created", request.id, user._id);
+        logger.info("[%d] new guest user %s created", request.id, user);
 
-        const cookie = signUser({ uuid: user._id });
+        const cookie = signUser({ uuid: user });
         const expires = new Date();
         expires.setDate(expires.getDate() + 365);
 

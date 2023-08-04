@@ -438,6 +438,18 @@ describe("Course code comparison", () => {
                 parseSectionCodeLong("MATH 005 PO-01 FA2022"),
             ),
         ).toBeFalsy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022 H1"),
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022 H1"),
+            ),
+        ).toBeTruthy();
+        expect(
+            compareSectionIdentifier(
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022 H1"),
+                parseSectionCodeLong("CSCI 005 HM-01 FA2022 H2"),
+            ),
+        ).toBeFalsy();
     });
 
     test("stringifyTermIdentifier", () => {
