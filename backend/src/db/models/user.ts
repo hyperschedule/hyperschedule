@@ -1,5 +1,5 @@
 import { collections } from "../collections";
-import { v4 as uuid4 } from "uuid";
+import { uuid4 } from "../utils";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { createLogger } from "../../logger";
@@ -10,7 +10,7 @@ const logger = createLogger("db.user");
  * Creates an anonymous user and returns the user id
  */
 export async function createGuestUser(): Promise<string> {
-    const uuid = uuid4();
+    const uuid = uuid4("u");
     const user: APIv4.GuestUser = {
         _id: uuid,
         isGuest: true,
@@ -31,7 +31,7 @@ export async function createGuestUser(): Promise<string> {
 }
 
 export async function createUser(eppn: string): Promise<string> {
-    const uuid = uuid4();
+    const uuid = uuid4("u");
     const user: APIv4.RegisteredUser = {
         _id: uuid,
         isGuest: false,
@@ -86,7 +86,7 @@ export async function addSchedule(
         throw Error("Schedule with this name and term already exists");
     }
 
-    const scheduleId = uuid4();
+    const scheduleId = uuid4("s");
 
     const result = await collections.users.findOneAndUpdate(
         {
@@ -123,6 +123,34 @@ export async function addSchedule(
         )}) for user ${userId} completed. New schedule ID is ${scheduleId}`,
     );
     return scheduleId;
+}
+
+export async function renameSchedule(
+    userId: string,
+    scheduleId: string,
+    newName: string,
+) {
+    logger.info(
+        `Renaming schedule ${scheduleId} for user ${userId} to "${newName}"`,
+    );
+
+    const result = await collections.users.findOneAndUpdate(
+        {
+            _id: userId,
+            "schedules._id": scheduleId,
+        },
+        {
+            $set: {
+                lastModified: Math.floor(new Date().getTime() / 1000),
+                "schedules.$.name": newName,
+            },
+        },
+    );
+
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
+    }
 }
 
 export async function addSection(

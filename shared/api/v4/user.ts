@@ -1,6 +1,5 @@
 import { SectionIdentifier, TermIdentifier } from "./course";
 import { z } from "zod";
-import * as APIv4 from "./course-code";
 
 export const UserSection = z.object({
     // placeholder attribute for future implementation of folders

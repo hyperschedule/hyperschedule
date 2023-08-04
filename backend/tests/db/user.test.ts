@@ -213,4 +213,13 @@ describe("db/models/user", () => {
             courseNumber: 132,
         });
     });
+
+    test("rename schedule", async () => {
+        const uid = await createGuestUser();
+        const sid0 = await addSchedule(
+            uid,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 0",
+        );
+    });
 });

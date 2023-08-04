@@ -15,16 +15,16 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 const logger = createLogger("server.route.user");
 
-const userApp = new App({ settings: { xPoweredBy: false } })
-    .use(jsonParser()) // we need to add this so it can parse json requests
-    .use((req: Request, res: Response, next: NextFunction) => {
+const userApp = new App({ settings: { xPoweredBy: false } }).use(
+    (req: Request, res: Response, next: NextFunction) => {
         // middleware to add this header to everything under this app
         res.header(
             "Cache-Control",
             "no-cache,no-store,max-age=0,must-revalidate",
         );
         next();
-    });
+    },
+);
 
 userApp
     .route("/new-guest")
@@ -64,7 +64,9 @@ userApp.get("/", async function (request: Request, response: Response) {
 });
 
 userApp
-    .post("/schedule", async function (request: Request, response: Response) {
+    .route("/schedule")
+    .use(jsonParser()) // we need to add this so it can parse json requests
+    .post(async function (request: Request, response: Response) {
         if (request.userToken === null) return response.status(401).end();
 
         const input = APIv4.AddScheduleRequest.safeParse(request.body);
@@ -99,7 +101,9 @@ userApp
     });
 
 userApp
-    .post("/section", async function (request: Request, response: Response) {
+    .route("/section")
+    .use(jsonParser()) // we need to add this so it can parse json requests
+    .post(async function (request: Request, response: Response) {
         if (request.userToken === null) return response.status(401).end();
         const input = APIv4.AddSectionRequest.safeParse(request.body);
         if (!input.success)
