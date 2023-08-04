@@ -66,7 +66,9 @@ export async function addSchedule(
     scheduleName: string,
 ) {
     const user = await getUser(userId);
+    logger.info(`Adding schedule ${scheduleName} (${term}) for user ${userId}`);
     if (user.schedules.length >= 100) {
+        logger.warn(`User ${userId} reached schedule limit`);
         throw Error("Schedule limit reached");
     }
     if (
@@ -104,8 +106,12 @@ export async function addSchedule(
     );
 
     if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
         throw Error("Database operation failed");
     }
+    logger.info(
+        `Addition of schedule ${scheduleName} (${term}) for user ${userId} completed. New schedule ID is ${scheduleId}`,
+    );
     return scheduleId;
 }
 
@@ -121,14 +127,25 @@ export async function addSection(
     if (user === null) {
         throw Error("User with this schedule not found");
     }
+    logger.info(
+        `Adding section ${APIv4.stringifySectionCodeLong(
+            section,
+        )} to ${scheduleId} for user ${userId}`,
+    );
 
     for (const s of user.schedules) {
         if (s._id === scheduleId) {
             const term = APIv4.parseTermIdentifier(s.term);
-            if (term.term !== section.term || term.year !== section.year)
+            if (term.term !== section.term || term.year !== section.year) {
+                logger.warn(
+                    `Operation failed. Section ${APIv4.stringifySectionCodeLong(
+                        section,
+                    )} is not compatible with schedule ${scheduleId}`,
+                );
                 throw Error(
                     "Section to be added does not have the same term as the schedule",
                 );
+            }
             break;
         }
     }
@@ -152,8 +169,14 @@ export async function addSection(
     );
 
     if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
         throw Error("Database operation failed");
     }
+    logger.info(
+        `Addition of section ${APIv4.stringifySectionCodeLong(
+            section,
+        )} to ${scheduleId} for user ${userId} completed`,
+    );
 }
 
 export async function deleteSchedule(userId: string, scheduleId: string) {
@@ -164,6 +187,7 @@ export async function deleteSchedule(userId: string, scheduleId: string) {
     if (user === null) {
         throw Error("User with this schedule not found");
     }
+    logger.info(`Deleting schedule ${scheduleId} for user ${userId}`);
 
     const result = await collections.users.findOneAndUpdate(
         {
@@ -182,8 +206,12 @@ export async function deleteSchedule(userId: string, scheduleId: string) {
     );
 
     if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
         throw Error("Database operation failed");
     }
+    logger.info(
+        `Deletion of schedule ${scheduleId} for user ${userId} completed`,
+    );
 }
 
 export async function deleteSection(
@@ -198,6 +226,12 @@ export async function deleteSection(
     if (user === null) {
         throw Error("User with this schedule not found");
     }
+
+    logger.info(
+        `Deleting ${APIv4.stringifySectionCodeLong(
+            section,
+        )} from schedule ${scheduleId} for user ${userId}`,
+    );
 
     const result = await collections.users.findOneAndUpdate(
         {
@@ -214,6 +248,12 @@ export async function deleteSection(
         },
     );
     if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
         throw Error("Database operation failed");
     }
+    logger.info(
+        `Deletion of ${APIv4.stringifySectionCodeLong(
+            section,
+        )} from schedule ${scheduleId} for user ${userId} completed`,
+    );
 }
