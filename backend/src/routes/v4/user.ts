@@ -29,6 +29,7 @@ const userApp = new App({
 }).use((req: Request, res: Response, next: NextFunction) => {
     // middleware to add this header to everything under this app
     res.header("Cache-Control", "no-cache,no-store,max-age=0,must-revalidate");
+    res.header("Access-Control-Allow-Credentials", "true");
     next();
 });
 
