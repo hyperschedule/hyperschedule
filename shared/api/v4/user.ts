@@ -52,6 +52,11 @@ export const AddScheduleRequest = z.object({
     name: z.string(),
 });
 export type AddScheduleRequest = z.infer<typeof AddScheduleRequest>;
+export const RenameScheduleRequest = z.object({
+    scheduleId: z.string(),
+    name: z.string(),
+});
+export type RenameScheduleRequest = z.infer<typeof RenameScheduleRequest>;
 
 export const AddScheduleResponse = z.object({
     scheduleId: z.string(),

@@ -7,6 +7,7 @@ import {
     deleteSchedule,
     deleteSection,
     getUser,
+    renameSchedule,
 } from "../../db/models/user";
 import { createLogger } from "../../logger";
 import { signUser } from "../../auth/token";
@@ -15,16 +16,21 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 const logger = createLogger("server.route.user");
 
-const userApp = new App({ settings: { xPoweredBy: false } }).use(
-    (req: Request, res: Response, next: NextFunction) => {
-        // middleware to add this header to everything under this app
-        res.header(
-            "Cache-Control",
-            "no-cache,no-store,max-age=0,must-revalidate",
-        );
-        next();
+const userApp = new App({
+    settings: { xPoweredBy: false },
+    onError(err: any, req, res) {
+        // apparently tinyhttp will throw an object {code: 404} when the route doesn't match anything
+        if (Object.hasOwn(err, "code")) return res.status(err.code).end();
+        // a lot of database methods can throw errors, and we don't
+        // want 500 status
+        logger.info("User error: %o", err);
+        return res.status(400).send(`${err}`);
     },
-);
+}).use((req: Request, res: Response, next: NextFunction) => {
+    // middleware to add this header to everything under this app
+    res.header("Cache-Control", "no-cache,no-store,max-age=0,must-revalidate");
+    next();
+});
 
 userApp
     .route("/new-guest")
@@ -85,6 +91,23 @@ userApp
         response
             .header("Content-Type", "application/json")
             .send({ scheduleId } satisfies APIv4.AddScheduleResponse);
+    })
+    .patch(async function (request: Request, response: Response) {
+        if (request.userToken === null) return response.status(401).end();
+
+        const input = APIv4.RenameScheduleRequest.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        await renameSchedule(
+            request.userToken.uuid,
+            input.data.scheduleId,
+            input.data.name,
+        );
+        return response.status(204).end();
     })
     .delete(async function (request: Request, response: Response) {
         if (request.userToken === null) return response.status(401).end();

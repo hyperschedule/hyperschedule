@@ -9,6 +9,7 @@ import {
     getUser,
     deleteSchedule,
     deleteSection,
+    renameSchedule,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -216,10 +217,20 @@ describe("db/models/user", () => {
 
     test("rename schedule", async () => {
         const uid = await createGuestUser();
-        const sid0 = await addSchedule(
+        const sid = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
             "test schedule 0",
         );
+        await renameSchedule(uid, sid, "test");
+        const user = await getUser(uid);
+        expect(user.schedules.length).toStrictEqual(1);
+        expect(user.schedules[0]!.name).toStrictEqual("test");
+        await expect(
+            renameSchedule(uid + "AAAA", sid, "test"),
+        ).rejects.toBeTruthy();
+        await expect(
+            renameSchedule(uid, sid + "AAAA", "test"),
+        ).rejects.toBeTruthy();
     });
 });
