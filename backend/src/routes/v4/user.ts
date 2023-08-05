@@ -13,6 +13,7 @@ import { createLogger } from "../../logger";
 import { signUser } from "../../auth/token";
 import { json as jsonParser } from "milliparsec";
 import * as APIv4 from "hyperschedule-shared/api/v4";
+import { CURRENT_TERM } from "../../current-term";
 
 const logger = createLogger("server.route.user");
 
@@ -47,6 +48,8 @@ userApp
         logger.trace("[%d] Creating new guest user", request.id);
         const user = await createGuestUser();
         logger.info("[%d] new guest user %s created", request.id, user);
+
+        await addSchedule(user, CURRENT_TERM, "Schedule 1");
 
         const cookie = signUser({ uuid: user });
         const expires = new Date();
