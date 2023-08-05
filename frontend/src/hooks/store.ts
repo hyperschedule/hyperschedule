@@ -34,7 +34,9 @@ export const enum Theme {
 export default Zustand.create<Store>((set, get) => ({
     mainTab: MainTab.CourseSearch,
     setMainTab: (mainTab) => set({ mainTab }),
-    theme: Theme.Light,
+    theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? Theme.Dark
+        : Theme.Light,
     toggleTheme: () =>
         set({ theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark }),
     searchText: "",
