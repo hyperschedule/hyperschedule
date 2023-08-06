@@ -28,15 +28,16 @@ const userApp = new App({
         return res.status(400).send(`${err}`);
     },
 }).use((req: Request, res: Response, next: NextFunction) => {
+    // middleware to add this header to everything under this app
+    res.header("Cache-Control", "no-cache,no-store,max-age=0,must-revalidate");
+    res.header("Access-Control-Allow-Credentials", "true");
     // handle preflight requests
     if (req.method === "OPTIONS") {
         res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH")
             .status(204)
             .end();
+        return;
     }
-    // middleware to add this header to everything under this app
-    res.header("Cache-Control", "no-cache,no-store,max-age=0,must-revalidate");
-    res.header("Access-Control-Allow-Credentials", "true");
     next();
 });
 
