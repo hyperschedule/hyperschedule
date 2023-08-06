@@ -7,6 +7,7 @@ import { DB_URL } from "./credentials";
 import { updateSections } from "./models/course";
 import { loadAllForTerm } from "../hmc-api/fetcher/fetch";
 import { linkCourseData } from "../hmc-api/data-linker";
+import { CURRENT_TERM } from "../current-term";
 
 const logger = createLogger("db.init");
 
@@ -14,11 +15,12 @@ logger.info("Connecting to db...");
 await connectToDb(DB_URL);
 logger.info("db connected");
 
-const term = { term: APIv4.Term.spring, year: 2022 };
+//const term = { term: APIv4.Term.spring, year: 2022 };
+const term = CURRENT_TERM;
 const data = linkCourseData(await loadAllForTerm(term), term);
 
 logger.info("Sample data loaded");
 
-await updateSections(data, { year: 2022, term: APIv4.Term.spring });
+await updateSections(data, term);
 
 await closeDb();
