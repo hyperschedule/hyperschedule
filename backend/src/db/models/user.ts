@@ -294,3 +294,62 @@ export async function deleteSection(
         )} from schedule ${scheduleId} for user ${userId} completed`,
     );
 }
+
+export async function setSectionAttrs(
+    userId: string,
+    scheduleId: string,
+    sectionId: APIv4.SectionIdentifier,
+    attrs: Partial<APIv4.UserSectionAttrs>,
+) {
+    const user = await collections.users.findOne({
+        _id: userId,
+        "schedules._id": scheduleId,
+    });
+    if (user === null) {
+        throw Error("User with this schedule not found");
+    }
+
+    logger.info(
+        `Setting attributes %o of ${APIv4.stringifySectionCodeLong(
+            sectionId,
+        )} in ${scheduleId} for ${userId}`,
+        attrs,
+    );
+
+    for (const schedule of user.schedules) {
+        if (schedule._id !== scheduleId) continue;
+
+        for (const s of schedule.sections) {
+            if (APIv4.compareSectionIdentifier(s.section, sectionId)) {
+                s.attrs = { ...s.attrs, ...attrs };
+                const result = await collections.users.findOneAndUpdate(
+                    {
+                        _id: userId,
+                        "schedules._id": scheduleId,
+                    },
+                    {
+                        $set: {
+                            "schedules.$": schedule,
+                            lastModified: Math.floor(
+                                new Date().getTime() / 1000,
+                            ),
+                        },
+                    },
+                );
+
+                if (!result.ok || result.value === null) {
+                    logger.warn(`Operation failed`, result);
+                    throw Error("Database operation failed");
+                }
+                logger.info(
+                    `Setting attributes %o of ${APIv4.stringifySectionCodeLong(
+                        sectionId,
+                    )} in ${scheduleId} for ${userId} completed`,
+                    attrs,
+                );
+            }
+        }
+
+        throw Error("No matching section found");
+    }
+}
