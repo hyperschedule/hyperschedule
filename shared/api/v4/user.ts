@@ -1,12 +1,14 @@
 import { SectionIdentifier, TermIdentifier } from "./course";
 import { z } from "zod";
 
+export const UserSectionAttrs = z.object({
+    selected: z.boolean(),
+});
+export type UserSectionAttrs = z.infer<typeof UserSectionAttrs>;
+
 export const UserSection = z.object({
-    // placeholder attribute for future implementation of folders
     section: SectionIdentifier,
-    attrs: z.object({
-        selected: z.boolean(),
-    }),
+    attrs: UserSectionAttrs,
 });
 export type UserSection = z.infer<typeof UserSection>;
 
