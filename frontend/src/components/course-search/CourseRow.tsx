@@ -3,25 +3,28 @@ import { useEffect } from "react";
 import { useMeasure } from "@react-hookz/web";
 import classNames from "classnames";
 
-import * as Api from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 import Css from "./CourseRow.module.css";
 
 import * as Feather from "react-feather";
 
 import randomColor from "randomcolor";
 import md5 from "md5";
-import { stringifySectionCode } from "hyperschedule-shared/api/v4";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 
+import useStore from "@hooks/store";
+import { useScheduleSectionMutation, useUserQuery } from "@hooks/api/user";
+import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/user";
+
 const statusBadge = {
-    [Api.SectionStatus.open]: Css.badgeOpen,
-    [Api.SectionStatus.closed]: Css.badgeClosed,
-    [Api.SectionStatus.reopened]: Css.badgeReopened,
-    [Api.SectionStatus.unknown]: Css.badgeUnknown,
+    [APIv4.SectionStatus.open]: Css.badgeOpen,
+    [APIv4.SectionStatus.closed]: Css.badgeClosed,
+    [APIv4.SectionStatus.reopened]: Css.badgeReopened,
+    [APIv4.SectionStatus.unknown]: Css.badgeUnknown,
 };
 
 export default function CourseRow(props: {
-    section: Api.Section;
+    section: APIv4.Section;
     expand: boolean;
     onClick?: () => void;
     updateDetailsSize?: (height: number) => void;
@@ -29,12 +32,16 @@ export default function CourseRow(props: {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
     const height = detailsBounds?.height ?? 0;
 
+    const activeSchedule = useActiveSchedule();
+    const scheduleMutation = useScheduleSectionMutation();
+    const activeScheduleLookup = useActiveScheduleLookup();
+
     useEffect(() => {
         if (!props.updateDetailsSize || !detailsBounds || !props.expand) return;
         props.updateDetailsSize(detailsBounds.height);
     }, [detailsBounds?.height, props.updateDetailsSize, props.expand]);
 
-    const code = stringifySectionCode(props.section.identifier);
+    const code = APIv4.stringifySectionCode(props.section.identifier);
 
     const color = randomColor({
         hue: "random",
@@ -58,7 +65,9 @@ export default function CourseRow(props: {
                     <Feather.ChevronRight className={Css.arrow} size={14} />
                     <span className={Css.summary}>
                         <span className={Css.courseNumber}>
-                            {stringifySectionCode(props.section.identifier)}
+                            {APIv4.stringifySectionCode(
+                                props.section.identifier,
+                            )}
                         </span>
                         <span className={Css.title}>
                             {props.section.course.title}
@@ -93,14 +102,7 @@ export default function CourseRow(props: {
                             seats filled
                         </span>
                     </span>
-                    <button
-                        className={Css.add}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                        }}
-                    >
-                        <Feather.Plus size={14} />
-                    </button>
+                    <ToggleButton section={props.section.identifier} />
                 </div>
                 <div
                     style={{ height: `${props.expand ? height : 0}px` }}
@@ -136,5 +138,33 @@ export default function CourseRow(props: {
                 </div>
             </div>
         </div>
+    );
+}
+
+function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
+    const activeSchedule = useActiveSchedule();
+    const scheduleMutation = useScheduleSectionMutation();
+    const activeScheduleLookup = useActiveScheduleLookup();
+
+    if (!activeSchedule) return <></>;
+
+    const inSchedule = activeScheduleLookup.has(
+        APIv4.stringifySectionCodeLong(props.section),
+    );
+
+    return (
+        <button
+            className={Css.toggle}
+            onClick={(event) => {
+                event.stopPropagation();
+                scheduleMutation.mutate({
+                    scheduleId: activeSchedule._id,
+                    section: props.section,
+                    add: !inSchedule,
+                });
+            }}
+        >
+            {inSchedule ? <Feather.X size={14} /> : <Feather.Plus size={14} />}
+        </button>
     );
 }

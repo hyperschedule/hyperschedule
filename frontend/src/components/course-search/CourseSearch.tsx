@@ -6,7 +6,8 @@ import { shallow } from "zustand/shallow";
 
 import type * as Api from "hyperschedule-shared/api/v4";
 
-import { useCourses } from "@hooks/api";
+import { useSectionsQuery } from "@hooks/api/course";
+import { useActiveTerm } from "@hooks/term";
 import useStore from "@hooks/store";
 import * as Search from "@lib/search";
 
@@ -29,7 +30,8 @@ function sectionKey(id: Api.SectionIdentifier) {
 }
 
 export default function CourseSearch() {
-    const query = useCourses();
+    const activeTerm = useActiveTerm();
+    const query = useSectionsQuery(activeTerm);
     const search = useStore(
         (store) => ({
             text: store.searchText,

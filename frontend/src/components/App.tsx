@@ -11,6 +11,7 @@ import CourseSearch from "./course-search/CourseSearch";
 import Schedule from "./Schedule";
 import MainSelector from "./MainSelector";
 import Toolbar from "./Toolbar";
+import SelectedList from "./SelectedList";
 
 import useStore, { MainTab } from "@hooks/store";
 
@@ -47,6 +48,9 @@ export default function App() {
                         <Toolbar />
                     </div>
                     <div className={Css.minimap}></div>
+                    <div className={Css.selectedList}>
+                        <SelectedList />
+                    </div>
                 </div>
                 <ThemeSlider />
             </div>

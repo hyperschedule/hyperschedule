@@ -94,6 +94,7 @@
             font-weight: 600;
             font-size: 0.875em;
             opacity: 0.875;
+            min-width: 8.5em;
         }
         & .affiliation {
             width: 4.5ex;
@@ -182,7 +183,7 @@
         }
     }
 
-    & button.add {
+    & button.toggle {
         align-self: stretch;
         background: none;
         border: none;
@@ -196,6 +197,10 @@
 
         &:hover {
             background: #0001;
+        }
+
+        &[disabled] {
+            visibility: hidden;
         }
     }
 }

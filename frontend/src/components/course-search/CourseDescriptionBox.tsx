@@ -1,5 +1,5 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { useCourseAreaDescription } from "@hooks/api";
+import { useCourseAreaDescription } from "@hooks/api/course";
 
 import Css from "./CourseDescriptionBox.module.css";
 

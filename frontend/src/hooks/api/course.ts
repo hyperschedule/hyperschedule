@@ -3,8 +3,8 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { apiUrl } from "@lib/config";
 import { useQuery } from "@tanstack/react-query";
 
-async function getCourses() {
-    const resp = await fetch(`${apiUrl}/v4/sections`);
+async function getSectionsForTerm(term: APIv4.TermIdentifier) {
+    const resp = await fetch(`${apiUrl}/v4/sections/${term.year}/${term.term}`);
     return APIv4.Section.array().parse(await resp.json());
 }
 
@@ -18,12 +18,12 @@ async function getCourseAreaDescription() {
     );
 }
 
-export type Courses = APIv4.Section[];
-
-export function useCourses() {
+export function useSectionsQuery(term: APIv4.TermIdentifier | undefined) {
+    // only enable query _after_ a term has been specified
     return useQuery({
-        queryKey: ["courses"],
-        queryFn: getCourses,
+        queryKey: ["sections", term] as const,
+        queryFn: (ctx) => getSectionsForTerm(ctx.queryKey[1]!),
+        enabled: !!term,
         staleTime: 30 * 1000,
         refetchInterval: 30 * 1000,
     });

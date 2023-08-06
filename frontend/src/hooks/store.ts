@@ -13,6 +13,7 @@ export type Store = WithSetters<{
     searchText: string;
     expandKey: Api.SectionIdentifier | null;
     expandHeight: number;
+    activeScheduleIndex: number;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -48,4 +49,7 @@ export default Zustand.create<Store>((set, get) => ({
     expandHeight: 0,
     setExpandHeight: (expandHeight) => set({ expandHeight }),
     clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
+    activeScheduleIndex: 0,
+    setActiveScheduleIndex: (activeScheduleIndex) =>
+        set({ activeScheduleIndex }),
 }));
