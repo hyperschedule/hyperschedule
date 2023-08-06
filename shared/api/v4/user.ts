@@ -11,7 +11,7 @@ export const UserSection = z.object({
 export type UserSection = z.infer<typeof UserSection>;
 
 export const UserSchedule = z.object({
-    _id: z.string().uuid(),
+    _id: z.string(),
     isActive: z.boolean(),
     term: TermIdentifier,
     name: z.string(),
@@ -19,26 +19,27 @@ export const UserSchedule = z.object({
 });
 export type UserSchedule = z.infer<typeof UserSchedule>;
 
-export const GuestUser = z.object({
-    _id: z.string().uuid(),
-    schedules: UserSchedule.array().max(100),
-    isGuest: z.literal(true),
+const UserData = z.object({
+    _id: z.string(),
+    schedules: UserSchedule.array().min(1).max(100),
     // seconds since Unix epoch. used to pruning inactive users.
     // this is only updated if the user did any modification to their schedule
     lastModified: z.number().positive(),
 });
+
+export const GuestUser = UserData.merge(
+    z.object({
+        isGuest: z.literal(true),
+    }),
+);
 export type GuestUser = z.infer<typeof GuestUser>;
 
-export const RegisteredUser = z.object({
-    _id: z.string().uuid(),
-    schedules: UserSchedule.array().max(100),
-    isGuest: z.literal(false),
-    // seconds since Unix epoch. used to pruning inactive users.
-    // this is only updated if the user did any modification to their schedule
-    lastModified: z.number().positive(),
-    // eduPersonPrincipalName, most likely the user's email
-    eppn: z.string(),
-});
+export const RegisteredUser = UserData.merge(
+    z.object({
+        isGuest: z.literal(false),
+        eppn: z.string(),
+    }),
+);
 export type RegisteredUser = z.infer<typeof RegisteredUser>;
 
 export const User = z.discriminatedUnion("isGuest", [
