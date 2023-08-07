@@ -3,6 +3,7 @@ import { uuid4 } from "../utils";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { createLogger } from "../../logger";
+import { CURRENT_TERM } from "../../current-term";
 
 const logger = createLogger("db.user");
 
@@ -10,46 +11,95 @@ const logger = createLogger("db.user");
  * Creates an anonymous user and returns the user id
  */
 export async function createGuestUser(): Promise<string> {
-    const uuid = uuid4("u");
+    const uid = uuid4("u");
+    const scheduleId = uuid4("s");
     const user: APIv4.GuestUser = {
-        _id: uuid,
+        _id: uid,
         isGuest: true,
-        schedules: [],
+        schedules: [
+            {
+                _id: scheduleId,
+                isActive: false,
+                term: CURRENT_TERM,
+                name: "Schedule 1",
+                sections: [],
+            },
+        ],
         lastModified: Math.floor(new Date().getTime() / 1000),
     };
 
     const res = await collections.users.insertOne(user);
 
-    if (res.insertedId.toString() !== uuid) {
+    if (res.insertedId.toString() !== uid) {
         logger.error(
-            `Error inserting guest user into database. Requested ID is ${uuid}, resulted id is ${res.insertedId}`,
+            `Error inserting guest user into database. Requested ID is ${uid}, resulted id is ${res.insertedId}`,
         );
         throw Error(`Database error: mismatching insertion id`);
     }
 
-    return uuid;
+    return uid;
 }
 
-export async function createUser(eppn: string): Promise<string> {
-    const uuid = uuid4("u");
+export async function createOrGetUser(
+    eppn: string,
+    orgName: string,
+): Promise<string> {
+    const lookup = await collections.users.findOne({
+        eppn,
+    });
+    if (lookup !== null) {
+        logger.info(`Found user ${lookup._id} for ${eppn}`);
+        return lookup._id;
+    }
+
+    const uid = uuid4("u");
+    const scheduleId = uuid4("s");
+    let school: APIv4.School = APIv4.School.Unknown;
+    switch (orgName) {
+        case "Harvey Mudd College":
+            school = APIv4.School.HMC;
+            break;
+        case "Scripps College":
+            school = APIv4.School.SCR;
+            break;
+        case "Pomona College":
+            school = APIv4.School.POM;
+            break;
+        case "Pitzer College":
+            school = APIv4.School.POM;
+            break;
+        case "Claremont McKenna College":
+            school = APIv4.School.CMC;
+            break;
+    }
+
     const user: APIv4.RegisteredUser = {
-        _id: uuid,
+        _id: uid,
         isGuest: false,
-        schedules: [],
+        schedules: [
+            {
+                _id: scheduleId,
+                isActive: false,
+                term: CURRENT_TERM,
+                name: "Schedule 1",
+                sections: [],
+            },
+        ],
         lastModified: Math.floor(new Date().getTime() / 1000),
         eppn,
+        school,
     };
 
     const res = await collections.users.insertOne(user);
 
-    if (res.insertedId.toString() !== uuid) {
+    if (res.insertedId.toString() !== uid) {
         logger.error(
-            `Error inserting guest user into database. Requested ID is ${uuid}, resulted id is ${res.insertedId}`,
+            `Error inserting guest user into database. Requested ID is ${uid}, resulted id is ${res.insertedId}`,
         );
         throw Error(`Database error: mismatching insertion id`);
     }
 
-    return uuid;
+    return uid;
 }
 
 export async function getUser(userId: string): Promise<APIv4.User> {

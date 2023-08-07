@@ -1,4 +1,4 @@
-import { SectionIdentifier, TermIdentifier } from "./course";
+import { SchoolEnum, SectionIdentifier, TermIdentifier } from "./course";
 import { z } from "zod";
 
 export const UserSectionAttrs = z.object({
@@ -40,6 +40,7 @@ export const RegisteredUser = UserData.merge(
     z.object({
         isGuest: z.literal(false),
         eppn: z.string(),
+        school: SchoolEnum,
     }),
 );
 export type RegisteredUser = z.infer<typeof RegisteredUser>;

@@ -21,6 +21,7 @@ export enum School {
     CMC = "CM",
     SCR = "SC",
     CGU = "CG",
+    Unknown = "UN"
 }
 
 export const SchoolEnum = z.nativeEnum(School);

@@ -81,7 +81,7 @@ services:
       - backend
     volumes:
       - ./data/nginx/cert/:/etc/nginx/cert/:ro
-      - ./data/nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./data/nginx/compose.conf:/etc/nginx/conf.d/default.conf:ro
 
 networks:
   backend:

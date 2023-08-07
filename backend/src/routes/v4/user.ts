@@ -56,8 +56,6 @@ userApp
         const user = await createGuestUser();
         logger.info("[%d] new guest user %s created", request.id, user);
 
-        await addSchedule(user, CURRENT_TERM, "Schedule 1");
-
         const cookie = signUser({ uuid: user });
         const expires = new Date();
         expires.setDate(expires.getDate() + 365);
