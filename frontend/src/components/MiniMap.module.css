@@ -1,12 +1,12 @@
 .viewportContainer {
     margin: 1rem;
+    height: 33vh;
     display: grid;
 
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-        "day-label blank"
-        "viewport time-label";
+    grid-template-columns: auto 1.5em;
+    grid-template-rows: 1.5em auto;
+    grid-template-areas: "topLabel ."
+                         "viewport rightLabel";
 
     & .viewportLabel {
         display: flex;
