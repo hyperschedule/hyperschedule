@@ -34,7 +34,7 @@ export default function MiniMap() {
 
     // default bounds if no classes are outside this region
     let earliestClassTime = 8 * 3600; // 8am
-    let latestClassTime = 19 * 3600; // 7pm
+    let latestClassTime = 18 * 3600; // 7pm
 
     for (const entry of scheduleSections) {
         const section = sectionsLookup.get(
@@ -44,15 +44,20 @@ export default function MiniMap() {
         sections.push(section);
         for (const schedule of section.schedules) {
             if (schedule.startTime === schedule.endTime) continue;
-            earliestClassTime = Math.min(schedule.startTime, earliestClassTime);
-            latestClassTime = Math.max(schedule.endTime, latestClassTime);
+            // we use startTime-1 and endTime+1 to render an extra hour window on top and bottom
+            earliestClassTime = Math.min(
+                schedule.startTime - 1,
+                earliestClassTime,
+            );
+            latestClassTime = Math.max(schedule.endTime + 1, latestClassTime);
         }
     }
 
     for (const card of expandCards) {
         if (card.startTime === card.endTime) continue;
-        earliestClassTime = Math.min(card.startTime, earliestClassTime);
-        latestClassTime = Math.max(card.endTime, latestClassTime);
+        // we use startTime-1 and endTime+1 to render an extra hour window on top and bottom
+        earliestClassTime = Math.min(card.startTime - 1, earliestClassTime);
+        latestClassTime = Math.max(card.endTime + 1, latestClassTime);
     }
 
     const scheduleStartHour = Math.floor(earliestClassTime / 3600);
@@ -60,8 +65,8 @@ export default function MiniMap() {
 
     // grid rows in units of 5mins, since (afaik) all classes' start/end times
     // are aligned to some multiple of 5mins?
-    const overallStartTime = scheduleStartHour * 12;
-    const overallEndTime = scheduleEndHour * 12;
+    const overallStartTime = 0;
+    const overallEndTime = 24 * 12;
 
     const weekend = { showSunday: false, showSaturday: false };
     const cards = sections.flatMap(getCards);
@@ -74,42 +79,39 @@ export default function MiniMap() {
         weekend.showSaturday ||= card.day === APIv4.Weekday.saturday;
     }
 
-    const gridLines: JSX.Element[] = [];
-    for (let i = overallStartTime + 12; i < overallEndTime; i += 12)
-        gridLines.push(
-            <div
-                key={`hour:${i}`}
-                className={classNames(Css.rowLine, {
-                    [Css.noon as string]: i === 12 * 12,
-                    [Css.evening as string]: i === 17 * 12,
-                })}
-                style={{ gridRow: i - overallStartTime }}
-            ></div>,
-        );
+    // const gridLines: JSX.Element[] = [];
+    // for (let i = overallStartTime + 12; i < overallEndTime; i += 12)
+    //     gridLines.push(
+    //         <div
+    //             key={`hour:${i}`}
+    //             className={classNames(Css.rowLine, {
+    //                 [Css.noon as string]: i === 12 * 12,
+    //                 [Css.evening as string]: i === 17 * 12,
+    //             })}
+    //             style={{gridRow: i - overallStartTime}}
+    //         ></div>,
+    //     );
 
     const byDay = collectByDay(cards);
 
     return (
-        <div className={Css.viewportContainer}>
+        <div className={Css.visibleWindowContainer}>
             <div
-                className={classNames([
-                    Css.viewportLabelTop,
-                    Css.viewportLabel,
-                ])}
+                className={classNames([Css.minimapLabelTop, Css.minimapLabel])}
             >
                 <span>{weekend.showSunday ? "S" : "M"}</span>{" "}
                 <span>{weekend.showSaturday ? "S" : "F"}</span>
             </div>
             <div
                 className={classNames([
-                    Css.viewportLabelRight,
-                    Css.viewportLabel,
+                    Css.minimapLabelRight,
+                    Css.minimapLabel,
                 ])}
             >
                 <span>{scheduleStartHour}am</span>
                 <span>{scheduleEndHour - 12}pm</span>
             </div>
-            <div className={Css.viewport}>
+            <div className={Css.visibleWindow}>
                 <div
                     className={classNames(Css.grid, {
                         [Css.showSunday as string]: weekend.showSunday,
@@ -119,6 +121,12 @@ export default function MiniMap() {
                         gridTemplateRows: `repeat(${
                             overallEndTime - overallStartTime
                         }, 1fr)`,
+                        height: `${
+                            (24 / (scheduleEndHour - scheduleStartHour)) * 100
+                        }%`,
+                        transform: `translate(${
+                            weekend.showSunday ? 0 : -100 / 7
+                        }%,-${(scheduleStartHour / 24) * 100}%)`,
                     }}
                 >
                     {["U", "M", "T", "W", "R", "F", "S"].map((day, i) => (
@@ -169,6 +177,10 @@ export default function MiniMap() {
                                         ...sectionColorStyle(card.section),
                                         "--stack-order": order[i],
                                         "--reverse-stack-order": revOrder[i],
+                                        boxShadow:
+                                            order[i] === 0
+                                                ? "none"
+                                                : "0 0 0.25rem var(--shadow)",
                                     } as any
                                 }
                                 onClick={() => setExpandKey(card.section)}

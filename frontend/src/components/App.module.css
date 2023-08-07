@@ -45,6 +45,8 @@
         --highlight: #f80;
         --highlight-transparent: #f800;
 
+        --shadow: #4b4b48;
+
         --palette-red: #f87171;
         --palette-orange: #eab308;
         --palette-green: #22c55e;
@@ -61,6 +63,8 @@
 
         --highlight: #f80;
         --highlight-transparent: #f800;
+
+        --shadow: #6d6c6b;
 
         --palette-red: #ec4202;
         --palette-orange: #da9a03;
