@@ -85,6 +85,37 @@ export function stackCardsReverse(cards: Readonly<Card>[]) {
     return order;
 }
 
+function compareEndTime(a: Readonly<Card>, b: Readonly<Card>) {
+    return a.endTime - b.endTime || a.startTime - b.startTime;
+}
+
+export function mergeCards(cards: Readonly<Card>[]) {
+    if (!cards.length) return [];
+
+    cards.sort(compareEndTime);
+
+    const groups: Readonly<Card>[][] = [[cards[0]!]];
+
+    for (let i = 1; i < cards.length; ++i) {
+        const current = cards[i]!;
+        if (current.startTime < cards[i - 1]!.endTime)
+            groups[groups.length - 1]!.push(current);
+        else groups.push([current]);
+    }
+
+    return groups;
+}
+
+export function timeHull(cards: readonly Readonly<Card>[]) {
+    let min = 24 * 3600;
+    let max = 0;
+    for (const card of cards) {
+        min = Math.min(min, card.startTime);
+        max = Math.max(max, card.endTime);
+    }
+    return { startTime: min, endTime: max };
+}
+
 export function hasWeekend(cards: readonly Readonly<Card>[]) {
     const weekend = { sunday: false, saturday: false };
     for (const card of cards) {

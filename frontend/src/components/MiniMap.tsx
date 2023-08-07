@@ -12,7 +12,13 @@ import GridBackground from "@components/schedule/GridBackground";
 
 import classNames from "classnames";
 
-import * as Schedule from "@lib/schedule";
+import {
+    getCards,
+    cardKey,
+    mergeCards,
+    groupCardsByDay,
+    timeHull,
+} from "@lib/schedule";
 
 export default function MiniMap() {
     const scheduleSections = useActiveScheduleSections();
@@ -27,7 +33,7 @@ export default function MiniMap() {
     const expandSection = expandKey
         ? sectionsLookup.get(APIv4.stringifySectionCodeLong(expandKey))
         : null;
-    const expandCards = expandSection ? Schedule.getCards(expandSection) : [];
+    const expandCards = expandSection ? getCards(expandSection) : [];
 
     // default bounds if no classes are outside this region
     let earliestClassTime = 8 * 3600; // 8am
@@ -61,7 +67,7 @@ export default function MiniMap() {
     const overallEndTime = scheduleEndHour * 12;
 
     const weekend = { showSunday: false, showSaturday: false };
-    const cards = sections.flatMap(Schedule.getCards);
+    const cards = sections.flatMap(getCards);
     for (const card of expandCards) {
         weekend.showSunday ||= card.day === APIv4.Weekday.sunday;
         weekend.showSaturday ||= card.day === APIv4.Weekday.saturday;
@@ -71,7 +77,7 @@ export default function MiniMap() {
         weekend.showSaturday ||= card.day === APIv4.Weekday.saturday;
     }
 
-    const byDay = Schedule.groupCardsByDay(cards);
+    const byDay = groupCardsByDay(cards);
 
     return (
         <div className={Css.viewportContainer}>
@@ -108,22 +114,83 @@ export default function MiniMap() {
                     <GridBackground />
                     {expandCards.map((card) => (
                         <div
-                            key={`outline:${Schedule.cardKey(card)}`}
+                            key={`outline:${cardKey(card)}`}
                             className={Css.expandOutline}
                             style={{
                                 gridColumn: card.day,
                                 gridRow: `${
                                     Math.floor(card.startTime / 300) -
-                                    overallStartTime
+                                    overallStartTime +
+                                    1
                                 } / ${
                                     Math.floor(card.endTime / 300) -
-                                    overallStartTime
+                                    overallStartTime +
+                                    1
                                 }`,
                                 ...sectionColorStyle(card.section),
                             }}
                             onClick={clearExpand}
                         ></div>
                     ))}
+                    {Object.entries(byDay).flatMap(([day, cards]) =>
+                        mergeCards(cards).map((group, i) => {
+                            const hull = timeHull(group);
+                            return (
+                                <div
+                                    key={`${group}:${day}/${i}`}
+                                    className={Css.cardGroup}
+                                    style={{
+                                        gridColumn: day,
+                                        gridRow: `${
+                                            Math.round(hull.startTime / 300) -
+                                            overallStartTime +
+                                            1
+                                        } / ${
+                                            Math.round(hull.endTime / 300) -
+                                            overallStartTime +
+                                            1
+                                        }`,
+                                        gridTemplateRows: `repeat(${Math.round(
+                                            (hull.endTime - hull.startTime) /
+                                                300,
+                                        )},1fr)`,
+                                        gridTemplateColumns: `repeat(${group.length},1fr)`,
+                                    }}
+                                >
+                                    {group.map((card, i) => (
+                                        <div
+                                            key={`slice:${APIv4.stringifySectionCodeLong(
+                                                card.section,
+                                            )}/${i}`}
+                                            className={Css.slice}
+                                            style={{
+                                                gridColumn: `${i + 1}`,
+                                                gridRow: `${
+                                                    Math.round(
+                                                        (card.startTime -
+                                                            hull.startTime) /
+                                                            300,
+                                                    ) + 1
+                                                } / ${
+                                                    Math.round(
+                                                        (card.endTime -
+                                                            hull.startTime) /
+                                                            300,
+                                                    ) + 1
+                                                }`,
+                                                ...sectionColorStyle(
+                                                    card.section,
+                                                ),
+                                            }}
+                                            onClick={() =>
+                                                setExpandKey(card.section)
+                                            }
+                                        ></div>
+                                    ))}
+                                </div>
+                            );
+                        }),
+                    )}
                 </div>
             </div>
         </div>

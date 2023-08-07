@@ -82,6 +82,31 @@
         }
     }
 
+    & .cardGroup {
+        display: grid;
+        border-radius: 0.125rem;
+        overflow: hidden;
+
+        & .slice {
+            background-color: var(--section-color);
+            cursor: pointer;
+
+            @nest [data-theme="dark"] & {
+                --section-color: color-mix(
+                    in srgb,
+                    var(--section-color-light) 50%,
+                    var(--bg-1)
+                );
+                color: white;
+            }
+            @nest [data-theme="light"] & {
+                --section-color: var(--section-color-light);
+                color: black;
+            }
+        }
+    }
+
+    /*
     & .card {
         background: var(--section-color);
         font-size: 0.75rem;
@@ -119,9 +144,9 @@
             border-color: var(--highlight);
         }
     }
+    */
 
     & .expandOutline {
-        margin: 0.125rem;
         outline: 2px dashed var(--highlight);
         background-color: color-mix(
             in srgb,
