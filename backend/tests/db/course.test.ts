@@ -3,6 +3,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { getAllSections, updateSections } from "../../src/db/models/course";
 import { setupDbHooks } from "./hooks";
 import { testSectionV4 } from "../test-data";
+import { collections } from "../../src/db";
 
 setupDbHooks();
 
@@ -14,7 +15,7 @@ const testTermIdentifier = {
 describe("db/models/course", () => {
     test("Basic insertion and query", async () => {
         await updateSections([testSectionV4], testTermIdentifier);
-        const sections = await getAllSections();
+        const sections = await getAllSections(testTermIdentifier);
         expect(sections.length).toStrictEqual(1);
         expect(sections[0]).toStrictEqual(testSectionV4);
         expect(
@@ -63,8 +64,9 @@ describe("db/models/course", () => {
             ],
             { term: APIv4.Term.spring, year: 2023 },
         );
-        const sections = await getAllSections();
-        expect(sections.length).toStrictEqual(2);
+        expect(
+            (await collections.sections.find({}).toArray()).length,
+        ).toStrictEqual(2);
     });
 
     test("updateSections() replaces everything form the same semester", async () => {
@@ -121,7 +123,10 @@ describe("db/models/course", () => {
             ],
             { term: APIv4.Term.spring, year: 2023 },
         );
-        const sections = await getAllSections();
+        const sections = await getAllSections({
+            term: APIv4.Term.spring,
+            year: 2023,
+        });
         expect(sections.length).toStrictEqual(1);
         expect(sections[0]).toStrictEqual({
             ...testSectionV4,
@@ -178,7 +183,9 @@ describe("db/models/course", () => {
             { term: APIv4.Term.spring, year: 2023 },
         );
 
-        expect((await getAllSections()).length).toStrictEqual(2);
+        expect(
+            (await collections.sections.find({}).toArray()).length,
+        ).toStrictEqual(2);
         const springSections = await getAllSections({
             term: APIv4.Term.spring,
             year: 2023,

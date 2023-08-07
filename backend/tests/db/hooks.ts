@@ -9,10 +9,10 @@ export function setupDbHooks() {
         mongod = await MongoMemoryServer.create();
         const uri = mongod.getUri();
         await connectToDb(uri);
-    });
+    }, 30000);
 
     afterEach(async () => {
         await closeDb();
         await mongod.stop();
-    });
+    }, 30000);
 }
