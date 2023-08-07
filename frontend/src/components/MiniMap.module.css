@@ -5,8 +5,8 @@
 
     grid-template-columns: auto 1.5em;
     grid-template-rows: 1.5em auto;
-    grid-template-areas: "topLabel ."
-                         "viewport rightLabel";
+    grid-template-areas: "day-label ."
+                         "viewport time-label";
 
     & .viewportLabel {
         display: flex;
