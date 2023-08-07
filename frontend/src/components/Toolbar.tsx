@@ -2,7 +2,7 @@
 import * as Config from "@lib/config";
 import { useUserQuery, useLogin } from "@hooks/api/user";
 import useStore from "@hooks/store";
-import * as APIv4 from "hyperschedule-shared/api/v4";
+import type * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
 
 export default function Toolbar() {

@@ -1,11 +1,40 @@
-.viewport {
-    overflow: hidden;
-
+.viewportContainer {
     margin: 1rem;
-    border-radius: 0.25rem;
-    height: 20rem;
+    height: 33vh;
+    display: grid;
 
-    position: relative;
+    grid-template-columns: auto 1.5em;
+    grid-template-rows: 1.5em auto;
+    grid-template-areas: "topLabel ."
+                         "viewport rightLabel";
+
+    .viewportLabel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    & .viewportLabelRight {
+        height: 100%;
+        width: 1.5em;
+        writing-mode: vertical-lr;
+        grid-area: rightLabel;
+    }
+
+    & .viewportLabelTop {
+        width: 100%;
+        height: 1.5em;
+        grid-area: topLabel;
+    }
+
+    & .viewport {
+        overflow: hidden;
+        border-radius: 0.25rem;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        grid-area: viewport;
+    }
 }
 
 .grid {
@@ -16,8 +45,8 @@
     top: 0;
     left: 0;
     transition: transform var(--misc-transition-duration),
-        width var(--misc-transition-duration),
-        background-color var(--theme-transition-duration);
+    width var(--misc-transition-duration),
+    background-color var(--theme-transition-duration);
 
     background-color: var(--bg-1);
     grid-template-areas: "U M T W R F S";
@@ -25,10 +54,12 @@
     &.showSunday.showSaturday {
         width: 100%;
     }
+
     &.showSunday:not(.showSaturday),
     &.showSaturday:not(.showSunday) {
         width: calc(7 / 6 * 100%);
     }
+
     &:not(.showSunday):not(.showSaturday) {
         width: calc(7 / 5 * 100%);
     }
@@ -44,7 +75,7 @@
 
         &.noon,
         &.evening {
-            //border-top: 1px solid var(--bg-3);
+        //border-top: 1px solid var(--bg-3);
         }
     }
 
@@ -54,6 +85,7 @@
         &.odd {
             background-color: var(--bg-2);
         }
+
         &.even {
         }
     }
@@ -80,9 +112,9 @@
 
         @nest [data-theme="dark"] & {
             --section-color: color-mix(
-                in srgb,
-                var(--section-color-light) 50%,
-                var(--bg-1)
+                    in srgb,
+                    var(--section-color-light) 50%,
+                    var(--bg-1)
             );
             color: white;
         }
@@ -100,9 +132,9 @@
         margin: 0.125rem;
         outline: 2px dashed var(--highlight);
         background-color: color-mix(
-            in srgb,
-            var(--highlight) 25%,
-            var(--highlight-transparent)
+                in srgb,
+                var(--highlight) 25%,
+                var(--highlight-transparent)
         );
         border-radius: 0.25rem;
         z-index: 2;
