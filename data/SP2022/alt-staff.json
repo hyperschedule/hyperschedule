@@ -5172,11 +5172,6 @@
     "altName" : "Souly\\, Wilfried"
   },
   {
-    "cxId" : "50058024",
-    "lastName" : "Staff",
-    "altName" : "Staff\\, "
-  },
-  {
     "cxId" : "10019737",
     "firstName" : "Michael",
     "lastName" : "Kuehlwein",
@@ -6284,8 +6279,8 @@
   },
   {
     "cxId" : "50058024",
-    "lastName" : "Staff",
-    "altName" : "Staff\\, "
+    "lastName" : "Faculty TBD",
+    "altName" : "Faculty TBD\\, "
   },
   {
     "cxId" : "30212591",
@@ -7517,11 +7512,6 @@
     "altName" : "Lozano\\, Fernando"
   },
   {
-    "cxId" : "50058024",
-    "lastName" : "Staff",
-    "altName" : "Staff\\, "
-  },
-  {
     "cxId" : "30026673",
     "firstName" : "Morcos",
     "lastName" : "Massoud",
@@ -8113,11 +8103,6 @@
     "firstName" : "Juanita",
     "lastName" : "Aristizabal",
     "altName" : "Aristizabal\\, Juanita"
-  },
-  {
-    "cxId" : "50058024",
-    "lastName" : "Staff",
-    "altName" : "Staff\\, "
   },
   {
     "cxId" : "50435577",
@@ -8781,6 +8766,11 @@
     "firstName" : "Fernando",
     "lastName" : "Lozano",
     "altName" : "Lozano\\, Fernando"
+  },
+  {
+    "cxId" : "50058024",
+    "lastName" : "Faculty TBD",
+    "altName" : "Faculty TBD\\, "
   },
   {
     "cxId" : "30087468",
@@ -9996,6 +9986,11 @@
     "altName" : "Mahoney\\, Monica"
   },
   {
+    "cxId" : "50058024",
+    "lastName" : "Faculty TBD",
+    "altName" : "Faculty TBD\\, "
+  },
+  {
     "cxId" : "30276876",
     "firstName" : "Kaitlyn",
     "lastName" : "Woltz",
@@ -10574,6 +10569,11 @@
     "firstName" : "Shanna",
     "lastName" : "Rose",
     "altName" : "Rose\\, Shanna"
+  },
+  {
+    "cxId" : "50058024",
+    "lastName" : "Faculty TBD",
+    "altName" : "Faculty TBD\\, "
   },
   {
     "cxId" : "50452082",
