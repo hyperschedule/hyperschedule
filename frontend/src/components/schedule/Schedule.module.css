@@ -3,7 +3,6 @@
 
     margin: 1rem;
     border-radius: 0.25rem;
-    height: 20rem;
 
     position: relative;
 }
@@ -61,10 +60,10 @@
         border: 1px solid transparent;
         transition: margin var(--misc-transition-duration);
 
-        margin-left: calc(0.125rem * (2 * var(--stack-order) + 1));
-        margin-top: calc(0.125rem * 2 * var(--stack-order));
-        margin-right: calc(0.125rem * (2 * var(--reverse-stack-order) + 1));
-        margin-bottom: calc(0.125rem * 2 * var(--reverse-stack-order));
+        margin-left: calc(0.25rem + 0.5rem * var(--stack-order));
+        margin-top: calc(0.25rem * var(--stack-order));
+        margin-right: calc(0.25rem + 0.5rem * var(--reverse-stack-order));
+        margin-bottom: calc(0.25rem * var(--reverse-stack-order));
 
         box-shadow: 0 0 0.25rem var(--bg-0);
 
