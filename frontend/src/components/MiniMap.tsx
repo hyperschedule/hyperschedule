@@ -8,14 +8,17 @@ import useStore from "@hooks/store";
 
 import { sectionColorStyle } from "@lib/section";
 
+import GridBackground from "@components/schedule/GridBackground";
+
 import classNames from "classnames";
 
-interface Card {
-    section: APIv4.SectionIdentifier;
-    day: APIv4.Weekday;
-    startTime: number;
-    endTime: number;
-}
+import {
+    getCards,
+    cardKey,
+    mergeCards,
+    groupCardsByDay,
+    timeHull,
+} from "@lib/schedule";
 
 export default function MiniMap() {
     const scheduleSections = useActiveScheduleSections();
@@ -34,7 +37,7 @@ export default function MiniMap() {
 
     // default bounds if no classes are outside this region
     let earliestClassTime = 8 * 3600; // 8am
-    let latestClassTime = 18 * 3600; // 7pm
+    let latestClassTime = 18 * 3600; // 6pm
 
     for (const entry of scheduleSections) {
         const section = sectionsLookup.get(
@@ -43,8 +46,8 @@ export default function MiniMap() {
         if (!section) continue;
         sections.push(section);
         for (const schedule of section.schedules) {
+            // use startTime - 1 and endTime + 1 to render an extra hour around the schedule window
             if (schedule.startTime === schedule.endTime) continue;
-            // we use startTime-1 and endTime+1 to render an extra hour window on top and bottom
             earliestClassTime = Math.min(
                 schedule.startTime - 1,
                 earliestClassTime,
@@ -55,7 +58,7 @@ export default function MiniMap() {
 
     for (const card of expandCards) {
         if (card.startTime === card.endTime) continue;
-        // we use startTime-1 and endTime+1 to render an extra hour window on top and bottom
+        // use startTime - 1 and endTime + 1 to render an extra hour around the schedule window
         earliestClassTime = Math.min(card.startTime - 1, earliestClassTime);
         latestClassTime = Math.max(card.endTime + 1, latestClassTime);
     }
@@ -79,39 +82,29 @@ export default function MiniMap() {
         weekend.showSaturday ||= card.day === APIv4.Weekday.saturday;
     }
 
-    // const gridLines: JSX.Element[] = [];
-    // for (let i = overallStartTime + 12; i < overallEndTime; i += 12)
-    //     gridLines.push(
-    //         <div
-    //             key={`hour:${i}`}
-    //             className={classNames(Css.rowLine, {
-    //                 [Css.noon as string]: i === 12 * 12,
-    //                 [Css.evening as string]: i === 17 * 12,
-    //             })}
-    //             style={{gridRow: i - overallStartTime}}
-    //         ></div>,
-    //     );
-
-    const byDay = collectByDay(cards);
+    const byDay = groupCardsByDay(cards);
 
     return (
-        <div className={Css.visibleWindowContainer}>
+        <div className={Css.viewportContainer}>
             <div
-                className={classNames([Css.minimapLabelTop, Css.minimapLabel])}
+                className={classNames([
+                    Css.viewportLabelTop,
+                    Css.viewportLabel,
+                ])}
             >
                 <span>{weekend.showSunday ? "S" : "M"}</span>{" "}
                 <span>{weekend.showSaturday ? "S" : "F"}</span>
             </div>
             <div
                 className={classNames([
-                    Css.minimapLabelRight,
-                    Css.minimapLabel,
+                    Css.viewportLabelRight,
+                    Css.viewportLabel,
                 ])}
             >
                 <span>{scheduleStartHour}am</span>
                 <span>{scheduleEndHour - 12}pm</span>
             </div>
-            <div className={Css.visibleWindow}>
+            <div className={Css.viewport}>
                 <div
                     className={classNames(Css.grid, {
                         [Css.showSunday as string]: weekend.showSunday,
@@ -129,15 +122,7 @@ export default function MiniMap() {
                         }%,-${(scheduleStartHour / 24) * 100}%)`,
                     }}
                 >
-                    {["U", "M", "T", "W", "R", "F", "S"].map((day, i) => (
-                        <div
-                            key={`day:${day}`}
-                            className={classNames(Css.dayBackground, {
-                                [Css.odd as string]: i & 1,
-                            })}
-                            style={{ gridColumn: day }}
-                        ></div>
-                    ))}
+                    <GridBackground />
                     {expandCards.map((card) => (
                         <div
                             key={`outline:${cardKey(card)}`}
@@ -146,144 +131,79 @@ export default function MiniMap() {
                                 gridColumn: card.day,
                                 gridRow: `${
                                     Math.floor(card.startTime / 300) -
-                                    overallStartTime
+                                    overallStartTime +
+                                    1
                                 } / ${
                                     Math.floor(card.endTime / 300) -
-                                    overallStartTime
+                                    overallStartTime +
+                                    1
                                 }`,
                                 ...sectionColorStyle(card.section),
                             }}
                             onClick={clearExpand}
                         ></div>
                     ))}
-                    {Object.values(byDay).flatMap((cards) => {
-                        const order = stackCards(cards);
-                        const revOrder = stackCardsReverse(cards);
-
-                        return cards.map((card, i) => (
-                            <div
-                                key={`card:${cardKey(card)}`}
-                                className={Css.card}
-                                style={
-                                    {
-                                        gridColumn: card.day,
+                    {Object.entries(byDay).flatMap(([day, cards]) =>
+                        mergeCards(cards).map((group, i) => {
+                            const hull = timeHull(group);
+                            return (
+                                <div
+                                    key={`${group}:${day}/${i}`}
+                                    className={Css.cardGroup}
+                                    style={{
+                                        gridColumn: day,
                                         gridRow: `${
-                                            Math.floor(card.startTime / 300) -
-                                            overallStartTime
+                                            Math.round(hull.startTime / 300) -
+                                            overallStartTime +
+                                            1
                                         } / ${
-                                            Math.floor(card.endTime / 300) -
-                                            overallStartTime
+                                            Math.round(hull.endTime / 300) -
+                                            overallStartTime +
+                                            1
                                         }`,
-                                        ...sectionColorStyle(card.section),
-                                        "--stack-order": order[i],
-                                        "--reverse-stack-order": revOrder[i],
-                                        boxShadow:
-                                            order[i] === 0
-                                                ? "none"
-                                                : "0 0 0.25rem var(--shadow)",
-                                    } as any
-                                }
-                                onClick={() => setExpandKey(card.section)}
-                            ></div>
-                        ));
-                    })}
-                    {/*cards.map((card) => (
-                    <div
-                        key={`card:${cardKey(card)}`}
-                        className={Css.card}
-                        style={{
-                            gridColumn: card.day,
-                            gridRow: `${
-                                Math.floor(card.startTime / 300) -
-                                overallStartTime
-                            } / ${
-                                Math.floor(card.endTime / 300) -
-                                overallStartTime
-                            }`,
-                            ...sectionColorStyle(card.section),
-                        }}
-                    ></div>
-                ))*/}
+                                        gridTemplateRows: `repeat(${Math.round(
+                                            (hull.endTime - hull.startTime) /
+                                                300,
+                                        )},1fr)`,
+                                        gridTemplateColumns: `repeat(${group.length},1fr)`,
+                                    }}
+                                >
+                                    {group.map((card, i) => (
+                                        <div
+                                            key={`slice:${APIv4.stringifySectionCodeLong(
+                                                card.section,
+                                            )}/${i}`}
+                                            className={Css.slice}
+                                            style={{
+                                                gridColumn: `${i + 1}`,
+                                                gridRow: `${
+                                                    Math.round(
+                                                        (card.startTime -
+                                                            hull.startTime) /
+                                                            300,
+                                                    ) + 1
+                                                } / ${
+                                                    Math.round(
+                                                        (card.endTime -
+                                                            hull.startTime) /
+                                                            300,
+                                                    ) + 1
+                                                }`,
+                                                ...sectionColorStyle(
+                                                    card.section,
+                                                ),
+                                            }}
+                                            onClick={() =>
+                                                setExpandKey(card.section)
+                                            }
+                                        ></div>
+                                    ))}
+                                </div>
+                            );
+                        }),
+                    )}
                 </div>
             </div>
         </div>
     );
-}
-
-function cardKey(card: Readonly<Card>) {
-    return `${APIv4.stringifySectionCodeLong(card.section)}:${card.day}/${
-        card.startTime
-    }-${card.endTime}`;
-}
-
-function getCards(section: APIv4.Section) {
-    const cards: Card[] = [];
-    for (const schedule of section.schedules) {
-        if (schedule.startTime === schedule.endTime) continue;
-
-        for (const day of schedule.days)
-            cards.push({
-                day,
-                startTime: schedule.startTime,
-                endTime: schedule.endTime,
-                section: section.identifier,
-            });
-    }
-    return cards;
-}
-
-function collectByDay(cards: readonly Readonly<Card>[]) {
-    const byDay: Record<APIv4.Weekday, Readonly<Card>[]> = {
-        [APIv4.Weekday.monday]: [],
-        [APIv4.Weekday.tuesday]: [],
-        [APIv4.Weekday.wednesday]: [],
-        [APIv4.Weekday.thursday]: [],
-        [APIv4.Weekday.friday]: [],
-        [APIv4.Weekday.saturday]: [],
-        [APIv4.Weekday.sunday]: [],
-    };
-    for (const card of cards) byDay[card.day].push(card);
-    return byDay;
-}
-
-function stackCards(cards: Readonly<Card>[]) {
-    const order: number[] = [0];
-    cards.sort((a, b) => a.endTime - b.endTime || a.startTime - b.startTime);
-
-    for (let i = 1; i < cards.length; ++i) {
-        const current = cards[i]!;
-        let maxDepth = -1;
-
-        for (let j = i - 1; j >= 0; --j) {
-            const prev = cards[j]!;
-            if (current.startTime >= prev.endTime) break;
-            maxDepth = Math.max(maxDepth, order[j]!);
-        }
-
-        order[i] = maxDepth + 1;
-    }
-
-    return order;
-}
-
-function stackCardsReverse(cards: Readonly<Card>[]) {
-    const order: number[] = [];
-    order[cards.length - 1] = 0;
-
-    cards.sort((a, b) => a.startTime - b.startTime || a.endTime - b.endTime);
-
-    for (let i = cards.length - 1; i >= 0; --i) {
-        const current = cards[i]!;
-        let maxDepth = -1;
-
-        for (let j = i + 1; j < cards.length; ++j) {
-            const prev = cards[j]!;
-            if (current.endTime <= prev.startTime) break;
-            maxDepth = Math.max(maxDepth, order[j]!);
-        }
-
-        order[i] = maxDepth + 1;
-    }
-
-    return order;
 }

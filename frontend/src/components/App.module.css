@@ -97,15 +97,13 @@
     position: absolute;
     right: 0;
 
+    display: grid;
+    grid-template-areas: "toolbar" "minimap" "selected";
+    grid-template-rows: auto 1fr 2fr;
+
     @media (--viewport-large) {
         position: relative;
         grid-area: sidebar;
         border-left: 1px solid var(--bg-1);
     }
-}
-
-.toolbar {
-}
-
-.selectedList {
 }

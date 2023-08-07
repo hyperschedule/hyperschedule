@@ -27,7 +27,7 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
     }));
 
     return (
-        <>
+        <div>
             <div>logged in as {props.user.isGuest ? "guest" : "someone"}</div>
             <div>
                 {props.user.schedules.map((schedule, i) => (
@@ -42,6 +42,6 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
                     </button>
                 ))}
             </div>
-        </>
+        </div>
     );
 }

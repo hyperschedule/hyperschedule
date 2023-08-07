@@ -1,0 +1,99 @@
+.viewport {
+    overflow: hidden;
+
+    margin: 1rem;
+    border-radius: 0.25rem;
+
+    position: relative;
+}
+
+.grid {
+    display: grid;
+
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: transform var(--misc-transition-duration),
+        width var(--misc-transition-duration),
+        background-color var(--theme-transition-duration);
+
+    background-color: var(--bg-1);
+    grid-template-areas: "U M T W R F S";
+
+    &.showSunday.showSaturday {
+        width: 100%;
+    }
+    &.showSunday:not(.showSaturday),
+    &.showSaturday:not(.showSunday) {
+        width: calc(7 / 6 * 100%);
+    }
+    &:not(.showSunday):not(.showSaturday) {
+        width: calc(7 / 5 * 100%);
+    }
+
+    &:not(.showSunday) {
+        transform: translateX(calc(-100% / 7));
+    }
+
+    grid-template-columns: repeat(7, 1fr);
+
+    & .rowLine {
+        grid-column: 1 / -1;
+
+        &.noon,
+        &.evening {
+            //border-top: 1px solid var(--bg-3);
+        }
+    }
+
+    & .card {
+        background: var(--section-color);
+        font-size: 0.75rem;
+        border-radius: 0.125rem;
+        padding: 0.125rem 0.25rem;
+        margin: 0.125rem;
+        text-align: center;
+        z-index: 1;
+        cursor: pointer;
+
+        border: 1px solid transparent;
+        transition: margin var(--misc-transition-duration);
+
+        margin-left: calc(0.25rem + 0.5rem * var(--stack-order));
+        margin-top: calc(0.25rem * var(--stack-order));
+        margin-right: calc(0.25rem + 0.5rem * var(--reverse-stack-order));
+        margin-bottom: calc(0.25rem * var(--reverse-stack-order));
+
+        box-shadow: 0 0 0.25rem var(--bg-0);
+
+        @nest [data-theme="dark"] & {
+            --section-color: color-mix(
+                in srgb,
+                var(--section-color-light) 50%,
+                var(--bg-1)
+            );
+            color: white;
+        }
+        @nest [data-theme="light"] & {
+            --section-color: var(--section-color-light);
+            color: black;
+        }
+
+        &.highlight {
+            border-color: var(--highlight);
+        }
+    }
+
+    & .expandOutline {
+        margin: 0.125rem;
+        outline: 2px dashed var(--highlight);
+        background-color: color-mix(
+            in srgb,
+            var(--highlight) 25%,
+            var(--highlight-transparent)
+        );
+        border-radius: 0.25rem;
+        z-index: 2;
+    }
+}

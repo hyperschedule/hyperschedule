@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 import ThemeSlider from "./ThemeSlider";
 import CourseSearch from "./course-search/CourseSearch";
-import Schedule from "./Schedule";
+import Schedule from "./schedule/Schedule";
 import MainSelector from "./MainSelector";
 import Toolbar from "./Toolbar";
 import SelectedList from "./SelectedList";
@@ -45,13 +45,9 @@ export default function App() {
                     </div>
                 </div>
                 <div className={Css.sidebar}>
-                    <div className={Css.toolbar}>
-                        <Toolbar />
-                    </div>
+                    <Toolbar />
                     <MiniMap />
-                    <div className={Css.selectedList}>
-                        <SelectedList />
-                    </div>
+                    <SelectedList />
                 </div>
                 <ThemeSlider />
             </div>

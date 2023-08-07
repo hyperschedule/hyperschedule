@@ -8,7 +8,7 @@ export default function SelectedList() {
 
     if (!schedule) return <></>;
     return (
-        <>
+        <div>
             {schedule.sections.map((entry) => {
                 const section = sectionsLookup.get(
                     APIv4.stringifySectionCodeLong(entry.section),
@@ -21,6 +21,6 @@ export default function SelectedList() {
                     </div>
                 );
             })}
-        </>
+        </div>
     );
 }

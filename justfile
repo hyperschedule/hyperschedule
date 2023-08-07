@@ -21,3 +21,6 @@ init-db:
 
 download-data term:
   scp -rT "hyperschedule:/srv/hyperschedule/data/$1" "data/$1"
+
+install-hooks:
+  ln -s '../../hooks/pre-commit' '.git/hooks/pre-commit'

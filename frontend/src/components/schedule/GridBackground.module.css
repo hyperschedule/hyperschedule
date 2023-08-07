@@ -1,0 +1,9 @@
+.dayBackground {
+    grid-row: 1 / -1;
+
+    &.odd {
+        background-color: var(--bg-2);
+    }
+    &.even {
+    }
+}
