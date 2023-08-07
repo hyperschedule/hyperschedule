@@ -11,15 +11,19 @@ export function useActiveSchedule() {
     return userQuery.data?.schedules[activeScheduleIndex];
 }
 
-export function useActiveScheduleLookup() {
+export function useActiveScheduleSections() {
     const schedule = useActiveSchedule();
+    return schedule?.sections ?? [];
+}
+
+export function useActiveScheduleLookup() {
+    const sections = useActiveScheduleSections();
     return useMemo(() => {
         const lookup = new Map<string, APIv4.UserSection>();
-        if (!schedule) return lookup;
 
-        for (const entry of schedule.sections)
+        for (const entry of sections)
             lookup.set(APIv4.stringifySectionCodeLong(entry.section), entry);
 
         return lookup;
-    }, [schedule]);
+    }, [sections]);
 }

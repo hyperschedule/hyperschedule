@@ -2,7 +2,7 @@ import Css from "./MiniMap.module.css";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { useActiveSchedule } from "@hooks/schedule";
+import { useActiveScheduleSections } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
 import useStore from "@hooks/store";
 
@@ -20,14 +20,14 @@ type Card = {
 type Interval = { start: number; end: number };
 
 export default function MiniMap() {
-    const schedule = useActiveSchedule();
+    const scheduleSections = useActiveScheduleSections();
     const sectionsLookup = useActiveSectionsLookup();
 
     const expandKey = useStore((store) => store.expandKey);
     const setExpandKey = useStore((store) => store.setExpandKey);
     const clearExpand = useStore((store) => store.clearExpand);
 
-    if (!schedule || !sectionsLookup) return <></>;
+    if (!scheduleSections || !sectionsLookup) return <></>;
 
     // grid rows in units of 5mins, since (afaik) all classes' start/end times
     // are aligned to some multiple of 5mins?
@@ -35,7 +35,7 @@ export default function MiniMap() {
     const overallEndTime = 22 * 12;
 
     const sections: APIv4.Section[] = [];
-    for (const entry of schedule.sections) {
+    for (const entry of scheduleSections) {
         const section = sectionsLookup.get(
             APIv4.stringifySectionCodeLong(entry.section),
         );
