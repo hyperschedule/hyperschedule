@@ -85,26 +85,23 @@ export default function MiniMap() {
     const byDay = groupCardsByDay(cards);
 
     return (
-        <div className={Css.viewportContainer}>
+        <div className={Css.minimapContainer}>
             <div
-                className={classNames([
-                    Css.viewportLabelTop,
-                    Css.viewportLabel,
-                ])}
+                className={classNames([Css.minimapLabelTop, Css.minimapLabel])}
             >
                 <span>{weekend.showSunday ? "S" : "M"}</span>{" "}
                 <span>{weekend.showSaturday ? "S" : "F"}</span>
             </div>
             <div
                 className={classNames([
-                    Css.viewportLabelRight,
-                    Css.viewportLabel,
+                    Css.minimapLabelRight,
+                    Css.minimapLabel,
                 ])}
             >
                 <span>{scheduleStartHour}am</span>
                 <span>{scheduleEndHour - 12}pm</span>
             </div>
-            <div className={Css.viewport}>
+            <div className={Css.minimap}>
                 <div
                     className={classNames(Css.grid, {
                         [Css.showSunday as string]: weekend.showSunday,
