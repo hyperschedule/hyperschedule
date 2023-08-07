@@ -12,6 +12,7 @@ import Schedule from "./Schedule";
 import MainSelector from "./MainSelector";
 import Toolbar from "./Toolbar";
 import SelectedList from "./SelectedList";
+import MiniMap from "./MiniMap";
 
 import useStore, { MainTab } from "@hooks/store";
 
@@ -47,7 +48,7 @@ export default function App() {
                     <div className={Css.toolbar}>
                         <Toolbar />
                     </div>
-                    <div className={Css.minimap}></div>
+                    <MiniMap />
                     <div className={Css.selectedList}>
                         <SelectedList />
                     </div>

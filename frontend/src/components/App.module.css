@@ -37,13 +37,16 @@
 
     &[data-theme="light"] {
         --bg-0: #ffffff;
-        --bg-1: #cfcac3;
-        --bg-2: #afaaa3;
-        --bg-3: #8f8a83;
+        --bg-1: #dfdad3;
+        --bg-2: #bfbab3;
+        --bg-3: #afaaa3;
 
         --fg-0: #2f2822;
         --fg-1: #4f4842;
         --fg-2: #6f6862;
+
+        --highlight: #f80;
+        --highlight-transparent: #f800;
 
         --palette-red: #f87171;
         --palette-orange: #eab308;
@@ -52,11 +55,15 @@
 
     &[data-theme="dark"] {
         --bg-0: #2a2824;
-        --bg-1: #4a4844;
-        --bg-2: #6a6864;
+        --bg-1: #3a3834;
+        --bg-2: #4a4844;
+        --bg-3: #5a5854;
 
         --fg-0: #efeae3;
         --fg-1: #cfcac3;
+
+        --highlight: #f80;
+        --highlight-transparent: #f800;
 
         --palette-red: #ec4202;
         --palette-orange: #da9a03;
@@ -94,15 +101,6 @@
         grid-area: sidebar;
         border-left: 1px solid var(--bg-1);
     }
-}
-
-.minimap {
-    background-color: var(--bg-1);
-    height: 20rem;
-    margin: 1rem;
-    border-radius: 0.5rem;
-
-    transition: background-color var(--theme-transition-duration);
 }
 
 .toolbar {

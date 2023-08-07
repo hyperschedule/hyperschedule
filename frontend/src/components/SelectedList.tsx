@@ -1,4 +1,4 @@
-import { useActiveSchedule } from "@hooks/user";
+import { useActiveSchedule } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 

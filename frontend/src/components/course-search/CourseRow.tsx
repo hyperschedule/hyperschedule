@@ -14,7 +14,9 @@ import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox
 
 import useStore from "@hooks/store";
 import { useScheduleSectionMutation, useUserQuery } from "@hooks/api/user";
-import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/user";
+import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
+
+import { sectionColorStyle } from "@lib/section";
 
 const statusBadge = {
     [APIv4.SectionStatus.open]: Css.badgeOpen,
@@ -54,12 +56,7 @@ export default function CourseRow(props: {
         <div className={Css.padder}>
             <div
                 className={classNames(Css.box, { [Css.expand!]: props.expand })}
-                style={
-                    {
-                        "--course-color-light": color,
-                        "--course-color-dark": `${color}60`,
-                    } as React.CSSProperties
-                }
+                style={sectionColorStyle(props.section.identifier)}
             >
                 <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={14} />

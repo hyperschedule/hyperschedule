@@ -10,7 +10,7 @@
     */
 
     border-radius: 0.125rem;
-    border: 1px solid var(--course-color);
+    border: 1px solid var(--section-color);
     transition: border-color var(--theme-transition-duration);
     font-size: calc(7rem / 8);
 
@@ -19,14 +19,18 @@
     }
 
     @nest [data-theme="dark"] & {
-        --course-color: var(--course-color-dark);
+        --section-color: color-mix(
+            in srgb,
+            var(--section-color-light) 25%,
+            var(--bg-0)
+        );
         & .titlebar {
             color: white;
         }
     }
 
     @nest [data-theme="light"] & {
-        --course-color: var(--course-color-light);
+        --section-color: var(--section-color-light);
         & .titlebar {
             color: black;
         }
@@ -37,7 +41,7 @@
     user-select: none;
     cursor: pointer;
     white-space: nowrap;
-    background-color: var(--course-color);
+    background-color: var(--section-color);
     transition: background-color var(--theme-transition-duration),
         color var(--theme-transition-duration);
 

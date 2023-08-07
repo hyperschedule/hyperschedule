@@ -1,6 +1,8 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useCourseAreaDescription } from "@hooks/api/course";
 
+import { formatTime24 } from "@lib/time";
+
 import Css from "./CourseDescriptionBox.module.css";
 
 function computeCredits(section: APIv4.Section): number {
@@ -19,7 +21,7 @@ export default function CourseDescriptionBox(props: {
     if (!descriptions.data) return <></>;
 
     return (
-        <>
+        <div className={Css.root}>
             <p className={Css.description}>
                 {props.section.course.description}
             </p>
@@ -45,6 +47,19 @@ export default function CourseDescriptionBox(props: {
                     ))}
                 </ul>
             </section>
-        </>
+            <section className={Css.schedule}>
+                <h3>Schedule</h3>
+                <ul>
+                    {props.section.schedules.map((slot, i) => (
+                        <li key={i}>
+                            {slot.days.join("")} {formatTime24(slot.startTime)}
+                            &ndash;
+                            {formatTime24(slot.endTime)} @{" "}
+                            {slot.locations.join(", ")}
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        </div>
     );
 }

@@ -1,5 +1,5 @@
 import { useCurrentTermQuery } from "@hooks/api/term";
-import { useActiveSchedule } from "@hooks/user";
+import { useActiveSchedule } from "@hooks/schedule";
 
 export function useActiveTerm() {
     const currentTermQuery = useCurrentTermQuery();
