@@ -2,7 +2,7 @@
 import * as Config from "@lib/config";
 import { useUserQuery, useLogin } from "@hooks/api/user";
 import useStore from "@hooks/store";
-import * as APIv4 from "hyperschedule-shared/api/v4";
+import type * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
 
 export default function Toolbar() {
@@ -27,7 +27,7 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
     }));
 
     return (
-        <>
+        <div>
             <div>logged in as {props.user.isGuest ? "guest" : "someone"}</div>
             <div>
                 {props.user.schedules.map((schedule, i) => (
@@ -42,6 +42,6 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
                     </button>
                 ))}
             </div>
-        </>
+        </div>
     );
 }

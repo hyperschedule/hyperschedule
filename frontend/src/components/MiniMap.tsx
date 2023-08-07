@@ -22,30 +22,47 @@ export default function MiniMap() {
     const setExpandKey = useStore((store) => store.setExpandKey);
     const clearExpand = useStore((store) => store.clearExpand);
 
-    if (!scheduleSections || !sectionsLookup) return <></>;
-
-    // grid rows in units of 5mins, since (afaik) all classes' start/end times
-    // are aligned to some multiple of 5mins?
-    const overallStartTime = 7 * 12;
-    const overallEndTime = 22 * 12;
-
     const sections: APIv4.Section[] = [];
+
+    const expandSection = expandKey
+        ? sectionsLookup.get(APIv4.stringifySectionCodeLong(expandKey))
+        : null;
+    const expandCards = expandSection ? Schedule.getCards(expandSection) : [];
+
+    // default bounds if no classes are outside this region
+    let earliestClassTime = 8 * 3600; // 8am
+    let latestClassTime = 19 * 3600; // 7pm
+
     for (const entry of scheduleSections) {
         const section = sectionsLookup.get(
             APIv4.stringifySectionCodeLong(entry.section),
         );
         if (!section) continue;
         sections.push(section);
+        for (const schedule of section.schedules) {
+            if (schedule.startTime === schedule.endTime) continue;
+            earliestClassTime = Math.min(schedule.startTime, earliestClassTime);
+            latestClassTime = Math.max(schedule.endTime, latestClassTime);
+        }
     }
 
-    const expandSection = expandKey
-        ? sectionsLookup.get(APIv4.stringifySectionCodeLong(expandKey))
-        : null;
-    const expandCards = expandSection ? Schedule.getCards(expandSection) : null;
+    for (const card of expandCards) {
+        if (card.startTime === card.endTime) continue;
+        earliestClassTime = Math.min(card.startTime, earliestClassTime);
+        latestClassTime = Math.max(card.endTime, latestClassTime);
+    }
+
+    const scheduleStartHour = Math.floor(earliestClassTime / 3600);
+    const scheduleEndHour = Math.ceil(latestClassTime / 3600);
+
+    // grid rows in units of 5mins, since (afaik) all classes' start/end times
+    // are aligned to some multiple of 5mins?
+    const overallStartTime = scheduleStartHour * 12;
+    const overallEndTime = scheduleEndHour * 12;
 
     const weekend = { showSunday: false, showSaturday: false };
     const cards = sections.flatMap(Schedule.getCards);
-    for (const card of expandCards ?? []) {
+    for (const card of expandCards) {
         weekend.showSunday ||= card.day === APIv4.Weekday.sunday;
         weekend.showSaturday ||= card.day === APIv4.Weekday.saturday;
     }
@@ -54,61 +71,45 @@ export default function MiniMap() {
         weekend.showSaturday ||= card.day === APIv4.Weekday.saturday;
     }
 
-    const gridLines: JSX.Element[] = [];
-    for (let i = overallStartTime + 12; i < overallEndTime; i += 12)
-        gridLines.push(
-            <div
-                key={`hour:${i}`}
-                className={classNames(Css.rowLine, {
-                    [Css.noon]: i === 12 * 12,
-                    [Css.evening]: i === 17 * 12,
-                })}
-                style={{ gridRow: i - overallStartTime }}
-            ></div>,
-        );
-
     const byDay = Schedule.groupCardsByDay(cards);
 
     return (
-        <div className={Css.viewport}>
+        <div className={Css.viewportContainer}>
             <div
-                className={classNames(Css.grid, {
-                    [Css.showSunday]: weekend.showSunday,
-                    [Css.showSaturday]: weekend.showSaturday,
-                })}
-                style={{
-                    gridTemplateRows: `repeat(${
-                        overallEndTime - overallStartTime
-                    }, 1fr)`,
-                }}
+                className={classNames([
+                    Css.viewportLabelTop,
+                    Css.viewportLabel,
+                ])}
             >
-                <GridBackground />
-                {expandCards?.map((card) => (
-                    <div
-                        key={`outline:${Schedule.cardKey(card)}`}
-                        className={Css.expandOutline}
-                        style={{
-                            gridColumn: card.day,
-                            gridRow: `${
-                                Math.floor(card.startTime / 300) -
-                                overallStartTime
-                            } / ${
-                                Math.floor(card.endTime / 300) -
-                                overallStartTime
-                            }`,
-                            ...sectionColorStyle(card.section),
-                        }}
-                        onClick={clearExpand}
-                    ></div>
-                ))}
-                {Object.values(byDay).flatMap((cards) => {
-                    const order = Schedule.stackCards(cards);
-                    const revOrder = Schedule.stackCardsReverse(cards);
-
-                    return cards.map((card, i) => (
+                <span>{weekend.showSunday ? "S" : "M"}</span>{" "}
+                <span>{weekend.showSaturday ? "S" : "F"}</span>
+            </div>
+            <div
+                className={classNames([
+                    Css.viewportLabelRight,
+                    Css.viewportLabel,
+                ])}
+            >
+                <span>{scheduleStartHour}am</span>
+                <span>{scheduleEndHour - 12}pm</span>
+            </div>
+            <div className={Css.viewport}>
+                <div
+                    className={classNames(Css.grid, {
+                        [Css.showSunday as string]: weekend.showSunday,
+                        [Css.showSaturday as string]: weekend.showSaturday,
+                    })}
+                    style={{
+                        gridTemplateRows: `repeat(${
+                            overallEndTime - overallStartTime
+                        }, 1fr)`,
+                    }}
+                >
+                    <GridBackground />
+                    {expandCards.map((card) => (
                         <div
-                            key={`card:${Schedule.cardKey(card)}`}
-                            className={Css.card}
+                            key={`outline:${Schedule.cardKey(card)}`}
+                            className={Css.expandOutline}
                             style={{
                                 gridColumn: card.day,
                                 gridRow: `${
@@ -118,14 +119,12 @@ export default function MiniMap() {
                                     Math.floor(card.endTime / 300) -
                                     overallStartTime
                                 }`,
-                                "--stack-order": order[i]!,
-                                "--reverse-stack-order": revOrder[i]!,
                                 ...sectionColorStyle(card.section),
                             }}
-                            onClick={() => setExpandKey(card.section)}
+                            onClick={clearExpand}
                         ></div>
-                    ));
-                })}
+                    ))}
+                </div>
             </div>
         </div>
     );

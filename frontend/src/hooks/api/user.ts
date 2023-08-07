@@ -20,7 +20,7 @@ export function useLogin() {
     // TODO: revalidate? invalidate user? who knows how to use react query
     return useMutation({
         mutationFn: async () => {
-            return await fetch(`${apiUrl}/v4/user/new-guest`, {
+            return fetch(`${apiUrl}/v4/user/new-guest`, {
                 method: "POST",
                 credentials: "include",
             });

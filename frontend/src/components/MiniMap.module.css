@@ -1,11 +1,43 @@
-.viewport {
-    overflow: hidden;
-
+.viewportContainer {
     margin: 1rem;
-    border-radius: 0.25rem;
-    height: 20rem;
+    display: grid;
 
-    position: relative;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "day-label blank"
+        "viewport time-label";
+
+    & .viewportLabel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        font-size: 0.875rem;
+        color: var(--fg-1);
+    }
+
+    & .viewportLabelRight {
+        height: 100%;
+        width: 1.5em;
+        writing-mode: vertical-lr;
+        grid-area: time-label;
+    }
+
+    & .viewportLabelTop {
+        width: 100%;
+        height: 1.5em;
+        grid-area: day-label;
+    }
+
+    & .viewport {
+        overflow: hidden;
+        border-radius: 0.25rem;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        grid-area: viewport;
+    }
 }
 
 .grid {
@@ -25,10 +57,12 @@
     &.showSunday.showSaturday {
         width: 100%;
     }
+
     &.showSunday:not(.showSaturday),
     &.showSaturday:not(.showSunday) {
         width: calc(7 / 6 * 100%);
     }
+
     &:not(.showSunday):not(.showSaturday) {
         width: calc(7 / 5 * 100%);
     }
