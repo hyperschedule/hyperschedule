@@ -12,18 +12,21 @@ export function useUserQuery() {
     return useQuery({
         queryKey: ["user"],
         queryFn: getUser,
-        //staleTime: Infinity,
+        staleTime: Infinity,
     });
 }
 
 export function useLogin() {
-    // TODO: revalidate? invalidate user? who knows how to use react query
+    const client = useQueryClient();
     return useMutation({
         mutationFn: async () => {
             return fetch(`${apiUrl}/v4/user/new-guest`, {
                 method: "POST",
                 credentials: "include",
             });
+        },
+        onSuccess: () => {
+            client.invalidateQueries(["user"]);
         },
     });
 }
