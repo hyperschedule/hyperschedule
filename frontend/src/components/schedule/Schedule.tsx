@@ -25,8 +25,6 @@ export default function Schedule() {
     const scheduleSections = useActiveScheduleSections();
     const sectionsLookup = useActiveSectionsLookup();
 
-    if (!scheduleSections || !sectionsLookup) return <></>;
-
     // grid rows in units of 5mins, since (afaik) all classes' start/end times
     // are aligned to some multiple of 5mins?
     const overallStartTime = 7 * 12;
@@ -50,8 +48,9 @@ export default function Schedule() {
             <div
                 key={`hour:${i}`}
                 className={classNames(Css.rowLine, {
-                    [Css.noon]: i === 12 * 12,
-                    [Css.evening]: i === 17 * 12,
+                    // bullshit !: <https://github.com/facebook/create-react-app/issues/11156>
+                    [Css.noon!]: i === 12 * 12,
+                    [Css.evening!]: i === 17 * 12,
                 })}
                 style={{ gridRow: i - overallStartTime }}
             ></div>,
@@ -63,8 +62,9 @@ export default function Schedule() {
         <div className={Css.viewport}>
             <div
                 className={classNames(Css.grid, {
-                    [Css.showSunday]: weekend.sunday,
-                    [Css.showSaturday]: weekend.saturday,
+                    // bullshit !: <https://github.com/facebook/create-react-app/issues/11156>
+                    [Css.showSunday!]: weekend.sunday,
+                    [Css.showSaturday!]: weekend.saturday,
                 })}
                 style={{
                     gridTemplateRows: `repeat(${
@@ -81,19 +81,21 @@ export default function Schedule() {
                         <div
                             key={`card:${cardKey(card)}`}
                             className={Css.card}
-                            style={{
-                                gridColumn: card.day,
-                                gridRow: `${
-                                    Math.floor(card.startTime / 300) -
-                                    overallStartTime
-                                } / ${
-                                    Math.floor(card.endTime / 300) -
-                                    overallStartTime
-                                }`,
-                                "--stack-order": order[i]!,
-                                "--reverse-stack-order": revOrder[i]!,
-                                ...sectionColorStyle(card.section),
-                            }}
+                            style={
+                                {
+                                    gridColumn: card.day,
+                                    gridRow: `${
+                                        Math.floor(card.startTime / 300) -
+                                        overallStartTime
+                                    } / ${
+                                        Math.floor(card.endTime / 300) -
+                                        overallStartTime
+                                    }`,
+                                    "--stack-order": order[i]!,
+                                    "--reverse-stack-order": revOrder[i]!,
+                                    ...sectionColorStyle(card.section),
+                                } as React.CSSProperties
+                            }
                         >
                             {APIv4.stringifySectionCode(card.section)}
                         </div>

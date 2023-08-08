@@ -21,7 +21,8 @@ export default function GridBackground() {
                 <div
                     key={`day:${day}`}
                     className={classNames(Css.dayBackground, {
-                        [Css.odd]: i & 1,
+                        // bullshit !: <https://github.com/facebook/create-react-app/issues/11156>
+                        [Css.odd!]: i & 1,
                     })}
                     style={{ gridColumn: day }}
                 ></div>
