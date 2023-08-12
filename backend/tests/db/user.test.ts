@@ -10,6 +10,7 @@ import {
     deleteSchedule,
     deleteSection,
     renameSchedule,
+    setSectionAttrs,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -25,13 +26,15 @@ describe("db/models/user", () => {
 
     test("add schedule to an user", async () => {
         const uid = await createGuestUser();
+        const user = await getUser(uid);
+        expect(user!.schedules.length).toStrictEqual(1);
         await addSchedule(
             uid,
             { year: 2022, term: APIv4.Term.fall },
             "test schedule 0",
         );
         const updated1 = await getUser(uid);
-        expect(updated1!.schedules.length).toStrictEqual(1);
+        expect(updated1!.schedules.length).toStrictEqual(2);
 
         await expect(
             addSchedule(
@@ -47,7 +50,7 @@ describe("db/models/user", () => {
             "test schedule 0",
         );
         const updated2 = await getUser(uid);
-        expect(updated2!.schedules.length).toStrictEqual(2);
+        expect(updated2!.schedules.length).toStrictEqual(3);
 
         await addSchedule(
             uid,
@@ -55,12 +58,12 @@ describe("db/models/user", () => {
             "test schedule 1",
         );
         const updated3 = await getUser(uid);
-        expect(updated3.schedules.length).toStrictEqual(3);
+        expect(updated3.schedules.length).toStrictEqual(4);
 
-        // add another 97 schedules. use promise.all to test possible race conditions
+        // add another 96 schedules. use promise.all to test possible race conditions
         await expect(
             Promise.all(
-                [...Array(97)].map((_, i) =>
+                [...Array(96)].map((_, i) =>
                     addSchedule(
                         uid,
                         { year: 2022, term: APIv4.Term.fall },
@@ -95,6 +98,7 @@ describe("db/models/user", () => {
         };
 
         const uid = await createGuestUser();
+        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
         const uid2 = await createGuestUser();
         const sid = await addSchedule(
             uid,
@@ -141,11 +145,16 @@ describe("db/models/user", () => {
         ).rejects.toBeTruthy();
 
         const user2 = await getUser(uid2);
-        expect(user2.schedules.length).toStrictEqual(0);
+        expect(user2.schedules.length).toStrictEqual(1);
     });
 
     test("delete schedule from user", async () => {
         const uid = await createGuestUser();
+        const user = await getUser(uid);
+        expect(user.schedules.length).toStrictEqual(1);
+        await deleteSchedule(uid, user.schedules[0]!._id);
+        expect((await getUser(uid)).schedules.length).toStrictEqual(0);
+
         const sid0 = await addSchedule(
             uid,
             { year: 2022, term: APIv4.Term.fall },
@@ -187,6 +196,7 @@ describe("db/models/user", () => {
             half: null,
         };
         const uid = await createGuestUser();
+        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
         const sid0 = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
@@ -217,6 +227,7 @@ describe("db/models/user", () => {
 
     test("rename schedule", async () => {
         const uid = await createGuestUser();
+        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
         const sid = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
@@ -232,5 +243,37 @@ describe("db/models/user", () => {
         await expect(
             renameSchedule(uid, sid + "AAAA", "test"),
         ).rejects.toBeTruthy();
+    });
+
+    test("set section attrs", async () => {
+        const testSection: APIv4.SectionIdentifier = {
+            department: "CSCI",
+            courseNumber: 131,
+            suffix: "",
+            affiliation: "HM",
+            sectionNumber: 1,
+            term: APIv4.Term.spring,
+            year: 2023,
+            half: null,
+        };
+        const uid = await createGuestUser();
+        // delete the default schedule
+        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
+
+        const sid = await addSchedule(
+            uid,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 0",
+        );
+        await addSection(uid, sid, testSection);
+        const user = await getUser(uid);
+        expect(user.schedules[0]!.sections[0]!.attrs).toStrictEqual({
+            selected: true,
+        } satisfies APIv4.UserSectionAttrs);
+        await setSectionAttrs(uid, sid, testSection, { selected: false });
+        const user2 = await getUser(uid);
+        expect(user2.schedules[0]!.sections[0]!.attrs).toStrictEqual({
+            selected: false,
+        } satisfies APIv4.UserSectionAttrs);
     });
 });

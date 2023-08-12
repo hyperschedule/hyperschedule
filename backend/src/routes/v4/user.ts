@@ -71,12 +71,15 @@ userApp
 
 userApp.get("/", async function (request: Request, response: Response) {
     if (request.userToken === null) return response.status(401).end();
-    let user:APIv4.User;
+    let user: APIv4.User;
     try {
         user = await getUser(request.userToken.uuid);
     } catch (e) {
-        logger.error("Cannot find user %s with a valid server signature",request.userToken.uuid)
-        return response.status(401).cookie("token","").end()
+        logger.error(
+            "Cannot find user %s with a valid server signature",
+            request.userToken.uuid,
+        );
+        return response.status(401).cookie("token", "").end();
     }
     logger.info(user);
     return response.header("Content-Type", "application/json").send(user);

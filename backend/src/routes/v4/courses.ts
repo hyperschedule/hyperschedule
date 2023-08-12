@@ -2,7 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { getAllSections } from "../../db/models/course";
 import { App } from "@tinyhttp/app";
 import { courseAreaDescriptions } from "../../hmc-api/course-area-descriptions";
-import {CURRENT_TERM} from "../../current-term";
+import { CURRENT_TERM } from "../../current-term";
 
 const courseApp = new App({ settings: { xPoweredBy: false } });
 
@@ -27,10 +27,17 @@ courseApp.get("/sections/:year/:term", async (request, reply) => {
     if (!parseTerm.success)
         return reply.status(400).send(`Invalid term ${term}`);
 
-    if (year<CURRENT_TERM.year){
-        reply.header("Cache-Control",`public,immutable,max-age=${7*24*3600}`)
+    // TODO: use a better term comparison
+    if (year < CURRENT_TERM.year) {
+        reply.header(
+            "Cache-Control",
+            `public,immutable,max-age=${7 * 24 * 3600}`,
+        );
     } else {
-        reply.header("Cache-Control","public,s-max-age=15,max-age=15,proxy-revalidate,stale-while-revalidate=30")
+        reply.header(
+            "Cache-Control",
+            "public,s-max-age=15,max-age=15,proxy-revalidate,stale-while-revalidate=30",
+        );
     }
     const sections = await getAllSections({ term: parseTerm.data, year });
 

@@ -397,6 +397,7 @@ export async function setSectionAttrs(
                     )} in ${scheduleId} for ${userId} completed`,
                     attrs,
                 );
+                return;
             }
         }
 
