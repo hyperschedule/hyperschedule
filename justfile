@@ -19,6 +19,29 @@ init-db:
       --loader='ts-node/esm' \
       'src/db/init-db.ts'
 
+load-db:
+  podman exec -i hyperschedule-mongodb \
+    mongorestore \
+    --username 'hyperschedule' \
+    --password 'local_dev' \
+    --authenticationDatabase 'admin' \
+    --nsInclude 'hyperschedule.sections' \
+    --archive \
+    --gzip \
+    < 'data/db_dump'
+
+dump-db:
+  podman exec hyperschedule-mongodb \
+    mongodump \
+    --db 'hyperschedule' \
+    --collection 'sections' \
+    --authenticationDatabase admin \
+    --username hyperschedule \
+    --password local_dev \
+    --archive \
+    --gzip \
+    > 'data/db_dump'
+
 download-data term:
   scp -rT "hyperschedule:/srv/hyperschedule/data/$1" "data/$1"
 
