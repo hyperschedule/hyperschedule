@@ -2,10 +2,6 @@ import * as path from "node:path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-import pcssComment from "postcss-comment";
-import pcssNesting from "postcss-nesting";
-import pcssCustomMedia from "postcss-custom-media";
-
 export default defineConfig({
     root: "src",
     envDir: __dirname,
@@ -16,6 +12,10 @@ export default defineConfig({
             "@components": path.join(__dirname, "src/components"),
             "@lib": path.join(__dirname, "src/lib"),
             "@hooks": path.join(__dirname, "src/hooks"),
+            // fix the weird thing with use-sync-external-store, imported by both zustand and react-query
+            "use-sync-external-store/shim": path.dirname(
+                require.resolve("use-sync-external-store"),
+            ),
         },
     },
     css: {},
@@ -27,6 +27,7 @@ export default defineConfig({
                 app: "src/index.html",
             },
         },
+        outDir: path.resolve(__dirname, "dist"),
         sourcemap: true,
     },
     server: {
