@@ -67,6 +67,8 @@
     "start-db": "./start-dev-db.sh",
     "stop-db": "docker stop hyperschedule-mongodb",
     "restart-db": "yarn stop-db && yarn start-db",
+    "dump-db": "docker exec -i hyperschedule-mongodb /usr/bin/mongodump --db=hyperschedule --collection=sections --authenticationDatabase admin --username hyperschedule --password local_dev --archive --gzip > ../data/db_dump",
+    "load-db": "docker exec -i hyperschedule-mongodb /usr/bin/mongorestore --username hyperschedule --password local_dev --authenticationDatabase admin --nsInclude=\"hyperschedule.sections\" --archive --gzip < ../data/db_dump",
     "typecheck": "tsc --noEmit",
     "ci:test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' DOTENV_CONFIG_PATH=.env.development jest --setupFiles dotenv/config --bail=0 --no-cache --ci",
     "prod-node": "NODE_ENV=production node --experimental-specifier-resolution=node --loader ts-node/esm/transpile-only",

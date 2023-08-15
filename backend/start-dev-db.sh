@@ -20,8 +20,7 @@ else
   echo $'\e[95mWaiting 5 seconds for database to start\e[m'
   sleep 5
 
-  echo $'\e[95mInitializing database with sample data\e[m'
-  yarn dev-node ./src/db/init-db.ts
+  yarn load-db
 fi
 
 echo $'\e[95mDone\e[m'
