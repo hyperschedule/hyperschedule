@@ -26,7 +26,7 @@ export function useLogin() {
             });
         },
         onSuccess: () => {
-            client.invalidateQueries(["user"]);
+            void client.invalidateQueries(["user"]);
         },
     });
 }
@@ -49,7 +49,7 @@ export function useScheduleSectionMutation() {
                 body: JSON.stringify(args),
             }),
         onSuccess: () => {
-            client.invalidateQueries(["user"]);
+            void client.invalidateQueries(["user"]);
         },
     });
 }
@@ -65,7 +65,7 @@ export function useScheduleSectionAttrsMutation() {
                 body: JSON.stringify(args),
             }),
         onSuccess: () => {
-            client.invalidateQueries(["user"]);
+            void client.invalidateQueries(["user"]);
         },
     });
 }
