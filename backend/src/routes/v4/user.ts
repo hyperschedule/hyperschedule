@@ -8,6 +8,7 @@ import {
     deleteSection,
     getUser,
     renameSchedule,
+    setSectionAttrs,
 } from "../../db/models/user";
 import { createLogger } from "../../logger";
 import { signUser } from "../../auth/token";
@@ -173,6 +174,25 @@ userApp
             request.userToken.uuid,
             input.data.scheduleId,
             input.data.section,
+        );
+
+        return response.status(204).end();
+    })
+    .patch(async function (request: Request, response: Response) {
+        if (request.userToken === null) return response.status(401).end();
+
+        const input = APIv4.SetSectionAttrRequest.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        await setSectionAttrs(
+            request.userToken.uuid,
+            input.data.scheduleId,
+            input.data.section,
+            input.data.attrs,
         );
 
         return response.status(204).end();

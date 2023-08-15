@@ -78,3 +78,10 @@ export type AddSectionRequest = z.infer<typeof AddSectionRequest>;
 
 export const DeleteSectionRequest = AddSectionRequest;
 export type DeleteSectionResponse = AddSectionRequest;
+
+export const SetSectionAttrRequest = z.object({
+    scheduleId: z.string(),
+    section: SectionIdentifier,
+    attrs: UserSectionAttrs,
+});
+export type SetSectionAttrRequest = z.infer<typeof SetSectionAttrRequest>;
