@@ -1,7 +1,7 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useCourseAreaDescription } from "@hooks/api/course";
 
-import { formatTime24 } from "@lib/time";
+import { formatTime12 } from "@lib/time";
 
 import Css from "./CourseDescriptionBox.module.css";
 
@@ -52,12 +52,23 @@ export default function CourseDescriptionBox(props: {
                 <ul>
                     {props.section.schedules.map((slot, i) => (
                         <li key={i}>
-                            {slot.days.join("")} {formatTime24(slot.startTime)}
+                            {slot.days.join("")} {formatTime12(slot.startTime)}
                             &ndash;
-                            {formatTime24(slot.endTime)} @{" "}
+                            {formatTime12(slot.endTime)} @{" "}
                             {slot.locations.join(", ")}
                         </li>
                     ))}
+                    {props.section.identifier.half === null ? (
+                        <></>
+                    ) : (
+                        <li key={"half"}>
+                            (
+                            {props.section.identifier.half.number === 1
+                                ? "first"
+                                : "second"}{" "}
+                            half semester only)
+                        </li>
+                    )}
                 </ul>
             </section>
         </div>

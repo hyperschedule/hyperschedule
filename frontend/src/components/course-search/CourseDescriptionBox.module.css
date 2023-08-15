@@ -45,5 +45,11 @@
             border-radius: 0.25em;
             transition: background-color var(--theme-transition-duration);
         }
+
+        &.instructors li:not(:last-child){
+            &::after{
+                content: ",";
+            }
+        }
     }
 }
