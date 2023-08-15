@@ -1,7 +1,89 @@
-.viewport {
+.container {
+    margin: 1rem 1rem 4rem 1rem;
+
+    display: grid;
+    grid-template-areas: "blank days" "times main";
+    grid-gap: 0.5rem;
+
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
+
+    &:not(.showSunday) {
+        & .dayLabelViewport .labelGrid {
+            transform: translateX(calc(-100% / 7));
+        }
+
+        & .grid {
+            transform: translate(calc(-100% / 7), var(--translateY));
+        }
+    }
+    &.showSunday .grid {
+        transform: translateY(var(--translateY));
+    }
+}
+
+.timeLabelViewport {
+    grid-area: times;
+
+    text-align: right;
+    font-size: 0.875rem;
+    color: var(--fg-1);
     overflow: hidden;
 
-    margin: 1rem;
+    & .labelGrid {
+        display: grid;
+        grid-template-rows: repeat(24, 1fr);
+
+        height: calc(24 / (var(--end-hour) - var(--start-hour)) * 100%);
+        position: relative;
+        transform: translateY(calc(var(--start-hour) / 24 * -100%));
+    }
+
+    & div {
+        height: 0;
+    }
+}
+
+.dayLabelViewport {
+    grid-area: days;
+    text-align: center;
+    overflow: hidden;
+
+    & .labelGrid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+
+        position: relative;
+    }
+}
+
+.labelGrid,
+.grid {
+    transition: transform var(--misc-transition-duration),
+        width var(--misc-transition-duration),
+        height var(--misc-transition-duration),
+        background-color var(--theme-transition-duration);
+}
+
+.dayLabelViewport .labelGrid,
+.grid {
+    @nest .container.showSunday.showSaturday & {
+        width: 100%;
+    }
+    @nest .container.showSunday:not(.showSaturday) &,
+        .container.showSaturday:not(.showSunday) & {
+        width: calc(7 / 6 * 100%);
+    }
+    @nest .container:not(.showSunday):not(.showSaturday) & {
+        width: calc(7 / 5 * 100%);
+    }
+}
+
+.viewport {
+    grid-area: main;
+
+    overflow: hidden;
+
     border-radius: 0.25rem;
 
     position: relative;
@@ -11,30 +93,21 @@
     display: grid;
 
     position: absolute;
-    height: 100%;
     top: 0;
     left: 0;
+
     transition: transform var(--misc-transition-duration),
         width var(--misc-transition-duration),
+        height var(--misc-transition-duration),
         background-color var(--theme-transition-duration);
 
     background-color: var(--bg-1);
     grid-template-areas: "U M T W R F S";
+    grid-template-rows: repeat(calc(24 * 12), 1fr);
 
-    &.showSunday.showSaturday {
-        width: 100%;
-    }
-    &.showSunday:not(.showSaturday),
-    &.showSaturday:not(.showSunday) {
-        width: calc(7 / 6 * 100%);
-    }
-    &:not(.showSunday):not(.showSaturday) {
-        width: calc(7 / 5 * 100%);
-    }
+    height: calc(24 / (var(--end-hour) - var(--start-hour)) * 100%);
 
-    &:not(.showSunday) {
-        transform: translateX(calc(-100% / 7));
-    }
+    --translateY: calc(var(--start-hour) / 24 * -100%);
 
     grid-template-columns: repeat(7, 1fr);
 
@@ -65,7 +138,7 @@
         margin-right: calc(0.25rem + 0.5rem * var(--reverse-stack-order));
         margin-bottom: calc(0.25rem * var(--reverse-stack-order));
 
-        box-shadow: 0 0 0.25rem var(--bg-0);
+        box-shadow: 0 0 0.25rem var(--shadow-color);
 
         @nest [data-theme="dark"] & {
             --section-color: color-mix(

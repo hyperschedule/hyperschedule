@@ -1,18 +1,8 @@
 import classNames from "classnames";
 
-import * as APIv4 from "hyperschedule-shared/api/v4";
+import Css from "./GridBackgroundColumns.module.css";
 
-import Css from "./GridBackground.module.css";
-
-const dayOrder = [
-    APIv4.Weekday.sunday,
-    APIv4.Weekday.monday,
-    APIv4.Weekday.tuesday,
-    APIv4.Weekday.wednesday,
-    APIv4.Weekday.thursday,
-    APIv4.Weekday.friday,
-    APIv4.Weekday.saturday,
-] as const;
+import { dayOrder } from "@lib/schedule";
 
 export default function GridBackground() {
     return (

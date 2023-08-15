@@ -4,10 +4,12 @@
 
     grid-template-columns: auto 1.5em;
     grid-template-rows: 1.5em auto;
-    grid-template-areas: "day-label ."
-                         "minimap time-label";
+    grid-template-areas:
+        "day-label ."
+        "minimap time-label";
 
-    & .minimapLabel {
+    & .minimapLabelTime,
+    & .minimapLabelDay {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -16,14 +18,14 @@
         color: var(--fg-1);
     }
 
-    & .minimapLabelRight {
+    & .minimapLabelTime {
         height: 100%;
         width: 1.5em;
         writing-mode: vertical-lr;
         grid-area: time-label;
     }
 
-    & .minimapLabelTop {
+    & .minimapLabelDay {
         width: 100%;
         height: 1.5em;
         grid-area: day-label;
@@ -43,16 +45,27 @@
     display: grid;
 
     position: absolute;
-    height: 100%;
     top: 0;
     left: 0;
     transition: transform var(--misc-transition-duration),
-    width var(--misc-transition-duration),
-    height var(--misc-transition-duration),
-    background-color var(--theme-transition-duration);
+        width var(--misc-transition-duration),
+        height var(--misc-transition-duration),
+        background-color var(--theme-transition-duration);
 
     background-color: var(--bg-1);
     grid-template-areas: "U M T W R F S";
+    grid-template-rows: repeat(calc(24 * 12), 1fr);
+
+    height: calc(24 / (var(--end-hour) - var(--start-hour)) * 100%);
+    &:not(.showSunday) {
+        transform: translate(
+            calc(-100% / 7),
+            calc(var(--start-hour) / 24 * -100%)
+        );
+    }
+    &.showSunday {
+        transform: translate(0, calc(var(--start-hour) / 24 * -100%));
+    }
 
     &.showSunday.showSaturday {
         width: 100%;

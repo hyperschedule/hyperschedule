@@ -32,10 +32,12 @@
     --font-sans: "Inter", sans-serif;
     --font-mono: "Roboto Mono", monospace;
 
+    --shadow-color: #0008;
+
     &[data-theme="light"] {
         --bg-0: #ffffff;
-        --bg-1: #dfdad3;
-        --bg-2: #bfbab3;
+        --bg-1: #efeae3;
+        --bg-2: #cfcac3;
         --bg-3: #afaaa3;
 
         --fg-0: #2f2822;

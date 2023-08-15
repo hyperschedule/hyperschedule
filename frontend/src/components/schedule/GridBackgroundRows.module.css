@@ -1,0 +1,6 @@
+.gridLine {
+    border-top: 1px solid var(--bg-3);
+
+    grid-row: calc(var(--hour) * 12 + 1);
+    grid-column: 1 / -1;
+}

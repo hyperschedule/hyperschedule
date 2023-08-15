@@ -34,23 +34,10 @@ export default function CourseRow(props: {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
     const height = detailsBounds?.height ?? 0;
 
-    const activeSchedule = useActiveSchedule();
-    const scheduleMutation = useScheduleSectionMutation();
-    const activeScheduleLookup = useActiveScheduleLookup();
-
     useEffect(() => {
         if (!props.updateDetailsSize || !detailsBounds || !props.expand) return;
         props.updateDetailsSize(detailsBounds.height);
     }, [detailsBounds?.height, props.updateDetailsSize, props.expand]);
-
-    const code = APIv4.stringifySectionCode(props.section.identifier);
-
-    const color = randomColor({
-        hue: "random",
-        luminosity: "light",
-        seed: md5(code),
-        format: "hex",
-    });
 
     return (
         <div className={Css.padder}>

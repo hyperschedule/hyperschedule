@@ -7,6 +7,30 @@ export type Card = {
     endTime: number;
 };
 
+export type Bounds = {
+    startTime: number;
+    endTime: number;
+    sunday: boolean;
+    saturday: boolean;
+};
+
+export const defaultBounds: Readonly<Bounds> = Object.freeze({
+    startTime: 8 * 3600, // 8am
+    endTime: 18 * 3600, // 6pm
+    sunday: false,
+    saturday: false,
+});
+
+export const dayOrder = [
+    APIv4.Weekday.sunday,
+    APIv4.Weekday.monday,
+    APIv4.Weekday.tuesday,
+    APIv4.Weekday.wednesday,
+    APIv4.Weekday.thursday,
+    APIv4.Weekday.friday,
+    APIv4.Weekday.saturday,
+] as const;
+
 export function cardKey(card: Readonly<Card>) {
     return `${APIv4.stringifySectionCodeLong(card.section)}:${card.day}/${
         card.startTime
@@ -123,4 +147,26 @@ export function hasWeekend(cards: readonly Readonly<Card>[]) {
         weekend.saturday ||= card.day === APIv4.Weekday.saturday;
     }
     return weekend;
+}
+
+export function updateBounds(bounds: Bounds, section: Readonly<APIv4.Section>) {
+    for (const schedule of section.schedules) {
+        if (schedule.startTime === schedule.endTime) continue;
+        bounds.startTime = Math.min(schedule.startTime, bounds.startTime);
+        bounds.endTime = Math.max(schedule.endTime, bounds.endTime);
+
+        for (const day of schedule.days) {
+            bounds.sunday ||= day === APIv4.Weekday.sunday;
+            bounds.saturday ||= day === APIv4.Weekday.saturday;
+        }
+    }
+}
+
+export function combineBounds(a: Readonly<Bounds>, b: Readonly<Bounds>) {
+    return {
+        startTime: Math.min(a.startTime, b.startTime),
+        endTime: Math.max(a.endTime, b.endTime),
+        sunday: a.sunday || b.sunday,
+        saturday: a.saturday || b.saturday,
+    } satisfies Bounds;
 }

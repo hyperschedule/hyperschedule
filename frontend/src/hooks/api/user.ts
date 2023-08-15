@@ -35,13 +35,32 @@ export function useScheduleSectionMutation() {
     const client = useQueryClient();
 
     return useMutation({
-        mutationFn: (args: {
+        mutationFn: ({
+            add,
+            ...args
+        }: {
             scheduleId: string;
             section: APIv4.SectionIdentifier;
             add: boolean;
         }) =>
             fetch(`${apiUrl}/v4/user/section`, {
-                method: args.add ? "POST" : "DELETE",
+                method: add ? "POST" : "DELETE",
+                credentials: "include",
+                body: JSON.stringify(args),
+            }),
+        onSuccess: () => {
+            client.invalidateQueries(["user"]);
+        },
+    });
+}
+
+export function useScheduleSectionAttrsMutation() {
+    const client = useQueryClient();
+
+    return useMutation({
+        mutationFn: (args: APIv4.SetSectionAttrRequest) =>
+            fetch(`${apiUrl}/v4/user/section`, {
+                method: "PATCH",
                 credentials: "include",
                 body: JSON.stringify(args),
             }),
