@@ -12,7 +12,7 @@ import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox
 
 import { useScheduleSectionMutation } from "@hooks/api/user";
 import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
-
+import useStore, { PopupOption } from "@hooks/store";
 import { sectionColorStyle } from "@lib/section";
 
 const statusBadge = {
@@ -126,9 +126,7 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
     const activeSchedule = useActiveSchedule();
     const scheduleMutation = useScheduleSectionMutation();
     const activeScheduleLookup = useActiveScheduleLookup();
-
-    if (!activeSchedule) return <></>;
-
+    const setPopup = useStore((store) => store.setPopup);
     const inSchedule = activeScheduleLookup.has(
         APIv4.stringifySectionCodeLong(props.section),
     );
@@ -138,11 +136,15 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
             className={Css.toggle}
             onClick={(event) => {
                 event.stopPropagation();
-                scheduleMutation.mutate({
-                    scheduleId: activeSchedule._id,
-                    section: props.section,
-                    add: !inSchedule,
-                });
+                if (activeSchedule === undefined) {
+                    setPopup({ option: PopupOption.Login });
+                } else {
+                    scheduleMutation.mutate({
+                        scheduleId: activeSchedule._id,
+                        section: props.section,
+                        add: !inSchedule,
+                    });
+                }
             }}
         >
             {inSchedule ? <Feather.X size={14} /> : <Feather.Plus size={14} />}
