@@ -1,0 +1,51 @@
+.popupBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    @media (--viewport-medium) or (--viewport-large) {
+        backdrop-filter: blur(4px);
+
+    }
+    z-index: 10;
+
+    & .popupBox {
+        width: 100vw;
+        height: 100vh;
+        @media (--viewport-medium) {
+            width: 80vw;
+            height: 80vh;
+            border-radius: 0.25rem;
+        }
+        @media (--viewport-large) {
+            width: 60vw;
+            height: 60vh;
+            border-radius: 0.25rem;
+        }
+        background: var(--bg-1);
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    & .popupContent {
+        margin: 1.5rem;
+        width: calc(100% - 1.5rem);
+        height: calc(100% - 1.5rem);
+    }
+
+    & .closeButton {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: var(--fg-1);
+
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+}

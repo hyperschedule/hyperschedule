@@ -13,6 +13,7 @@ import MainSelector from "./MainSelector";
 import Toolbar from "./Toolbar";
 import SelectedList from "./SelectedList";
 import MiniMap from "./MiniMap";
+import Popup from "@components/popup/Popup";
 
 import useStore, { MainTab } from "@hooks/store";
 
@@ -27,6 +28,7 @@ export default function App() {
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
             <div className={Css.app} data-theme={theme}>
+                <Popup />
                 <div className={Css.main}>
                     <MainSelector />
                     <div

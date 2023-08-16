@@ -1,19 +1,19 @@
-import { useUserQuery, useLogin } from "@hooks/api/user";
-import useStore from "@hooks/store";
+import { useUserQuery } from "@hooks/api/user";
+import useStore, { PopupOption } from "@hooks/store";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
 
 export default function Toolbar() {
-    const loginMutation = useLogin();
-
     const userQuery = useUserQuery();
-
+    const setPopup = useStore((store) => store.setPopup);
     return (
         <>
             {userQuery.data ? (
                 <ToolbarLoggedIn user={userQuery.data} />
             ) : (
-                <button onClick={() => loginMutation.mutate()}>login</button>
+                <button onClick={() => setPopup({ option: PopupOption.Login })}>
+                    Login
+                </button>
             )}
         </>
     );

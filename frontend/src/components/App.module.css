@@ -10,7 +10,7 @@
     color: var(--fg-0);
 
     transition: background-color var(--theme-transition-duration),
-        color var(--theme-transition-duration);
+    color var(--theme-transition-duration);
 
     display: grid;
     grid-template-areas: "main";

@@ -14,6 +14,7 @@ export type Store = WithSetters<{
     expandKey: Api.SectionIdentifier | null;
     expandHeight: number;
     activeScheduleIndex: number;
+    popup: Popup;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -31,6 +32,18 @@ export const enum Theme {
     Dark = "dark",
     Light = "light",
 }
+
+export const enum PopupOption {
+    Login = "login",
+    SectionDetail = "SectionDetail",
+    UserDetail = "UserDetail",
+}
+
+export type Popup =
+    | { option: PopupOption.Login }
+    | { option: PopupOption.SectionDetail; section: Api.SectionIdentifier }
+    | { option: PopupOption.UserDetail }
+    | null;
 
 export default Zustand.create<Store>((set, get) => ({
     mainTab: MainTab.CourseSearch,
@@ -52,4 +65,6 @@ export default Zustand.create<Store>((set, get) => ({
     activeScheduleIndex: 0,
     setActiveScheduleIndex: (activeScheduleIndex) =>
         set({ activeScheduleIndex }),
+    popup: null,
+    setPopup: (popup) => set({ popup }),
 }));
