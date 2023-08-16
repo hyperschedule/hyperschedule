@@ -1,11 +1,13 @@
 import { useLogin } from "@hooks/api/user";
 import { apiUrl } from "@lib/config";
+import useStore from "@hooks/store";
 
 export default function () {
     const loginMutation = useLogin();
+    const setPopup = useStore((store) => store.setPopup);
 
     function loginAsGuest() {
-        loginMutation.mutate();
+        void loginMutation.mutateAsync().then(() => setPopup(null));
     }
 
     function loginThroughCAS() {

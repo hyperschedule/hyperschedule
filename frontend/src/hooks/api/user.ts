@@ -26,7 +26,7 @@ export function useLogin() {
             });
         },
         onSuccess: () => {
-            void client.invalidateQueries(["user"]);
+            return client.invalidateQueries(["user"]);
         },
     });
 }
