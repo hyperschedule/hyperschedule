@@ -4,7 +4,7 @@ import * as Feather from "react-feather";
 import Login from "./Login";
 import SectionDetails from "@components/popup/SectionDetails";
 
-function PopupBox(props: { inner: JSX.Element }): JSX.Element {
+function PopupBox(props: { children: JSX.Element }): JSX.Element {
     const setPopup = useStore((store) => store.setPopup);
 
     function dismissPopup() {
@@ -17,21 +17,27 @@ function PopupBox(props: { inner: JSX.Element }): JSX.Element {
                 <button className={Css.closeButton} onClick={dismissPopup}>
                     <Feather.X size={24} />
                 </button>
-                <div className={Css.popupContent}>{props.inner}</div>
+                <div className={Css.popupContent}>{props.children}</div>
             </div>
         </div>
     );
 }
 
-export default function (): JSX.Element {
+export default function Popup() {
     const popup = useStore((store) => store.popup);
     if (popup === null) return <></>;
     switch (popup.option) {
         case PopupOption.Login:
-            return <PopupBox inner={<Login />} />;
+            return (
+                <PopupBox>
+                    <Login />
+                </PopupBox>
+            );
         case PopupOption.SectionDetail:
             return (
-                <PopupBox inner={<SectionDetails section={popup.section} />} />
+                <PopupBox>
+                    <SectionDetails section={popup.section} />
+                </PopupBox>
             );
         default:
             return <></>;
