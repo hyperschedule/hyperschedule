@@ -1,5 +1,3 @@
-//import * as React from "react";
-import * as Config from "@lib/config";
 import { useUserQuery, useLogin } from "@hooks/api/user";
 import useStore from "@hooks/store";
 import type * as APIv4 from "hyperschedule-shared/api/v4";

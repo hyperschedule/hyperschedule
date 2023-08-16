@@ -1,5 +1,4 @@
 import { createLogger } from "../logger";
-import * as APIv4 from "hyperschedule-shared/api/v4";
 
 // we use lazy import here to make sure createRootLogger can be executed first
 import { connectToDb, closeDb } from "./connector";

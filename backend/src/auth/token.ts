@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { PRIVKEY, PUBKEY } from "./keys";
-import { validate } from "uuid";
 
 export interface UserToken {
     uuid: string;
@@ -38,7 +37,6 @@ export function safeVerifyUser(
         if (
             payload.iat === undefined ||
             payload.exp === undefined ||
-            //!validate(payload.uuid) ||
             Object.keys(payload).length !== 3
         )
             return { valid: false, reason: "invalid payload" };

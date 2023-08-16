@@ -8,12 +8,9 @@ import Css from "./CourseRow.module.css";
 
 import * as Feather from "react-feather";
 
-import randomColor from "randomcolor";
-import md5 from "md5";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 
-import useStore from "@hooks/store";
-import { useScheduleSectionMutation, useUserQuery } from "@hooks/api/user";
+import { useScheduleSectionMutation } from "@hooks/api/user";
 import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
 
 import { sectionColorStyle } from "@lib/section";

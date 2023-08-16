@@ -7,7 +7,6 @@ import { useActiveSectionsLookup } from "@hooks/section";
 //import useStore from "@hooks/store";
 
 import { sectionColorStyle } from "@lib/section";
-import { dayOrder } from "@lib/schedule";
 
 import classNames from "classnames";
 
@@ -16,7 +15,6 @@ import GridBackgroundRows from "@components/schedule/GridBackgroundRows";
 
 import {
     cardKey,
-    getCards,
     hasWeekend,
     groupCardsByDay,
     stackCards,
@@ -70,6 +68,9 @@ export default function Schedule() {
                                         }`,
                                         "--stack-order": order[i]!,
                                         "--reverse-stack-order": revOrder[i]!,
+                                        ...(order[i] === 0
+                                            ? { boxShadow: "none" }
+                                            : {}),
                                         ...sectionColorStyle(card.section),
                                     } as React.CSSProperties
                                 }

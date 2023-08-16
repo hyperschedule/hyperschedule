@@ -43,7 +43,6 @@
     "no-unreachable": "error",
     "no-debugger": "warn",
     "require-atomic-updates": "warn",
-    "no-await-in-loop": "warn",
     "no-console": [
       "error",
       {
@@ -93,9 +92,6 @@
       }
     ],
     "@typescript-eslint/no-confusing-non-null-assertion": "warn",
-    // we enforce type definition to be interface so the generated docs
-    // look better.
-    "@typescript-eslint/consistent-type-definitions": ["warn", "interface"],
     "@typescript-eslint/consistent-type-assertions": [
       "error",
       {

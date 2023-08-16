@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useUserQuery, useScheduleSectionMutation } from "@hooks/api/user";
+import { useUserQuery } from "@hooks/api/user";
 import { useActiveSectionsLookup } from "@hooks/section";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
