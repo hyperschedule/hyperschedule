@@ -125,16 +125,6 @@ export async function addSchedule(
         logger.warn(`User ${userId} reached schedule limit`);
         throw Error("Schedule limit reached");
     }
-    if (
-        user.schedules.filter(
-            (s) =>
-                s.name === scheduleName &&
-                s.term.term === term.term &&
-                s.term.year === term.year,
-        ).length > 0
-    ) {
-        throw Error("Schedule with this name and term already exists");
-    }
 
     const scheduleId = uuid4("s");
 

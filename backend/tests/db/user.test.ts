@@ -36,14 +36,6 @@ describe("db/models/user", () => {
         const updated1 = await getUser(uid);
         expect(updated1!.schedules.length).toStrictEqual(2);
 
-        await expect(
-            addSchedule(
-                uid,
-                { year: 2022, term: APIv4.Term.fall },
-                "test schedule 0",
-            ),
-        ).rejects.toBeTruthy();
-
         await addSchedule(
             uid,
             { year: 2022, term: APIv4.Term.spring },
