@@ -1,17 +1,15 @@
 import { useActiveSchedule } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
 import { useScheduleSectionAttrsMutation } from "@hooks/api/user";
-
+import useStore, { PopupOption } from "@hooks/store";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-
-import Css from "./SelectedList.module.css";
 
 export default function SelectedList() {
     const schedule = useActiveSchedule();
     const sectionsLookup = useActiveSectionsLookup();
 
     const attrsMutation = useScheduleSectionAttrsMutation();
-
+    const setPopup = useStore((store) => store.setPopup);
     if (!schedule) return <></>;
     return (
         <div>
@@ -33,8 +31,17 @@ export default function SelectedList() {
                         >
                             {+entry.attrs.selected}
                         </button>
-                        {APIv4.stringifySectionCode(entry.section)}{" "}
-                        {section?.course.title ?? null}
+                        <div
+                            onClick={() =>
+                                setPopup({
+                                    option: PopupOption.SectionDetail,
+                                    section: entry.section,
+                                })
+                            }
+                        >
+                            {APIv4.stringifySectionCode(entry.section)}{" "}
+                            {section?.course.title ?? null}
+                        </div>
                     </div>
                 );
             })}
