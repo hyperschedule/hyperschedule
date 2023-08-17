@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="">
   <head>
+    <script type="text/javascript">
+      if (window.parent!==window&&(location.hash==="#v4-import"||location.hash==="#v4-import-dev"))window.parent.postMessage(JSON.parse(localStorage.getItem("selectedCourses"))?.map(c=>c.courseCode)??[],location.hash==="#v4-import"?"https://beta.hyperschedule.io":"http://localhost:5000")
+    </script>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Hyperschedule - The fast course scheduler</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <link
       rel="stylesheet"
       href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
