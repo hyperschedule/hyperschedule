@@ -72,3 +72,19 @@ export async function getAllSections(
     logger.trace("DB query completed for all sections");
     return arr.map(dbToSection);
 }
+
+export async function getAllSectionId(
+    term: TermIdentifier,
+): Promise<DBSection[]> {
+    logger.trace("DB query start for all section id");
+    const cursor = collections.sections.find(
+        {
+            "_id.term": term.term,
+            "_id.year": term.year,
+        },
+        { projection: { _id: 1 } },
+    );
+    const arr = await cursor.toArray();
+    logger.trace("DB query completed for all section ids");
+    return arr;
+}

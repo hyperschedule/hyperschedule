@@ -1,4 +1,5 @@
 import { SchoolEnum, SectionIdentifier, TermIdentifier } from "./course";
+import * as APIv3 from "../v3";
 import { z } from "zod";
 
 export const UserSectionAttrs = z.object({
@@ -85,3 +86,8 @@ export const SetSectionAttrRequest = z.object({
     attrs: UserSectionAttrs,
 });
 export type SetSectionAttrRequest = z.infer<typeof SetSectionAttrRequest>;
+
+export const ImportV3Request = z.object({
+    courses: z.string().array().nonempty(),
+});
+export type ImportV3Request = z.infer<typeof ImportV3Request>;

@@ -291,6 +291,44 @@ export async function deleteSchedule(userId: string, scheduleId: string) {
     );
 }
 
+export async function batchAddSectionsToNewSchedule(
+    userId: string,
+    sections: APIv4.SectionIdentifier[],
+    term: APIv4.TermIdentifier,
+    scheduleName: string,
+) {
+    logger.info(`Batch-importing sections for user ${userId}, %o`, sections);
+    const scheduleId = uuid4("s");
+    const result = await collections.users.findOneAndUpdate(
+        {
+            _id: userId,
+        },
+
+        {
+            $set: {
+                lastModified: Math.floor(new Date().getTime() / 1000),
+            },
+            $push: {
+                schedules: {
+                    _id: scheduleId,
+                    name: scheduleName,
+                    term: term,
+                    sections: sections.map((s) => ({
+                        section: s,
+                        attrs: { selected: false },
+                    })),
+                    isActive: false,
+                } satisfies APIv4.UserSchedule,
+            },
+        },
+    );
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
+    }
+    logger.info(`Batch-importing sections for user ${userId} completed`);
+}
+
 export async function deleteSection(
     userId: string,
     scheduleId: string,
