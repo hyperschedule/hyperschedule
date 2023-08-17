@@ -93,7 +93,6 @@
 
     & .cardGroup {
         display: grid;
-        border-radius: 0.125rem;
         overflow: hidden;
 
         & .slice {

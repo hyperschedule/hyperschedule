@@ -1,0 +1,11 @@
+[data-theme="dark"] .sectionColor {
+    --section-color: color-mix(
+        in srgb,
+        var(--section-color-light) 25%,
+        var(--bg-0)
+    );
+}
+
+[data-theme="light"] .sectionColor {
+    --section-color: var(--section-color-light);
+}

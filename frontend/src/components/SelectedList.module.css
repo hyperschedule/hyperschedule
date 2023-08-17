@@ -1,0 +1,12 @@
+.list {
+    overflow-y: scroll;
+}
+
+.entry {
+    composes: sectionColor from "@css/section-color.css";
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    background-color: var(--section-color);
+}

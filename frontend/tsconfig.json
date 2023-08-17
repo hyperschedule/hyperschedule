@@ -1,6 +1,8 @@
 {
   "extends": "../tsconfig-base.json",
   "compilerOptions": {
+    // https://github.com/mrmckeb/typescript-plugin-css-modules/issues/222
+    "composite": false,
     "lib": ["esnext", "dom"],
     "sourceRoot": "src",
     "baseUrl": "src",
@@ -25,5 +27,5 @@
       "@hooks/*": ["hooks/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.css", "src/**/*"]
 }

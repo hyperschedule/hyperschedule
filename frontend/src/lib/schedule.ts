@@ -5,6 +5,7 @@ export type Card = {
     day: APIv4.Weekday;
     startTime: number;
     endTime: number;
+    priority: number;
 };
 
 export type Bounds = {
@@ -12,6 +13,12 @@ export type Bounds = {
     endTime: number;
     sunday: boolean;
     saturday: boolean;
+};
+
+export type Group = {
+    startTime: number;
+    endTime: number;
+    cards: [Card, ...Card[]];
 };
 
 export const defaultBounds: Readonly<Bounds> = Object.freeze({
@@ -37,7 +44,7 @@ export function cardKey(card: Readonly<Card>) {
     }-${card.endTime}`;
 }
 
-export function getCards(section: APIv4.Section) {
+export function getCards(section: Readonly<APIv4.Section>, priority: number) {
     const cards: Card[] = [];
     for (const schedule of section.schedules) {
         if (schedule.startTime === schedule.endTime) continue;
@@ -48,6 +55,7 @@ export function getCards(section: APIv4.Section) {
                 startTime: schedule.startTime,
                 endTime: schedule.endTime,
                 section: section.identifier,
+                priority,
             });
     }
     return cards;
@@ -109,22 +117,44 @@ export function stackCardsReverse(cards: Readonly<Card>[]) {
     return order;
 }
 
-function compareEndTime(a: Readonly<Card>, b: Readonly<Card>) {
+export function compareEndTime(a: Readonly<Card>, b: Readonly<Card>) {
     return a.endTime - b.endTime || a.startTime - b.startTime;
 }
 
+export function compareStartTime(a: Readonly<Card>, b: Readonly<Card>) {
+    return a.startTime - b.startTime || a.endTime - b.endTime;
+}
+
+export function comparePriority(a: Readonly<Card>, b: Readonly<Card>) {
+    return a.priority - b.priority;
+}
+
 export function mergeCards(cards: Readonly<Card>[]) {
-    if (!cards.length) return [];
+    cards.sort(compareStartTime);
 
-    cards.sort(compareEndTime);
+    const first = cards[0];
 
-    const groups: Readonly<Card>[][] = [[cards[0]!]];
+    if (!first) return [];
+
+    //const groups: Readonly<Card>[][] = [[cards[0]!]];
+
+    const groups: Group[] = [
+        { startTime: first.startTime, endTime: first.endTime, cards: [first] },
+    ];
 
     for (let i = 1; i < cards.length; ++i) {
+        const lastGroup = groups[groups.length - 1]!;
         const current = cards[i]!;
-        if (current.startTime < cards[i - 1]!.endTime)
-            groups[groups.length - 1]!.push(current);
-        else groups.push([current]);
+
+        if (current.startTime < lastGroup.endTime) {
+            lastGroup.endTime = Math.max(lastGroup.endTime, current.endTime);
+            lastGroup.cards.push(current);
+        } else
+            groups.push({
+                startTime: current.startTime,
+                endTime: current.endTime,
+                cards: [current],
+            });
     }
 
     return groups;

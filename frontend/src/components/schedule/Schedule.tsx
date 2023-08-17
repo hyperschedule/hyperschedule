@@ -17,6 +17,8 @@ import {
     cardKey,
     hasWeekend,
     groupCardsByDay,
+    mergeCards,
+    comparePriority,
     stackCards,
     stackCardsReverse,
 } from "@lib/schedule";
@@ -33,9 +35,8 @@ export default function Schedule() {
     return (
         <div
             className={classNames(Css.container, {
-                // bullshit !: <https://github.com/facebook/create-react-app/issues/11156>
-                [Css.showSunday!]: weekend.sunday,
-                [Css.showSaturday!]: weekend.saturday,
+                [Css.showSunday]: weekend.sunday,
+                [Css.showSaturday]: weekend.saturday,
             })}
             style={
                 {
@@ -50,34 +51,43 @@ export default function Schedule() {
                 <div className={Css.grid}>
                     <GridBackgroundColumns />
                     <GridBackgroundRows />
-                    {Object.values(byDay).flatMap((cards) => {
-                        const order = stackCards(cards);
-                        const revOrder = stackCardsReverse(cards);
+                    {Object.entries(byDay).flatMap(([day, cards]) => {
+                        const groups = mergeCards(cards);
 
-                        return cards.map((card, i) => (
-                            <div
-                                key={`card:${cardKey(card)}`}
-                                className={Css.card}
-                                style={
-                                    {
-                                        gridColumn: card.day,
-                                        gridRow: `${
-                                            Math.floor(card.startTime / 300) + 1
-                                        } / ${
-                                            Math.floor(card.endTime / 300) + 1
-                                        }`,
-                                        "--stack-order": order[i]!,
-                                        "--reverse-stack-order": revOrder[i]!,
-                                        ...(order[i] === 0
-                                            ? { boxShadow: "none" }
-                                            : {}),
-                                        ...sectionColorStyle(card.section),
-                                    } as React.CSSProperties
-                                }
-                            >
-                                {APIv4.stringifySectionCode(card.section)}
-                            </div>
-                        ));
+                        //const order = stackCards(cards);
+                        //const revOrder = stackCardsReverse(cards);
+
+                        return groups.flatMap((group) =>
+                            group.cards.sort(comparePriority).map((card, i) => (
+                                <div
+                                    key={`card:${cardKey(card)}`}
+                                    className={Css.card}
+                                    style={
+                                        {
+                                            gridColumn: card.day,
+                                            gridRow: `${
+                                                Math.floor(
+                                                    card.startTime / 300,
+                                                ) + 1
+                                            } / ${
+                                                Math.floor(card.endTime / 300) +
+                                                1
+                                            }`,
+                                            "--stack-order": i,
+                                            "--reverse-stack-order":
+                                                group.cards.length - i - 1,
+                                            //    revOrder[i]!,
+                                            //...(order[i] === 0
+                                            //    ? { boxShadow: "none" }
+                                            //    : {}),
+                                            ...sectionColorStyle(card.section),
+                                        } as React.CSSProperties
+                                    }
+                                >
+                                    {APIv4.stringifySectionCode(card.section)}
+                                </div>
+                            )),
+                        );
                     })}
                 </div>
             </div>

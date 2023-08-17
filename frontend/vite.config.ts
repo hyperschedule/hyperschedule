@@ -24,6 +24,7 @@ export default defineConfig({
             "@components": path.join(__dirname, "src/components"),
             "@lib": path.join(__dirname, "src/lib"),
             "@hooks": path.join(__dirname, "src/hooks"),
+            "@css": path.join(__dirname, "src/css"),
             ...useSyncExternalStoreFix,
         },
     },

@@ -62,7 +62,7 @@ export function useActiveScheduleResolved() {
 
         Lib.updateBounds(bounds, expandSection);
 
-        return { bounds, cards: Lib.getCards(expandSection) };
+        return { bounds, cards: Lib.getCards(expandSection, 0) };
     }, [expandKey, lookup]);
 
     const bounds = expand

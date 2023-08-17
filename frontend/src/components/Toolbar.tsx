@@ -2,6 +2,7 @@ import { useUserQuery } from "@hooks/api/user";
 import useStore, { PopupOption } from "@hooks/store";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
+import Css from "./Toolbar.module.css";
 
 export default function Toolbar() {
     const userQuery = useUserQuery();

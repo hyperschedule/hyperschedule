@@ -10,7 +10,7 @@
     color: var(--fg-0);
 
     transition: background-color var(--theme-transition-duration),
-    color var(--theme-transition-duration);
+        color var(--theme-transition-duration);
 
     display: grid;
     grid-template-areas: "main";
@@ -102,6 +102,8 @@
     display: grid;
     grid-template-areas: "toolbar" "minimap" "selected";
     grid-template-rows: auto 1fr 2fr;
+
+    min-height: 0;
 
     @media (--viewport-large) {
         position: relative;
