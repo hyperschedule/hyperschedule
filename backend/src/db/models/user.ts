@@ -125,16 +125,6 @@ export async function addSchedule(
         logger.warn(`User ${userId} reached schedule limit`);
         throw Error("Schedule limit reached");
     }
-    if (
-        user.schedules.filter(
-            (s) =>
-                s.name === scheduleName &&
-                s.term.term === term.term &&
-                s.term.year === term.year,
-        ).length > 0
-    ) {
-        throw Error("Schedule with this name and term already exists");
-    }
 
     const scheduleId = uuid4("s");
 
@@ -299,6 +289,44 @@ export async function deleteSchedule(userId: string, scheduleId: string) {
     logger.info(
         `Deletion of schedule ${scheduleId} for user ${userId} completed`,
     );
+}
+
+export async function batchAddSectionsToNewSchedule(
+    userId: string,
+    sections: APIv4.SectionIdentifier[],
+    term: APIv4.TermIdentifier,
+    scheduleName: string,
+) {
+    logger.info(`Batch-importing sections for user ${userId}, %o`, sections);
+    const scheduleId = uuid4("s");
+    const result = await collections.users.findOneAndUpdate(
+        {
+            _id: userId,
+        },
+
+        {
+            $set: {
+                lastModified: Math.floor(new Date().getTime() / 1000),
+            },
+            $push: {
+                schedules: {
+                    _id: scheduleId,
+                    name: scheduleName,
+                    term: term,
+                    sections: sections.map((s) => ({
+                        section: s,
+                        attrs: { selected: false },
+                    })),
+                    isActive: false,
+                } satisfies APIv4.UserSchedule,
+            },
+        },
+    );
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
+    }
+    logger.info(`Batch-importing sections for user ${userId} completed`);
 }
 
 export async function deleteSection(

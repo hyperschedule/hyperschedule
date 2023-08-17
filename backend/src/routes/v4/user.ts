@@ -3,6 +3,7 @@ import { App } from "@tinyhttp/app";
 import {
     addSchedule,
     addSection,
+    batchAddSectionsToNewSchedule,
     createGuestUser,
     deleteSchedule,
     deleteSection,
@@ -14,6 +15,8 @@ import { createLogger } from "../../logger";
 import { signUser } from "../../auth/token";
 import { json as jsonParser } from "milliparsec";
 import * as APIv4 from "hyperschedule-shared/api/v4";
+import { getAllSectionId, getAllSections } from "../../db/models/course";
+import { CURRENT_TERM } from "../../current-term";
 
 const logger = createLogger("server.route.user");
 
@@ -193,6 +196,41 @@ userApp
             input.data.scheduleId,
             input.data.section,
             input.data.attrs,
+        );
+
+        return response.status(204).end();
+    });
+
+userApp
+    .route("/import-v3-courses")
+    .use(jsonParser()) // we need to add this so it can parse json requests
+    .post(async function (request: Request, response: Response) {
+        if (request.userToken === null) return response.status(401).end();
+        const input = APIv4.ImportV3Request.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        const map: Map<string, APIv4.SectionIdentifier> = new Map(
+            (await getAllSectionId(CURRENT_TERM)).map((s) => [
+                APIv4.stringifySectionCode(s._id),
+                s._id,
+            ]),
+        );
+        const sections: APIv4.SectionIdentifier[] = [];
+        for (const c of input.data.courses) {
+            const section = map.get(c);
+            if (section === undefined) continue;
+            sections.push(section);
+        }
+
+        await batchAddSectionsToNewSchedule(
+            request.userToken.uuid,
+            sections,
+            CURRENT_TERM,
+            "Imported Schedule",
         );
 
         return response.status(204).end();
