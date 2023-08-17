@@ -100,15 +100,9 @@
             cursor: pointer;
 
             @nest [data-theme="dark"] & {
-                --section-color: color-mix(
-                    in srgb,
-                    var(--section-color-light) 50%,
-                    var(--bg-1)
-                );
                 color: white;
             }
             @nest [data-theme="light"] & {
-                --section-color: var(--section-color-light);
                 color: black;
             }
         }

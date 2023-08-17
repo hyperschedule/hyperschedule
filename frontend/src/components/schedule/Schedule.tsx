@@ -6,7 +6,7 @@ import { useActiveScheduleResolved } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
 //import useStore from "@hooks/store";
 
-import { sectionColorStyle } from "@lib/section";
+import { sectionColorStyle } from "@lib/color";
 
 import classNames from "classnames";
 
@@ -22,11 +22,13 @@ import {
     stackCards,
     stackCardsReverse,
 } from "@lib/schedule";
+import useStore from "@hooks/store";
 
 export default function Schedule() {
     const { sections, cards, bounds, startHour, endHour } =
         useActiveScheduleResolved();
     const sectionsLookup = useActiveSectionsLookup();
+    const theme = useStore((store) => store.theme);
 
     const weekend = hasWeekend(cards);
 
@@ -76,11 +78,21 @@ export default function Schedule() {
                                             "--stack-order": i,
                                             "--reverse-stack-order":
                                                 group.cards.length - i - 1,
-                                            //    revOrder[i]!,
-                                            //...(order[i] === 0
-                                            //    ? { boxShadow: "none" }
-                                            //    : {}),
-                                            ...sectionColorStyle(card.section),
+                                            ...sectionColorStyle(
+                                                card.section,
+                                                theme,
+                                            ),
+                                            "--opacity":
+                                                group.cards.length === 1
+                                                    ? 1
+                                                    : (1 -
+                                                          (group.cards.length -
+                                                              i -
+                                                              1) /
+                                                              group.cards
+                                                                  .length) *
+                                                          0.25 +
+                                                      0.75,
                                         } as React.CSSProperties
                                     }
                                 >

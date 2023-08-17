@@ -137,15 +137,12 @@
 }
 
 .card {
-    composes: sectionColor from "@css/section-color";
-
     background: var(--section-color);
     font-size: 0.75rem;
     border-radius: 0.25rem;
     padding: 0.125rem 0.25rem;
     margin: 0.125rem;
     text-align: center;
-    z-index: 1;
     cursor: pointer;
 
     writing-mode: vertical-rl;
@@ -160,7 +157,20 @@
 
     z-index: var(--reverse-stack-order);
 
-    box-shadow: 0 0 0.25rem var(--shadow-color);
+
+    //box-shadow: 0 0 calc(max(0.1rem * var(--reverse-stack-order),1px)) var(--section-shadow);
+
+    // this thing is 1px becuase this is actually standard-deviation, the same scale as gausian blur
+    // https://drafts.fxtf.org/filter-effects/#funcdef-filter-drop-shadow
+
+    filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow))
+            opacity(var(--opacity)) ;
+
+    box-sizing: border-box;
+    &:hover{
+        box-shadow: 0 0 0.2em var(--section-shadow);
+        filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow));
+    }
 
     &.highlight {
         border-color: var(--highlight);

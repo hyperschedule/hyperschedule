@@ -13,7 +13,7 @@ import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox
 import { useScheduleSectionMutation } from "@hooks/api/user";
 import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
 import useStore, { PopupOption } from "@hooks/store";
-import { sectionColorStyle } from "@lib/section";
+import { sectionColorStyle } from "@lib/color";
 
 const statusBadge = {
     [APIv4.SectionStatus.open]: Css.badgeOpen,
@@ -30,6 +30,7 @@ export default function CourseRow(props: {
 }) {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
     const height = detailsBounds?.height ?? 0;
+    const theme = useStore((store) => store.theme);
 
     useEffect(() => {
         if (!props.updateDetailsSize || !detailsBounds || !props.expand) return;
@@ -40,7 +41,7 @@ export default function CourseRow(props: {
         <div className={Css.padder}>
             <div
                 className={classNames(Css.box, { [Css.expand!]: props.expand })}
-                style={sectionColorStyle(props.section.identifier)}
+                style={sectionColorStyle(props.section.identifier, theme)}
             >
                 <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={14} />

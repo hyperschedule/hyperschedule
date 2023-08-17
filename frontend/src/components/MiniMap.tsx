@@ -5,7 +5,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useActiveScheduleResolved } from "@hooks/schedule";
 import useStore from "@hooks/store";
 
-import { sectionColorStyle } from "@lib/section";
+import { sectionColorStyle } from "@lib/color";
 
 import GridBackgroundColumns from "@components/schedule/GridBackgroundColumns";
 
@@ -24,6 +24,7 @@ export default function MiniMap() {
 
     const setExpandKey = useStore((store) => store.setExpandKey);
     const clearExpand = useStore((store) => store.clearExpand);
+    const theme = useStore((store) => store.theme);
 
     const byDay = groupCardsByDay(cards);
 
@@ -60,7 +61,7 @@ export default function MiniMap() {
                                 gridRow: `${
                                     Math.floor(card.startTime / 300) + 1
                                 } / ${Math.floor(card.endTime / 300) + 1}`,
-                                ...sectionColorStyle(card.section),
+                                ...sectionColorStyle(card.section, theme),
                             }}
                             onClick={clearExpand}
                         ></div>
@@ -111,6 +112,7 @@ export default function MiniMap() {
                                                     }`,
                                                     ...sectionColorStyle(
                                                         card.section,
+                                                        theme,
                                                     ),
                                                 }}
                                                 onClick={() =>
