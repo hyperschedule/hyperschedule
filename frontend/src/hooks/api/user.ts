@@ -2,6 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiUrl } from "@lib/config";
+import { importFromLegacy } from "@lib/legacy-imprt";
 
 async function getUser() {
     const resp = await fetch(`${apiUrl}/v4/user`, { credentials: "include" });
@@ -64,6 +65,17 @@ export function useScheduleSectionAttrsMutation() {
                 credentials: "include",
                 body: JSON.stringify(args),
             }),
+        onSuccess: () => {
+            void client.invalidateQueries(["user"]);
+        },
+    });
+}
+
+export function useLegacyImport() {
+    const client = useQueryClient();
+
+    return useMutation({
+        mutationFn: importFromLegacy,
         onSuccess: () => {
             void client.invalidateQueries(["user"]);
         },

@@ -33,6 +33,11 @@ function hslArrayToCssString(color: Color, alpha: number = 1) {
     return `hsl(${h},${s}%,${l}%,${alpha})`;
 }
 
+// normally, the color of the shadow is the complementary color of
+// the light (e.g. during the day, the shadow is yellow tinted from
+// the blue skylight). here, we don't have a defined source of light,
+// so we'll simply approximate it by taking the complementary color of
+// the section color
 function computeShadowColor(c: Color): Color {
     const [h, s, v] = c;
     return [Math.abs(180 - h), s, v * 0.5];
