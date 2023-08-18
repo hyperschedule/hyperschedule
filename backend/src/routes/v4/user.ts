@@ -9,6 +9,7 @@ import {
     deleteSection,
     getUser,
     renameSchedule,
+    replaceSections,
     setActiveSchedule,
     setSectionAttrs,
 } from "../../db/models/user";
@@ -214,6 +215,26 @@ userApp
                 .send(input.error);
 
         await setActiveSchedule(request.userToken.uuid, input.data.scheduleId);
+        response.status(204).end();
+    });
+
+userApp
+    .route("/replace-sections")
+    .use(jsonParser()) // we need to add this so it can parse json requests
+    .post(async function (request: Request, response: Response) {
+        if (request.userToken === null) return response.status(401).end();
+        const input = APIv4.ReplaceSectionsRequest.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        await replaceSections(
+            request.userToken.uuid,
+            input.data.scheduleId,
+            input.data.sections,
+        );
         response.status(204).end();
     });
 
