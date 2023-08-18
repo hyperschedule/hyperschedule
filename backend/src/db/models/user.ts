@@ -295,6 +295,39 @@ export async function deleteSchedule(
     );
 }
 
+// used by frontend to reorder sections
+export async function replaceSections(
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
+    sections: APIv4.SectionIdentifier[],
+) {
+    logger.info(`Replacing sections for ${userId}`);
+    const user = await collections.users.findOne({
+        _id: userId,
+        "schedules._id": scheduleId,
+    });
+    if (user === null) {
+        throw Error("User with this schedule not found");
+    }
+    const result = await collections.users.findOneAndUpdate(
+        {
+            _id: userId,
+            "schedules._id": scheduleId,
+        },
+        {
+            $set: {
+                lastModified: Math.floor(new Date().getTime() / 1000),
+                "schedules.$.sections": sections,
+            },
+        },
+    );
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
+    }
+    logger.info(`Replacing sections for ${userId} completed`);
+}
+
 export async function batchAddSectionsToNewSchedule(
     userId: APIv4.UserId,
     sections: APIv4.SectionIdentifier[],
