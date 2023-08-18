@@ -10,7 +10,7 @@ const logger = createLogger("db.user");
 /**
  * Creates an anonymous user and returns the user id
  */
-export async function createGuestUser(): Promise<string> {
+export async function createGuestUser(): Promise<APIv4.UserId> {
     const uid = uuid4("u");
     const scheduleId = uuid4("s");
     const user: APIv4.GuestUser = {
@@ -19,13 +19,13 @@ export async function createGuestUser(): Promise<string> {
         schedules: [
             {
                 _id: scheduleId,
-                isActive: false,
                 term: CURRENT_TERM,
                 name: "Schedule 1",
                 sections: [],
             },
         ],
         lastModified: Math.floor(new Date().getTime() / 1000),
+        activeSchedule: scheduleId,
     };
 
     const res = await collections.users.insertOne(user);
@@ -43,7 +43,7 @@ export async function createGuestUser(): Promise<string> {
 export async function createOrGetUser(
     eppn: string,
     orgName: string,
-): Promise<string> {
+): Promise<APIv4.UserId> {
     const lookup = await collections.users.findOne({
         eppn,
     });
@@ -79,13 +79,13 @@ export async function createOrGetUser(
         schedules: [
             {
                 _id: scheduleId,
-                isActive: false,
                 term: CURRENT_TERM,
                 name: "Schedule 1",
                 sections: [],
             },
         ],
         lastModified: Math.floor(new Date().getTime() / 1000),
+        activeSchedule: scheduleId,
         eppn,
         school,
     };
@@ -111,10 +111,10 @@ export async function getUser(userId: string): Promise<APIv4.User> {
 }
 
 export async function addSchedule(
-    userId: string,
+    userId: APIv4.UserId,
     term: APIv4.TermIdentifier,
     scheduleName: string,
-) {
+): Promise<APIv4.ScheduleId> {
     const user = await getUser(userId);
     logger.info(
         `Adding schedule ${scheduleName} (${APIv4.stringifyTermIdentifier(
@@ -141,7 +141,6 @@ export async function addSchedule(
             $push: {
                 schedules: {
                     _id: scheduleId,
-                    isActive: false,
                     term,
                     name: scheduleName,
                     sections: [],
@@ -166,8 +165,8 @@ export async function addSchedule(
 }
 
 export async function renameSchedule(
-    userId: string,
-    scheduleId: string,
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
     newName: string,
 ) {
     logger.info(
@@ -194,8 +193,8 @@ export async function renameSchedule(
 }
 
 export async function addSection(
-    userId: string,
-    scheduleId: string,
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
     section: APIv4.SectionIdentifier,
 ) {
     const user = await collections.users.findOne({
@@ -256,7 +255,10 @@ export async function addSection(
     );
 }
 
-export async function deleteSchedule(userId: string, scheduleId: string) {
+export async function deleteSchedule(
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
+) {
     const user = await collections.users.findOne({
         _id: userId,
         "schedules._id": scheduleId,
@@ -264,6 +266,7 @@ export async function deleteSchedule(userId: string, scheduleId: string) {
     if (user === null) {
         throw Error("User with this schedule not found");
     }
+
     logger.info(`Deleting schedule ${scheduleId} for user ${userId}`);
 
     const result = await collections.users.findOneAndUpdate(
@@ -278,6 +281,7 @@ export async function deleteSchedule(userId: string, scheduleId: string) {
             },
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),
+                activeSchedule: null,
             },
         },
     );
@@ -292,11 +296,11 @@ export async function deleteSchedule(userId: string, scheduleId: string) {
 }
 
 export async function batchAddSectionsToNewSchedule(
-    userId: string,
+    userId: APIv4.UserId,
     sections: APIv4.SectionIdentifier[],
     term: APIv4.TermIdentifier,
     scheduleName: string,
-) {
+): Promise<APIv4.ScheduleId> {
     logger.info(`Batch-importing sections for user ${userId}, %o`, sections);
     const scheduleId = uuid4("s");
     const result = await collections.users.findOneAndUpdate(
@@ -317,7 +321,6 @@ export async function batchAddSectionsToNewSchedule(
                         section: s,
                         attrs: { selected: false },
                     })),
-                    isActive: false,
                 } satisfies APIv4.UserSchedule,
             },
         },
@@ -327,11 +330,12 @@ export async function batchAddSectionsToNewSchedule(
         throw Error("Database operation failed");
     }
     logger.info(`Batch-importing sections for user ${userId} completed`);
+    return scheduleId;
 }
 
 export async function deleteSection(
-    userId: string,
-    scheduleId: string,
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
     section: APIv4.SectionIdentifier,
 ) {
     const user = await collections.users.findOne({
@@ -374,8 +378,8 @@ export async function deleteSection(
 }
 
 export async function setSectionAttrs(
-    userId: string,
-    scheduleId: string,
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
     sectionId: APIv4.SectionIdentifier,
     attrs: Partial<APIv4.UserSectionAttrs>,
 ) {
@@ -430,5 +434,36 @@ export async function setSectionAttrs(
         }
 
         throw Error("No matching section found");
+    }
+}
+
+export async function setActiveSchedule(
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
+) {
+    const user = await collections.users.findOne({
+        _id: userId,
+        "schedules._id": scheduleId,
+    });
+    if (user === null) {
+        throw Error("User with this schedule not found");
+    }
+
+    const result = await collections.users.findOneAndUpdate(
+        {
+            _id: userId,
+            "schedules._id": scheduleId,
+        },
+        {
+            $set: {
+                lastModified: Math.floor(new Date().getTime() / 1000),
+                activeSchedule: scheduleId,
+            },
+        },
+    );
+
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
     }
 }

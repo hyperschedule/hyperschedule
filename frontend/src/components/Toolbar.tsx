@@ -21,9 +21,12 @@ export default function Toolbar() {
 }
 
 function ToolbarLoggedIn(props: { user: APIv4.User }) {
-    const { activeScheduleIndex } = useStore((store) => ({
-        activeScheduleIndex: store.activeScheduleIndex,
-    }));
+    const { activeScheduleIndex, setActiveScheduleIndex } = useStore(
+        (store) => ({
+            activeScheduleIndex: store.activeScheduleIndex,
+            setActiveScheduleIndex: store.setActiveScheduleIndex,
+        }),
+    );
 
     return (
         <div>
@@ -35,6 +38,7 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
                         className={classNames({
                             active: activeScheduleIndex === i,
                         })}
+                        onClick={() => setActiveScheduleIndex(i)}
                     >
                         {schedule.name} ({schedule.term.year}{" "}
                         {schedule.term.term})

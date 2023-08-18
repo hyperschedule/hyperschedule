@@ -1,7 +1,7 @@
-// async functions? react? css? never heard of them
 import { apiUrl } from "@lib/config";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
+// async functions? react? css? never heard of them. who needs those anyways ¯\_(ツ)_/¯
 export function importFromLegacy(): Promise<unknown> {
     return new Promise((resolve, reject) => {
         const frame = document.createElement("iframe");

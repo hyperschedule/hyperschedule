@@ -2,16 +2,16 @@ import { describe, test, expect } from "@jest/globals";
 import { signUser, verifyUser } from "../src/auth/token";
 import { PUBKEY } from "../src/auth/keys";
 import jwt from "jsonwebtoken";
-import { v4 as uuid4 } from "uuid";
+import { uuid4 } from "../src/db/utils";
 
 describe("auth/token.ts", () => {
     test("User encoding and decoding works correctly", () => {
-        const uuid = uuid4();
+        const uuid = uuid4("u");
         const sig = signUser({ uuid });
         expect(verifyUser(sig).uuid).toStrictEqual(uuid);
     });
     test("Token expiration works correctly", () => {
-        let uuid = uuid4();
+        let uuid = uuid4("u");
         let sig = signUser({
             uuid,
             // @ts-ignore forcing an iat to backdate this by a year

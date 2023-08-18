@@ -165,7 +165,6 @@ describe("db/models/user", () => {
         expect(updated2.schedules.length).toStrictEqual(1);
         expect(updated2.schedules[0]).toStrictEqual({
             _id: sid1,
-            isActive: false,
             term: { year: 2022, term: APIv4.Term.spring },
             name: "test schedule 1",
             sections: [],

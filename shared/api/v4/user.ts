@@ -1,6 +1,10 @@
 import { SchoolEnum, SectionIdentifier, TermIdentifier } from "./course";
-import * as APIv3 from "../v3";
 import { z } from "zod";
+
+export const UserId = z.string().regex(/u\.[A-Za-z0-9\-_]{22}/);
+export const ScheduleId = z.string().regex(/s\.[A-Za-z0-9\-_]{22}/);
+export type UserId = z.infer<typeof UserId>;
+export type ScheduleId = z.infer<typeof ScheduleId>;
 
 export const UserSectionAttrs = z.object({
     selected: z.boolean(),
@@ -14,8 +18,7 @@ export const UserSection = z.object({
 export type UserSection = z.infer<typeof UserSection>;
 
 export const UserSchedule = z.object({
-    _id: z.string(),
-    isActive: z.boolean(),
+    _id: ScheduleId,
     term: TermIdentifier,
     name: z.string(),
     sections: UserSection.array(),
@@ -23,11 +26,13 @@ export const UserSchedule = z.object({
 export type UserSchedule = z.infer<typeof UserSchedule>;
 
 const UserData = z.object({
-    _id: z.string(),
+    _id: UserId,
     schedules: UserSchedule.array().min(1).max(100),
     // seconds since Unix epoch. used to pruning inactive users.
     // this is only updated if the user did any modification to their schedule
     lastModified: z.number().positive(),
+    // id of the active schedule. null if no active schedule is set
+    activeSchedule: z.string().nullable(),
 });
 
 export const GuestUser = UserData.merge(
@@ -64,7 +69,7 @@ export const RenameScheduleRequest = z.object({
 export type RenameScheduleRequest = z.infer<typeof RenameScheduleRequest>;
 
 export const AddScheduleResponse = z.object({
-    scheduleId: z.string(),
+    scheduleId: ScheduleId,
 });
 export type AddScheduleResponse = z.infer<typeof AddScheduleResponse>;
 
@@ -72,7 +77,7 @@ export const DeleteScheduleRequest = AddScheduleResponse;
 export type DeleteScheduleRequest = AddScheduleResponse;
 
 export const AddSectionRequest = z.object({
-    scheduleId: z.string(),
+    scheduleId: ScheduleId,
     section: SectionIdentifier,
 });
 export type AddSectionRequest = z.infer<typeof AddSectionRequest>;
@@ -81,7 +86,7 @@ export const DeleteSectionRequest = AddSectionRequest;
 export type DeleteSectionResponse = AddSectionRequest;
 
 export const SetSectionAttrRequest = z.object({
-    scheduleId: z.string(),
+    scheduleId: ScheduleId,
     section: SectionIdentifier,
     attrs: UserSectionAttrs,
 });
@@ -91,3 +96,8 @@ export const ImportV3Request = z.object({
     courses: z.string().array().nonempty(),
 });
 export type ImportV3Request = z.infer<typeof ImportV3Request>;
+
+export const SetActiveScheduleRequest = z.object({
+    scheduleId: ScheduleId,
+});
+export type SetActiveScheduleRequest = z.infer<typeof SetActiveScheduleRequest>;

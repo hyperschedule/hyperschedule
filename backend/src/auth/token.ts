@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import { PRIVKEY, PUBKEY } from "./keys";
+import { UserId } from "hyperschedule-shared/api/v4";
 
 export interface UserToken {
-    uuid: string;
+    uuid: UserId;
 }
 
 const SIGNING_ALGORITHM = "ES512";
@@ -34,10 +35,12 @@ export function safeVerifyUser(
 
         if (typeof payload === "string")
             return { valid: false, reason: "invalid payload" };
+
         if (
             payload.iat === undefined ||
             payload.exp === undefined ||
-            Object.keys(payload).length !== 3
+            Object.keys(payload).length !== 3 ||
+            !UserId.safeParse(payload.uuid).success
         )
             return { valid: false, reason: "invalid payload" };
 
