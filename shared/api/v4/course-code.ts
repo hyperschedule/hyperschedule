@@ -101,8 +101,8 @@ export function stringifyCourseCode(code: Readonly<APIv4.CourseCode>): string {
         .padStart(3, "0")}${code.suffix} ${code.affiliation}`;
 }
 
-const courseCodeRegex =
-    /^(?<dept>[A-Z]{1,4}) (?<number>\d{1,3})(?<suffix>[A-Z]{0,2}) (?<affiliation>[A-Z]{2})$/;
+export const courseCodeRegex =
+    /^(?<dept>[A-Z]{1,4}) (?<number>\d{1,3})(?<suffix>[A-Z0-9]{0,2}) (?<affiliation>[A-Z]{2})$/;
 
 /**
  * reverse function of {@link stringifyCourseCode}

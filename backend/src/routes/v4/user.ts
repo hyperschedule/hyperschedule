@@ -252,8 +252,8 @@ userApp
 
         const map: Map<string, APIv4.SectionIdentifier> = new Map(
             (await getAllSectionId(CURRENT_TERM)).map((s) => [
-                APIv4.stringifySectionCode(s._id),
-                s._id,
+                APIv4.stringifySectionCode(s),
+                s,
             ]),
         );
         const sections: APIv4.UserSection[] = [];

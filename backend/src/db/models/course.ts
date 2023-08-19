@@ -6,6 +6,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { createLogger } from "../../logger";
 import type { TermIdentifier } from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "../../current-term";
+import { z } from "zod";
 
 const logger = createLogger("db.course");
 
@@ -75,16 +76,104 @@ export async function getAllSections(
 
 export async function getAllSectionId(
     term: TermIdentifier,
-): Promise<DBSection[]> {
+): Promise<APIv4.SectionIdentifier[]> {
     logger.trace("DB query start for all section id");
-    const cursor = collections.sections.find(
-        {
-            "_id.term": term.term,
-            "_id.year": term.year,
-        },
-        { projection: { _id: 1 } },
-    );
+    const cursor = collections.sections
+        .find(
+            {
+                "_id.term": term.term,
+                "_id.year": term.year,
+            },
+            { projection: { _id: 1 } },
+        )
+        .map((s) => s._id);
     const arr = await cursor.toArray();
     logger.trace("DB query completed for all section ids");
     return arr;
+}
+
+const AggregationOutput = z.object({
+    terms: APIv4.TermIdentifier.array(),
+    code: APIv4.CourseCodeString,
+});
+
+export async function computeLastOffered(term: APIv4.TermIdentifier) {
+    logger.info("DB query start for last offered");
+    const aggr = await collections.sections
+        .aggregate([
+            {
+                $project: {
+                    _id: 1,
+                },
+            },
+            {
+                // this entire stage is basically doing a stringifyCourseCode and set to a separate variable "code"
+                $set: {
+                    code: {
+                        $reduce: {
+                            input: [
+                                "$_id.department",
+                                " ",
+                                { $toString: "$_id.courseNumber" },
+                                "$_id.suffix",
+                                " ",
+                                "$_id.affiliation",
+                            ],
+                            initialValue: "",
+                            in: { $concat: ["$$value", "$$this"] },
+                        },
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: "$code",
+                    terms: {
+                        $addToSet: { term: "$_id.term", year: "$_id.year" },
+                    },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    code: "$_id",
+                    terms: 1,
+                },
+            },
+            {
+                // filter for results containing stuff from the specified term
+                $match: {
+                    terms: {
+                        $elemMatch: term,
+                    },
+                },
+            },
+        ])
+        .toArray();
+    logger.info("DB query end for last offered");
+    const res: { code: APIv4.CourseCode; terms: APIv4.TermIdentifier[] }[] = [];
+    for (const doc of aggr) {
+        const parsed = AggregationOutput.safeParse(doc);
+        if (!parsed.success) {
+            logger.warn(
+                "Unexpected failure on aggregation %o %o",
+                doc,
+                parsed.error,
+            );
+            continue;
+        }
+        parsed.data.terms.sort((a, b) => {
+            if (a.year < b.year) return -1;
+            if (a.year > b.year) return 1;
+            if (a.term === b.term) return 0;
+            if (a.term === APIv4.Term.spring) return -1;
+            return 1;
+        });
+
+        res.push({
+            code: APIv4.parseCourseCode(parsed.data.code),
+            terms: parsed.data.terms,
+        });
+    }
+    return res;
 }

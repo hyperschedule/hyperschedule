@@ -8,7 +8,11 @@
  */
 
 import { z } from "zod";
-import { CxCourseCodeRegex, CxSectionIdRegex } from "./course-code";
+import {
+    courseCodeRegex,
+    CxCourseCodeRegex,
+    CxSectionIdRegex,
+} from "./course-code";
 
 /**
  * All school codes are three letters for consistency. According to portal
@@ -180,3 +184,4 @@ export const CxCourseCodeString = z.string().regex(CxCourseCodeRegex);
 export const SessionString = z
     .string()
     .regex(/^(?:FA|SP|SU)\d{4}(?:[A-Z]\d)?$/);
+export const CourseCodeString = z.string().regex(courseCodeRegex);
