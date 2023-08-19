@@ -1,4 +1,4 @@
-import { useUserQuery } from "@hooks/api/user";
+import { useUserQuery, useLegacyImport } from "@hooks/api/user";
 import useStore, { PopupOption } from "@hooks/store";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
@@ -6,9 +6,14 @@ import Css from "./Toolbar.module.css";
 
 export default function Toolbar() {
     const userQuery = useUserQuery();
+    const legacyImport = useLegacyImport();
+
     const setPopup = useStore((store) => store.setPopup);
     return (
-        <>
+        <div>
+            <button onClick={() => legacyImport.mutate()}>
+                Import from legacy
+            </button>
             {userQuery.data ? (
                 <ToolbarLoggedIn user={userQuery.data} />
             ) : (
@@ -16,7 +21,7 @@ export default function Toolbar() {
                     Login
                 </button>
             )}
-        </>
+        </div>
     );
 }
 

@@ -71,6 +71,22 @@ export function useScheduleSectionAttrsMutation() {
     });
 }
 
+export function useScheduleReplaceSectionsMutation() {
+    const client = useQueryClient();
+
+    return useMutation({
+        mutationFn: (args: APIv4.ReplaceSectionsRequest) =>
+            fetch(`${apiUrl}/v4/user/replace-sections`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(args),
+            }),
+        onSuccess: () => {
+            return client.invalidateQueries(["user"]);
+        },
+    });
+}
+
 export function useLegacyImport() {
     const client = useQueryClient();
 

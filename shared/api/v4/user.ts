@@ -104,6 +104,6 @@ export type SetActiveScheduleRequest = z.infer<typeof SetActiveScheduleRequest>;
 
 export const ReplaceSectionsRequest = z.object({
     scheduleId: ScheduleId,
-    sections: SectionIdentifier.array(),
+    sections: UserSection.array(),
 });
 export type ReplaceSectionsRequest = z.infer<typeof ReplaceSectionsRequest>;

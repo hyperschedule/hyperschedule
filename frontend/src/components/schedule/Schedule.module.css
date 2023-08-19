@@ -150,6 +150,9 @@
     border: 1px solid transparent;
     transition: margin var(--misc-transition-duration);
 
+    //border-color: color-mix(in srgb, var(--section-color) 75%, black);
+    //border-color: var(--section-shadow);
+
     margin-left: calc(0.25rem + 0.5rem * var(--stack-order));
     //margin-top: calc(0.25rem * var(--stack-order));
     margin-right: calc(0.25rem + 1.5rem * var(--reverse-stack-order));
@@ -157,19 +160,21 @@
 
     z-index: var(--reverse-stack-order);
 
-
-    //box-shadow: 0 0 calc(max(0.1rem * var(--reverse-stack-order),1px)) var(--section-shadow);
+    //box-shadow: 0 0 calc(max(0.1rem * var(--reverse-stack-order), 1px))
+    //    var(--section-shadow);
 
     // this thing is 1px becuase this is actually standard-deviation, the same scale as gausian blur
     // https://drafts.fxtf.org/filter-effects/#funcdef-filter-drop-shadow
 
-    filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow))
-            opacity(var(--opacity)) ;
+    //filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow))
+    //        opacity(var(--opacity)) ;
 
     box-sizing: border-box;
-    &:hover{
+    &:hover {
         box-shadow: 0 0 0.2em var(--section-shadow);
-        filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow));
+        filter: drop-shadow(
+            0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow)
+        );
     }
 
     &.highlight {

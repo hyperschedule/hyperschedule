@@ -299,7 +299,7 @@ export async function deleteSchedule(
 export async function replaceSections(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
-    sections: APIv4.SectionIdentifier[],
+    sections: APIv4.UserSection[],
 ) {
     logger.info(`Replacing sections for ${userId}`);
     const user = await collections.users.findOne({

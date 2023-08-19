@@ -8,3 +8,7 @@
 
     background-color: var(--section-color);
 }
+
+.list[data-reordering] .entry {
+    cursor: grab;
+}
