@@ -330,7 +330,7 @@ export async function replaceSections(
 
 export async function batchAddSectionsToNewSchedule(
     userId: APIv4.UserId,
-    sections: APIv4.SectionIdentifier[],
+    sections: APIv4.UserSection[],
     term: APIv4.TermIdentifier,
     scheduleName: string,
 ): Promise<APIv4.ScheduleId> {
@@ -350,10 +350,7 @@ export async function batchAddSectionsToNewSchedule(
                     _id: scheduleId,
                     name: scheduleName,
                     term: term,
-                    sections: sections.map((s) => ({
-                        section: s,
-                        attrs: { selected: false },
-                    })),
+                    sections,
                 } satisfies APIv4.UserSchedule,
             },
         },

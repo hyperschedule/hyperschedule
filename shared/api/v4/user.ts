@@ -93,9 +93,18 @@ export const SetSectionAttrRequest = z.object({
 export type SetSectionAttrRequest = z.infer<typeof SetSectionAttrRequest>;
 
 export const ImportV3Request = z.object({
-    courses: z.string().array().nonempty(),
+    courses: z
+        .object({
+            code: z.string(),
+            selected: z.boolean(),
+        })
+        .array(),
 });
 export type ImportV3Request = z.infer<typeof ImportV3Request>;
+export const ImportV3Response = z.object({
+    scheduleId: ScheduleId,
+});
+export type ImportV3Response = z.infer<typeof ImportV3Response>;
 
 export const SetActiveScheduleRequest = z.object({
     scheduleId: ScheduleId,

@@ -2,37 +2,47 @@ import { apiUrl } from "@lib/config";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 // async functions? react? css? never heard of them. who needs those anyways ¯\_(ツ)_/¯
-export function importFromLegacy(): Promise<unknown> {
+export function importFromLegacy(): Promise<APIv4.ImportV3Response> {
     return new Promise((resolve, reject) => {
-        const frame = document.createElement("iframe");
-        frame.style.width = "0px";
-        frame.style.height = "0px";
-        frame.style.position = "fixed";
-        frame.style.top = "0";
-        frame.style.left = "0";
-        frame.style.visibility = "hidden";
-
+        let link: string;
         if (import.meta.env.DEV) {
-            frame.src = "https://hyperschedule.io/#v4-import-dev";
+            link = "http://hyperschedule.io/#v4-import-dev";
         } else {
-            frame.src = "https://hyperschedule.io/#v4-import";
+            link = "https://hyperschedule.io/#v4-import";
         }
 
+        let win: Window;
+
         function listener(ev: MessageEvent) {
+            const payload = APIv4.ImportV3Request.safeParse(ev.data);
+            // some extensions post messages too, and we want to ignore those
+            if (!payload.success) return;
+
+            win.close();
             window.removeEventListener("message", listener);
-            document.body.removeChild(frame);
-            fetch(`${apiUrl}/v4/user/import-v3-courses`, {
-                body: JSON.stringify(
-                    APIv4.ImportV3Request.parse({ courses: ev.data }),
-                ),
-                method: "POST",
-                credentials: "include",
-            })
-                .then(resolve)
-                .catch(reject);
+
+            if (payload.data.courses.length !== 0) {
+                fetch(`${apiUrl}/v4/user/import-v3-courses`, {
+                    body: JSON.stringify(payload.data),
+                    method: "POST",
+                    credentials: "include",
+                })
+                    .then(async (r) =>
+                        resolve(APIv4.ImportV3Response.parse(await r.json())),
+                    )
+                    .catch(reject);
+            } else {
+                reject("No data found from legacy");
+            }
         }
 
         window.addEventListener("message", listener);
-        document.body.append(frame);
+        const tmp = window.open(link);
+        if (tmp === null) {
+            reject("Cannot open new window");
+            window.removeEventListener("message", listener);
+        } else {
+            win = tmp;
+        }
     });
 }

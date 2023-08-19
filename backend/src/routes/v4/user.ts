@@ -256,11 +256,11 @@ userApp
                 s._id,
             ]),
         );
-        const sections: APIv4.SectionIdentifier[] = [];
+        const sections: APIv4.UserSection[] = [];
         for (const c of input.data.courses) {
-            const section = map.get(c);
+            const section = map.get(c.code);
             if (section === undefined) continue;
-            sections.push(section);
+            sections.push({ section, attrs: { selected: c.selected } });
         }
 
         const scheduleId = await batchAddSectionsToNewSchedule(
@@ -272,7 +272,9 @@ userApp
 
         await setActiveSchedule(request.userToken.uuid, scheduleId);
 
-        return response.status(204).end();
+        return response
+            .header("Content-Type", "application/json")
+            .send({ scheduleId } satisfies APIv4.ImportV3Response);
     });
 
 export { userApp };
