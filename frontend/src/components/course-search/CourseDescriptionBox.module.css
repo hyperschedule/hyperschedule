@@ -25,18 +25,21 @@
 
         &.instructors li,
         &.areas li,
-        &.schedule li {
+        &.schedule li,
+        &.history li {
             list-style-type: none;
         }
 
         &.instructors ul,
-        &.areas ul {
+        &.areas ul,
+        &.history ul {
             display: flex;
             gap: 0.5em;
             flex-wrap: wrap;
         }
 
-        &.areas li {
+        &.areas li,
+        &.history li {
             font-size: 0.875em;
             font-weight: 500;
             list-style-type: none;

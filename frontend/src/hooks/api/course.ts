@@ -2,9 +2,13 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { apiUrl } from "@lib/config";
 import { useQuery } from "@tanstack/react-query";
+import { useActiveTerm } from "@hooks/term";
+import { useMemo } from "react";
 
 async function getSectionsForTerm(term: APIv4.TermIdentifier) {
-    const resp = await fetch(`${apiUrl}/v4/sections/${term.year}/${term.term}`);
+    const resp = await fetch(
+        `${apiUrl}/v4/sections/${APIv4.stringifyTermIdentifier(term)}`,
+    );
     return APIv4.Section.array().parse(await resp.json());
 }
 
@@ -16,6 +20,13 @@ async function getCourseAreaDescription() {
             a.description,
         ]),
     );
+}
+
+async function getOfferingHistory(term: APIv4.TermIdentifier) {
+    const resp = await fetch(
+        `${apiUrl}/v4/offering-history/${APIv4.stringifyTermIdentifier(term)}`,
+    );
+    return APIv4.OfferingHistory.array().parse(await resp.json());
 }
 
 export function useSectionsQuery(term: APIv4.TermIdentifier | undefined) {
@@ -36,4 +47,31 @@ export function useCourseAreaDescription() {
         staleTime: 24 * 60 * 60 * 1000, // 1 day
         refetchInterval: 24 * 60 * 60 * 1000,
     });
+}
+
+export function useOfferingHistory(term: APIv4.TermIdentifier | undefined) {
+    return useQuery({
+        queryKey: ["last-offered", term] as const,
+        queryFn: (ctx) => getOfferingHistory(ctx.queryKey[1]!),
+        enabled: !!term,
+        staleTime: 24 * 60 * 60 * 1000, // 1 day
+        refetchInterval: 24 * 60 * 60 * 1000,
+    });
+}
+
+export function useOfferingHistoryLookup() {
+    const activeTerm = useActiveTerm();
+    const offeringHistory = useOfferingHistory(activeTerm);
+
+    return useMemo(() => {
+        if (!offeringHistory.data || activeTerm === undefined)
+            return new Map<string, APIv4.TermIdentifier[]>();
+
+        return new Map<string, APIv4.TermIdentifier[]>(
+            offeringHistory.data.map((entry) => [
+                APIv4.stringifyCourseCode(entry.code),
+                entry.terms.filter((t) => APIv4.termIsBefore(t, activeTerm)),
+            ]),
+        );
+    }, [offeringHistory.data]);
 }

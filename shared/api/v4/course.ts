@@ -13,6 +13,7 @@ import {
     CxCourseCodeRegex,
     CxSectionIdRegex,
 } from "./course-code";
+import * as APIv4 from "./course-code";
 
 /**
  * All school codes are three letters for consistency. According to portal
@@ -179,9 +180,35 @@ export const Section = z.object({
 });
 export type Section = z.infer<typeof Section>;
 
+export const OfferingHistory = z.object({
+    code: CourseCode,
+    terms: TermIdentifier.array(),
+});
+export type OfferingHistory = z.infer<typeof OfferingHistory>;
+
 export const CxSectionIdentifierString = z.string().regex(CxSectionIdRegex);
 export const CxCourseCodeString = z.string().regex(CxCourseCodeRegex);
 export const SessionString = z
     .string()
     .regex(/^(?:FA|SP|SU)\d{4}(?:[A-Z]\d)?$/);
 export const CourseCodeString = z.string().regex(courseCodeRegex);
+
+/**
+ * returns true if term a is before b
+ */
+export function termIsBefore(a: TermIdentifier, b: TermIdentifier): boolean {
+    switch (a.term) {
+        case Term.fall:
+            return a.year < b.year;
+        case Term.summer:
+            return (
+                a.year < b.year || (a.year === b.year && b.term === Term.fall)
+            );
+        case Term.spring:
+            return (
+                a.year < b.year ||
+                (a.year === b.year &&
+                    (b.term === Term.fall || b.term === Term.summer))
+            );
+    }
+}

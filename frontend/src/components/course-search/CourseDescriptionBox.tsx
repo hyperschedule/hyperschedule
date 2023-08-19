@@ -1,5 +1,8 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { useCourseAreaDescription } from "@hooks/api/course";
+import {
+    useCourseAreaDescription,
+    useOfferingHistoryLookup,
+} from "@hooks/api/course";
 
 import { formatTime12 } from "@lib/time";
 
@@ -18,6 +21,11 @@ export default function CourseDescriptionBox(props: {
     section: APIv4.Section;
 }) {
     const descriptions = useCourseAreaDescription();
+    const offeringHistory = useOfferingHistoryLookup();
+    const historyEntry = offeringHistory.get(
+        APIv4.stringifyCourseCode(props.section.course.code),
+    );
+
     if (!descriptions.data) return <></>;
 
     return (
@@ -70,6 +78,22 @@ export default function CourseDescriptionBox(props: {
                         </li>
                     )}
                 </ul>
+            </section>
+            <section className={Css.history}>
+                {historyEntry === undefined || historyEntry.length === 0 ? (
+                    <h3>First offering since 2011</h3>
+                ) : (
+                    <>
+                        <h3>Past Offerings</h3>
+                        <ul>
+                            {historyEntry.map((t) => (
+                                <li key={APIv4.stringifyTermIdentifier(t)}>
+                                    {APIv4.stringifyTermIdentifier(t)}
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                )}
             </section>
         </div>
     );

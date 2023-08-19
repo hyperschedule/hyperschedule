@@ -97,7 +97,7 @@ const AggregationOutput = z.object({
     code: APIv4.CourseCodeString,
 });
 
-export async function computeLastOffered(term: APIv4.TermIdentifier) {
+export async function computeOfferingHistory(term: APIv4.TermIdentifier) {
     logger.info("DB query start for last offered");
     const aggr = await collections.sections
         .aggregate([
@@ -151,7 +151,7 @@ export async function computeLastOffered(term: APIv4.TermIdentifier) {
         ])
         .toArray();
     logger.info("DB query end for last offered");
-    const res: { code: APIv4.CourseCode; terms: APIv4.TermIdentifier[] }[] = [];
+    const res: APIv4.OfferingHistory[] = [];
     for (const doc of aggr) {
         const parsed = AggregationOutput.safeParse(doc);
         if (!parsed.success) {
@@ -163,11 +163,9 @@ export async function computeLastOffered(term: APIv4.TermIdentifier) {
             continue;
         }
         parsed.data.terms.sort((a, b) => {
-            if (a.year < b.year) return -1;
-            if (a.year > b.year) return 1;
-            if (a.term === b.term) return 0;
-            if (a.term === APIv4.Term.spring) return -1;
-            return 1;
+            if (APIv4.termIsBefore(a, b)) return 1;
+            if (a.year === b.year && a.term === b.term) return 0;
+            return -1;
         });
 
         res.push({
