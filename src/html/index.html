@@ -2,7 +2,25 @@
 <html lang="">
   <head>
     <script type="text/javascript">
-      if (window.parent!==window&&(location.hash==="#v4-import"||location.hash==="#v4-import-dev"))window.parent.postMessage(JSON.parse(localStorage.getItem("selectedCourses"))?.map(c=>c.courseCode)??[],location.hash==="#v4-import"?"https://beta.hyperschedule.io":"http://localhost:5000")
+    if (
+        window.opener !== null &&
+        (location.hash === "#v4-import" || location.hash === "#v4-import-dev")
+    ) {
+        window.opener.postMessage(
+            {
+                courses:
+                    JSON.parse(localStorage.getItem("selectedCourses"))?.map(
+                        (c) => ({
+                            code: c.courseCode,
+                            selected: c.selected,
+                        }),
+                    ) ?? [],
+            },
+            location.hash === "#v4-import"
+                ? "https://beta.hyperschedule.io"
+                : "http://localhost:5000",
+        );
+    }
     </script>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
