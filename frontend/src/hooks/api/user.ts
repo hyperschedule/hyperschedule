@@ -2,7 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiUrl } from "@lib/config";
-import { importFromLegacy } from "@lib/legacy-imprt";
+import { importFromLegacy } from "@lib/legacy-import";
 
 async function getUser() {
     const resp = await fetch(`${apiUrl}/v4/user`, { credentials: "include" });
