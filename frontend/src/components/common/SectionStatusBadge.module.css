@@ -7,7 +7,7 @@
     padding: 0 0.5rem;
     display: inline-block;
     text-align: center;
-    text-shadow: 0 0 0.125em black;
+    text-shadow: 0 0 0.125em var(--shadow-color);
 
     &[data-status="O"] {
         background-color: var(--palette-green);

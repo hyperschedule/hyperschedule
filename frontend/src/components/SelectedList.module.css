@@ -4,13 +4,57 @@
 
 .list {
     overflow-y: scroll;
+    height: 100%;
 }
 
 .entry {
-    display: grid;
-    grid-template-columns: auto 1fr;
-
+    display: flex;
+    align-items: center;
     background-color: var(--section-color);
+    font-size: 0.875rem;
+
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
+
+    & button {
+        background-color: transparent;
+        border: none;
+        color: var(--fg-1);
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        padding: 0;
+    }
+
+    & .selectButton {
+        padding-right: 0.5em;
+    }
+
+    & .deleteButton {
+        padding-left: 0.5em;
+    }
+
+    & span.code {
+        font-weight: bold;
+        min-width: 8.5em;
+    }
+
+    & span.title {
+    }
+
+    & span.text {
+        flex-grow: 1;
+    }
+
+    & span.enrollments {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    & .badge {
+    }
 }
 
 .list[data-reordering] .entry {

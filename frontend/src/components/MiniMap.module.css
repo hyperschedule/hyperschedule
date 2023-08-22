@@ -1,5 +1,4 @@
 .minimapContainer {
-    margin: 1rem;
     display: grid;
 
     grid-template-columns: auto 1.5em;
@@ -97,6 +96,8 @@
 
         & .slice {
             background-color: var(--section-color);
+            border: 2px solid transparent;
+            box-sizing: border-box;
             cursor: pointer;
 
             @nest [data-theme="dark"] & {
@@ -104,6 +105,10 @@
             }
             @nest [data-theme="light"] & {
                 color: black;
+            }
+
+            &:hover {
+                border: 2px solid var(--highlight);
             }
         }
     }

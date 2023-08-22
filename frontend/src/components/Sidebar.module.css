@@ -1,0 +1,19 @@
+.sidebar {
+    transition: border-left-color var(--theme-transition-duration);
+    position: absolute;
+    right: 0;
+
+    display: grid;
+    grid-template-areas: "minimap" "selected";
+    grid-template-rows: 1fr 2fr;
+    gap: 1rem;
+
+    min-height: 0;
+
+    @media (--viewport-large) {
+        position: relative;
+        grid-area: sidebar;
+        border-left: 1px solid var(--bg-1);
+        padding-right: 1rem;
+    }
+}

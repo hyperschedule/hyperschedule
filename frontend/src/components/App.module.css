@@ -94,21 +94,3 @@
         visibility: visible;
     }
 }
-
-.sidebar {
-    transition: border-left-color var(--theme-transition-duration);
-    position: absolute;
-    right: 0;
-
-    display: grid;
-    grid-template-areas: "minimap" "selected";
-    grid-template-rows: 1fr 2fr;
-
-    min-height: 0;
-
-    @media (--viewport-large) {
-        position: relative;
-        grid-area: sidebar;
-        border-left: 1px solid var(--bg-1);
-    }
-}

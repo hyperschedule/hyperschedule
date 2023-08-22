@@ -181,7 +181,7 @@
     //        opacity(var(--opacity)) ;
     */
 
-    opacity: calc(1 - 0.5 * var(--stack-order) / var(--group-size) );
+    opacity: calc(1 - 0.5 * var(--stack-order) / var(--group-size));
     /*color: color-mix(
         in srgb,
         var(--fg-0) calc(100% * (1 - min(var(--stack-order), 1))),
@@ -206,6 +206,7 @@
     display: grid;
     grid-template-areas: "code" "title" "location" "half" "status";
     grid-template-rows: auto auto auto 1fr auto;
+    grid-template-columns: 100%;
     align-content: center;
 
     & .code {
@@ -223,10 +224,9 @@
         align-self: center;
         justify-self: center;
 
-        display: grid;
+        display: flex;
         align-items: center;
-        grid-template-columns: auto auto;
-        gap: 0.5rem;
+        flex-direction: column;
     }
 
     & .location {

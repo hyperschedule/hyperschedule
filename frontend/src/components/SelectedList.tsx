@@ -16,6 +16,7 @@ import * as DndUtil from "@dnd-kit/utilities";
 import * as Feather from "react-feather";
 
 import Css from "./SelectedList.module.css";
+import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
 export default function SelectedList() {
     const schedule = useActiveSchedule();
@@ -141,6 +142,12 @@ function SectionEntry({ entry }: { entry: APIv4.UserSection }) {
 
     if (!schedule) return <></>;
 
+    const iconProps = {
+        strokeWidth: 1.5,
+        size: "1.25em",
+        preserveAspectRatio: "",
+    };
+
     const section = sectionsLookup.get(
         APIv4.stringifySectionCodeLong(entry.section),
     );
@@ -158,6 +165,7 @@ function SectionEntry({ entry }: { entry: APIv4.UserSection }) {
             {...sortable.listeners}
         >
             <button
+                className={Css.selectButton}
                 onClick={() => {
                     attrsMutation.mutate({
                         section: entry.section,
@@ -169,23 +177,34 @@ function SectionEntry({ entry }: { entry: APIv4.UserSection }) {
                 }}
             >
                 {entry.attrs.selected ? (
-                    <Feather.CheckSquare />
+                    <Feather.CheckSquare {...iconProps} />
                 ) : (
-                    <Feather.Square />
+                    <Feather.Square {...iconProps} />
                 )}
             </button>
-            <div
-                onClick={
-                    () => undefined
-                    //setPopup({
-                    //    option: PopupOption.SectionDetail,
-                    //    section: entry.section,
-                    //})
-                }
-            >
-                {APIv4.stringifySectionCode(entry.section)}{" "}
-                {section?.course.title ?? null}
-            </div>
+            <span className={Css.text}>
+                <span className={Css.code}>
+                    {APIv4.stringifySectionCode(entry.section)}{" "}
+                </span>
+                <span className={Css.title}>
+                    {section?.course.title ?? "(section no longer exists)"}
+                </span>
+            </span>
+            {section !== undefined ? (
+                <>
+                    <span className={Css.enrollments}>
+                        {section.seatsFilled}/{section.seatsTotal}
+                    </span>
+                    <span className={Css.badge}>
+                        <SectionStatusBadge status={section.status} />
+                    </span>
+                </>
+            ) : (
+                <></>
+            )}
+            <button className={Css.deleteButton}>
+                <Feather.Trash2 {...iconProps} />
+            </button>
         </div>
     );
 }

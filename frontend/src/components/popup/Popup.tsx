@@ -12,8 +12,9 @@ function PopupBox(props: { children: JSX.Element }): JSX.Element {
     }
 
     return (
-        <div className={Css.popupBackground}>
-            <div className={Css.popupBox}>
+        <div className={Css.popupBackground} onClick={dismissPopup}>
+            {/*we call stopPropagation here so clicks inside the box don't actually dismiss the popup*/}
+            <div className={Css.popupBox} onClick={(e) => e.stopPropagation()}>
                 <button className={Css.closeButton} onClick={dismissPopup}>
                     <Feather.X size={24} />
                 </button>

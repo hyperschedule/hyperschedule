@@ -11,11 +11,10 @@ import CourseSearch from "./course-search/CourseSearch";
 import Schedule from "./schedule/Schedule";
 import MainSelector from "./MainSelector";
 import Toolbar from "./Toolbar";
-import SelectedList from "./SelectedList";
-import MiniMap from "./MiniMap";
 import Popup from "@components/popup/Popup";
 
 import useStore, { MainTab } from "@hooks/store";
+import Sidebar from "./Sidebar";
 
 export default function App() {
     // memoize `queryClient` with empty dependency list to ensure it only gets
@@ -47,10 +46,7 @@ export default function App() {
                         <Schedule />
                     </div>
                 </div>
-                <div className={Css.sidebar}>
-                    <MiniMap />
-                    <SelectedList />
-                </div>
+                <Sidebar />
                 <ThemeSlider />
             </div>
             <ReactQueryDevtools initialIsOpen={false} />

@@ -152,10 +152,10 @@ function Card(props: {
                 <>
                     <div className={Css.title}>{section.course.title}</div>
                     <div className={Css.status}>
-                        <SectionStatusBadge status={section.status} />
                         <div>
                             {section.seatsFilled} / {section.seatsTotal}
                         </div>
+                        <SectionStatusBadge status={section.status} />
                     </div>
                 </>
             ) : (

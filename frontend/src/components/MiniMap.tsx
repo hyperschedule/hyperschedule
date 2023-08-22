@@ -3,7 +3,7 @@ import Css from "./MiniMap.module.css";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useActiveScheduleResolved } from "@hooks/schedule";
-import useStore from "@hooks/store";
+import useStore, { PopupOption } from "@hooks/store";
 
 import { sectionColorStyle } from "@lib/color";
 
@@ -13,9 +13,9 @@ import classNames from "classnames";
 
 import {
     cardKey,
-    mergeCards,
-    groupCardsByDay,
     comparePriority,
+    groupCardsByDay,
+    mergeCards,
 } from "@lib/schedule";
 
 export default function MiniMap() {
@@ -25,6 +25,7 @@ export default function MiniMap() {
     const setExpandKey = useStore((store) => store.setExpandKey);
     const clearExpand = useStore((store) => store.clearExpand);
     const theme = useStore((store) => store.theme);
+    const setPopup = useStore((store) => store.setPopup);
 
     const byDay = groupCardsByDay(cards);
 
@@ -116,7 +117,10 @@ export default function MiniMap() {
                                                     ),
                                                 }}
                                                 onClick={() =>
-                                                    setExpandKey(card.section)
+                                                    setPopup({
+                                                        option: PopupOption.SectionDetail,
+                                                        section: card.section,
+                                                    })
                                                 }
                                             ></div>
                                         ))}

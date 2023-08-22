@@ -49,8 +49,8 @@
             transition: background-color var(--theme-transition-duration);
         }
 
-        &.instructors li:not(:last-child){
-            &::after{
+        &.instructors li:not(:last-child) {
+            &::after {
                 content: ",";
             }
         }
