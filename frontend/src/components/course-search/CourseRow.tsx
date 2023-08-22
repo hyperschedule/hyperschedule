@@ -9,18 +9,12 @@ import Css from "./CourseRow.module.css";
 import * as Feather from "react-feather";
 
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
+import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
 import { useScheduleSectionMutation } from "@hooks/api/user";
 import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
 import useStore, { PopupOption } from "@hooks/store";
 import { sectionColorStyle } from "@lib/color";
-
-const statusBadge = {
-    [APIv4.SectionStatus.open]: Css.badgeOpen,
-    [APIv4.SectionStatus.closed]: Css.badgeClosed,
-    [APIv4.SectionStatus.reopened]: Css.badgeReopened,
-    [APIv4.SectionStatus.unknown]: Css.badgeUnknown,
-};
 
 export default function CourseRow(props: {
     section: APIv4.Section;
@@ -56,12 +50,7 @@ export default function CourseRow(props: {
                         </span>
                     </span>
                     <span className={Css.status}>
-                        <span
-                            className={classNames(
-                                Css.badge,
-                                statusBadge[props.section.status],
-                            )}
-                        />
+                        <SectionStatusBadge status={props.section.status} />
                         <span className={Css.seats}>
                             <span
                                 className={classNames(Css.permCountLabel, {

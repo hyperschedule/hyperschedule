@@ -13,6 +13,8 @@ import classNames from "classnames";
 import GridBackgroundColumns from "@components/schedule/GridBackgroundColumns";
 import GridBackgroundRows from "@components/schedule/GridBackgroundRows";
 
+import SectionStatusBadge from "@components/common/SectionStatusBadge";
+
 import {
     cardKey,
     hasWeekend,
@@ -21,6 +23,7 @@ import {
     comparePriority,
     stackCards,
     stackCardsReverse,
+    type Card,
 } from "@lib/schedule";
 import useStore from "@hooks/store";
 
@@ -28,7 +31,6 @@ export default function Schedule() {
     const { sections, cards, bounds, startHour, endHour } =
         useActiveScheduleResolved();
     const sectionsLookup = useActiveSectionsLookup();
-    const theme = useStore((store) => store.theme);
 
     const weekend = hasWeekend(cards);
 
@@ -60,45 +62,18 @@ export default function Schedule() {
                         //const revOrder = stackCardsReverse(cards);
 
                         return groups.flatMap((group) =>
-                            group.cards.sort(comparePriority).map((card, i) => (
-                                <div
-                                    key={`card:${cardKey(card)}`}
-                                    className={Css.card}
-                                    style={
-                                        {
-                                            gridColumn: card.day,
-                                            gridRow: `${
-                                                Math.floor(
-                                                    card.startTime / 300,
-                                                ) + 1
-                                            } / ${
-                                                Math.floor(card.endTime / 300) +
-                                                1
-                                            }`,
-                                            "--stack-order": i,
-                                            "--reverse-stack-order":
-                                                group.cards.length - i - 1,
-                                            ...sectionColorStyle(
-                                                card.section,
-                                                theme,
-                                            ),
-                                            "--opacity":
-                                                group.cards.length === 1
-                                                    ? 1
-                                                    : (1 -
-                                                          (group.cards.length -
-                                                              i -
-                                                              1) /
-                                                              group.cards
-                                                                  .length) *
-                                                          0.25 +
-                                                      0.75,
-                                        } as React.CSSProperties
-                                    }
-                                >
-                                    {APIv4.stringifySectionCode(card.section)}
-                                </div>
-                            )),
+                            group.cards
+                                .sort(comparePriority)
+                                .map((card, i) => (
+                                    <Card
+                                        key={`card:${cardKey(card)}`}
+                                        card={card}
+                                        orderFromTop={i}
+                                        orderFromBottom={
+                                            group.cards.length - 1 - i
+                                        }
+                                    />
+                                )),
                         );
                     })}
                 </div>
@@ -136,6 +111,72 @@ function DayLabels() {
                 <div>Friday</div>
                 <div>Saturday</div>
             </div>
+        </div>
+    );
+}
+
+function Card(props: {
+    readonly card: Readonly<Card>;
+    readonly orderFromTop: number;
+    readonly orderFromBottom: number;
+}) {
+    const theme = useStore((store) => store.theme);
+    const sectionsLookup = useActiveSectionsLookup();
+
+    const section = sectionsLookup.get(
+        APIv4.stringifySectionCodeLong(props.card.section),
+    );
+
+    return (
+        <div
+            className={Css.card}
+            style={
+                {
+                    gridColumn: props.card.day,
+                    gridRow: `${Math.floor(props.card.startTime / 300) + 1} / ${
+                        Math.floor(props.card.endTime / 300) + 1
+                    }`,
+                    "--stack-order": props.orderFromTop,
+                    "--reverse-stack-order": props.orderFromBottom,
+                    ...sectionColorStyle(props.card.section, theme),
+                    /*
+                    "--opacity":
+                        group.cards.length === 1
+                            ? 1
+                            : (1 -
+                                  (group.cards.length - i - 1) /
+                                      group.cards.length) *
+                                  0.25 +
+                              0.75,
+                              */
+                } as React.CSSProperties
+            }
+        >
+            <div className={Css.code}>
+                {APIv4.stringifySectionCode(props.card.section)}
+            </div>
+            {section ? (
+                <>
+                    <div className={Css.title}>{section.course.title}</div>
+                    <div className={Css.status}>
+                        <SectionStatusBadge status={section.status} />
+                        <div>
+                            {section.seatsFilled} / {section.seatsTotal}
+                        </div>
+                    </div>
+                </>
+            ) : (
+                "TODO DEAD"
+            )}
+            <div className={Css.location}>
+                {props.card.locations.join(", ")}
+            </div>
+            {props.card.section.half && (
+                <div className={Css.half}>
+                    ({props.card.section.half.number === 1 ? "first" : "second"}{" "}
+                    half semester)
+                </div>
+            )}
         </div>
     );
 }

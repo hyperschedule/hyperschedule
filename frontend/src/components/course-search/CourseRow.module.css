@@ -114,42 +114,6 @@
         & .seats {
         }
 
-        & .badge {
-            text-transform: uppercase;
-            font-weight: bold;
-            color: white;
-            background-color: red;
-            border-radius: 1rem;
-            padding: 0 0.5rem;
-            display: inline-block;
-            text-align: center;
-            text-shadow: 0 0 0.125em black;
-        }
-        & .badgeOpen {
-            background-color: var(--palette-green);
-            &::after {
-                content: "open";
-            }
-        }
-        & .badgeClosed {
-            background-color: var(--palette-red);
-            &::after {
-                content: "closed";
-            }
-        }
-        & .badgeReopened {
-            background-color: var(--palette-orange);
-            &::after {
-                content: "reopened";
-            }
-        }
-        & .badgeUnknown {
-            background-color: gray;
-            &::after {
-                content: "unknown";
-            }
-        }
-
         & .seatsFilled {
             display: inline-block;
             text-align: right;

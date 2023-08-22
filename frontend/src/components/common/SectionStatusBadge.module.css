@@ -1,0 +1,36 @@
+.badge {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    background-color: red;
+    border-radius: 1rem;
+    padding: 0 0.5rem;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 0 0 0.125em black;
+
+    &[data-status="O"] {
+        background-color: var(--palette-green);
+        &::after {
+            content: "open";
+        }
+    }
+    &[data-status="C"] {
+        background-color: var(--palette-red);
+        &::after {
+            content: "closed";
+        }
+    }
+    &[data-status="R"] {
+        background-color: var(--palette-orange);
+        &::after {
+            content: "reopened";
+        }
+    }
+    &[data-status="U"] {
+        background-color: gray;
+        &::after {
+            content: "unknown";
+        }
+    }
+}

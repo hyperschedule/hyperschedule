@@ -6,6 +6,7 @@ export type Card = {
     startTime: number;
     endTime: number;
     priority: number;
+    locations: string[];
 };
 
 export type Bounds = {
@@ -55,6 +56,7 @@ export function getCards(section: Readonly<APIv4.Section>, priority: number) {
                 startTime: schedule.startTime,
                 endTime: schedule.endTime,
                 section: section.identifier,
+                locations: schedule.locations,
                 priority,
             });
     }

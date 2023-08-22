@@ -18,8 +18,9 @@
     grid-template-rows: 1fr;
 
     @media (--viewport-large) {
-        grid-template-areas: "main sidebar";
+        grid-template-areas: "main toolbar" "main sidebar";
         grid-template-columns: 1fr calc(100% / 3);
+        grid-template-rows: auto 1fr;
     }
 
     /* `h` stands for highlight */
@@ -100,8 +101,8 @@
     right: 0;
 
     display: grid;
-    grid-template-areas: "toolbar" "minimap" "selected";
-    grid-template-rows: auto 1fr 2fr;
+    grid-template-areas: "minimap" "selected";
+    grid-template-rows: 1fr 2fr;
 
     min-height: 0;
 

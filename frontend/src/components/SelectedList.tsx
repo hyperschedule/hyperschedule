@@ -34,7 +34,7 @@ export default function SelectedList() {
     if (!schedule) return <></>;
 
     return (
-        <div>
+        <div className={Css.container}>
             <div>
                 {reorderMode ? (
                     <>

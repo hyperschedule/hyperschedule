@@ -29,6 +29,7 @@ export default function App() {
         <ReactQuery.QueryClientProvider client={queryClient}>
             <div className={Css.app} data-theme={theme}>
                 <Popup />
+                <Toolbar />
                 <div className={Css.main}>
                     <MainSelector />
                     <div
@@ -47,7 +48,6 @@ export default function App() {
                     </div>
                 </div>
                 <div className={Css.sidebar}>
-                    <Toolbar />
                     <MiniMap />
                     <SelectedList />
                 </div>

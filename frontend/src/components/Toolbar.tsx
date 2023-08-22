@@ -10,7 +10,7 @@ export default function Toolbar() {
 
     const setPopup = useStore((store) => store.setPopup);
     return (
-        <div>
+        <div className={Css.toolbar}>
             <button onClick={() => legacyImport.mutate()}>
                 Import from legacy
             </button>
