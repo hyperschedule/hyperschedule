@@ -8,7 +8,7 @@
     @media (--viewport-medium) or (--viewport-large) {
         backdrop-filter: blur(4px);
     }
-    z-index: 10;
+    z-index: 100;
 
     & .popupBox {
         width: 100vw;

@@ -72,6 +72,7 @@ export default function Schedule() {
                                         orderFromBottom={
                                             group.cards.length - 1 - i
                                         }
+                                        totalCardsInGroup={group.cards.length}
                                     />
                                 )),
                         );
@@ -119,6 +120,7 @@ function Card(props: {
     readonly card: Readonly<Card>;
     readonly orderFromTop: number;
     readonly orderFromBottom: number;
+    readonly totalCardsInGroup: number;
 }) {
     const theme = useStore((store) => store.theme);
     const sectionsLookup = useActiveSectionsLookup();
@@ -138,17 +140,8 @@ function Card(props: {
                     }`,
                     "--stack-order": props.orderFromTop,
                     "--reverse-stack-order": props.orderFromBottom,
+                    "--group-size": props.totalCardsInGroup,
                     ...sectionColorStyle(props.card.section, theme),
-                    /*
-                    "--opacity":
-                        group.cards.length === 1
-                            ? 1
-                            : (1 -
-                                  (group.cards.length - i - 1) /
-                                      group.cards.length) *
-                                  0.25 +
-                              0.75,
-                              */
                 } as React.CSSProperties
             }
         >

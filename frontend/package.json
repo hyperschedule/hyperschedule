@@ -39,6 +39,7 @@
     "@types/react-window": "^1.8.5",
     "@vitejs/plugin-react": "^3.0.0",
     "classnames": "^2.3.2",
+    "html2canvas": "^1.4.1",
     "hyperschedule-shared": "workspace:^",
     "postcss-comment": "^2.0.0",
     "postcss-custom-media": "^10.0.0",
