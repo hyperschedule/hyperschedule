@@ -1,5 +1,25 @@
 import Css from "./ScheduleControl.module.css";
 import useStore from "@hooks/store";
+import html2canvas from "html2canvas";
+import { scheduleContainerId } from "@lib/constants";
+
+async function downloadImage() {
+    const el = document.querySelector(
+        "#" + scheduleContainerId,
+    ) as HTMLDivElement;
+    const canvas = await html2canvas(el, {
+        windowWidth: 1920,
+        windowHeight: 1080,
+    });
+    const url = canvas.toDataURL("image/png");
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "schedule.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 
 export default function ScheduleControl() {
     const options = useStore((store) => store.scheduleRenderingOptions);
@@ -33,6 +53,9 @@ export default function ScheduleControl() {
                 />{" "}
                 hide status
             </label>
+            <button onClick={() => void downloadImage()}>
+                download schedule image
+            </button>
         </div>
     );
 }

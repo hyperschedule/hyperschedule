@@ -105,20 +105,21 @@ export default function CourseDescriptionBox(props: {
                 </ul>
             </section>
             <section className={Css.history}>
-                {historyEntry === undefined || historyEntry.length === 0 ? (
-                    <h3>First offering since 2011</h3>
-                ) : (
-                    <>
-                        <h3>Past Offerings</h3>
-                        <ul>
-                            {historyEntry.map((t) => (
+                <>
+                    <h3>Past Offerings</h3>
+                    <ul>
+                        {historyEntry === undefined ||
+                        historyEntry.length === 0 ? (
+                            <li className={Css.none}>(none since 2011)</li>
+                        ) : (
+                            historyEntry.map((t) => (
                                 <li key={APIv4.stringifyTermIdentifier(t)}>
                                     {APIv4.stringifyTermIdentifier(t)}
                                 </li>
-                            ))}
-                        </ul>
-                    </>
-                )}
+                            ))
+                        )}
+                    </ul>
+                </>
             </section>
         </div>
     );

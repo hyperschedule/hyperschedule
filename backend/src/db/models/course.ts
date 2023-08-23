@@ -4,7 +4,6 @@ import { dbToSection, sectionToDb } from "../utils";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { createLogger } from "../../logger";
-import type { TermIdentifier } from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "../../current-term";
 import { z } from "zod";
 
@@ -60,7 +59,7 @@ export async function updateSections(
 }
 
 export async function getAllSections(
-    term?: TermIdentifier,
+    term?: APIv4.TermIdentifier,
 ): Promise<APIv4.Section[]> {
     term = term ?? CURRENT_TERM;
 
@@ -75,7 +74,7 @@ export async function getAllSections(
 }
 
 export async function getAllSectionId(
-    term: TermIdentifier,
+    term: APIv4.TermIdentifier,
 ): Promise<APIv4.SectionIdentifier[]> {
     logger.trace("DB query start for all section id");
     const cursor = collections.sections

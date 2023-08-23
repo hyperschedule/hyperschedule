@@ -26,6 +26,7 @@ import {
     type Card,
 } from "@lib/schedule";
 import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
+import { scheduleContainerId } from "@lib/constants";
 
 export default function Schedule(props: ScheduleRenderingOptions) {
     const { sections, cards, bounds, startHour, endHour } =
@@ -48,6 +49,7 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                     "--end-hour": endHour,
                 } as React.CSSProperties
             }
+            id={scheduleContainerId}
         >
             <DayLabels />
             <TimeLabels />

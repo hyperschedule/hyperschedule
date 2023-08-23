@@ -38,13 +38,13 @@
 
     &[data-theme="light"] {
         --bg-0: #ffffff;
-        --bg-1: #efeae3;
-        --bg-2: #cfcac3;
-        --bg-3: #afaaa3;
+        --bg-1: hsl(35, 30%, 90%);
+        --bg-2: hsl(35, 25%, 80%);
+        --bg-3: hsl(35, 20%, 70%);
 
-        --fg-0: #2f2822;
-        --fg-1: #4f4842;
-        --fg-2: #6f6862;
+        --fg-0: hsl(40, 10%, 10%);
+        --fg-1: hsl(40, 10%, 25%);
+        --fg-2: hsl(40, 10%, 45%);
 
         --highlight: #f80;
         --highlight-transparent: #f800;
@@ -57,13 +57,13 @@
     }
 
     &[data-theme="dark"] {
-        --bg-0: #2a2824;
-        --bg-1: #3a3834;
-        --bg-2: #4a4844;
-        --bg-3: #5a5854;
+        --bg-0: hsl(35, 10%, 15%);
+        --bg-1: hsl(35, 10%, 30%);
+        --bg-2: hsl(35, 10%, 45%);
+        --bg-3: hsl(35, 10%, 60%);
 
-        --fg-0: #efeae3;
-        --fg-1: #cfcac3;
+        --fg-0: hsl(40, 25%, 90%);
+        --fg-1: hsl(40, 25%, 80%);
 
         --highlight: #f80;
         --highlight-transparent: #f800;
