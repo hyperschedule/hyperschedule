@@ -1,8 +1,9 @@
 import { useActiveSchedule } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
 import {
-    useScheduleSectionAttrsMutation,
     useScheduleReplaceSectionsMutation,
+    useScheduleSectionAttrsMutation,
+    useScheduleSectionMutation,
 } from "@hooks/api/user";
 import useStore, { PopupOption } from "@hooks/store";
 import * as APIv4 from "hyperschedule-shared/api/v4";
@@ -118,6 +119,7 @@ export default function SelectedList() {
                                         entry.section,
                                     )}
                                     entry={entry}
+                                    scheduleId={schedule._id}
                                 />
                             ),
                         )}
@@ -129,18 +131,27 @@ export default function SelectedList() {
     );
 }
 
-function SectionEntry({ entry }: { entry: APIv4.UserSection }) {
+function SectionEntry({
+    entry,
+    scheduleId,
+}: {
+    entry: APIv4.UserSection;
+    scheduleId: APIv4.ScheduleId;
+}) {
     const schedule = useActiveSchedule();
 
     const sectionsLookup = useActiveSectionsLookup();
     const attrsMutation = useScheduleSectionAttrsMutation();
     const theme = useStore((store) => store.theme);
+    const setPopup = useStore((store) => store.setPopup);
 
     const sortable = DndSortable.useSortable({
         id: APIv4.stringifySectionCodeLong(entry.section),
     });
 
     if (!schedule) return <></>;
+
+    const scheduleSelectMutation = useScheduleSectionMutation();
 
     const iconProps = {
         strokeWidth: 1.5,
@@ -182,7 +193,15 @@ function SectionEntry({ entry }: { entry: APIv4.UserSection }) {
                     <Feather.Square {...iconProps} />
                 )}
             </button>
-            <span className={Css.text}>
+            <span
+                className={Css.text}
+                onClick={() =>
+                    setPopup({
+                        option: PopupOption.SectionDetail,
+                        section: entry.section,
+                    })
+                }
+            >
                 <span className={Css.code}>
                     {APIv4.stringifySectionCode(entry.section)}{" "}
                 </span>
@@ -202,7 +221,16 @@ function SectionEntry({ entry }: { entry: APIv4.UserSection }) {
             ) : (
                 <></>
             )}
-            <button className={Css.deleteButton}>
+            <button
+                className={Css.deleteButton}
+                onClick={() =>
+                    scheduleSelectMutation.mutate({
+                        section: entry.section,
+                        add: false,
+                        scheduleId,
+                    })
+                }
+            >
                 <Feather.Trash2 {...iconProps} />
             </button>
         </div>

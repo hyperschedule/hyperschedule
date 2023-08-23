@@ -46,6 +46,8 @@
 
     & span.text {
         flex-grow: 1;
+        cursor: pointer;
+        user-select: none;
     }
 
     & span.enrollments {

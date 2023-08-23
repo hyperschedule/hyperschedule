@@ -153,8 +153,7 @@
     */
 
     border: 1px solid transparent;
-    transition: margin var(--misc-transition-duration) z-index
-        var(--misc-transition-duration);
+    transition: margin var(--misc-transition-duration);
 
     /*
     //border-color: color-mix(in srgb, var(--section-color) 75%, black);
@@ -216,7 +215,7 @@
 
     & .title {
         grid-area: title;
-        font-weight: 600;
+        margin-bottom: 0.25em;
     }
 
     & .status {

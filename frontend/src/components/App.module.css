@@ -28,6 +28,7 @@
     --hfg: #efeae4;
 
     --theme-transition-duration: 200ms;
+    --slider-transition-duration: 200ms;
     --misc-transition-duration: 200ms;
 
     --font-sans: "Inter", sans-serif;

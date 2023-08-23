@@ -4,7 +4,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useActiveScheduleResolved } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
-//import useStore from "@hooks/store";
+import { Fragment } from "react";
 
 import { sectionColorStyle } from "@lib/color";
 
@@ -25,9 +25,9 @@ import {
     stackCardsReverse,
     type Card,
 } from "@lib/schedule";
-import useStore from "@hooks/store";
+import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
 
-export default function Schedule() {
+export default function Schedule(props: ScheduleRenderingOptions) {
     const { sections, cards, bounds, startHour, endHour } =
         useActiveScheduleResolved();
     const sectionsLookup = useActiveSectionsLookup();
@@ -62,19 +62,43 @@ export default function Schedule() {
                         //const revOrder = stackCardsReverse(cards);
 
                         return groups.flatMap((group) =>
-                            group.cards
-                                .sort(comparePriority)
-                                .map((card, i) => (
-                                    <Card
-                                        key={`card:${cardKey(card)}`}
-                                        card={card}
-                                        orderFromTop={i}
-                                        orderFromBottom={
-                                            group.cards.length - 1 - i
-                                        }
-                                        totalCardsInGroup={group.cards.length}
-                                    />
-                                )),
+                            group.cards.sort(comparePriority).map((card, i) => {
+                                if (props.hideConflicting) {
+                                    if (i > 0) {
+                                        return (
+                                            <Fragment
+                                                key={`card:${cardKey(card)}`}
+                                            />
+                                        );
+                                    } else {
+                                        return (
+                                            <Card
+                                                key={`card:${cardKey(card)}`}
+                                                card={card}
+                                                orderFromTop={0}
+                                                orderFromBottom={0}
+                                                totalCardsInGroup={1}
+                                                hideStatus={props.hideStatus}
+                                            />
+                                        );
+                                    }
+                                } else {
+                                    return (
+                                        <Card
+                                            key={`card:${cardKey(card)}`}
+                                            card={card}
+                                            orderFromTop={i}
+                                            orderFromBottom={
+                                                group.cards.length - 1 - i
+                                            }
+                                            totalCardsInGroup={
+                                                group.cards.length
+                                            }
+                                            hideStatus={props.hideStatus}
+                                        />
+                                    );
+                                }
+                            }),
                         );
                     })}
                 </div>
@@ -121,6 +145,7 @@ function Card(props: {
     readonly orderFromTop: number;
     readonly orderFromBottom: number;
     readonly totalCardsInGroup: number;
+    readonly hideStatus: boolean;
 }) {
     const theme = useStore((store) => store.theme);
     const sectionsLookup = useActiveSectionsLookup();
@@ -151,12 +176,16 @@ function Card(props: {
             {section ? (
                 <>
                     <div className={Css.title}>{section.course.title}</div>
-                    <div className={Css.status}>
-                        <div>
-                            {section.seatsFilled} / {section.seatsTotal}
+                    {props.hideStatus ? (
+                        <></>
+                    ) : (
+                        <div className={Css.status}>
+                            <div>
+                                {section.seatsFilled} / {section.seatsTotal}
+                            </div>
+                            <SectionStatusBadge status={section.status} />
                         </div>
-                        <SectionStatusBadge status={section.status} />
-                    </div>
+                    )}
                 </>
             ) : (
                 "TODO DEAD"

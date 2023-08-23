@@ -1,0 +1,47 @@
+.container {
+    width: 4em;
+    height: 1.75em;
+    border: 1px solid gray;
+    cursor: pointer;
+    border-radius: 2em;
+    box-sizing: border-box;
+
+    background-color: var(--color-right);
+    transition: background-color var(--slider-transition-duration);
+    color: inherit;
+}
+
+.left {
+    width: 1em;
+    height: 1em;
+
+    background: var(--color-left);
+    transition: background-color var(--slider-transition-duration),
+        transform var(--slider-transition-duration);
+    border-radius: 50%;
+    line-height: 0;
+    padding: 0.25em;
+
+    & .iconLeft {
+        position: absolute;
+        transition: opacity var(--slider-transition-duration);
+    }
+
+    & .iconRight {
+        transition: opacity var(--slider-transition-duration);
+        opacity: 0;
+    }
+}
+
+.right {
+    composes: left;
+    transform: translateX(2em);
+
+    & .iconLeft {
+        opacity: 0;
+    }
+
+    & .iconRight {
+        opacity: 1;
+    }
+}

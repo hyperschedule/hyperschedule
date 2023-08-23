@@ -17,6 +17,31 @@ function computeCredits(section: APIv4.Section): number {
     return section.credits * 3;
 }
 
+// certain course descriptions contain links, such as PE 095B
+const linkHtmlMatcher = /<a +href="?([A-Za-z0-9:\/.%_-]+)"?.*>(.*)<\/a>/;
+
+function processDescription(description: string): JSX.Element {
+    const match = linkHtmlMatcher.exec(description);
+
+    if (match !== null) {
+        const start = match.index;
+        const end = start + match[0].length;
+        const before = description.slice(0, start);
+        const after = description.slice(end);
+        return (
+            <>
+                {before}
+                <a href={match[1]} target="_blank">
+                    {match[2]}
+                </a>
+                {after}
+            </>
+        );
+    } else {
+        return <>{description}</>;
+    }
+}
+
 export default function CourseDescriptionBox(props: {
     section: APIv4.Section;
 }) {
@@ -31,7 +56,7 @@ export default function CourseDescriptionBox(props: {
     return (
         <div className={Css.root}>
             <p className={Css.description}>
-                {props.section.course.description}
+                {processDescription(props.section.course.description)}
             </p>
             <section className={Css.credits}>
                 <h3>Credits</h3>

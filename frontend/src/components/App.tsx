@@ -24,6 +24,12 @@ export default function App() {
     const theme = useStore((store) => store.theme);
     const mainTab = useStore((store) => store.mainTab);
 
+    // we pass in schedule rendering options as props so we can make a screenshot of the schedule with only certain options
+    // in the future
+    const scheduleRenderingOptions = useStore(
+        (store) => store.scheduleRenderingOptions,
+    );
+
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
             <div className={Css.app} data-theme={theme}>
@@ -43,7 +49,7 @@ export default function App() {
                             [Css.visible!]: mainTab === MainTab.Schedule,
                         })}
                     >
-                        <Schedule />
+                        <Schedule {...scheduleRenderingOptions} />
                     </div>
                 </div>
                 <Sidebar />

@@ -15,6 +15,7 @@ export type Store = WithSetters<{
     expandHeight: number;
     activeScheduleIndex: number;
     popup: Popup;
+    scheduleRenderingOptions: ScheduleRenderingOptions;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -45,6 +46,11 @@ export type Popup =
     | { option: PopupOption.UserDetail }
     | null;
 
+export interface ScheduleRenderingOptions {
+    hideConflicting: boolean;
+    hideStatus: boolean;
+}
+
 export default Zustand.create<Store>((set, get) => ({
     mainTab: MainTab.CourseSearch,
     setMainTab: (mainTab) => set({ mainTab }),
@@ -67,4 +73,8 @@ export default Zustand.create<Store>((set, get) => ({
         set({ activeScheduleIndex }),
     popup: null,
     setPopup: (popup) => set({ popup }),
+
+    scheduleRenderingOptions: { hideConflicting: false, hideStatus: false },
+    setScheduleRenderingOptions: (options) =>
+        set({ scheduleRenderingOptions: options }),
 }));
