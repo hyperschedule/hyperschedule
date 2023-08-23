@@ -7,6 +7,7 @@ import {
 import { formatTime12 } from "@lib/time";
 
 import Css from "./CourseDescriptionBox.module.css";
+import * as Feather from "react-feather";
 
 function computeCredits(section: APIv4.Section): number {
     if (
@@ -32,7 +33,7 @@ function processDescription(description: string): JSX.Element {
             <>
                 {before}
                 <a href={match[1]} target="_blank">
-                    {match[2]}
+                    {match[2]} <Feather.ExternalLink size={"1em"} />
                 </a>
                 {after}
             </>
@@ -75,9 +76,35 @@ export default function CourseDescriptionBox(props: {
             <section className={Css.areas}>
                 <h3>Course Areas</h3>
                 <ul>
-                    {props.section.courseAreas.map((c) => (
-                        <li key={c}>{descriptions.data.get(c) ?? c}</li>
-                    ))}
+                    {props.section.courseAreas.map((code) => {
+                        const campus = code.charCodeAt(0) - 48; // 48 is the ascii code for '0'
+                        let cls: string = "";
+                        if (campus < 6) {
+                            switch (campus) {
+                                // this is ordered by the year the school is established
+                                case 1:
+                                    cls = Css.pom;
+                                    break;
+                                case 2:
+                                    cls = Css.scr;
+                                    break;
+                                case 3:
+                                    cls = Css.cmc;
+                                    break;
+                                case 4:
+                                    cls = Css.hmc;
+                                    break;
+                                case 5:
+                                    cls = Css.ptz;
+                            }
+                        }
+
+                        return (
+                            <li key={code} className={cls}>
+                                {descriptions.data.get(code) ?? code}
+                            </li>
+                        );
+                    })}
                 </ul>
             </section>
             <section className={Css.schedule}>

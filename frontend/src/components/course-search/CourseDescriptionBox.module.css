@@ -3,6 +3,16 @@
         margin: 0;
     }
 
+    /* for links placed in course descriptions like some PE*/
+
+    & a {
+        &,
+        &:visited {
+            color: var(--fg-2);
+            text-decoration: underline var(--fg-2);
+        }
+    }
+
     & section {
         margin: 0.25rem 0;
         display: grid;
@@ -52,6 +62,39 @@
         &.instructors li:not(:last-child) {
             &::after {
                 content: ",";
+            }
+        }
+
+        &.areas li {
+            &.hmc,
+            &.ptz {
+                color: hsl(40, 10%, 10%);
+            }
+
+            &.pom,
+            &.scr,
+            &.cmc {
+                color: hsl(40, 25%, 90%);
+            }
+
+            &.hmc {
+                background-color: gold;
+            }
+
+            &.cmc {
+                background-color: maroon;
+            }
+
+            &.ptz {
+                background-color: orange;
+            }
+
+            &.pom {
+                background-color: blue;
+            }
+
+            &.scr {
+                background-color: green;
             }
         }
     }

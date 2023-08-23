@@ -1,5 +1,5 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-
+import Css from "./SectionDetails.module.css";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 import { useActiveSectionsLookup } from "@hooks/section";
 
@@ -9,5 +9,14 @@ export default function SectionDetails(props: {
     const lookup = useActiveSectionsLookup();
     const s = lookup.get(APIv4.stringifySectionCodeLong(props.section));
     if (s === undefined) return <>Section data not found</>;
-    return <CourseDescriptionBox section={s} />;
+    return (
+        <div className={Css.content}>
+            <h3>
+                {APIv4.stringifySectionCodeLong(props.section)}:{" "}
+                {s.course.title}
+            </h3>
+
+            <CourseDescriptionBox section={s} />
+        </div>
+    );
 }

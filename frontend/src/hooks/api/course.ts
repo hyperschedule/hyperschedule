@@ -10,7 +10,10 @@ async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     const resp = await fetch(
         `${apiUrl}/v4/sections/${APIv4.stringifyTermIdentifier(term)}`,
     );
-    return APIv4.Section.array().parse(await resp.json());
+    const sections = APIv4.Section.array().parse(await resp.json());
+    // we want the areas for schools to appear last, which is sorted numerically
+    sections.forEach((s) => s.courseAreas.reverse());
+    return sections;
 }
 
 async function getCourseAreaDescription() {

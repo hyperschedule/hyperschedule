@@ -16,16 +16,17 @@ import GridBackgroundRows from "@components/schedule/GridBackgroundRows";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
 import {
-    cardKey,
-    hasWeekend,
-    groupCardsByDay,
-    mergeCards,
-    comparePriority,
-    stackCards,
-    stackCardsReverse,
     type Card,
+    cardKey,
+    comparePriority,
+    groupCardsByDay,
+    hasWeekend,
+    mergeCards,
 } from "@lib/schedule";
-import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
+import useStore, {
+    PopupOption,
+    type ScheduleRenderingOptions,
+} from "@hooks/store";
 import { scheduleContainerId } from "@lib/constants";
 
 export default function Schedule(props: ScheduleRenderingOptions) {
@@ -150,6 +151,7 @@ function Card(props: {
     readonly hideStatus: boolean;
 }) {
     const theme = useStore((store) => store.theme);
+    const setPopup = useStore((store) => store.setPopup);
     const sectionsLookup = useActiveSectionsLookup();
 
     const section = sectionsLookup.get(
@@ -170,6 +172,12 @@ function Card(props: {
                     "--group-size": props.totalCardsInGroup,
                     ...sectionColorStyle(props.card.section, theme),
                 } as React.CSSProperties
+            }
+            onClick={() =>
+                setPopup({
+                    option: PopupOption.SectionDetail,
+                    section: props.card.section,
+                })
             }
         >
             <div className={Css.code}>
