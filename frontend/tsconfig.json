@@ -3,6 +3,8 @@
   "compilerOptions": {
     // https://github.com/mrmckeb/typescript-plugin-css-modules/issues/222
     "composite": false,
+    // react-toastify has some type errors because it tries to target older react versions
+    "skipLibCheck": true,
     "lib": ["esnext", "dom"],
     "sourceRoot": "src",
     "baseUrl": "src",

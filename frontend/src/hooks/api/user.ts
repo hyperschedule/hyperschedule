@@ -3,6 +3,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiUrl } from "@lib/config";
 import { importFromLegacy } from "@lib/legacy-import";
+import { toast } from "react-toastify";
 
 async function getUser() {
     const resp = await fetch(`${apiUrl}/v4/user`, { credentials: "include" });
@@ -94,6 +95,9 @@ export function useLegacyImport() {
         mutationFn: importFromLegacy,
         onSuccess: () => {
             void client.invalidateQueries(["user"]);
+        },
+        onError: () => {
+            toast.error("No data found from legacy hyperschedule", {});
         },
     });
 }

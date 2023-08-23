@@ -12,9 +12,12 @@ import Schedule from "./schedule/Schedule";
 import MainSelector from "./MainSelector";
 import Toolbar from "./Toolbar";
 import Popup from "@components/popup/Popup";
+import { ToastContainer, Slide } from "react-toastify";
 
 import useStore, { MainTab } from "@hooks/store";
 import Sidebar from "./Sidebar";
+
+import "react-toastify/dist/ReactToastify.min.css";
 
 export default function App() {
     // memoize `queryClient` with empty dependency list to ensure it only gets
@@ -54,6 +57,12 @@ export default function App() {
                 </div>
                 <Sidebar />
                 <ThemeSlider />
+                <ToastContainer
+                    position="top-center"
+                    hideProgressBar
+                    theme={theme}
+                    transition={Slide}
+                />
             </div>
             <ReactQueryDevtools initialIsOpen={false} />
         </ReactQuery.QueryClientProvider>
