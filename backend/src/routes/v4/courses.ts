@@ -12,7 +12,7 @@ courseApp.get("/sections", async function (request, reply) {
         .header("Content-Type", "application/json")
         .header(
             "Cache-Control",
-            "public,s-max-age=15,max-age=15,proxy-revalidate,stale-while-revalidate=30",
+            "public,s-max-age=15,max-age=60,proxy-revalidate,stale-while-revalidate=30",
         )
         .send(JSON.stringify(sections));
 });
@@ -30,7 +30,7 @@ courseApp.get("/sections/:term", async (request, response) => {
     } else {
         response.header(
             "Cache-Control",
-            "public,s-max-age=15,max-age=15,proxy-revalidate,stale-while-revalidate=30",
+            "public,s-max-age=15,max-age=60,proxy-revalidate,stale-while-revalidate=30",
         );
     }
     const sections = await getAllSections(term);

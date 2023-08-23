@@ -91,6 +91,15 @@ export async function getAllSectionId(
     return arr;
 }
 
+function sortTermIdentifierReverse(
+    a: APIv4.TermIdentifier,
+    b: APIv4.TermIdentifier,
+) {
+    if (APIv4.termIsBefore(a, b)) return 1;
+    if (a.year === b.year && a.term === b.term) return 0;
+    return -1;
+}
+
 const AggregationOutput = z.object({
     terms: APIv4.TermIdentifier.array(),
     code: APIv4.CourseCodeString,
@@ -103,12 +112,8 @@ export async function computeOfferingHistory(term: APIv4.TermIdentifier) {
             {
                 $project: {
                     _id: 1,
-                },
-            },
-            {
-                // this entire stage is basically doing a stringifyCourseCode and set to a separate variable "code"
-                $set: {
                     code: {
+                        // this entire stage is basically doing a stringifyCourseCode and set to a separate variable "code"
                         $reduce: {
                             input: [
                                 "$_id.department",
@@ -161,11 +166,7 @@ export async function computeOfferingHistory(term: APIv4.TermIdentifier) {
             );
             continue;
         }
-        parsed.data.terms.sort((a, b) => {
-            if (APIv4.termIsBefore(a, b)) return 1;
-            if (a.year === b.year && a.term === b.term) return 0;
-            return -1;
-        });
+        parsed.data.terms.sort(sortTermIdentifierReverse);
 
         res.push({
             code: APIv4.parseCourseCode(parsed.data.code),
@@ -173,4 +174,36 @@ export async function computeOfferingHistory(term: APIv4.TermIdentifier) {
         });
     }
     return res;
+}
+
+// figure out which terms we have data for
+export async function computeAllTerms() {
+    logger.info("DB query start for all terms");
+    const result = await collections.sections
+        .aggregate([
+            {
+                $project: {
+                    _id: false,
+                    term: {
+                        $concat: ["$_id.term", { $toString: "$_id.year" }],
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: "$term",
+                },
+            },
+        ])
+        .toArray();
+
+    const arr: APIv4.TermIdentifier[] = [];
+    for (const doc of result) {
+        const s = APIv4.TermIdentifierString.parse(doc._id);
+        const term = APIv4.parseTermIdentifier(s);
+        arr.push(term);
+    }
+    arr.sort(sortTermIdentifierReverse);
+
+    return arr;
 }

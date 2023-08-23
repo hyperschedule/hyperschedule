@@ -2,6 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { apiUrl } from "@lib/config";
 import { useQuery } from "@tanstack/react-query";
+
 import { useActiveTerm } from "@hooks/term";
 import { useMemo } from "react";
 

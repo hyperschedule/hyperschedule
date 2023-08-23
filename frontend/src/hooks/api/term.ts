@@ -9,5 +9,19 @@ export function useCurrentTermQuery() {
             const resp = await fetch(`${apiUrl}/v4/term/current`);
             return APIv4.TermIdentifier.parse(await resp.json());
         },
+        staleTime: 10 * 60 * 1000,
+        refetchInterval: 30 * 60 * 1000,
+    });
+}
+
+export function useAllTermsQuery() {
+    return useQuery({
+        queryKey: ["term/all"],
+        queryFn: async () => {
+            const resp = await fetch(`${apiUrl}/v4/term/all`);
+            return APIv4.TermIdentifier.array().parse(await resp.json());
+        },
+        staleTime: 10 * 60 * 1000,
+        refetchInterval: 30 * 60 * 1000,
     });
 }
