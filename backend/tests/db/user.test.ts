@@ -11,6 +11,7 @@ import {
     deleteSection,
     renameSchedule,
     setSectionAttrs,
+    setActiveSchedule,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -287,5 +288,39 @@ describe("db/models/user", () => {
         expect(user2.schedules[sid]!.sections[0]!.attrs).toStrictEqual({
             selected: false,
         } satisfies APIv4.UserSectionAttrs);
+    });
+
+    test("active schedule logic", async () => {
+        const uid = await createGuestUser();
+        const user = await getUser(uid);
+        const sid = Object.keys(user.schedules)[0]!;
+        expect(user.activeSchedule).toStrictEqual(sid);
+
+        await deleteSchedule(uid, sid);
+        const updated = await getUser(uid);
+        expect(updated.activeSchedule).toStrictEqual(null);
+
+        const sid1 = await addSchedule(
+            uid,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 1",
+        );
+        const updated1 = await getUser(uid);
+        expect(updated1.activeSchedule).toStrictEqual(sid1);
+
+        const sid2 = await addSchedule(
+            uid,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 2",
+        );
+        const updated2 = await getUser(uid);
+        expect(updated2.activeSchedule).toStrictEqual(sid1);
+
+        await setActiveSchedule(uid, sid2);
+        const updated3 = await getUser(uid);
+        expect(updated3.activeSchedule).toStrictEqual(sid2);
+
+        // cannot set id for deleted schedules
+        await expect(setActiveSchedule(uid, sid)).rejects.toBeTruthy();
     });
 });

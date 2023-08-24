@@ -130,12 +130,14 @@ export async function addSchedule(
             term,
         )}) for user ${userId}`,
     );
-    if (Object.keys(user.schedules).length >= 100) {
+
+    const scheduleId = uuid4("s");
+
+    const numberOfSchedules = Object.keys(user.schedules).length;
+    if (numberOfSchedules >= 100) {
         logger.warn(`User ${userId} reached schedule limit`);
         throw Error("Schedule limit reached");
     }
-
-    const scheduleId = uuid4("s");
 
     const result = await collections.users.findOneAndUpdate(
         {
@@ -144,16 +146,26 @@ export async function addSchedule(
                 $exists: false,
             },
         },
-        {
-            $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
-                [`schedules.${scheduleId}`]: {
-                    term,
-                    name: scheduleName,
-                    sections: [],
-                } satisfies APIv4.UserSchedule,
-            } as UpdateFilter<APIv4.User>,
-        },
+        [
+            // we need to make this an array so we can use aggregation pipeline methods (namely $cond) in here
+            {
+                $set: {
+                    lastModified: Math.floor(new Date().getTime() / 1000),
+                    [`schedules.${scheduleId}`]: {
+                        term,
+                        name: scheduleName,
+                        sections: [],
+                    } satisfies APIv4.UserSchedule,
+                    activeSchedule: {
+                        $cond: {
+                            if: { $eq: ["$activeSchedule", null] },
+                            then: scheduleId,
+                            else: "$activeSchedule",
+                        },
+                    },
+                } as UpdateFilter<APIv4.User>,
+            },
+        ],
     );
 
     if (!result.ok || result.value === null) {
