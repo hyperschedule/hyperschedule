@@ -275,6 +275,24 @@ export async function deleteSchedule(
         throw Error("User with this schedule not found");
     }
 
+    const schedules = APIv4.getSchedulesSorted(user.schedules).map(
+        ([id]) => id,
+    );
+    let newActiveSchedule: APIv4.ScheduleId | null = null;
+    if (schedules.length > 1) {
+        // set active schedule to be the next one down the list. if it is already last one on the list, set it above
+        const n = schedules.indexOf(scheduleId);
+        if (n === -1) {
+            throw Error(
+                "Something went horribly wrong. MongoDB says this thing should be here but apparently not",
+            );
+        } else if (n === schedules.length - 1) {
+            newActiveSchedule = schedules[n - 1]!;
+        } else {
+            newActiveSchedule = schedules[n + 1]!;
+        }
+    }
+
     logger.info(`Deleting schedule ${scheduleId} for user ${userId}`);
 
     const result = await collections.users.findOneAndUpdate(
@@ -287,7 +305,7 @@ export async function deleteSchedule(
             },
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),
-                activeSchedule: null,
+                activeSchedule: newActiveSchedule,
             },
         },
     );

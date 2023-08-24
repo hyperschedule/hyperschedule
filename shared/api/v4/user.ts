@@ -1,4 +1,9 @@
-import { SchoolEnum, SectionIdentifier, TermIdentifier } from "./course";
+import {
+    SchoolEnum,
+    SectionIdentifier,
+    TermIdentifier,
+    termIsBefore,
+} from "./course";
 import { z } from "zod";
 
 export const UserId = z.string().regex(/u~[A-Za-z0-9\-_]{22}/);
@@ -31,9 +36,8 @@ const UserData = z.object({
     // this is only updated if the user did any modification to their schedule
     lastModified: z.number().positive(),
     // id of the active schedule. null if no active schedule is set
-    activeSchedule: z.string().nullable(),
+    activeSchedule: ScheduleId.nullable(),
 });
-
 export const GuestUser = UserData.merge(
     z.object({
         isGuest: z.literal(true),
@@ -55,6 +59,27 @@ export const User = z.discriminatedUnion("isGuest", [
     GuestUser,
 ]);
 export type User = z.infer<typeof User>;
+
+/**
+ * sort schedules in reverse chronological order, then by name in lexical order
+ */
+export function getSchedulesSorted(
+    schedules: Record<ScheduleId, UserSchedule>,
+): [ScheduleId, UserSchedule][] {
+    const arr = Object.entries(schedules);
+    arr.sort((a, b): number => {
+        const schedule0 = a[1];
+        const schedule1 = b[1];
+        if (
+            schedule0.term.year === schedule1.term.year &&
+            schedule0.term.term === schedule1.term.term
+        )
+            return schedule0.name.localeCompare(schedule1.name);
+        if (termIsBefore(schedule0.term, schedule1.term)) return 1;
+        return -1;
+    });
+    return arr;
+}
 
 export const AddScheduleRequest = z.object({
     term: TermIdentifier,

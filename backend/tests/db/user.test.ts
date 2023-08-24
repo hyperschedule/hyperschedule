@@ -322,5 +322,9 @@ describe("db/models/user", () => {
 
         // cannot set id for deleted schedules
         await expect(setActiveSchedule(uid, sid)).rejects.toBeTruthy();
+
+        await deleteSchedule(uid, sid2);
+        const updated4 = await getUser(uid);
+        expect(updated4.activeSchedule).toStrictEqual(sid1);
     });
 });
