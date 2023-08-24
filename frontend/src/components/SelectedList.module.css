@@ -1,10 +1,13 @@
 .container {
+    grid-area: selected;
+
     min-height: 0;
+    display: grid;
 }
 
 .list {
     overflow-y: scroll;
-    height: 100%;
+    padding: 1rem;
 }
 
 .entry {
@@ -39,6 +42,7 @@
     & span.code {
         font-weight: bold;
         min-width: 8.5em;
+        font-size: 0.875em;
     }
 
     & span.title {

@@ -1,19 +1,90 @@
-.sidebar {
-    transition: border-left-color var(--theme-transition-duration);
-    position: absolute;
-    right: 0;
+.handle {
+    grid-area: sidebar-handle;
 
-    display: grid;
-    grid-template-areas: "minimap" "selected";
-    grid-template-rows: 1fr 2fr;
-    gap: 1rem;
+    @media (--viewport-large) {
+        display: none;
+    }
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+    opacity: 0;
+    cursor: pointer;
+    backdrop-filter: blur(0.25rem) brightness(50%);
+
+    transition: opacity var(--misc-transition-duration);
+
+    &[data-show] {
+        visibility: visible;
+        opacity: 1;
+
+        @media (--viewport-large) {
+            visibility: hidden;
+            opacity: 0;
+        }
+    }
+}
+
+.icon {
+    width: 1.5rem;
+}
+
+.sidebar {
+    transition: border-left-color var(--theme-transition-duration),
+        transform var(--misc-transition-duration);
+
+    box-shadow: 0 0 1rem #0008;
 
     min-height: 0;
 
+    display: grid;
+    grid-template-areas: "top" "minimap" "selected";
+
+    &[data-tab="CourseSearch"] {
+        grid-template-rows: auto 1fr 2fr;
+    }
+
+    &[data-tab="Schedule"] {
+        grid-template-rows: auto auto 2fr;
+    }
+
+    background-color: var(--bg-0);
+
+    & .top {
+        display: flex;
+        justify-content: flex-end;
+
+        & button {
+            background: none;
+            color: inherit;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+    }
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(100%);
+
+    &[data-show] {
+        transform: translateX(0);
+    }
+
     @media (--viewport-large) {
+        transform: none;
+
         position: relative;
+
         grid-area: sidebar;
         border-left: 1px solid var(--bg-1);
-        padding-right: 1rem;
+
+        & .top {
+            display: none;
+        }
     }
 }

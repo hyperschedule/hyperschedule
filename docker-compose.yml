@@ -1,87 +1,89 @@
 version: "3.8"
 services:
-  base:
-    image: hyperschedule-dev-base
-    build:
-      context: .
-      dockerfile: dev.dockerfile
+    base:
+        image: hyperschedule-dev-base
+        build:
+            context: .
+            dockerfile: dev.dockerfile
 
-  db:
-    image: mongo
-    networks:
-      - backend
-    expose:
-      - 27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: hyperschedule
-      MONGO_INITDB_ROOT_PASSWORD: local_dev
+    db:
+        image: mongo
+        networks:
+            - backend
+        expose:
+            - 27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: hyperschedule
+            MONGO_INITDB_ROOT_PASSWORD:
+                local_dev
 
-  db-init:
-    image:  hyperschedule-dev-base
-    networks:
-      - backend
-    depends_on:
-      base:
-        condition: service_completed_successfully
-      db:
-        condition: service_started
-    volumes:
-      - ./backend:/srv/hyperschedule/backend:ro
-      - ./shared:/srv/hyperschedule/shared:ro
-      - ./data:/srv/hyperschedule/data:ro
-    working_dir: /srv/hyperschedule/backend
-    command: yarn dev-node ./src/db/init-db.ts
-    environment:
-      DB_URL: mongodb://hyperschedule:local_dev@db
+                #db-init:
+                #  image:  hyperschedule-dev-base
+                #  networks:
+                #    - backend
+                #  depends_on:
+                #    base:
+                #      condition: service_completed_successfully
+                #    db:
+                #      condition: service_started
+                #  volumes:
+                #    - ./backend:/srv/hyperschedule/backend:ro
+                #    - ./shared:/srv/hyperschedule/shared:ro
+                #    - ./data:/srv/hyperschedule/data:ro
+                #  working_dir: /srv/hyperschedule/backend
+                #  command: yarn dev-node ./src/db/init-db.ts
+                #  environment:
+                #    DB_URL: mongodb://hyperschedule:local_dev@db
 
-  backend:
-    image: hyperschedule-dev-base
-    depends_on:
-      base:
-        condition: service_completed_successfully
-      db-init:
-        condition: service_completed_successfully
-    ports:
-      - 8080:8080
-    networks:
-      - backend
-    volumes:
-      - ./backend:/srv/hyperschedule/backend:ro
-      - ./shared:/srv/hyperschedule/shared:ro
-      - ./data:/srv/hyperschedule/data:ro
-    working_dir: /srv/hyperschedule/backend
-    command: yarn serve
-    environment:
-      DB_URL: mongodb://hyperschedule:local_dev@db
+    backend:
+        image: hyperschedule-dev-base
+        depends_on:
+            base:
+                condition:
+                    service_completed_successfully
+                    #db-init:
+                    #    condition: service_completed_successfully
+        ports:
+            - 8080:8080
+        networks:
+            - backend
+        volumes:
+            - ./backend:/srv/hyperschedule/backend:ro
+            - ./shared:/srv/hyperschedule/shared:ro
+            - ./data:/srv/hyperschedule/data:ro
+        working_dir: /srv/hyperschedule/backend
+        command: yarn serve
+        environment:
+            DB_URL: mongodb://hyperschedule:local_dev@db
 
-  frontend:
-    image: hyperschedule-dev-base
-    depends_on:
-      base:
-        condition: service_completed_successfully
-    ports:
-      - 5000:5000
-    volumes:
-      # this is not read-only because vite really wants to write some files
-      - ./frontend:/srv/hyperschedule/frontend
-      - ./shared:/srv/hyperschedule/shared:ro
-      - ./data:/srv/hyperschedule/data:ro
-    working_dir: /srv/hyperschedule/frontend
-    command: yarn serve
+    frontend:
+        image: hyperschedule-dev-base
+        depends_on:
+            base:
+                condition: service_completed_successfully
+        ports:
+            - 5000:5000
+        volumes:
+            # this is not read-only because vite really wants to write some files
+            - ./frontend:/srv/hyperschedule/frontend
+            - ./shared:/srv/hyperschedule/shared:ro
+            - ./data:/srv/hyperschedule/data:ro
+        working_dir: /srv/hyperschedule/frontend
+        command: yarn serve
 
-  nginx:
-    image: nginx:1.24.0
-    depends_on:
-      backend:
-        condition: service_started
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - backend
-    volumes:
-      - ./data/nginx/cert/:/etc/nginx/cert/:ro
-      - ./data/nginx/compose.conf:/etc/nginx/conf.d/default.conf:ro
+    nginx:
+        image: nginx:1.24.0
+        depends_on:
+            backend:
+                condition: service_started
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            - backend
+        volumes:
+            - ./data/nginx/cert/:/etc/nginx/cert/:ro
+            - ./data/nginx/compose.conf:/etc/nginx/conf.d/default.conf:ro
 
 networks:
-  backend:
+    backend:

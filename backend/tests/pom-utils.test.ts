@@ -1,6 +1,6 @@
 import { describe, test, expect } from "@jest/globals";
 import { mergeApiCourses, mergeCourseAreaCourses } from "../src/pom-api/utils";
-import { CourseWithAreas } from "../src/pom-api/types";
+import type { CourseWithAreas } from "../src/pom-api/types";
 
 describe("mergeCourseAreaCourses", () => {
     test("Empty course array", () => {

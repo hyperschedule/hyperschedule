@@ -13,7 +13,7 @@
         color var(--theme-transition-duration);
 
     display: grid;
-    grid-template-areas: "main";
+    grid-template-areas: "toolbar sidebar-handle" "main main";
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
 

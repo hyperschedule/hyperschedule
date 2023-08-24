@@ -5,7 +5,7 @@
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    @media (--viewport-medium) or (--viewport-large) {
+    @media (--viewport-medium) {
         backdrop-filter: blur(4px);
     }
     z-index: 100;

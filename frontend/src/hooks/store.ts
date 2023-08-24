@@ -16,6 +16,7 @@ export type Store = WithSetters<{
     activeScheduleIndex: number;
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
+    showSidebar: boolean;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -73,6 +74,9 @@ export default Zustand.create<Store>((set, get) => ({
         set({ activeScheduleIndex }),
     popup: null,
     setPopup: (popup) => set({ popup }),
+
+    showSidebar: false,
+    setShowSidebar: (showSidebar) => set({ showSidebar }),
 
     scheduleRenderingOptions: { hideConflicting: false, hideStatus: false },
     setScheduleRenderingOptions: (options) =>

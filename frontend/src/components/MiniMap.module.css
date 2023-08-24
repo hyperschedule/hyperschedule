@@ -1,11 +1,14 @@
 .minimapContainer {
+    grid-area: minimap;
+
     display: grid;
 
-    grid-template-columns: auto 1.5em;
-    grid-template-rows: 1.5em auto;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
     grid-template-areas:
         "day-label ."
         "minimap time-label";
+    padding: 0 1rem 1rem 1rem;
 
     & .minimapLabelTime,
     & .minimapLabelDay {

@@ -6,6 +6,7 @@
     "moduleResolution": "node",
     "strict": true,
     "noUncheckedIndexedAccess": true,
+    "importsNotUsedAsValues": "error",
     "jsx": "react-jsx",
     "sourceMap": true,
     "resolveJsonModule": true,

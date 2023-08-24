@@ -8,6 +8,7 @@
     display: inline-block;
     text-align: center;
     text-shadow: 0 0 0.125em var(--shadow-color);
+    font-size: 0.75rem;
 
     &[data-status="O"] {
         background-color: var(--palette-green);

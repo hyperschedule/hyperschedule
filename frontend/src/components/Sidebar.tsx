@@ -4,22 +4,49 @@ import SelectedList from "@components/SelectedList";
 import * as React from "react";
 import useStore, { MainTab } from "@hooks/store";
 import ScheduleControl from "@components/schedule/ScheduleControl";
+import { shallow } from "zustand/shallow";
+import * as Feather from "react-feather";
 
 export default function Sidebar() {
-    const tab = useStore((store) => store.mainTab);
+    const { tab, show, setShow } = useStore(
+        (store) => ({
+            tab: store.mainTab,
+            show: store.showSidebar,
+            setShow: store.setShowSidebar,
+        }),
+        shallow,
+    );
 
-    if (tab === MainTab.CourseSearch)
-        return (
-            <div className={Css.sidebar}>
-                <MiniMap />
+    return (
+        <>
+            <button className={Css.handle} onClick={() => setShow(true)}>
+                <Feather.List />
+            </button>
+            <div
+                className={Css.overlay}
+                data-show={show || undefined}
+                onClick={() => setShow(false)}
+            />
+            <div
+                className={Css.sidebar}
+                data-show={show || undefined}
+                data-tab={tab}
+            >
+                <div className={Css.top}>
+                    <button onClick={() => setShow(false)}>
+                        <Feather.ChevronRight
+                            className={Css.icon}
+                            size="auto"
+                        />
+                    </button>
+                </div>
+                {tab === MainTab.CourseSearch ? (
+                    <MiniMap />
+                ) : (
+                    <ScheduleControl />
+                )}
                 <SelectedList />
             </div>
-        );
-    else
-        return (
-            <div className={Css.sidebar}>
-                <ScheduleControl />
-                <SelectedList />
-            </div>
-        );
+        </>
+    );
 }

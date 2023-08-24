@@ -1,5 +1,6 @@
 parser: postcss-comment
 plugins:
+    autoprefixer: {}
     postcss-nesting: {}
     "@csstools/postcss-global-data":
         files:

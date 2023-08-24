@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import { linkCourseData } from "../../src/hmc-api/data-linker";
-import { HmcApiFiles } from "../../src/hmc-api/fetcher/types";
+import type { HmcApiFiles } from "../../src/hmc-api/fetcher/types";
 import { Term } from "hyperschedule-shared/api/v4";
 
 const testData: HmcApiFiles = {

@@ -20,7 +20,7 @@ init-db:
       'src/db/init-db.ts'
 
 load-db:
-  podman exec -i hyperschedule-mongodb \
+  docker-compose exec -T db \
     mongorestore \
     --username 'hyperschedule' \
     --password 'local_dev' \
