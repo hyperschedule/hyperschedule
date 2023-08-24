@@ -30,7 +30,7 @@ import useStore, {
 import { scheduleContainerId } from "@lib/constants";
 
 export default function Schedule(props: ScheduleRenderingOptions) {
-    const { sections, cards, bounds, startHour, endHour } =
+    const { sections, cards, bounds, startHour, endHour, unconflicting } =
         useActiveScheduleResolved();
     const sectionsLookup = useActiveSectionsLookup();
 
@@ -55,7 +55,10 @@ export default function Schedule(props: ScheduleRenderingOptions) {
             <DayLabels />
             <TimeLabels />
             <div className={Css.viewport}>
-                <div className={Css.grid}>
+                <div
+                    className={Css.grid}
+                    data-show-conflict={!props.hideConflicting || undefined}
+                >
                     <GridBackgroundColumns />
                     <GridBackgroundRows />
                     {Object.entries(byDay).flatMap(([day, cards]) => {
@@ -64,45 +67,23 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                         //const order = stackCards(cards);
                         //const revOrder = stackCardsReverse(cards);
 
-                        return groups.flatMap((group) =>
-                            group.cards.sort(comparePriority).map((card, i) => {
-                                if (props.hideConflicting) {
-                                    if (i > 0) {
-                                        return (
-                                            <Fragment
-                                                key={`card:${cardKey(card)}`}
-                                            />
-                                        );
-                                    } else {
-                                        return (
-                                            <Card
-                                                key={`card:${cardKey(card)}`}
-                                                card={card}
-                                                orderFromTop={0}
-                                                orderFromBottom={0}
-                                                totalCardsInGroup={1}
-                                                hideStatus={props.hideStatus}
-                                            />
-                                        );
+                        return groups.flatMap((group) => {
+                            const cards = group.cards.sort(comparePriority);
+
+                            return cards.map((card, i) => (
+                                <Card
+                                    key={`card:${cardKey(card)}`}
+                                    card={card}
+                                    conflict={
+                                        !unconflicting.has(card.sectionObj)
                                     }
-                                } else {
-                                    return (
-                                        <Card
-                                            key={`card:${cardKey(card)}`}
-                                            card={card}
-                                            orderFromTop={i}
-                                            orderFromBottom={
-                                                group.cards.length - 1 - i
-                                            }
-                                            totalCardsInGroup={
-                                                group.cards.length
-                                            }
-                                            hideStatus={props.hideStatus}
-                                        />
-                                    );
-                                }
-                            }),
-                        );
+                                    orderFromTop={i}
+                                    orderFromBottom={group.cards.length - 1 - i}
+                                    totalCardsInGroup={group.cards.length}
+                                    hideStatus={props.hideStatus}
+                                />
+                            ));
+                        });
                     })}
                 </div>
             </div>
@@ -149,6 +130,7 @@ function Card(props: {
     readonly orderFromBottom: number;
     readonly totalCardsInGroup: number;
     readonly hideStatus: boolean;
+    readonly conflict: boolean;
 }) {
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
@@ -179,6 +161,7 @@ function Card(props: {
                     section: props.card.section,
                 })
             }
+            data-conflict={props.conflict || undefined}
         >
             <div className={Css.code}>
                 {APIv4.stringifySectionCode(props.card.section)}

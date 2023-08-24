@@ -141,7 +141,7 @@
     background: var(--section-color);
     font-size: 0.75rem;
     border-radius: 0.25rem;
-    padding: 0.5rem;
+    padding: 0.25rem;
     margin: 0.125rem;
     text-align: center;
     cursor: pointer;
@@ -155,38 +155,16 @@
     border: 1px solid transparent;
     transition: margin var(--misc-transition-duration);
 
-    /*
-    //border-color: color-mix(in srgb, var(--section-color) 75%, black);
-    //border-color: var(--section-shadow);
-    */
-
-    --offset-x: calc((40% - 0.25rem) / var(--group-size));
-    --offset-y: calc((20% - 0.25rem) / var(--group-size));
-
-    margin-left: calc(0.25rem + var(--stack-order) * var(--offset-x));
-    margin-right: calc(0.25rem + var(--reverse-stack-order) * var(--offset-x));
-    margin-top: calc(0.25rem + var(--stack-order) * var(--offset-y));
-
-    z-index: var(--reverse-stack-order);
-
-    /*
-    //box-shadow: 0 0 calc(max(0.1rem * var(--reverse-stack-order), 1px))
-    //    var(--section-shadow);
-
-    // this thing is 1px becuase this is actually standard-deviation, the same scale as gausian blur
-    // https://drafts.fxtf.org/filter-effects/#funcdef-filter-drop-shadow
-
-    //filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow))
-    //        opacity(var(--opacity)) ;
-    */
-
-    opacity: calc(1 - 0.5 * var(--stack-order) / var(--group-size));
     /*color: color-mix(
         in srgb,
         var(--fg-0) calc(100% * (1 - min(var(--stack-order), 1))),
         transparent
     );
     */
+
+    &[data-conflict] {
+        visibility: hidden;
+    }
 
     box-sizing: border-box;
 
@@ -206,7 +184,6 @@
     grid-template-areas: "code" "title" "location" "half" "status";
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-columns: 100%;
-    align-content: center;
 
     & .code {
         grid-area: code;
@@ -234,5 +211,36 @@
 
     & .half {
         grid-area: half;
+    }
+}
+
+[data-show-conflict] .card {
+    --offset-x: calc((40% - 0.25rem) / var(--group-size));
+
+    margin-left: calc(0.25rem + var(--stack-order) * var(--offset-x));
+    margin-right: calc(0.25rem + var(--reverse-stack-order) * var(--offset-x));
+
+    z-index: var(--reverse-stack-order);
+
+    opacity: calc(1 - 0.5 * var(--stack-order) / var(--group-size));
+
+    /*
+    //border-color: color-mix(in srgb, var(--section-color) 75%, black);
+    //border-color: var(--section-shadow);
+    */
+
+    /*
+    //box-shadow: 0 0 calc(max(0.1rem * var(--reverse-stack-order), 1px))
+    //    var(--section-shadow);
+
+    // this thing is 1px becuase this is actually standard-deviation, the same scale as gausian blur
+    // https://drafts.fxtf.org/filter-effects/#funcdef-filter-drop-shadow
+
+    //filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow))
+    //        opacity(var(--opacity)) ;
+    */
+
+    &[data-conflict] {
+        visibility: inherit;
     }
 }

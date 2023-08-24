@@ -15,7 +15,7 @@
     display: grid;
     grid-template-areas: "toolbar sidebar-handle" "main main";
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
+    grid-template-rows: auto 1fr;
 
     @media (--viewport-large) {
         grid-template-areas: "main toolbar" "main sidebar";

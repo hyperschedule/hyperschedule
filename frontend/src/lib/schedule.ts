@@ -2,6 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 export type Card = {
     section: APIv4.SectionIdentifier;
+    sectionObj: APIv4.Section; // i see a refactor coming
     day: APIv4.Weekday;
     startTime: number;
     endTime: number;
@@ -56,6 +57,7 @@ export function getCards(section: Readonly<APIv4.Section>, priority: number) {
                 startTime: schedule.startTime,
                 endTime: schedule.endTime,
                 section: section.identifier,
+                sectionObj: section,
                 locations: schedule.locations,
                 priority,
             });
@@ -160,6 +162,43 @@ export function mergeCards(cards: Readonly<Card>[]) {
     }
 
     return groups;
+}
+
+export function sectionsConflict(
+    a: Readonly<APIv4.Section>,
+    b: Readonly<APIv4.Section>,
+) {
+    const byDayA = groupCardsByDay(getCards(a, 0));
+    const byDayB = groupCardsByDay(getCards(b, 0));
+
+    for (const day of Object.values(APIv4.Weekday)) {
+        // quadratic, improve someday
+        for (const cardA of byDayA[day])
+            for (const cardB of byDayB[day]) {
+                if (
+                    cardA.startTime < cardB.endTime &&
+                    cardB.startTime < cardA.endTime
+                )
+                    return true;
+            }
+    }
+
+    return false;
+}
+
+export function greedyCollect<A>(
+    items: readonly Readonly<A>[],
+    conflict: (a: Readonly<A>, b: Readonly<A>) => boolean,
+) {
+    // this is quadratic; some day we might care about finding a better algorithm
+    const select = new Set<A>();
+    for (const current of items) {
+        let currentConflict = false;
+        for (const prev of select) currentConflict ||= conflict(prev, current);
+
+        if (!currentConflict) select.add(current);
+    }
+    return select;
 }
 
 export function timeHull(cards: readonly Readonly<Card>[]) {

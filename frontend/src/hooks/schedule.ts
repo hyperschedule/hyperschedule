@@ -69,6 +69,11 @@ export function useActiveScheduleResolved() {
         ? Lib.combineBounds(main.bounds, expand.bounds)
         : main.bounds;
 
+    const unconflicting = Lib.greedyCollect(
+        main.sections,
+        Lib.sectionsConflict,
+    );
+
     return {
         sections: main.sections,
         cards: main.cards,
@@ -76,5 +81,6 @@ export function useActiveScheduleResolved() {
         bounds,
         startHour: Math.floor(bounds.startTime / 3600),
         endHour: Math.ceil(bounds.endTime / 3600),
+        unconflicting,
     };
 }
