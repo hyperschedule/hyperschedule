@@ -4,10 +4,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiUrl } from "@lib/config";
 import { importFromLegacy } from "@lib/legacy-import";
 import { toast } from "react-toastify";
+import useStore from "../store";
 
-async function getUser(): Promise<APIv4.User | null> {
+async function getUser(): Promise<APIv4.User> {
+    // we let any error here throw so they can propagate to trigger re-fetches
     const resp = await fetch(`${apiUrl}/v4/user`, { credentials: "include" });
-    return resp.ok ? APIv4.User.parse(await resp.json()) : null;
+    return APIv4.User.parse(await resp.json());
 }
 
 export function useUserQuery() {
@@ -21,6 +23,32 @@ export function useUserQuery() {
 export function useUser(): APIv4.User | null {
     const query = useUserQuery();
     return query.data ?? null;
+}
+
+async function updateActiveScheduleToApi(
+    user: APIv4.User | null,
+    request: APIv4.SetActiveScheduleRequest,
+) {
+    if (user === null) return;
+
+    return fetch(`${apiUrl}/v4/user/active-schedule`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(request),
+    });
+}
+
+export function useActiveScheduleMutation() {
+    const user = useUser();
+    const setActiveScheduleId = useStore((store) => store.setActiveScheduleId);
+    const activeScheduleId = useStore((store) => store.activeScheduleId);
+    return useMutation({
+        mutationFn: async (args: APIv4.SetActiveScheduleRequest) => {
+            if (args.scheduleId === activeScheduleId) return;
+            setActiveScheduleId(args.scheduleId);
+            return updateActiveScheduleToApi(user, args);
+        },
+    });
 }
 
 export function useGuestLogin() {

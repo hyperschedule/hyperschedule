@@ -1,3 +1,7 @@
 .toolbar {
     grid-area: toolbar;
+
+    .active {
+        color: palevioletred;
+    }
 }

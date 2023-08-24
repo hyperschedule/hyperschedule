@@ -59,7 +59,9 @@ export default Zustand.create<Store>((set, get) => ({
         ? Theme.Dark
         : Theme.Light,
     toggleTheme: () =>
-        set({ theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark }),
+        set({
+            theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
+        }),
     searchText: "",
     searchFilters: [],
     setSearchText: (searchText) =>
@@ -70,7 +72,9 @@ export default Zustand.create<Store>((set, get) => ({
     setExpandHeight: (expandHeight) => set({ expandHeight }),
     clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
     activeScheduleId: null,
-    setActiveScheduleId: (activeScheduleId) => set({ activeScheduleId }),
+    setActiveScheduleId: (activeScheduleId) => {
+        set({ activeScheduleId });
+    },
     popup: null,
     setPopup: (popup) => set({ popup }),
 

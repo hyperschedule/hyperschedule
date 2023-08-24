@@ -1,4 +1,8 @@
-import { useUserQuery, useLegacyImport } from "@hooks/api/user";
+import {
+    useUserQuery,
+    useLegacyImport,
+    useActiveScheduleMutation,
+} from "@hooks/api/user";
 import useStore, { PopupOption } from "@hooks/store";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
@@ -26,10 +30,8 @@ export default function Toolbar() {
 }
 
 function ToolbarLoggedIn(props: { user: APIv4.User }) {
-    const { activeScheduleId, setActiveScheduleId } = useStore((store) => ({
-        activeScheduleId: store.activeScheduleId,
-        setActiveScheduleId: store.setActiveScheduleId,
-    }));
+    const activeScheduleId = useStore((store) => store.activeScheduleId);
+    const activeScheduleMutation = useActiveScheduleMutation();
 
     return (
         <div>
@@ -39,9 +41,11 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
                     <button
                         key={id}
                         className={classNames({
-                            active: activeScheduleId === id,
+                            [Css.active]: activeScheduleId === id,
                         })}
-                        onClick={() => setActiveScheduleId(id)}
+                        onClick={() =>
+                            activeScheduleMutation.mutate({ scheduleId: id })
+                        }
                     >
                         {schedule.name} ({schedule.term.year}{" "}
                         {schedule.term.term})
