@@ -27,14 +27,22 @@ describe("db/models/user", () => {
     test("add schedule to an user", async () => {
         const uid = await createGuestUser();
         const user = await getUser(uid);
-        expect(user!.schedules.length).toStrictEqual(1);
-        await addSchedule(
+        expect(Object.keys(user!.schedules).length).toStrictEqual(1);
+        const sid = await addSchedule(
             uid,
             { year: 2022, term: APIv4.Term.fall },
             "test schedule 0",
         );
         const updated1 = await getUser(uid);
-        expect(updated1!.schedules.length).toStrictEqual(2);
+
+        expect(updated1.schedules).toStrictEqual({
+            ...user.schedules,
+            [sid]: {
+                term: { year: 2022, term: APIv4.Term.fall },
+                name: "test schedule 0",
+                sections: [],
+            } satisfies APIv4.UserSchedule,
+        });
 
         await addSchedule(
             uid,
@@ -42,7 +50,7 @@ describe("db/models/user", () => {
             "test schedule 0",
         );
         const updated2 = await getUser(uid);
-        expect(updated2!.schedules.length).toStrictEqual(3);
+        expect(Object.keys(updated2!.schedules).length).toStrictEqual(3);
 
         await addSchedule(
             uid,
@@ -50,7 +58,7 @@ describe("db/models/user", () => {
             "test schedule 1",
         );
         const updated3 = await getUser(uid);
-        expect(updated3.schedules.length).toStrictEqual(4);
+        expect(Object.keys(updated3.schedules).length).toStrictEqual(4);
 
         // add another 96 schedules. use promise.all to test possible race conditions
         await expect(
@@ -66,7 +74,7 @@ describe("db/models/user", () => {
         ).resolves.toBeTruthy();
 
         const updated4 = await getUser(uid);
-        expect(updated4.schedules.length).toStrictEqual(100);
+        expect(Object.keys(updated4.schedules).length).toStrictEqual(100);
 
         await expect(
             addSchedule(
@@ -90,7 +98,11 @@ describe("db/models/user", () => {
         };
 
         const uid = await createGuestUser();
-        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
+
+        await deleteSchedule(
+            uid,
+            Object.keys((await getUser(uid)).schedules)[0]!,
+        );
         const uid2 = await createGuestUser();
         const sid = await addSchedule(
             uid,
@@ -100,18 +112,17 @@ describe("db/models/user", () => {
 
         await addSection(uid, sid, section);
         const updated1 = await getUser(uid);
-        expect(updated1.schedules.length).toStrictEqual(1);
-        expect(updated1.schedules[0]!.sections.length).toStrictEqual(1);
-        expect(updated1.schedules[0]!.sections[0]!.section).toStrictEqual(
+        expect(Object.keys(updated1.schedules).length).toStrictEqual(1);
+        expect(updated1.schedules[sid]!.sections.length).toStrictEqual(1);
+        expect(updated1.schedules[sid]!.sections[0]!.section).toStrictEqual(
             section,
         );
 
         // if we add the same section again it should ignore the duplicated copy
         await addSection(uid, sid, { ...section });
         const updated2 = await getUser(uid);
-        expect(updated2.schedules.length).toStrictEqual(1);
-        expect(updated2.schedules[0]!.sections.length).toStrictEqual(1);
-        expect(updated2.schedules[0]!.sections[0]!.section).toStrictEqual(
+        expect(Object.keys(updated2.schedules).length).toStrictEqual(1);
+        expect(updated2.schedules[sid]!.sections[0]!.section).toStrictEqual(
             section,
         );
 
@@ -122,12 +133,12 @@ describe("db/models/user", () => {
 
         await addSection(uid, sid, newId);
         const updated3 = await getUser(uid);
-        expect(updated3.schedules.length).toStrictEqual(1);
-        expect(updated3.schedules[0]!.sections.length).toStrictEqual(2);
-        expect(updated3.schedules[0]!.sections[0]!.section).toStrictEqual(
+        expect(Object.keys(updated3.schedules).length).toStrictEqual(1);
+        expect(updated3.schedules[sid]!.sections.length).toStrictEqual(2);
+        expect(updated3.schedules[sid]!.sections[0]!.section).toStrictEqual(
             section,
         );
-        expect(updated3.schedules[0]!.sections[1]!.section).toStrictEqual(
+        expect(updated3.schedules[sid]!.sections[1]!.section).toStrictEqual(
             newId,
         );
 
@@ -137,15 +148,17 @@ describe("db/models/user", () => {
         ).rejects.toBeTruthy();
 
         const user2 = await getUser(uid2);
-        expect(user2.schedules.length).toStrictEqual(1);
+        expect(Object.keys(user2.schedules).length).toStrictEqual(1);
     });
 
     test("delete schedule from user", async () => {
         const uid = await createGuestUser();
         const user = await getUser(uid);
-        expect(user.schedules.length).toStrictEqual(1);
-        await deleteSchedule(uid, user.schedules[0]!._id);
-        expect((await getUser(uid)).schedules.length).toStrictEqual(0);
+        expect(Object.keys(user.schedules).length).toStrictEqual(1);
+        await deleteSchedule(uid, Object.keys(user.schedules)[0]!);
+        expect(
+            Object.keys((await getUser(uid)).schedules).length,
+        ).toStrictEqual(0);
 
         const sid0 = await addSchedule(
             uid,
@@ -158,13 +171,12 @@ describe("db/models/user", () => {
             "test schedule 1",
         );
         const updated1 = await getUser(uid);
-        expect(updated1.schedules.length).toStrictEqual(2);
+        expect(Object.keys(updated1.schedules).length).toStrictEqual(2);
 
         await deleteSchedule(uid, sid0);
         const updated2 = await getUser(uid);
-        expect(updated2.schedules.length).toStrictEqual(1);
-        expect(updated2.schedules[0]).toStrictEqual({
-            _id: sid1,
+        expect(Object.keys(updated2.schedules).length).toStrictEqual(1);
+        expect(updated2.schedules[sid1]).toStrictEqual({
             term: { year: 2022, term: APIv4.Term.spring },
             name: "test schedule 1",
             sections: [],
@@ -172,7 +184,7 @@ describe("db/models/user", () => {
 
         await deleteSchedule(uid, sid1);
         const updated3 = await getUser(uid);
-        expect(updated3!.schedules.length).toStrictEqual(0);
+        expect(Object.keys(updated3!.schedules).length).toStrictEqual(0);
     });
 
     test("delete section from schedule", async () => {
@@ -187,7 +199,10 @@ describe("db/models/user", () => {
             half: null,
         };
         const uid = await createGuestUser();
-        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
+        await deleteSchedule(
+            uid,
+            Object.keys((await getUser(uid)).schedules)[0]!,
+        );
         const sid0 = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
@@ -203,14 +218,14 @@ describe("db/models/user", () => {
         await addSection(uid, sid1, testSection);
         await addSection(uid, sid0, { ...testSection, courseNumber: 132 });
         const updated1 = await getUser(uid);
-        expect(updated1.schedules[0]!.sections.length).toStrictEqual(2);
-        expect(updated1.schedules[1]!.sections.length).toStrictEqual(1);
+        expect(updated1.schedules[sid0]!.sections.length).toStrictEqual(2);
+        expect(updated1.schedules[sid1]!.sections.length).toStrictEqual(1);
         await deleteSection(uid, sid0, testSection);
 
         const updated2 = await getUser(uid);
-        expect(updated2.schedules[0]!.sections.length).toStrictEqual(1);
-        expect(updated2.schedules[1]!.sections.length).toStrictEqual(1);
-        expect(updated2.schedules[0]!.sections[0]!.section).toStrictEqual({
+        expect(updated2.schedules[sid0]!.sections.length).toStrictEqual(1);
+        expect(updated2.schedules[sid1]!.sections.length).toStrictEqual(1);
+        expect(updated2.schedules[sid0]!.sections[0]!.section).toStrictEqual({
             ...testSection,
             courseNumber: 132,
         });
@@ -218,7 +233,10 @@ describe("db/models/user", () => {
 
     test("rename schedule", async () => {
         const uid = await createGuestUser();
-        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
+        await deleteSchedule(
+            uid,
+            Object.keys((await getUser(uid)).schedules)[0]!,
+        );
         const sid = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
@@ -226,8 +244,8 @@ describe("db/models/user", () => {
         );
         await renameSchedule(uid, sid, "test");
         const user = await getUser(uid);
-        expect(user.schedules.length).toStrictEqual(1);
-        expect(user.schedules[0]!.name).toStrictEqual("test");
+        expect(Object.keys(user.schedules).length).toStrictEqual(1);
+        expect(user.schedules[sid]!.name).toStrictEqual("test");
         await expect(
             renameSchedule(uid + "AAAA", sid, "test"),
         ).rejects.toBeTruthy();
@@ -249,7 +267,10 @@ describe("db/models/user", () => {
         };
         const uid = await createGuestUser();
         // delete the default schedule
-        await deleteSchedule(uid, (await getUser(uid)).schedules[0]!._id);
+        await deleteSchedule(
+            uid,
+            Object.keys((await getUser(uid)).schedules)[0]!,
+        );
 
         const sid = await addSchedule(
             uid,
@@ -258,12 +279,12 @@ describe("db/models/user", () => {
         );
         await addSection(uid, sid, testSection);
         const user = await getUser(uid);
-        expect(user.schedules[0]!.sections[0]!.attrs).toStrictEqual({
+        expect(user.schedules[sid]!.sections[0]!.attrs).toStrictEqual({
             selected: true,
         } satisfies APIv4.UserSectionAttrs);
         await setSectionAttrs(uid, sid, testSection, { selected: false });
         const user2 = await getUser(uid);
-        expect(user2.schedules[0]!.sections[0]!.attrs).toStrictEqual({
+        expect(user2.schedules[sid]!.sections[0]!.attrs).toStrictEqual({
             selected: false,
         } satisfies APIv4.UserSectionAttrs);
     });

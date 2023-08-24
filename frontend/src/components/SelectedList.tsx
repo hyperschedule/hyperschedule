@@ -18,22 +18,33 @@ import * as Feather from "react-feather";
 
 import Css from "./SelectedList.module.css";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
+import { toast } from "react-toastify";
 
 export default function SelectedList() {
-    const schedule = useActiveSchedule();
+    const activeSchedule = useActiveSchedule();
+
     const sectionsLookup = useActiveSectionsLookup();
     const replaceSectionsMutation = useScheduleReplaceSectionsMutation();
 
-    const sensors = DndCore.useSensors(
-        DndCore.useSensor(DndCore.PointerSensor),
-    );
+    const activeScheduleId = useStore((store) => store.activeScheduleId);
 
     const [reorderMode, setReorderMode] = useState(false);
     const [activeEntry, setActiveEntry] = useState<string | null>(null);
 
     const [sectionsOrder, setSectionsOrder] = useState<APIv4.UserSection[]>([]);
 
-    if (!schedule) return <></>;
+    const sensors = DndCore.useSensors(
+        DndCore.useSensor(DndCore.PointerSensor),
+    );
+
+    if (activeScheduleId === null) return <></>;
+    if (activeSchedule === undefined) {
+        toast.error(
+            "Unexpected error: cannot find data for selected schedule. You may be able to fix this by selecting a schedule, then reload the page.",
+            { autoClose: false },
+        );
+        return <></>;
+    }
 
     return (
         <div className={Css.container}>
@@ -43,7 +54,7 @@ export default function SelectedList() {
                         <button
                             onClick={() => {
                                 replaceSectionsMutation.mutate({
-                                    scheduleId: schedule._id,
+                                    scheduleId: activeScheduleId,
                                     sections: sectionsOrder,
                                 });
                                 setReorderMode(false);
@@ -58,7 +69,7 @@ export default function SelectedList() {
                 ) : (
                     <button
                         onClick={() => {
-                            setSectionsOrder(schedule.sections);
+                            setSectionsOrder(activeSchedule.sections);
                             setReorderMode(true);
                         }}
                     >
@@ -112,17 +123,18 @@ export default function SelectedList() {
                         strategy={DndSortable.verticalListSortingStrategy}
                         disabled={!reorderMode}
                     >
-                        {(reorderMode ? sectionsOrder : schedule.sections).map(
-                            (entry) => (
-                                <SectionEntry
-                                    key={APIv4.stringifySectionCodeLong(
-                                        entry.section,
-                                    )}
-                                    entry={entry}
-                                    scheduleId={schedule._id}
-                                />
-                            ),
-                        )}
+                        {(reorderMode
+                            ? sectionsOrder
+                            : activeSchedule.sections
+                        ).map((entry) => (
+                            <SectionEntry
+                                key={APIv4.stringifySectionCodeLong(
+                                    entry.section,
+                                )}
+                                entry={entry}
+                                scheduleId={activeScheduleId}
+                            />
+                        ))}
                     </DndSortable.SortableContext>
                     <DndCore.DragOverlay></DndCore.DragOverlay>
                 </DndCore.DndContext>
@@ -138,8 +150,6 @@ function SectionEntry({
     entry: APIv4.UserSection;
     scheduleId: APIv4.ScheduleId;
 }) {
-    const schedule = useActiveSchedule();
-
     const sectionsLookup = useActiveSectionsLookup();
     const attrsMutation = useScheduleSectionAttrsMutation();
     const theme = useStore((store) => store.theme);
@@ -148,8 +158,6 @@ function SectionEntry({
     const sortable = DndSortable.useSortable({
         id: APIv4.stringifySectionCodeLong(entry.section),
     });
-
-    if (!schedule) return <></>;
 
     const scheduleSelectMutation = useScheduleSectionMutation();
 
@@ -180,7 +188,7 @@ function SectionEntry({
                 onClick={() => {
                     attrsMutation.mutate({
                         section: entry.section,
-                        scheduleId: schedule._id,
+                        scheduleId: scheduleId,
                         attrs: {
                             selected: !entry.attrs.selected,
                         },

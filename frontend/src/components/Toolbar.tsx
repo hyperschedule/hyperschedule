@@ -26,24 +26,22 @@ export default function Toolbar() {
 }
 
 function ToolbarLoggedIn(props: { user: APIv4.User }) {
-    const { activeScheduleIndex, setActiveScheduleIndex } = useStore(
-        (store) => ({
-            activeScheduleIndex: store.activeScheduleIndex,
-            setActiveScheduleIndex: store.setActiveScheduleIndex,
-        }),
-    );
+    const { activeScheduleId, setActiveScheduleId } = useStore((store) => ({
+        activeScheduleId: store.activeScheduleId,
+        setActiveScheduleId: store.setActiveScheduleId,
+    }));
 
     return (
         <div>
             <div>logged in as {props.user.isGuest ? "guest" : "someone"}</div>
             <div>
-                {props.user.schedules.map((schedule, i) => (
+                {Object.entries(props.user.schedules).map(([id, schedule]) => (
                     <button
-                        key={schedule._id}
+                        key={id}
                         className={classNames({
-                            active: activeScheduleIndex === i,
+                            active: activeScheduleId === id,
                         })}
-                        onClick={() => setActiveScheduleIndex(i)}
+                        onClick={() => setActiveScheduleId(id)}
                     >
                         {schedule.name} ({schedule.term.year}{" "}
                         {schedule.term.term})

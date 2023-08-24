@@ -4,8 +4,19 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { createLogger } from "../../logger";
 import { CURRENT_TERM } from "../../current-term";
+import type { UpdateFilter } from "mongodb";
 
 const logger = createLogger("db.user");
+
+function filterUserWithSchedule(
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
+) {
+    return {
+        _id: userId,
+        [`schedules.${scheduleId}`]: { $exists: true },
+    };
+}
 
 /**
  * Creates an anonymous user and returns the user id
@@ -16,14 +27,13 @@ export async function createGuestUser(): Promise<APIv4.UserId> {
     const user: APIv4.GuestUser = {
         _id: uid,
         isGuest: true,
-        schedules: [
-            {
-                _id: scheduleId,
+        schedules: {
+            [scheduleId]: {
                 term: CURRENT_TERM,
                 name: "Schedule 1",
                 sections: [],
             },
-        ],
+        },
         lastModified: Math.floor(new Date().getTime() / 1000),
         activeSchedule: scheduleId,
     };
@@ -76,14 +86,13 @@ export async function createOrGetUser(
     const user: APIv4.RegisteredUser = {
         _id: uid,
         isGuest: false,
-        schedules: [
-            {
-                _id: scheduleId,
+        schedules: {
+            [scheduleId]: {
                 term: CURRENT_TERM,
                 name: "Schedule 1",
                 sections: [],
             },
-        ],
+        },
         lastModified: Math.floor(new Date().getTime() / 1000),
         activeSchedule: scheduleId,
         eppn,
@@ -121,7 +130,7 @@ export async function addSchedule(
             term,
         )}) for user ${userId}`,
     );
-    if (user.schedules.length >= 100) {
+    if (Object.keys(user.schedules).length >= 100) {
         logger.warn(`User ${userId} reached schedule limit`);
         throw Error("Schedule limit reached");
     }
@@ -131,24 +140,19 @@ export async function addSchedule(
     const result = await collections.users.findOneAndUpdate(
         {
             _id: userId,
-            schedules: {
-                $not: {
-                    $size: 100,
-                },
+            [`schedules.${scheduleId}`]: {
+                $exists: false,
             },
         },
         {
-            $push: {
-                schedules: {
-                    _id: scheduleId,
+            $set: {
+                lastModified: Math.floor(new Date().getTime() / 1000),
+                [`schedules.${scheduleId}`]: {
                     term,
                     name: scheduleName,
                     sections: [],
                 } satisfies APIv4.UserSchedule,
-            },
-            $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
-            },
+            } as UpdateFilter<APIv4.User>,
         },
     );
 
@@ -174,16 +178,13 @@ export async function renameSchedule(
     );
 
     const result = await collections.users.findOneAndUpdate(
-        {
-            _id: userId,
-            "schedules._id": scheduleId,
-        },
+        filterUserWithSchedule(userId, scheduleId),
         {
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),
-                "schedules.$.name": newName,
+                [`schedules.${scheduleId}.name`]: newName,
             },
-        },
+        } as UpdateFilter<APIv4.User>,
     );
 
     if (!result.ok || result.value === null) {
@@ -197,10 +198,9 @@ export async function addSection(
     scheduleId: APIv4.ScheduleId,
     section: APIv4.SectionIdentifier,
 ) {
-    const user = await collections.users.findOne({
-        _id: userId,
-        "schedules._id": scheduleId,
-    });
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
     if (user === null) {
         throw Error("User with this schedule not found");
     }
@@ -210,30 +210,26 @@ export async function addSection(
         )} to ${scheduleId} for user ${userId}`,
     );
 
-    for (const s of user.schedules) {
-        if (s._id === scheduleId) {
-            if (s.term.term !== section.term || s.term.year !== section.year) {
-                logger.warn(
-                    `Operation failed. Section ${APIv4.stringifySectionCodeLong(
-                        section,
-                    )} is not compatible with schedule ${scheduleId}`,
-                );
-                throw Error(
-                    "Section to be added does not have the same term as the schedule",
-                );
-            }
-            break;
-        }
+    const schedule = user.schedules[scheduleId]!;
+    if (
+        schedule.term.term !== section.term ||
+        schedule.term.year !== section.year
+    ) {
+        logger.warn(
+            `Operation failed. Section ${APIv4.stringifySectionCodeLong(
+                section,
+            )} is not compatible with schedule ${scheduleId}`,
+        );
+        throw Error(
+            "Section to be added does not have the same term as the schedule",
+        );
     }
 
     const result = await collections.users.findOneAndUpdate(
-        {
-            _id: userId,
-            "schedules._id": scheduleId,
-        },
+        filterUserWithSchedule(userId, scheduleId),
         {
             $addToSet: {
-                "schedules.$.sections": {
+                [`schedules.${scheduleId}.sections`]: {
                     attrs: { selected: true },
                     section: section,
                 } satisfies APIv4.UserSection,
@@ -259,10 +255,10 @@ export async function deleteSchedule(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
 ) {
-    const user = await collections.users.findOne({
-        _id: userId,
-        "schedules._id": scheduleId,
-    });
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
+
     if (user === null) {
         throw Error("User with this schedule not found");
     }
@@ -274,10 +270,8 @@ export async function deleteSchedule(
             _id: userId,
         },
         {
-            $pull: {
-                schedules: {
-                    _id: scheduleId,
-                },
+            $unset: {
+                [`schedules.${scheduleId}`]: true,
             },
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),
@@ -302,25 +296,22 @@ export async function replaceSections(
     sections: APIv4.UserSection[],
 ) {
     logger.info(`Replacing sections for ${userId}`);
-    const user = await collections.users.findOne({
-        _id: userId,
-        "schedules._id": scheduleId,
-    });
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
     if (user === null) {
         throw Error("User with this schedule not found");
     }
     const result = await collections.users.findOneAndUpdate(
-        {
-            _id: userId,
-            "schedules._id": scheduleId,
-        },
+        filterUserWithSchedule(userId, scheduleId),
         {
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),
-                "schedules.$.sections": sections,
+                [`schedules.${scheduleId}.sections`]: sections,
             },
-        },
+        } as UpdateFilter<APIv4.User>,
     );
+
     if (!result.ok || result.value === null) {
         logger.warn(`Operation failed`, result);
         throw Error("Database operation failed");
@@ -344,17 +335,15 @@ export async function batchAddSectionsToNewSchedule(
         {
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),
-            },
-            $push: {
-                schedules: {
-                    _id: scheduleId,
+                [`schedules.${scheduleId}`]: {
                     name: scheduleName,
                     term: term,
                     sections,
                 } satisfies APIv4.UserSchedule,
             },
-        },
+        } as UpdateFilter<APIv4.User>,
     );
+
     if (!result.ok || result.value === null) {
         logger.warn(`Operation failed`, result);
         throw Error("Database operation failed");
@@ -368,10 +357,9 @@ export async function deleteSection(
     scheduleId: APIv4.ScheduleId,
     section: APIv4.SectionIdentifier,
 ) {
-    const user = await collections.users.findOne({
-        _id: userId,
-        "schedules._id": scheduleId,
-    });
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
     if (user === null) {
         throw Error("User with this schedule not found");
     }
@@ -385,14 +373,14 @@ export async function deleteSection(
     const result = await collections.users.findOneAndUpdate(
         {
             _id: userId,
-            "schedules._id": scheduleId,
+            [`schedules.${scheduleId}.sections`]: { $elemMatch: { section } },
         },
         {
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),
             },
             $pull: {
-                "schedules.$.sections": { section },
+                [`schedules.${scheduleId}.sections`]: { section },
             },
         },
     );
@@ -413,10 +401,9 @@ export async function setSectionAttrs(
     sectionId: APIv4.SectionIdentifier,
     attrs: Partial<APIv4.UserSectionAttrs>,
 ) {
-    const user = await collections.users.findOne({
-        _id: userId,
-        "schedules._id": scheduleId,
-    });
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
     if (user === null) {
         throw Error("User with this schedule not found");
     }
@@ -428,62 +415,48 @@ export async function setSectionAttrs(
         attrs,
     );
 
-    for (const schedule of user.schedules) {
-        if (schedule._id !== scheduleId) continue;
+    const result = await collections.users.findOneAndUpdate(
+        {
+            _id: userId,
+            [`schedules.${scheduleId}.sections`]: {
+                $elemMatch: {
+                    section: sectionId,
+                },
+            },
+        },
+        {
+            $set: {
+                [`schedules.${scheduleId}.sections.$.attrs`]: attrs,
+                lastModified: Math.floor(new Date().getTime() / 1000),
+            },
+        } as UpdateFilter<APIv4.User>,
+    );
 
-        for (const s of schedule.sections) {
-            if (APIv4.compareSectionIdentifier(s.section, sectionId)) {
-                s.attrs = { ...s.attrs, ...attrs };
-                const result = await collections.users.findOneAndUpdate(
-                    {
-                        _id: userId,
-                        "schedules._id": scheduleId,
-                    },
-                    {
-                        $set: {
-                            "schedules.$": schedule,
-                            lastModified: Math.floor(
-                                new Date().getTime() / 1000,
-                            ),
-                        },
-                    },
-                );
-
-                if (!result.ok || result.value === null) {
-                    logger.warn(`Operation failed`, result);
-                    throw Error("Database operation failed");
-                }
-                logger.info(
-                    `Setting attributes %o of ${APIv4.stringifySectionCodeLong(
-                        sectionId,
-                    )} in ${scheduleId} for ${userId} completed`,
-                    attrs,
-                );
-                return;
-            }
-        }
-
-        throw Error("No matching section found");
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
     }
+    logger.info(
+        `Setting attributes %o of ${APIv4.stringifySectionCodeLong(
+            sectionId,
+        )} in ${scheduleId} for ${userId} completed`,
+        attrs,
+    );
 }
 
 export async function setActiveSchedule(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
 ) {
-    const user = await collections.users.findOne({
-        _id: userId,
-        "schedules._id": scheduleId,
-    });
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
     if (user === null) {
         throw Error("User with this schedule not found");
     }
 
     const result = await collections.users.findOneAndUpdate(
-        {
-            _id: userId,
-            "schedules._id": scheduleId,
-        },
+        filterUserWithSchedule(userId, scheduleId),
         {
             $set: {
                 lastModified: Math.floor(new Date().getTime() / 1000),

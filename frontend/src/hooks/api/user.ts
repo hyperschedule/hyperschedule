@@ -5,7 +5,7 @@ import { apiUrl } from "@lib/config";
 import { importFromLegacy } from "@lib/legacy-import";
 import { toast } from "react-toastify";
 
-async function getUser() {
+async function getUser(): Promise<APIv4.User | null> {
     const resp = await fetch(`${apiUrl}/v4/user`, { credentials: "include" });
     return resp.ok ? APIv4.User.parse(await resp.json()) : null;
 }
@@ -18,7 +18,12 @@ export function useUserQuery() {
     });
 }
 
-export function useLogin() {
+export function useUser(): APIv4.User | null {
+    const query = useUserQuery();
+    return query.data ?? null;
+}
+
+export function useGuestLogin() {
     const client = useQueryClient();
     return useMutation({
         mutationFn: async () => {

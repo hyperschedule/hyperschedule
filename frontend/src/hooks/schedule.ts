@@ -8,18 +8,19 @@ import * as Lib from "@lib/schedule";
 
 import useStore from "@hooks/store";
 
-export function useActiveSchedule() {
+export function useActiveSchedule(): APIv4.UserSchedule | undefined {
     const userQuery = useUserQuery();
-    const activeScheduleIndex = useStore((store) => store.activeScheduleIndex);
-    return userQuery.data?.schedules[activeScheduleIndex];
+    const activeScheduleId = useStore((store) => store.activeScheduleId);
+    if (activeScheduleId === null) return undefined;
+    return userQuery.data?.schedules[activeScheduleId];
 }
 
-export function useActiveScheduleEntries() {
+export function useActiveScheduleEntries(): APIv4.UserSection[] {
     const schedule = useActiveSchedule();
     return schedule?.sections ?? [];
 }
 
-export function useActiveScheduleLookup() {
+export function useActiveScheduleLookup(): Map<string, APIv4.UserSection> {
     const entries = useActiveScheduleEntries();
     return useMemo(() => {
         const lookup = new Map<string, APIv4.UserSection>();
