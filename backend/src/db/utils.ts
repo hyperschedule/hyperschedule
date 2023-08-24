@@ -18,6 +18,7 @@ export function uuid4(prefix: string = ""): string {
     const encoded = Buffer.from(arr).toString("base64url");
     if (prefix)
         // the only characters allowed in a URL and is not in b64 encoding are ~ and .
-        return `${prefix}.${encoded}`;
+        // strings containing . cannot be used as a key thanks to mongodb
+        return `${prefix}~${encoded}`;
     return encoded;
 }

@@ -1,8 +1,8 @@
 import { SchoolEnum, SectionIdentifier, TermIdentifier } from "./course";
 import { z } from "zod";
 
-export const UserId = z.string().regex(/u\.[A-Za-z0-9\-_]{22}/);
-export const ScheduleId = z.string().regex(/s\.[A-Za-z0-9\-_]{22}/);
+export const UserId = z.string().regex(/u~[A-Za-z0-9\-_]{22}/);
+export const ScheduleId = z.string().regex(/s~[A-Za-z0-9\-_]{22}/);
 export type UserId = z.infer<typeof UserId>;
 export type ScheduleId = z.infer<typeof ScheduleId>;
 
@@ -18,7 +18,6 @@ export const UserSection = z.object({
 export type UserSection = z.infer<typeof UserSection>;
 
 export const UserSchedule = z.object({
-    _id: ScheduleId,
     term: TermIdentifier,
     name: z.string(),
     sections: UserSection.array(),
@@ -27,7 +26,7 @@ export type UserSchedule = z.infer<typeof UserSchedule>;
 
 const UserData = z.object({
     _id: UserId,
-    schedules: UserSchedule.array().min(1).max(100),
+    schedules: z.record(ScheduleId, UserSchedule),
     // seconds since Unix epoch. used to pruning inactive users.
     // this is only updated if the user did any modification to their schedule
     lastModified: z.number().positive(),

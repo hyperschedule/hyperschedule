@@ -11,10 +11,11 @@ import * as Feather from "react-feather";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
-import { useScheduleSectionMutation } from "@hooks/api/user";
+import { useScheduleSectionMutation, useUser } from "@hooks/api/user";
 import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
 import useStore, { PopupOption } from "@hooks/store";
 import { sectionColorStyle } from "@lib/color";
+import { toast } from "react-toastify";
 
 export default function CourseRow(props: {
     section: APIv4.Section;
@@ -113,27 +114,34 @@ export default function CourseRow(props: {
 }
 
 function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
-    const activeSchedule = useActiveSchedule();
     const scheduleMutation = useScheduleSectionMutation();
     const activeScheduleLookup = useActiveScheduleLookup();
     const setPopup = useStore((store) => store.setPopup);
+    const activeScheduleId = useStore((store) => store.activeScheduleId);
     const inSchedule = activeScheduleLookup.has(
         APIv4.stringifySectionCodeLong(props.section),
     );
+    const user = useUser();
 
     return (
         <button
             className={Css.toggle}
             onClick={(event) => {
                 event.stopPropagation();
-                if (activeSchedule === undefined) {
+                if (user === null) {
                     setPopup({ option: PopupOption.Login });
                 } else {
-                    scheduleMutation.mutate({
-                        scheduleId: activeSchedule._id,
-                        section: props.section,
-                        add: !inSchedule,
-                    });
+                    if (activeScheduleId === null) {
+                        toast.error(
+                            "No schedule selected. Please select a schedule",
+                        );
+                    } else {
+                        scheduleMutation.mutate({
+                            scheduleId: activeScheduleId,
+                            section: props.section,
+                            add: !inSchedule,
+                        });
+                    }
                 }
             }}
         >
