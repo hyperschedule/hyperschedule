@@ -73,6 +73,7 @@ export default Zustand.create<Store>((set, get) => ({
     clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
     activeScheduleId: null,
     setActiveScheduleId: (activeScheduleId) => {
+        // don't use this function directly, use useActiveScheduleMutation from @hooks/api/user.ts instead
         set({ activeScheduleId });
     },
     popup: null,

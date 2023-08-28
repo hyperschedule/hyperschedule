@@ -18,6 +18,7 @@ import SectionStatusBadge from "@components/common/SectionStatusBadge";
 import {
     type Card,
     cardKey,
+    combineLocations,
     comparePriority,
     groupCardsByDay,
     hasWeekend,
@@ -184,7 +185,7 @@ function Card(props: {
                 "TODO DEAD"
             )}
             <div className={Css.location}>
-                {props.card.locations.join(", ")}
+                {combineLocations(props.card.locations).join(", ")}
             </div>
             {props.card.section.half && (
                 <div className={Css.half}>

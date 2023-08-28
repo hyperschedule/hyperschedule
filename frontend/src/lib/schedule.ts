@@ -81,7 +81,7 @@ export function groupCardsByDay(cards: readonly Readonly<Card>[]) {
 
 export function stackCards(cards: Readonly<Card>[]) {
     const order: number[] = [0];
-    cards.sort((a, b) => a.endTime - b.endTime || a.startTime - b.startTime);
+    cards.sort(compareEndTime);
 
     for (let i = 1; i < cards.length; ++i) {
         const current = cards[i]!;
@@ -103,7 +103,7 @@ export function stackCardsReverse(cards: Readonly<Card>[]) {
     const order: number[] = [];
     order[cards.length - 1] = 0;
 
-    cards.sort((a, b) => a.startTime - b.startTime || a.endTime - b.endTime);
+    cards.sort(compareStartTime);
 
     for (let i = cards.length - 1; i >= 0; --i) {
         const current = cards[i]!;
@@ -240,4 +240,17 @@ export function combineBounds(a: Readonly<Bounds>, b: Readonly<Bounds>) {
         sunday: a.sunday || b.sunday,
         saturday: a.saturday || b.saturday,
     } satisfies Bounds;
+}
+
+/**
+ * combine the locations to one if all locations are in the same building
+ */
+export function combineLocations(locations: string[]): string[] {
+    if (locations.length <= 1) return locations;
+    const prefix = locations.map((s) => s.split(" ").slice(0, -1).join(" "));
+    for (let i = 0; i < prefix.length - 1; i++) {
+        if (prefix[i] !== prefix[i + 1]) return locations;
+    }
+    const room = locations.map((s) => s.split(" ").slice(-1)[0]!);
+    return [`${prefix[0]} ${room.join(", ")}`];
 }

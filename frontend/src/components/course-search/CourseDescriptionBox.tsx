@@ -8,6 +8,7 @@ import { formatTime12 } from "@lib/time";
 
 import Css from "./CourseDescriptionBox.module.css";
 import * as Feather from "react-feather";
+import { combineLocations } from "@lib/schedule";
 
 function computeCredits(section: APIv4.Section): number {
     if (
@@ -115,7 +116,7 @@ export default function CourseDescriptionBox(props: {
                             {slot.days.join("")} {formatTime12(slot.startTime)}
                             &ndash;
                             {formatTime12(slot.endTime)} @{" "}
-                            {slot.locations.join(", ")}
+                            {combineLocations(slot.locations).join(", ")}
                         </li>
                     ))}
                     {props.section.identifier.half === null ? (
