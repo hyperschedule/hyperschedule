@@ -78,23 +78,23 @@
             }
 
             &.hmc {
-                background-color: gold;
+                background-color: rgb(232, 168, 49);
             }
 
             &.cmc {
-                background-color: maroon;
+                background-color: rgb(126, 25, 48);
             }
 
             &.ptz {
-                background-color: orange;
+                background-color: rgb(245, 146, 54);
             }
 
             &.pom {
-                background-color: blue;
+                background-color: rgb(19, 88, 178);
             }
 
             &.scr {
-                background-color: green;
+                background-color: rgb(54, 109, 91);
             }
         }
     }
