@@ -4,7 +4,7 @@ import { endpoints, endpointAuthorization } from "../hmc-api/fetcher/endpoints";
 import type { Endpoint } from "../hmc-api/fetcher/types";
 import * as fetcherUtils from "../hmc-api/fetcher/utils";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { CURRENT_TERM } from "../current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 const enum HttpStatus {
     Ok = 200,

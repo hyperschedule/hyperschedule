@@ -4,7 +4,7 @@ import { dbToSection, sectionToDb } from "../utils";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { createLogger } from "../../logger";
-import { CURRENT_TERM } from "../../current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { z } from "zod";
 
 const logger = createLogger("db.course");

@@ -1,5 +1,5 @@
 import { App } from "@tinyhttp/app";
-import { CURRENT_TERM } from "../../current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { computeAllTerms } from "../../db/models/course";
 
 const app = new App({ settings: { xPoweredBy: false } });

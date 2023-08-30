@@ -6,7 +6,7 @@ import { DB_URL } from "./credentials";
 import { updateSections } from "./models/course";
 import { loadAllForTerm } from "../hmc-api/fetcher/fetch";
 import { linkCourseData } from "../hmc-api/data-linker";
-import { CURRENT_TERM } from "../current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 const logger = createLogger("db.init");
 

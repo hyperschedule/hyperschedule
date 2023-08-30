@@ -3,7 +3,7 @@ import type { Endpoint, HmcApiFiles } from "./types";
 import { fetchAllForTerm, fetchAndSave, loadAllForTerm } from "./fetch";
 import { createLogger } from "../../logger";
 import { setTimeout } from "node:timers/promises";
-import { CURRENT_TERM } from "../../current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { linkCourseData } from "../data-linker";
 import { updateSections } from "../../db/models/course";
 import process from "node:process";

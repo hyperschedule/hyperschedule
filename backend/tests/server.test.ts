@@ -4,7 +4,7 @@ import { app } from "../src/server";
 import { updateSections } from "../src/db/models/course";
 import { setupDbHooks } from "./db/hooks";
 import { testSectionV4, testSectionV3 } from "./test-data";
-import { CURRENT_TERM } from "../src/current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 setupDbHooks();
 

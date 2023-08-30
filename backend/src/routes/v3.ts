@@ -1,7 +1,7 @@
 import { App } from "@tinyhttp/app";
 import type { Request, Response } from "@tinyhttp/app";
 import { getAllSections } from "../db/models/course";
-import { CURRENT_TERM } from "../current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { v3CourseListFromV4SectionList } from "../hmc-api/v3convert";
 import { createLogger } from "../logger";
 

@@ -18,7 +18,7 @@ import { signUser } from "../../auth/token";
 import { json as jsonParser } from "milliparsec";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { getAllSectionId } from "../../db/models/course";
-import { CURRENT_TERM } from "../../current-term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 const logger = createLogger("server.route.user");
 
