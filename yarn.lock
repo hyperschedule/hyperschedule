@@ -1993,6 +1993,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mongodb-js/saslprep@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@mongodb-js/saslprep@npm:1.1.0"
+  dependencies:
+    sparse-bitfield: ^3.0.3
+  checksum: 1479a43e216734672f8eb1a2a55165b6896841bd00fb5bd645390a24374ef6c29f0f6d19a43618a19b8f1912fcbd2b2cc2210a62361103d1f28dce6852cf31d4
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -3187,7 +3196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^4.7.0":
+"bson@npm:^4.7.0, bson@npm:^4.7.2":
   version: 4.7.2
   resolution: "bson@npm:4.7.2"
   dependencies:
@@ -4735,7 +4744,7 @@ __metadata:
     jest: ^29.3.1
     jsonwebtoken: ^9.0.0
     milliparsec: ^2.2.2
-    mongodb: ^4.13.0
+    mongodb: ^4.17.0
     mongodb-memory-server: ^8.10.2
     pino: ^8.8.0
     pino-pretty: ^9.1.1
@@ -6126,7 +6135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-connection-string-url@npm:^2.5.4":
+"mongodb-connection-string-url@npm:^2.5.4, mongodb-connection-string-url@npm:^2.6.0":
   version: 2.6.0
   resolution: "mongodb-connection-string-url@npm:2.6.0"
   dependencies:
@@ -6183,6 +6192,24 @@ __metadata:
     saslprep:
       optional: true
   checksum: ab3b8f27e99fab4ea0c163067158ad360a161edf9ebf74368b9b561da7b75d23c09282d530cb4e2fac32ea30eae29620e861d837d334ddbdfa50d57240c1bd8e
+  languageName: node
+  linkType: hard
+
+"mongodb@npm:^4.17.0":
+  version: 4.17.1
+  resolution: "mongodb@npm:4.17.1"
+  dependencies:
+    "@aws-sdk/credential-providers": ^3.186.0
+    "@mongodb-js/saslprep": ^1.1.0
+    bson: ^4.7.2
+    mongodb-connection-string-url: ^2.6.0
+    socks: ^2.7.1
+  dependenciesMeta:
+    "@aws-sdk/credential-providers":
+      optional: true
+    "@mongodb-js/saslprep":
+      optional: true
+  checksum: e7f280570d0f23d60c308b2a484ed55762ec8e523946c0de1a0b3b398f24efcf1916a745e5407f32cd1c105b2f19d8ac75474c92f73cdf651affe3430a963f54
   languageName: node
   linkType: hard
 

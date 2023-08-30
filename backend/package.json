@@ -46,7 +46,7 @@
     "jest": "^29.3.1",
     "jsonwebtoken": "^9.0.0",
     "milliparsec": "^2.2.2",
-    "mongodb": "^4.13.0",
+    "mongodb": "^4.17.0",
     "mongodb-memory-server": "^8.10.2",
     "pino": "^8.8.0",
     "pino-pretty": "^9.1.1",
