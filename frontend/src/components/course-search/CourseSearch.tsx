@@ -4,7 +4,7 @@ import { useMeasure /*, useRafEffect*/ } from "@react-hookz/web";
 //import classNames from "classnames";
 import { shallow } from "zustand/shallow";
 
-import type * as Api from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useSectionsQuery } from "@hooks/api/course";
 import { useActiveTerm } from "@hooks/term";
@@ -15,19 +15,6 @@ import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
-
-function sectionKey(id: Api.SectionIdentifier) {
-    return [
-        id.department,
-        id.courseNumber,
-        id.suffix,
-        id.affiliation,
-        id.sectionNumber,
-        id.year,
-        id.term,
-        id.half,
-    ].join(" ");
-}
 
 export default function CourseSearch() {
     const activeTerm = useActiveTerm();
@@ -91,7 +78,7 @@ function computeIndices(state: {
 }
 
 function CourseSearchResults(props: {
-    sections: Api.Section[];
+    sections: APIv4.Section[];
     searchKey: string;
 }) {
     // https://github.com/streamich/react-use/issues/1264#issuecomment-721645100
@@ -107,6 +94,8 @@ function CourseSearchResults(props: {
         }),
         shallow,
     );
+
+    const setScrollFunc = useStore((store) => store.setScrollToSection);
 
     const [expandIndex, setExpandIndex] = React.useState<number | null>(null);
 
@@ -131,9 +120,10 @@ function CourseSearchResults(props: {
             return;
         }
 
-        const key = sectionKey(expandKey);
+        const key = APIv4.stringifySectionCodeLong(expandKey);
         const index = props.sections.findIndex(
-            (section) => sectionKey(section.identifier) === key,
+            (section) =>
+                APIv4.stringifySectionCodeLong(section.identifier) === key,
         );
         setExpandIndex(index === -1 ? null : index);
     }, [expandKey, props.sections]);
@@ -144,6 +134,33 @@ function CourseSearchResults(props: {
     const sections = props.sections
         .slice(indexStart, indexEnd)
         .map((section, i) => ({ index: i + indexStart, section }));
+
+    const allSectionsToIndexMap = React.useMemo(() => {
+        const map = new Map<string, number>();
+        for (let i = 0; i < props.sections.length; i++) {
+            map.set(
+                APIv4.stringifySectionCodeLong(props.sections[i]!.identifier),
+                i,
+            );
+        }
+        return map;
+    }, [props.sections, props.searchKey]);
+
+    function scrollToSection(section: APIv4.SectionIdentifier) {
+        const index = allSectionsToIndexMap.get(
+            APIv4.stringifySectionCodeLong(section),
+        );
+        if (index === undefined) return;
+        if (rowBounds === undefined) return;
+        viewportRef.current?.scrollTo({
+            top: index * rowBounds.height,
+        });
+    }
+
+    React.useEffect(() => {
+        setScrollFunc(scrollToSection);
+        return () => setScrollFunc(() => {});
+    }, [props.sections, props.searchKey, rowBounds]);
 
     // always render expanded entry even if it's outside the viewport bounds, to
     // ensure height measurements/calculations are up-to-date
@@ -176,7 +193,9 @@ function CourseSearchResults(props: {
                         >
                             {sections.map(({ index, section }) => (
                                 <CourseSearchRow
-                                    key={`${props.searchKey}:${sectionKey(
+                                    key={`${
+                                        props.searchKey
+                                    }:${APIv4.stringifySectionCodeLong(
                                         section.identifier,
                                     )}`}
                                     expandIndex={expandIndex}
@@ -203,7 +222,7 @@ function CourseSearchResults(props: {
 
 function CourseSearchRow(props: {
     index: number;
-    section: Api.Section;
+    section: APIv4.Section;
     scroll: number;
     rowHeight: number;
     viewportHeight: number;

@@ -10,7 +10,9 @@ export default function Root() {
     const queryClient = React.useMemo(() => new ReactQuery.QueryClient(), []);
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
-            <App />
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>
             <ReactQueryDevtools initialIsOpen={false} />
         </ReactQuery.QueryClientProvider>
     );

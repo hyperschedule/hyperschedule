@@ -1,6 +1,7 @@
 import * as Zustand from "zustand";
 import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
+import { subscribeWithSelector } from "zustand/middleware";
 
 type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
     [K in keyof Shape as `set${Capitalize<string & K>}`]: (
@@ -17,6 +18,7 @@ export type Store = WithSetters<{
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
     showSidebar: boolean;
+    scrollToSection: (section: APIv4.SectionIdentifier) => void;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -52,37 +54,44 @@ export interface ScheduleRenderingOptions {
     hideStatus: boolean;
 }
 
-export default Zustand.create<Store>((set, get) => ({
-    mainTab: MainTab.CourseSearch,
-    setMainTab: (mainTab) => set({ mainTab }),
-    theme: window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? Theme.Dark
-        : Theme.Light,
-    toggleTheme: () =>
-        set({
-            theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
-        }),
-    searchText: "",
-    searchFilters: [],
-    setSearchText: (searchText) =>
-        set({ searchText, expandKey: null, expandHeight: 0 }),
-    expandKey: null,
-    setExpandKey: (expandKey) => set({ expandKey }),
-    expandHeight: 0,
-    setExpandHeight: (expandHeight) => set({ expandHeight }),
-    clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
-    activeScheduleId: null,
-    setActiveScheduleId: (activeScheduleId) => {
-        // don't use this function directly, use useActiveScheduleMutation from @hooks/api/user.ts instead
-        set({ activeScheduleId });
-    },
-    popup: null,
-    setPopup: (popup) => set({ popup }),
+const useStore = Zustand.create<Store>()(
+    subscribeWithSelector((set, get) => ({
+        mainTab: MainTab.CourseSearch,
+        setMainTab: (mainTab) => set({ mainTab }),
+        theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? Theme.Dark
+            : Theme.Light,
+        toggleTheme: () =>
+            set({
+                theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
+            }),
+        searchText: "",
+        searchFilters: [],
+        setSearchText: (searchText) =>
+            set({ searchText, expandKey: null, expandHeight: 0 }),
+        expandKey: null,
+        setExpandKey: (expandKey) => set({ expandKey }),
+        expandHeight: 0,
+        setExpandHeight: (expandHeight) => set({ expandHeight }),
+        clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
+        activeScheduleId: null,
+        setActiveScheduleId: (activeScheduleId) => {
+            // don't use this function directly, use useActiveScheduleMutation from @hooks/api/user.ts instead
+            set({ activeScheduleId });
+        },
+        popup: null,
+        setPopup: (popup) => set({ popup }),
 
-    showSidebar: false,
-    setShowSidebar: (showSidebar) => set({ showSidebar }),
+        showSidebar: false,
+        setShowSidebar: (showSidebar) => set({ showSidebar }),
 
-    scheduleRenderingOptions: { hideConflicting: false, hideStatus: false },
-    setScheduleRenderingOptions: (options) =>
-        set({ scheduleRenderingOptions: options }),
-}));
+        scheduleRenderingOptions: { hideConflicting: false, hideStatus: false },
+        setScheduleRenderingOptions: (options) =>
+            set({ scheduleRenderingOptions: options }),
+
+        scrollToSection: () => {},
+        setScrollToSection: (section) => set({ scrollToSection: section }),
+    })),
+);
+
+export default useStore;

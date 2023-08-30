@@ -5,7 +5,7 @@ import {
     useScheduleSectionAttrsMutation,
     useScheduleSectionMutation,
 } from "@hooks/api/user";
-import useStore, { PopupOption } from "@hooks/store";
+import useStore, { MainTab, PopupOption } from "@hooks/store";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { sectionColorStyle } from "@lib/color";
 import { useState } from "react";
@@ -154,7 +154,9 @@ function SectionEntry({
     const attrsMutation = useScheduleSectionAttrsMutation();
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
-
+    const mainTab = useStore((store) => store.mainTab);
+    const scrollToSection = useStore((store) => store.scrollToSection);
+    const setExpandKey = useStore((store) => store.setExpandKey);
     const sortable = DndSortable.useSortable({
         id: APIv4.stringifySectionCodeLong(entry.section),
     });
@@ -203,12 +205,16 @@ function SectionEntry({
             </button>
             <span
                 className={Css.text}
-                onClick={() =>
-                    setPopup({
-                        option: PopupOption.SectionDetail,
-                        section: entry.section,
-                    })
-                }
+                onClick={() => {
+                    if (mainTab === MainTab.CourseSearch) {
+                        setExpandKey(entry.section);
+                        scrollToSection(entry.section);
+                    } else
+                        setPopup({
+                            option: PopupOption.SectionDetail,
+                            section: entry.section,
+                        });
+                }}
             >
                 <span className={Css.code}>
                     {APIv4.stringifySectionCode(entry.section)}{" "}
@@ -231,13 +237,13 @@ function SectionEntry({
             )}
             <button
                 className={Css.deleteButton}
-                onClick={() =>
+                onClick={() => {
                     scheduleSelectMutation.mutate({
                         section: entry.section,
                         add: false,
                         scheduleId,
-                    })
-                }
+                    });
+                }}
             >
                 <Feather.Trash2 {...iconProps} />
             </button>
