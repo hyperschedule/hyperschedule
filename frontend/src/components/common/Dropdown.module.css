@@ -1,0 +1,7 @@
+& .dropdown {
+    grid-area: dropdown;
+    & select {
+        display: block;
+        height: 100%;
+    }
+}

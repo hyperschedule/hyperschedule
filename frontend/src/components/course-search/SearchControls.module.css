@@ -2,8 +2,8 @@
     grid-area: controls;
 
     display: grid;
-    grid-template-areas: "input button" "tags tags";
-    grid-template-columns: 1fr auto;
+    grid-template-areas: "dropdown input button" "tags tags tags";
+    grid-template-columns: auto 1fr auto;
     column-gap: 1rem;
 
     padding: 1rem;
