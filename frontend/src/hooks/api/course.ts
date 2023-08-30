@@ -3,10 +3,10 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { apiUrl } from "@lib/config";
 import { useQuery } from "@tanstack/react-query";
 
-import { useActiveTerm } from "@hooks/term";
 import { useMemo } from "react";
+import useStore from "@hooks/store";
 
-async function getSectionsForTerm(term: APIv4.TermIdentifier) {
+export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     const resp = await fetch(
         `${apiUrl}/v4/sections/${APIv4.stringifyTermIdentifier(term)}`,
     );
@@ -16,7 +16,7 @@ async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     return sections;
 }
 
-async function getCourseAreaDescription() {
+export async function getCourseAreaDescription() {
     const resp = await fetch(`${apiUrl}/v4/course-areas`);
     return new Map<string, string>(
         (await resp.json()).map((a: { area: string; description: string }) => [
@@ -26,19 +26,18 @@ async function getCourseAreaDescription() {
     );
 }
 
-async function getOfferingHistory(term: APIv4.TermIdentifier) {
+export async function getOfferingHistory(term: APIv4.TermIdentifier) {
     const resp = await fetch(
         `${apiUrl}/v4/offering-history/${APIv4.stringifyTermIdentifier(term)}`,
     );
     return APIv4.OfferingHistory.array().parse(await resp.json());
 }
 
-export function useSectionsQuery(term: APIv4.TermIdentifier | undefined) {
+export function useSectionsQuery(term: APIv4.TermIdentifier) {
     // only enable query _after_ a term has been specified
     return useQuery({
         queryKey: ["sections", term] as const,
         queryFn: (ctx) => getSectionsForTerm(ctx.queryKey[1]!),
-        enabled: !!term,
         staleTime: 30 * 1000,
         refetchInterval: 30 * 1000,
     });
@@ -53,22 +52,21 @@ export function useCourseAreaDescription() {
     });
 }
 
-export function useOfferingHistory(term: APIv4.TermIdentifier | undefined) {
+export function useOfferingHistory(term: APIv4.TermIdentifier) {
     return useQuery({
         queryKey: ["last-offered", term] as const,
         queryFn: (ctx) => getOfferingHistory(ctx.queryKey[1]!),
-        enabled: !!term,
         staleTime: 24 * 60 * 60 * 1000, // 1 day
         refetchInterval: 24 * 60 * 60 * 1000,
     });
 }
 
 export function useOfferingHistoryLookup() {
-    const activeTerm = useActiveTerm();
+    const activeTerm = useStore((store) => store.activeTerm);
     const offeringHistory = useOfferingHistory(activeTerm);
 
     return useMemo(() => {
-        if (!offeringHistory.data || activeTerm === undefined)
+        if (!offeringHistory.data)
             return new Map<string, APIv4.TermIdentifier[]>();
 
         return new Map<string, APIv4.TermIdentifier[]>(

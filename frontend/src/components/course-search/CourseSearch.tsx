@@ -7,7 +7,6 @@ import { shallow } from "zustand/shallow";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useSectionsQuery } from "@hooks/api/course";
-import { useActiveTerm } from "@hooks/term";
 import useStore from "@hooks/store";
 import * as Search from "@lib/search";
 
@@ -17,7 +16,7 @@ import CourseRow from "@components/course-search/CourseRow";
 import Css from "./CourseSearch.module.css";
 
 export default function CourseSearch() {
-    const activeTerm = useActiveTerm();
+    const activeTerm = useStore((store) => store.activeTerm);
     const query = useSectionsQuery(activeTerm);
     const search = useStore(
         (store) => ({

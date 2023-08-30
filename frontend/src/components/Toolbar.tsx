@@ -4,20 +4,27 @@ import {
     useActiveScheduleMutation,
 } from "@hooks/api/user";
 import useStore, { PopupOption } from "@hooks/store";
-import type * as APIv4 from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
 import Css from "./Toolbar.module.css";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 export default function Toolbar() {
     const userQuery = useUserQuery();
     const legacyImport = useLegacyImport();
+    const activeTerm = useStore((store) => store.activeTerm);
 
     const setPopup = useStore((store) => store.setPopup);
     return (
         <div className={Css.toolbar}>
-            <button onClick={() => legacyImport.mutate()}>
-                Import from legacy
-            </button>
+            {activeTerm.term === CURRENT_TERM.term &&
+            activeTerm.year === CURRENT_TERM.year ? (
+                <button onClick={() => legacyImport.mutate()}>
+                    Import from legacy
+                </button>
+            ) : (
+                <></>
+            )}
             {userQuery.data ? (
                 <ToolbarLoggedIn user={userQuery.data} />
             ) : (
@@ -47,8 +54,8 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
                             activeScheduleMutation.mutate({ scheduleId: id })
                         }
                     >
-                        {schedule.name} ({schedule.term.year}{" "}
-                        {schedule.term.term})
+                        {schedule.name} (
+                        {APIv4.stringifyTermIdentifier(schedule.term)})
                     </button>
                 ))}
             </div>

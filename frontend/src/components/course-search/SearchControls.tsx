@@ -5,22 +5,30 @@ import useStore from "@hooks/store";
 import { useAllTerms } from "@hooks/term";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import Dropdown from "@components/common/Dropdown";
-import { useState } from "react";
+import { prefetchDataForTerm } from "@hooks/api/prefetch";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SearchControls() {
     const searchText = useStore((store) => store.searchText);
     const setSearchText = useStore((store) => store.setSearchText);
+    const activeTerm = useStore((store) => store.activeTerm);
+    const setActiveTerm = useStore((store) => store.setActiveTerm);
+
     const allTerms = useAllTerms();
-    const activeTerm = useStore((store) => store.mainTab);
+    const queryClient = useQueryClient();
 
     if (allTerms === undefined) return <></>;
 
     return (
         <div className={Css.searchControls}>
             <Dropdown
-                selected={"FA2022"}
+                selected={APIv4.stringifyTermIdentifier(activeTerm)}
                 choices={allTerms.map(APIv4.stringifyTermIdentifier)}
-                onSelect={(ev) => {}}
+                onSelect={(s) => {
+                    const term = APIv4.parseTermIdentifier(s);
+                    void prefetchDataForTerm(term, queryClient);
+                    setActiveTerm(term);
+                }}
             />
 
             <input

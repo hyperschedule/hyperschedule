@@ -1,9 +1,6 @@
 import * as React from "react";
 import Css from "./App.module.css";
 
-import * as ReactQuery from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
 import classNames from "classnames";
 
 import ThemeSlider from "./ThemeSlider";
@@ -35,6 +32,7 @@ export default function App() {
 
     const activeScheduleId = useStore((store) => store.activeScheduleId);
     const setActiveScheduleId = useStore((store) => store.setActiveScheduleId);
+    const activeTerm = useStore((store) => store.activeTerm);
     useEffect(() => {
         // we do this whole dance because we want to keep two different states: server-side activeScheduleId,
         // which is used to initialize the client-side activeScheduleId on page load, and the client-side activeScheduleId.
@@ -48,9 +46,16 @@ export default function App() {
         // active schedule set on the server.
 
         if (activeScheduleId === null && userQuery.data?.activeSchedule) {
-            setActiveScheduleId(userQuery.data.activeSchedule);
+            const user = userQuery.data;
+            const schedule = user.schedules[user.activeSchedule!];
+            if (schedule === undefined) return;
+            if (
+                schedule.term.term === activeTerm.term &&
+                schedule.term.year === activeTerm.year
+            )
+                setActiveScheduleId(userQuery.data.activeSchedule);
         }
-    }, [activeScheduleId, userQuery.data?.activeSchedule]);
+    }, [activeScheduleId, userQuery.data?.activeSchedule, activeTerm]);
 
     return (
         <div className={Css.app} data-theme={theme}>

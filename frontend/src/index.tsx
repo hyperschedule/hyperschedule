@@ -3,11 +3,14 @@ import App from "@components/App";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import * as React from "react";
 import * as ReactQuery from "@tanstack/react-query";
+import { prefetchDataForTerm } from "@hooks/api/prefetch";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 export default function Root() {
     // memoize `queryClient` with empty dependency list to ensure it only gets
     // constructed/initialized once throughout the app's lifecycle
     const queryClient = React.useMemo(() => new ReactQuery.QueryClient(), []);
+    void prefetchDataForTerm(CURRENT_TERM, queryClient);
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
             <React.StrictMode>

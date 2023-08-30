@@ -1,6 +1,8 @@
 import * as Zustand from "zustand";
 import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
+import { prefetchDataForTerm } from "@hooks/api/prefetch";
 
 type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
     [K in keyof Shape as `set${Capitalize<string & K>}`]: (
@@ -18,6 +20,7 @@ export type Store = WithSetters<{
     scheduleRenderingOptions: ScheduleRenderingOptions;
     showSidebar: boolean;
     scrollToSection: (section: APIv4.SectionIdentifier) => void;
+    activeTerm: APIv4.TermIdentifier;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -89,5 +92,10 @@ const useStore = Zustand.create<Store>()((set, get) => ({
 
     scrollToSection: () => {},
     setScrollToSection: (section) => set({ scrollToSection: section }),
+
+    activeTerm: CURRENT_TERM,
+    setActiveTerm: (term) => {
+        set({ activeTerm: term, activeScheduleId: null });
+    },
 }));
 export default useStore;
