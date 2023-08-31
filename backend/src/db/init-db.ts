@@ -1,12 +1,12 @@
 import { createLogger } from "../logger";
-
-// we use lazy import here to make sure createRootLogger can be executed first
 import { connectToDb, closeDb } from "./connector";
 import { DB_URL } from "./credentials";
 import { updateSections } from "./models/course";
 import { loadAllForTerm } from "../hmc-api/fetcher/fetch";
 import { linkCourseData } from "../hmc-api/data-linker";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
+import * as APIv4 from "hyperschedule-shared/api/v4";
+import type { HmcApiFiles } from "../hmc-api/fetcher/types";
 
 const logger = createLogger("db.init");
 
@@ -15,11 +15,25 @@ await connectToDb(DB_URL);
 logger.info("db connected");
 
 //const term = { term: APIv4.Term.spring, year: 2022 };
-const term = CURRENT_TERM;
-const data = linkCourseData(await loadAllForTerm(term), term);
+for (let year = 2011; year <= CURRENT_TERM.year; year++) {
+    for (const term of [
+        { year, term: APIv4.Term.spring },
+        { year, term: APIv4.Term.fall },
+    ]) {
+        loadAllForTerm(term)
+            .then((files) => {
+                const data = linkCourseData(files, term);
+                return updateSections(data, term);
+            })
+            .catch((e) =>
+                logger.info(
+                    "Cannot load data files for %s",
+                    APIv4.stringifyTermIdentifier(term),
+                ),
+            );
+    }
+}
 
-logger.info("Sample data loaded");
-
-await updateSections(data, term);
+logger.info("All data loaded");
 
 await closeDb();

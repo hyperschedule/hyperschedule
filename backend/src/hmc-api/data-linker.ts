@@ -216,9 +216,10 @@ function processStaff(
         if (!staffMap.has(staff.cxId))
             logger.trace("Nonexistent staff %o in alt-staff.json", staff);
         // overwrite existing staff if there is a preferred name
-        staffMap.set(staff.cxId, {
-            name: staff.altName,
-        });
+        if (staff.altName !== null)
+            staffMap.set(staff.cxId, {
+                name: staff.altName,
+            });
     }
 }
 

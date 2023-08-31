@@ -127,9 +127,6 @@ function CourseSearchResults(props: {
         setExpandIndex(index === -1 ? null : index);
     }, [expandKey, props.sections]);
 
-    if (props.sections.length === 0)
-        return <CourseSearchEnd text="no courses found" />;
-
     const sections = props.sections
         .slice(indexStart, indexEnd)
         .map((section, i) => ({ index: i + indexStart, section }));
@@ -171,6 +168,9 @@ function CourseSearchResults(props: {
     //        index: expandIndex,
     //        section: props.sections[expandIndex]!,
     //    });
+
+    if (props.sections.length === 0)
+        return <CourseSearchEnd text="no courses found" />;
 
     return (
         <>

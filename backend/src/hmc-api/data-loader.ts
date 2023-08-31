@@ -270,7 +270,7 @@ const altStaffInput = z.object({
 const altStaffOutput = z
     .object({
         cxId: IntString,
-        altName: z.string().nonempty(),
+        altName: z.string().nonempty().nullable(),
     })
     .strict();
 export type AltStaffOutput = z.infer<typeof altStaffOutput>[];
@@ -290,8 +290,21 @@ export function parseAltStaff(data: string): AltStaffOutput {
             const nameArr = v!
                 .split(",")
                 .map((s) => s.trim().replace("\\", ""));
-            if (nameArr.length !== 2)
-                logger.trace(`Malformed alt staff name v`);
+            if (nameArr.length !== 2) {
+                logger.trace(`Malformed alt staff name ${v}`);
+                return {
+                    name: "altName",
+                    value: null,
+                };
+            }
+            if (nameArr[0] === "" || nameArr[1] === "") {
+                logger.trace(`Staff altname contains empty string ${v}`);
+                return {
+                    name: "altName",
+                    value: null,
+                };
+            }
+
             return {
                 name: "altName",
                 value: `${nameArr[1]} ${nameArr[0]}`,
