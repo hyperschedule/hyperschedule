@@ -6,9 +6,10 @@ import { importFromLegacy } from "@lib/legacy-import";
 import { toast } from "react-toastify";
 import useStore from "../store";
 
-async function getUser(): Promise<APIv4.User> {
+async function getUser(): Promise<APIv4.User | null> {
     // we let any error here throw so they can propagate to trigger re-fetches
     const resp = await fetch(`${apiUrl}/v4/user`, { credentials: "include" });
+    if (!resp.ok) return null;
     return APIv4.User.parse(await resp.json());
 }
 
@@ -17,6 +18,7 @@ export function useUserQuery() {
         queryKey: ["user"],
         queryFn: getUser,
         staleTime: Infinity,
+        retry: false,
     });
 }
 

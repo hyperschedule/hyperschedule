@@ -85,7 +85,7 @@ userApp.get("/", async function (request: Request, response: Response) {
             "Cannot find user %s with a valid server signature",
             request.userToken.uuid,
         );
-        return response.status(401).cookie("token", "").end();
+        return response.status(401).cookie("token", "", { maxAge: 0 }).end();
     }
     return response.header("Content-Type", "application/json").send(user);
 });
