@@ -60,6 +60,19 @@ export default function CourseDescriptionBox(props: {
             <p className={Css.description}>
                 {processDescription(props.section.course.description)}
             </p>
+            {props.section.identifier.affiliation ===
+            props.section.course.primaryAssociation ? (
+                <></>
+            ) : (
+                <section>
+                    <h3>Primary Association</h3>
+                    <span>
+                        {APIv4.schoolCodeToName(
+                            props.section.course.primaryAssociation,
+                        )}
+                    </span>
+                </section>
+            )}
             <section className={Css.credits}>
                 <h3>Credits</h3>
                 <div>{computeCredits(props.section)} (HMC)</div>

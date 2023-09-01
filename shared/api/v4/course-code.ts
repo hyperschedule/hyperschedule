@@ -1,9 +1,4 @@
-import type * as APIv4 from "hyperschedule-shared/api/v4";
-import type {
-    CourseCode,
-    SectionIdentifier,
-    TermIdentifier,
-} from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 
 export const CxCourseCodeRegex = RegExp(
     "^" +
@@ -216,8 +211,8 @@ export function parseSectionCodeLong(code: string): APIv4.SectionIdentifier {
  * return true if two course codes are equal, false otherwise
  */
 export function compareCourseCode(
-    a: Readonly<CourseCode>,
-    b: Readonly<CourseCode>,
+    a: Readonly<APIv4.CourseCode>,
+    b: Readonly<APIv4.CourseCode>,
 ): boolean {
     return (
         a.affiliation === b.affiliation &&
@@ -231,8 +226,8 @@ export function compareCourseCode(
  * return true if two section identifiers are equal, false otherwise
  */
 export function compareSectionIdentifier(
-    a: Readonly<SectionIdentifier>,
-    b: Readonly<SectionIdentifier>,
+    a: Readonly<APIv4.SectionIdentifier>,
+    b: Readonly<APIv4.SectionIdentifier>,
 ): boolean {
     return (
         a.department === b.department &&
@@ -248,13 +243,13 @@ export function compareSectionIdentifier(
     );
 }
 
-export function stringifyTermIdentifier(term: TermIdentifier): string {
+export function stringifyTermIdentifier(term: APIv4.TermIdentifier): string {
     return `${term.term}${term.year}`;
 }
 
 const termIdentifierRegex = /^(?<term>FA|SP|SU)(?<year>\d{4})$/;
 
-export function parseTermIdentifier(term: string): TermIdentifier {
+export function parseTermIdentifier(term: string): APIv4.TermIdentifier {
     const match = termIdentifierRegex.exec(term);
     if (match === null) throw Error(`Malformed term identifier ${term}`);
     const groups = match.groups as {
@@ -264,5 +259,24 @@ export function parseTermIdentifier(term: string): TermIdentifier {
     return {
         term: groups.term,
         year: parseInt(groups.year, 10),
-    } as TermIdentifier;
+    } as APIv4.TermIdentifier;
+}
+
+export function schoolCodeToName(school: APIv4.School): string {
+    switch (school) {
+        case APIv4.School.CGU:
+            return "Claremont Graduate University";
+        case APIv4.School.CMC:
+            return "Claremont McKenna";
+        case APIv4.School.HMC:
+            return "Harvey Mudd";
+        case APIv4.School.POM:
+            return "Pomona";
+        case APIv4.School.SCR:
+            return "Scripps";
+        case APIv4.School.PTZ:
+            return "Pitzer";
+        case APIv4.School.Unknown:
+            return "Unknown";
+    }
 }

@@ -26,7 +26,6 @@ export type Store = WithSetters<{
     toggleTheme: () => void;
 
     clearExpand: () => void;
-    searchFilters: Search.Filter[];
 };
 
 export const enum MainTab {

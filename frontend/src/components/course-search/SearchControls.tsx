@@ -7,15 +7,19 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import Dropdown from "@components/common/Dropdown";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+
+let timer: number;
 
 export default function SearchControls() {
-    const searchText = useStore((store) => store.searchText);
     const setSearchText = useStore((store) => store.setSearchText);
     const activeTerm = useStore((store) => store.activeTerm);
     const setActiveTerm = useStore((store) => store.setActiveTerm);
 
     const allTerms = useAllTerms();
     const queryClient = useQueryClient();
+
+    const [searchState, setSearchState] = useState("");
 
     if (allTerms === undefined) return <></>;
 
@@ -32,8 +36,15 @@ export default function SearchControls() {
             />
 
             <input
-                value={searchText}
-                onChange={(ev) => setSearchText(ev.currentTarget.value)}
+                value={searchState}
+                onChange={(ev) => {
+                    setSearchState(ev.target.value);
+                    clearTimeout(timer);
+                    timer = setTimeout(
+                        () => setSearchText(ev.target.value),
+                        150,
+                    );
+                }}
                 placeholder="Search for courses..."
             />
             <button className={Css.filterButton}>

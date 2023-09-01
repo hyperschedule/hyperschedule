@@ -21,23 +21,36 @@ export default function CourseSearch() {
     const search = useStore(
         (store) => ({
             text: store.searchText,
-            filters: store.searchFilters,
         }),
         shallow,
     );
 
-    const filteredSections = React.useMemo(() => {
-        return query.data?.filter((section) =>
-            Search.matches(section, search.text, search.filters),
-        );
-    }, [query.data, search.text, search.filters]);
+    const sectionsToShow = React.useMemo(() => {
+        if (query.data === undefined) return undefined;
+        let res: [number, APIv4.Section][] = [];
+        let maxScore = 0;
+        for (const s of query.data) {
+            const score = Search.matchesText(search.text, s);
+            if (score !== null) {
+                res.push([score, s]);
+                if (score > maxScore) maxScore = score;
+            }
+        }
+        if (maxScore >= Search.exactMatchThreshold) {
+            // if an exact match is found, only display other exact matches of the same priority
+            const displayThreshold = 1 << Math.floor(Math.log2(maxScore));
+            res = res.filter((r) => r[0] >= displayThreshold);
+        }
+        const sorted = res.sort((a, b) => b[0] - a[0]);
+        return sorted.map((a) => a[1]);
+    }, [query.data, search.text]);
 
     return (
         <div className={Css.container}>
             <SearchControls />
-            {filteredSections !== undefined ? (
+            {sectionsToShow !== undefined ? (
                 <CourseSearchResults
-                    sections={filteredSections}
+                    sections={sectionsToShow}
                     searchKey={btoa(search.text)}
                 />
             ) : (
@@ -192,11 +205,9 @@ function CourseSearchResults(props: {
                         >
                             {sections.map(({ index, section }) => (
                                 <CourseSearchRow
-                                    key={`${
-                                        props.searchKey
-                                    }:${APIv4.stringifySectionCodeLong(
+                                    key={APIv4.stringifySectionCodeLong(
                                         section.identifier,
-                                    )}`}
+                                    )}
                                     expandIndex={expandIndex}
                                     index={index}
                                     section={section}
