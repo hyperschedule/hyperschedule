@@ -33,11 +33,11 @@
 
 .sidebar {
     transition: border-left-color var(--theme-transition-duration),
-        transform var(--misc-transition-duration);
-
-    box-shadow: 0 0 1rem #0008;
+        transform var(--misc-transition-duration),
+        box-shadow var(--misc-transition-duration);
 
     min-height: 0;
+    min-width: calc(min(24rem, 100vw));
 
     display: grid;
     grid-template-areas: "top" "minimap" "selected";
@@ -73,6 +73,7 @@
 
     &[data-show] {
         transform: translateX(0);
+        box-shadow: 0 0 1rem #0008;
     }
 
     @media (--viewport-large) {
@@ -82,6 +83,8 @@
 
         grid-area: sidebar;
         border-left: 1px solid var(--bg-1);
+
+        box-shadow: none;
 
         & .top {
             display: none;
