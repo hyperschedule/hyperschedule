@@ -10,9 +10,11 @@ import { useState, useRef } from "react";
 
 import Dropdown from "@components/common/Dropdown";
 import FilterBubble from "./FilterBubble";
+import type * as Search from "@lib/search";
 
 export default function SearchControls() {
     const searchFilters = useStore((store) => store.searchFilters);
+    const addSearchFilter = useStore((store) => store.addSearchFilter);
     const setSearchText = useStore((store) => store.setSearchText);
     const activeTerm = useStore((store) => store.activeTerm);
     const setActiveTerm = useStore((store) => store.setActiveTerm);
@@ -71,44 +73,81 @@ export default function SearchControls() {
                     value={searchState}
                     onChange={(ev) => {
                         //ev.target.value.endsWith(':')
+                        const el = ev.target;
 
-                        setSearchState(ev.target.value);
+                        if (
+                            el.selectionStart === el.selectionEnd &&
+                            el.selectionEnd !== null &&
+                            el.selectionEnd > 0 &&
+                            el.value.at(el.selectionEnd - 1) === ":"
+                        ) {
+                            const stringBefore = el.value.slice(
+                                0,
+                                el.selectionEnd - 1,
+                            );
+                            const match =
+                                stringBefore.match(/\b(dept|title|code)$/);
+                            if (match !== null) {
+                                const newSearch =
+                                    stringBefore.slice(0, match.index) +
+                                    el.value.slice(el.selectionEnd);
+
+                                addSearchFilter({
+                                    key: match[1]!,
+                                    data: { text: "" },
+                                } as Search.Filter);
+
+                                setSearchState(newSearch);
+                                setSearchText(newSearch);
+                                window.requestAnimationFrame(() => {
+                                    // we can't use focusOnFilter here because the searchFilters haven't been updated yet
+                                    const selection =
+                                        filterGroupRef.current?.querySelectorAll(
+                                            "input",
+                                        );
+                                    if (selection === undefined) return;
+                                    const input = selection.item(
+                                        selection.length - 1,
+                                    );
+
+                                    input.focus();
+                                    input.setSelectionRange(0, 0);
+                                });
+                                return;
+                            }
+                        }
+                        setSearchState(el.value);
                         clearTimeout(timer);
                         setTimer(
-                            setTimeout(
-                                () => setSearchText(ev.target.value),
-                                150,
-                            ),
+                            setTimeout(() => setSearchText(el.value), 150),
                         );
                     }}
                     onKeyDown={(ev) => {
+                        const el = ev.currentTarget;
                         if (ev.code === "ArrowLeft") {
-                            const el = textBoxRef.current;
-                            if (el !== null) {
-                                if (
-                                    el.selectionStart === 0 &&
-                                    el.selectionEnd === 0 &&
-                                    searchFilters.length >= 1
-                                ) {
-                                    // removeSearchFilter(
-                                    //     searchFilters.length - 1,
-                                    // );
-
-                                    focusOnFilter(
-                                        searchFilters.length - 1,
-                                        Number.MAX_SAFE_INTEGER,
-                                    );
-                                }
+                            if (
+                                el.selectionStart === 0 &&
+                                el.selectionEnd === 0 &&
+                                searchFilters.length >= 1
+                            ) {
+                                focusOnFilter(
+                                    searchFilters.length - 1,
+                                    Number.MAX_SAFE_INTEGER,
+                                );
                             }
                         } else if (ev.code === "Backspace") {
-                            if (textBoxRef.current?.value.length === 0)
+                            if (el.value.length === 0)
                                 focusOnFilter(
                                     searchFilters.length - 1,
                                     Number.MAX_SAFE_INTEGER,
                                 );
                         }
                     }}
-                    placeholder="Search for courses..."
+                    placeholder={
+                        searchFilters.length === 0
+                            ? "Search for courses..."
+                            : ""
+                    }
                 />
             </div>
             <button className={Css.filterButton}>

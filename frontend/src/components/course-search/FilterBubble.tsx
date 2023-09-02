@@ -12,32 +12,22 @@ type FilterBubbleCommonProps<Data> = {
 };
 
 type FilterBubbleComponentProps<Data> = Data & FilterBubbleCommonProps<Data>;
-
-// this is easier than trying to fill the generic for ForwardRefExoticComponent
-type ForwardedRefType<Props> = ReturnType<
-    typeof React.forwardRef<HTMLInputElement, Props>
+type FilterBubbleComponent<K extends Search.FilterKey> = React.FC<
+    FilterBubbleComponentProps<Search.FilterData[K]>
 >;
 
 const FilterBubbleInput: {
-    [K in Search.FilterKey]: ForwardedRefType<
-        FilterBubbleComponentProps<Search.FilterData[K]>
-    >;
+    [K in Search.FilterKey]: FilterBubbleComponent<K>;
 } = {
-    [Search.FilterKey.Department]: React.forwardRef(FilterBubbleTextInput),
-    [Search.FilterKey.Instructor]: React.forwardRef(FilterBubbleTextInput),
-    [Search.FilterKey.Description]: React.forwardRef(FilterBubbleTextInput),
-    [Search.FilterKey.CourseCode]: React.forwardRef(FilterBubbleTextInput),
-    [Search.FilterKey.Title]: React.forwardRef(FilterBubbleTextInput),
-    [Search.FilterKey.ScheduleDays]: React.forwardRef(
-        FilterBubbleInputUnimplemented,
-    ),
-    [Search.FilterKey.MeetingTime]: React.forwardRef(
-        FilterBubbleInputUnimplemented,
-    ),
-    [Search.FilterKey.CourseArea]: React.forwardRef(
-        FilterBubbleInputUnimplemented,
-    ),
-    [Search.FilterKey.Campus]: React.forwardRef(FilterBubbleInputUnimplemented),
+    [Search.FilterKey.Department]: FilterBubbleTextInput,
+    [Search.FilterKey.Instructor]: FilterBubbleTextInput,
+    [Search.FilterKey.Description]: FilterBubbleTextInput,
+    [Search.FilterKey.CourseCode]: FilterBubbleTextInput,
+    [Search.FilterKey.Title]: FilterBubbleTextInput,
+    [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.MeetingTime]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.CourseArea]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.Campus]: FilterBubbleInputUnimplemented,
 };
 
 export default function FilterBubble(props: {
@@ -53,13 +43,9 @@ export default function FilterBubble(props: {
     // FilterBubbleInput is typed to make sure the type of the component's props
     // matches its corresponding key, but TS doesn't understand this yet,
     // so we do a little type cast to appease it.
-    const InputComponent = FilterBubbleInput[props.filter.key] as React.FC<
-        FilterBubbleComponentProps<Search.FilterData[Search.FilterKey]> & {
-            ref: React.Ref<HTMLInputElement>;
-        }
-    >;
-
-    const inputRef = React.useRef<HTMLInputElement>(null);
+    const InputComponent = FilterBubbleInput[
+        props.filter.key
+    ] as FilterBubbleComponent<Search.FilterKey>;
 
     return (
         <div className={Css.bubble}>
@@ -74,8 +60,7 @@ export default function FilterBubble(props: {
                         } as Search.Filter);
                     }}
                     onKeyDown={(ev) => {
-                        const el = inputRef.current;
-                        if (el === null) return;
+                        const el = ev.currentTarget;
                         if (ev.code === "ArrowLeft") {
                             if (
                                 el.selectionStart === 0 &&
@@ -92,13 +77,12 @@ export default function FilterBubble(props: {
                             )
                                 props.focusOnFilter(props.index + 1, 0);
                         } else if (ev.code === "Backspace") {
-                            if (inputRef.current?.value.length === 0) {
+                            if (ev.currentTarget.value.length === 0) {
                                 removeSearchFilter(props.index);
                                 props.focusOnFilter(props.index + 1, 0);
                             }
                         }
                     }}
-                    ref={inputRef}
                 />
                 <Feather.X
                     className={Css.closeIcon}
@@ -117,7 +101,6 @@ function FilterBubbleTextInput(
     props: FilterBubbleComponentProps<{
         text: string;
     }>,
-    ref: React.Ref<HTMLInputElement>,
 ) {
     const [measurements, measurementsRef] = useMeasure<HTMLSpanElement>();
 
@@ -131,7 +114,6 @@ function FilterBubbleTextInput(
                 }}
                 onChange={(ev) => props.onChange({ text: ev.target.value })}
                 onKeyDown={props.onKeyDown}
-                ref={ref}
             ></input>
             {
                 // we have to do a hidden measurement element because this is not monospace font,

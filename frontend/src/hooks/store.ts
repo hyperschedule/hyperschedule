@@ -26,6 +26,7 @@ export type Store = WithSetters<{
     toggleTheme: () => void;
 
     clearExpand: () => void;
+    addSearchFilter: (filter: Search.Filter) => void;
     setSearchFilter: (index: number, filter: Search.Filter) => void;
     removeSearchFilter: (index: number) => void;
 };
@@ -84,6 +85,11 @@ const useStore = Zustand.create<Store>()((set, get) => ({
     setSearchFilter(index, filter) {
         const newFilters = get().searchFilters.slice();
         newFilters[index] = filter;
+        set({ searchFilters: newFilters });
+    },
+    addSearchFilter(filter) {
+        const newFilters = get().searchFilters.slice();
+        newFilters.push(filter);
         set({ searchFilters: newFilters });
     },
     removeSearchFilter: (index) => {
