@@ -37,6 +37,7 @@
 
     & .closeIcon {
         height: 0.875em;
+        width: 0.875em;
         border-radius: 1em;
         //color: var(--fg-1);
         opacity: 50%;

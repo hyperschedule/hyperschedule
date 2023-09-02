@@ -6,9 +6,44 @@ import React from "react";
 import { useMeasure } from "@react-hookz/web";
 import * as Feather from "react-feather";
 
+type FilterBubbleCommonProps<Data> = {
+    onChange: (data: Data) => void;
+    onKeyDown: (ev: React.KeyboardEvent<HTMLInputElement>) => void;
+};
+
+type FilterBubbleComponentProps<Data> = Data & FilterBubbleCommonProps<Data>;
+
+// this is easier than trying to fill the generic for ForwardRefExoticComponent
+type ForwardedRefType<Props> = ReturnType<
+    typeof React.forwardRef<HTMLInputElement, Props>
+>;
+
+const FilterBubbleInput: {
+    [K in Search.FilterKey]: ForwardedRefType<
+        FilterBubbleComponentProps<Search.FilterData[K]>
+    >;
+} = {
+    [Search.FilterKey.Department]: React.forwardRef(FilterBubbleTextInput),
+    [Search.FilterKey.Instructor]: React.forwardRef(FilterBubbleTextInput),
+    [Search.FilterKey.Description]: React.forwardRef(FilterBubbleTextInput),
+    [Search.FilterKey.CourseCode]: React.forwardRef(FilterBubbleTextInput),
+    [Search.FilterKey.Title]: React.forwardRef(FilterBubbleTextInput),
+    [Search.FilterKey.ScheduleDays]: React.forwardRef(
+        FilterBubbleInputUnimplemented,
+    ),
+    [Search.FilterKey.MeetingTime]: React.forwardRef(
+        FilterBubbleInputUnimplemented,
+    ),
+    [Search.FilterKey.CourseArea]: React.forwardRef(
+        FilterBubbleInputUnimplemented,
+    ),
+    [Search.FilterKey.Campus]: React.forwardRef(FilterBubbleInputUnimplemented),
+};
+
 export default function FilterBubble(props: {
     filter: Search.Filter;
     index: number;
+    focusOnFilter: (index: number, cursor: number) => void;
 }) {
     const setSearchFilter = useStore((store) => store.setSearchFilter);
     const removeSearchFilter = useStore((store) => store.removeSearchFilter);
@@ -18,9 +53,13 @@ export default function FilterBubble(props: {
     // FilterBubbleInput is typed to make sure the type of the component's props
     // matches its corresponding key, but TS doesn't understand this yet,
     // so we do a little type cast to appease it.
-    const InputComponent = FilterBubbleInput[
-        props.filter.key
-    ] as FilterBubbleInputComponent<Search.FilterKey>;
+    const InputComponent = FilterBubbleInput[props.filter.key] as React.FC<
+        FilterBubbleComponentProps<Search.FilterData[Search.FilterKey]> & {
+            ref: React.Ref<HTMLInputElement>;
+        }
+    >;
+
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     return (
         <div className={Css.bubble}>
@@ -34,9 +73,34 @@ export default function FilterBubble(props: {
                             data,
                         } as Search.Filter);
                     }}
+                    onKeyDown={(ev) => {
+                        const el = inputRef.current;
+                        if (el === null) return;
+                        if (ev.code === "ArrowLeft") {
+                            if (
+                                el.selectionStart === 0 &&
+                                el.selectionEnd === 0
+                            )
+                                props.focusOnFilter(
+                                    props.index - 1,
+                                    Number.MAX_SAFE_INTEGER,
+                                );
+                        } else if (ev.code === "ArrowRight") {
+                            if (
+                                el.selectionStart === el.value.length &&
+                                el.selectionEnd === el.value.length
+                            )
+                                props.focusOnFilter(props.index + 1, 0);
+                        } else if (ev.code === "Backspace") {
+                            if (inputRef.current?.value.length === 0) {
+                                removeSearchFilter(props.index);
+                                props.focusOnFilter(props.index + 1, 0);
+                            }
+                        }
+                    }}
+                    ref={inputRef}
                 />
                 <Feather.X
-                    size="auto"
                     className={Css.closeIcon}
                     onClick={() => removeSearchFilter(props.index)}
                 />
@@ -49,11 +113,13 @@ function FilterBubbleInputUnimplemented() {
     return <>?</>;
 }
 
-function FilterBubbleTextInput(props: {
-    text: string;
-    onChange: (data: { text: string }) => void;
-}) {
-    const [measurements, ref] = useMeasure<HTMLSpanElement>();
+function FilterBubbleTextInput(
+    props: FilterBubbleComponentProps<{
+        text: string;
+    }>,
+    ref: React.Ref<HTMLInputElement>,
+) {
+    const [measurements, measurementsRef] = useMeasure<HTMLSpanElement>();
 
     return (
         <>
@@ -64,34 +130,16 @@ function FilterBubbleTextInput(props: {
                     maxWidth: `calc(${measurements?.width ?? 0}px + 1em)`,
                 }}
                 onChange={(ev) => props.onChange({ text: ev.target.value })}
+                onKeyDown={props.onKeyDown}
+                ref={ref}
             ></input>
             {
                 // we have to do a hidden measurement element because this is not monospace font,
                 // and strings such as "iiiii" and "mmmmm" have drastically different width
-                <span ref={ref} className={Css.measure}>
+                <span ref={measurementsRef} className={Css.measure}>
                     {props.text}
                 </span>
             }
         </>
     );
 }
-
-type FilterBubbleInputComponent<K extends Search.FilterKey> = React.FC<
-    Search.FilterData[K] & {
-        onChange: (data: Search.FilterData[K]) => void;
-    }
->;
-
-const FilterBubbleInput: {
-    [K in Search.FilterKey]: FilterBubbleInputComponent<K>;
-} = {
-    [Search.FilterKey.Department]: FilterBubbleTextInput,
-    [Search.FilterKey.Instructor]: FilterBubbleTextInput,
-    [Search.FilterKey.Description]: FilterBubbleTextInput,
-    [Search.FilterKey.CourseCode]: FilterBubbleTextInput,
-    [Search.FilterKey.Title]: FilterBubbleTextInput,
-    [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
-    [Search.FilterKey.MeetingTime]: FilterBubbleInputUnimplemented,
-    [Search.FilterKey.CourseArea]: FilterBubbleInputUnimplemented,
-    [Search.FilterKey.Campus]: FilterBubbleInputUnimplemented,
-};

@@ -14,11 +14,15 @@
 .inputGroup {
     display: flex;
     flex-wrap: wrap-reverse;
-    gap: 0.25rem;
 
     border: 1px solid var(--bg-1);
     padding: 0.25rem;
     transition: border-color var(--theme-transition-duration);
+
+    & .filterGroup {
+        display: flex;
+        gap: 0.25rem;
+    }
 
     & .input {
         font: inherit;
