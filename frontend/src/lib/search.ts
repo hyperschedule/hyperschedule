@@ -269,59 +269,45 @@ export type Filter = {
     };
 }[FilterKey];
 
-export type Filters = Record<FilterKey, Filter>;
+export const exampleFilters: Filter[] = [
+    // {
+    //     key: FilterKey.CourseArea,
+    //     data: { area: "5WRT" },
+    // },
+    // {
+    //     key: FilterKey.MeetingTime,
+    //     data: { startTime: 0, endTime: 17 * 60 + 30 },
+    // },
+    { key: FilterKey.Title, data: { text: "" } },
+    { key: FilterKey.Description, data: { text: "" } },
+    { key: FilterKey.Department, data: { text: "" } },
+];
 
-export const exampleFilters: Partial<Filters> = {
-    [FilterKey.CourseArea]: {
-        key: FilterKey.CourseArea,
-        data: { area: "5WRT" },
-    },
-    [FilterKey.MeetingTime]: {
-        key: FilterKey.MeetingTime,
-        data: { startTime: 0, endTime: 17 * 60 + 30 },
-    },
-    [FilterKey.Title]: { key: FilterKey.Title, data: { text: "" } },
-};
-// { key: FilterKey.Campus, data: { campus: APIv4.School.HMC } },
-
-//
-// export function matchesFilter(section: Section, filter: Filter): boolean {
-//     switch (filter.key) {
-//         case FilterKey.Department:
-//             return false;
-//
-//         default:
-//             return false;
-//     }
-// }
-//
-// export function matchesText(section: Section, text: string): boolean {
-//     const terms: string[] = [];
-//     for (const match of text.matchAll(/[A-Za-z]+|\d+/g))
-//         terms.push(match[0].toLocaleLowerCase());
-//
-//     const items = [
-//         section.course.code.department,
-//         section.course.code.courseNumber.toString().padStart(3, "0"),
-//         section.course.code.affiliation,
-//         section.identifier.sectionNumber.toString().padStart(2, "0"),
-//         section.course.title,
-//     ];
-//
-//     return terms.every((term) =>
-//         items.some((item) =>
-//             item.toLocaleLowerCase().includes(term.toLocaleLowerCase()),
-//         ),
-//     );
-// }
-//
-// export function matches(
-//     section: Section,
-//     text: string,
-//     filters: Filter[],
-// ): boolean {
-//     return (
-//         matchesText(section, text) &&
-//         filters.every((filter) => matchesFilter(section, filter))
-//     );
-// }
+export function filterSection(
+    section: APIv4.Section,
+    filters: Filter[],
+): boolean {
+    // a section is a match iff all filters match
+    for (const filter of filters) {
+        switch (filter.key) {
+            case FilterKey.Department:
+            case FilterKey.Campus:
+            case FilterKey.Description:
+            case FilterKey.CourseCode:
+            case FilterKey.Instructor:
+            case FilterKey.ScheduleDays:
+            case FilterKey.CourseArea:
+            case FilterKey.MeetingTime:
+                break;
+            case FilterKey.Title:
+                if (
+                    !section.course.title
+                        .toLocaleLowerCase()
+                        .includes(filter.data.text.toLocaleLowerCase())
+                )
+                    return false;
+                break;
+        }
+    }
+    return true;
+}

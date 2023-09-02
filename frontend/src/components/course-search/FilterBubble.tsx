@@ -4,9 +4,14 @@ import Css from "./FilterBubble.module.css";
 import useStore from "@hooks/store";
 import React from "react";
 import { useMeasure } from "@react-hookz/web";
+import * as Feather from "react-feather";
 
-export default function FilterBubble({ filter }: { filter: Search.Filter }) {
+export default function FilterBubble(props: {
+    filter: Search.Filter;
+    index: number;
+}) {
     const setSearchFilter = useStore((store) => store.setSearchFilter);
+    const removeSearchFilter = useStore((store) => store.removeSearchFilter);
 
     // A little type trickery to enable implementing per-key components in a record,
     // which is nicer to write than a bunch of if-else or switch-case code.
@@ -14,20 +19,28 @@ export default function FilterBubble({ filter }: { filter: Search.Filter }) {
     // matches its corresponding key, but TS doesn't understand this yet,
     // so we do a little type cast to appease it.
     const InputComponent = FilterBubbleInput[
-        filter.key
+        props.filter.key
     ] as FilterBubbleInputComponent<Search.FilterKey>;
 
     return (
         <div className={Css.bubble}>
-            <span className={Css.filterKey}>{filter.key}</span>{" "}
-            {
+            <span className={Css.filterKey}>{props.filter.key}</span>
+            <span className={Css.filterData}>
                 <InputComponent
-                    {...filter.data}
+                    {...props.filter.data}
                     onChange={(data) => {
-                        setSearchFilter(filter.key, data);
+                        setSearchFilter(props.index, {
+                            key: props.filter.key,
+                            data,
+                        } as Search.Filter);
                     }}
                 />
-            }
+                <Feather.X
+                    size="auto"
+                    className={Css.closeIcon}
+                    onClick={() => removeSearchFilter(props.index)}
+                />
+            </span>
         </div>
     );
 }

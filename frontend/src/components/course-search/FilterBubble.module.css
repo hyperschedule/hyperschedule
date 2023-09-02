@@ -8,22 +8,42 @@
 
         border-bottom-left-radius: 0.5em;
         border-top-left-radius: 0.5em;
-        padding-left: 1em;
+        padding-left: 0.5em;
         padding-right: 0.5em;
 
         border-right: 1px solid var(--fg-1);
     }
 
-    & input {
+    & .filterData {
+        padding-left: 0.5em;
+
+        display: flex;
+        align-items: center;
+
+        background: var(--bg-1);
+
         border-bottom-right-radius: 0.5em;
         border-top-right-radius: 0.5em;
-        padding-left: 0.5em;
+    }
+
+    & input {
         min-width: 1em;
         background: var(--bg-1);
         color: inherit;
         font: inherit;
         border: none;
         outline: none;
+    }
+
+    & .closeIcon {
+        height: 0.875em;
+        border-radius: 1em;
+        //color: var(--fg-1);
+        opacity: 50%;
+
+        &:hover {
+            background: var(--bg-0);
+        }
     }
 
     & .measure {

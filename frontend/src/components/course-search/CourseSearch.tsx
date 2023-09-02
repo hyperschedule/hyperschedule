@@ -18,19 +18,17 @@ import Css from "./CourseSearch.module.css";
 export default function CourseSearch() {
     const activeTerm = useStore((store) => store.activeTerm);
     const query = useSectionsQuery(activeTerm);
-    const search = useStore(
-        (store) => ({
-            text: store.searchText,
-        }),
-        shallow,
-    );
+    const searchText = useStore((store) => store.searchText);
+    const searchFilters = useStore((store) => store.searchFilters);
 
     const sectionsToShow = React.useMemo(() => {
         if (query.data === undefined) return undefined;
         let res: [number, APIv4.Section][] = [];
         let maxScore = 0;
-        for (const s of query.data) {
-            const score = Search.matchesText(search.text, s);
+        for (const s of query.data.filter((s) =>
+            Search.filterSection(s, searchFilters),
+        )) {
+            const score = Search.matchesText(searchText, s);
             if (score !== null) {
                 res.push([score, s]);
                 if (score > maxScore) maxScore = score;
@@ -43,7 +41,7 @@ export default function CourseSearch() {
         }
         const sorted = res.sort((a, b) => b[0] - a[0]);
         return sorted.map((a) => a[1]);
-    }, [query.data, search.text]);
+    }, [query.data, searchText, searchFilters]);
 
     return (
         <div className={Css.container}>
@@ -51,7 +49,7 @@ export default function CourseSearch() {
             {sectionsToShow !== undefined ? (
                 <CourseSearchResults
                     sections={sectionsToShow}
-                    searchKey={btoa(search.text)}
+                    searchKey={btoa(searchText)}
                 />
             ) : (
                 <CourseSearchEnd text="loading courses..." />

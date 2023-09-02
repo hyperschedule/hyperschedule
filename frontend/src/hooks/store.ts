@@ -2,7 +2,6 @@ import * as Zustand from "zustand";
 import * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
-import { prefetchDataForTerm } from "@hooks/api/prefetch";
 
 type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
     [K in keyof Shape as `set${Capitalize<string & K>}`]: (
@@ -13,7 +12,7 @@ type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
 export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
-    searchFilters: Partial<Search.Filters>;
+    searchFilters: Search.Filter[];
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
     activeScheduleId: APIv4.ScheduleId | null;
@@ -27,10 +26,8 @@ export type Store = WithSetters<{
     toggleTheme: () => void;
 
     clearExpand: () => void;
-    setSearchFilter: <K extends Search.FilterKey>(
-        key: K,
-        data: Search.FilterData[K],
-    ) => void;
+    setSearchFilter: (index: number, filter: Search.Filter) => void;
+    removeSearchFilter: (index: number) => void;
 };
 
 export const enum MainTab {
@@ -77,17 +74,24 @@ const useStore = Zustand.create<Store>()((set, get) => ({
         set({
             theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
         }),
+
     searchText: "",
+    setSearchText: (searchText) =>
+        set({ searchText, expandKey: null, expandHeight: 0 }),
 
     searchFilters: Search.exampleFilters,
     setSearchFilters: (searchFilters) => set({ searchFilters }),
-    setSearchFilter(key, data) {
-        set({
-            searchFilters: { ...get().searchFilters, [key]: { key, data } },
-        });
+    setSearchFilter(index, filter) {
+        const newFilters = get().searchFilters.slice();
+        newFilters[index] = filter;
+        set({ searchFilters: newFilters });
     },
-    setSearchText: (searchText) =>
-        set({ searchText, expandKey: null, expandHeight: 0 }),
+    removeSearchFilter: (index) => {
+        const newFilters = get().searchFilters.slice();
+        newFilters.splice(index, 1);
+        set({ searchFilters: newFilters });
+    },
+
     expandKey: null,
     setExpandKey: (expandKey) => set({ expandKey }),
     expandHeight: 0,
