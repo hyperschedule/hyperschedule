@@ -232,30 +232,57 @@ export const enum FilterKey {
 }
 
 export type FilterData = {
-    [FilterKey.Department]: { department: string };
-    [FilterKey.Instructor]: { instructor: string };
-    [FilterKey.Description]: { description: string };
-    [FilterKey.CourseCode]: { code: string };
-    [FilterKey.Title]: { title: string };
-    [FilterKey.ScheduleDays]: { days: Set<APIv4.Weekday> };
-    [FilterKey.MeetingTime]: { startTime: number; endTime: number };
-    [FilterKey.CourseArea]: { area: string };
-    [FilterKey.Campus]: { campus: APIv4.School };
+    [FilterKey.Department]: {
+        text: string;
+    };
+    [FilterKey.Instructor]: {
+        text: string;
+    };
+    [FilterKey.Description]: {
+        text: string;
+    };
+    [FilterKey.CourseCode]: {
+        text: string;
+    };
+    [FilterKey.Title]: {
+        text: string;
+    };
+    [FilterKey.ScheduleDays]: {
+        days: Set<APIv4.Weekday>;
+    };
+    [FilterKey.MeetingTime]: {
+        startTime: number;
+        endTime: number;
+    };
+    [FilterKey.CourseArea]: {
+        area: string;
+    };
+    [FilterKey.Campus]: {
+        campus: APIv4.School;
+    };
 };
 
 export type Filter = {
-    [K in FilterKey]: { key: K; data: FilterData[K] };
+    [K in FilterKey]: {
+        key: K;
+        data: FilterData[K];
+    };
 }[FilterKey];
 
-export const exampleFilters: Filter[] = [
-    { key: FilterKey.CourseArea, data: { area: "5WRT" } },
-    {
+export type Filters = Record<FilterKey, Filter>;
+
+export const exampleFilters: Partial<Filters> = {
+    [FilterKey.CourseArea]: {
+        key: FilterKey.CourseArea,
+        data: { area: "5WRT" },
+    },
+    [FilterKey.MeetingTime]: {
         key: FilterKey.MeetingTime,
         data: { startTime: 0, endTime: 17 * 60 + 30 },
     },
-    { key: FilterKey.Title, data: { title: "" } },
-    { key: FilterKey.Campus, data: { campus: APIv4.School.HMC } },
-];
+    [FilterKey.Title]: { key: FilterKey.Title, data: { text: "" } },
+};
+// { key: FilterKey.Campus, data: { campus: APIv4.School.HMC } },
 
 //
 // export function matchesFilter(section: Section, filter: Filter): boolean {

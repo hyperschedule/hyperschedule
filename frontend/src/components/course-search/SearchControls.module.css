@@ -13,6 +13,7 @@
 
 .inputGroup {
     display: flex;
+    flex-wrap: wrap-reverse;
     gap: 0.25rem;
 
     border: 1px solid var(--bg-1);

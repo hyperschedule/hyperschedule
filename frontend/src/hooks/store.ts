@@ -13,7 +13,7 @@ type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
 export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
-    searchFilters: Search.Filter[];
+    searchFilters: Partial<Search.Filters>;
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
     activeScheduleId: APIv4.ScheduleId | null;
@@ -27,6 +27,10 @@ export type Store = WithSetters<{
     toggleTheme: () => void;
 
     clearExpand: () => void;
+    setSearchFilter: <K extends Search.FilterKey>(
+        key: K,
+        data: Search.FilterData[K],
+    ) => void;
 };
 
 export const enum MainTab {
@@ -46,9 +50,16 @@ export const enum PopupOption {
 }
 
 export type Popup =
-    | { option: PopupOption.Login }
-    | { option: PopupOption.SectionDetail; section: APIv4.SectionIdentifier }
-    | { option: PopupOption.UserDetail }
+    | {
+          option: PopupOption.Login;
+      }
+    | {
+          option: PopupOption.SectionDetail;
+          section: APIv4.SectionIdentifier;
+      }
+    | {
+          option: PopupOption.UserDetail;
+      }
     | null;
 
 export interface ScheduleRenderingOptions {
@@ -67,8 +78,14 @@ const useStore = Zustand.create<Store>()((set, get) => ({
             theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
         }),
     searchText: "",
+
     searchFilters: Search.exampleFilters,
     setSearchFilters: (searchFilters) => set({ searchFilters }),
+    setSearchFilter(key, data) {
+        set({
+            searchFilters: { ...get().searchFilters, [key]: { key, data } },
+        });
+    },
     setSearchText: (searchText) =>
         set({ searchText, expandKey: null, expandHeight: 0 }),
     expandKey: null,

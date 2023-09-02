@@ -38,9 +38,9 @@ export default function SearchControls() {
                 }}
             />
             <div className={Css.inputGroup}>
-                {searchFilters.map((filter, i) => (
-                    <FilterBubble key={i} filter={filter} />
-                ))}
+                {Object.entries(searchFilters).map(([k, v]) => {
+                    return <FilterBubble key={k} filter={v} />;
+                })}
                 <input
                     className={Css.input}
                     value={searchState}
