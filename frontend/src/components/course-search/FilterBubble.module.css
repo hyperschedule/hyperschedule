@@ -1,0 +1,19 @@
+.bubble {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 0.25em;
+
+    background-color: var(--bg-1);
+    border-radius: 0.25em;
+
+    padding: 0.25em;
+
+    & input {
+        width: 4rem;
+        background: var(--bg-0);
+        color: inherit;
+        font: inherit;
+        border: none;
+        outline: none;
+    }
+}

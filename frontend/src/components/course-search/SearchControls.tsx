@@ -4,14 +4,15 @@ import * as Feather from "react-feather";
 import useStore from "@hooks/store";
 import { useAllTerms } from "@hooks/term";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import Dropdown from "@components/common/Dropdown";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-let timer: number;
+import Dropdown from "@components/common/Dropdown";
+import FilterBubble from "./FilterBubble";
 
 export default function SearchControls() {
+    const searchFilters = useStore((store) => store.searchFilters);
     const setSearchText = useStore((store) => store.setSearchText);
     const activeTerm = useStore((store) => store.activeTerm);
     const setActiveTerm = useStore((store) => store.setActiveTerm);
@@ -20,6 +21,8 @@ export default function SearchControls() {
     const queryClient = useQueryClient();
 
     const [searchState, setSearchState] = useState("");
+
+    const [timer, setTimer] = useState<number | undefined>(undefined);
 
     if (allTerms === undefined) return <></>;
 
@@ -34,19 +37,28 @@ export default function SearchControls() {
                     setActiveTerm(term);
                 }}
             />
+            <div className={Css.inputGroup}>
+                {searchFilters.map((filter, i) => (
+                    <FilterBubble key={i} filter={filter} />
+                ))}
+                <input
+                    className={Css.input}
+                    value={searchState}
+                    onChange={(ev) => {
+                        //ev.target.value.endsWith(':')
 
-            <input
-                value={searchState}
-                onChange={(ev) => {
-                    setSearchState(ev.target.value);
-                    clearTimeout(timer);
-                    timer = setTimeout(
-                        () => setSearchText(ev.target.value),
-                        150,
-                    );
-                }}
-                placeholder="Search for courses..."
-            />
+                        setSearchState(ev.target.value);
+                        clearTimeout(timer);
+                        setTimer(
+                            setTimeout(
+                                () => setSearchText(ev.target.value),
+                                150,
+                            ),
+                        );
+                    }}
+                    placeholder="Search for courses..."
+                />
+            </div>
             <button className={Css.filterButton}>
                 <Feather.Sliders size={16} />
                 Filters

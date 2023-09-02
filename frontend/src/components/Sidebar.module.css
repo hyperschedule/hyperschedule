@@ -86,6 +86,8 @@
 
         box-shadow: none;
 
+        min-width: 0;
+
         & .top {
             display: none;
         }

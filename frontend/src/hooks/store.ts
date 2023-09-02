@@ -1,5 +1,5 @@
 import * as Zustand from "zustand";
-import type * as Search from "@lib/search";
+import * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
@@ -13,6 +13,7 @@ type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
 export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
+    searchFilters: Search.Filter[];
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
     activeScheduleId: APIv4.ScheduleId | null;
@@ -66,7 +67,8 @@ const useStore = Zustand.create<Store>()((set, get) => ({
             theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
         }),
     searchText: "",
-    searchFilters: [],
+    searchFilters: Search.exampleFilters,
+    setSearchFilters: (searchFilters) => set({ searchFilters }),
     setSearchText: (searchText) =>
         set({ searchText, expandKey: null, expandHeight: 0 }),
     expandKey: null,

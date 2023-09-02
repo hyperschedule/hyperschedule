@@ -31,6 +31,18 @@ function computeMatchScore(categories: Match[]): number | null {
 
 const tokensRegex = /[0-9]+|[a-z]+/g;
 
+/*
+
+  try all exact matches
+
+  match each token,
+  return true if every token matches true
+
+
+
+
+  */
+
 /**
  * the most generic text search. this function returns a positive integer indicating the priority (1 being lowest) or null indicating no match
  * this is necessary in the case of, e.g., a search term of "rust". in this case, we should rank courses from the
@@ -208,28 +220,42 @@ export function matchesText(
 }
 
 export const enum FilterKey {
-    Department = "Department",
-    Title = "Department",
-    Description = "Description",
-    CourseCode = "CourseCode",
-    Instructor = "Instructor",
-    ScheduleDays = "ScheduleDays",
+    Department = "dept",
+    Title = "title",
+    Campus = "campus",
+    Description = "desc",
+    CourseCode = "code",
+    Instructor = "inst",
+    ScheduleDays = "days",
+    CourseArea = "area",
+    MeetingTime = "time",
 }
 
-export type Filter =
-    | {
-          key:
-              | FilterKey.Department
-              | FilterKey.Instructor
-              | FilterKey.Description
-              | FilterKey.CourseCode
-              | FilterKey.Title;
-          contains: string;
-      }
-    | {
-          key: FilterKey.ScheduleDays;
-          days: Set<never>; // TODO
-      };
+export type FilterData = {
+    [FilterKey.Department]: { department: string };
+    [FilterKey.Instructor]: { instructor: string };
+    [FilterKey.Description]: { description: string };
+    [FilterKey.CourseCode]: { code: string };
+    [FilterKey.Title]: { title: string };
+    [FilterKey.ScheduleDays]: { days: Set<APIv4.Weekday> };
+    [FilterKey.MeetingTime]: { startTime: number; endTime: number };
+    [FilterKey.CourseArea]: { area: string };
+    [FilterKey.Campus]: { campus: APIv4.School };
+};
+
+export type Filter = {
+    [K in FilterKey]: { key: K; data: FilterData[K] };
+}[FilterKey];
+
+export const exampleFilters: Filter[] = [
+    { key: FilterKey.CourseArea, data: { area: "5WRT" } },
+    {
+        key: FilterKey.MeetingTime,
+        data: { startTime: 0, endTime: 17 * 60 + 30 },
+    },
+    { key: FilterKey.Title, data: { title: "" } },
+    { key: FilterKey.Campus, data: { campus: APIv4.School.HMC } },
+];
 
 //
 // export function matchesFilter(section: Section, filter: Filter): boolean {
