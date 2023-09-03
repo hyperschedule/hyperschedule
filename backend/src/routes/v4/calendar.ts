@@ -14,17 +14,22 @@ export const calendarApp = new App({ settings: { xPoweredBy: false } });
 calendarApp.get(
     "/:userId/:scheduleId",
     async function (request: Request, response: Response) {
-        logger.info("Requesting calendar");
-
         const userId = APIv4.UserId.safeParse(request.params.userId);
         if (!userId.success) {
+            logger.info("Error parsing user id %o", request.params.userId);
             return response
                 .status(400)
                 .header("Content-Type", "application/json")
                 .send(userId.error);
         }
-        const scheduleId = APIv4.UserId.safeParse(request.params.scheduleId);
+        const scheduleId = APIv4.ScheduleId.safeParse(
+            request.params.scheduleId,
+        );
         if (!scheduleId.success) {
+            logger.info(
+                "Error parsing schedule id %o",
+                request.params.scheduleId,
+            );
             return response
                 .status(400)
                 .header("Content-Type", "application/json")
