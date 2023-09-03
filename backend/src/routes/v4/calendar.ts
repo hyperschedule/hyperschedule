@@ -58,10 +58,7 @@ calendarApp.get(
 
         const calendar = await createCalendar(schedule);
         if (calendar.error !== undefined) {
-            logger.error(
-                "Error creating iCal calendar: %o",
-                calendar.error.cause,
-            );
+            logger.error("Error creating iCal calendar: %o", calendar.error);
             return response
                 .status(500)
                 .header("Content-Type", "text/plain")
