@@ -85,8 +85,9 @@ export default function SearchControls() {
                                 0,
                                 el.selectionEnd - 1,
                             );
-                            const match =
-                                stringBefore.match(/\b(dept|title|code)$/);
+                            const match = stringBefore.match(
+                                /\b(dept|title|code|instr|desc)$/,
+                            );
                             if (match !== null) {
                                 const newSearch =
                                     stringBefore.slice(0, match.index) +

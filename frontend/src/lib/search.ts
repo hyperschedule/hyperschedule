@@ -225,7 +225,7 @@ export const enum FilterKey {
     Campus = "campus",
     Description = "desc",
     CourseCode = "code",
-    Instructor = "inst",
+    Instructor = "instr",
     ScheduleDays = "days",
     CourseArea = "area",
     MeetingTime = "time",
@@ -291,12 +291,61 @@ export function filterSection(
     for (const filter of filters) {
         switch (filter.key) {
             case FilterKey.Department:
+                if (
+                    !section.identifier.department
+                        .toLowerCase()
+                        .includes(filter.data.text)
+                )
+                    return false;
+                break;
             case FilterKey.Campus:
+                break;
             case FilterKey.Description:
+                if (
+                    !section.course.description
+                        .toLowerCase()
+                        .includes(filter.data.text)
+                )
+                    return false;
+                break;
             case FilterKey.CourseCode:
+                const tokens = Array.from(
+                    filter.data.text.matchAll(tokensRegex),
+                ).map((v) => v[0]);
+                if (tokens.length > 3) return false;
+                switch (tokens.length) {
+                    case 3:
+                        if (!section.identifier.suffix.includes(tokens[2]!))
+                            return false;
+                    case 2:
+                        if (
+                            !section.identifier.courseNumber
+                                .toString()
+                                .padStart(3, "0")
+                                .includes(tokens[1]!)
+                        )
+                            return false;
+                    case 1:
+                        if (
+                            !section.identifier.department
+                                .toLowerCase()
+                                .includes(tokens[0]!)
+                        )
+                            return false;
+                }
+                break;
             case FilterKey.Instructor:
+                if (
+                    !section.instructors.some((instr) =>
+                        instr.name.toLowerCase().includes(filter.data.text),
+                    )
+                )
+                    return false;
+                break;
             case FilterKey.ScheduleDays:
+                break;
             case FilterKey.CourseArea:
+                break;
             case FilterKey.MeetingTime:
                 break;
             case FilterKey.Title:
