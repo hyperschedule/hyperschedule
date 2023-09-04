@@ -6,6 +6,8 @@ import React from "react";
 import * as Feather from "react-feather";
 
 import { useCourseAreaDescription } from "@hooks/api/course";
+import classNames from "classnames";
+import { useActiveSectionsQuery } from "@hooks/section";
 
 type FilterBubbleComponentProps<Data> = {
     onChange: (data: Data | null) => void;
@@ -121,13 +123,37 @@ function FilterBubbleTextInput(
     );
 }
 
+const campusCss = [
+    // this is ordered by the year the school is established
+    Css.pom,
+    Css.scr,
+    Css.cmc,
+    Css.hmc,
+    Css.ptz,
+];
+
 function CourseAreaBubble(
     props: FilterBubbleComponentProps<{
         area: string;
     }>,
 ) {
-    const result = useCourseAreaDescription();
-    const descriptions = result.data ?? new Map<string, never>();
+    const courseAreaDescription = useCourseAreaDescription();
+    const activeSections = useActiveSectionsQuery().data;
+
+    const relevantAreas: Map<string, string> = React.useMemo(() => {
+        // not all areas exist in a semester
+        const descriptions = courseAreaDescription.data;
+        if (descriptions === undefined) return new Map();
+        if (activeSections === undefined) return new Map();
+        const areas = new Map<string, string>();
+        for (const s of activeSections)
+            for (const a of s.courseAreas) {
+                const desc = descriptions.get(a);
+                if (desc) areas.set(a, desc);
+            }
+
+        return areas;
+    }, [activeSections]);
 
     const [selectedArea, setSelectedArea] = React.useState<string | null>(null);
     const [text, setText] = React.useState("");
@@ -156,7 +182,7 @@ function CourseAreaBubble(
         const matched: { area: string; description: string }[] = [];
         const tokens = text.toLocaleLowerCase().split(/\s+/);
 
-        for (const [area, description] of descriptions.entries()) {
+        for (const [area, description] of relevantAreas.entries()) {
             if (
                 !tokens.every((token) =>
                     description.toLocaleLowerCase().includes(token),
@@ -171,10 +197,10 @@ function CourseAreaBubble(
         return matched.sort(
             (a, b) => a.description.length - b.description.length,
         );
-    }, [descriptions, text]);
+    }, [relevantAreas, text]);
 
     const selectedDescription = selectedArea
-        ? descriptions.get(selectedArea)
+        ? relevantAreas.get(selectedArea)
         : undefined;
 
     return (
@@ -243,13 +269,25 @@ function CourseAreaBubble(
             </div>
             <div className={Css.dropdown} ref={dropdownRef}>
                 {matchedAreaDescriptions.map(({ area, description }, index) => {
+                    const campus = area.charCodeAt(0) - 48 - 1; // 48 is the ascii code for '0'
+
                     return (
                         <div
                             key={area}
                             className={Css.item}
                             data-highlight={index === selectIndex || undefined}
                         >
-                            {description}
+                            {campus < 5 ? (
+                                <span
+                                    className={classNames(
+                                        campusCss[campus],
+                                        Css.campusIndicator,
+                                    )}
+                                />
+                            ) : (
+                                <></>
+                            )}
+                            <span>{description}</span>
                         </div>
                     );
                 })}

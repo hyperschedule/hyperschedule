@@ -104,13 +104,45 @@
 
         & .item {
             padding: 0.25em 0.5em;
-
+            position: relative;
             &:not(:last-child) {
                 border-bottom: 1px solid var(--bg-2);
             }
 
             &[data-highlight] {
                 background-color: var(--highlight);
+            }
+
+            & .campusIndicator {
+                display: block;
+                width: 0.5em;
+                height: 0.5em;
+                border-radius: 0.5em;
+
+                position: absolute;
+                right: 0.5em;
+                top: 50%;
+                transform: translateY(-50%);
+
+                &.hmc {
+                    background-color: rgb(232, 168, 49);
+                }
+
+                &.cmc {
+                    background-color: rgb(126, 25, 48);
+                }
+
+                &.ptz {
+                    background-color: rgb(245, 146, 54);
+                }
+
+                &.pom {
+                    background-color: rgb(19, 88, 178);
+                }
+
+                &.scr {
+                    background-color: rgb(54, 109, 91);
+                }
             }
         }
     }
