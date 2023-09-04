@@ -2,7 +2,7 @@ import * as Search from "@lib/search";
 
 import Css from "./FilterBubble.module.css";
 import useStore from "@hooks/store";
-import React from "react";
+import React, { useState } from "react";
 import * as Feather from "react-feather";
 
 import { useCourseAreaDescription } from "@hooks/api/course";
@@ -105,6 +105,8 @@ function FilterBubbleTextInput(
     }>,
 ) {
     const [text, setText] = React.useState("");
+    const [timer, setTimer] = useState<number | undefined>(undefined);
+
     return (
         <div className={Css.sizer}>
             <input
@@ -114,7 +116,13 @@ function FilterBubbleTextInput(
                 value={text}
                 onChange={(ev) => {
                     setText(ev.target.value);
-                    props.onChange({ text: ev.target.value });
+                    clearTimeout(timer);
+                    setTimer(
+                        setTimeout(
+                            () => props.onChange({ text: ev.target.value }),
+                            150,
+                        ),
+                    );
                 }}
                 onKeyDown={props.onKeyDown}
             />

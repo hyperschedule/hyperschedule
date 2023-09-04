@@ -23,11 +23,20 @@ export default function CourseSearch() {
 
     const sectionsToShow = React.useMemo(() => {
         if (query.data === undefined) return undefined;
+
+        const filtered =
+            searchFilters.length === 0
+                ? query.data
+                : query.data.filter((s) =>
+                      Search.filterSection(s, searchFilters),
+                  );
+
+        if (searchText === "") return filtered;
+
         let res: [number, APIv4.Section][] = [];
         let maxScore = 0;
-        for (const s of query.data.filter((s) =>
-            Search.filterSection(s, searchFilters),
-        )) {
+
+        for (const s of filtered) {
             const score = Search.matchesText(searchText, s);
             if (score !== null) {
                 res.push([score, s]);
