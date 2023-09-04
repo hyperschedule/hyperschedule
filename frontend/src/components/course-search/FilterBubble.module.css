@@ -95,9 +95,9 @@
         z-index: 2;
         background-color: var(--bg-1);
 
-        max-height: min(36em, 80vh);
-        box-shadow: 1px 1px var(--shadow-color);
-        overflow-y: scroll;
+        max-height: min(24em, 80vh);
+        box-shadow: 0 0 0.5em var(--shadow-color);
+        overflow-y: auto;
 
         /*seems like portal truncates all course area descriptions to 24 characters*/
         width: 24ch;

@@ -6,7 +6,6 @@ import React from "react";
 import * as Feather from "react-feather";
 
 import { useCourseAreaDescription } from "@hooks/api/course";
-import classNames from "classnames";
 
 type FilterBubbleComponentProps<Data> = {
     onChange: (data: Data | null) => void;
@@ -135,14 +134,23 @@ function CourseAreaBubble(
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
-    const [focus, setFocus] = React.useState(false);
+    const [hasFocus, setHasFocus] = React.useState(false);
 
     const [selectIndex, setSelectIndex] = React.useState(0);
 
-    const updateFocus = () =>
-        setFocus(document.activeElement === inputRef.current);
+    function recomputeFocus() {
+        setHasFocus(document.activeElement === inputRef.current);
+    }
 
-    React.useEffect(updateFocus, [document.activeElement, inputRef]);
+    React.useEffect(recomputeFocus, [document.activeElement, inputRef]);
+
+    function setActive(index: number) {
+        setSelectIndex(index);
+        // css nth-child is 1-indexed
+        document
+            .querySelector(`.${Css.item}:nth-child(${index + 1})`)!
+            .scrollIntoView(false);
+    }
 
     const matchedAreaDescriptions = React.useMemo(() => {
         const matched: { area: string; description: string }[] = [];
@@ -172,50 +180,63 @@ function CourseAreaBubble(
     return (
         <div
             className={Css.courseArea}
-            data-focus={focus || undefined}
+            data-focus={hasFocus || undefined}
             data-selected={selectedArea}
         >
             <div className={Css.sizer}>
                 <input
                     ref={inputRef}
                     size={1}
-                    value={focus ? text : selectedDescription ?? text}
+                    value={hasFocus ? text : selectedDescription ?? text}
                     onChange={(ev) => {
                         setText(ev.target.value);
+                        setSelectedArea(null);
                         setSelectIndex(0);
                     }}
                     className={Css.input}
                     onKeyDown={(ev) => {
                         switch (ev.code) {
                             case "ArrowUp":
-                                setSelectIndex(Math.max(selectIndex - 1, 0));
+                                setActive(Math.max(selectIndex - 1, 0));
                                 return;
                             case "ArrowDown":
-                                setSelectIndex(
+                                setActive(
                                     Math.min(
                                         selectIndex + 1,
                                         matchedAreaDescriptions.length - 1,
                                     ),
                                 );
                                 return;
+                            case "Tab":
                             case "Enter":
+                                const selected =
+                                    matchedAreaDescriptions[selectIndex];
+                                if (selected === undefined) return;
+                                setText(selected.description);
+                                setSelectedArea(selected.area);
+                                props.onChange({ area: selected.area });
                                 props.focusNext();
+                                if (ev.code === "Tab")
+                                    // tab by default focuses the next element
+                                    ev.preventDefault();
+                                return;
+                            default:
+                                props.onKeyDown(ev);
                         }
-
-                        props.onKeyDown(ev);
                     }}
-                    onFocus={updateFocus}
+                    onFocus={recomputeFocus}
                     onBlur={() => {
-                        const entry = matchedAreaDescriptions[selectIndex];
-                        if (!entry) {
-                            setSelectedArea(null);
-                            props.onChange(null);
-                        } else {
-                            setText(entry.description);
-                            setSelectedArea(entry.area);
-                            props.onChange({ area: entry.area });
+                        const selected = matchedAreaDescriptions[selectIndex];
+                        if (
+                            selected !== undefined &&
+                            text.toLocaleLowerCase() ===
+                                selected.description.toLocaleLowerCase()
+                        ) {
+                            // accept the filter if someone types the identical area, then clicks away (or press right arrow)
+                            setSelectedArea(selected.area);
+                            props.onChange({ area: selected.area });
                         }
-                        updateFocus();
+                        recomputeFocus();
                     }}
                 />
                 <span className={Css.mirror}>{text}</span>
