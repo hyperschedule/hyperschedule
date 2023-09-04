@@ -1,5 +1,5 @@
 import * as Zustand from "zustand";
-import * as Search from "@lib/search";
+import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
@@ -80,7 +80,7 @@ const useStore = Zustand.create<Store>()((set, get) => ({
     setSearchText: (searchText) =>
         set({ searchText, expandKey: null, expandHeight: 0 }),
 
-    searchFilters: Search.exampleFilters,
+    searchFilters: [],
     setSearchFilters: (searchFilters) => set({ searchFilters }),
     setSearchFilter(index, filter) {
         const newFilters = get().searchFilters.slice();

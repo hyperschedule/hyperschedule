@@ -6,12 +6,13 @@ import React from "react";
 import { useMeasure } from "@react-hookz/web";
 import * as Feather from "react-feather";
 
-type FilterBubbleCommonProps<Data> = {
-    onChange: (data: Data) => void;
-    onKeyDown: (ev: React.KeyboardEvent<HTMLInputElement>) => void;
-};
+import { useCourseAreaDescription } from "@hooks/api/course";
 
-type FilterBubbleComponentProps<Data> = Data & FilterBubbleCommonProps<Data>;
+type FilterBubbleComponentProps<Data> = {
+    onChange: (data: Data | null) => void;
+    onKeyDown: (ev: React.KeyboardEvent<HTMLInputElement>) => void;
+    focusNext: () => void;
+};
 type FilterBubbleComponent<K extends Search.FilterKey> = React.FC<
     FilterBubbleComponentProps<Search.FilterData[K]>
 >;
@@ -26,7 +27,118 @@ const FilterBubbleInput: {
     [Search.FilterKey.Title]: FilterBubbleTextInput,
     [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
     [Search.FilterKey.MeetingTime]: FilterBubbleInputUnimplemented,
-    [Search.FilterKey.CourseArea]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.CourseArea](props) {
+        const result = useCourseAreaDescription();
+        const descriptions = result.data ?? new Map<string, never>();
+
+        const [selectedArea, setSelectedArea] = React.useState<string | null>(
+            null,
+        );
+        const [text, setText] = React.useState("");
+
+        const inputRef = React.useRef<HTMLInputElement>(null);
+        const [focus, setFocus] = React.useState(false);
+
+        const [selectIndex, setSelectIndex] = React.useState(0);
+
+        const updateFocus = () =>
+            setFocus(document.activeElement === inputRef.current);
+
+        React.useEffect(updateFocus, [document.activeElement, inputRef]);
+
+        const matchedAreaDescriptions = React.useMemo(() => {
+            const matched: { area: string; description: string }[] = [];
+            const tokens = text.toLocaleLowerCase().split(/\s+/);
+
+            for (const [area, description] of descriptions.entries()) {
+                if (
+                    !tokens.every((token) =>
+                        description.toLocaleLowerCase().includes(token),
+                    )
+                )
+                    continue;
+                matched.push({ area, description });
+            }
+
+            // fun fact: levenshtein edit distance is equivalent to length
+            // (in the case that we are filtering candidates by substring include)
+            return matched.sort(
+                (a, b) => a.description.length - b.description.length,
+            );
+        }, [descriptions, text]);
+
+        const selectedDescription = selectedArea
+            ? descriptions.get(selectedArea)
+            : undefined;
+
+        return (
+            <div
+                className={Css.courseArea}
+                data-focus={focus || undefined}
+                data-selected={selectedArea}
+            >
+                <input
+                    ref={inputRef}
+                    size={8}
+                    value={focus ? text : selectedDescription ?? text}
+                    onChange={(ev) => {
+                        setText(ev.target.value);
+                        setSelectIndex(0);
+                    }}
+                    className={Css.input}
+                    onKeyDown={(ev) => {
+                        switch (ev.code) {
+                            case "ArrowUp":
+                                setSelectIndex(Math.max(selectIndex - 1, 0));
+                                return;
+                            case "ArrowDown":
+                                setSelectIndex(
+                                    Math.min(
+                                        selectIndex + 1,
+                                        matchedAreaDescriptions.length - 1,
+                                    ),
+                                );
+                                return;
+                            case "Enter":
+                                props.focusNext();
+                        }
+
+                        props.onKeyDown(ev);
+                    }}
+                    onFocus={updateFocus}
+                    onBlur={() => {
+                        const entry = matchedAreaDescriptions[selectIndex];
+                        if (!entry) {
+                            setSelectedArea(null);
+                            props.onChange(null);
+                        } else {
+                            setText(entry.description);
+                            setSelectedArea(entry.area);
+                            props.onChange({ area: entry.area });
+                        }
+                        updateFocus();
+                    }}
+                />
+                <div className={Css.dropdown}>
+                    {matchedAreaDescriptions.map(
+                        ({ area, description }, index) => {
+                            return (
+                                <div
+                                    key={area}
+                                    className={Css.item}
+                                    data-highlight={
+                                        index === selectIndex || undefined
+                                    }
+                                >
+                                    {description}
+                                </div>
+                            );
+                        },
+                    )}
+                </div>
+            </div>
+        );
+    },
     [Search.FilterKey.Campus]: FilterBubbleInputUnimplemented,
 };
 
@@ -52,7 +164,7 @@ export default function FilterBubble(props: {
             <span className={Css.filterKey}>{props.filter.key}</span>
             <span className={Css.filterData}>
                 <InputComponent
-                    {...props.filter.data}
+                    focusNext={() => props.focusOnFilter(props.index + 1, 0)}
                     onChange={(data) => {
                         setSearchFilter(props.index, {
                             key: props.filter.key,
@@ -102,26 +214,21 @@ function FilterBubbleTextInput(
         text: string;
     }>,
 ) {
-    const [measurements, measurementsRef] = useMeasure<HTMLSpanElement>();
-
+    const [text, setText] = React.useState("");
     return (
-        <>
+        <div className={Css.sizer}>
             <input
                 type="text"
-                value={props.text}
-                style={{
-                    maxWidth: `calc(${measurements?.width ?? 0}px + 1em)`,
+                size={1}
+                className={Css.input}
+                value={text}
+                onChange={(ev) => {
+                    setText(ev.target.value);
+                    props.onChange({ text: ev.target.value });
                 }}
-                onChange={(ev) => props.onChange({ text: ev.target.value })}
                 onKeyDown={props.onKeyDown}
-            ></input>
-            {
-                // we have to do a hidden measurement element because this is not monospace font,
-                // and strings such as "iiiii" and "mmmmm" have drastically different width
-                <span ref={measurementsRef} className={Css.measure}>
-                    {props.text}
-                </span>
-            }
-        </>
+            />
+            <span className={Css.mirror}>{text}</span>
+        </div>
     );
 }

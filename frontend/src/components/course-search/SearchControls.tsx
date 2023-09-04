@@ -10,7 +10,7 @@ import { useState, useRef } from "react";
 
 import Dropdown from "@components/common/Dropdown";
 import FilterBubble from "./FilterBubble";
-import type * as Search from "@lib/search";
+import * as Search from "@lib/search";
 
 export default function SearchControls() {
     const searchFilters = useStore((store) => store.searchFilters);
@@ -86,17 +86,18 @@ export default function SearchControls() {
                                 el.selectionEnd - 1,
                             );
                             const match = stringBefore.match(
-                                /\b(dept|title|code|instr|desc)$/,
+                                Search.filterKeyRegexp,
                             );
                             if (match !== null) {
                                 const newSearch =
                                     stringBefore.slice(0, match.index) +
                                     el.value.slice(el.selectionEnd);
 
+                                const key = match[1]! as Search.FilterKey;
                                 addSearchFilter({
-                                    key: match[1]!,
-                                    data: { text: "" },
-                                } as Search.Filter);
+                                    key: key,
+                                    data: null,
+                                });
 
                                 setSearchState(newSearch);
                                 setSearchText(newSearch);
@@ -117,6 +118,7 @@ export default function SearchControls() {
                                 return;
                             }
                         }
+
                         setSearchState(el.value);
                         clearTimeout(timer);
                         setTimer(

@@ -57,3 +57,60 @@
         z-index: -100;
     }
 }
+
+.sizer {
+    display: grid;
+    grid-template-areas: "main";
+
+    & .input {
+        grid-area: main;
+        padding: 0;
+    }
+    & .mirror {
+        grid-area: main;
+        white-space: pre;
+        visibility: hidden;
+    }
+}
+
+.courseArea {
+    position: relative;
+
+    & .input {
+        color: red;
+    }
+
+    &[data-selected] .input,
+    & .input:focus {
+        color: inherit;
+    }
+
+    & .dropdown {
+        display: none;
+
+        position: absolute;
+        top: 100%;
+        z-index: 2;
+        background-color: var(--bg-1);
+
+        max-height: 12em;
+
+        overflow-y: scroll;
+
+        & .item {
+            padding: 0.25em 0.5em;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--bg-2);
+            }
+
+            &[data-highlight] {
+                background-color: var(--highlight);
+            }
+        }
+    }
+
+    &[data-focus] .dropdown {
+        display: block;
+    }
+}

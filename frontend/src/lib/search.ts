@@ -219,7 +219,7 @@ export function matchesText(
     return computeMatchScore(matches);
 }
 
-export const enum FilterKey {
+export enum FilterKey {
     Department = "dept",
     Title = "title",
     Campus = "campus",
@@ -230,6 +230,11 @@ export const enum FilterKey {
     CourseArea = "area",
     MeetingTime = "time",
 }
+
+export const filterKeyRegexp = RegExp(
+    `\\b(${Object.values(FilterKey).join("|")})$`,
+    "i",
+);
 
 export type FilterData = {
     [FilterKey.Department]: {
@@ -255,7 +260,7 @@ export type FilterData = {
         endTime: number;
     };
     [FilterKey.CourseArea]: {
-        area: string;
+        area: string | null;
     };
     [FilterKey.Campus]: {
         campus: APIv4.School;
@@ -265,7 +270,7 @@ export type FilterData = {
 export type Filter = {
     [K in FilterKey]: {
         key: K;
-        data: FilterData[K];
+        data: FilterData[K] | null;
     };
 }[FilterKey];
 
@@ -289,6 +294,7 @@ export function filterSection(
 ): boolean {
     // a section is a match iff all filters match
     for (const filter of filters) {
+        if (!filter.data) continue;
         switch (filter.key) {
             case FilterKey.Department:
                 if (
@@ -335,9 +341,10 @@ export function filterSection(
                 }
                 break;
             case FilterKey.Instructor:
+                const data = filter.data;
                 if (
                     !section.instructors.some((instr) =>
-                        instr.name.toLowerCase().includes(filter.data.text),
+                        instr.name.toLowerCase().includes(data.text),
                     )
                 )
                     return false;
@@ -359,4 +366,32 @@ export function filterSection(
         }
     }
     return true;
+}
+
+export function editDistance(
+    start: string,
+    end: string,
+    cost?: Partial<{ insert: number; delete: number; replace: number }>,
+): number {
+    const insertCost = cost?.insert ?? 1;
+    const deleteCost = cost?.delete ?? 1;
+    const replaceCost = cost?.replace ?? 1;
+
+    const table: number[] = [];
+    const index = (i: number, j: number) => i * (end.length + 1) + j;
+
+    for (let i = 0; i <= start.length; ++i) table[index(i, 0)] = i * deleteCost;
+    for (let j = 0; j <= end.length; ++j) table[index(0, j)] = j * insertCost;
+
+    for (let i = 1; i <= start.length; ++i)
+        for (let j = 1; j <= end.length; ++j) {
+            table[index(i, j)] = Math.min(
+                deleteCost + table[index(i - 1, j)]!,
+                replaceCost * +(start[i - 1]! !== end[j - 1]!) +
+                    table[index(i - 1, j - 1)]!,
+                insertCost + table[index(i, j - 1)]!,
+            );
+        }
+
+    return table[index(start.length, end.length)]!;
 }
