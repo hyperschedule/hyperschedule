@@ -101,10 +101,14 @@ async function createCalendar(
                 schedule.endTime,
             );
             const recurrenceRule = createRRule(section.endDate, schedule.days);
+            const title = section.course.title;
+            const description = section.course.description;
             events.push({
                 start,
                 end,
                 recurrenceRule,
+                title,
+                description,
             });
         }
     }
