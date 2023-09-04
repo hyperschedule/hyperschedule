@@ -92,14 +92,30 @@ async function createCalendar(
         if (!sectionIdSet.has(sectionIdString)) continue;
 
         for (const schedule of section.schedules) {
+            const startDate = new Date(
+                section.startDate.year,
+                section.startDate.month - 1, // Date month is 0-indexed
+                section.startDate.day,
+            );
+
+            let daysUntilFirstClass = Math.min(
+                ...schedule.days.map((wd) => {
+                    const n = (weekdayIndex(wd) - startDate.getDay()) % 7;
+                    return n >= 0 ? n : n + 7;
+                }),
+            );
+            startDate.setDate(startDate.getDate() + daysUntilFirstClass);
+            const startCourseDate = {
+                year: startDate.getFullYear(),
+                month: startDate.getMonth() + 1,
+                day: startDate.getDate(),
+            };
+
             const start = createDateTimeArray(
-                section.startDate,
+                startCourseDate,
                 schedule.startTime,
             );
-            const end = createDateTimeArray(
-                section.startDate,
-                schedule.endTime,
-            );
+            const end = createDateTimeArray(startCourseDate, schedule.endTime);
             const recurrenceRule = createRRule(section.endDate, schedule.days);
             const title = section.course.title;
             const description = section.course.description;
@@ -158,5 +174,25 @@ function weekdayToRRuleDay(day: APIv4.Weekday): string {
             return "SA";
         case WD.sunday:
             return "SU";
+    }
+}
+
+function weekdayIndex(day: APIv4.Weekday): number {
+    const WD = APIv4.Weekday;
+    switch (day) {
+        case WD.sunday:
+            return 0;
+        case WD.monday:
+            return 1;
+        case WD.tuesday:
+            return 2;
+        case WD.wednesday:
+            return 3;
+        case WD.thursday:
+            return 4;
+        case WD.friday:
+            return 5;
+        case WD.saturday:
+            return 6;
     }
 }
