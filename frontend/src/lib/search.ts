@@ -352,6 +352,8 @@ export function filterSection(
             case FilterKey.ScheduleDays:
                 break;
             case FilterKey.CourseArea:
+                if (!section.courseAreas.includes(filter.data.area!))
+                    return false;
                 break;
             case FilterKey.MeetingTime:
                 break;

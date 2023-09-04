@@ -70,6 +70,7 @@
         grid-area: main;
         white-space: pre;
         visibility: hidden;
+        padding-right: 0.5em;
     }
 }
 
@@ -78,6 +79,7 @@
 
     & .input {
         color: red;
+        min-width: 1em;
     }
 
     &[data-selected] .input,
@@ -93,9 +95,12 @@
         z-index: 2;
         background-color: var(--bg-1);
 
-        max-height: 12em;
-
+        max-height: min(36em, 80vh);
+        box-shadow: 1px 1px var(--shadow-color);
         overflow-y: scroll;
+
+        /*seems like portal truncates all course area descriptions to 24 characters*/
+        width: 24ch;
 
         & .item {
             padding: 0.25em 0.5em;
