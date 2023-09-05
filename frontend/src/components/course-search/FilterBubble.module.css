@@ -103,6 +103,7 @@
         width: 24ch;
 
         & .item {
+            cursor: pointer;
             padding: 0.25em 0.5em;
             position: relative;
             &:not(:last-child) {
@@ -110,7 +111,7 @@
             }
 
             &[data-highlight] {
-                background-color: var(--highlight);
+                background-color: var(--select);
             }
 
             & .campusIndicator {

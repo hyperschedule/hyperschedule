@@ -284,6 +284,22 @@ function CourseAreaBubble(
                             key={area}
                             className={Css.item}
                             data-highlight={index === selectIndex || undefined}
+                            onPointerEnter={
+                                // we don't need to use setActive because we don't need to scroll
+                                () => setSelectIndex(index)
+                            }
+                            onPointerDown={
+                                // prevent default so it doesn't trigger a blur
+                                // (otherwise this dropdown would be deleted before click
+                                // and you can never click on it
+                                (ev) => ev.preventDefault()
+                            }
+                            onClick={() => {
+                                setText(description);
+                                setSelectedArea(area);
+                                props.onChange({ area });
+                                props.focusNext();
+                            }}
                         >
                             {campus < 5 ? (
                                 <span
