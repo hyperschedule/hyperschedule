@@ -4,7 +4,7 @@ import Css from "./FilterBubble.module.css";
 import useStore from "@hooks/store";
 import React, { useState } from "react";
 import * as Feather from "react-feather";
-
+import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useCourseAreaDescription } from "@hooks/api/course";
 import classNames from "classnames";
 import { useActiveSectionsQuery } from "@hooks/section";
@@ -29,7 +29,7 @@ const FilterBubbleInput: {
     [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
     [Search.FilterKey.MeetingTime]: FilterBubbleInputUnimplemented,
     [Search.FilterKey.CourseArea]: CourseAreaBubble,
-    [Search.FilterKey.Campus]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.Campus]: CampusBubble,
 };
 
 export default function FilterBubble(props: {
@@ -341,6 +341,39 @@ function CourseAreaBubble(
                         <span>{description}</span>
                     </>
                 );
+            }}
+        />
+    );
+}
+
+function CampusBubble(
+    props: FilterBubbleComponentProps<{ campus: APIv4.School }>,
+) {
+    const activeSections = useActiveSectionsQuery().data;
+    const filteredSchoolCodes: APIv4.School[] = React.useMemo(() => {
+        if (activeSections === undefined) return [];
+        const campuses = new Set<APIv4.School>();
+        for (const s of activeSections) {
+            campuses.add(s.course.primaryAssociation);
+        }
+        return Array.from(campuses.values());
+    }, [activeSections]);
+
+    const schools = filteredSchoolCodes.map(APIv4.schoolCodeToName);
+
+    return (
+        <AutoComplete
+            onSelect={(index) => {
+                const campus = filteredSchoolCodes[index];
+                if (campus !== undefined) {
+                    props.onChange({ campus });
+                    props.focusNext();
+                }
+            }}
+            onKeyDown={props.onKeyDown}
+            choices={schools}
+            render={({ index }) => {
+                return <span>{schools[index]}</span>;
             }}
         />
     );

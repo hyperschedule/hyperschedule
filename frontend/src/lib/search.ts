@@ -305,6 +305,8 @@ export function filterSection(
                     return false;
                 break;
             case FilterKey.Campus:
+                if (section.course.primaryAssociation !== filter.data.campus)
+                    return false;
                 break;
             case FilterKey.Description:
                 if (
