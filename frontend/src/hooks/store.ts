@@ -45,6 +45,7 @@ export const enum PopupOption {
     Login = "login",
     SectionDetail = "SectionDetail",
     UserDetail = "UserDetail",
+    Filter = "Filter",
 }
 
 export type Popup =
@@ -57,6 +58,9 @@ export type Popup =
       }
     | {
           option: PopupOption.UserDetail;
+      }
+    | {
+          option: PopupOption.Filter;
       }
     | null;
 

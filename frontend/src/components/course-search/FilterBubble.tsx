@@ -32,6 +32,21 @@ const FilterBubbleInput: {
     [Search.FilterKey.Campus]: CampusBubble,
 };
 
+// non-interactive example bubble used in the filter popup
+export function ExampleFilterBubble(props: {
+    filterKey: string;
+    data: string;
+}) {
+    return (
+        <div className={Css.bubble}>
+            <span className={Css.filterKey}>{props.filterKey}</span>
+            <span className={Css.filterData}>
+                <span style={{ paddingRight: "1em" }}>{props.data}</span>
+            </span>
+        </div>
+    );
+}
+
 export default function FilterBubble(props: {
     filter: Search.Filter;
     index: number;
@@ -156,7 +171,7 @@ function AutoComplete(props: {
         // css nth-child is 1-indexed
         document
             .querySelector(`.${Css.autocompleteItem}:nth-child(${index + 1})`)!
-            .scrollIntoView(false);
+            .scrollIntoView({ block: "end", inline: "end" });
     }
 
     const filteredChoices = React.useMemo(() => {
