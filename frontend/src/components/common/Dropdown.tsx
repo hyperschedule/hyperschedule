@@ -1,5 +1,5 @@
 import Css from "./Dropdown.module.css";
-
+import * as Feather from "react-feather";
 export default function Dropdown(props: {
     choices: string[];
     selected: string;
@@ -7,16 +7,19 @@ export default function Dropdown(props: {
 }) {
     return (
         <div className={Css.dropdown}>
-            <select
-                value={props.selected}
-                onChange={(ev) => props.onSelect(ev.target.value)}
-            >
-                {props.choices.map((s) => (
-                    <option value={s} key={s}>
-                        {s}
-                    </option>
-                ))}
-            </select>
+            <div className={Css.select}>
+                <select
+                    value={props.selected}
+                    onChange={(ev) => props.onSelect(ev.target.value)}
+                >
+                    {props.choices.map((s) => (
+                        <option value={s} key={s}>
+                            {s}
+                        </option>
+                    ))}
+                </select>
+                <Feather.ChevronDown className={Css.downArrow} />
+            </div>
         </div>
     );
 }
