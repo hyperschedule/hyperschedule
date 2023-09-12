@@ -34,10 +34,7 @@ export default function Sidebar() {
             >
                 <div className={Css.top}>
                     <button onClick={() => setShow(false)}>
-                        <Feather.ChevronRight
-                            className={Css.icon}
-                            size="auto"
-                        />
+                        <Feather.ChevronRight className={Css.icon} />
                     </button>
                 </div>
                 {tab === MainTab.CourseSearch ? (

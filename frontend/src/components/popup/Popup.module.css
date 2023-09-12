@@ -28,7 +28,6 @@
         }
         @media (--viewport-large) {
             width: 60vw;
-            max-height: 60vh;
             min-height: 20vh;
         }
         background: var(--bg-0);

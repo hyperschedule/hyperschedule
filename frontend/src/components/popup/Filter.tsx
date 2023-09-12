@@ -63,17 +63,9 @@ export default function Filter() {
                 <span style={{ display: "inline-block", width: "fit-content" }}>
                     <ExampleFilterBubble filterKey="dept" data="CS" />
                 </span>{" "}
-                by typing{" "}
-                <span
-                    style={{
-                        color: "var(--fg-1)",
-                        backgroundColor: "var(--bg-1)",
-                    }}
-                >
-                    dept:
-                </span>{" "}
-                into the search box. All the examples here will match Mudd's CS5
-                in FA2023. All filters are case-insensitive.
+                by typing <mark>dept:</mark> into the search box. All the
+                examples here will match Mudd's CS5 in FA2023. All filters are
+                case-insensitive.
             </div>
 
             <table className={Css.filterTable}>
@@ -95,7 +87,6 @@ export default function Filter() {
                                 <td className={Css.nameColumn}>
                                     <Feather.PlusCircle
                                         className={Css.addIcon}
-                                        size=""
                                         onClick={() => {
                                             setPopup(null);
                                             addFilter({ key, data: null });

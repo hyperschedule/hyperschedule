@@ -156,13 +156,13 @@
     */
 
     & .expandOutline {
-        outline: 2px dashed var(--highlight);
+        border: 2px dashed var(--highlight);
         background-color: color-mix(
             in srgb,
             var(--highlight) 25%,
             var(--highlight-transparent)
         );
-        border-radius: 0.25rem;
+        border-radius: 0.25em;
         z-index: 2;
     }
 }

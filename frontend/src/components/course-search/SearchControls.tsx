@@ -158,7 +158,7 @@ export default function SearchControls() {
                 className={Css.filterButton}
                 onClick={() => setPopup({ option: PopupOption.Filter })}
             >
-                <Feather.Sliders size={16} />
+                <Feather.Filter size={16} />
                 Filters
             </button>
         </div>
