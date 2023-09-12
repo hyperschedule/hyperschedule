@@ -17,6 +17,10 @@
         background-color: transparent;
         color: var(--fg-0);
         transition: color var(--misc-transition-duration);
+
+        & option:disabled {
+            display: none;
+        }
     }
 
     & .select {

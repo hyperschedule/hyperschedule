@@ -3,21 +3,25 @@ import * as Feather from "react-feather";
 export default function Dropdown(props: {
     choices: string[];
     selected: string;
-    onSelect: (selected: string) => void;
+    onSelect: (selected: number) => void;
 }) {
     return (
         <div className={Css.dropdown}>
             <div className={Css.select}>
                 <select
                     value={props.selected}
-                    onChange={(ev) => props.onSelect(ev.target.value)}
+                    onChange={(ev) => props.onSelect(ev.target.selectedIndex)}
                 >
-                    {props.choices.map((s) => (
-                        <option value={s} key={s}>
+                    {props.choices.map((s, i) => (
+                        <option value={s} key={i}>
                             {s}
                         </option>
                     ))}
+                    <option value="" disabled>
+                        (nothing)
+                    </option>
                 </select>
+
                 <Feather.ChevronDown className={Css.downArrow} />
             </div>
         </div>
