@@ -4,6 +4,7 @@ export default function Dropdown(props: {
     choices: string[];
     selected: string;
     onSelect: (selected: number) => void;
+    emptyPlaceholder: string;
 }) {
     return (
         <div className={Css.dropdown}>
@@ -17,9 +18,13 @@ export default function Dropdown(props: {
                             {s}
                         </option>
                     ))}
-                    <option value="" disabled>
-                        (nothing)
-                    </option>
+                    {props.selected === "" ? (
+                        <option value="" disabled>
+                            ({props.emptyPlaceholder})
+                        </option>
+                    ) : (
+                        <></>
+                    )}
                 </select>
 
                 <Feather.ChevronDown className={Css.downArrow} />

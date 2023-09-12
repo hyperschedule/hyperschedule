@@ -2,6 +2,7 @@
     grid-area: dropdown;
 
     position: relative;
+    width: fit-content;
 
     & select {
         /* we need this for firefox and safari*/
@@ -20,6 +21,7 @@
 
         & option:disabled {
             display: none;
+            appearance: none;
         }
     }
 

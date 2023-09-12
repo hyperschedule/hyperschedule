@@ -51,6 +51,7 @@ export default function SearchControls() {
             <Dropdown
                 selected={APIv4.stringifyTermIdentifier(activeTerm)}
                 choices={allTerms.map(APIv4.stringifyTermIdentifier)}
+                emptyPlaceholder="no term selected"
                 onSelect={(index) => {
                     const term = allTerms[index]!;
                     void prefetchDataForTerm(term, queryClient);

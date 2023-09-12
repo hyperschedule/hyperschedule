@@ -60,6 +60,7 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
                 <Dropdown
                     choices={scheduleChoices}
                     selected={selectedSchedule}
+                    emptyPlaceholder="no schedule selected"
                     onSelect={(index) => {
                         activeScheduleMutation.mutate({
                             scheduleId: schedules[index]![0],
