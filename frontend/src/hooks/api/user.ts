@@ -44,9 +44,17 @@ export function useActiveScheduleMutation() {
     const user = useUser();
     const setActiveScheduleId = useStore((store) => store.setActiveScheduleId);
     const activeScheduleId = useStore((store) => store.activeScheduleId);
+
+    const setActiveTerm = useStore((store) => store.setActiveTerm);
     return useMutation({
         mutationFn: async (args: APIv4.SetActiveScheduleRequest) => {
             if (args.scheduleId === activeScheduleId) return;
+
+            // this really should never be null but just to be sure
+            const newActiveTerm =
+                user?.schedules[args.scheduleId]?.term ?? null;
+            if (newActiveTerm) setActiveTerm(newActiveTerm);
+            // we need to call setActiveTerm before calling setActiveScheduleId
             setActiveScheduleId(args.scheduleId);
             return updateActiveScheduleToApi(user, args);
         },

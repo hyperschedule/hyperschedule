@@ -44,6 +44,15 @@ function processDescription(description: string): JSX.Element {
     }
 }
 
+const campusCss = [
+    // this is ordered by the year the school is established
+    Css.pom,
+    Css.scr,
+    Css.cmc,
+    Css.hmc,
+    Css.ptz,
+];
+
 export default function CourseDescriptionBox(props: {
     section: APIv4.Section;
 }) {
@@ -91,27 +100,10 @@ export default function CourseDescriptionBox(props: {
                 <h3>Course Areas</h3>
                 <ul>
                     {props.section.courseAreas.map((code) => {
-                        const campus = code.charCodeAt(0) - 48; // 48 is the ascii code for '0'
-                        let cls: string = "";
-                        if (campus < 6) {
-                            switch (campus) {
-                                // this is ordered by the year the school is established
-                                case 1:
-                                    cls = Css.pom;
-                                    break;
-                                case 2:
-                                    cls = Css.scr;
-                                    break;
-                                case 3:
-                                    cls = Css.cmc;
-                                    break;
-                                case 4:
-                                    cls = Css.hmc;
-                                    break;
-                                case 5:
-                                    cls = Css.ptz;
-                            }
-                        }
+                        const campus = code.charCodeAt(0) - 48 - 1; // 48 is the ascii code for '0'
+                        let cls: string;
+                        if (campus < 5) cls = campusCss[campus]!;
+                        else cls = "";
 
                         return (
                             <li key={code} className={cls}>

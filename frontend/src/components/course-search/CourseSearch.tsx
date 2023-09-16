@@ -6,7 +6,7 @@ import { shallow } from "zustand/shallow";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { useSectionsQuery } from "@hooks/api/course";
+import { useCourseAreaDescription, useSectionsQuery } from "@hooks/api/course";
 import useStore from "@hooks/store";
 import * as Search from "@lib/search";
 
@@ -20,24 +20,25 @@ export default function CourseSearch() {
     const query = useSectionsQuery(activeTerm);
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
+    const areas = useCourseAreaDescription().data;
 
     const sectionsToShow = React.useMemo(() => {
         if (query.data === undefined) return undefined;
+        const filtered =
+            searchFilters.length === 0
+                ? query.data
+                : query.data.filter((s) =>
+                      Search.filterSection(s, searchFilters),
+                  );
+        if (searchText === "") return filtered;
+
         let res: [number, APIv4.Section][] = [];
-        let maxScore = 0;
-        for (const s of query.data.filter((s) =>
-            Search.filterSection(s, searchFilters),
-        )) {
-            const score = Search.matchesText(searchText, s);
+
+        for (const s of filtered) {
+            const score = Search.matchesText(searchText, s, areas);
             if (score !== null) {
                 res.push([score, s]);
-                if (score > maxScore) maxScore = score;
             }
-        }
-        if (maxScore >= Search.exactMatchThreshold) {
-            // if an exact match is found, only display other exact matches of the same priority
-            const displayThreshold = 1 << Math.floor(Math.log2(maxScore));
-            res = res.filter((r) => r[0] >= displayThreshold);
         }
         const sorted = res.sort((a, b) => b[0] - a[0]);
         return sorted.map((a) => a[1]);

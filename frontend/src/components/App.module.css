@@ -47,6 +47,7 @@
         --fg-2: hsl(40, 10%, 45%);
 
         --highlight: #f80;
+        --select: hsl(80, 60%, 60%);
         --highlight-transparent: #f800;
 
         --shadow: #4b4b48;
@@ -64,9 +65,11 @@
 
         --fg-0: hsl(40, 25%, 90%);
         --fg-1: hsl(40, 25%, 80%);
+        --fg-2: hsl(40, 25%, 70%);
 
         --highlight: #f80;
         --highlight-transparent: #f800;
+        --select: hsl(80, 40%, 30%);
 
         --shadow: #6d6c6b;
 

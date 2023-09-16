@@ -1,16 +1,48 @@
 & .dropdown {
     grid-area: dropdown;
 
+    position: relative;
+    width: fit-content;
+
     & select {
+        /* we need this for firefox and safari*/
+        appearance: none;
+        outline: none;
+        display: inline-block;
+        border: none;
+        user-select: none;
+        font-size: 1em;
+        padding-right: 1.5em;
+        padding-left: 0.5em;
+        height: 100%;
+        background-color: transparent;
+        color: var(--fg-0);
+        transition: color var(--misc-transition-duration);
+
+        & option:disabled {
+            display: none;
+            appearance: none;
+        }
+    }
+
+    & .select {
         transition: color var(--misc-transition-duration),
             background-color var(--misc-transition-duration),
             border var(--misc-transition-duration);
-        display: block;
+        display: flex;
+        align-items: center;
         height: 100%;
-        outline: none;
         background-color: var(--bg-0);
         color: var(--fg-0);
         border: 1px solid var(--bg-1);
         border-radius: 0.25em;
+
+        & .downArrow {
+            width: 1em;
+            height: 1em;
+            position: absolute;
+            right: 0;
+            pointer-events: none;
+        }
     }
 }

@@ -2,7 +2,8 @@ import useStore, { PopupOption } from "@hooks/store";
 import Css from "./Popup.module.css";
 import * as Feather from "react-feather";
 import Login from "./Login";
-import SectionDetails from "@components/popup/SectionDetails";
+import SectionDetails from "./SectionDetails";
+import Filter from "./Filter";
 
 function PopupBox(props: { children: JSX.Element }): JSX.Element {
     const setPopup = useStore((store) => store.setPopup);
@@ -38,6 +39,12 @@ export default function Popup() {
             return (
                 <PopupBox>
                     <SectionDetails section={popup.section} />
+                </PopupBox>
+            );
+        case PopupOption.Filter:
+            return (
+                <PopupBox>
+                    <Filter />
                 </PopupBox>
             );
         default:

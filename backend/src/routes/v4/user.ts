@@ -67,7 +67,7 @@ userApp
 
         return response
             .cookie("token", cookie, {
-                secure: true,
+                httpOnly: true,
                 sameSite: "strict",
                 expires,
             })

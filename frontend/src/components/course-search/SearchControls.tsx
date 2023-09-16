@@ -1,16 +1,16 @@
 import Css from "./SearchControls.module.css";
 import * as Feather from "react-feather";
 
-import useStore from "@hooks/store";
+import useStore, { PopupOption } from "@hooks/store";
 import { useAllTerms } from "@hooks/term";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { useQueryClient } from "@tanstack/react-query";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 
 import Dropdown from "@components/common/Dropdown";
 import FilterBubble from "./FilterBubble";
-import type * as Search from "@lib/search";
+import * as Search from "@lib/search";
 
 export default function SearchControls() {
     const searchFilters = useStore((store) => store.searchFilters);
@@ -18,6 +18,7 @@ export default function SearchControls() {
     const setSearchText = useStore((store) => store.setSearchText);
     const activeTerm = useStore((store) => store.activeTerm);
     const setActiveTerm = useStore((store) => store.setActiveTerm);
+    const setPopup = useStore((store) => store.setPopup);
 
     const allTerms = useAllTerms();
     const queryClient = useQueryClient();
@@ -50,8 +51,9 @@ export default function SearchControls() {
             <Dropdown
                 selected={APIv4.stringifyTermIdentifier(activeTerm)}
                 choices={allTerms.map(APIv4.stringifyTermIdentifier)}
-                onSelect={(s) => {
-                    const term = APIv4.parseTermIdentifier(s);
+                emptyPlaceholder="no term selected"
+                onSelect={(index) => {
+                    const term = allTerms[index]!;
                     void prefetchDataForTerm(term, queryClient);
                     setActiveTerm(term);
                 }}
@@ -85,17 +87,19 @@ export default function SearchControls() {
                                 0,
                                 el.selectionEnd - 1,
                             );
-                            const match =
-                                stringBefore.match(/\b(dept|title|code)$/);
+                            const match = stringBefore.match(
+                                Search.filterKeyRegexp,
+                            );
                             if (match !== null) {
                                 const newSearch =
                                     stringBefore.slice(0, match.index) +
                                     el.value.slice(el.selectionEnd);
 
+                                const key = match[1]! as Search.FilterKey;
                                 addSearchFilter({
-                                    key: match[1]!,
-                                    data: { text: "" },
-                                } as Search.Filter);
+                                    key: key,
+                                    data: null,
+                                });
 
                                 setSearchState(newSearch);
                                 setSearchText(newSearch);
@@ -116,6 +120,7 @@ export default function SearchControls() {
                                 return;
                             }
                         }
+
                         setSearchState(el.value);
                         clearTimeout(timer);
                         setTimer(
@@ -150,8 +155,11 @@ export default function SearchControls() {
                     }
                 />
             </div>
-            <button className={Css.filterButton}>
-                <Feather.Sliders size={16} />
+            <button
+                className={Css.filterButton}
+                onClick={() => setPopup({ option: PopupOption.Filter })}
+            >
+                <Feather.Filter size={16} />
                 Filters
             </button>
         </div>

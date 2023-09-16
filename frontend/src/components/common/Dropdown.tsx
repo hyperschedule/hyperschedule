@@ -1,22 +1,34 @@
 import Css from "./Dropdown.module.css";
-
+import * as Feather from "react-feather";
 export default function Dropdown(props: {
     choices: string[];
     selected: string;
-    onSelect: (selected: string) => void;
+    onSelect: (selected: number) => void;
+    emptyPlaceholder: string;
 }) {
     return (
         <div className={Css.dropdown}>
-            <select
-                value={props.selected}
-                onChange={(ev) => props.onSelect(ev.target.value)}
-            >
-                {props.choices.map((s) => (
-                    <option value={s} key={s}>
-                        {s}
-                    </option>
-                ))}
-            </select>
+            <div className={Css.select}>
+                <select
+                    value={props.selected}
+                    onChange={(ev) => props.onSelect(ev.target.selectedIndex)}
+                >
+                    {props.choices.map((s, i) => (
+                        <option value={s} key={i}>
+                            {s}
+                        </option>
+                    ))}
+                    {props.selected === "" ? (
+                        <option value="" disabled>
+                            ({props.emptyPlaceholder})
+                        </option>
+                    ) : (
+                        <></>
+                    )}
+                </select>
+
+                <Feather.ChevronDown className={Css.downArrow} />
+            </div>
         </div>
     );
 }
