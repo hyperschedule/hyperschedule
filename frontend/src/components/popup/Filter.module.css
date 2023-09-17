@@ -41,13 +41,13 @@
         }
     }
 
-    .name {
+    & .name {
         text-align: center;
         display: inline-block;
         width: 100%;
     }
 
-    .nameColumn {
+    & .nameColumn {
         padding-left: 1em;
     }
 }

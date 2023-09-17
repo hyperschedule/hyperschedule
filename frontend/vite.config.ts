@@ -14,6 +14,27 @@ if (process.env.NODE_ENV === "production") {
     };
 }
 
+const allocatedCssNumbers = new Map<string, number>();
+let cssClassCounter = 0;
+
+// generate a css class name. this function needs to be deterministic (hence the map)
+function generateCssClassName(classname: string, filename: string) {
+    // if we somehow managed have more than 2^32 css classes there are way more serious problems
+
+    const indexString = filename + "__" + classname;
+    let n: number | undefined = allocatedCssNumbers.get(indexString);
+    if (n === undefined) {
+        n = cssClassCounter++;
+        allocatedCssNumbers.set(indexString, n);
+    }
+
+    const arr = new Uint32Array(1);
+    arr[0] = n;
+    const s = Buffer.from(arr).toString("base64url");
+    if (s.match(/^\d/)) return "_" + s;
+    return s;
+}
+
 export default defineConfig({
     root: "src",
     envDir: __dirname,
@@ -28,13 +49,25 @@ export default defineConfig({
             ...useSyncExternalStoreFix,
         },
     },
-    css: {},
+    css: {
+        modules: {
+            generateScopedName:
+                process.env.NODE_ENV !== "production"
+                    ? "[local]__[path][name]"
+                    : generateCssClassName,
+        },
+    },
     ssr: { external: ["@babel/runtime"] },
     build: {
         emptyOutDir: true,
         rollupOptions: {
             input: {
                 app: "src/index.html",
+                sw: "src/service-worker/sw.ts",
+            },
+            output: {
+                entryFileNames: "[name].js",
+                assetFileNames: "[name].[ext]",
             },
         },
         outDir: path.resolve(__dirname, "dist"),

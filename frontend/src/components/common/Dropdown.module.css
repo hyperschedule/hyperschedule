@@ -1,4 +1,4 @@
-& .dropdown {
+.dropdown {
     grid-area: dropdown;
 
     position: relative;
