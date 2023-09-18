@@ -23,7 +23,6 @@ export default function MiniMap() {
     const { bounds, cards, expandCards, startHour, endHour } =
         useActiveScheduleResolved();
 
-    const setExpandKey = useStore((store) => store.setExpandKey);
     const clearExpand = useStore((store) => store.clearExpand);
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);

@@ -4,7 +4,6 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useActiveScheduleResolved } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
-import { Fragment } from "react";
 
 import { sectionColorStyle } from "@lib/color";
 
@@ -29,12 +28,10 @@ import { PopupOption } from "@lib/popup";
 import { scheduleContainerId } from "@lib/constants";
 
 export default function Schedule(props: ScheduleRenderingOptions) {
-    const { sections, cards, bounds, startHour, endHour, unconflicting } =
+    const { cards, startHour, endHour, unconflicting } =
         useActiveScheduleResolved();
-    const sectionsLookup = useActiveSectionsLookup();
 
     const weekend = hasWeekend(cards);
-
     const byDay = groupCardsByDay(cards);
 
     return (
@@ -60,7 +57,7 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                 >
                     <GridBackgroundColumns />
                     <GridBackgroundRows />
-                    {Object.entries(byDay).flatMap(([day, cards]) => {
+                    {Object.entries(byDay).flatMap(([, cards]) => {
                         const groups = mergeCards(cards);
 
                         //const order = stackCards(cards);

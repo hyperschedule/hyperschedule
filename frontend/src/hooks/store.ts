@@ -2,7 +2,7 @@ import * as Zustand from "zustand";
 import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
-import type { Popup, PopupOption } from "@lib/popup";
+import type { Popup } from "@lib/popup";
 
 type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
     [K in keyof Shape as `set${Capitalize<string & K>}`]: (

@@ -6,7 +6,6 @@ import { loadAllForTerm } from "../hmc-api/fetcher/fetch";
 import { linkCourseData } from "../hmc-api/data-linker";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import type { HmcApiFiles } from "../hmc-api/fetcher/types";
 
 const logger = createLogger("db.init");
 
@@ -25,7 +24,7 @@ for (let year = 2011; year <= CURRENT_TERM.year; year++) {
                 const data = linkCourseData(files, term);
                 return updateSections(data, term);
             })
-            .catch((e) =>
+            .catch(() =>
                 logger.info(
                     "Cannot load data files for %s",
                     APIv4.stringifyTermIdentifier(term),

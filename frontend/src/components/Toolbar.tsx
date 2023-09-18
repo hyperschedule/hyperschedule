@@ -6,11 +6,9 @@ import {
 import useStore from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import classNames from "classnames";
 import Css from "./Toolbar.module.css";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import Dropdown from "@components/common/Dropdown";
-import { useState } from "react";
 import * as Feather from "react-feather";
 
 export default function Toolbar() {

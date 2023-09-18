@@ -12,7 +12,7 @@ import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
 import { useScheduleSectionMutation, useUser } from "@hooks/api/user";
-import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
+import { useActiveScheduleLookup } from "@hooks/schedule";
 import useStore from "@hooks/store";
 import { sectionColorStyle } from "@lib/color";
 import { toast } from "react-toastify";

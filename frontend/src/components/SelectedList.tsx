@@ -24,13 +24,11 @@ import { toast } from "react-toastify";
 export default function SelectedList() {
     const activeSchedule = useActiveSchedule();
 
-    const sectionsLookup = useActiveSectionsLookup();
     const replaceSectionsMutation = useScheduleReplaceSectionsMutation();
 
     const activeScheduleId = useStore((store) => store.activeScheduleId);
 
     const [reorderMode, setReorderMode] = useState(false);
-    const [activeEntry, setActiveEntry] = useState<string | null>(null);
 
     const [sectionsOrder, setSectionsOrder] = useState<APIv4.UserSection[]>([]);
 
@@ -85,9 +83,6 @@ export default function SelectedList() {
                 <DndCore.DndContext
                     collisionDetection={DndCore.closestCenter}
                     sensors={sensors}
-                    onDragStart={(event) =>
-                        setActiveEntry(event.active.id as string)
-                    }
                     onDragEnd={(event) => {
                         if (!event.over || event.active.id === event.over.id)
                             return;
