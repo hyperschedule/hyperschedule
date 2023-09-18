@@ -24,14 +24,9 @@ export default function Root() {
 // https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-client-rendering-apis
 createRoot(document.getElementById("root")!).render(<Root />);
 
-let workerUrl: string;
-
-if (import.meta.env.DEV) workerUrl = "/sw.ts";
-else workerUrl = "/sw.js";
-
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-        .register(workerUrl, {
+        .register("/sw.js", {
             scope: "/",
         })
         .catch((err) => {

@@ -38,6 +38,7 @@ function generateCssClassName(classname: string, filename: string) {
 export default defineConfig({
     root: "src",
     envDir: __dirname,
+    publicDir: path.resolve(__dirname, "dist"),
     plugins: [react()],
     resolve: {
         extensions: [".ts", ".tsx"],
@@ -70,6 +71,7 @@ export default defineConfig({
                 assetFileNames: "[name].[ext]",
             },
         },
+        copyPublicDir: false,
         outDir: path.resolve(__dirname, "dist"),
         sourcemap: true,
     },

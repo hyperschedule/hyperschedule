@@ -10,6 +10,7 @@ import Css from "./Toolbar.module.css";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import Dropdown from "@components/common/Dropdown";
 import { useState } from "react";
+import * as Feather from "react-feather";
 
 export default function Toolbar() {
     const userQuery = useUserQuery();
@@ -27,6 +28,9 @@ export default function Toolbar() {
             ) : (
                 <></>
             )}
+            <button>Report issues</button>
+            <button>Export calendar</button>
+            <Feather.GitHub />
             {userQuery.data ? (
                 <ToolbarLoggedIn user={userQuery.data} />
             ) : (
@@ -56,7 +60,7 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
     return (
         <div>
             <div>logged in as {props.user.isGuest ? "guest" : "someone"}</div>
-            <div>
+            <div className={Css.rowWrapper}>
                 <Dropdown
                     choices={scheduleChoices}
                     selected={selectedSchedule}
@@ -67,6 +71,8 @@ function ToolbarLoggedIn(props: { user: APIv4.User }) {
                         });
                     }}
                 />
+                <Feather.Edit />
+                <Feather.User />
             </div>
         </div>
     );

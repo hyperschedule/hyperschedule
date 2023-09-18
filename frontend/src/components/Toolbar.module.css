@@ -4,4 +4,9 @@
     & .active {
         color: palevioletred;
     }
+
+    & .rowWrapper {
+        display: flex;
+        justify-content: space-between;
+    }
 }
