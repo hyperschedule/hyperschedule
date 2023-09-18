@@ -5,7 +5,8 @@ import {
     useScheduleSectionAttrsMutation,
     useScheduleSectionMutation,
 } from "@hooks/api/user";
-import useStore, { MainTab, PopupOption } from "@hooks/store";
+import useStore, { MainTab } from "@hooks/store";
+import { PopupOption } from "@lib/popup";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { sectionColorStyle } from "@lib/color";
 import { useState } from "react";

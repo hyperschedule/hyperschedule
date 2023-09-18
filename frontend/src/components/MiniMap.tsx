@@ -3,7 +3,8 @@ import Css from "./MiniMap.module.css";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useActiveScheduleResolved } from "@hooks/schedule";
-import useStore, { PopupOption } from "@hooks/store";
+import useStore from "@hooks/store";
+import { PopupOption } from "@lib/popup";
 
 import { sectionColorStyle } from "@lib/color";
 

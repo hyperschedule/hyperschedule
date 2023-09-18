@@ -24,10 +24,8 @@ import {
     hasWeekend,
     mergeCards,
 } from "@lib/schedule";
-import useStore, {
-    PopupOption,
-    type ScheduleRenderingOptions,
-} from "@hooks/store";
+import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
+import { PopupOption } from "@lib/popup";
 import { scheduleContainerId } from "@lib/constants";
 
 export default function Schedule(props: ScheduleRenderingOptions) {

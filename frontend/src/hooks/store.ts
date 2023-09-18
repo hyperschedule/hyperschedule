@@ -2,6 +2,7 @@ import * as Zustand from "zustand";
 import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
+import type { Popup, PopupOption } from "@lib/popup";
 
 type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
     [K in keyof Shape as `set${Capitalize<string & K>}`]: (
@@ -40,29 +41,6 @@ export const enum Theme {
     Dark = "dark",
     Light = "light",
 }
-
-export const enum PopupOption {
-    Login = "login",
-    SectionDetail = "SectionDetail",
-    UserDetail = "UserDetail",
-    Filter = "Filter",
-}
-
-export type Popup =
-    | {
-          option: PopupOption.Login;
-      }
-    | {
-          option: PopupOption.SectionDetail;
-          section: APIv4.SectionIdentifier;
-      }
-    | {
-          option: PopupOption.UserDetail;
-      }
-    | {
-          option: PopupOption.Filter;
-      }
-    | null;
 
 export interface ScheduleRenderingOptions {
     hideConflicting: boolean;

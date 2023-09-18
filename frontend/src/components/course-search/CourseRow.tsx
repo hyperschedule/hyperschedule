@@ -13,9 +13,10 @@ import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
 import { useScheduleSectionMutation, useUser } from "@hooks/api/user";
 import { useActiveSchedule, useActiveScheduleLookup } from "@hooks/schedule";
-import useStore, { PopupOption } from "@hooks/store";
+import useStore from "@hooks/store";
 import { sectionColorStyle } from "@lib/color";
 import { toast } from "react-toastify";
+import { PopupOption } from "@lib/popup";
 
 export default function CourseRow(props: {
     section: APIv4.Section;

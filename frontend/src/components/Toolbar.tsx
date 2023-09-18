@@ -3,7 +3,8 @@ import {
     useLegacyImport,
     useActiveScheduleMutation,
 } from "@hooks/api/user";
-import useStore, { PopupOption } from "@hooks/store";
+import useStore from "@hooks/store";
+import { PopupOption } from "@lib/popup";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import classNames from "classnames";
 import Css from "./Toolbar.module.css";

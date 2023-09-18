@@ -1,7 +1,8 @@
 import Css from "./SearchControls.module.css";
 import * as Feather from "react-feather";
 
-import useStore, { PopupOption } from "@hooks/store";
+import useStore from "@hooks/store";
+import { PopupOption } from "@lib/popup";
 import { useAllTerms } from "@hooks/term";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
