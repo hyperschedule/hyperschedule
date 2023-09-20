@@ -28,7 +28,10 @@ export default function CourseSearch() {
             searchFilters.length === 0
                 ? query.data
                 : query.data.filter((s) =>
-                      Search.filterSection(s, searchFilters),
+                      Search.filterSection(
+                          s,
+                          searchFilters.map((s) => s.filter),
+                      ),
                   );
         if (searchText === "") return filtered;
 

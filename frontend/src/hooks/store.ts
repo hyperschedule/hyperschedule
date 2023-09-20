@@ -10,10 +10,18 @@ type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
     ) => void;
 };
 
+// we need this so we can correctly render filters with immutable keys.
+// without this there are subtle bugs with filter deletions
+let filterKeyCount = 0;
+type StoreFilter = {
+    filter: Search.Filter;
+    key: number;
+};
+
 export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
-    searchFilters: Search.Filter[];
+    searchFilters: StoreFilter[];
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
     activeScheduleId: APIv4.ScheduleId | null;
@@ -66,12 +74,21 @@ const useStore = Zustand.create<Store>()((set, get) => ({
     setSearchFilters: (searchFilters) => set({ searchFilters }),
     setSearchFilter(index, filter) {
         const newFilters = get().searchFilters.slice();
-        newFilters[index] = filter;
+        const sf = newFilters[index];
+        if (sf === undefined) {
+            console.error(
+                "Nonexistent search index %d supplied to all filters %o",
+                index,
+                newFilters,
+            );
+            return;
+        }
+        sf.filter = filter;
         set({ searchFilters: newFilters });
     },
     addSearchFilter(filter) {
         const newFilters = get().searchFilters.slice();
-        newFilters.push(filter);
+        newFilters.push({ filter, key: filterKeyCount++ });
         set({ searchFilters: newFilters });
     },
     removeSearchFilter: (index) => {

@@ -63,8 +63,8 @@ export default function SearchControls() {
                 <div className={Css.filterGroup} ref={filterGroupRef}>
                     {searchFilters.map((filter, index) => (
                         <FilterBubble
-                            key={index}
-                            filter={filter}
+                            key={filter.key}
+                            filter={filter.filter}
                             index={index}
                             focusOnFilter={focusOnFilter}
                         />
