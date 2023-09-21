@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiUrl } from "@lib/config";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 export async function getAllTerms() {
-    const resp = await fetch(`${apiUrl}/v4/term/all`);
+    const resp = await fetch(`${__API_URL__}/v4/term/all`);
     return APIv4.TermIdentifier.array().parse(await resp.json());
 }
 

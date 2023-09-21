@@ -1,5 +1,4 @@
 import { useGuestLogin } from "@hooks/api/user";
-import { apiUrl } from "@lib/config";
 import useStore from "@hooks/store";
 
 export default function Login() {
@@ -11,7 +10,7 @@ export default function Login() {
     }
 
     function loginThroughCAS() {
-        window.location.href = `${apiUrl}/auth/saml`;
+        window.location.href = `${__API_URL__}/auth/saml`;
     }
 
     return (

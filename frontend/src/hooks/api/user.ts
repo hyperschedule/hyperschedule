@@ -1,14 +1,15 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiUrl } from "@lib/config";
 import { importFromLegacy } from "@lib/legacy-import";
 import { toast } from "react-toastify";
 import useStore from "../store";
 
 async function getUser(): Promise<APIv4.User | null> {
     // we let any error here throw so they can propagate to trigger re-fetches
-    const resp = await fetch(`${apiUrl}/v4/user`, { credentials: "include" });
+    const resp = await fetch(`${__API_URL__}/v4/user`, {
+        credentials: "include",
+    });
     if (!resp.ok) return null;
     return APIv4.User.parse(await resp.json());
 }
@@ -33,7 +34,7 @@ async function updateActiveScheduleToApi(
 ) {
     if (user === null) return;
 
-    return fetch(`${apiUrl}/v4/user/active-schedule`, {
+    return fetch(`${__API_URL__}/v4/user/active-schedule`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(request),
@@ -65,7 +66,7 @@ export function useGuestLogin() {
     const client = useQueryClient();
     return useMutation({
         mutationFn: async () => {
-            return fetch(`${apiUrl}/v4/user/new-guest`, {
+            return fetch(`${__API_URL__}/v4/user/new-guest`, {
                 method: "POST",
                 credentials: "include",
             });
@@ -88,7 +89,7 @@ export function useScheduleSectionMutation() {
             section: APIv4.SectionIdentifier;
             add: boolean;
         }) =>
-            fetch(`${apiUrl}/v4/user/section`, {
+            fetch(`${__API_URL__}/v4/user/section`, {
                 method: add ? "POST" : "DELETE",
                 credentials: "include",
                 body: JSON.stringify(args),
@@ -104,7 +105,7 @@ export function useScheduleSectionAttrsMutation() {
 
     return useMutation({
         mutationFn: (args: APIv4.SetSectionAttrRequest) =>
-            fetch(`${apiUrl}/v4/user/section`, {
+            fetch(`${__API_URL__}/v4/user/section`, {
                 method: "PATCH",
                 credentials: "include",
                 body: JSON.stringify(args),
@@ -120,7 +121,7 @@ export function useScheduleReplaceSectionsMutation() {
 
     return useMutation({
         mutationFn: (args: APIv4.ReplaceSectionsRequest) =>
-            fetch(`${apiUrl}/v4/user/replace-sections`, {
+            fetch(`${__API_URL__}/v4/user/replace-sections`, {
                 method: "POST",
                 credentials: "include",
                 body: JSON.stringify(args),

@@ -1,4 +1,3 @@
-import { apiUrl } from "@lib/config";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 // async functions? react? css? never heard of them. who needs those anyways ¯\_(ツ)_/¯
@@ -22,7 +21,7 @@ export function importFromLegacy(): Promise<APIv4.ImportV3Response> {
             window.removeEventListener("message", listener);
 
             if (payload.data.courses.length !== 0) {
-                fetch(`${apiUrl}/v4/user/import-v3-courses`, {
+                fetch(`${__API_URL__}/v4/user/import-v3-courses`, {
                     body: JSON.stringify(payload.data),
                     method: "POST",
                     credentials: "include",

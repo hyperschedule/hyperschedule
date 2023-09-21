@@ -1,5 +1,5 @@
 import * as path from "node:path";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 
 // fix the weird thing with use-sync-external-store, imported by both zustand and react-query
@@ -35,48 +35,54 @@ function generateCssClassName(classname: string, filename: string) {
     return s;
 }
 
-export default defineConfig({
-    root: "src",
-    envDir: __dirname,
-    publicDir: path.resolve(__dirname, "dist"),
-    plugins: [react()],
-    resolve: {
-        extensions: [".ts", ".tsx"],
-        alias: {
-            "@components": path.join(__dirname, "src/components"),
-            "@lib": path.join(__dirname, "src/lib"),
-            "@hooks": path.join(__dirname, "src/hooks"),
-            "@css": path.join(__dirname, "src/css"),
-            ...useSyncExternalStoreFix,
+export default defineConfig(({ command, mode }) => {
+    const env = loadEnv(mode, process.cwd(), "");
+    return {
+        root: "src",
+        envDir: __dirname,
+        publicDir: path.resolve(__dirname, "dist"),
+        plugins: [react()],
+        define: {
+            __API_URL__: JSON.stringify(env.HYPERSCHEDULE_API_URL),
         },
-    },
-    css: {
-        modules: {
-            generateScopedName:
-                process.env.NODE_ENV !== "production"
-                    ? "[local]__[path][name]"
-                    : generateCssClassName,
-        },
-    },
-    ssr: { external: ["@babel/runtime"] },
-    build: {
-        emptyOutDir: true,
-        rollupOptions: {
-            input: {
-                app: "src/index.html",
-                sw: "src/service-worker/sw.ts",
-            },
-            output: {
-                entryFileNames: "[name].js",
-                assetFileNames: "[name].[ext]",
+        resolve: {
+            extensions: [".ts", ".tsx"],
+            alias: {
+                "@components": path.join(__dirname, "src/components"),
+                "@lib": path.join(__dirname, "src/lib"),
+                "@hooks": path.join(__dirname, "src/hooks"),
+                "@css": path.join(__dirname, "src/css"),
+                ...useSyncExternalStoreFix,
             },
         },
-        copyPublicDir: false,
-        outDir: path.resolve(__dirname, "dist"),
-        sourcemap: true,
-    },
-    server: {
-        port: 5000,
-        host: true,
-    },
+        css: {
+            modules: {
+                generateScopedName:
+                    process.env.NODE_ENV !== "production"
+                        ? "[local]__[path][name]"
+                        : generateCssClassName,
+            },
+        },
+        ssr: { external: ["@babel/runtime"] },
+        build: {
+            emptyOutDir: true,
+            rollupOptions: {
+                input: {
+                    app: "src/index.html",
+                    sw: "src/service-worker/sw.ts",
+                },
+                output: {
+                    entryFileNames: "[name].js",
+                    assetFileNames: "[name].[ext]",
+                },
+            },
+            copyPublicDir: false,
+            outDir: path.resolve(__dirname, "dist"),
+            sourcemap: true,
+        },
+        server: {
+            port: 5000,
+            host: true,
+        },
+    };
 });

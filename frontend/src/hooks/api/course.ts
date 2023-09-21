@@ -1,6 +1,5 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { apiUrl } from "@lib/config";
 import { useQuery } from "@tanstack/react-query";
 
 import { useMemo } from "react";
@@ -8,7 +7,7 @@ import useStore from "@hooks/store";
 
 export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     const resp = await fetch(
-        `${apiUrl}/v4/sections/${APIv4.stringifyTermIdentifier(term)}`,
+        `${__API_URL__}/v4/sections/${APIv4.stringifyTermIdentifier(term)}`,
     );
     const sections = APIv4.Section.array().parse(await resp.json());
     // we want the areas for schools to appear last, which is sorted numerically
@@ -17,7 +16,7 @@ export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
 }
 
 export async function getCourseAreaDescription() {
-    const resp = await fetch(`${apiUrl}/v4/course-areas`);
+    const resp = await fetch(`${__API_URL__}/v4/course-areas`);
     return new Map<string, string>(
         (await resp.json()).map((a: { area: string; description: string }) => [
             a.area,
@@ -28,7 +27,9 @@ export async function getCourseAreaDescription() {
 
 export async function getOfferingHistory(term: APIv4.TermIdentifier) {
     const resp = await fetch(
-        `${apiUrl}/v4/offering-history/${APIv4.stringifyTermIdentifier(term)}`,
+        `${__API_URL__}/v4/offering-history/${APIv4.stringifyTermIdentifier(
+            term,
+        )}`,
     );
     return APIv4.OfferingHistory.array().parse(await resp.json());
 }
