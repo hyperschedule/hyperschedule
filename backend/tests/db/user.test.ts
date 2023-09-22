@@ -12,6 +12,8 @@ import {
     renameSchedule,
     setSectionAttrs,
     setActiveSchedule,
+    deleteGuestUser,
+    createOrGetUser,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -23,6 +25,22 @@ describe("db/models/user", () => {
         expect(
             (await collections.users.find({}).toArray()).length,
         ).toStrictEqual(1);
+    });
+
+    test("user deletion", async () => {
+        const uid = await createGuestUser();
+        await expect(getUser(uid)).resolves.toBeTruthy();
+        await deleteGuestUser(uid);
+        await expect(getUser(uid)).rejects.toBeTruthy();
+
+        // test that non-guest user cannot be deleted
+        const loggedInUid = await createOrGetUser(
+            "test@hmc.edu",
+            "Harvey Mudd",
+        );
+        await expect(getUser(loggedInUid)).resolves.toBeTruthy();
+        await expect(deleteGuestUser(loggedInUid)).rejects.toBeTruthy();
+        await expect(getUser(loggedInUid)).resolves.toBeTruthy();
     });
 
     test("add schedule to an user", async () => {

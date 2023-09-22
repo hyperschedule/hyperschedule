@@ -5,6 +5,7 @@ import {
     addSection,
     batchAddSectionsToNewSchedule,
     createGuestUser,
+    deleteGuestUser,
     deleteSchedule,
     deleteSection,
     getUser,
@@ -88,6 +89,15 @@ userApp.get("/", async function (request: Request, response: Response) {
         return response.status(401).cookie("token", "", { maxAge: 0 }).end();
     }
     return response.header("Content-Type", "application/json").send(user);
+});
+
+userApp.post("/logout", async function (request: Request, response: Response) {
+    if (request.userToken === null) return response.status(401).end();
+    let user = await getUser(request.userToken.uuid);
+    // start processing logout before we start deleting the user, if guest
+    response.status(204).cookie("token", "", { maxAge: 0 }).end();
+    if (user.isGuest) await deleteGuestUser(user._id);
+    return response;
 });
 
 userApp

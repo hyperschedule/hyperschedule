@@ -50,6 +50,16 @@ export async function createGuestUser(): Promise<APIv4.UserId> {
     return uid;
 }
 
+export async function deleteGuestUser(userId: APIv4.UserId) {
+    const result = await collections.users.deleteOne({
+        _id: userId,
+        isGuest: true,
+    });
+    if (result.deletedCount !== 1) {
+        throw Error("Guest user with specified ID not found");
+    }
+}
+
 export async function createOrGetUser(
     eppn: string,
     orgName: string,
