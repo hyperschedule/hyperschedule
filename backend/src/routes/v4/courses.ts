@@ -20,9 +20,11 @@ courseApp.get("/sections", async function (request, reply) {
 courseApp.get("/sections/:term", async (request, response) => {
     const parsed = APIv4.TermIdentifierString.safeParse(request.params.term);
     if (!parsed.success) return response.status(404).end();
-    const term = APIv4.parseTermIdentifier(parsed.data);
-    // TODO: use a better term comparison
-    if (APIv4.termIsBefore(term, CURRENT_TERM)) {
+    const requestedTerm = APIv4.parseTermIdentifier(parsed.data);
+    if (APIv4.termIsBefore(CURRENT_TERM, requestedTerm))
+        return response.status(404).end();
+
+    if (APIv4.termIsBefore(requestedTerm, CURRENT_TERM)) {
         response.header(
             "Cache-Control",
             `public,immutable,max-age=${7 * 24 * 3600}`,
@@ -33,7 +35,7 @@ courseApp.get("/sections/:term", async (request, response) => {
             "public,s-max-age=15,max-age=60,proxy-revalidate,stale-while-revalidate=30",
         );
     }
-    const sections = await getAllSections(term);
+    const sections = await getAllSections(requestedTerm);
 
     return response
         .header("Content-Type", "application/json")
