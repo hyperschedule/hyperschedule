@@ -26,6 +26,7 @@ import {
 import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import { scheduleContainerId } from "@lib/constants";
+import type { CSSProperties } from "react";
 
 export default function Schedule(props: ScheduleRenderingOptions) {
     const { cards, startHour, endHour, unconflicting } =
@@ -104,17 +105,32 @@ function TimeLabels() {
     );
 }
 
+const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+];
+
 function DayLabels() {
     return (
         <div className={Css.dayLabelViewport}>
             <div className={Css.labelGrid}>
-                <div>Sunday</div>
-                <div>Monday</div>
-                <div>Tuesday</div>
-                <div>Wednesday</div>
-                <div>Thursday</div>
-                <div>Friday</div>
-                <div>Saturday</div>
+                {weekdays.map((day) => (
+                    <div
+                        key={day}
+                        className={Css.dayLabel}
+                        style={
+                            {
+                                "--label": `"${day}"`,
+                                "--labelShort": `"${day.slice(0, 3)}"`,
+                            } as CSSProperties
+                        }
+                    />
+                ))}
             </div>
         </div>
     );

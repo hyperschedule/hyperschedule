@@ -1,5 +1,5 @@
 .container {
-    margin: 1rem;
+    margin: 1em 0.5em;
 
     display: grid;
     grid-template-areas: "blank days" "times main";
@@ -70,6 +70,15 @@
         background-color var(--theme-transition-duration);
 }
 
+.dayLabel {
+    &::after {
+        content: var(--labelShort);
+        @media (--viewport-medium) {
+            content: var(--label);
+        }
+    }
+}
+
 .dayLabelViewport .labelGrid,
 .grid {
     @nest .container.showSunday.showSaturday & {
@@ -115,7 +124,7 @@
 
     --translateY: calc(var(--start-hour) / 24 * -100%);
 
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, calc(100% / 7));
 
     & .rowLine {
         grid-column: 1 / -1;

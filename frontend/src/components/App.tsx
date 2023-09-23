@@ -62,15 +62,20 @@ export default function App() {
             <Toolbar />
             <div className={Css.main}>
                 <MainSelector />
-                {mainTab === MainTab.CourseSearch ? (
-                    <div className={classNames(Css.mainContent)}>
-                        <CourseSearch />
-                    </div>
-                ) : (
-                    <div className={classNames(Css.mainContent)}>
-                        <Schedule {...scheduleRenderingOptions} />
-                    </div>
-                )}
+                <div
+                    className={classNames(Css.mainContent, {
+                        [Css.hidden]: mainTab !== MainTab.CourseSearch,
+                    })}
+                >
+                    <CourseSearch />
+                </div>
+                <div
+                    className={classNames(Css.mainContent, {
+                        [Css.hidden]: mainTab !== MainTab.Schedule,
+                    })}
+                >
+                    <Schedule {...scheduleRenderingOptions} />
+                </div>
             </div>
             <Sidebar />
             <ThemeSlider />
