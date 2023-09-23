@@ -32,7 +32,7 @@
     "ts-node": "^10.9.1"
   },
   "peerDependencies": {
-    "typescript": "^4.7.4"
+    "typescript": "*"
   },
   "scripts": {
     "test": "jest --onlyChanged",
