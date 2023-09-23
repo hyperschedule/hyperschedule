@@ -153,7 +153,7 @@ export default function SearchControls() {
                     }}
                     placeholder={
                         searchFilters.length === 0
-                            ? "Search for course codes, titles, instructors, locations..."
+                            ? "Search for codes, areas, titles, instructors, locations..."
                             : ""
                     }
                 />

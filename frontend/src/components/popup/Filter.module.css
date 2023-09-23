@@ -1,3 +1,8 @@
+.tableWrapper {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
 .filterTable {
     margin: 2em auto;
     border-collapse: collapse;
@@ -49,5 +54,14 @@
 
     & .nameColumn {
         padding-left: 1em;
+    }
+
+    & .typeable {
+        width: 10ch;
+        text-align: center;
+        & code {
+            font-size: 1em;
+            font-family: var(--font-mono);
+        }
     }
 }
