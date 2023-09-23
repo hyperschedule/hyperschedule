@@ -50,7 +50,7 @@
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "typescript-plugin-css-modules": "^5.0.1",
-    "vite": "^4.0.3"
+    "vite": "^4.4.9"
   },
   "scripts": {
     "serve": "vite",
