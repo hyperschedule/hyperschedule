@@ -1,20 +1,23 @@
 .dropdown {
-    grid-area: dropdown;
-
     position: relative;
-    width: fit-content;
+    height: 100%;
 
     & select {
         /* we need this for firefox and safari*/
         appearance: none;
+        text-align: center;
         outline: none;
         display: inline-block;
         border: none;
         user-select: none;
+        /* apparently the default font size on some browser is like 0.7em or something*/
         font-size: 1em;
         padding-right: 1.5em;
         padding-left: 0.5em;
+
+        width: 100%;
         height: 100%;
+
         background-color: transparent;
         color: var(--fg-0);
         transition: color var(--misc-transition-duration);
@@ -26,7 +29,6 @@
     }
 
     & .select {
-        box-sizing: border-box;
         transition:
             color var(--misc-transition-duration),
             background-color var(--misc-transition-duration),

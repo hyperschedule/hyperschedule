@@ -9,13 +9,12 @@ import Schedule from "./schedule/Schedule";
 import MainSelector from "./MainSelector";
 import Toolbar from "./Toolbar";
 import Popup from "@components/popup/Popup";
-import { ToastContainer, Slide } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 
 import useStore, { MainTab } from "@hooks/store";
 import Sidebar from "./Sidebar";
 
 import "react-toastify/dist/ReactToastify.min.css";
-import { useEffect } from "react";
 import { useUserQuery } from "@hooks/api/user";
 
 export default function App() {
@@ -33,7 +32,7 @@ export default function App() {
     const activeScheduleId = useStore((store) => store.activeScheduleId);
     const setActiveScheduleId = useStore((store) => store.setActiveScheduleId);
     const activeTerm = useStore((store) => store.activeTerm);
-    useEffect(() => {
+    React.useEffect(() => {
         // we do this whole dance because we want to keep two different states: server-side activeScheduleId,
         // which is used to initialize the client-side activeScheduleId on page load, and the client-side activeScheduleId.
         // we want to save a server-state of activeScheduleId so the user can stay on the same schedule the next time they
@@ -63,20 +62,15 @@ export default function App() {
             <Toolbar />
             <div className={Css.main}>
                 <MainSelector />
-                <div
-                    className={classNames(Css.mainContent, {
-                        [Css.visible!]: mainTab === MainTab.CourseSearch,
-                    })}
-                >
-                    <CourseSearch />
-                </div>
-                <div
-                    className={classNames(Css.mainContent, {
-                        [Css.visible!]: mainTab === MainTab.Schedule,
-                    })}
-                >
-                    <Schedule {...scheduleRenderingOptions} />
-                </div>
+                {mainTab === MainTab.CourseSearch ? (
+                    <div className={classNames(Css.mainContent)}>
+                        <CourseSearch />
+                    </div>
+                ) : (
+                    <div className={classNames(Css.mainContent)}>
+                        <Schedule {...scheduleRenderingOptions} />
+                    </div>
+                )}
             </div>
             <Sidebar />
             <ThemeSlider />

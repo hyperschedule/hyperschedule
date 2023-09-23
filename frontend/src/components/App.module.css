@@ -5,7 +5,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    overflow: hidden;
+    /*
+    overflow here needs to be clip instead of hidden so the screen can't be scrolled left or right by keyboard
+    navigation on course filter
+    */
+    overflow: clip;
     background-color: var(--bg-0);
     color: var(--fg-0);
 
@@ -78,6 +82,10 @@
         --palette-orange: #da9a03;
         --palette-green: #58a803;
     }
+
+    & div {
+        box-sizing: border-box;
+    }
 }
 
 .main {
@@ -87,15 +95,11 @@
     grid-template-rows: auto 1fr;
 
     min-height: 0;
+    max-width: 100vw;
 }
 
 .mainContent {
     grid-area: content;
-    visibility: hidden;
     min-height: 0;
     display: grid;
-
-    &.visible {
-        visibility: visible;
-    }
 }

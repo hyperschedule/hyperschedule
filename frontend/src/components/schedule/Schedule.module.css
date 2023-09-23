@@ -168,8 +168,6 @@
         visibility: hidden;
     }
 
-    box-sizing: border-box;
-
     &:hover {
         filter: drop-shadow(
             0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow)

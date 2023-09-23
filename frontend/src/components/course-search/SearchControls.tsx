@@ -49,16 +49,18 @@ export default function SearchControls() {
 
     return (
         <div className={Css.searchControls}>
-            <Dropdown
-                selected={APIv4.stringifyTermIdentifier(activeTerm)}
-                choices={allTerms.map(APIv4.stringifyTermIdentifier)}
-                emptyPlaceholder="no term selected"
-                onSelect={(index) => {
-                    const term = allTerms[index]!;
-                    void prefetchDataForTerm(term, queryClient);
-                    setActiveTerm(term);
-                }}
-            />
+            <div className={Css.termSelect}>
+                <Dropdown
+                    selected={APIv4.stringifyTermIdentifier(activeTerm)}
+                    choices={allTerms.map(APIv4.stringifyTermIdentifier)}
+                    emptyPlaceholder="no term selected"
+                    onSelect={(index) => {
+                        const term = allTerms[index]!;
+                        void prefetchDataForTerm(term, queryClient);
+                        setActiveTerm(term);
+                    }}
+                />
+            </div>
             <div className={Css.inputGroup}>
                 <div className={Css.filterGroup} ref={filterGroupRef}>
                     {searchFilters.map((filter, index) => (
@@ -151,7 +153,7 @@ export default function SearchControls() {
                     }}
                     placeholder={
                         searchFilters.length === 0
-                            ? "Search for courses..."
+                            ? "Search for course codes, titles, instructors, locations..."
                             : ""
                     }
                 />

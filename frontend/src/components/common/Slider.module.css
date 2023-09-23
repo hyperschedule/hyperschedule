@@ -4,7 +4,6 @@
     border: 1px solid gray;
     cursor: pointer;
     border-radius: 2em;
-    box-sizing: border-box;
 
     background-color: var(--color-right);
     transition: background-color var(--slider-transition-duration);

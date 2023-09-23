@@ -101,7 +101,6 @@
         & .slice {
             background-color: var(--section-color);
             border: 2px solid transparent;
-            box-sizing: border-box;
             cursor: pointer;
 
             @nest [data-theme="dark"] & {

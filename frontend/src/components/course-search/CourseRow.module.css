@@ -4,11 +4,6 @@
 }
 
 .box {
-    /* TODO: two-row display on small screens (will also have to re-fiddle with
-    measure logic). question: is it possible to media query on parent container
-    size, rather than screen size?
-    */
-
     border-radius: 0.125rem;
     border: 1px solid var(--section-color);
     transition: border-color var(--theme-transition-duration);
@@ -111,6 +106,7 @@
         margin-left: auto;
         font-weight: normal;
         font-size: calc(15em / 16);
+        justify-items: end;
 
         & .seats {
         }
