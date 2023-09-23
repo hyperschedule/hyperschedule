@@ -63,7 +63,8 @@
 
 .labelGrid,
 .grid {
-    transition: transform var(--misc-transition-duration),
+    transition:
+        transform var(--misc-transition-duration),
         width var(--misc-transition-duration),
         height var(--misc-transition-duration),
         background-color var(--theme-transition-duration);
@@ -100,7 +101,8 @@
     top: 0;
     left: 0;
 
-    transition: transform var(--misc-transition-duration),
+    transition:
+        transform var(--misc-transition-duration),
         width var(--misc-transition-duration),
         height var(--misc-transition-duration),
         background-color var(--theme-transition-duration);

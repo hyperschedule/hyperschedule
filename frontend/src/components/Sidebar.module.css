@@ -32,7 +32,8 @@
 }
 
 .sidebar {
-    transition: border-left-color var(--theme-transition-duration),
+    transition:
+        border-left-color var(--theme-transition-duration),
         transform var(--misc-transition-duration),
         box-shadow var(--misc-transition-duration);
 

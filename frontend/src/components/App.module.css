@@ -9,7 +9,8 @@
     background-color: var(--bg-0);
     color: var(--fg-0);
 
-    transition: background-color var(--theme-transition-duration),
+    transition:
+        background-color var(--theme-transition-duration),
         color var(--theme-transition-duration);
 
     display: grid;

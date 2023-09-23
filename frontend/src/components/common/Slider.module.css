@@ -16,7 +16,8 @@
     height: 1em;
 
     background: var(--color-left);
-    transition: background-color var(--slider-transition-duration),
+    transition:
+        background-color var(--slider-transition-duration),
         transform var(--slider-transition-duration);
     border-radius: 50%;
     line-height: 0;

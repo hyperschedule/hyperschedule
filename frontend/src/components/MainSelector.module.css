@@ -13,7 +13,8 @@
         position: absolute;
         width: 50%;
         height: 100%;
-        transition: transform 100ms,
+        transition:
+            transform 100ms,
             background-color var(--theme-transition-duration);
     }
 

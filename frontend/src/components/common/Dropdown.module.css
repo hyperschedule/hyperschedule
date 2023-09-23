@@ -27,7 +27,8 @@
 
     & .select {
         box-sizing: border-box;
-        transition: color var(--misc-transition-duration),
+        transition:
+            color var(--misc-transition-duration),
             background-color var(--misc-transition-duration),
             border var(--misc-transition-duration);
         display: flex;

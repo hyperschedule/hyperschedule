@@ -15,7 +15,8 @@
 
 .knob {
     background: var(--bg-0);
-    transition: background-color var(--theme-transition-duration),
+    transition:
+        background-color var(--theme-transition-duration),
         transform var(--theme-transition-duration);
     border-radius: 100%;
     line-height: 0;
