@@ -41,6 +41,11 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
         example: ["Dodds", "zach"],
         typeableExample: "instr:dodds",
     },
+    [Search.FilterKey.Location]: {
+        name: "Location",
+        example: ["McGregor", "greg"],
+        typeableExample: "loc:greg",
+    },
     [Search.FilterKey.CourseArea]: {
         name: "Course Area",
         example: ["HM Common Core", "PO Area 5 Requirement"],
@@ -55,6 +60,11 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
         name: "Time",
         example: [">10am", "<6:30pm", "8am-3:45pm", ">=17:05", "<=13"],
         typeableExample: "time:8am-5pm",
+    },
+    [Search.FilterKey.Credits]: {
+        name: "Credits",
+        example: [""],
+        typeableExample: "",
     },
 };
 

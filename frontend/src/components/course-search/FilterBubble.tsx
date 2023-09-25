@@ -26,8 +26,10 @@ const FilterBubbleInput: {
     [Search.FilterKey.Description]: FilterBubbleTextInput,
     [Search.FilterKey.CourseCode]: FilterBubbleTextInput,
     [Search.FilterKey.Title]: FilterBubbleTextInput,
+    [Search.FilterKey.Location]: FilterBubbleTextInput,
     [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
     [Search.FilterKey.MeetingTime]: TimeFilterBubble,
+    [Search.FilterKey.Credits]: FilterBubbleInputUnimplemented,
     [Search.FilterKey.CourseArea]: CourseAreaBubble,
     [Search.FilterKey.Campus]: CampusBubble,
 };

@@ -148,6 +148,8 @@ export enum FilterKey {
     ScheduleDays = "days",
     CourseArea = "area",
     MeetingTime = "time",
+    Location = "loc",
+    Credits = "cred",
 }
 
 export const filterKeyRegexp = RegExp(
@@ -167,6 +169,10 @@ export type CampusFilter = {
 export type CourseAreaFilter = {
     area: string;
 };
+export type CreditFilter = {
+    min: number | null;
+    max: number | null;
+};
 
 export type FilterData = {
     [FilterKey.Department]: TextFilter;
@@ -174,10 +180,12 @@ export type FilterData = {
     [FilterKey.Description]: TextFilter;
     [FilterKey.CourseCode]: TextFilter;
     [FilterKey.Title]: TextFilter;
+    [FilterKey.Location]: TextFilter;
     [FilterKey.ScheduleDays]: DaysFilter;
     [FilterKey.MeetingTime]: TimeFilter;
     [FilterKey.CourseArea]: CourseAreaFilter;
     [FilterKey.Campus]: CampusFilter;
+    [FilterKey.Credits]: CreditFilter;
 };
 
 export type Filter = {
@@ -242,10 +250,10 @@ export function filterSection(
                 }
                 break;
             case FilterKey.Instructor:
-                const data = filter.data;
+                const instrQuery = filter.data.text.toLocaleLowerCase();
                 if (
                     !section.instructors.some((instr) =>
-                        instr.name.toLowerCase().includes(data.text),
+                        instr.name.toLowerCase().includes(instrQuery),
                     )
                 )
                     return false;
@@ -270,11 +278,28 @@ export function filterSection(
                         return false;
                 }
                 break;
+            case FilterKey.Credits:
+                if (filter.data.min && section.credits < filter.data.min)
+                    return false;
+                if (filter.data.max && section.credits > filter.data.max)
+                    return false;
+                break;
             case FilterKey.Title:
                 if (
                     !section.course.title
                         .toLocaleLowerCase()
                         .includes(filter.data.text.toLocaleLowerCase())
+                )
+                    return false;
+                break;
+            case FilterKey.Location:
+                const locQuery = filter.data.text.toLocaleLowerCase();
+                if (
+                    !section.schedules
+                        .flatMap((s) => s.locations)
+                        .some((loc) =>
+                            loc.toLocaleLowerCase().includes(locQuery),
+                        )
                 )
                     return false;
                 break;
