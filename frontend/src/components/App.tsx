@@ -3,7 +3,6 @@ import Css from "./App.module.css";
 
 import classNames from "classnames";
 
-import ThemeSlider from "./ThemeSlider";
 import CourseSearch from "./course-search/CourseSearch";
 import Schedule from "./schedule/Schedule";
 import MainSelector from "./MainSelector";
@@ -78,7 +77,6 @@ export default function App() {
                 </div>
             </div>
             <Sidebar />
-            <ThemeSlider />
             <ToastContainer
                 position="top-center"
                 hideProgressBar

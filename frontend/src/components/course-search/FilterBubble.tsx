@@ -27,7 +27,7 @@ const FilterBubbleInput: {
     [Search.FilterKey.CourseCode]: FilterBubbleTextInput,
     [Search.FilterKey.Title]: FilterBubbleTextInput,
     [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
-    [Search.FilterKey.MeetingTime]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.MeetingTime]: TimeFilterBubble,
     [Search.FilterKey.CourseArea]: CourseAreaBubble,
     [Search.FilterKey.Campus]: CampusBubble,
 };
@@ -110,14 +110,122 @@ export default function FilterBubble(props: {
     );
 }
 
+const timeRegex =
+    /^(?<hour>\d{1,2})(?::(?<minute>[0-5][0-9]))?\s*(?<ampm>am|pm)?$/i;
+
+function parseTimeExp(value: string): number | null {
+    const match = value.match(timeRegex);
+    if (match === null) return null;
+    const groups = match.groups as {
+        hour: string;
+        minute?: string;
+        ampm?: string;
+    };
+
+    const hour = parseInt(groups.hour, 10);
+    const minute = parseInt(groups.minute ?? "0", 10);
+    const ampm = groups.ampm;
+
+    if (minute > 59) return null;
+    if (ampm !== undefined) {
+        switch (ampm.toLocaleLowerCase()) {
+            case "am":
+                if (hour > 12) return null;
+                return (hour % 12) * 3600 + minute * 60;
+            case "pm":
+                if (hour > 12) return null;
+                return ((hour % 12) + 12) * 3600 + minute * 60;
+        }
+    }
+    if (hour > 23) return null;
+    return hour * 3600 + minute * 60;
+}
+
+function TimeFilterBubble(
+    props: FilterBubbleComponentProps<Search.TimeFilter>,
+) {
+    const [text, setText] = React.useState("");
+    const [valid, setValid] = React.useState(false);
+    // we don't want to flag an error until at least one valid filter has been entered
+    const [completed, setCompleted] = React.useState(false);
+
+    return (
+        <div className={Css.sizer}>
+            <input
+                type="text"
+                size={1}
+                className={classNames(Css.input, {
+                    [Css.invalid]: completed && !valid,
+                })}
+                value={text}
+                onChange={(ev) => {
+                    setText(ev.target.value);
+                    if (ev.target.value === "") {
+                        props.onChange(null);
+                        return;
+                    }
+
+                    const exp = Search.parseRangeExp(
+                        ev.target.value,
+                        parseTimeExp,
+                    );
+                    if (exp !== null) {
+                        if (exp.type === "range") {
+                            if (exp.end >= exp.start) {
+                                props.onChange({
+                                    startTime: exp.start,
+                                    endTime: exp.end,
+                                });
+                                setValid(true);
+                                setCompleted(true);
+                                return;
+                            }
+                        } else {
+                            const filter: Search.TimeFilter = {
+                                startTime: null,
+                                endTime: null,
+                            };
+
+                            switch (exp.op) {
+                                case Search.CompOperator.GreaterThan:
+                                    filter.startTime = exp.value + 1;
+                                    break;
+                                case Search.CompOperator.LessThan:
+                                    filter.endTime = exp.value - 1;
+                                    break;
+                                case Search.CompOperator.AtLeast:
+                                    filter.startTime = exp.value;
+                                    break;
+                                case Search.CompOperator.AtMost:
+                                    filter.endTime = exp.value;
+                                    break;
+                                case Search.CompOperator.Equal:
+                                    filter.startTime = exp.value;
+                                    filter.endTime = exp.value;
+                                    break;
+                            }
+                            props.onChange(filter);
+                            setValid(true);
+                            setCompleted(true);
+                            return;
+                        }
+                    }
+                    setValid(false);
+                }}
+                onKeyDown={props.onKeyDown}
+                onBlur={() => setCompleted(true)}
+            />
+            <span className={Css.mirror}>{text}</span>
+        </div>
+    );
+}
+
 function FilterBubbleInputUnimplemented() {
     return <>?</>;
 }
 
 function FilterBubbleTextInput(
-    props: FilterBubbleComponentProps<{
-        text: string;
-    }>,
+    props: FilterBubbleComponentProps<Search.TextFilter>,
 ) {
     const [text, setText] = React.useState("");
     const [timer, setTimer] = useState<number | undefined>(undefined);
@@ -305,9 +413,7 @@ const campusCss = [
 ];
 
 function CourseAreaBubble(
-    props: FilterBubbleComponentProps<{
-        area: string;
-    }>,
+    props: FilterBubbleComponentProps<Search.CourseAreaFilter>,
 ) {
     const courseAreaDescription = useCourseAreaDescription();
     const activeSections = useActiveSectionsQuery().data;
@@ -361,9 +467,7 @@ function CourseAreaBubble(
     );
 }
 
-function CampusBubble(
-    props: FilterBubbleComponentProps<{ campus: APIv4.School }>,
-) {
+function CampusBubble(props: FilterBubbleComponentProps<Search.CampusFilter>) {
     const activeSections = useActiveSectionsQuery().data;
     const filteredSchoolCodes: APIv4.School[] = React.useMemo(() => {
         if (activeSections === undefined) return [];

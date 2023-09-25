@@ -53,8 +53,8 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
     },
     [Search.FilterKey.MeetingTime]: {
         name: "Time",
-        example: [""],
-        typeableExample: "",
+        example: [">10am", "<6:30pm", "8am-3:45pm", ">=17:05", "<=13"],
+        typeableExample: "time:8am-5pm",
     },
 };
 

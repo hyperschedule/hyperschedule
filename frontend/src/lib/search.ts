@@ -155,35 +155,29 @@ export const filterKeyRegexp = RegExp(
     "i",
 );
 
+export type TextFilter = { text: string };
+export type DaysFilter = { days: Set<APIv4.Weekday> };
+export type TimeFilter = {
+    startTime: number | null;
+    endTime: number | null;
+};
+export type CampusFilter = {
+    campus: APIv4.School;
+};
+export type CourseAreaFilter = {
+    area: string;
+};
+
 export type FilterData = {
-    [FilterKey.Department]: {
-        text: string;
-    };
-    [FilterKey.Instructor]: {
-        text: string;
-    };
-    [FilterKey.Description]: {
-        text: string;
-    };
-    [FilterKey.CourseCode]: {
-        text: string;
-    };
-    [FilterKey.Title]: {
-        text: string;
-    };
-    [FilterKey.ScheduleDays]: {
-        days: Set<APIv4.Weekday>;
-    };
-    [FilterKey.MeetingTime]: {
-        startTime: number;
-        endTime: number;
-    };
-    [FilterKey.CourseArea]: {
-        area: string | null;
-    };
-    [FilterKey.Campus]: {
-        campus: APIv4.School;
-    };
+    [FilterKey.Department]: TextFilter;
+    [FilterKey.Instructor]: TextFilter;
+    [FilterKey.Description]: TextFilter;
+    [FilterKey.CourseCode]: TextFilter;
+    [FilterKey.Title]: TextFilter;
+    [FilterKey.ScheduleDays]: DaysFilter;
+    [FilterKey.MeetingTime]: TimeFilter;
+    [FilterKey.CourseArea]: CourseAreaFilter;
+    [FilterKey.Campus]: CampusFilter;
 };
 
 export type Filter = {
@@ -192,20 +186,6 @@ export type Filter = {
         data: FilterData[K] | null;
     };
 }[FilterKey];
-
-export const exampleFilters: Filter[] = [
-    // {
-    //     key: FilterKey.CourseArea,
-    //     data: { area: "5WRT" },
-    // },
-    // {
-    //     key: FilterKey.MeetingTime,
-    //     data: { startTime: 0, endTime: 17 * 60 + 30 },
-    // },
-    { key: FilterKey.Title, data: { text: "" } },
-    { key: FilterKey.Description, data: { text: "" } },
-    { key: FilterKey.Department, data: { text: "" } },
-];
 
 export function filterSection(
     section: APIv4.Section,
@@ -277,6 +257,18 @@ export function filterSection(
                     return false;
                 break;
             case FilterKey.MeetingTime:
+                for (const schedule of section.schedules) {
+                    if (
+                        filter.data.startTime &&
+                        schedule.startTime < filter.data.startTime
+                    )
+                        return false;
+                    if (
+                        filter.data.endTime &&
+                        schedule.endTime > filter.data.endTime
+                    )
+                        return false;
+                }
                 break;
             case FilterKey.Title:
                 if (
@@ -289,6 +281,70 @@ export function filterSection(
         }
     }
     return true;
+}
+
+export const enum CompOperator {
+    GreaterThan = ">",
+    LessThan = "<",
+    AtLeast = ">=", // nobody wants to type GreaterThanOrEqualsTo
+    AtMost = "<=",
+    Equal = "=",
+}
+
+/**
+ * this is a mini-AST of range expression, which will be applied to time and credits.
+ * single type would be something like, >=3, <2:00pm and range would be 1-3, 2:00pm-5:00pm
+ */
+type RangeFilterExp<T> =
+    | {
+          type: "single";
+          op: CompOperator;
+          value: T;
+      }
+    | {
+          type: "range";
+          start: T;
+          end: T;
+      };
+
+// beware the <= and >= has to appear before > and < in this regex
+const compOpRegex = /^(<=|>=|>|<|=)(.*)$/;
+const rangeRegex = /^(.*)-(.*)$/;
+
+export function parseRangeExp<T>(
+    input: string,
+    parseExp: (value: string) => T | null,
+): RangeFilterExp<T> | null {
+    const compMatch = input.match(compOpRegex);
+    if (compMatch !== null) {
+        const op = compMatch[1] as CompOperator;
+        const value = parseExp(compMatch[2]!.trim());
+        if (value === null) return null;
+        return {
+            type: "single",
+            op,
+            value: value,
+        };
+    }
+
+    const rangeMatch = input.match(rangeRegex);
+    if (rangeMatch !== null) {
+        const left = rangeMatch[1]!.trim();
+        const right = rangeMatch[2]!.trim();
+
+        const start = parseExp(left);
+        if (start === null) return null;
+
+        const end = parseExp(right);
+        if (end === null) return null;
+
+        return {
+            type: "range",
+            start,
+            end,
+        };
+    }
+    return null;
 }
 
 export function editDistance(

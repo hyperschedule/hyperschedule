@@ -65,7 +65,13 @@
     & .input {
         grid-area: main;
         padding: 0;
+
+        /*this is for instant-feedback color change, which is not the same as autocomplete*/
+        &.invalid {
+            color: red;
+        }
     }
+
     & .mirror {
         grid-area: main;
         white-space: pre;
@@ -106,6 +112,7 @@
             cursor: pointer;
             padding: 0.25em 0.5em;
             position: relative;
+
             &:not(:last-child) {
                 border-bottom: 1px solid var(--bg-2);
             }

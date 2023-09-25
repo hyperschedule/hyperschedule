@@ -6,6 +6,7 @@ import useStore, { MainTab } from "@hooks/store";
 import ScheduleControl from "@components/schedule/ScheduleControl";
 import { shallow } from "zustand/shallow";
 import * as Feather from "react-feather";
+import ThemeSlider from "./ThemeSlider";
 
 export default function Sidebar() {
     const { tab, show, setShow } = useStore(
@@ -43,6 +44,7 @@ export default function Sidebar() {
                     <ScheduleControl />
                 )}
                 <SelectedList />
+                <ThemeSlider />
             </div>
         </>
     );
