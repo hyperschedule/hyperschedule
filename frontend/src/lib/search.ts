@@ -259,12 +259,12 @@ export function filterSection(
             case FilterKey.MeetingTime:
                 for (const schedule of section.schedules) {
                     if (
-                        filter.data.startTime &&
+                        filter.data.startTime !== null &&
                         schedule.startTime < filter.data.startTime
                     )
                         return false;
                     if (
-                        filter.data.endTime &&
+                        filter.data.endTime !== null &&
                         schedule.endTime > filter.data.endTime
                     )
                         return false;
