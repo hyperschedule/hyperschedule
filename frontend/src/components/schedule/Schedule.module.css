@@ -81,14 +81,14 @@
 
 .dayLabelViewport .labelGrid,
 .grid {
-    @nest .container.showSunday.showSaturday & {
+    .container.showSunday.showSaturday & {
         width: 100%;
     }
-    @nest .container.showSunday:not(.showSaturday) &,
-        .container.showSaturday:not(.showSunday) & {
+    .container.showSunday:not(.showSaturday) &,
+    .container.showSaturday:not(.showSunday) & {
         width: calc(7 / 6 * 100%);
     }
-    @nest .container:not(.showSunday):not(.showSaturday) & {
+    .container:not(.showSunday):not(.showSaturday) & {
         width: calc(7 / 5 * 100%);
     }
 }

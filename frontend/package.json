@@ -38,14 +38,14 @@
     "@types/react-measure": "^2.0.8",
     "@types/react-window": "^1.8.5",
     "@vitejs/plugin-react": "^3.0.0",
-    "autoprefixer": "^10.4.15",
+    "autoprefixer": "^10.4.16",
     "classnames": "^2.3.2",
     "html2canvas": "^1.4.1",
     "hyperschedule-shared": "workspace:^",
     "postcss": "^8.4.30",
     "postcss-comment": "^2.0.0",
-    "postcss-custom-media": "^10.0.0",
-    "postcss-nesting": "^10.2.0",
+    "postcss-custom-media": "^10.0.1",
+    "postcss-nesting": "^12.0.1",
     "postcss-reuse": "^2.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -65,11 +65,11 @@
     "@tanstack/react-query": "^4.32.0",
     "@tanstack/react-query-devtools": "^4.32.0",
     "@types/md5": "^2.3.2",
-    "immer": "^9.0.17",
+    "immer": "^10.0.2",
     "md5": "^2.3.0",
     "randomcolor": "^0.6.2",
     "react-measure": "^2.5.2",
-    "react-window": "^1.8.8",
-    "zustand": "^4.2.0"
+    "react-window": "^1.8.9",
+    "zustand": "^4.4.1"
   }
 }

@@ -103,10 +103,10 @@
             border: 2px solid transparent;
             cursor: pointer;
 
-            @nest [data-theme="dark"] & {
+            [data-theme="dark"] & {
                 color: white;
             }
-            @nest [data-theme="light"] & {
+            [data-theme="light"] & {
                 color: black;
             }
 
@@ -136,7 +136,7 @@
         margin-bottom: calc(0.125rem * 2 * var(--reverse-stack-order));
 
 
-        @nest [data-theme="dark"] & {
+         [data-theme="dark"] & {
             --section-color: color-mix(
                 in srgb,
                 var(--section-color-light) 50%,
@@ -144,7 +144,7 @@
             );
             color: white;
         }
-        @nest [data-theme="light"] & {
+         [data-theme="light"] & {
             --section-color: var(--section-color-light);
             color: black;
         }

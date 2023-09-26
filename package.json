@@ -39,7 +39,7 @@
     "test": "FORCE_COLOR=true yarn workspaces foreach --since --parallel --interlaced --verbose run test",
     "typecheck": "yarn workspaces foreach --since --verbose --parallel run typecheck",
     "lint": "eslint . --cache --cache-strategy content",
-    "format": "prettier --write --loglevel warn --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html' '*/src/**/*.css'",
+    "format": "prettier --write --log-level warn --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html' '*/src/**/*.css'",
     "format-check": "prettier --check --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html' '*/src/**/*.css'",
     "ci:test": "yarn workspaces foreach --all --verbose --topological-dev run ci:test",
     "ci:format": "prettier --loglevel warn --list-different --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html'",

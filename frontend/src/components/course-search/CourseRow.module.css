@@ -13,11 +13,11 @@
         transform: rotate(90deg);
     }
 
-    @nest [data-theme="dark"] & .titlebar {
+    [data-theme="dark"] & .titlebar {
         color: white;
     }
 
-    @nest [data-theme="light"] & .titlebar {
+    [data-theme="light"] & .titlebar {
         color: black;
     }
 }
