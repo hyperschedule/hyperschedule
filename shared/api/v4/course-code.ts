@@ -265,9 +265,9 @@ export function parseTermIdentifier(term: string): APIv4.TermIdentifier {
 export function schoolCodeToName(school: APIv4.School): string {
     switch (school) {
         case APIv4.School.CGU:
-            return "Claremont Graduate University";
+            return "CGU";
         case APIv4.School.CMC:
-            return "Claremont McKenna";
+            return "CMC";
         case APIv4.School.HMC:
             return "Harvey Mudd";
         case APIv4.School.POM:

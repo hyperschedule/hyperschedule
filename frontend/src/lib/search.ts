@@ -1,4 +1,5 @@
 import type * as APIv4 from "hyperschedule-shared/api/v4";
+import { computeMuddCredits } from "@lib/credits";
 
 const tokensRegex = /[0-9]+|[a-z]+/g;
 
@@ -159,19 +160,15 @@ export const filterKeyRegexp = RegExp(
 
 export type TextFilter = { text: string };
 export type DaysFilter = { days: Set<APIv4.Weekday> };
-export type TimeFilter = {
-    startTime: number | null;
-    endTime: number | null;
-};
 export type CampusFilter = {
     campus: APIv4.School;
 };
 export type CourseAreaFilter = {
     area: string;
 };
-export type CreditFilter = {
-    min: number | null;
-    max: number | null;
+export type RangeFilter = {
+    start: number | null;
+    end: number | null;
 };
 
 export type FilterData = {
@@ -182,10 +179,10 @@ export type FilterData = {
     [FilterKey.Title]: TextFilter;
     [FilterKey.Location]: TextFilter;
     [FilterKey.ScheduleDays]: DaysFilter;
-    [FilterKey.MeetingTime]: TimeFilter;
+    [FilterKey.MeetingTime]: RangeFilter;
     [FilterKey.CourseArea]: CourseAreaFilter;
     [FilterKey.Campus]: CampusFilter;
-    [FilterKey.Credits]: CreditFilter;
+    [FilterKey.Credits]: RangeFilter;
 };
 
 export type Filter = {
@@ -267,22 +264,22 @@ export function filterSection(
             case FilterKey.MeetingTime:
                 for (const schedule of section.schedules) {
                     if (
-                        filter.data.startTime !== null &&
-                        schedule.startTime < filter.data.startTime
+                        filter.data.start !== null &&
+                        schedule.startTime < filter.data.start
                     )
                         return false;
                     if (
-                        filter.data.endTime !== null &&
-                        schedule.endTime > filter.data.endTime
+                        filter.data.end !== null &&
+                        schedule.endTime > filter.data.end
                     )
                         return false;
                 }
                 break;
             case FilterKey.Credits:
-                if (filter.data.min && section.credits < filter.data.min)
+                const credits = computeMuddCredits(section);
+                if (filter.data.start && credits < filter.data.start)
                     return false;
-                if (filter.data.max && section.credits > filter.data.max)
-                    return false;
+                if (filter.data.end && credits > filter.data.end) return false;
                 break;
             case FilterKey.Title:
                 if (

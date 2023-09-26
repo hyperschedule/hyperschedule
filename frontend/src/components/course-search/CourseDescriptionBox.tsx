@@ -9,15 +9,7 @@ import { formatTime12 } from "@lib/time";
 import Css from "./CourseDescriptionBox.module.css";
 import * as Feather from "react-feather";
 import { combineLocations } from "@lib/schedule";
-
-function computeCredits(section: APIv4.Section): number {
-    if (
-        section.course.primaryAssociation === APIv4.School.HMC ||
-        section.credits >= 3
-    )
-        return section.credits;
-    return section.credits * 3;
-}
+import { computeMuddCredits } from "@lib/credits";
 
 // certain course descriptions contain links, such as PE 095B
 const linkHtmlMatcher = /<a +href="?([A-Za-z0-9:\/.%_-]+)"?.*>(.*)<\/a>/;
@@ -69,23 +61,26 @@ export default function CourseDescriptionBox(props: {
             <p className={Css.description}>
                 {processDescription(props.section.course.description)}
             </p>
-            {props.section.identifier.affiliation ===
-            props.section.course.primaryAssociation ? (
+            <section className={Css.credits}>
+                <h3>HMC Credits</h3>
+                <div>{computeMuddCredits(props.section)}</div>
+            </section>
+
+            {props.section.course.primaryAssociation === APIv4.School.HMC ? (
                 <></>
             ) : (
-                <section>
-                    <h3>Primary Association</h3>
-                    <span>
+                <section className={Css.credits}>
+                    <h3>
+                        {" "}
                         {APIv4.schoolCodeToName(
                             props.section.course.primaryAssociation,
-                        )}
-                    </span>
+                        )}{" "}
+                        Credits
+                    </h3>
+                    <div>{props.section.credits}</div>
                 </section>
             )}
-            <section className={Css.credits}>
-                <h3>Credits</h3>
-                <div>{computeCredits(props.section)} (HMC)</div>
-            </section>
+
             <section className={Css.instructors}>
                 <h3>
                     Instructor{props.section.instructors.length > 1 ? "s" : ""}
@@ -154,6 +149,19 @@ export default function CourseDescriptionBox(props: {
                     </ul>
                 </>
             </section>
+            {props.section.identifier.affiliation ===
+            props.section.course.primaryAssociation ? (
+                <></>
+            ) : (
+                <section>
+                    <h3>Primary Association</h3>
+                    <span>
+                        {APIv4.schoolCodeToName(
+                            props.section.course.primaryAssociation,
+                        )}
+                    </span>
+                </section>
+            )}
         </div>
     );
 }

@@ -28,8 +28,11 @@ const FilterBubbleInput: {
     [Search.FilterKey.Title]: FilterBubbleTextInput,
     [Search.FilterKey.Location]: FilterBubbleTextInput,
     [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
-    [Search.FilterKey.MeetingTime]: TimeFilterBubble,
-    [Search.FilterKey.Credits]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.MeetingTime]: RangeFilterBubbleFactory(parseTimeExp, 1),
+    [Search.FilterKey.Credits]: RangeFilterBubbleFactory(
+        parseCreditExp,
+        0.0001,
+    ),
     [Search.FilterKey.CourseArea]: CourseAreaBubble,
     [Search.FilterKey.Campus]: CampusBubble,
 };
@@ -143,83 +146,100 @@ function parseTimeExp(value: string): number | null {
     return hour * 3600 + minute * 60;
 }
 
-function TimeFilterBubble(
-    props: FilterBubbleComponentProps<Search.TimeFilter>,
+const creditRegex = /^\d?(\.\d{1,4})?$/;
+
+function parseCreditExp(value: string): number | null {
+    if (value === "") return null;
+    const match = value.match(creditRegex);
+    if (match === null) return null;
+
+    const n = parseFloat(value);
+    // this really shouldn't happen because of the regex but we still check just in case
+    if (Number.isNaN(n)) return null;
+
+    return n;
+}
+
+function RangeFilterBubbleFactory(
+    parseValueFunc: (value: string) => number | null,
+    epsilon: number,
 ) {
-    const [text, setText] = React.useState("");
-    const [valid, setValid] = React.useState(false);
-    // we don't want to flag an error until at least one valid filter has been entered
-    const [completed, setCompleted] = React.useState(false);
+    return function (props: FilterBubbleComponentProps<Search.RangeFilter>) {
+        const [text, setText] = React.useState("");
+        const [valid, setValid] = React.useState(false);
+        // we don't want to flag an error until at least one valid filter has been entered
+        const [completed, setCompleted] = React.useState(false);
 
-    return (
-        <div className={Css.sizer}>
-            <input
-                type="text"
-                size={1}
-                className={classNames(Css.input, {
-                    [Css.invalid]: completed && !valid,
-                })}
-                value={text}
-                onChange={(ev) => {
-                    setText(ev.target.value);
-                    if (ev.target.value === "") {
-                        props.onChange(null);
-                        return;
-                    }
+        return (
+            <div className={Css.sizer}>
+                <input
+                    type="text"
+                    size={1}
+                    className={classNames(Css.input, {
+                        [Css.invalid]: completed && !valid,
+                    })}
+                    value={text}
+                    onChange={(ev) => {
+                        setText(ev.target.value);
+                        if (ev.target.value === "") {
+                            props.onChange(null);
+                            return;
+                        }
 
-                    const exp = Search.parseRangeExp(
-                        ev.target.value,
-                        parseTimeExp,
-                    );
-                    if (exp !== null) {
-                        if (exp.type === "range") {
-                            if (exp.end >= exp.start) {
-                                props.onChange({
-                                    startTime: exp.start,
-                                    endTime: exp.end,
-                                });
+                        const exp = Search.parseRangeExp(
+                            ev.target.value,
+                            parseValueFunc,
+                        );
+                        if (exp !== null) {
+                            if (exp.type === "range") {
+                                if (exp.end >= exp.start) {
+                                    props.onChange({
+                                        start: exp.start,
+                                        end: exp.end,
+                                    });
+                                    setValid(true);
+                                    setCompleted(true);
+                                    return;
+                                }
+                            } else {
+                                const filter: Search.RangeFilter = {
+                                    start: null,
+                                    end: null,
+                                };
+
+                                switch (exp.op) {
+                                    case Search.CompOperator.GreaterThan:
+                                        filter.start = exp.value + epsilon;
+                                        break;
+                                    case Search.CompOperator.LessThan:
+                                        filter.end = exp.value - epsilon;
+                                        break;
+                                    case Search.CompOperator.AtLeast:
+                                        filter.start = exp.value;
+                                        break;
+                                    case Search.CompOperator.AtMost:
+                                        filter.end = exp.value;
+                                        break;
+                                    case Search.CompOperator.Equal:
+                                        filter.start = exp.value;
+                                        filter.end = exp.value;
+                                        break;
+                                }
+                                props.onChange(filter);
                                 setValid(true);
                                 setCompleted(true);
                                 return;
                             }
-                        } else {
-                            const filter: Search.TimeFilter = {
-                                startTime: null,
-                                endTime: null,
-                            };
-
-                            switch (exp.op) {
-                                case Search.CompOperator.GreaterThan:
-                                    filter.startTime = exp.value + 1;
-                                    break;
-                                case Search.CompOperator.LessThan:
-                                    filter.endTime = exp.value - 1;
-                                    break;
-                                case Search.CompOperator.AtLeast:
-                                    filter.startTime = exp.value;
-                                    break;
-                                case Search.CompOperator.AtMost:
-                                    filter.endTime = exp.value;
-                                    break;
-                                case Search.CompOperator.Equal:
-                                    filter.startTime = exp.value;
-                                    filter.endTime = exp.value;
-                                    break;
-                            }
-                            props.onChange(filter);
-                            setValid(true);
-                            setCompleted(true);
-                            return;
                         }
-                    }
-                    setValid(false);
-                }}
-                onKeyDown={props.onKeyDown}
-                onBlur={() => setCompleted(true)}
-            />
-            <span className={Css.mirror}>{text}</span>
-        </div>
-    );
+                        setValid(false);
+                    }}
+                    onKeyDown={props.onKeyDown}
+                    onBlur={() => setCompleted(true)}
+                />
+                <span className={Css.mirror}>{text}</span>
+            </div>
+        );
+    };
 }
 
 function FilterBubbleInputUnimplemented() {

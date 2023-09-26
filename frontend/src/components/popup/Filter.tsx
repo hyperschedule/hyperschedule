@@ -62,8 +62,8 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
         typeableExample: "time:8am-5pm",
     },
     [Search.FilterKey.Credits]: {
-        name: "Credits",
-        example: [""],
+        name: "Credits (HMC)",
+        example: ["<=1", "=3", "1-2", ">=2"],
         typeableExample: "",
     },
 };
