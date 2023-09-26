@@ -3,8 +3,16 @@
         margin: 0;
     }
 
-    /* for links placed in course descriptions like some PE*/
+    & .statusRow {
+        display: flex;
+        align-items: center;
+        & .statusText {
+            margin-left: 0.5em;
+        }
+        margin-bottom: 0.5em;
+    }
 
+    /* for links placed in course descriptions like some PE*/
     & a {
         &,
         &:visited {

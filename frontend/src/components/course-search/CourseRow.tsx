@@ -103,6 +103,7 @@ export default function CourseRow(props: {
                                 <div className={Css.details}>
                                     <CourseDescriptionBox
                                         section={props.section}
+                                        showStatus={false}
                                     ></CourseDescriptionBox>
                                 </div>
                             </div>

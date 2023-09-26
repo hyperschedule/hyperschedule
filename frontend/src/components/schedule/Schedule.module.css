@@ -190,13 +190,14 @@
     }
 
     display: grid;
-    grid-template-areas: "code" "title" "location" "half" "status";
-    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas: "code" "title";
+    grid-template-rows: auto auto;
     grid-template-columns: 100%;
 
     & .code {
         grid-area: code;
         font-weight: 600;
+        white-space: nowrap;
     }
 
     & .title {
@@ -226,8 +227,8 @@
 [data-show-conflict] .card {
     --offset-x: calc((40% - 0.25rem) / var(--group-size));
 
-    margin-left: calc(0.25rem + var(--stack-order) * var(--offset-x));
-    margin-right: calc(0.25rem + var(--reverse-stack-order) * var(--offset-x));
+    margin-left: calc(0.125rem + var(--stack-order) * var(--offset-x));
+    margin-right: calc(0.125rem + var(--reverse-stack-order) * var(--offset-x));
 
     z-index: var(--reverse-stack-order);
 

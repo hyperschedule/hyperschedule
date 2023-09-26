@@ -151,6 +151,9 @@ function Card(props: {
     const section = sectionsLookup.get(
         APIv4.stringifySectionCodeLong(props.card.section),
     );
+    if (section === undefined) {
+        return <>Error</>;
+    }
 
     return (
         <div
@@ -178,26 +181,26 @@ function Card(props: {
             <div className={Css.code}>
                 {APIv4.stringifySectionCode(props.card.section)}
             </div>
-            {section ? (
-                <>
-                    <div className={Css.title}>{section.course.title}</div>
-                    {props.hideStatus ? (
-                        <></>
-                    ) : (
-                        <div className={Css.status}>
-                            <div>
-                                {section.seatsFilled} / {section.seatsTotal}
-                            </div>
-                            <SectionStatusBadge status={section.status} />
-                        </div>
-                    )}
-                </>
-            ) : (
-                "TODO DEAD"
-            )}
-            <div className={Css.location}>
-                {combineLocations(props.card.locations).join(", ")}
-            </div>
+            {/*{section ? (*/}
+            {/*    <>*/}
+            <div className={Css.title}>{section.course.title}</div>
+            {/*        {props.hideStatus ? (*/}
+            {/*            <></>*/}
+            {/*        ) : (*/}
+            {/*            <div className={Css.status}>*/}
+            {/*                <div>*/}
+            {/*                    {section.seatsFilled} / {section.seatsTotal}*/}
+            {/*                </div>*/}
+            {/*                <SectionStatusBadge status={section.status} />*/}
+            {/*            </div>*/}
+            {/*        )}*/}
+            {/*    </>*/}
+            {/*) : (*/}
+            {/*    "TODO DEAD"*/}
+            {/*)}*/}
+            {/*<div className={Css.location}>*/}
+            {/*    {combineLocations(props.card.locations).join(", ")}*/}
+            {/*</div>*/}
             {props.card.section.half && (
                 <div className={Css.half}>
                     ({props.card.section.half.number === 1 ? "first" : "second"}{" "}

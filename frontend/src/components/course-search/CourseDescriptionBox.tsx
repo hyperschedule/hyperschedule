@@ -10,6 +10,7 @@ import Css from "./CourseDescriptionBox.module.css";
 import * as Feather from "react-feather";
 import { combineLocations } from "@lib/schedule";
 import { computeMuddCredits } from "@lib/credits";
+import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
 // certain course descriptions contain links, such as PE 095B
 const linkHtmlMatcher = /<a +href="?([A-Za-z0-9:\/.%_-]+)"?.*>(.*)<\/a>/;
@@ -47,6 +48,7 @@ const campusCss = [
 
 export default function CourseDescriptionBox(props: {
     section: APIv4.Section;
+    showStatus: boolean;
 }) {
     const descriptions = useCourseAreaDescription();
     const offeringHistory = useOfferingHistoryLookup();
@@ -58,6 +60,22 @@ export default function CourseDescriptionBox(props: {
 
     return (
         <div className={Css.root}>
+            {props.showStatus ? (
+                <div className={Css.statusRow}>
+                    <SectionStatusBadge status={props.section.status} />
+                    <span className={Css.statusText}>
+                        {props.section.seatsFilled}/{props.section.seatsTotal}{" "}
+                        seats filled
+                        {props.section.permCount === 0 ? (
+                            <></>
+                        ) : (
+                            <>, {props.section.permCount} PERMs</>
+                        )}
+                    </span>
+                </div>
+            ) : (
+                <></>
+            )}
             <p className={Css.description}>
                 {processDescription(props.section.course.description)}
             </p>
