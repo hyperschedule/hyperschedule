@@ -18,6 +18,7 @@ import {
     groupCardsByDay,
     mergeCards,
 } from "@lib/schedule";
+import { useState } from "react";
 
 export default function MiniMap() {
     const { bounds, cards, expandCards, startHour, endHour } =
@@ -26,6 +27,8 @@ export default function MiniMap() {
     const clearExpand = useStore((store) => store.clearExpand);
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
+
+    const [hoverSection, setHoverSection] = useState<string | null>(null);
 
     const byDay = groupCardsByDay(cards);
 
@@ -90,40 +93,61 @@ export default function MiniMap() {
                                 >
                                     {group.cards
                                         .sort(comparePriority)
-                                        .map((card, i) => (
-                                            <div
-                                                key={`slice:${APIv4.stringifySectionCodeLong(
+                                        .map((card, i) => {
+                                            const sectionCode =
+                                                APIv4.stringifySectionCodeLong(
                                                     card.section,
-                                                )}/${i}`}
-                                                className={Css.slice}
-                                                style={{
-                                                    gridColumn: `${i + 1}`,
-                                                    gridRow: `${
-                                                        Math.round(
-                                                            (card.startTime -
-                                                                group.startTime) /
-                                                                300,
-                                                        ) + 1
-                                                    } / ${
-                                                        Math.round(
-                                                            (card.endTime -
-                                                                group.startTime) /
-                                                                300,
-                                                        ) + 1
-                                                    }`,
-                                                    ...sectionColorStyle(
-                                                        card.section,
-                                                        theme,
-                                                    ),
-                                                }}
-                                                onClick={() =>
-                                                    setPopup({
-                                                        option: PopupOption.SectionDetail,
-                                                        section: card.section,
-                                                    })
-                                                }
-                                            ></div>
-                                        ))}
+                                                );
+
+                                            return (
+                                                <div
+                                                    key={`slice:${sectionCode}/${i}`}
+                                                    className={classNames(
+                                                        Css.slice,
+                                                        {
+                                                            [Css.hover]:
+                                                                sectionCode ===
+                                                                hoverSection,
+                                                        },
+                                                    )}
+                                                    style={{
+                                                        gridColumn: `${i + 1}`,
+                                                        gridRow: `${
+                                                            Math.round(
+                                                                (card.startTime -
+                                                                    group.startTime) /
+                                                                    300,
+                                                            ) + 1
+                                                        } / ${
+                                                            Math.round(
+                                                                (card.endTime -
+                                                                    group.startTime) /
+                                                                    300,
+                                                            ) + 1
+                                                        }`,
+                                                        ...sectionColorStyle(
+                                                            card.section,
+                                                            theme,
+                                                        ),
+                                                    }}
+                                                    onClick={() =>
+                                                        setPopup({
+                                                            option: PopupOption.SectionDetail,
+                                                            section:
+                                                                card.section,
+                                                        })
+                                                    }
+                                                    onPointerEnter={() =>
+                                                        setHoverSection(
+                                                            sectionCode,
+                                                        )
+                                                    }
+                                                    onPointerLeave={() =>
+                                                        setHoverSection(null)
+                                                    }
+                                                ></div>
+                                            );
+                                        })}
                                 </div>
                             );
                         }),

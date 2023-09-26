@@ -110,7 +110,7 @@
                 color: black;
             }
 
-            &:hover {
+            &.hover {
                 border: 2px solid var(--highlight);
             }
         }
