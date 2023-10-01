@@ -54,6 +54,8 @@ export const RegisteredUser = UserData.merge(
 );
 export type RegisteredUser = z.infer<typeof RegisteredUser>;
 
+//export const User = RegisteredUser;
+//export type User = RegisteredUser;
 export const User = z.discriminatedUnion("isGuest", [
     RegisteredUser,
     GuestUser,
@@ -107,7 +109,7 @@ export const AddSectionRequest = z.object({
 export type AddSectionRequest = z.infer<typeof AddSectionRequest>;
 
 export const DeleteSectionRequest = AddSectionRequest;
-export type DeleteSectionResponse = AddSectionRequest;
+export type DeleteSectionRequest = AddSectionRequest;
 
 export const SetSectionAttrRequest = z.object({
     scheduleId: ScheduleId,

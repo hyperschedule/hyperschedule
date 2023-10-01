@@ -1,14 +1,11 @@
 import * as Zustand from "zustand";
+import * as ZustandMiddleware from "zustand/middleware";
+
 import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import type { Popup } from "@lib/popup";
-
-type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
-    [K in keyof Shape as `set${Capitalize<string & K>}`]: (
-        value: Shape[K],
-    ) => void;
-};
+import type { WithSetters } from "@lib/store";
 
 // we need this so we can correctly render filters with immutable keys.
 // without this there are subtle bugs with filter deletions
@@ -55,7 +52,7 @@ export interface ScheduleRenderingOptions {
     hideStatus: boolean;
 }
 
-const useStore = Zustand.create<Store>()((set, get) => ({
+const initStore: Zustand.StateCreator<Store> = (set, get) => ({
     mainTab: MainTab.CourseSearch,
     setMainTab: (mainTab) => set({ mainTab }),
     theme: window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -124,5 +121,18 @@ const useStore = Zustand.create<Store>()((set, get) => ({
     setActiveTerm: (term) => {
         set({ activeTerm: term, activeScheduleId: null });
     },
-}));
+});
+
+const useStore = Zustand.create<Store>()(
+    ZustandMiddleware.devtools(
+        ZustandMiddleware.persist(initStore, {
+            name: "hyperschedule-store",
+            partialize: (store) => ({
+                mainTab: store.mainTab,
+                activeTerm: store.activeTerm,
+            }),
+        }),
+    ),
+);
+
 export default useStore;

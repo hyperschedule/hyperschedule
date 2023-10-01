@@ -10,6 +10,7 @@ export const enum PopupOption {
 export type Popup =
     | {
           option: PopupOption.Login;
+          continuation?: () => void;
       }
     | {
           option: PopupOption.SectionDetail;

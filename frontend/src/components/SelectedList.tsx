@@ -1,15 +1,17 @@
 import { useActiveSchedule } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
-import {
-    useScheduleReplaceSectionsMutation,
-    useScheduleSectionAttrsMutation,
-    useScheduleSectionMutation,
-} from "@hooks/api/user";
+//import {
+//    useScheduleReplaceSectionsMutation,
+//    useScheduleSectionAttrsMutation,
+//    useScheduleSectionMutation,
+//} from "@hooks/api/user";
 import useStore, { MainTab } from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { sectionColorStyle } from "@lib/color";
 import { useState } from "react";
+
+import { pick } from "@lib/store";
 
 import * as DndCore from "@dnd-kit/core";
 import * as DndSortable from "@dnd-kit/sortable";
@@ -17,16 +19,18 @@ import * as DndUtil from "@dnd-kit/utilities";
 
 import * as Feather from "react-feather";
 
+import { useUserStore } from "@hooks/store/user";
+import Dropdown from "@components/common/Dropdown";
 import Css from "./SelectedList.module.css";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 import { toast } from "react-toastify";
 
 export default function SelectedList() {
     const activeSchedule = useActiveSchedule();
+    const user = useUserStore();
+    //const schedules = APIv4.getSchedulesSorted(user.schedule);
 
-    const replaceSectionsMutation = useScheduleReplaceSectionsMutation();
-
-    const activeScheduleId = useStore((store) => store.activeScheduleId);
+    //const replaceSectionsMutation = useScheduleReplaceSectionsMutation();
 
     const [reorderMode, setReorderMode] = useState(false);
 
@@ -35,6 +39,8 @@ export default function SelectedList() {
     const sensors = DndCore.useSensors(
         DndCore.useSensor(DndCore.PointerSensor),
     );
+
+    const activeScheduleId = useStore((store) => store.activeScheduleId);
 
     if (activeScheduleId === null) return <></>;
     if (activeSchedule === undefined) {
@@ -48,11 +54,14 @@ export default function SelectedList() {
     return (
         <div className={Css.container}>
             <div>
+                {/*<Feather.Edit />
+                <Feather.User />*/}
+
                 {reorderMode ? (
                     <>
                         <button
                             onClick={() => {
-                                replaceSectionsMutation.mutate({
+                                user.scheduleSetSections({
                                     scheduleId: activeScheduleId,
                                     sections: sectionsOrder,
                                 });
@@ -147,7 +156,7 @@ function SectionEntry({
     scheduleId: APIv4.ScheduleId;
 }) {
     const sectionsLookup = useActiveSectionsLookup();
-    const attrsMutation = useScheduleSectionAttrsMutation();
+    //const attrsMutation = useScheduleSectionAttrsMutation();
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
     const mainTab = useStore((store) => store.mainTab);
@@ -157,7 +166,9 @@ function SectionEntry({
         id: APIv4.stringifySectionCodeLong(entry.section),
     });
 
-    const scheduleSelectMutation = useScheduleSectionMutation();
+    const { scheduleDeleteSection, scheduleSetSectionAttrs } = useUserStore(
+        pick("scheduleDeleteSection", "scheduleSetSectionAttrs"),
+    );
 
     const iconProps = {
         strokeWidth: 1.5,
@@ -184,7 +195,7 @@ function SectionEntry({
             <button
                 className={Css.selectButton}
                 onClick={() => {
-                    attrsMutation.mutate({
+                    scheduleSetSectionAttrs({
                         section: entry.section,
                         scheduleId: scheduleId,
                         attrs: {
@@ -234,9 +245,8 @@ function SectionEntry({
             <button
                 className={Css.deleteButton}
                 onClick={() => {
-                    scheduleSelectMutation.mutate({
+                    scheduleDeleteSection({
                         section: entry.section,
-                        add: false,
                         scheduleId,
                     });
                 }}

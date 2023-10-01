@@ -33,7 +33,7 @@ export default function Popup() {
         case PopupOption.Login:
             return (
                 <PopupBox>
-                    <Login />
+                    <Login continuation={popup.continuation} />
                 </PopupBox>
             );
         case PopupOption.SectionDetail:

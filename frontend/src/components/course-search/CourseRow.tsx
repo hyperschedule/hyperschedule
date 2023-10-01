@@ -11,12 +11,13 @@ import * as Feather from "react-feather";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
-import { useScheduleSectionMutation, useUser } from "@hooks/api/user";
+import { useUserStore } from "@hooks/store/user";
 import { useActiveScheduleLookup } from "@hooks/schedule";
 import useStore from "@hooks/store";
 import { sectionColorStyle } from "@lib/color";
 import { toast } from "react-toastify";
 import { PopupOption } from "@lib/popup";
+import { pick } from "@lib/store";
 
 export default function CourseRow(props: {
     section: APIv4.Section;
@@ -116,35 +117,59 @@ export default function CourseRow(props: {
 }
 
 function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
-    const scheduleMutation = useScheduleSectionMutation();
+    const user = useUserStore(
+        pick(
+            "serverUser",
+            "hasConfirmedGuest",
+            "scheduleAddSection",
+            "scheduleDeleteSection",
+            "addSchedule",
+        ),
+    );
     const activeScheduleLookup = useActiveScheduleLookup();
     const setPopup = useStore((store) => store.setPopup);
-    const activeScheduleId = useStore((store) => store.activeScheduleId);
+    const { activeScheduleId, setActiveScheduleId } = useStore(
+        pick("activeScheduleId", "setActiveScheduleId"),
+    );
+    const activeTerm = useStore((store) => store.activeTerm);
     const inSchedule = activeScheduleLookup.has(
         APIv4.stringifySectionCodeLong(props.section),
     );
-    const user = useUser();
+
+    function createScheduleAndAddSection() {
+        const scheduleId = user.addSchedule({
+            name: "schedule 1",
+            term: activeTerm,
+        });
+        setActiveScheduleId(scheduleId);
+        user.scheduleAddSection({ scheduleId, section: props.section });
+    }
 
     return (
         <button
             className={Css.toggle}
             onClick={(event) => {
                 event.stopPropagation();
-                if (user === null) {
-                    setPopup({ option: PopupOption.Login });
-                } else {
-                    if (activeScheduleId === null) {
+
+                if (activeScheduleId === null) {
+                    if (!!user.serverUser || user.hasConfirmedGuest) {
                         toast.error(
                             "No schedule selected. Please select a schedule",
                         );
-                    } else {
-                        scheduleMutation.mutate({
-                            scheduleId: activeScheduleId,
-                            section: props.section,
-                            add: !inSchedule,
-                        });
+                        return;
                     }
+                    setPopup({
+                        option: PopupOption.Login,
+                        continuation: createScheduleAndAddSection,
+                    });
+                    return;
                 }
+                (inSchedule
+                    ? user.scheduleDeleteSection
+                    : user.scheduleAddSection)({
+                    scheduleId: activeScheduleId,
+                    section: props.section,
+                });
             }}
         >
             {inSchedule ? <Feather.X size={14} /> : <Feather.Plus size={14} />}

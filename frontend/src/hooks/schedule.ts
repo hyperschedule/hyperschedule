@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
-import { useUserQuery } from "@hooks/api/user";
+//import { useUserQuery } from "@hooks/api/user";
+import { useUserStore } from "@hooks/store/user";
 import { useActiveSectionsLookup } from "@hooks/section";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
@@ -9,10 +10,11 @@ import * as Lib from "@lib/schedule";
 import useStore from "@hooks/store";
 
 export function useActiveSchedule(): APIv4.UserSchedule | undefined {
-    const userQuery = useUserQuery();
+    //const userQuery = useUserQuery();
     const activeScheduleId = useStore((store) => store.activeScheduleId);
+    const schedules = useUserStore((store) => store.schedule);
     if (activeScheduleId === null) return undefined;
-    return userQuery.data?.schedules[activeScheduleId];
+    return schedules[activeScheduleId];
 }
 
 export function useActiveScheduleEntries(): APIv4.UserSection[] {
