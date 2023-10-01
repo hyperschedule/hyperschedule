@@ -3,17 +3,14 @@ import * as ZustandMiddleware from "zustand/middleware";
 import { produce } from "immer";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 import { pick } from "@lib/store";
 
 export type Store = {
     hasConfirmedGuest: boolean;
-    schedule: Record<string, APIv4.UserSchedule>;
-    serverUser: {
-        id: APIv4.UserId;
-        eppn: string;
-        school: APIv4.School;
-    } | null;
+    schedules: Record<string, APIv4.UserSchedule>;
+    server: Omit<APIv4.ServerUser, "schedules"> | null;
     // mutators
     confirmGuest: () => void;
     scheduleAddSection: (request: APIv4.AddSectionRequest) => void;
@@ -30,18 +27,24 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
 
     return {
         hasConfirmedGuest: false,
-        schedule: {},
-        serverUser: null,
+        schedules: {
+            "s~default": {
+                name: "Schedule 1",
+                term: CURRENT_TERM,
+                sections: [],
+            } satisfies APIv4.UserSchedule,
+        },
+        server: null,
         scheduleAddSection: (request) =>
             update((store) => {
-                store.schedule[request.scheduleId]!.sections.push({
+                store.schedules[request.scheduleId]!.sections.push({
                     section: request.section,
                     attrs: { selected: true },
                 });
             }),
         scheduleDeleteSection: (request) =>
             update((store) => {
-                const schedule = store.schedule[request.scheduleId]!;
+                const schedule = store.schedules[request.scheduleId]!;
                 schedule.sections = schedule.sections.filter(
                     (entry) =>
                         !APIv4.compareSectionIdentifier(
@@ -52,11 +55,12 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             }),
         scheduleSetSections: (request) =>
             update((store) => {
-                store.schedule[request.scheduleId]!.sections = request.sections;
+                store.schedules[request.scheduleId]!.sections =
+                    request.sections;
             }),
         scheduleSetSectionAttrs: (request) =>
             update((store) => {
-                store.schedule[request.scheduleId]!.sections.find((entry) =>
+                store.schedules[request.scheduleId]!.sections.find((entry) =>
                     APIv4.compareSectionIdentifier(
                         entry.section,
                         request.section,
@@ -65,11 +69,11 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             }),
         confirmGuest: () => set({ hasConfirmedGuest: true }),
         addSchedule: (request) => {
-            const schedule = get().schedule;
-            const id = `${Object.keys(schedule).length}`;
+            const schedules = get().schedules;
+            const id = `${Object.keys(schedules).length}`;
             set({
-                schedule: {
-                    ...schedule,
+                schedules: {
+                    ...schedules,
                     [id]: {
                         name: request.name,
                         term: request.term,
@@ -86,7 +90,7 @@ export const useUserStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
         ZustandMiddleware.persist(init, {
             name: "hyperschedule-user",
-            partialize: pick("schedule", "serverUser", "hasConfirmedGuest"),
+            partialize: pick("schedules", "hasConfirmedGuest"),
         }),
     ),
 );

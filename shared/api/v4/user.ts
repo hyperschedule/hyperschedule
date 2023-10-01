@@ -29,37 +29,21 @@ export const UserSchedule = z.object({
 });
 export type UserSchedule = z.infer<typeof UserSchedule>;
 
-const UserData = z.object({
-    _id: UserId,
+export const LocalUser = z.object({
+    _id: z.undefined(),
     schedules: z.record(ScheduleId, UserSchedule),
-    // seconds since Unix epoch. used to pruning inactive users.
-    // this is only updated if the user did any modification to their schedule
-    lastModified: z.number().positive(),
-    // id of the active schedule. null if no active schedule is set
-    activeSchedule: ScheduleId.nullable(),
 });
-export const GuestUser = UserData.merge(
-    z.object({
-        isGuest: z.literal(true),
-    }),
-);
-export type GuestUser = z.infer<typeof GuestUser>;
+export type LocalUser = z.infer<typeof LocalUser>;
 
-export const RegisteredUser = UserData.merge(
-    z.object({
-        isGuest: z.literal(false),
-        eppn: z.string(),
-        school: SchoolEnum,
-    }),
-);
-export type RegisteredUser = z.infer<typeof RegisteredUser>;
+export const ServerUser = z.object({
+    _id: UserId,
+    eppn: z.string(),
+    school: SchoolEnum,
+    schedules: z.record(ScheduleId, UserSchedule),
+});
+export type ServerUser = z.infer<typeof ServerUser>;
 
-//export const User = RegisteredUser;
-//export type User = RegisteredUser;
-export const User = z.discriminatedUnion("isGuest", [
-    RegisteredUser,
-    GuestUser,
-]);
+export const User = z.union([LocalUser, ServerUser]);
 export type User = z.infer<typeof User>;
 
 /**

@@ -4,18 +4,14 @@ import {
     addSchedule,
     addSection,
     batchAddSectionsToNewSchedule,
-    createGuestUser,
-    deleteGuestUser,
     deleteSchedule,
     deleteSection,
     getUser,
     renameSchedule,
     replaceSections,
-    setActiveSchedule,
     setSectionAttrs,
 } from "../../db/models/user";
 import { createLogger } from "../../logger";
-import { signUser } from "../../auth/token";
 import { json as jsonParser } from "milliparsec";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { getAllSectionId } from "../../db/models/course";
@@ -47,38 +43,9 @@ const userApp = new App({
     next();
 });
 
-userApp
-    .route("/new-guest")
-    .get(async function (request: Request, response: Response) {
-        response.status(405).end();
-    })
-    .post(async function (request: Request, response: Response) {
-        if (request.userToken !== null)
-            return response
-                .status(401)
-                .send(`Already authenticated as ${request.userToken.uuid}`);
-
-        logger.trace("[%d] Creating new guest user", request.id);
-        const user = await createGuestUser();
-        logger.info("[%d] new guest user %s created", request.id, user);
-
-        const cookie = signUser({ uuid: user });
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 365);
-
-        return response
-            .cookie("token", cookie, {
-                httpOnly: true,
-                sameSite: "strict",
-                expires,
-            })
-            .status(204)
-            .end();
-    });
-
 userApp.get("/", async function (request: Request, response: Response) {
     if (request.userToken === null) return response.status(401).end();
-    let user: APIv4.User;
+    let user: APIv4.ServerUser;
     try {
         user = await getUser(request.userToken.uuid);
     } catch (e) {
@@ -93,11 +60,7 @@ userApp.get("/", async function (request: Request, response: Response) {
 
 userApp.post("/logout", async function (request: Request, response: Response) {
     if (request.userToken === null) return response.status(401).end();
-    let user = await getUser(request.userToken.uuid);
-    // start processing logout before we start deleting the user, if guest
-    response.status(204).cookie("token", "", { maxAge: 0 }).end();
-    if (user.isGuest) await deleteGuestUser(user._id);
-    return response;
+    return response.status(204).cookie("token", "", { maxAge: 0 }).end();
 });
 
 userApp
@@ -213,22 +176,6 @@ userApp
     });
 
 userApp
-    .route("/active-schedule")
-    .use(jsonParser()) // we need to add this so it can parse json requests
-    .post(async function (request: Request, response: Response) {
-        if (request.userToken === null) return response.status(401).end();
-        const input = APIv4.SetActiveScheduleRequest.safeParse(request.body);
-        if (!input.success)
-            return response
-                .status(400)
-                .header("Content-Type", "application/json")
-                .send(input.error);
-
-        await setActiveSchedule(request.userToken.uuid, input.data.scheduleId);
-        response.status(204).end();
-    });
-
-userApp
     .route("/replace-sections")
     .use(jsonParser()) // we need to add this so it can parse json requests
     .post(async function (request: Request, response: Response) {
@@ -279,8 +226,6 @@ userApp
             CURRENT_TERM,
             "Imported Schedule",
         );
-
-        await setActiveSchedule(request.userToken.uuid, scheduleId);
 
         return response
             .header("Content-Type", "application/json")

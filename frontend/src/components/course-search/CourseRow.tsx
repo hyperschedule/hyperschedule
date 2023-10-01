@@ -119,7 +119,7 @@ export default function CourseRow(props: {
 function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
     const user = useUserStore(
         pick(
-            "serverUser",
+            "server",
             "hasConfirmedGuest",
             "scheduleAddSection",
             "scheduleDeleteSection",
@@ -131,19 +131,10 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
     const { activeScheduleId, setActiveScheduleId } = useStore(
         pick("activeScheduleId", "setActiveScheduleId"),
     );
-    const activeTerm = useStore((store) => store.activeTerm);
+
     const inSchedule = activeScheduleLookup.has(
         APIv4.stringifySectionCodeLong(props.section),
     );
-
-    function createScheduleAndAddSection() {
-        const scheduleId = user.addSchedule({
-            name: "schedule 1",
-            term: activeTerm,
-        });
-        setActiveScheduleId(scheduleId);
-        user.scheduleAddSection({ scheduleId, section: props.section });
-    }
 
     return (
         <button
@@ -152,7 +143,7 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
                 event.stopPropagation();
 
                 if (activeScheduleId === null) {
-                    if (!!user.serverUser || user.hasConfirmedGuest) {
+                    if (user.server !== null || user.hasConfirmedGuest) {
                         toast.error(
                             "No schedule selected. Please select a schedule",
                         );
@@ -160,7 +151,13 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
                     }
                     setPopup({
                         option: PopupOption.Login,
-                        continuation: createScheduleAndAddSection,
+                        continuation: () => {
+                            setActiveScheduleId("s~default");
+                            user.scheduleAddSection({
+                                scheduleId: "s~default",
+                                section: props.section,
+                            });
+                        },
                     });
                     return;
                 }

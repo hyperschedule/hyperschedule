@@ -3,7 +3,6 @@ import { describe, test, expect } from "@jest/globals";
 import { collections } from "../../src/db";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import {
-    createGuestUser,
     addSchedule,
     addSection,
     getUser,
@@ -11,40 +10,22 @@ import {
     deleteSection,
     renameSchedule,
     setSectionAttrs,
-    setActiveSchedule,
-    deleteGuestUser,
-    createOrGetUser,
+    getOrCreateUser,
 } from "../../src/db/models/user";
 
 setupDbHooks();
 
 describe("db/models/user", () => {
     test("user creation", async () => {
-        const uid = await createGuestUser();
+        const uid = await getOrCreateUser("test user", "");
         expect(await collections.users.findOne({ _id: uid })).toBeTruthy();
         expect(
             (await collections.users.find({}).toArray()).length,
         ).toStrictEqual(1);
     });
 
-    test("user deletion", async () => {
-        const uid = await createGuestUser();
-        await expect(getUser(uid)).resolves.toBeTruthy();
-        await deleteGuestUser(uid);
-        await expect(getUser(uid)).rejects.toBeTruthy();
-
-        // test that non-guest user cannot be deleted
-        const loggedInUid = await createOrGetUser(
-            "test@hmc.edu",
-            "Harvey Mudd",
-        );
-        await expect(getUser(loggedInUid)).resolves.toBeTruthy();
-        await expect(deleteGuestUser(loggedInUid)).rejects.toBeTruthy();
-        await expect(getUser(loggedInUid)).resolves.toBeTruthy();
-    });
-
     test("add schedule to an user", async () => {
-        const uid = await createGuestUser();
+        const uid = await getOrCreateUser("test user", "");
         const user = await getUser(uid);
         expect(Object.keys(user!.schedules).length).toStrictEqual(1);
         const sid = await addSchedule(
@@ -116,13 +97,13 @@ describe("db/models/user", () => {
             half: null,
         };
 
-        const uid = await createGuestUser();
+        const uid = await await getOrCreateUser("test user", "");
 
         await deleteSchedule(
             uid,
             Object.keys((await getUser(uid)).schedules)[0]!,
         );
-        const uid2 = await createGuestUser();
+        const uid2 = await await getOrCreateUser("test user 2", "");
         const sid = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
@@ -171,7 +152,7 @@ describe("db/models/user", () => {
     });
 
     test("delete schedule from user", async () => {
-        const uid = await createGuestUser();
+        const uid = await await getOrCreateUser("test user", "");
         const user = await getUser(uid);
         expect(Object.keys(user.schedules).length).toStrictEqual(1);
         await deleteSchedule(uid, Object.keys(user.schedules)[0]!);
@@ -217,7 +198,7 @@ describe("db/models/user", () => {
             year: 2023,
             half: null,
         };
-        const uid = await createGuestUser();
+        const uid = await getOrCreateUser("test user", "");
         await deleteSchedule(
             uid,
             Object.keys((await getUser(uid)).schedules)[0]!,
@@ -251,7 +232,7 @@ describe("db/models/user", () => {
     });
 
     test("rename schedule", async () => {
-        const uid = await createGuestUser();
+        const uid = await getOrCreateUser("test user", "");
         await deleteSchedule(
             uid,
             Object.keys((await getUser(uid)).schedules)[0]!,
@@ -284,7 +265,7 @@ describe("db/models/user", () => {
             year: 2023,
             half: null,
         };
-        const uid = await createGuestUser();
+        const uid = await getOrCreateUser("test user", "");
         // delete the default schedule
         await deleteSchedule(
             uid,
@@ -306,43 +287,5 @@ describe("db/models/user", () => {
         expect(user2.schedules[sid]!.sections[0]!.attrs).toStrictEqual({
             selected: false,
         } satisfies APIv4.UserSectionAttrs);
-    });
-
-    test("active schedule logic", async () => {
-        const uid = await createGuestUser();
-        const user = await getUser(uid);
-        const sid = Object.keys(user.schedules)[0]!;
-        expect(user.activeSchedule).toStrictEqual(sid);
-
-        await deleteSchedule(uid, sid);
-        const updated = await getUser(uid);
-        expect(updated.activeSchedule).toStrictEqual(null);
-
-        const sid1 = await addSchedule(
-            uid,
-            { year: 2023, term: APIv4.Term.spring },
-            "test schedule 1",
-        );
-        const updated1 = await getUser(uid);
-        expect(updated1.activeSchedule).toStrictEqual(sid1);
-
-        const sid2 = await addSchedule(
-            uid,
-            { year: 2023, term: APIv4.Term.spring },
-            "test schedule 2",
-        );
-        const updated2 = await getUser(uid);
-        expect(updated2.activeSchedule).toStrictEqual(sid1);
-
-        await setActiveSchedule(uid, sid2);
-        const updated3 = await getUser(uid);
-        expect(updated3.activeSchedule).toStrictEqual(sid2);
-
-        // cannot set id for deleted schedules
-        await expect(setActiveSchedule(uid, sid)).rejects.toBeTruthy();
-
-        await deleteSchedule(uid, sid2);
-        const updated4 = await getUser(uid);
-        expect(updated4.activeSchedule).toStrictEqual(sid1);
     });
 });

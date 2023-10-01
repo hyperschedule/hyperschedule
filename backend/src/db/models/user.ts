@@ -18,49 +18,7 @@ function filterUserWithSchedule(
     };
 }
 
-/**
- * Creates an anonymous user and returns the user id
- */
-export async function createGuestUser(): Promise<APIv4.UserId> {
-    const uid = uuid4("u");
-    const scheduleId = uuid4("s");
-    const user: APIv4.GuestUser = {
-        _id: uid,
-        isGuest: true,
-        schedules: {
-            [scheduleId]: {
-                term: CURRENT_TERM,
-                name: "Schedule 1",
-                sections: [],
-            },
-        },
-        lastModified: Math.floor(new Date().getTime() / 1000),
-        activeSchedule: scheduleId,
-    };
-
-    const res = await collections.users.insertOne(user);
-
-    if (res.insertedId.toString() !== uid) {
-        logger.error(
-            `Error inserting guest user into database. Requested ID is ${uid}, resulted id is ${res.insertedId}`,
-        );
-        throw Error(`Database error: mismatching insertion id`);
-    }
-
-    return uid;
-}
-
-export async function deleteGuestUser(userId: APIv4.UserId) {
-    const result = await collections.users.deleteOne({
-        _id: userId,
-        isGuest: true,
-    });
-    if (result.deletedCount !== 1) {
-        throw Error("Guest user with specified ID not found");
-    }
-}
-
-export async function createOrGetUser(
+export async function getOrCreateUser(
     eppn: string,
     orgName: string,
 ): Promise<APIv4.UserId> {
@@ -93,9 +51,8 @@ export async function createOrGetUser(
             break;
     }
 
-    const user: APIv4.RegisteredUser = {
+    const user: APIv4.ServerUser = {
         _id: uid,
-        isGuest: false,
         schedules: {
             [scheduleId]: {
                 term: CURRENT_TERM,
@@ -103,8 +60,6 @@ export async function createOrGetUser(
                 sections: [],
             },
         },
-        lastModified: Math.floor(new Date().getTime() / 1000),
-        activeSchedule: scheduleId,
         eppn,
         school,
     };
@@ -121,7 +76,7 @@ export async function createOrGetUser(
     return uid;
 }
 
-export async function getUser(userId: string): Promise<APIv4.User> {
+export async function getUser(userId: string): Promise<APIv4.ServerUser> {
     const user = await collections.users.findOne({ _id: userId });
     if (user === null) {
         throw Error("User not found");
@@ -160,7 +115,6 @@ export async function addSchedule(
             // we need to make this an array so we can use aggregation pipeline methods (namely $cond) in here
             {
                 $set: {
-                    lastModified: Math.floor(new Date().getTime() / 1000),
                     [`schedules.${scheduleId}`]: {
                         term,
                         name: scheduleName,
@@ -173,7 +127,7 @@ export async function addSchedule(
                             else: "$activeSchedule",
                         },
                     },
-                } as UpdateFilter<APIv4.User>,
+                } as UpdateFilter<APIv4.ServerUser>,
             },
         ],
     );
@@ -203,10 +157,9 @@ export async function renameSchedule(
         filterUserWithSchedule(userId, scheduleId),
         {
             $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
                 [`schedules.${scheduleId}.name`]: newName,
             },
-        } as UpdateFilter<APIv4.User>,
+        } as UpdateFilter<APIv4.ServerUser>,
     );
 
     if (!result.ok || result.value === null) {
@@ -256,9 +209,6 @@ export async function addSection(
                     section: section,
                 } satisfies APIv4.UserSection,
             },
-            $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
-            },
         },
     );
 
@@ -285,24 +235,6 @@ export async function deleteSchedule(
         throw Error("User with this schedule not found");
     }
 
-    const schedules = APIv4.getSchedulesSorted(user.schedules).map(
-        ([id]) => id,
-    );
-    let newActiveSchedule: APIv4.ScheduleId | null = null;
-    if (schedules.length > 1) {
-        // set active schedule to be the next one down the list. if it is already last one on the list, set it above
-        const n = schedules.indexOf(scheduleId);
-        if (n === -1) {
-            throw Error(
-                "Something went horribly wrong. MongoDB says this thing should be here but apparently not",
-            );
-        } else if (n === schedules.length - 1) {
-            newActiveSchedule = schedules[n - 1]!;
-        } else {
-            newActiveSchedule = schedules[n + 1]!;
-        }
-    }
-
     logger.info(`Deleting schedule ${scheduleId} for user ${userId}`);
 
     const result = await collections.users.findOneAndUpdate(
@@ -312,10 +244,6 @@ export async function deleteSchedule(
         {
             $unset: {
                 [`schedules.${scheduleId}`]: true,
-            },
-            $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
-                activeSchedule: newActiveSchedule,
             },
         },
     );
@@ -346,10 +274,9 @@ export async function replaceSections(
         filterUserWithSchedule(userId, scheduleId),
         {
             $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
                 [`schedules.${scheduleId}.sections`]: sections,
             },
-        } as UpdateFilter<APIv4.User>,
+        } as UpdateFilter<APIv4.ServerUser>,
     );
 
     if (!result.ok || result.value === null) {
@@ -374,14 +301,13 @@ export async function batchAddSectionsToNewSchedule(
 
         {
             $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
                 [`schedules.${scheduleId}`]: {
                     name: scheduleName,
                     term: term,
                     sections,
                 } satisfies APIv4.UserSchedule,
             },
-        } as UpdateFilter<APIv4.User>,
+        } as UpdateFilter<APIv4.ServerUser>,
     );
 
     if (!result.ok || result.value === null) {
@@ -416,9 +342,6 @@ export async function deleteSection(
             [`schedules.${scheduleId}.sections`]: { $elemMatch: { section } },
         },
         {
-            $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
-            },
             $pull: {
                 [`schedules.${scheduleId}.sections`]: { section },
             },
@@ -467,9 +390,8 @@ export async function setSectionAttrs(
         {
             $set: {
                 [`schedules.${scheduleId}.sections.$.attrs`]: attrs,
-                lastModified: Math.floor(new Date().getTime() / 1000),
             },
-        } as UpdateFilter<APIv4.User>,
+        } as UpdateFilter<APIv4.ServerUser>,
     );
 
     if (!result.ok || result.value === null) {
@@ -482,31 +404,4 @@ export async function setSectionAttrs(
         )} in ${scheduleId} for ${userId} completed`,
         attrs,
     );
-}
-
-export async function setActiveSchedule(
-    userId: APIv4.UserId,
-    scheduleId: APIv4.ScheduleId,
-) {
-    const user = await collections.users.findOne(
-        filterUserWithSchedule(userId, scheduleId),
-    );
-    if (user === null) {
-        throw Error("User with this schedule not found");
-    }
-
-    const result = await collections.users.findOneAndUpdate(
-        filterUserWithSchedule(userId, scheduleId),
-        {
-            $set: {
-                lastModified: Math.floor(new Date().getTime() / 1000),
-                activeSchedule: scheduleId,
-            },
-        },
-    );
-
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
-        throw Error("Database operation failed");
-    }
 }

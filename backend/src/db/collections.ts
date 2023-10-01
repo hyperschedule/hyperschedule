@@ -7,7 +7,7 @@ export type DBSection = Omit<APIv4.Section, "identifier"> & {
 };
 
 export interface DBCollections {
-    users: Collection<APIv4.User>;
+    users: Collection<APIv4.ServerUser>;
     sections: Collection<DBSection>;
 }
 

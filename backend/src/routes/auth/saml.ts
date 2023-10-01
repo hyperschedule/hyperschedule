@@ -3,7 +3,7 @@ import { App } from "@tinyhttp/app";
 import { urlencoded as bodyParser } from "milliparsec";
 import { createLogger } from "../../logger";
 import { z } from "zod";
-import { createOrGetUser } from "../../db/models/user";
+import { getOrCreateUser } from "../../db/models/user";
 import { signUser } from "../../auth/token";
 
 const logger = createLogger("routes.auth.saml");
@@ -48,7 +48,7 @@ samlApp
                     .send("Cannot interpret response from CAS.");
             }
 
-            const user = await createOrGetUser(
+            const user = await getOrCreateUser(
                 data.data.attributes.eppn,
                 data.data.attributes.orgName,
             );

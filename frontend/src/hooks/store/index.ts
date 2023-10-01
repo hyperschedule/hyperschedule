@@ -130,6 +130,7 @@ const useStore = Zustand.create<Store>()(
             partialize: (store) => ({
                 mainTab: store.mainTab,
                 activeTerm: store.activeTerm,
+                activeScheduleId: store.activeScheduleId,
             }),
         }),
     ),

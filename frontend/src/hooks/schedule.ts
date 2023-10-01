@@ -12,7 +12,7 @@ import useStore from "@hooks/store";
 export function useActiveSchedule(): APIv4.UserSchedule | undefined {
     //const userQuery = useUserQuery();
     const activeScheduleId = useStore((store) => store.activeScheduleId);
-    const schedules = useUserStore((store) => store.schedule);
+    const schedules = useUserStore((store) => store.schedules);
     if (activeScheduleId === null) return undefined;
     return schedules[activeScheduleId];
 }

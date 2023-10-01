@@ -13,7 +13,8 @@ function scheduleDisplayName(schedule: APIv4.UserSchedule) {
 }
 
 export default function Toolbar() {
-    const loggedIn = useUserStore((user) => user.serverUser);
+    const loggedIn = useUserStore((user) => user.server);
+    const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
     const activeTerm = useStore((store) => store.activeTerm);
 
     function loginThroughCAS() {
@@ -21,7 +22,7 @@ export default function Toolbar() {
     }
 
     const user = useUserStore();
-    const schedules = APIv4.getSchedulesSorted(user.schedule);
+    const schedules = APIv4.getSchedulesSorted(user.schedules);
     const { activeScheduleId, setActiveScheduleId } = useStore(
         pick("activeScheduleId", "setActiveScheduleId"),
     );
@@ -30,7 +31,7 @@ export default function Toolbar() {
     const selectedSchedule =
         activeScheduleId === null
             ? ""
-            : scheduleDisplayName(user.schedule[activeScheduleId]!);
+            : scheduleDisplayName(user.schedules[activeScheduleId]!);
 
     return (
         <div className={Css.toolbar}>
@@ -44,12 +45,18 @@ export default function Toolbar() {
             <button>Report issues</button>
             <button>Export calendar</button>
             <Feather.GitHub />
-            <Dropdown
-                choices={scheduleChoices}
-                selected={selectedSchedule}
-                emptyPlaceholder="no schedule selected"
-                onSelect={(index) => setActiveScheduleId(schedules[index]![0])}
-            />
+            {confirmedGuest ? (
+                <Dropdown
+                    choices={scheduleChoices}
+                    selected={selectedSchedule}
+                    emptyPlaceholder="no schedule selected"
+                    onSelect={(index) =>
+                        setActiveScheduleId(schedules[index]![0])
+                    }
+                />
+            ) : (
+                <></>
+            )}
 
             {loggedIn ? (
                 "logged in"
