@@ -7,10 +7,16 @@ import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 import { pick } from "@lib/store";
 
+import { toast } from "react-toastify";
+import { apiRequest } from "@lib/api";
+
 export type Store = {
     hasConfirmedGuest: boolean;
     schedules: Record<string, APIv4.UserSchedule>;
     server: Omit<APIv4.ServerUser, "schedules"> | null;
+    activeScheduleId: APIv4.ScheduleId | null;
+    activeTerm: APIv4.TermIdentifier;
+
     // mutators
     confirmGuest: () => void;
     scheduleAddSection: (request: APIv4.AddSectionRequest) => void;
@@ -18,6 +24,8 @@ export type Store = {
     scheduleSetSections: (request: APIv4.ReplaceSectionsRequest) => void;
     scheduleSetSectionAttrs: (request: APIv4.SetSectionAttrRequest) => void;
     addSchedule: (request: APIv4.AddScheduleRequest) => string;
+    setActiveTerm: (term: APIv4.TermIdentifier) => void;
+    setActiveScheduleId: (scheduleId: APIv4.ScheduleId) => void;
 };
 
 const init: Zustand.StateCreator<Store> = (set, get) => {
@@ -25,7 +33,29 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         set(produce(f));
     }
 
+    async function getUser() {
+        const user = await apiRequest("getUser", null);
+        set({
+            schedules: user.schedules,
+            server: pick("eppn", "school", "_id")(user),
+        });
+    }
+
     return {
+        activeScheduleId: "s~default",
+        setActiveScheduleId: (activeScheduleId) => {
+            // TODO: set active term according to schedule term
+            const schedule = get().schedules[activeScheduleId];
+            if (!schedule) {
+                toast.error("invalid activeScheduleId");
+                return;
+            }
+            set({ activeScheduleId, activeTerm: schedule.term });
+        },
+        activeTerm: CURRENT_TERM,
+        setActiveTerm: (term) => {
+            set({ activeTerm: term, activeScheduleId: null });
+        },
         hasConfirmedGuest: false,
         schedules: {
             "s~default": {
@@ -35,14 +65,35 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             } satisfies APIv4.UserSchedule,
         },
         server: null,
-        scheduleAddSection: (request) =>
+        scheduleAddSection: (request) => {
+            apiRequest("addSection", request).catch();
             update((store) => {
+                const schedule = get().schedules[request.scheduleId];
+                if (schedule === undefined) {
+                    toast.error(
+                        "Attempting to add section to a non-existent schedule",
+                    );
+                } else if (
+                    schedule.term.term !== request.section.term ||
+                    schedule.term.year !== schedule.term.year
+                ) {
+                    toast.error(
+                        `Cannot add section ${APIv4.stringifySectionCodeLong(
+                            request.section,
+                        )} to schedule in ${APIv4.stringifyTermIdentifier(
+                            schedule.term,
+                        )}`,
+                    );
+                    store.activeScheduleId = null;
+                }
                 store.schedules[request.scheduleId]!.sections.push({
                     section: request.section,
                     attrs: { selected: true },
                 });
-            }),
-        scheduleDeleteSection: (request) =>
+            });
+        },
+        scheduleDeleteSection: (request) => {
+            apiRequest("deleteSection", request).catch();
             update((store) => {
                 const schedule = store.schedules[request.scheduleId]!;
                 schedule.sections = schedule.sections.filter(
@@ -52,13 +103,19 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
                             request.section,
                         ),
                 );
-            }),
-        scheduleSetSections: (request) =>
+            });
+        },
+
+        scheduleSetSections: (request) => {
+            apiRequest("replaceSections", request).catch();
             update((store) => {
                 store.schedules[request.scheduleId]!.sections =
                     request.sections;
-            }),
-        scheduleSetSectionAttrs: (request) =>
+            });
+        },
+
+        scheduleSetSectionAttrs: (request) => {
+            apiRequest("setSectionAttrs", request).catch();
             update((store) => {
                 store.schedules[request.scheduleId]!.sections.find((entry) =>
                     APIv4.compareSectionIdentifier(
@@ -66,7 +123,8 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
                         request.section,
                     ),
                 )!.attrs = request.attrs;
-            }),
+            });
+        },
         confirmGuest: () => set({ hasConfirmedGuest: true }),
         addSchedule: (request) => {
             const schedules = get().schedules;
@@ -90,7 +148,12 @@ export const useUserStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
         ZustandMiddleware.persist(init, {
             name: "hyperschedule-user",
-            partialize: pick("schedules", "hasConfirmedGuest"),
+            partialize: pick(
+                "schedules",
+                "hasConfirmedGuest",
+                "activeScheduleId",
+                "activeTerm",
+            ),
         }),
     ),
 );

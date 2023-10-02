@@ -128,7 +128,7 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
     );
     const activeScheduleLookup = useActiveScheduleLookup();
     const setPopup = useStore((store) => store.setPopup);
-    const { activeScheduleId, setActiveScheduleId } = useStore(
+    const { activeScheduleId, setActiveScheduleId } = useUserStore(
         pick("activeScheduleId", "setActiveScheduleId"),
     );
 
@@ -142,13 +142,8 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
             onClick={(event) => {
                 event.stopPropagation();
 
-                if (activeScheduleId === null) {
-                    if (user.server !== null || user.hasConfirmedGuest) {
-                        toast.error(
-                            "No schedule selected. Please select a schedule",
-                        );
-                        return;
-                    }
+                // not logged in, and i haven't confirmed i want to proceed as guest
+                if (user.server === null && !user.hasConfirmedGuest) {
                     setPopup({
                         option: PopupOption.Login,
                         continuation: () => {
@@ -161,6 +156,14 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
                     });
                     return;
                 }
+
+                if (activeScheduleId === null) {
+                    toast.error(
+                        "No schedule selected. Please select a schedule",
+                    );
+                    return;
+                }
+
                 (inSchedule
                     ? user.scheduleDeleteSection
                     : user.scheduleAddSection)({

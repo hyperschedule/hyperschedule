@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useMemo } from "react";
 import useStore from "@hooks/store";
+import { useUserStore } from "@hooks/store/user";
 
 export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     const resp = await fetch(
@@ -63,7 +64,7 @@ export function useOfferingHistory(term: APIv4.TermIdentifier) {
 }
 
 export function useOfferingHistoryLookup() {
-    const activeTerm = useStore((store) => store.activeTerm);
+    const activeTerm = useUserStore((store) => store.activeTerm);
     const offeringHistory = useOfferingHistory(activeTerm);
 
     return useMemo(() => {

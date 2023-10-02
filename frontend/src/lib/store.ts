@@ -1,3 +1,10 @@
+import type * as Zustand from "zustand";
+
+export type StoreInit<Store> = (
+    setState: Zustand.StoreApi<Store>["setState"],
+    getState: Zustand.StoreApi<Store>["getState"],
+) => void;
+
 export type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {
     [K in keyof Shape as `set${Capitalize<string & K>}`]: (
         value: Shape[K],

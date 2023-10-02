@@ -15,7 +15,6 @@ function scheduleDisplayName(schedule: APIv4.UserSchedule) {
 export default function Toolbar() {
     const loggedIn = useUserStore((user) => user.server);
     const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
-    const activeTerm = useStore((store) => store.activeTerm);
 
     function loginThroughCAS() {
         window.location.href = `${__API_URL__}/auth/saml`;
@@ -23,20 +22,17 @@ export default function Toolbar() {
 
     const user = useUserStore();
     const schedules = APIv4.getSchedulesSorted(user.schedules);
-    const { activeScheduleId, setActiveScheduleId } = useStore(
-        pick("activeScheduleId", "setActiveScheduleId"),
-    );
 
     const scheduleChoices = schedules.map((s) => scheduleDisplayName(s[1]));
     const selectedSchedule =
-        activeScheduleId === null
+        user.activeScheduleId === null
             ? ""
-            : scheduleDisplayName(user.schedules[activeScheduleId]!);
+            : scheduleDisplayName(user.schedules[user.activeScheduleId]!);
 
     return (
         <div className={Css.toolbar}>
-            {activeTerm.term === CURRENT_TERM.term &&
-            activeTerm.year ===
+            {user.activeTerm.term === CURRENT_TERM.term &&
+            user.activeTerm.year ===
                 CURRENT_TERM.year ? null /*<button onClick={() => legacyImport.mutate()}>
                     Import from legacy
                 </button>*/ : (
@@ -51,7 +47,7 @@ export default function Toolbar() {
                     selected={selectedSchedule}
                     emptyPlaceholder="no schedule selected"
                     onSelect={(index) =>
-                        setActiveScheduleId(schedules[index]![0])
+                        user.setActiveScheduleId(schedules[index]![0])
                     }
                 />
             ) : (

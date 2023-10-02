@@ -83,6 +83,7 @@ userApp
         );
 
         response
+            .status(201)
             .header("Content-Type", "application/json")
             .send({ scheduleId } satisfies APIv4.AddScheduleResponse);
     })

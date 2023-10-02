@@ -27,20 +27,19 @@ import { toast } from "react-toastify";
 
 export default function SelectedList() {
     const activeSchedule = useActiveSchedule();
-    const user = useUserStore();
+    const activeScheduleId = useUserStore((store) => store.activeScheduleId);
+    const scheduleSetSections = useUserStore(
+        (store) => store.scheduleSetSections,
+    );
     //const schedules = APIv4.getSchedulesSorted(user.schedule);
-
     //const replaceSectionsMutation = useScheduleReplaceSectionsMutation();
 
-    const [reorderMode, setReorderMode] = useState(false);
-
-    const [sectionsOrder, setSectionsOrder] = useState<APIv4.UserSection[]>([]);
+    //const [reorderMode, setReorderMode] = useState(false);
+    //const [sectionsOrder, setSectionsOrder] = useState<APIv4.UserSection[]>([]);
 
     const sensors = DndCore.useSensors(
         DndCore.useSensor(DndCore.PointerSensor),
     );
-
-    const activeScheduleId = useStore((store) => store.activeScheduleId);
 
     if (activeScheduleId === null) return <></>;
     if (activeSchedule === undefined) {
@@ -57,11 +56,11 @@ export default function SelectedList() {
                 {/*<Feather.Edit />
                 <Feather.User />*/}
 
-                {reorderMode ? (
+                {/*reorderMode ? (
                     <>
                         <button
                             onClick={() => {
-                                user.scheduleSetSections({
+                                scheduleSetSections({
                                     scheduleId: activeScheduleId,
                                     sections: sectionsOrder,
                                 });
@@ -83,12 +82,9 @@ export default function SelectedList() {
                     >
                         reorder
                     </button>
-                )}
+                )*/}
             </div>
-            <div
-                className={Css.list}
-                {...(reorderMode ? { "data-reordering": true } : {})}
-            >
+            <div className={Css.list} data-reordering>
                 <DndCore.DndContext
                     collisionDetection={DndCore.closestCenter}
                     sensors={sensors}
@@ -99,39 +95,50 @@ export default function SelectedList() {
                         const oldId = event.active.id;
                         const newId = event.over.id;
 
-                        const oldIndex = sectionsOrder.findIndex(
+                        const oldIndex = activeSchedule.sections.findIndex(
                             (entry) =>
                                 APIv4.stringifySectionCodeLong(
                                     entry.section,
                                 ) === oldId,
                         );
-                        const newIndex = sectionsOrder.findIndex(
+
+                        //sectionsOrder.findIndex(
+                        //(entry) =>
+                        //    APIv4.stringifySectionCodeLong(
+                        //        entry.section,
+                        //    ) === oldId,
+                        //);
+                        const newIndex = activeSchedule.sections.findIndex(
                             (entry) =>
                                 APIv4.stringifySectionCodeLong(
                                     entry.section,
                                 ) === newId,
                         );
 
-                        setSectionsOrder(
-                            DndSortable.arrayMove(
-                                sectionsOrder,
+                        //    sectionsOrder.findIndex(
+                        //    (entry) =>
+                        //        APIv4.stringifySectionCodeLong(
+                        //            entry.section,
+                        //        ) === newId,
+                        //);
+
+                        scheduleSetSections({
+                            scheduleId: activeScheduleId,
+                            sections: DndSortable.arrayMove(
+                                activeSchedule.sections,
                                 oldIndex,
                                 newIndex,
                             ),
-                        );
+                        });
                     }}
                 >
                     <DndSortable.SortableContext
-                        items={sectionsOrder.map((entry) =>
+                        items={activeSchedule.sections.map((entry) =>
                             APIv4.stringifySectionCodeLong(entry.section),
                         )}
                         strategy={DndSortable.verticalListSortingStrategy}
-                        disabled={!reorderMode}
                     >
-                        {(reorderMode
-                            ? sectionsOrder
-                            : activeSchedule.sections
-                        ).map((entry) => (
+                        {activeSchedule.sections.map((entry) => (
                             <SectionEntry
                                 key={APIv4.stringifySectionCodeLong(
                                     entry.section,

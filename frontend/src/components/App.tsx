@@ -27,36 +27,6 @@ export default function App() {
         (store) => store.scheduleRenderingOptions,
     );
 
-    //const userQuery = useUserQuery();
-
-    //const activeScheduleId = useStore((store) => store.activeScheduleId);
-    //const setActiveScheduleId = useStore((store) => store.setActiveScheduleId);
-    //const activeTerm = useStore((store) => store.activeTerm);
-
-    //React.useEffect(() => {
-    //    // we do this whole dance because we want to keep two different states: server-side activeScheduleId,
-    //    // which is used to initialize the client-side activeScheduleId on page load, and the client-side activeScheduleId.
-    //    // we want to save a server-state of activeScheduleId so the user can stay on the same schedule the next time they
-    //    // visit hyperschedule. however, we don't want to, say, switch the active schedule and rerender everything on the
-    //    // user's laptop when the user went to look at a different schedule on their phone and somehow triggered a server
-    //    // sync.
-    //    //
-    //    // so, the client will keep updating the server about the activeSchedule, but will ignore everything received from
-    //    // the server. this is why it's also ok for this function to fail fast and silently, as there is always *some*
-    //    // active schedule set on the server.
-
-    //    if (activeScheduleId === null && userQuery.data?.activeSchedule) {
-    //        const user = userQuery.data;
-    //        const schedule = user.schedules[user.activeSchedule!];
-    //        if (schedule === undefined) return;
-    //        if (
-    //            schedule.term.term === activeTerm.term &&
-    //            schedule.term.year === activeTerm.year
-    //        )
-    //            setActiveScheduleId(userQuery.data.activeSchedule);
-    //    }
-    //}, [activeScheduleId, userQuery.data?.activeSchedule, activeTerm]);
-
     return (
         <div className={Css.app} data-theme={theme}>
             <Popup />

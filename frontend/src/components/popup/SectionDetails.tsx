@@ -2,12 +2,12 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import Css from "./SectionDetails.module.css";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 import { useActiveSectionsLookup } from "@hooks/section";
-import useStore from "@hooks/store";
+import { useUserStore } from "@hooks/store/user";
 
 export default function SectionDetails(props: {
     section: APIv4.SectionIdentifier;
 }): JSX.Element {
-    const activeTerm = useStore((store) => store.activeTerm);
+    const activeTerm = useUserStore((store) => store.activeTerm);
 
     const lookup = useActiveSectionsLookup();
     const s = lookup.get(APIv4.stringifySectionCodeLong(props.section));

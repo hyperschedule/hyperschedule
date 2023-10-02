@@ -3,10 +3,10 @@ import { useSectionsQuery } from "@hooks/api/course";
 import { useMemo } from "react";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import useStore from "@hooks/store";
+import { useUserStore } from "@hooks/store/user";
 
 export function useActiveSectionsQuery() {
-    const activeTerm = useStore((store) => store.activeTerm);
+    const activeTerm = useUserStore((store) => store.activeTerm);
     return useSectionsQuery(activeTerm);
 }
 

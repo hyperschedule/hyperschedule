@@ -7,6 +7,8 @@ import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import type { Popup } from "@lib/popup";
 import type { WithSetters } from "@lib/store";
 
+import * as User from "./user";
+
 // we need this so we can correctly render filters with immutable keys.
 // without this there are subtle bugs with filter deletions
 let filterKeyCount = 0;
@@ -21,12 +23,11 @@ export type Store = WithSetters<{
     searchFilters: StoreFilter[];
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
-    activeScheduleId: APIv4.ScheduleId | null;
+
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
     showSidebar: boolean;
     scrollToSection: (section: APIv4.SectionIdentifier) => void;
-    activeTerm: APIv4.TermIdentifier;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -99,11 +100,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => ({
     expandHeight: 0,
     setExpandHeight: (expandHeight) => set({ expandHeight }),
     clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
-    activeScheduleId: null,
-    setActiveScheduleId: (activeScheduleId) => {
-        // don't use this function directly, use useActiveScheduleMutation from @hooks/api/user.ts instead
-        set({ activeScheduleId });
-    },
+
     popup: null,
     setPopup: (popup) => set({ popup }),
 
@@ -116,11 +113,6 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => ({
 
     scrollToSection: () => {},
     setScrollToSection: (section) => set({ scrollToSection: section }),
-
-    activeTerm: CURRENT_TERM,
-    setActiveTerm: (term) => {
-        set({ activeTerm: term, activeScheduleId: null });
-    },
 });
 
 const useStore = Zustand.create<Store>()(
@@ -129,8 +121,6 @@ const useStore = Zustand.create<Store>()(
             name: "hyperschedule-store",
             partialize: (store) => ({
                 mainTab: store.mainTab,
-                activeTerm: store.activeTerm,
-                activeScheduleId: store.activeScheduleId,
             }),
         }),
     ),

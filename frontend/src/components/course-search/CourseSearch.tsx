@@ -14,9 +14,10 @@ import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
+import { useUserStore } from "@hooks/store/user";
 
 export default function CourseSearch() {
-    const activeTerm = useStore((store) => store.activeTerm);
+    const activeTerm = useUserStore((store) => store.activeTerm);
     const query = useSectionsQuery(activeTerm);
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
