@@ -2,6 +2,115 @@ import { z } from "zod";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { toast } from "react-toastify";
 
+import * as Schema from "hyperschedule-shared/lib/schema";
+
+export const schema = {
+    user: Schema.route("/v4/user", {
+        get: { return: APIv4.ServerUser, status: 200 },
+    }),
+    schedule: Schema.route("/v4/user/schedule", {
+        post: {
+            body: APIv4.AddScheduleRequest,
+            return: APIv4.AddScheduleResponse,
+            status: 201,
+        },
+        delete: {
+            body: APIv4.DeleteScheduleRequest,
+            return: z.void(),
+            status: 204,
+        },
+    }),
+    section: Schema.route("/v4/user/section", {
+        post: {
+            body: APIv4.AddSectionRequest,
+            return: z.void(),
+            status: 201,
+        },
+        delete: {
+            body: APIv4.DeleteSectionRequest,
+            return: z.void(),
+            status: 204,
+        },
+        patch: {
+            body: APIv4.SetSectionAttrRequest,
+            return: z.void(),
+            status: 204,
+        },
+    }),
+    replaceSections: Schema.route("/v4/user/replace-sections", {
+        post: {
+            body: APIv4.ReplaceSectionsRequest,
+            return: z.void(),
+            status: 204,
+        },
+    }),
+};
+
+function validateResponse<Schema extends Schema.MethodSchemaAny>(
+    schema: Schema,
+) {
+    return async function (response: Response) {
+        if (response.status !== schema.status) {
+            toast.error("Unexpected response status from the server");
+            console.error(response);
+            throw Error();
+        }
+
+        const json = await response.json();
+        const result = schema.return.safeParse(json);
+        if (!result.success) {
+            toast.error("Invalid response data from the server");
+            console.error(json);
+            console.error(result);
+            throw result.error;
+        }
+
+        return result.data as Schema.MethodReturn<Schema>;
+    };
+}
+
+export async function fetchWithToast(...args: Parameters<typeof fetch>) {
+    try {
+        return await fetch(...args);
+    } catch (e) {
+        console.error(e);
+        toast.error("Unexpected network error while connecting to the server");
+        throw e;
+    }
+}
+
+export function schemaFetch<
+    Schema extends Schema.RouteSchemaAny,
+    Method extends Schema.RouteMethods<Schema>,
+>(schema: Schema, method: Method): Schema.RouteFetch<Schema, Method> {
+    const methodSchema = schema.methods[method]!;
+
+    const url = `${__API_URL__}${schema.path}`;
+    const defaultFetchOptions = { method, credentials: "include" } as const;
+    const validate = validateResponse(methodSchema);
+
+    return (
+        "body" in methodSchema
+            ? (body) =>
+                  fetchWithToast(url, {
+                      ...defaultFetchOptions,
+                      body: JSON.stringify(body),
+                  }).then(validate)
+            : () => fetchWithToast(url, defaultFetchOptions).then(validate)
+    ) as Schema.RouteFetch<Schema, Method>;
+}
+
+export const apiFetch = {
+    getUser: schemaFetch(schema.user, "get"),
+    addSchedule: schemaFetch(schema.schedule, "post"),
+    deleteSchedule: schemaFetch(schema.schedule, "delete"),
+    addSection: schemaFetch(schema.section, "post"),
+    deleteSection: schemaFetch(schema.section, "delete"),
+    setSectionAttrs: schemaFetch(schema.section, "patch"),
+    replaceSections: schemaFetch(schema.replaceSections, "post"),
+};
+
+/*
 const apiSpec = {
     getUser: {
         path: "/v4/user/",
@@ -89,3 +198,5 @@ export async function apiRequest<K extends keyof typeof apiSpec>(
 
     return data.data;
 }
+
+ */

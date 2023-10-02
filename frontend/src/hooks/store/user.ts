@@ -8,7 +8,7 @@ import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { pick } from "@lib/store";
 
 import { toast } from "react-toastify";
-import { apiRequest } from "@lib/api";
+import { apiFetch } from "@lib/api";
 
 export type Store = {
     hasConfirmedGuest: boolean;
@@ -34,7 +34,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
     }
 
     async function getUser() {
-        const user = await apiRequest("getUser", null);
+        const user = await apiFetch.getUser();
         set({
             schedules: user.schedules,
             server: pick("eppn", "school", "_id")(user),
@@ -66,7 +66,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         },
         server: null,
         scheduleAddSection: (request) => {
-            apiRequest("addSection", request).catch();
+            apiFetch.addSection(request).catch();
             update((store) => {
                 const schedule = get().schedules[request.scheduleId];
                 if (schedule === undefined) {
@@ -93,7 +93,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             });
         },
         scheduleDeleteSection: (request) => {
-            apiRequest("deleteSection", request).catch();
+            apiFetch.deleteSection(request).catch();
             update((store) => {
                 const schedule = store.schedules[request.scheduleId]!;
                 schedule.sections = schedule.sections.filter(
@@ -107,7 +107,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         },
 
         scheduleSetSections: (request) => {
-            apiRequest("replaceSections", request).catch();
+            apiFetch.replaceSections(request).catch();
             update((store) => {
                 store.schedules[request.scheduleId]!.sections =
                     request.sections;
@@ -115,7 +115,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         },
 
         scheduleSetSectionAttrs: (request) => {
-            apiRequest("setSectionAttrs", request).catch();
+            apiFetch.setSectionAttrs(request).catch();
             update((store) => {
                 store.schedules[request.scheduleId]!.sections.find((entry) =>
                     APIv4.compareSectionIdentifier(
