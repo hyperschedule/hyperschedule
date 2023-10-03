@@ -41,7 +41,7 @@ export default function Toolbar() {
             <button>Report issues</button>
             <button>Export calendar</button>
             <Feather.GitHub />
-            {confirmedGuest ? (
+            {confirmedGuest || loggedIn ? (
                 <Dropdown
                     choices={scheduleChoices}
                     selected={selectedSchedule}

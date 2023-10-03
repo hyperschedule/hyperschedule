@@ -28,6 +28,14 @@ export type Store = {
     setActiveScheduleId: (scheduleId: APIv4.ScheduleId) => void;
 };
 
+function firstValidScheduleId(
+    schedules: Record<APIv4.ScheduleId, APIv4.UserSchedule>,
+): APIv4.ScheduleId | null {
+    const sorted = APIv4.getSchedulesSorted(schedules);
+    if (sorted.length === 0) return null;
+    return sorted[0]![0];
+}
+
 const init: Zustand.StateCreator<Store> = (set, get) => {
     function update(f: (store: Store) => void) {
         set(produce(f));
@@ -35,11 +43,21 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
 
     async function getUser() {
         const user = await apiFetch.getUser();
+
+        const activeSchedule = get().activeScheduleId;
+        if (activeSchedule !== null) {
+            if (!Object.hasOwn(user.schedules, activeSchedule)) {
+                set({ activeScheduleId: firstValidScheduleId(user.schedules) });
+            }
+        }
+
         set({
             schedules: user.schedules,
             server: pick("eppn", "school", "_id")(user),
         });
     }
+
+    getUser().catch();
 
     return {
         activeScheduleId: "s~default",

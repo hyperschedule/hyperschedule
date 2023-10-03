@@ -172,8 +172,8 @@ export async function apiRequest<K extends keyof typeof apiSpec>(
     try {
         response = await fetch(`${__API_URL__}${apiSpec[key].path}`, {
             method: spec.method,
-            body: payload === null ? "" : JSON.stringify(payload),
             credentials: "include",
+            ...(payload === null ? {} : { body: JSON.stringify(payload) }),
         });
     } catch (e) {
         console.error(e);
