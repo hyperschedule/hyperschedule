@@ -55,7 +55,9 @@ function validateResponse<Schema extends Schema.MethodSchemaAny>(
             console.error(response);
             throw Error();
         }
-
+        if (response.status === 204 || response.status === 201) {
+            return;
+        }
         const json = await response.json();
         const result = schema.return.safeParse(json);
         if (!result.success) {
@@ -86,7 +88,10 @@ export function schemaFetch<
     const methodSchema = schema.methods[method]!;
 
     const url = `${__API_URL__}${schema.path}`;
-    const defaultFetchOptions = { method, credentials: "include" } as const;
+    const defaultFetchOptions = {
+        method: method.toUpperCase(),
+        credentials: "include",
+    } as const;
     const validate = validateResponse(methodSchema);
 
     return (
