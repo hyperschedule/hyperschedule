@@ -38,7 +38,11 @@ export default function SelectedList() {
     //const [sectionsOrder, setSectionsOrder] = useState<APIv4.UserSection[]>([]);
 
     const sensors = DndCore.useSensors(
-        DndCore.useSensor(DndCore.PointerSensor),
+        DndCore.useSensor(DndCore.PointerSensor, {
+            activationConstraint: {
+                distance: 10,
+            },
+        }),
     );
 
     if (activeScheduleId === null) return <></>;
