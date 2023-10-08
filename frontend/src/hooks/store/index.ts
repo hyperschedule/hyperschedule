@@ -3,11 +3,9 @@ import * as ZustandMiddleware from "zustand/middleware";
 
 import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
-import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import type { Popup } from "@lib/popup";
 import type { WithSetters } from "@lib/store";
-
-import * as User from "./user";
+import { pick } from "@lib/store";
 
 // we need this so we can correctly render filters with immutable keys.
 // without this there are subtle bugs with filter deletions
@@ -50,7 +48,7 @@ export const enum Theme {
 
 export interface ScheduleRenderingOptions {
     hideConflicting: boolean;
-    hideStatus: boolean;
+    showDetails: boolean;
 }
 
 const initStore: Zustand.StateCreator<Store> = (set, get) => ({
@@ -107,7 +105,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => ({
     showSidebar: false,
     setShowSidebar: (showSidebar) => set({ showSidebar }),
 
-    scheduleRenderingOptions: { hideConflicting: false, hideStatus: false },
+    scheduleRenderingOptions: { hideConflicting: false, showDetails: false },
     setScheduleRenderingOptions: (options) =>
         set({ scheduleRenderingOptions: options }),
 
@@ -119,9 +117,7 @@ const useStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
         ZustandMiddleware.persist(initStore, {
             name: "hyperschedule-store",
-            partialize: (store) => ({
-                mainTab: store.mainTab,
-            }),
+            partialize: pick("mainTab", "scheduleRenderingOptions"),
         }),
     ),
 );

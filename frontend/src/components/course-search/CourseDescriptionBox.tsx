@@ -80,7 +80,9 @@ export default function CourseDescriptionBox(props: {
                 {processDescription(props.section.course.description)}
             </p>
             <section className={Css.credits}>
-                <h3>HMC Credits</h3>
+                <h3>
+                    HMC Credit{computeMuddCredits(props.section) > 1 ? "s" : ""}
+                </h3>
                 <div>{computeMuddCredits(props.section)}</div>
             </section>
 
@@ -93,7 +95,7 @@ export default function CourseDescriptionBox(props: {
                         {APIv4.schoolCodeToName(
                             props.section.course.primaryAssociation,
                         )}{" "}
-                        Credits
+                        Credit{props.section.credits > 1 ? "s" : ""}
                     </h3>
                     <div>{props.section.credits}</div>
                 </section>

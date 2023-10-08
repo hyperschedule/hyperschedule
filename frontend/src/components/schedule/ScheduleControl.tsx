@@ -34,7 +34,7 @@ export default function ScheduleControl() {
                     onChange={() =>
                         setOptions({
                             hideConflicting: !options.hideConflicting,
-                            hideStatus: options.hideStatus,
+                            showDetails: options.showDetails,
                         })
                     }
                 />{" "}
@@ -43,15 +43,15 @@ export default function ScheduleControl() {
             <label>
                 <input
                     type="checkbox"
-                    checked={options.hideStatus}
+                    checked={options.showDetails}
                     onChange={() =>
                         setOptions({
                             hideConflicting: options.hideConflicting,
-                            hideStatus: !options.hideStatus,
+                            showDetails: !options.showDetails,
                         })
                     }
                 />{" "}
-                hide status
+                show details
             </label>
             <button onClick={() => void downloadImage()}>
                 download schedule image

@@ -171,6 +171,10 @@ export function sectionsConflict(
     const byDayA = groupCardsByDay(getCards(a, 0));
     const byDayB = groupCardsByDay(getCards(b, 0));
 
+    if (a.identifier.half && b.identifier.half) {
+        if (a.identifier.half.number !== b.identifier.half.number) return false;
+    }
+
     for (const day of Object.values(APIv4.Weekday)) {
         // quadratic, improve someday
         for (const cardA of byDayA[day])

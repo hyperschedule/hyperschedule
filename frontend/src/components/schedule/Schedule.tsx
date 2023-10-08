@@ -77,7 +77,7 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                                     orderFromTop={i}
                                     orderFromBottom={group.cards.length - 1 - i}
                                     totalCardsInGroup={group.cards.length}
-                                    hideStatus={props.hideStatus}
+                                    showDetails={props.showDetails}
                                 />
                             ));
                         });
@@ -141,7 +141,7 @@ function Card(props: {
     readonly orderFromTop: number;
     readonly orderFromBottom: number;
     readonly totalCardsInGroup: number;
-    readonly hideStatus: boolean;
+    readonly showDetails: boolean;
     readonly conflict: boolean;
 }) {
     const theme = useStore((store) => store.theme);
@@ -157,7 +157,10 @@ function Card(props: {
 
     return (
         <div
-            className={Css.card}
+            className={classNames(Css.card, {
+                [Css.firstHalf]: props.card.section.half?.number === 1,
+                [Css.secondHalf]: props.card.section.half?.number === 2,
+            })}
             style={
                 {
                     gridColumn: props.card.day,
@@ -184,23 +187,22 @@ function Card(props: {
             {/*{section ? (*/}
             {/*    <>*/}
             <div className={Css.title}>{section.course.title}</div>
-            {/*        {props.hideStatus ? (*/}
-            {/*            <></>*/}
-            {/*        ) : (*/}
-            {/*            <div className={Css.status}>*/}
-            {/*                <div>*/}
-            {/*                    {section.seatsFilled} / {section.seatsTotal}*/}
-            {/*                </div>*/}
-            {/*                <SectionStatusBadge status={section.status} />*/}
-            {/*            </div>*/}
-            {/*        )}*/}
-            {/*    </>*/}
-            {/*) : (*/}
-            {/*    "TODO DEAD"*/}
-            {/*)}*/}
-            {/*<div className={Css.location}>*/}
-            {/*    {combineLocations(props.card.locations).join(", ")}*/}
-            {/*</div>*/}
+            {props.showDetails ? (
+                <>
+                    <div className={Css.status}>
+                        <div>
+                            {section.seatsFilled} / {section.seatsTotal}
+                        </div>
+                        <SectionStatusBadge status={section.status} />
+                    </div>
+                    <div className={Css.location}>
+                        {combineLocations(props.card.locations).join(", ")}
+                    </div>
+                </>
+            ) : (
+                <></>
+            )}
+
             {props.card.section.half && (
                 <div className={Css.half}>
                     ({props.card.section.half.number === 1 ? "first" : "second"}{" "}

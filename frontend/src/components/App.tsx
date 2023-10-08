@@ -28,7 +28,11 @@ export default function App() {
     );
 
     return (
-        <div className={Css.app} data-theme={theme}>
+        <div
+            className={Css.app}
+            data-theme={theme}
+            data-schedule-tab={mainTab === MainTab.Schedule ? "" : undefined}
+        >
             <Popup />
             <Toolbar />
             <div className={Css.main}>

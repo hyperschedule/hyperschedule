@@ -84,10 +84,12 @@
     .container.showSunday.showSaturday & {
         width: 100%;
     }
+
     .container.showSunday:not(.showSaturday) &,
     .container.showSaturday:not(.showSunday) & {
         width: calc(7 / 6 * 100%);
     }
+
     .container:not(.showSunday):not(.showSaturday) & {
         width: calc(7 / 5 * 100%);
     }
@@ -190,8 +192,8 @@
     }
 
     display: grid;
-    grid-template-areas: "code" "title";
-    grid-template-rows: auto auto;
+    grid-template-areas: "code" "title" "half" "status" "location";
+    grid-template-rows: auto 1fr auto auto auto;
     grid-template-columns: 100%;
 
     & .code {
@@ -203,6 +205,7 @@
     & .title {
         grid-area: title;
         margin-bottom: 0.25em;
+        align-self: center;
     }
 
     & .status {
@@ -221,6 +224,15 @@
 
     & .half {
         grid-area: half;
+    }
+
+    &.firstHalf,
+    &.secondHalf {
+        width: 50%;
+    }
+
+    &.secondHalf {
+        transform: translateX(100%);
     }
 }
 
@@ -252,5 +264,11 @@
 
     &[data-conflict] {
         visibility: inherit;
+    }
+
+    &.firstHalf,
+    &.secondHalf {
+        transform: unset;
+        width: unset;
     }
 }
