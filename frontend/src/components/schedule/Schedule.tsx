@@ -71,9 +71,7 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                                 <Card
                                     key={`card:${cardKey(card)}`}
                                     card={card}
-                                    conflict={
-                                        !unconflicting.has(card.sectionObj)
-                                    }
+                                    conflict={!unconflicting.has(card.section)}
                                     orderFromTop={i}
                                     orderFromBottom={group.cards.length - 1 - i}
                                     totalCardsInGroup={group.cards.length}
@@ -149,7 +147,7 @@ function Card(props: {
     const sectionsLookup = useActiveSectionsLookup();
 
     const section = sectionsLookup.get(
-        APIv4.stringifySectionCodeLong(props.card.section),
+        APIv4.stringifySectionCodeLong(props.card.section.identifier),
     );
     if (section === undefined) {
         return <>Error</>;
@@ -158,8 +156,10 @@ function Card(props: {
     return (
         <div
             className={classNames(Css.card, {
-                [Css.firstHalf]: props.card.section.half?.number === 1,
-                [Css.secondHalf]: props.card.section.half?.number === 2,
+                [Css.firstHalf]:
+                    props.card.section.identifier.half?.number === 1,
+                [Css.secondHalf]:
+                    props.card.section.identifier.half?.number === 2,
             })}
             style={
                 {
@@ -170,19 +170,19 @@ function Card(props: {
                     "--stack-order": props.orderFromTop,
                     "--reverse-stack-order": props.orderFromBottom,
                     "--group-size": props.totalCardsInGroup,
-                    ...sectionColorStyle(props.card.section, theme),
+                    ...sectionColorStyle(props.card.section.identifier, theme),
                 } as React.CSSProperties
             }
             onClick={() =>
                 setPopup({
                     option: PopupOption.SectionDetail,
-                    section: props.card.section,
+                    section: props.card.section.identifier,
                 })
             }
             data-conflict={props.conflict || undefined}
         >
             <div className={Css.code}>
-                {APIv4.stringifySectionCode(props.card.section)}
+                {APIv4.stringifySectionCode(props.card.section.identifier)}
             </div>
             {/*{section ? (*/}
             {/*    <>*/}
@@ -203,9 +203,12 @@ function Card(props: {
                 <></>
             )}
 
-            {props.card.section.half && (
+            {props.card.section.identifier.half && (
                 <div className={Css.half}>
-                    ({props.card.section.half.number === 1 ? "first" : "second"}{" "}
+                    (
+                    {props.card.section.identifier.half.number === 1
+                        ? "first"
+                        : "second"}{" "}
                     half semester)
                 </div>
             )}

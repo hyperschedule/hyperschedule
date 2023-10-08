@@ -65,7 +65,10 @@ export default function MiniMap() {
                                 gridRow: `${
                                     Math.floor(card.startTime / 300) + 1
                                 } / ${Math.floor(card.endTime / 300) + 1}`,
-                                ...sectionColorStyle(card.section, theme),
+                                ...sectionColorStyle(
+                                    card.section.identifier,
+                                    theme,
+                                ),
                             }}
                             onClick={clearExpand}
                         ></div>
@@ -96,7 +99,7 @@ export default function MiniMap() {
                                         .map((card, i) => {
                                             const sectionCode =
                                                 APIv4.stringifySectionCodeLong(
-                                                    card.section,
+                                                    card.section.identifier,
                                                 );
 
                                             return (
@@ -126,7 +129,8 @@ export default function MiniMap() {
                                                             ) + 1
                                                         }`,
                                                         ...sectionColorStyle(
-                                                            card.section,
+                                                            card.section
+                                                                .identifier,
                                                             theme,
                                                         ),
                                                     }}
@@ -134,7 +138,8 @@ export default function MiniMap() {
                                                         setPopup({
                                                             option: PopupOption.SectionDetail,
                                                             section:
-                                                                card.section,
+                                                                card.section
+                                                                    .identifier,
                                                         })
                                                     }
                                                     onPointerEnter={() =>

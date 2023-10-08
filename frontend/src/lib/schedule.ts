@@ -1,8 +1,7 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 export type Card = {
-    section: APIv4.SectionIdentifier;
-    sectionObj: APIv4.Section; // i see a refactor coming
+    section: APIv4.Section;
     day: APIv4.Weekday;
     startTime: number;
     endTime: number;
@@ -41,9 +40,9 @@ export const dayOrder = [
 ] as const;
 
 export function cardKey(card: Readonly<Card>) {
-    return `${APIv4.stringifySectionCodeLong(card.section)}:${card.day}/${
-        card.startTime
-    }-${card.endTime}`;
+    return `${APIv4.stringifySectionCodeLong(card.section.identifier)}:${
+        card.day
+    }/${card.startTime}-${card.endTime}`;
 }
 
 export function getCards(section: Readonly<APIv4.Section>, priority: number) {
@@ -56,8 +55,7 @@ export function getCards(section: Readonly<APIv4.Section>, priority: number) {
                 day,
                 startTime: schedule.startTime,
                 endTime: schedule.endTime,
-                section: section.identifier,
-                sectionObj: section,
+                section,
                 locations: schedule.locations,
                 priority,
             });
