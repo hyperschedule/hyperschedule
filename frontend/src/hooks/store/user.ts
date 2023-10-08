@@ -57,12 +57,11 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         });
     }
 
-    getUser().catch();
+    getUser().catch(() => {});
 
     return {
         activeScheduleId: "s~default",
         setActiveScheduleId: (activeScheduleId) => {
-            // TODO: set active term according to schedule term
             const schedule = get().schedules[activeScheduleId];
             if (!schedule) {
                 toast.error("invalid activeScheduleId");
@@ -84,7 +83,8 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         },
         server: null,
         scheduleAddSection: (request) => {
-            apiFetch.addSection(request).catch();
+            if (get().server) apiFetch.addSection(request).catch(() => {});
+
             update((store) => {
                 const schedule = get().schedules[request.scheduleId];
                 if (schedule === undefined) {
@@ -111,7 +111,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             });
         },
         scheduleDeleteSection: (request) => {
-            apiFetch.deleteSection(request).catch();
+            if (get().server) apiFetch.deleteSection(request).catch(() => {});
             update((store) => {
                 const schedule = store.schedules[request.scheduleId]!;
                 schedule.sections = schedule.sections.filter(
@@ -125,7 +125,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         },
 
         scheduleSetSections: (request) => {
-            apiFetch.replaceSections(request).catch();
+            if (get().server) apiFetch.replaceSections(request).catch(() => {});
             update((store) => {
                 store.schedules[request.scheduleId]!.sections =
                     request.sections;
@@ -133,7 +133,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         },
 
         scheduleSetSectionAttrs: (request) => {
-            apiFetch.setSectionAttrs(request).catch();
+            if (get().server) apiFetch.setSectionAttrs(request).catch(() => {});
             update((store) => {
                 store.schedules[request.scheduleId]!.sections.find((entry) =>
                     APIv4.compareSectionIdentifier(
