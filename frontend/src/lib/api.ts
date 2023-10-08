@@ -48,10 +48,12 @@ export const schema = {
 
 function validateResponse<Schema extends Schema.MethodSchemaAny>(
     schema: Schema,
+    showToastOnError: boolean,
 ) {
     return async function (response: Response) {
         if (response.status !== schema.status) {
-            toast.error("Unexpected response status from the server");
+            if (showToastOnError)
+                toast.error("Unexpected response status from the server");
             console.error(response);
             throw Error();
         }
@@ -61,7 +63,8 @@ function validateResponse<Schema extends Schema.MethodSchemaAny>(
         const json = await response.json();
         const result = schema.return.safeParse(json);
         if (!result.success) {
-            toast.error("Invalid response data from the server");
+            if (showToastOnError)
+                toast.error("Invalid response data from the server");
             console.error(json);
             console.error(result);
             throw result.error;
@@ -87,7 +90,11 @@ export async function fetchWithToast(...args: Parameters<typeof fetch>) {
 export function schemaFetch<
     Schema extends Schema.RouteSchemaAny,
     Method extends Schema.RouteMethods<Schema>,
->(schema: Schema, method: Method): Schema.RouteFetch<Schema, Method> {
+>(
+    schema: Schema,
+    method: Method,
+    showToastOnError: boolean = true,
+): Schema.RouteFetch<Schema, Method> {
     const methodSchema = schema.methods[method]!;
 
     const url = `${__API_URL__}${schema.path}`;
@@ -95,21 +102,22 @@ export function schemaFetch<
         method: method.toUpperCase(),
         credentials: "include",
     } as const;
-    const validate = validateResponse(methodSchema);
+    const validate = validateResponse(methodSchema, showToastOnError);
+    const fetchFunc = showToastOnError ? fetchWithToast : fetch;
 
     return (
         "body" in methodSchema
             ? (body) =>
-                  fetchWithToast(url, {
+                  fetchFunc(url, {
                       ...defaultFetchOptions,
                       body: JSON.stringify(body),
                   }).then(validate)
-            : () => fetchWithToast(url, defaultFetchOptions).then(validate)
+            : () => fetchFunc(url, defaultFetchOptions).then(validate)
     ) as Schema.RouteFetch<Schema, Method>;
 }
 
 export const apiFetch = {
-    getUser: schemaFetch(schema.user, "get"),
+    getUser: schemaFetch(schema.user, "get", false),
     addSchedule: schemaFetch(schema.schedule, "post"),
     deleteSchedule: schemaFetch(schema.schedule, "delete"),
     addSection: schemaFetch(schema.section, "post"),
