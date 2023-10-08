@@ -31,6 +31,32 @@
     width: 1.5rem;
 }
 
+.scheduleSelect {
+    grid-area: schedule-select;
+    gap: 0.5em;
+
+    &,
+    & .dropdownContainer,
+    & .editScheduleButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    & .dropdownContainer {
+        height: 1.75em;
+        gap: 0.5em;
+    }
+
+    & .editScheduleButton {
+        font-size: 1em;
+
+        & .editIcon {
+            height: 1em;
+        }
+    }
+}
+
 .sidebar {
     transition:
         border-left-color var(--theme-transition-duration),
@@ -41,14 +67,14 @@
     min-width: calc(min(24rem, 100vw));
 
     display: grid;
-    grid-template-areas: "top" "minimap" "selected";
+    grid-template-areas: "top" "minimap" "schedule-select" "selected";
 
     &[data-tab="CourseSearch"] {
-        grid-template-rows: auto 1fr 2fr;
+        grid-template-rows: auto 1fr auto 2fr;
     }
 
     &[data-tab="Schedule"] {
-        grid-template-rows: auto auto 2fr;
+        grid-template-rows: auto auto auto 2fr;
     }
 
     background-color: var(--bg-0);
