@@ -1,6 +1,13 @@
 .handle {
     grid-area: sidebar-handle;
 
+    @media (--viewport-medium) {
+        display: none;
+        [data-schedule-tab] & {
+            display: initial;
+        }
+    }
+
     @media (--viewport-large) {
         display: none;
     }
@@ -34,6 +41,7 @@
 .scheduleSelect {
     grid-area: schedule-select;
     gap: 0.5em;
+    margin: 0.5em 1em;
 
     &,
     & .dropdownContainer,
@@ -53,6 +61,13 @@
 
         & .editIcon {
             height: 1em;
+        }
+    }
+
+    & .dropdownLabel {
+        width: 5em;
+        @media (--viewport-large) {
+            width: unset;
         }
     }
 }
@@ -103,7 +118,7 @@
         box-shadow: 0 0 1rem #0008;
     }
 
-    @media (--viewport-large) {
+    @define-mixin show-sidebar {
         transform: none;
 
         position: relative;
@@ -118,5 +133,15 @@
         & .top {
             display: none;
         }
+    }
+
+    @media (--viewport-medium) {
+        [data-search-tab] & {
+            @mixin show-sidebar;
+        }
+    }
+
+    @media (--viewport-large) {
+        @mixin show-sidebar;
     }
 }

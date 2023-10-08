@@ -70,7 +70,9 @@ export default function Sidebar() {
                 ) : (
                     <div className={Css.scheduleSelect}>
                         <div className={Css.dropdownContainer}>
-                            <span>Select a schedule:</span>
+                            <span className={Css.dropdownLabel}>
+                                Select a schedule:
+                            </span>
                             <Dropdown
                                 choices={scheduleChoices}
                                 selected={selectedSchedule}

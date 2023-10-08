@@ -1,3 +1,13 @@
 @custom-media --viewport-zero screen and (min-width: 0em);
-@custom-media --viewport-medium screen and (min-width: 48em);
-@custom-media --viewport-large screen and (min-width: 64em);
+
+/*
+this is the width we show sidebar, but only on course search tab. we want about 20em for the sidebar, which is 1/3
+of the screen width. this means the screen needs to be at least 60em to accommodate that.
+ */
+@custom-media --viewport-medium screen and (min-width: 60em);
+/*
+in order to make sure all the text on the schedule tab can be rendered properly, we want about 10em each day. When the
+sidebar is shown and weekends are hidden, each column is (2/3)/5 = 13.2% of the screen width. This means we need to have
+at least 10/0.132 = 76em, plus 2em for the hours label on the side, brings us to 78em total.
+*/
+@custom-media --viewport-large screen and (min-width: 78em);

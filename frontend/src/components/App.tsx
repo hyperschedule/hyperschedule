@@ -27,11 +27,14 @@ export default function App() {
         (store) => store.scheduleRenderingOptions,
     );
 
+    const onSearchTab = mainTab === MainTab.Schedule;
+
     return (
         <div
             className={Css.app}
             data-theme={theme}
-            data-schedule-tab={mainTab === MainTab.Schedule ? "" : undefined}
+            data-schedule-tab={onSearchTab ? "" : undefined}
+            data-search-tab={!onSearchTab ? "" : undefined}
         >
             <Popup />
             <Toolbar />
@@ -39,14 +42,14 @@ export default function App() {
                 <MainSelector />
                 <div
                     className={classNames(Css.mainContent, {
-                        [Css.hidden]: mainTab !== MainTab.CourseSearch,
+                        [Css.hidden]: onSearchTab,
                     })}
                 >
                     <CourseSearch />
                 </div>
                 <div
                     className={classNames(Css.mainContent, {
-                        [Css.hidden]: mainTab !== MainTab.Schedule,
+                        [Css.hidden]: !onSearchTab,
                     })}
                 >
                     <Schedule {...scheduleRenderingOptions} />
