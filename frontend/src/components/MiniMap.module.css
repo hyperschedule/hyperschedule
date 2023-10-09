@@ -1,3 +1,8 @@
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
 .minimapContainer {
     grid-area: minimap;
 
@@ -12,10 +17,6 @@
 
     & .minimapLabelTime,
     & .minimapLabelDay {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
         font-size: 0.875rem;
         color: var(--fg-1);
     }
@@ -23,11 +24,55 @@
     & .minimapLabelTime {
         height: 100%;
         width: 1.5em;
-        writing-mode: vertical-lr;
         grid-area: time-label;
+
+        display: grid;
+        /* necessary on firefox to make things display correctly */
+        position: relative;
+
+        transition: grid-template-rows var(--misc-transition-duration);
+
+        & .startHour,
+        & .endHour {
+            transition: opacity var(--misc-transition-duration);
+
+            /*on chrome, if we specify the writing mode on parent it will rotate the entire grid*/
+            writing-mode: vertical-lr;
+        }
+
+        & .startHour {
+            grid-row: 1;
+        }
+
+        & .endHour {
+            position: absolute;
+            transform: translateY(-100%);
+        }
+
+        & .timeIconContainer {
+            position: absolute;
+            transform: translateY(-50%);
+
+            &.start {
+                transform: none;
+            }
+
+            &.end {
+                transform: translateY(-100%);
+            }
+
+            & .timeIcon {
+                width: 1em;
+                padding-left: 0.25em;
+            }
+        }
     }
 
     & .minimapLabelDay {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
         width: 100%;
         height: 1.5em;
         grid-area: day-label;
@@ -61,12 +106,14 @@
     grid-template-rows: repeat(calc(24 * 12), 1fr);
 
     height: calc(24 / (var(--end-hour) - var(--start-hour)) * 100%);
+
     &:not(.showSunday) {
         transform: translate(
             calc(-100% / 7),
             calc(var(--start-hour) / 24 * -100%)
         );
     }
+
     &.showSunday {
         transform: translate(0, calc(var(--start-hour) / 24 * -100%));
     }
@@ -89,21 +136,6 @@
     & .rowLine {
         grid-column: 1 / -1;
         border-top: 1px dashed var(--bg-2);
-
-        &.morning {
-            /*8pm, 8*12+1*/
-            grid-row: 97;
-        }
-
-        &.noon {
-            /*1pm, 13*12+1*/
-            grid-row: 157;
-        }
-
-        &.evening {
-            /*5pm, 17*12+1*/
-            grid-row: 205;
-        }
     }
 
     & .cardGroup {
@@ -118,6 +150,7 @@
             [data-theme="dark"] & {
                 color: white;
             }
+
             [data-theme="light"] & {
                 color: black;
             }

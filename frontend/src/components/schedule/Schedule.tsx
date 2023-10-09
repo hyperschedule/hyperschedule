@@ -50,7 +50,7 @@ export default function Schedule(props: ScheduleRenderingOptions) {
             id={scheduleContainerId}
         >
             <DayLabels />
-            <TimeLabels />
+            <TimeLabels startHour={startHour} endHour={endHour} />
             <div className={Css.viewport}>
                 <div
                     className={Css.grid}
@@ -86,13 +86,18 @@ export default function Schedule(props: ScheduleRenderingOptions) {
     );
 }
 
-function TimeLabels() {
+function TimeLabels(props: { startHour: number; endHour: number }) {
     const labels: JSX.Element[] = [];
-    for (let i = 0; i < 24; ++i)
+    for (let h = 0; h < 24; ++h)
         labels.push(
-            <div key={i}>
-                {((i - 1) % 12) + 1}
-                {i < 12 ? "am" : "pm"}
+            <div
+                key={h}
+                className={classNames({
+                    [Css.offsetY]: h !== props.startHour && h !== props.endHour,
+                })}
+            >
+                {((h - 1) % 12) + 1}
+                {h < 12 ? "am" : "pm"}
             </div>,
         );
 

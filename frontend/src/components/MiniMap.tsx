@@ -12,6 +12,10 @@ import GridBackgroundColumns from "@components/schedule/GridBackgroundColumns";
 
 import classNames from "classnames";
 
+const MORNING_LINE_HOUR = 8;
+const NOON_LINE_HOUR = 13;
+const EVENING_LINE_HOUR = 18;
+
 import {
     cardKey,
     comparePriority,
@@ -19,6 +23,7 @@ import {
     mergeCards,
 } from "@lib/schedule";
 import { useState } from "react";
+import * as Feather from "react-feather";
 
 export default function MiniMap() {
     const { bounds, cards, expandCards, startHour, endHour } =
@@ -38,9 +43,68 @@ export default function MiniMap() {
                 <span>{bounds.sunday ? "Sun" : "Mon"}</span>
                 <span>{bounds.saturday ? "Sat" : "Fri"}</span>
             </div>
-            <div className={Css.minimapLabelTime}>
-                <span>{startHour}am</span>
-                <span>{endHour - 12}pm</span>
+            <div
+                className={Css.minimapLabelTime}
+                style={{
+                    gridTemplateRows: [...Array(24)]
+                        .map((_, i) => {
+                            // this loop looks very funny but is necessary for the time label animation.
+                            // modification to grid-column is not animatable, only change in grid-template-column
+                            // is animatable. so we have to set some columns to have a height of 0 instead of just
+                            // changing the positions of the icons
+                            if (i < startHour - 1) return 0;
+                            if (i > endHour - 1) return 0;
+                            return (
+                                (100 / (endHour - startHour)).toString() + "%"
+                            );
+                        })
+                        .join(" "),
+                }}
+            >
+                <span
+                    className={classNames(Css.startHour, {
+                        [Css.hidden]: startHour + 1 >= MORNING_LINE_HOUR,
+                    })}
+                >
+                    {startHour}am
+                </span>
+                <span
+                    className={classNames(Css.endHour, {
+                        [Css.hidden]: endHour - 1 <= EVENING_LINE_HOUR,
+                    })}
+                    style={{ gridRow: endHour }}
+                >
+                    {endHour - 12}pm
+                </span>
+
+                <div
+                    className={classNames(Css.timeIconContainer, {
+                        [Css.start]: startHour === MORNING_LINE_HOUR,
+                    })}
+                    style={{
+                        gridRow: MORNING_LINE_HOUR,
+                    }}
+                >
+                    <Feather.Sunrise className={Css.timeIcon} />
+                </div>
+
+                <div
+                    className={Css.timeIconContainer}
+                    style={{ gridRow: NOON_LINE_HOUR }}
+                >
+                    <Feather.Sun className={Css.timeIcon} />
+                </div>
+
+                <div
+                    className={classNames(Css.timeIconContainer, {
+                        [Css.end]: endHour === EVENING_LINE_HOUR,
+                    })}
+                    style={{
+                        gridRow: EVENING_LINE_HOUR,
+                    }}
+                >
+                    <Feather.Sunset className={Css.timeIcon} />
+                </div>
             </div>
             <div className={Css.minimap}>
                 <div
@@ -57,9 +121,23 @@ export default function MiniMap() {
                 >
                     <GridBackgroundColumns />
 
-                    {[Css.morning, Css.noon, Css.evening].map((time) => (
-                        <div className={classNames(Css.rowLine, time)} />
-                    ))}
+                    <div
+                        className={classNames(Css.rowLine, {
+                            [Css.hidden]: startHour === MORNING_LINE_HOUR,
+                        })}
+                        style={{ gridRow: MORNING_LINE_HOUR * 12 + 1 }}
+                    />
+
+                    <div
+                        className={classNames(Css.rowLine)}
+                        style={{ gridRow: NOON_LINE_HOUR * 12 + 1 }}
+                    />
+                    <div
+                        className={classNames(Css.rowLine, {
+                            [Css.hidden]: endHour === EVENING_LINE_HOUR,
+                        })}
+                        style={{ gridRow: EVENING_LINE_HOUR * 12 + 1 }}
+                    />
 
                     {expandCards.map((card) => (
                         <div

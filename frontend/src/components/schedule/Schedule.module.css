@@ -41,6 +41,10 @@
         height: calc(24 / (var(--end-hour) - var(--start-hour)) * 100%);
         position: relative;
         transform: translateY(calc(var(--start-hour) / 24 * -100%));
+
+        & .offsetY {
+            transform: translateY(-0.625em);
+        }
     }
 
     & div {
