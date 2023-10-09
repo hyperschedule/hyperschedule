@@ -117,7 +117,7 @@ const useStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
         ZustandMiddleware.persist(initStore, {
             name: "hyperschedule-store",
-            partialize: pick("mainTab", "scheduleRenderingOptions"),
+            partialize: pick("mainTab", "scheduleRenderingOptions", "theme"),
         }),
     ),
 );
