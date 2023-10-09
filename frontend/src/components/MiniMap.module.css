@@ -34,7 +34,8 @@
     }
 
     & .minimap {
-        overflow: hidden;
+        overflow: clip;
+        border: 1px solid var(--bg-2);
         border-radius: 0.25rem;
         width: 100%;
         height: 100%;
@@ -87,10 +88,21 @@
 
     & .rowLine {
         grid-column: 1 / -1;
+        border-top: 1px dashed var(--bg-2);
 
-        &.noon,
+        &.morning {
+            /*8pm, 8*12+1*/
+            grid-row: 97;
+        }
+
+        &.noon {
+            /*1pm, 13*12+1*/
+            grid-row: 157;
+        }
+
         &.evening {
-            //border-top: 1px solid var(--bg-3);
+            /*5pm, 17*12+1*/
+            grid-row: 205;
         }
     }
 

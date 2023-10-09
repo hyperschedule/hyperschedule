@@ -24,7 +24,7 @@ export type Group = {
 
 export const defaultBounds: Readonly<Bounds> = Object.freeze({
     startTime: 9 * 3600, // 9am
-    endTime: 18 * 3600, // 6pm
+    endTime: 17 * 3600, // 5pm
     sunday: false,
     saturday: false,
 });

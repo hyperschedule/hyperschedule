@@ -56,6 +56,11 @@ export default function MiniMap() {
                     }
                 >
                     <GridBackgroundColumns />
+
+                    {[Css.morning, Css.noon, Css.evening].map((time) => (
+                        <div className={classNames(Css.rowLine, time)} />
+                    ))}
+
                     {expandCards.map((card) => (
                         <div
                             key={`outline:${cardKey(card)}`}
