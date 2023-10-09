@@ -158,6 +158,9 @@
             &.hover {
                 border: 2px solid var(--highlight);
             }
+            &.highlight {
+                border: 2px dashed var(--highlight);
+            }
         }
     }
 

@@ -1,15 +1,10 @@
 import { useActiveSchedule } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
-//import {
-//    useScheduleReplaceSectionsMutation,
-//    useScheduleSectionAttrsMutation,
-//    useScheduleSectionMutation,
-//} from "@hooks/api/user";
+
 import useStore, { MainTab } from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { sectionColorStyle } from "@lib/color";
-import { useState } from "react";
 
 import { pick } from "@lib/store";
 
@@ -20,22 +15,25 @@ import * as DndUtil from "@dnd-kit/utilities";
 import * as Feather from "react-feather";
 
 import { useUserStore } from "@hooks/store/user";
-import Dropdown from "@components/common/Dropdown";
 import Css from "./SelectedList.module.css";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 import { toast } from "react-toastify";
 
+import * as Schedule from "@lib/schedule";
+import classNames from "classnames";
+import { computeMuddCredits } from "@lib/credits";
+
 export default function SelectedList() {
+    const scheduleRenderingOptions = useStore(
+        (store) => store.scheduleRenderingOptions,
+    );
+
     const activeSchedule = useActiveSchedule();
     const activeScheduleId = useUserStore((store) => store.activeScheduleId);
     const scheduleSetSections = useUserStore(
         (store) => store.scheduleSetSections,
     );
-    //const schedules = APIv4.getSchedulesSorted(user.schedule);
-    //const replaceSectionsMutation = useScheduleReplaceSectionsMutation();
-
-    //const [reorderMode, setReorderMode] = useState(false);
-    //const [sectionsOrder, setSectionsOrder] = useState<APIv4.UserSection[]>([]);
+    const sectionsLookup = useActiveSectionsLookup();
 
     const sensors = DndCore.useSensors(
         DndCore.useSensor(DndCore.PointerSensor, {
@@ -48,47 +46,50 @@ export default function SelectedList() {
     if (activeScheduleId === null) return <></>;
     if (activeSchedule === undefined) {
         toast.error(
-            "Unexpected error: cannot find data for selected schedule. You may be able to fix this by selecting a schedule, then reload the page.",
+            "Unexpected error: cannot find data for selected schedule. You may be able to fix this by selecting a different schedule, then reload the page.",
             { autoClose: false },
         );
         return <></>;
     }
 
+    const selectedSections = activeSchedule.sections
+        .filter((us) => us.attrs.selected)
+        .map((us) =>
+            sectionsLookup.get(APIv4.stringifySectionCodeLong(us.section)),
+        )
+        .filter((s) => s !== undefined) as APIv4.Section[];
+
+    const unconflictingSections = Array.from(
+        Schedule.greedyCollect(selectedSections, Schedule.sectionsConflict),
+    );
+
+    const unconflictingSet = new Set<string>(
+        unconflictingSections.map((s) =>
+            APIv4.stringifySectionCodeLong(s.identifier),
+        ),
+    );
+
     return (
         <div className={Css.container}>
-            <div>
-                {/*<Feather.Edit />
-                <Feather.User />*/}
-
-                {/*reorderMode ? (
-                    <>
-                        <button
-                            onClick={() => {
-                                scheduleSetSections({
-                                    scheduleId: activeScheduleId,
-                                    sections: sectionsOrder,
-                                });
-                                setReorderMode(false);
-                            }}
-                        >
-                            ok
-                        </button>
-                        <button onClick={() => setReorderMode(false)}>
-                            cancel
-                        </button>
-                    </>
-                ) : (
-                    <button
-                        onClick={() => {
-                            setSectionsOrder(activeSchedule.sections);
-                            setReorderMode(true);
-                        }}
-                    >
-                        reorder
-                    </button>
-                )*/}
-            </div>
-            <div className={Css.list} data-reordering>
+            <div className={Css.list}>
+                <div className={Css.textContainer}>
+                    <span>
+                        {selectedSections
+                            .map(computeMuddCredits)
+                            .reduce((a, b) => a + b, 0)}{" "}
+                        credits selected
+                    </span>
+                    {scheduleRenderingOptions.hideConflicting ? (
+                        <span>
+                            {unconflictingSections
+                                .map(computeMuddCredits)
+                                .reduce((a, b) => a + b, 0)}{" "}
+                            credits without conflict
+                        </span>
+                    ) : (
+                        <></>
+                    )}
+                </div>
                 <DndCore.DndContext
                     collisionDetection={DndCore.closestCenter}
                     sensors={sensors}
@@ -106,25 +107,12 @@ export default function SelectedList() {
                                 ) === oldId,
                         );
 
-                        //sectionsOrder.findIndex(
-                        //(entry) =>
-                        //    APIv4.stringifySectionCodeLong(
-                        //        entry.section,
-                        //    ) === oldId,
-                        //);
                         const newIndex = activeSchedule.sections.findIndex(
                             (entry) =>
                                 APIv4.stringifySectionCodeLong(
                                     entry.section,
                                 ) === newId,
                         );
-
-                        //    sectionsOrder.findIndex(
-                        //    (entry) =>
-                        //        APIv4.stringifySectionCodeLong(
-                        //            entry.section,
-                        //        ) === newId,
-                        //);
 
                         scheduleSetSections({
                             scheduleId: activeScheduleId,
@@ -142,29 +130,40 @@ export default function SelectedList() {
                         )}
                         strategy={DndSortable.verticalListSortingStrategy}
                     >
-                        {activeSchedule.sections.map((entry) => (
-                            <SectionEntry
-                                key={APIv4.stringifySectionCodeLong(
-                                    entry.section,
-                                )}
-                                entry={entry}
-                                scheduleId={activeScheduleId}
-                            />
-                        ))}
+                        {activeSchedule.sections.map((entry) => {
+                            const sectionCode = APIv4.stringifySectionCodeLong(
+                                entry.section,
+                            );
+                            const unconflicting =
+                                unconflictingSet.has(sectionCode);
+                            return (
+                                <SectionEntry
+                                    key={sectionCode}
+                                    entry={entry}
+                                    scheduleId={activeScheduleId}
+                                    unconflicting={unconflicting}
+                                />
+                            );
+                        })}
                     </DndSortable.SortableContext>
                     <DndCore.DragOverlay></DndCore.DragOverlay>
                 </DndCore.DndContext>
+                {scheduleRenderingOptions.hideConflicting ? (
+                    <div className={Css.textContainer}>
+                        <span>(drag sections to reorder them)</span>
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
         </div>
     );
 }
 
-function SectionEntry({
-    entry,
-    scheduleId,
-}: {
+function SectionEntry(props: {
     entry: APIv4.UserSection;
     scheduleId: APIv4.ScheduleId;
+    unconflicting: boolean;
 }) {
     const sectionsLookup = useActiveSectionsLookup();
     //const attrsMutation = useScheduleSectionAttrsMutation();
@@ -173,8 +172,11 @@ function SectionEntry({
     const mainTab = useStore((store) => store.mainTab);
     const scrollToSection = useStore((store) => store.scrollToSection);
     const setExpandKey = useStore((store) => store.setExpandKey);
+    const scheduleRenderingOptions = useStore(
+        (store) => store.scheduleRenderingOptions,
+    );
     const sortable = DndSortable.useSortable({
-        id: APIv4.stringifySectionCodeLong(entry.section),
+        id: APIv4.stringifySectionCodeLong(props.entry.section),
     });
 
     const { scheduleDeleteSection, scheduleSetSectionAttrs } = useUserStore(
@@ -188,15 +190,23 @@ function SectionEntry({
     };
 
     const section = sectionsLookup.get(
-        APIv4.stringifySectionCodeLong(entry.section),
+        APIv4.stringifySectionCodeLong(props.entry.section),
     );
+
+    const isConflicting =
+        mainTab === MainTab.Schedule &&
+        props.entry.attrs.selected &&
+        scheduleRenderingOptions.hideConflicting &&
+        !props.unconflicting;
 
     return (
         <div
             ref={sortable.setNodeRef}
-            className={Css.entry}
+            className={classNames(Css.entry, {
+                [Css.unselected]: !props.entry.attrs.selected,
+            })}
             style={{
-                ...sectionColorStyle(entry.section, theme),
+                ...sectionColorStyle(props.entry.section, theme),
                 transform: DndUtil.CSS.Transform.toString(sortable.transform),
                 transition: sortable.transition,
             }}
@@ -207,15 +217,15 @@ function SectionEntry({
                 className={Css.selectButton}
                 onClick={() => {
                     scheduleSetSectionAttrs({
-                        section: entry.section,
-                        scheduleId: scheduleId,
+                        section: props.entry.section,
+                        scheduleId: props.scheduleId,
                         attrs: {
-                            selected: !entry.attrs.selected,
+                            selected: !props.entry.attrs.selected,
                         },
                     });
                 }}
             >
-                {entry.attrs.selected ? (
+                {props.entry.attrs.selected ? (
                     <Feather.CheckSquare {...iconProps} />
                 ) : (
                     <Feather.Square {...iconProps} />
@@ -225,22 +235,29 @@ function SectionEntry({
                 className={Css.text}
                 onClick={() => {
                     if (mainTab === MainTab.CourseSearch) {
-                        setExpandKey(entry.section);
-                        scrollToSection(entry.section);
+                        setExpandKey(props.entry.section);
+                        scrollToSection(props.entry.section);
                     } else
                         setPopup({
                             option: PopupOption.SectionDetail,
-                            section: entry.section,
+                            section: props.entry.section,
                         });
                 }}
             >
                 <span className={Css.code}>
-                    {APIv4.stringifySectionCode(entry.section)}{" "}
+                    {APIv4.stringifySectionCode(props.entry.section)}{" "}
                 </span>
                 <span className={Css.title}>
                     {section?.course.title ?? "(section no longer exists)"}
                 </span>
             </span>
+            {isConflicting ? (
+                <div className={Css.conflictingIcon}>
+                    <Feather.EyeOff />
+                </div>
+            ) : (
+                <></>
+            )}
             {section !== undefined ? (
                 <>
                     <span className={Css.enrollments}>
@@ -257,8 +274,8 @@ function SectionEntry({
                 className={Css.deleteButton}
                 onClick={() => {
                     scheduleDeleteSection({
-                        section: entry.section,
-                        scheduleId,
+                        section: props.entry.section,
+                        scheduleId: props.scheduleId,
                     });
                 }}
             >

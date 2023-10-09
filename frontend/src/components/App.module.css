@@ -62,7 +62,7 @@
         --fg-1: hsl(40, 10%, 25%);
         --fg-2: hsl(40, 10%, 45%);
 
-        --highlight: #f80;
+        --highlight: #f0f;
         --select: hsl(80, 60%, 60%);
         --highlight-transparent: #f800;
 
@@ -107,14 +107,14 @@
 
     min-height: 0;
     max-width: 100vw;
-
-    .hidden {
-        visibility: hidden;
-    }
 }
 
 .mainContent {
     grid-area: content;
     min-height: 0;
     display: grid;
+
+    &.hidden {
+        visibility: hidden;
+    }
 }

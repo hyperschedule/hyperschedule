@@ -4,7 +4,6 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useActiveScheduleResolved } from "@hooks/schedule";
 import useStore from "@hooks/store";
-import { PopupOption } from "@lib/popup";
 
 import { sectionColorStyle } from "@lib/color";
 
@@ -28,10 +27,16 @@ import * as Feather from "react-feather";
 export default function MiniMap() {
     const { bounds, cards, expandCards, startHour, endHour } =
         useActiveScheduleResolved();
-
-    const clearExpand = useStore((store) => store.clearExpand);
     const theme = useStore((store) => store.theme);
-    const setPopup = useStore((store) => store.setPopup);
+    const expandKey = useStore((store) => store.expandKey);
+    const setExpandKey = useStore((store) => store.setExpandKey);
+    const scrollToSection = useStore((store) => store.scrollToSection);
+
+    const isExpandSelected: boolean =
+        expandKey !== null &&
+        cards.some((c) =>
+            APIv4.compareSectionIdentifier(c.section.identifier, expandKey),
+        );
 
     const [hoverSection, setHoverSection] = useState<string | null>(null);
 
@@ -139,23 +144,26 @@ export default function MiniMap() {
                         style={{ gridRow: EVENING_LINE_HOUR * 12 + 1 }}
                     />
 
-                    {expandCards.map((card) => (
-                        <div
-                            key={`outline:${cardKey(card)}`}
-                            className={Css.expandOutline}
-                            style={{
-                                gridColumn: card.day,
-                                gridRow: `${
-                                    Math.floor(card.startTime / 300) + 1
-                                } / ${Math.floor(card.endTime / 300) + 1}`,
-                                ...sectionColorStyle(
-                                    card.section.identifier,
-                                    theme,
-                                ),
-                            }}
-                            onClick={clearExpand}
-                        ></div>
-                    ))}
+                    {isExpandSelected ? (
+                        <></>
+                    ) : (
+                        expandCards.map((card) => (
+                            <div
+                                key={`outline:${cardKey(card)}`}
+                                className={Css.expandOutline}
+                                style={{
+                                    gridColumn: card.day,
+                                    gridRow: `${
+                                        Math.floor(card.startTime / 300) + 1
+                                    } / ${Math.floor(card.endTime / 300) + 1}`,
+                                    ...sectionColorStyle(
+                                        card.section.identifier,
+                                        theme,
+                                    ),
+                                }}
+                            ></div>
+                        ))
+                    )}
                     {Object.entries(byDay).flatMap(([day, cards]) =>
                         mergeCards(cards).map((group, i) => {
                             return (
@@ -194,6 +202,12 @@ export default function MiniMap() {
                                                             [Css.hover]:
                                                                 sectionCode ===
                                                                 hoverSection,
+                                                            [Css.highlight]:
+                                                                expandKey &&
+                                                                sectionCode ===
+                                                                    APIv4.stringifySectionCodeLong(
+                                                                        expandKey,
+                                                                    ),
                                                         },
                                                     )}
                                                     style={{
@@ -217,14 +231,16 @@ export default function MiniMap() {
                                                             theme,
                                                         ),
                                                     }}
-                                                    onClick={() =>
-                                                        setPopup({
-                                                            option: PopupOption.SectionDetail,
-                                                            section:
-                                                                card.section
-                                                                    .identifier,
-                                                        })
-                                                    }
+                                                    onClick={() => {
+                                                        setExpandKey(
+                                                            card.section
+                                                                .identifier,
+                                                        );
+                                                        scrollToSection(
+                                                            card.section
+                                                                .identifier,
+                                                        );
+                                                    }}
                                                     onPointerEnter={() =>
                                                         setHoverSection(
                                                             sectionCode,

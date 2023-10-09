@@ -7,6 +7,12 @@
     overflow-y: auto;
     padding: 1rem;
     height: 100%;
+
+    .textContainer {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
 }
 
 .entry {
@@ -14,9 +20,24 @@
     align-items: center;
     background-color: var(--section-color);
     font-size: 0.875rem;
+    position: relative;
+    transition:
+        filter var(--misc-transition-duration),
+        background-color var(--misc-transition-duration);
 
     padding: 0.25rem;
     margin-bottom: 0.5rem;
+
+    &.unselected {
+        filter: grayscale(100%);
+    }
+
+    & .conflictingIcon {
+        & svg {
+            width: 1em;
+            height: 1em;
+        }
+    }
 
     & button {
         background-color: transparent;
@@ -60,8 +81,4 @@
 
     & .badge {
     }
-}
-
-.list[data-reordering] .entry {
-    cursor: grab;
 }
