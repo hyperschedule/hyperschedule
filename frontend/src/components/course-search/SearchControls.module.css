@@ -9,7 +9,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 0.5em 1em;
 
-    @media (--viewport-medium) {
+    @media (--medium-and-up) {
         grid-template-areas: "term input filter";
         grid-template-columns: auto 1fr auto;
     }

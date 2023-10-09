@@ -1,14 +1,13 @@
 .handle {
     grid-area: sidebar-handle;
 
-    @media (--viewport-medium) {
-        display: none;
+    @media (--medium-only) {
         [data-schedule-tab] & {
             display: initial;
         }
     }
 
-    @media (--viewport-large) {
+    @media (--medium-and-up) {
         display: none;
     }
 }
@@ -135,7 +134,7 @@
         }
     }
 
-    @media (--viewport-medium) {
+    @media (--medium-only) {
         [data-search-tab] & {
             @mixin show-sidebar;
         }

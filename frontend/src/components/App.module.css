@@ -23,18 +23,20 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
 
-    @media (--viewport-medium) {
+    @define-mixin show-sidebar {
+        grid-template-areas: "main toolbar" "main sidebar";
+        grid-template-columns: 1fr calc(100% / 3);
+        grid-template-rows: auto 1fr;
+    }
+
+    @media (--medium-only) {
         &:not([data-schedule-tab]) {
-            grid-template-areas: "main toolbar" "main sidebar";
-            grid-template-columns: 1fr calc(100% / 3);
-            grid-template-rows: auto 1fr;
+            @mixin show-sidebar;
         }
     }
 
     @media (--viewport-large) {
-        grid-template-areas: "main toolbar" "main sidebar";
-        grid-template-columns: 1fr calc(100% / 3);
-        grid-template-rows: auto 1fr;
+        @mixin show-sidebar;
     }
 
     /* `h` stands for highlight */

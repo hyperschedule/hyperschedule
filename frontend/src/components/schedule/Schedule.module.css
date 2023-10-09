@@ -77,7 +77,7 @@
 .dayLabel {
     &::after {
         content: var(--labelShort);
-        @media (--viewport-medium) {
+        @media (--medium-and-up) {
             content: var(--label);
         }
     }

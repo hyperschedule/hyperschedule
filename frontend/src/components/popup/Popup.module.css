@@ -5,7 +5,7 @@
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    @media (--viewport-medium) {
+    @media (--medium-and-up) {
         backdrop-filter: blur(4px);
     }
     z-index: 1000;
@@ -18,14 +18,18 @@
 
         overflow-y: auto;
 
-        @media (--viewport-medium) {
+        @media (--medium-and-up) {
             box-shadow: 0 0 0.5em var(--shadow-color);
             height: unset;
-            width: 80vw;
             max-height: 80vh;
-            min-height: 30vh;
             border-radius: 0.25rem;
         }
+
+        @media (--medium-only) {
+            width: 80vw;
+            min-height: 30vh;
+        }
+
         @media (--viewport-large) {
             width: 60vw;
             min-height: 20vh;
