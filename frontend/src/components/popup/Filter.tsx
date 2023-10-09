@@ -1,5 +1,5 @@
 import * as Css from "./Filter.module.css";
-import { ExampleFilterBubble } from "@components/course-search/FilterBubble";
+import { ExampleFilterBubble } from "@components/course-search/filter-bubble/FilterBubble";
 import * as Search from "@lib/search";
 import * as Feather from "react-feather";
 import useStore from "@hooks/store";

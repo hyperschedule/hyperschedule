@@ -11,7 +11,7 @@ import { useRef, useState } from "react";
 import { shallow } from "zustand/shallow";
 
 import Dropdown from "@components/common/Dropdown";
-import FilterBubble from "./FilterBubble";
+import FilterBubble from "@components/course-search/filter-bubble/FilterBubble";
 import * as Search from "@lib/search";
 import { pick } from "@lib/store";
 import { useUserStore } from "@hooks/store/user";
