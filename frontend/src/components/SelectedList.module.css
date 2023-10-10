@@ -25,11 +25,22 @@
         filter var(--misc-transition-duration),
         background-color var(--misc-transition-duration);
 
-    padding: 0.25rem;
+    padding: 0.125rem;
     margin-bottom: 0.5rem;
 
+    border: 0.125em solid var(--section-color);
+    border-radius: 0.125em;
+    box-sizing: content-box;
+
     &.unselected {
-        filter: grayscale(100%);
+        background-color: transparent;
+        color: var(--fg-1);
+
+        //border: 0.125em solid var(--bg-1);
+
+        & .badge {
+            filter: saturate(50%);
+        }
     }
 
     & .conflictingIcon {
@@ -42,13 +53,21 @@
     & button {
         background-color: transparent;
         border: none;
+        appearance: none;
         color: var(--fg-1);
 
         &:hover {
             cursor: pointer;
         }
 
-        padding: 0;
+        padding: 0.25em;
+        box-sizing: content-box;
+
+        &,
+        & svg {
+            width: 1.25em;
+            height: 1.25em;
+        }
     }
 
     & .selectButton {
@@ -77,8 +96,5 @@
     & span.enrollments {
         padding-left: 1em;
         padding-right: 1em;
-    }
-
-    & .badge {
     }
 }

@@ -63,11 +63,12 @@
         }
     }
 
-    & .dropdownLabel {
-        width: 5em;
-        @media (--viewport-large) {
-            width: unset;
-        }
+    & .mirror {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        top: 0;
+        left: 0;
     }
 }
 

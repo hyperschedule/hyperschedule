@@ -183,12 +183,6 @@ function SectionEntry(props: {
         pick("scheduleDeleteSection", "scheduleSetSectionAttrs"),
     );
 
-    const iconProps = {
-        strokeWidth: 1.5,
-        size: "1.25em",
-        preserveAspectRatio: "",
-    };
-
     const section = sectionsLookup.get(
         APIv4.stringifySectionCodeLong(props.entry.section),
     );
@@ -226,9 +220,9 @@ function SectionEntry(props: {
                 }}
             >
                 {props.entry.attrs.selected ? (
-                    <Feather.CheckSquare {...iconProps} />
+                    <Feather.CheckSquare strokeWidth={1.5} />
                 ) : (
-                    <Feather.Square {...iconProps} />
+                    <Feather.Square strokeWidth={1.5} />
                 )}
             </button>
             <span
@@ -279,7 +273,7 @@ function SectionEntry(props: {
                     });
                 }}
             >
-                <Feather.Trash2 {...iconProps} />
+                <Feather.Trash2 strokeWidth={1.5} />
             </button>
         </div>
     );

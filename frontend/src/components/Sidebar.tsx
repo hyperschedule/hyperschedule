@@ -10,6 +10,7 @@ import * as Feather from "react-feather";
 import ThemeSlider from "./ThemeSlider";
 import Dropdown from "@components/common/Dropdown";
 import * as APIv4 from "hyperschedule-shared/api/v4";
+import { useMeasure } from "@react-hookz/web";
 
 function scheduleDisplayName(schedule: APIv4.UserSchedule) {
     return `${schedule.name} (${APIv4.stringifyTermIdentifier(schedule.term)})`;
@@ -37,6 +38,9 @@ export default function Sidebar() {
         user.activeScheduleId === null
             ? ""
             : scheduleDisplayName(user.schedules[user.activeScheduleId]!);
+
+    const [textMeasure, textRef] = useMeasure<HTMLSpanElement>();
+    const [containerMeasure, containerRef] = useMeasure<HTMLDivElement>();
 
     return (
         <>
@@ -68,11 +72,22 @@ export default function Sidebar() {
                 {serverData === null && !confirmedGuest ? (
                     <></>
                 ) : (
-                    <div className={Css.scheduleSelect}>
+                    <div className={Css.scheduleSelect} ref={containerRef}>
                         <div className={Css.dropdownContainer}>
                             <span className={Css.dropdownLabel}>
-                                Select a schedule:
+                                Select a{" "}
+                                {(containerMeasure?.width ?? 0) / 3 >
+                                (textMeasure?.width ?? 0) ? (
+                                    <></>
+                                ) : (
+                                    <br />
+                                )}{" "}
+                                schedule
                             </span>
+                            <span className={Css.mirror} ref={textRef}>
+                                Select a schedule
+                            </span>
+
                             <Dropdown
                                 choices={scheduleChoices}
                                 selected={selectedSchedule}
