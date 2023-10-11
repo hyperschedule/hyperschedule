@@ -109,12 +109,12 @@ function ScheduleRendering() {
     return (
         <div className={Css.renderingOptions}>
             <Slider
-                value={options.hideConflicting}
-                text="hide conflicting"
+                value={options.showConflicting}
+                text="show conflicting"
                 onToggle={() => {
                     setOptions({
                         ...options,
-                        hideConflicting: !options.hideConflicting,
+                        showConflicting: !options.showConflicting,
                     });
                 }}
             />

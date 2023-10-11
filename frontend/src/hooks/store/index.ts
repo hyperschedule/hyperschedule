@@ -47,7 +47,7 @@ export const enum Theme {
 }
 
 export interface ScheduleRenderingOptions {
-    hideConflicting: boolean;
+    showConflicting: boolean;
     showDetails: boolean;
 }
 
@@ -105,7 +105,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => ({
     showSidebar: false,
     setShowSidebar: (showSidebar) => set({ showSidebar }),
 
-    scheduleRenderingOptions: { hideConflicting: false, showDetails: false },
+    scheduleRenderingOptions: { showConflicting: false, showDetails: false },
     setScheduleRenderingOptions: (options) =>
         set({ scheduleRenderingOptions: options }),
 

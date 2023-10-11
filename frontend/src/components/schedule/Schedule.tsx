@@ -54,7 +54,7 @@ export default function Schedule(props: ScheduleRenderingOptions) {
             <div className={Css.viewport}>
                 <div
                     className={Css.grid}
-                    data-show-conflict={!props.hideConflicting || undefined}
+                    data-show-conflict={props.showConflicting || undefined}
                 >
                     <GridBackgroundColumns />
                     <GridBackgroundRows />

@@ -73,7 +73,7 @@ export default function SelectedList() {
         <div className={Css.container}>
             <div className={Css.list}>
                 <div className={Css.textContainer}>
-                    {scheduleRenderingOptions.hideConflicting ? (
+                    {scheduleRenderingOptions.showConflicting ? (
                         <span>
                             {unconflictingSections
                                 .map(computeMuddCredits)
@@ -147,12 +147,12 @@ export default function SelectedList() {
                     </DndSortable.SortableContext>
                     <DndCore.DragOverlay></DndCore.DragOverlay>
                 </DndCore.DndContext>
-                {scheduleRenderingOptions.hideConflicting ? (
+                {scheduleRenderingOptions.showConflicting ? (
+                    <></>
+                ) : (
                     <div className={Css.textContainer}>
                         <span>(drag sections to reorder them)</span>
                     </div>
-                ) : (
-                    <></>
                 )}
             </div>
         </div>
@@ -189,7 +189,7 @@ function SectionEntry(props: {
     const isConflicting =
         mainTab === MainTab.Schedule &&
         props.entry.attrs.selected &&
-        scheduleRenderingOptions.hideConflicting &&
+        !scheduleRenderingOptions.showConflicting &&
         !props.unconflicting;
 
     return (
