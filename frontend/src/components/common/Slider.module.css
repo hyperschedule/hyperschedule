@@ -1,47 +1,61 @@
 .container {
-    width: 4em;
-    height: 1.75em;
-    border: 1px solid gray;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.label {
     cursor: pointer;
-    border-radius: 2em;
+    display: block;
+    position: relative;
 
-    background-color: var(--color-right);
-    transition: background-color var(--slider-transition-duration);
-    color: inherit;
-}
-
-.left {
-    width: 1em;
-    height: 1em;
-
-    background: var(--color-left);
-    transition:
-        background-color var(--slider-transition-duration),
-        transform var(--slider-transition-duration);
-    border-radius: 50%;
-    line-height: 0;
-    padding: 0.25em;
-
-    & .iconLeft {
+    & .input {
+        /*this is fine because we can activate an input by clicking on anywhere on the label*/
+        appearance: none;
+        visibility: hidden;
         position: absolute;
-        transition: opacity var(--slider-transition-duration);
-    }
-
-    & .iconRight {
-        transition: opacity var(--slider-transition-duration);
         opacity: 0;
-    }
-}
-
-.right {
-    composes: left;
-    transform: translateX(2em);
-
-    & .iconLeft {
-        opacity: 0;
+        width: 0;
+        height: 0;
     }
 
-    & .iconRight {
-        opacity: 1;
+    &,
+    & .spacer {
+        width: 2.5em;
+        height: 1.5em;
+    }
+
+    & .spacer {
+        width: 2.5em;
+        height: 1.5em;
+
+        border-radius: 0.75em;
+        border: 1px solid var(--bg-1);
+        transition: background-color var(--slider-transition-duration);
+
+        background-color: var(--palette-red);
+
+        .input:checked ~ & {
+            background-color: var(--palette-green);
+        }
+    }
+
+    & .knob {
+        width: 1.25em;
+        height: 1.25em;
+        border-radius: 50%;
+        background-color: var(--bg-1);
+        position: absolute;
+
+        top: 0.125em;
+        left: 0.125em;
+
+        transition: transform var(--slider-transition-duration);
+
+        .input:checked ~ & {
+            transform: translateX(1em);
+        }
     }
 }

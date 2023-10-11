@@ -1,27 +1,23 @@
 import Css from "./Slider.module.css";
-import type { MouseEventHandler, CSSProperties } from "react";
 
 export default function Slider(props: {
     value: boolean;
-    onClick?: MouseEventHandler<HTMLButtonElement>;
-    colorLeft: string;
-    colorRight: string;
+    onToggle: () => void;
+    text: string;
 }): JSX.Element {
     return (
-        <button
-            className={Css.container}
-            onClick={props.onClick}
-            style={
-                {
-                    "--color-left": props.colorLeft,
-                    "--color-right": props.colorRight,
-                } as CSSProperties
-            }
-        >
-            <div className={props.value ? Css.left : Css.right}>
-                <span className={Css.iconLeft} />
-                <span className={Css.iconRight} />
-            </div>
-        </button>
+        <div className={Css.container}>
+            <span>{props.text}</span>
+            <label className={Css.label}>
+                <input
+                    type="checkbox"
+                    onChange={props.onToggle}
+                    checked={props.value}
+                    className={Css.input}
+                />
+                <div className={Css.spacer} />
+                <div className={Css.knob} />
+            </label>
+        </div>
     );
 }

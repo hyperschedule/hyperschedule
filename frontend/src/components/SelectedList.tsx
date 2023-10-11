@@ -73,21 +73,20 @@ export default function SelectedList() {
         <div className={Css.container}>
             <div className={Css.list}>
                 <div className={Css.textContainer}>
-                    <span>
-                        {selectedSections
-                            .map(computeMuddCredits)
-                            .reduce((a, b) => a + b, 0)}{" "}
-                        credits selected
-                    </span>
                     {scheduleRenderingOptions.hideConflicting ? (
                         <span>
                             {unconflictingSections
                                 .map(computeMuddCredits)
                                 .reduce((a, b) => a + b, 0)}{" "}
-                            credits without conflict
+                            credits displayed
                         </span>
                     ) : (
-                        <></>
+                        <span>
+                            {selectedSections
+                                .map(computeMuddCredits)
+                                .reduce((a, b) => a + b, 0)}{" "}
+                            credits selected
+                        </span>
                     )}
                 </div>
                 <DndCore.DndContext

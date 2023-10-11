@@ -4,13 +4,12 @@ import SelectedList from "@components/SelectedList";
 import * as React from "react";
 import useStore, { MainTab } from "@hooks/store";
 import { useUserStore } from "@hooks/store/user";
-import ScheduleControl from "@components/schedule/ScheduleControl";
 import { shallow } from "zustand/shallow";
 import * as Feather from "react-feather";
 import ThemeSlider from "./ThemeSlider";
 import Dropdown from "@components/common/Dropdown";
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { useMeasure } from "@react-hookz/web";
+import Slider from "@components/common/Slider";
 
 function scheduleDisplayName(schedule: APIv4.UserSchedule) {
     return `${schedule.name} (${APIv4.stringifyTermIdentifier(schedule.term)})`;
@@ -26,21 +25,8 @@ export default function Sidebar() {
         shallow,
     );
 
-    const user = useUserStore();
-
     const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
     const serverData = useUserStore((user) => user.server);
-
-    const schedules = APIv4.getSchedulesSorted(user.schedules);
-
-    const scheduleChoices = schedules.map((s) => scheduleDisplayName(s[1]));
-    const selectedSchedule =
-        user.activeScheduleId === null
-            ? ""
-            : scheduleDisplayName(user.schedules[user.activeScheduleId]!);
-
-    const [textMeasure, textRef] = useMeasure<HTMLSpanElement>();
-    const [containerMeasure, containerRef] = useMeasure<HTMLDivElement>();
 
     return (
         <>
@@ -62,52 +48,76 @@ export default function Sidebar() {
                         <Feather.ChevronRight className={Css.icon} />
                     </button>
                 </div>
-                {tab === MainTab.CourseSearch ? (
-                    <MiniMap />
-                ) : (
-                    <ScheduleControl />
-                )}
-                <SelectedList />
+                {tab === MainTab.CourseSearch ? <MiniMap /> : <></>}
 
                 {serverData === null && !confirmedGuest ? (
                     <></>
                 ) : (
-                    <div className={Css.scheduleSelect} ref={containerRef}>
-                        <div className={Css.dropdownContainer}>
-                            <span className={Css.dropdownLabel}>
-                                Select a{" "}
-                                {(containerMeasure?.width ?? 0) / 3 >
-                                (textMeasure?.width ?? 0) ? (
-                                    <></>
-                                ) : (
-                                    <br />
-                                )}{" "}
-                                schedule
-                            </span>
-                            <span className={Css.mirror} ref={textRef}>
-                                Select a schedule
-                            </span>
+                    <>
+                        <ScheduleSelect />
+                        <SelectedList />
 
-                            <Dropdown
-                                choices={scheduleChoices}
-                                selected={selectedSchedule}
-                                emptyPlaceholder="no schedule selected"
-                                onSelect={(index) =>
-                                    user.setActiveScheduleId(
-                                        schedules[index]![0],
-                                    )
-                                }
-                            />
-                        </div>
-                        <button className={Css.editScheduleButton}>
-                            <Feather.Edit className={Css.editIcon} />
-                            edit
-                        </button>
-                    </div>
+                        <ScheduleRendering />
+                    </>
                 )}
-
                 <ThemeSlider />
             </div>
         </>
+    );
+}
+
+function ScheduleSelect() {
+    const activeScheduleId = useUserStore((store) => store.activeScheduleId);
+    const setActiveScheduleId = useUserStore(
+        (store) => store.setActiveScheduleId,
+    );
+    const userSchedules = useUserStore((store) => store.schedules);
+
+    const sortedSchedules = APIv4.getSchedulesSorted(userSchedules);
+    const scheduleChoices = sortedSchedules.map((s) =>
+        scheduleDisplayName(s[1]),
+    );
+    const selectedSchedule =
+        activeScheduleId === null
+            ? ""
+            : scheduleDisplayName(userSchedules[activeScheduleId]!);
+    return (
+        <div className={Css.scheduleSelect}>
+            <Feather.List className={Css.scheduleIcon} />
+            <div className={Css.dropdownContainer}>
+                <Dropdown
+                    choices={scheduleChoices}
+                    selected={selectedSchedule}
+                    emptyPlaceholder="no schedule selected"
+                    onSelect={(index) =>
+                        setActiveScheduleId(sortedSchedules[index]![0])
+                    }
+                />
+            </div>
+            <button className={Css.editScheduleButton}>
+                <Feather.Edit className={Css.editIcon} />
+                Edit
+            </button>
+        </div>
+    );
+}
+
+function ScheduleRendering() {
+    const options = useStore((store) => store.scheduleRenderingOptions);
+    const setOptions = useStore((store) => store.setScheduleRenderingOptions);
+
+    return (
+        <div className={Css.renderingOptions}>
+            <Slider
+                value={options.hideConflicting}
+                text="hide conflicting"
+                onToggle={() => {
+                    setOptions({
+                        ...options,
+                        hideConflicting: !options.hideConflicting,
+                    });
+                }}
+            />
+        </div>
     );
 }
