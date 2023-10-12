@@ -144,8 +144,11 @@
 
         & .slice {
             background-color: var(--section-color);
-            border: 2px solid transparent;
+            //border: 2px solid transparent;
             cursor: pointer;
+
+            transition: margin var(--misc-transition-duration);
+            grid-column: 1 / -1;
 
             [data-theme="dark"] & {
                 color: white;

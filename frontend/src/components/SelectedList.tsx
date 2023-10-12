@@ -187,7 +187,6 @@ function SectionEntry(props: {
     );
 
     const isConflicting =
-        mainTab === MainTab.Schedule &&
         props.entry.attrs.selected &&
         !scheduleRenderingOptions.showConflicting &&
         !props.unconflicting;

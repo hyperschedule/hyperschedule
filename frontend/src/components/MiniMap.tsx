@@ -16,6 +16,7 @@ const NOON_LINE_HOUR = 13;
 const EVENING_LINE_HOUR = 18;
 
 import {
+    type Card,
     cardKey,
     comparePriority,
     groupCardsByDay,
@@ -25,22 +26,16 @@ import { useState } from "react";
 import * as Feather from "react-feather";
 
 export default function MiniMap() {
-    const { bounds, cards, expandCards, startHour, endHour } =
+    const { bounds, cards, expandCards, startHour, endHour, unconflicting } =
         useActiveScheduleResolved();
     const theme = useStore((store) => store.theme);
     const expandKey = useStore((store) => store.expandKey);
-    const setExpandKey = useStore((store) => store.setExpandKey);
-    const scrollToSection = useStore((store) => store.scrollToSection);
 
     const isExpandSelected: boolean =
         expandKey !== null &&
         cards.some((c) =>
             APIv4.compareSectionIdentifier(c.section.identifier, expandKey),
         );
-
-    const [hoverSection, setHoverSection] = useState<string | null>(null);
-
-    const byDay = groupCardsByDay(cards);
 
     return (
         <div className={Css.minimapContainer}>
@@ -164,100 +159,141 @@ export default function MiniMap() {
                             ></div>
                         ))
                     )}
-                    {Object.entries(byDay).flatMap(([day, cards]) =>
-                        mergeCards(cards).map((group, i) => {
-                            return (
-                                <div
-                                    key={`group:${day}/${i}`}
-                                    className={Css.cardGroup}
-                                    style={{
-                                        gridColumn: day,
-                                        gridRow: `${
-                                            Math.round(group.startTime / 300) +
-                                            1
-                                        } / ${
-                                            Math.round(group.endTime / 300) + 1
-                                        }`,
-                                        gridTemplateRows: `repeat(${Math.round(
-                                            (group.endTime - group.startTime) /
-                                                300,
-                                        )},1fr)`,
-                                        gridTemplateColumns: `repeat(${group.cards.length},1fr)`,
-                                    }}
-                                >
-                                    {group.cards
-                                        .sort(comparePriority)
-                                        .map((card, i) => {
-                                            const sectionCode =
-                                                APIv4.stringifySectionCodeLong(
-                                                    card.section.identifier,
-                                                );
-
-                                            return (
-                                                <div
-                                                    key={`slice:${sectionCode}/${i}`}
-                                                    className={classNames(
-                                                        Css.slice,
-                                                        {
-                                                            [Css.hover]:
-                                                                sectionCode ===
-                                                                hoverSection,
-                                                            [Css.highlight]:
-                                                                expandKey &&
-                                                                sectionCode ===
-                                                                    APIv4.stringifySectionCodeLong(
-                                                                        expandKey,
-                                                                    ),
-                                                        },
-                                                    )}
-                                                    style={{
-                                                        gridColumn: `${i + 1}`,
-                                                        gridRow: `${
-                                                            Math.round(
-                                                                (card.startTime -
-                                                                    group.startTime) /
-                                                                    300,
-                                                            ) + 1
-                                                        } / ${
-                                                            Math.round(
-                                                                (card.endTime -
-                                                                    group.startTime) /
-                                                                    300,
-                                                            ) + 1
-                                                        }`,
-                                                        ...sectionColorStyle(
-                                                            card.section
-                                                                .identifier,
-                                                            theme,
-                                                        ),
-                                                    }}
-                                                    onClick={() => {
-                                                        setExpandKey(
-                                                            card.section
-                                                                .identifier,
-                                                        );
-                                                        scrollToSection(
-                                                            card.section
-                                                                .identifier,
-                                                        );
-                                                    }}
-                                                    onPointerEnter={() =>
-                                                        setHoverSection(
-                                                            sectionCode,
-                                                        )
-                                                    }
-                                                    onPointerLeave={() =>
-                                                        setHoverSection(null)
-                                                    }
-                                                ></div>
-                                            );
-                                        })}
-                                </div>
-                            );
-                        }),
-                    )}
+                    <MinimapGroups
+                        cards={cards}
+                        unconflicting={unconflicting}
+                    />
                 </div>
             </div>
         </div>
+    );
+}
+
+function MinimapGroups(props: { cards: Card[]; unconflicting: any }) {
+    const setExpandKey = useStore((store) => store.setExpandKey);
+    const scrollToSection = useStore((store) => store.scrollToSection);
+    const renderingOptions = useStore(
+        (store) => store.scheduleRenderingOptions,
+    );
+    const [hoverSection, setHoverSection] = useState<string | null>(null);
+
+    const theme = useStore((store) => store.theme);
+    const expandKey = useStore((store) => store.expandKey);
+
+    const byDay = groupCardsByDay(props.cards);
+
+    return (
+        <>
+            {Object.entries(byDay).flatMap(([day, cards]) =>
+                mergeCards(cards).map((group, i) => {
+                    return (
+                        <div
+                            key={`group:${day}/${i}`}
+                            className={Css.cardGroup}
+                            style={{
+                                gridColumn: day,
+                                gridRow: `${
+                                    Math.round(group.startTime / 300) + 1
+                                } / ${Math.round(group.endTime / 300) + 1}`,
+                                gridTemplateRows: `repeat(${Math.round(
+                                    (group.endTime - group.startTime) / 300,
+                                )},1fr)`,
+                            }}
+                        >
+                            {group.cards
+                                .sort(comparePriority)
+                                .map((card, i) => {
+                                    const sectionCode =
+                                        APIv4.stringifySectionCodeLong(
+                                            card.section.identifier,
+                                        );
+
+                                    let marginLeft: string = `${
+                                        (i / group.cards.length) * 100
+                                    }%`;
+                                    let marginRight: string;
+                                    let visibility: "hidden" | undefined;
+
+                                    if (renderingOptions.showConflicting) {
+                                        marginRight = `${
+                                            ((group.cards.length - i - 1) /
+                                                group.cards.length) *
+                                            100
+                                        }%`;
+                                    } else {
+                                        if (
+                                            props.unconflicting.has(
+                                                card.section,
+                                            )
+                                        ) {
+                                            marginLeft = "0";
+                                            marginRight = "0";
+                                        } else {
+                                            marginRight = `${
+                                                (1 - i / group.cards.length) *
+                                                100
+                                            }%`;
+                                            visibility = "hidden";
+                                        }
+                                    }
+
+                                    return (
+                                        <div
+                                            key={`slice:${sectionCode}`}
+                                            className={classNames(Css.slice, {
+                                                [Css.hover]:
+                                                    sectionCode ===
+                                                    hoverSection,
+                                                [Css.highlight]:
+                                                    expandKey &&
+                                                    sectionCode ===
+                                                        APIv4.stringifySectionCodeLong(
+                                                            expandKey,
+                                                        ),
+                                            })}
+                                            style={{
+                                                marginLeft,
+                                                marginRight,
+                                                visibility,
+                                                gridRow: `${
+                                                    Math.round(
+                                                        (card.startTime -
+                                                            group.startTime) /
+                                                            300,
+                                                    ) + 1
+                                                } / ${
+                                                    Math.round(
+                                                        (card.endTime -
+                                                            group.startTime) /
+                                                            300,
+                                                    ) + 1
+                                                }`,
+                                                ...sectionColorStyle(
+                                                    card.section.identifier,
+                                                    theme,
+                                                ),
+                                            }}
+                                            onClick={() => {
+                                                setExpandKey(
+                                                    card.section.identifier,
+                                                );
+                                                scrollToSection(
+                                                    card.section.identifier,
+                                                );
+                                            }}
+                                            onPointerEnter={() =>
+                                                setHoverSection(sectionCode)
+                                            }
+                                            onPointerLeave={() =>
+                                                setHoverSection(null)
+                                            }
+                                        ></div>
+                                    );
+                                })}
+                        </div>
+                    );
+                }),
+            )}
+        </>
     );
 }
