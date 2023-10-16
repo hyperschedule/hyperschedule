@@ -159,21 +159,19 @@ export default function MiniMap() {
                             ></div>
                         ))
                     )}
-                    <MinimapGroups
-                        cards={cards}
-                        unconflicting={unconflicting}
-                    />
+                    <MinimapCards cards={cards} unconflicting={unconflicting} />
                 </div>
             </div>
         </div>
     );
 }
 
-function MinimapGroups(props: {
+function MinimapCards(props: {
     cards: Card[];
     unconflicting: Set<APIv4.Section>;
 }) {
     const byDay = groupCardsByDay(props.cards);
+    const [hoverSection, setHoverSection] = useState<string | null>(null);
 
     return (
         <>
@@ -192,6 +190,8 @@ function MinimapGroups(props: {
                                     card.section,
                                 )}
                                 groupSize={group.cards.length}
+                                hoverSection={hoverSection}
+                                setHoverSection={setHoverSection}
                             />
                         ));
                 }),
@@ -205,13 +205,14 @@ function Card(props: {
     isUnconflicting: boolean;
     index: number;
     groupSize: number;
+    hoverSection: string | null;
+    setHoverSection: (val: string | null) => void;
 }) {
     const setExpandKey = useStore((store) => store.setExpandKey);
     const scrollToSection = useStore((store) => store.scrollToSection);
     const renderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
-    const [hoverSection, setHoverSection] = useState<string | null>(null);
 
     const theme = useStore((store) => store.theme);
     const expandKey = useStore((store) => store.expandKey);
@@ -240,7 +241,7 @@ function Card(props: {
     return (
         <div
             className={classNames(Css.slice, {
-                [Css.hover]: sectionCode === hoverSection,
+                [Css.hover]: sectionCode === props.hoverSection,
                 [Css.highlight]:
                     expandKey &&
                     sectionCode === APIv4.stringifySectionCodeLong(expandKey),
@@ -259,8 +260,8 @@ function Card(props: {
                 setExpandKey(props.card.section.identifier);
                 scrollToSection(props.card.section.identifier);
             }}
-            onPointerEnter={() => setHoverSection(sectionCode)}
-            onPointerLeave={() => setHoverSection(null)}
+            onPointerEnter={() => props.setHoverSection(sectionCode)}
+            onPointerLeave={() => props.setHoverSection(null)}
         ></div>
     );
 }
