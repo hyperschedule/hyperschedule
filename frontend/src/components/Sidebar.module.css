@@ -127,7 +127,6 @@
 
     @define-mixin show-sidebar {
         transform: none;
-
         position: relative;
 
         grid-area: sidebar;

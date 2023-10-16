@@ -43,10 +43,76 @@
         }
     }
 
-    & .conflictingIcon {
-        & svg {
-            width: 1em;
-            height: 1em;
+    & .sectionInfo {
+        flex-basis: 100%;
+
+        display: grid;
+        position: relative;
+        align-items: center;
+        justify-items: center;
+
+        grid-template-areas:
+            "code conflict seats"
+            "title conflict badge";
+
+        grid-template-columns: 1fr 1em 5.5em;
+        gap: 0.5em;
+
+        @media (--viewport-large) {
+            grid-template-areas: "code title conflict badge seats";
+            /* sections with 3 digits enrollments (e.g. colloquiums) are about 3.3em wide */
+            grid-template-columns: auto 1fr 1em 5.5em 4em;
+
+            gap: 0.375em;
+
+            & .badge {
+                justify-self: self-end;
+            }
+
+            & .seats {
+                justify-self: self-end;
+            }
+        }
+
+        user-select: none;
+        cursor: pointer;
+
+        & .badge {
+            grid-area: badge;
+        }
+
+        & .seats {
+            grid-area: seats;
+        }
+
+        & .conflictingIcon {
+            grid-area: conflict;
+
+            & svg {
+                width: 1em;
+                height: 1em;
+            }
+        }
+
+        & .code {
+            grid-area: code;
+            justify-self: self-start;
+
+            font-weight: bold;
+            min-width: 8.5em;
+            font-size: 0.875em;
+        }
+
+        & .title {
+            grid-area: title;
+            justify-self: self-start;
+
+            overflow: clip;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            position: absolute;
+            width: 100%;
         }
     }
 
@@ -76,25 +142,5 @@
 
     & .deleteButton {
         padding-left: 0.5em;
-    }
-
-    & span.code {
-        font-weight: bold;
-        min-width: 8.5em;
-        font-size: 0.875em;
-    }
-
-    & span.title {
-    }
-
-    & span.text {
-        flex-grow: 1;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    & span.enrollments {
-        padding-left: 1em;
-        padding-right: 1em;
     }
 }

@@ -202,6 +202,9 @@ function SectionEntry(props: {
                 transform: DndUtil.CSS.Transform.toString(sortable.transform),
                 transition: sortable.transition,
             }}
+            data-show-conflicting={
+                scheduleRenderingOptions.showConflicting ? "" : undefined
+            }
             {...sortable.attributes}
             {...sortable.listeners}
         >
@@ -223,8 +226,9 @@ function SectionEntry(props: {
                     <Feather.Square strokeWidth={1.5} />
                 )}
             </button>
-            <span
-                className={Css.text}
+
+            <div
+                className={Css.sectionInfo}
                 onClick={() => {
                     if (mainTab === MainTab.CourseSearch) {
                         setExpandKey(props.entry.section);
@@ -242,26 +246,28 @@ function SectionEntry(props: {
                 <span className={Css.title}>
                     {section?.course.title ?? "(section no longer exists)"}
                 </span>
-            </span>
-            {isConflicting ? (
-                <div className={Css.conflictingIcon}>
-                    <Feather.EyeOff />
-                </div>
-            ) : (
-                <></>
-            )}
-            {section !== undefined ? (
-                <>
-                    <span className={Css.enrollments}>
-                        {section.seatsFilled}/{section.seatsTotal}
-                    </span>
-                    <span className={Css.badge}>
-                        <SectionStatusBadge status={section.status} />
-                    </span>
-                </>
-            ) : (
-                <></>
-            )}
+
+                {isConflicting ? (
+                    <div className={Css.conflictingIcon}>
+                        <Feather.EyeOff />
+                    </div>
+                ) : (
+                    <></>
+                )}
+                {section !== undefined ? (
+                    <>
+                        <span className={Css.seats}>
+                            {section.seatsFilled}/{section.seatsTotal}
+                        </span>
+                        <span className={Css.badge}>
+                            <SectionStatusBadge status={section.status} />
+                        </span>
+                    </>
+                ) : (
+                    <></>
+                )}
+            </div>
+
             <button
                 className={Css.deleteButton}
                 onClick={() => {
