@@ -138,32 +138,28 @@
         border-top: 1px dashed var(--bg-2);
     }
 
-    & .cardGroup {
-        display: grid;
-        overflow: hidden;
+    & .slice {
+        background-color: var(--section-color);
+        //border: 2px solid transparent;
+        cursor: pointer;
 
-        & .slice {
-            background-color: var(--section-color);
-            //border: 2px solid transparent;
-            cursor: pointer;
+        transition: margin var(--misc-transition-duration);
+        grid-column: 1 / -1;
 
-            transition: margin var(--misc-transition-duration);
-            grid-column: 1 / -1;
+        [data-theme="dark"] & {
+            color: white;
+        }
 
-            [data-theme="dark"] & {
-                color: white;
-            }
+        [data-theme="light"] & {
+            color: black;
+        }
 
-            [data-theme="light"] & {
-                color: black;
-            }
+        &.hover {
+            border: 2px solid var(--highlight);
+        }
 
-            &.hover {
-                border: 2px solid var(--highlight);
-            }
-            &.highlight {
-                border: 2px dashed var(--highlight);
-            }
+        &.highlight {
+            border: 2px dashed var(--highlight);
         }
     }
 

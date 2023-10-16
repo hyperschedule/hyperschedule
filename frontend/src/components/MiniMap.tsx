@@ -169,7 +169,43 @@ export default function MiniMap() {
     );
 }
 
-function MinimapGroups(props: { cards: Card[]; unconflicting: any }) {
+function MinimapGroups(props: {
+    cards: Card[];
+    unconflicting: Set<APIv4.Section>;
+}) {
+    const byDay = groupCardsByDay(props.cards);
+
+    return (
+        <>
+            {Object.entries(byDay).flatMap(([day, cards]) =>
+                mergeCards(cards).flatMap((group) => {
+                    return group.cards
+                        .sort(comparePriority)
+                        .map((card, i) => (
+                            <Card
+                                key={`${APIv4.stringifySectionCodeLong(
+                                    card.section.identifier,
+                                )}:${card.startTime}/${card.endTime}/${day}`}
+                                card={card}
+                                index={i}
+                                isUnconflicting={props.unconflicting.has(
+                                    card.section,
+                                )}
+                                groupSize={group.cards.length}
+                            />
+                        ));
+                }),
+            )}
+        </>
+    );
+}
+
+function Card(props: {
+    card: Card;
+    isUnconflicting: boolean;
+    index: number;
+    groupSize: number;
+}) {
     const setExpandKey = useStore((store) => store.setExpandKey);
     const scrollToSection = useStore((store) => store.scrollToSection);
     const renderingOptions = useStore(
@@ -180,120 +216,51 @@ function MinimapGroups(props: { cards: Card[]; unconflicting: any }) {
     const theme = useStore((store) => store.theme);
     const expandKey = useStore((store) => store.expandKey);
 
-    const byDay = groupCardsByDay(props.cards);
+    const sectionCode = APIv4.stringifySectionCodeLong(
+        props.card.section.identifier,
+    );
 
+    let marginLeft: string = `${(props.index / props.groupSize) * 100}%`;
+    let marginRight: string;
+    let visibility: "hidden" | undefined;
+
+    if (renderingOptions.showConflicting) {
+        marginRight = `${
+            ((props.groupSize - props.index - 1) / props.groupSize) * 100
+        }%`;
+    } else {
+        if (props.isUnconflicting) {
+            marginLeft = "0";
+            marginRight = "0";
+        } else {
+            marginRight = `${(1 - props.index / props.groupSize) * 100}%`;
+            visibility = "hidden";
+        }
+    }
     return (
-        <>
-            {Object.entries(byDay).flatMap(([day, cards]) =>
-                mergeCards(cards).map((group, i) => {
-                    return (
-                        <div
-                            key={`group:${day}/${i}`}
-                            className={Css.cardGroup}
-                            style={{
-                                gridColumn: day,
-                                gridRow: `${
-                                    Math.round(group.startTime / 300) + 1
-                                } / ${Math.round(group.endTime / 300) + 1}`,
-                                gridTemplateRows: `repeat(${Math.round(
-                                    (group.endTime - group.startTime) / 300,
-                                )},1fr)`,
-                            }}
-                        >
-                            {group.cards
-                                .sort(comparePriority)
-                                .map((card, i) => {
-                                    const sectionCode =
-                                        APIv4.stringifySectionCodeLong(
-                                            card.section.identifier,
-                                        );
-
-                                    let marginLeft: string = `${
-                                        (i / group.cards.length) * 100
-                                    }%`;
-                                    let marginRight: string;
-                                    let visibility: "hidden" | undefined;
-
-                                    if (renderingOptions.showConflicting) {
-                                        marginRight = `${
-                                            ((group.cards.length - i - 1) /
-                                                group.cards.length) *
-                                            100
-                                        }%`;
-                                    } else {
-                                        if (
-                                            props.unconflicting.has(
-                                                card.section,
-                                            )
-                                        ) {
-                                            marginLeft = "0";
-                                            marginRight = "0";
-                                        } else {
-                                            marginRight = `${
-                                                (1 - i / group.cards.length) *
-                                                100
-                                            }%`;
-                                            visibility = "hidden";
-                                        }
-                                    }
-
-                                    return (
-                                        <div
-                                            key={`slice:${sectionCode}`}
-                                            className={classNames(Css.slice, {
-                                                [Css.hover]:
-                                                    sectionCode ===
-                                                    hoverSection,
-                                                [Css.highlight]:
-                                                    expandKey &&
-                                                    sectionCode ===
-                                                        APIv4.stringifySectionCodeLong(
-                                                            expandKey,
-                                                        ),
-                                            })}
-                                            style={{
-                                                marginLeft,
-                                                marginRight,
-                                                visibility,
-                                                gridRow: `${
-                                                    Math.round(
-                                                        (card.startTime -
-                                                            group.startTime) /
-                                                            300,
-                                                    ) + 1
-                                                } / ${
-                                                    Math.round(
-                                                        (card.endTime -
-                                                            group.startTime) /
-                                                            300,
-                                                    ) + 1
-                                                }`,
-                                                ...sectionColorStyle(
-                                                    card.section.identifier,
-                                                    theme,
-                                                ),
-                                            }}
-                                            onClick={() => {
-                                                setExpandKey(
-                                                    card.section.identifier,
-                                                );
-                                                scrollToSection(
-                                                    card.section.identifier,
-                                                );
-                                            }}
-                                            onPointerEnter={() =>
-                                                setHoverSection(sectionCode)
-                                            }
-                                            onPointerLeave={() =>
-                                                setHoverSection(null)
-                                            }
-                                        ></div>
-                                    );
-                                })}
-                        </div>
-                    );
-                }),
-            )}
-        </>
+        <div
+            className={classNames(Css.slice, {
+                [Css.hover]: sectionCode === hoverSection,
+                [Css.highlight]:
+                    expandKey &&
+                    sectionCode === APIv4.stringifySectionCodeLong(expandKey),
+            })}
+            style={{
+                marginLeft,
+                marginRight,
+                visibility,
+                gridColumn: props.card.day,
+                gridRow: `${props.card.startTime / 300} / ${
+                    props.card.endTime / 300
+                }`,
+                ...sectionColorStyle(props.card.section.identifier, theme),
+            }}
+            onClick={() => {
+                setExpandKey(props.card.section.identifier);
+                scrollToSection(props.card.section.identifier);
+            }}
+            onPointerEnter={() => setHoverSection(sectionCode)}
+            onPointerLeave={() => setHoverSection(null)}
+        ></div>
     );
 }
