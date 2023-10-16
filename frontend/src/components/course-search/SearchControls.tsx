@@ -100,7 +100,8 @@ export default function SearchControls() {
                                     stringBefore.slice(0, match.index) +
                                     el.value.slice(el.selectionEnd);
 
-                                const key = match[1]! as Search.FilterKey;
+                                const key =
+                                    match[1]!.toLocaleLowerCase() as Search.FilterKey;
                                 addSearchFilter({
                                     key: key,
                                     data: null,
