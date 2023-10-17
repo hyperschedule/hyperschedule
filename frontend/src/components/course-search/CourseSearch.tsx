@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { useMeasure /*, useRafEffect*/ } from "@react-hookz/web";
+import { useMeasure } from "@react-hookz/web";
 //import classNames from "classnames";
 import { shallow } from "zustand/shallow";
 
@@ -15,6 +15,7 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { useUserStore } from "@hooks/store/user";
+import { PopupOption } from "@lib/popup";
 
 export default function CourseSearch() {
     const activeTerm = useUserStore((store) => store.activeTerm);
@@ -111,6 +112,7 @@ function CourseSearchResults(props: {
     );
 
     const setScrollFunc = useStore((store) => store.setScrollToSection);
+    const setPopup = useStore((store) => store.setPopup);
 
     const [expandIndex, setExpandIndex] = React.useState<number | null>(null);
 
@@ -162,8 +164,14 @@ function CourseSearchResults(props: {
         const index = allSectionsToIndexMap.get(
             APIv4.stringifySectionCodeLong(section),
         );
-        if (index === undefined) return;
-        if (rowBounds === undefined) return;
+        if (index === undefined || rowBounds === undefined) {
+            setPopup({
+                option: PopupOption.SectionDetail,
+                section,
+            });
+            return;
+        }
+
         viewportRef.current?.scrollTo({
             top: index * rowBounds.height,
         });
