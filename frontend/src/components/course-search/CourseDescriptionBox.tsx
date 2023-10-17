@@ -76,6 +76,10 @@ export default function CourseDescriptionBox(props: {
         });
     }
 
+    const instructors = props.section.instructors
+        .map((i) => i.name.trim())
+        .filter((s) => s !== "");
+
     if (!descriptions.data) return <></>;
 
     return (
@@ -122,12 +126,10 @@ export default function CourseDescriptionBox(props: {
             )}
 
             <section className={Css.instructors}>
-                <h3>
-                    Instructor{props.section.instructors.length > 1 ? "s" : ""}
-                </h3>
+                <h3>Instructor{instructors.length > 1 ? "s" : ""}</h3>
                 <ul>
-                    {props.section.instructors.map((i) => (
-                        <li key={i.name}>{i.name}</li>
+                    {instructors.map((name) => (
+                        <li key={name}>{name}</li>
                     ))}
                 </ul>
             </section>
