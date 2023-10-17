@@ -15,7 +15,23 @@ export default function ErrorFallback(props: FallbackProps) {
                 The choice from here is yours.
             </p>
 
-            <p>In any case, please consider filing a bug report.</p>
+            <p>
+                In any case, please consider filing a bug report.{" "}
+                <a
+                    target="_blank"
+                    href={
+                        "/json-viewer.html#" +
+                        btoa(
+                            JSON.stringify(
+                                props.error,
+                                Object.getOwnPropertyNames(props.error),
+                            ),
+                        )
+                    }
+                >
+                    Click here to view error details.
+                </a>
+            </p>
 
             <h2>Option 1: try again</h2>
             <div>
@@ -39,8 +55,11 @@ export default function ErrorFallback(props: FallbackProps) {
             <div>
                 <p>
                     If you have signed-in, your data is still available on the
-                    server and can be downloaded again. Otherwise, you can view
-                    them here before deleting them.
+                    server and can be downloaded again. Otherwise, you can{" "}
+                    <a href="/json-viewer.html" target="_blank">
+                        view them here
+                    </a>{" "}
+                    before deleting them.
                 </p>
 
                 <div style={{ display: "flex", gap: "1.5em" }}>

@@ -69,6 +69,7 @@ export default defineConfig(({ command, mode }) => {
             rollupOptions: {
                 input: {
                     app: "src/index.html",
+                    json: "src/json-viewer.html",
                     sw: "src/service-worker/sw.ts",
                 },
                 output: {
