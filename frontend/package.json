@@ -43,7 +43,6 @@
     "html2canvas": "^1.4.1",
     "hyperschedule-shared": "workspace:^",
     "postcss": "^8.4.30",
-    "postcss-comment": "^2.0.0",
     "postcss-custom-media": "^10.0.1",
     "postcss-nesting": "^12.0.1",
     "postcss-reuse": "^2.2.0",

@@ -137,7 +137,6 @@
 
         &.noon,
         &.evening {
-            //border-top: 1px solid var(--bg-3);
         }
     }
 
@@ -252,23 +251,6 @@
     z-index: var(--reverse-stack-order);
 
     opacity: calc(1 - 0.5 * var(--stack-order) / var(--group-size));
-
-    /*
-    //border-color: color-mix(in srgb, var(--section-color) 75%, black);
-    //border-color: var(--section-shadow);
-    */
-
-    /*
-    //box-shadow: 0 0 calc(max(0.1rem * var(--reverse-stack-order), 1px))
-    //    var(--section-shadow);
-
-    // this thing is 1px becuase this is actually standard-deviation, the same scale as gausian blur
-    // https://drafts.fxtf.org/filter-effects/#funcdef-filter-drop-shadow
-
-    //filter: drop-shadow(0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow))
-    //        opacity(var(--opacity)) ;
-    */
-
     &[data-conflict] {
         visibility: inherit;
     }

@@ -163,52 +163,8 @@
         }
     }
 
-    /*
-    & .card {
-        background: var(--section-color);
-        font-size: 0.75rem;
-        border-radius: 0.125rem;
-        padding: 0.125rem 0.25rem;
-        margin: 0.125rem;
-        text-align: center;
-        z-index: 1;
-        cursor: pointer;
-
-        border: 1px solid transparent;
-        transition: margin var(--misc-transition-duration);
-
-        margin-left: calc(0.125rem * (2 * var(--stack-order) + 1));
-        margin-top: calc(0.125rem * 2 * var(--stack-order));
-        margin-right: calc(0.125rem * (2 * var(--reverse-stack-order) + 1));
-        margin-bottom: calc(0.125rem * 2 * var(--reverse-stack-order));
-
-
-         [data-theme="dark"] & {
-            --section-color: color-mix(
-                in srgb,
-                var(--section-color-light) 50%,
-                var(--bg-1)
-            );
-            color: white;
-        }
-         [data-theme="light"] & {
-            --section-color: var(--section-color-light);
-            color: black;
-        }
-
-        &.highlight {
-            border-color: var(--highlight);
-        }
-    }
-    */
-
     & .expandOutline {
         border: 0.125em dashed var(--highlight);
-        //background-color: color-mix(
-        //    in srgb,
-        //    var(--highlight) 25%,
-        //    var(--highlight-transparent)
-        //);
         border-radius: 0.25em;
         z-index: 2;
     }

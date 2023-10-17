@@ -3319,7 +3319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^2.0.0, chalk@npm:^2.4.1":
+"chalk@npm:^2.0.0":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
   dependencies:
@@ -4787,7 +4787,6 @@ __metadata:
     immer: ^10.0.2
     md5: ^2.3.0
     postcss: ^8.4.30
-    postcss-comment: ^2.0.0
     postcss-custom-media: ^10.0.1
     postcss-nesting: ^12.0.1
     postcss-reuse: ^2.2.0
@@ -6748,15 +6747,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-comment@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "postcss-comment@npm:2.0.0"
-  dependencies:
-    postcss: ^6.0.0
-  checksum: c9c52fc46dbca63fdfa3209c52223569af95cc46b999d904dbcf1da9f5da740dd1fd58701b23973d401401aa703d78ce2b1ec546aee992b1260d3df8c4c231d4
-  languageName: node
-  linkType: hard
-
 "postcss-custom-media@npm:^10.0.1":
   version: 10.0.1
   resolution: "postcss-custom-media@npm:10.0.1"
@@ -6903,17 +6893,6 @@ __metadata:
   version: 4.2.0
   resolution: "postcss-value-parser@npm:4.2.0"
   checksum: 819ffab0c9d51cf0acbabf8996dffbfafbafa57afc0e4c98db88b67f2094cb44488758f06e5da95d7036f19556a4a732525e84289a425f4f6fd8e412a9d7442f
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^6.0.0":
-  version: 6.0.23
-  resolution: "postcss@npm:6.0.23"
-  dependencies:
-    chalk: ^2.4.1
-    source-map: ^0.6.1
-    supports-color: ^5.4.0
-  checksum: cc6cb2c1dbcdefa6f57a71d67fe535c9e96543298bbe28f9a6a64c4f1e21b6127113890dd4cda8873d3f4e6613a0566b7b4bbb230204f3a9a309190bda065d81
   languageName: node
   linkType: hard
 
@@ -7763,7 +7742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^5.3.0, supports-color@npm:^5.4.0":
+"supports-color@npm:^5.3.0":
   version: 5.5.0
   resolution: "supports-color@npm:5.5.0"
   dependencies:

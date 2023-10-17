@@ -1,4 +1,3 @@
-parser: postcss-comment
 plugins:
     autoprefixer: {}
     postcss-mixins: {}
