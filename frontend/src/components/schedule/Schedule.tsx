@@ -75,7 +75,6 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                                     orderFromTop={i}
                                     orderFromBottom={group.cards.length - 1 - i}
                                     totalCardsInGroup={group.cards.length}
-                                    showDetails={props.showDetails}
                                 />
                             ));
                         });
@@ -140,12 +139,11 @@ function DayLabels() {
 }
 
 function Card(props: {
-    readonly card: Readonly<Card>;
-    readonly orderFromTop: number;
-    readonly orderFromBottom: number;
-    readonly totalCardsInGroup: number;
-    readonly showDetails: boolean;
-    readonly conflict: boolean;
+    card: Readonly<Card>;
+    orderFromTop: number;
+    orderFromBottom: number;
+    totalCardsInGroup: number;
+    conflict: boolean;
 }) {
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
@@ -189,24 +187,12 @@ function Card(props: {
             <div className={Css.code}>
                 {APIv4.stringifySectionCode(props.card.section.identifier)}
             </div>
-            {/*{section ? (*/}
-            {/*    <>*/}
+
             <div className={Css.title}>{section.course.title}</div>
-            {props.showDetails ? (
-                <>
-                    <div className={Css.status}>
-                        <div>
-                            {section.seatsFilled} / {section.seatsTotal}
-                        </div>
-                        <SectionStatusBadge status={section.status} />
-                    </div>
-                    <div className={Css.location}>
-                        {combineLocations(props.card.locations).join(", ")}
-                    </div>
-                </>
-            ) : (
-                <></>
-            )}
+
+            <div className={Css.location}>
+                {combineLocations(props.card.locations).join(", ")}
+            </div>
 
             {props.card.section.identifier.half && (
                 <div className={Css.half}>
@@ -214,7 +200,7 @@ function Card(props: {
                     {props.card.section.identifier.half.number === 1
                         ? "first"
                         : "second"}{" "}
-                    half semester)
+                    half)
                 </div>
             )}
         </div>

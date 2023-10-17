@@ -48,7 +48,6 @@ export const enum Theme {
 
 export interface ScheduleRenderingOptions {
     showConflicting: boolean;
-    showDetails: boolean;
 }
 
 const initStore: Zustand.StateCreator<Store> = (set, get) => ({

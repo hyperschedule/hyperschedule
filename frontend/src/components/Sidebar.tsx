@@ -110,7 +110,7 @@ function ScheduleRendering() {
         <div className={Css.renderingOptions}>
             <Slider
                 value={options.showConflicting}
-                text="show conflicting"
+                text="show conflicting sections"
                 onToggle={() => {
                     setOptions({
                         ...options,

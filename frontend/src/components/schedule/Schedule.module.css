@@ -169,7 +169,9 @@
     */
 
     border: 1px solid transparent;
-    transition: margin var(--misc-transition-duration);
+    transition:
+        margin var(--misc-transition-duration),
+        grid-template-rows var(--misc-transition-duration);
 
     /*color: color-mix(
         in srgb,
@@ -195,8 +197,8 @@
     }
 
     display: grid;
-    grid-template-areas: "code" "title" "half" "status" "location";
-    grid-template-rows: auto 1fr auto auto auto;
+    grid-template-areas: "gap-top" "code" "title" "gap-middle" "location" "gap-bottom" "half";
+    grid-template-rows: 1fr auto auto minmax(0, 1.5em) auto 1fr auto;
     grid-template-columns: 100%;
 
     & .code {
@@ -210,18 +212,7 @@
 
     & .title {
         grid-area: title;
-        margin-bottom: 0.25em;
         align-self: center;
-    }
-
-    & .status {
-        grid-area: status;
-        align-self: center;
-        justify-self: center;
-
-        display: flex;
-        align-items: center;
-        flex-direction: column;
     }
 
     & .location {
@@ -251,6 +242,7 @@
     z-index: var(--reverse-stack-order);
 
     opacity: calc(1 - 0.5 * var(--stack-order) / var(--group-size));
+
     &[data-conflict] {
         visibility: inherit;
     }
