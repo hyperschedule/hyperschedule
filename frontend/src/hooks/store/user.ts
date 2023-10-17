@@ -43,6 +43,11 @@ function firstValidScheduleId(
     return sorted[0]![0];
 }
 
+function generateOfflineScheduleId() {
+    // some browsers don't have the randomUUID function
+    return `s~${window.crypto.randomUUID()}`;
+}
+
 const init: Zustand.StateCreator<Store> = (set, get) => {
     function update(f: (store: Store) => void) {
         set(produce(f));
@@ -158,9 +163,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
                 const result = await apiFetch.addSchedule(request);
                 id = result.scheduleId;
             } else {
-                // some browsers don't have the randomUUID function
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                id = `s~${(window.crypto.randomUUID ?? Math.random)()}`;
+                id = generateOfflineScheduleId();
             }
             const schedules = get().schedules;
 
@@ -200,9 +203,29 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             });
         },
 
-        duplicateSchedule: (request) => {
-            toast.error("Not implemented");
-            throw Error("Cannot duplicate schedule");
+        duplicateSchedule: async (request) => {
+            let id: string;
+            if (get().server) {
+                const result = await apiFetch.duplicateSchedule(request);
+                id = result.scheduleId;
+            } else {
+                id = generateOfflineScheduleId();
+            }
+
+            update((store) => {
+                const fromSchedule = store.schedules[request.scheduleId];
+                if (fromSchedule === undefined) {
+                    toast.error("Cannot duplicate a non-existent schedule");
+                    console.error(
+                        `Duplicating a non-existent schedule ${request.scheduleId}`,
+                    );
+                    return;
+                }
+                store.schedules[id] = { ...fromSchedule };
+                store.schedules[id]!.name = request.name;
+            });
+
+            return id;
         },
     };
 };

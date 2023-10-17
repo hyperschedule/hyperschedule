@@ -24,6 +24,11 @@ export const schema = {
             return: z.void(),
             status: 204,
         },
+        put: {
+            body: APIv4.DuplicateScheduleRequest,
+            return: APIv4.DuplicateScheduleResponse,
+            status: 200,
+        },
     }),
     section: Schema.route("/v4/user/section", {
         post: {
@@ -126,6 +131,7 @@ export const apiFetch = {
     addSchedule: schemaFetch(schema.schedule, "post"),
     deleteSchedule: schemaFetch(schema.schedule, "delete"),
     renameSchedule: schemaFetch(schema.schedule, "patch"),
+    duplicateSchedule: schemaFetch(schema.schedule, "put"),
     addSection: schemaFetch(schema.section, "post"),
     deleteSection: schemaFetch(schema.section, "delete"),
     setSectionAttrs: schemaFetch(schema.section, "patch"),

@@ -13,7 +13,7 @@ export type MethodSchemaGetAny = {
     readonly status: number;
 };
 
-export type MethodSchemaPost<_ extends "post" | "patch" | "delete"> = {
+export type MethodSchemaPost<_ extends "post" | "patch" | "delete" | "put"> = {
     readonly body: Z.ZodType<JsonValue>;
     readonly return: Z.ZodType<JsonValue | void>;
     readonly status: number;
@@ -22,6 +22,7 @@ export type MethodSchemaPost<_ extends "post" | "patch" | "delete"> = {
 export type MethodsSchemaAny = {
     readonly get?: MethodSchemaGetAny;
     readonly post?: MethodSchemaPost<"post">;
+    readonly put?: MethodSchemaPost<"put">;
     readonly patch?: MethodSchemaPost<"patch">;
     readonly delete?: MethodSchemaPost<"delete">;
 };
@@ -43,7 +44,7 @@ export type RouteSchemaAny = RouteSchema<`/${string}`, MethodsSchemaAny>;
 type MethodKey<
     Methods extends MethodsSchemaAny,
     Type extends MethodSchemaGetAny | MethodSchemaPostAny,
-    Key extends "get" | "post" | "patch" | "delete",
+    Key extends "get" | "post" | "patch" | "delete" | "put",
 > = Methods[Key] extends Type
     ? Key extends keyof Methods
         ? Key
@@ -54,11 +55,13 @@ export type MethodKeys<Schema extends MethodsSchemaAny> =
     | MethodKey<Schema, MethodSchemaGetAny, "get">
     | MethodKey<Schema, MethodSchemaPostAny, "post">
     | MethodKey<Schema, MethodSchemaPostAny, "patch">
+    | MethodKey<Schema, MethodSchemaPostAny, "put">
     | MethodKey<Schema, MethodSchemaPostAny, "delete">;
 
 export type RouteMethods<Schema extends RouteSchemaAny> = MethodKeys<
     Schema["methods"]
 >;
+
 export function route<
     Path extends `/${string}`,
     Methods extends MethodsSchemaAny,

@@ -118,8 +118,13 @@ function EditSchedule(props: {
             <button
                 className={classNames(AppCss.defaultButton, Css.renameButton)}
                 onClick={() => {
+                    if (name.trim() === "") {
+                        toast.error("New schedule name cannot be empty");
+                        return;
+                    }
+
                     setName("");
-                    renameSchedule({ scheduleId: props.id, name });
+                    renameSchedule({ scheduleId: props.id, name: name.trim() });
                 }}
             >
                 <Feather.Edit3 className={AppCss.defaultButtonIcon} />
@@ -131,8 +136,16 @@ function EditSchedule(props: {
                     Css.duplicateButton,
                 )}
                 onClick={() => {
+                    if (name.trim() === "") {
+                        toast.error("New schedule name cannot be empty");
+                        return;
+                    }
+
                     setName("");
-                    duplicateSchedule({ scheduleId: props.id, name })
+                    duplicateSchedule({
+                        scheduleId: props.id,
+                        name: name.trim(),
+                    })
                         .then(setActiveScheduleId)
                         .catch(() => {});
                 }}
