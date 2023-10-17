@@ -10,6 +10,7 @@ import {
     renameSchedule,
     replaceSections,
     setSectionAttrs,
+    duplicateSchedule,
 } from "../../db/models/user";
 import { createLogger } from "../../logger";
 import { json as jsonParser } from "milliparsec";
@@ -116,6 +117,25 @@ userApp
 
         await deleteSchedule(request.userToken.uuid, input.data.scheduleId);
         return response.status(204).end();
+    })
+    .put(async function (request: Request, response: Response) {
+        if (request.userToken === null) return response.status(401).end();
+
+        const input = APIv4.DuplicateScheduleRequest.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        const scheduleId = await duplicateSchedule(
+            request.userToken.uuid,
+            input.data.scheduleId,
+            input.data.name,
+        );
+        return response
+            .header("Content-Type", "application/json")
+            .send({ scheduleId } satisfies APIv4.DuplicateScheduleResponse);
     });
 
 userApp

@@ -286,6 +286,28 @@ export async function replaceSections(
     logger.info(`Replacing sections for ${userId} completed`);
 }
 
+export async function duplicateSchedule(
+    userId: APIv4.UserId,
+    fromScheduleId: APIv4.ScheduleId,
+    scheduleName: string,
+) {
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, fromScheduleId),
+    );
+    if (user === null) {
+        throw Error("User with this schedule not found");
+    }
+
+    const schedule = user.schedules[fromScheduleId]!;
+
+    return batchAddSectionsToNewSchedule(
+        userId,
+        schedule.sections,
+        schedule.term,
+        scheduleName,
+    );
+}
+
 export async function batchAddSectionsToNewSchedule(
     userId: APIv4.UserId,
     sections: APIv4.UserSection[],
