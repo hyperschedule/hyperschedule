@@ -1,0 +1,37 @@
+.container {
+    .createSchedule {
+        display: flex;
+    }
+
+    .editScheduleRow {
+        display: grid;
+        align-items: center;
+
+        grid-template-areas:
+            "name delete gap new-name rename"
+            "name delete gap new-name duplicate";
+
+        grid-template-columns: auto auto 1fr auto auto;
+        gap: 0.5em;
+
+        .name {
+            grid-area: name;
+        }
+
+        .newName {
+            grid-area: new-name;
+        }
+
+        .deleteButton {
+            grid-area: delete;
+        }
+
+        .renameButton {
+            grid-area: rename;
+        }
+
+        .duplicateButton {
+            grid-area: duplicate;
+        }
+    }
+}

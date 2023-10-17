@@ -126,3 +126,11 @@ export const ReplaceSectionsRequest = z.object({
     sections: UserSection.array(),
 });
 export type ReplaceSectionsRequest = z.infer<typeof ReplaceSectionsRequest>;
+
+export const DuplicateScheduleRequest = z.object({
+    scheduleId: ScheduleId,
+    name: z.string(),
+});
+export type DuplicateScheduleRequest = z.infer<typeof DuplicateScheduleRequest>;
+export const DuplicateScheduleResponse = AddScheduleResponse;
+export type DuplicateScheduleResponse = AddScheduleResponse;

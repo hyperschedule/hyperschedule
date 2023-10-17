@@ -140,7 +140,6 @@
 
     & .slice {
         background-color: var(--section-color);
-        //border: 2px solid transparent;
         cursor: pointer;
 
         transition: margin var(--misc-transition-duration);

@@ -1,4 +1,5 @@
 import Css from "@components/Sidebar.module.css";
+import AppCss from "@components/App.module.css";
 import MiniMap from "@components/MiniMap";
 import SelectedList from "@components/SelectedList";
 import * as React from "react";
@@ -10,6 +11,8 @@ import ThemeSlider from "./ThemeSlider";
 import Dropdown from "@components/common/Dropdown";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import Slider from "@components/common/Slider";
+import { PopupOption } from "@lib/popup";
+import classNames from "classnames";
 
 function scheduleDisplayName(schedule: APIv4.UserSchedule) {
     return `${schedule.name} (${APIv4.stringifyTermIdentifier(schedule.term)})`;
@@ -72,6 +75,7 @@ function ScheduleSelect() {
         (store) => store.setActiveScheduleId,
     );
     const userSchedules = useUserStore((store) => store.schedules);
+    const setPopup = useStore((store) => store.setPopup);
 
     const sortedSchedules = APIv4.getSchedulesSorted(userSchedules);
     const scheduleChoices = sortedSchedules.map((s) =>
@@ -94,8 +98,16 @@ function ScheduleSelect() {
                     }
                 />
             </div>
-            <button className={Css.editScheduleButton}>
-                <Feather.Edit className={Css.editIcon} />
+            <button
+                className={classNames(
+                    AppCss.defaultButton,
+                    Css.editScheduleButton,
+                )}
+                onClick={() =>
+                    setPopup({ option: PopupOption.ManageSchedules })
+                }
+            >
+                <Feather.Edit className={AppCss.defaultButtonIcon} />
                 Edit
             </button>
         </div>

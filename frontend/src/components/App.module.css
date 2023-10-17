@@ -43,6 +43,7 @@
     --hbg: #2878aa;
     --hfg: #efeae4;
 
+    --menu-transition-duration: 100ms;
     --theme-transition-duration: 200ms;
     --slider-transition-duration: 200ms;
     --misc-transition-duration: 200ms;
@@ -117,4 +118,23 @@
     &.hidden {
         visibility: hidden;
     }
+}
+
+button.defaultButton {
+    font-size: 1em;
+    font-family: inherit;
+    appearance: none;
+    border: none;
+    background-color: var(--hbg);
+    color: var(--hfg);
+    cursor: pointer;
+
+    & svg.defaultButtonIcon {
+        width: 1em;
+        height: 1em;
+    }
+
+    display: flex;
+    gap: 0.375em;
+    align-items: center;
 }

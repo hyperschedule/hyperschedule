@@ -15,6 +15,8 @@ import FilterBubble from "@components/course-search/filter-bubble/FilterBubble";
 import * as Search from "@lib/search";
 import { pick } from "@lib/store";
 import { useUserStore } from "@hooks/store/user";
+import AppCss from "@components/App.module.css";
+import classNames from "classnames";
 
 export default function SearchControls() {
     const user = useUserStore(pick("activeTerm", "setActiveTerm"), shallow);
@@ -162,10 +164,10 @@ export default function SearchControls() {
                 />
             </div>
             <button
-                className={Css.filterButton}
+                className={classNames(AppCss.defaultButton, Css.filterButton)}
                 onClick={() => setPopup({ option: PopupOption.Filter })}
             >
-                <Feather.Filter size={16} />
+                <Feather.Filter className={AppCss.defaultButtonIcon} />
                 Filters
             </button>
         </div>

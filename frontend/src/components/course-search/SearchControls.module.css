@@ -24,17 +24,6 @@
 
     & .filterButton {
         grid-area: filter;
-
-        border: none;
-        background-color: var(--hbg);
-        color: var(--hfg);
-        font: inherit;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        align-items: center;
-        column-gap: 0.5em;
-        padding: 0.25rem 0.5rem;
-        cursor: pointer;
     }
 }
 

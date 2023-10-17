@@ -19,6 +19,11 @@ export const schema = {
             return: z.void(),
             status: 204,
         },
+        patch: {
+            body: APIv4.RenameScheduleRequest,
+            return: z.void(),
+            status: 204,
+        },
     }),
     section: Schema.route("/v4/user/section", {
         post: {
@@ -120,6 +125,7 @@ export const apiFetch = {
     getUser: schemaFetch(schema.user, "get", false),
     addSchedule: schemaFetch(schema.schedule, "post"),
     deleteSchedule: schemaFetch(schema.schedule, "delete"),
+    renameSchedule: schemaFetch(schema.schedule, "patch"),
     addSection: schemaFetch(schema.section, "post"),
     deleteSection: schemaFetch(schema.section, "delete"),
     setSectionAttrs: schemaFetch(schema.section, "patch"),

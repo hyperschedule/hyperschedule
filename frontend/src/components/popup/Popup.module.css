@@ -6,10 +6,12 @@
     width: 100vw;
     height: 100vh;
     @media (--medium-and-up) {
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px) brightness(50%);
     }
+
+    transition: opacity var(--menu-transition-duration);
+
     z-index: 1000;
-    background-color: #0004;
 
     & .popupBox {
         width: 100vw;
@@ -55,5 +57,11 @@
         position: absolute;
         top: 0.5rem;
         right: 0.5rem;
+    }
+
+    &.inactive {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
 }

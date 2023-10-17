@@ -23,7 +23,14 @@ export type Store = {
     scheduleDeleteSection: (request: APIv4.DeleteSectionRequest) => void;
     scheduleSetSections: (request: APIv4.ReplaceSectionsRequest) => void;
     scheduleSetSectionAttrs: (request: APIv4.SetSectionAttrRequest) => void;
-    addSchedule: (request: APIv4.AddScheduleRequest) => string;
+    addSchedule: (
+        request: APIv4.AddScheduleRequest,
+    ) => Promise<APIv4.ScheduleId>;
+    deleteSchedule: (request: APIv4.DeleteScheduleRequest) => void;
+    renameSchedule: (request: APIv4.RenameScheduleRequest) => void;
+    duplicateSchedule: (
+        request: APIv4.DuplicateScheduleRequest,
+    ) => Promise<APIv4.ScheduleId>;
     setActiveTerm: (term: APIv4.TermIdentifier) => void;
     setActiveScheduleId: (scheduleId: APIv4.ScheduleId) => void;
 };
@@ -144,9 +151,19 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             });
         },
         confirmGuest: () => set({ hasConfirmedGuest: true }),
-        addSchedule: (request) => {
+        addSchedule: async (request) => {
+            let id: string;
+
+            if (get().server) {
+                const result = await apiFetch.addSchedule(request);
+                id = result.scheduleId;
+            } else {
+                // some browsers don't have the randomUUID function
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                id = `s~${(window.crypto.randomUUID ?? Math.random)()}`;
+            }
             const schedules = get().schedules;
-            const id = `${Object.keys(schedules).length}`;
+
             set({
                 schedules: {
                     ...schedules,
@@ -157,7 +174,35 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
                     },
                 },
             });
+
             return id;
+        },
+        deleteSchedule: (request) => {
+            if (get().server) apiFetch.deleteSchedule(request).catch(() => {});
+            update((store) => {
+                delete store.schedules[request.scheduleId];
+                if (store.activeScheduleId === request.scheduleId)
+                    store.activeScheduleId = null;
+            });
+        },
+        renameSchedule: (request) => {
+            if (get().server) apiFetch.renameSchedule(request).catch(() => {});
+            update((store) => {
+                const schedule = store.schedules[request.scheduleId];
+                if (schedule === undefined) {
+                    toast.error("Cannot rename a non-existent schedule");
+                    console.error(
+                        `Rename non-existent schedule ${request.scheduleId}`,
+                    );
+                    return;
+                }
+                schedule.name = request.name;
+            });
+        },
+
+        duplicateSchedule: (request) => {
+            toast.error("Not implemented");
+            throw Error("Cannot duplicate schedule");
         },
     };
 };

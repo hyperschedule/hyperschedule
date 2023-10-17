@@ -64,26 +64,17 @@
     }
 
     & .editScheduleButton {
-        font-size: 1em;
-        appearance: none;
-        border: none;
-        background-color: var(--hbg);
-        color: var(--hfg);
         height: 1.75em;
-
-        & .editIcon {
-            width: 1em;
-            height: 1em;
-        }
     }
 }
 
 .sidebar {
     transition:
-        border-left-color var(--theme-transition-duration),
-        transform var(--misc-transition-duration),
-        grid-template-rows var(--misc-transition-duration),
-        box-shadow var(--misc-transition-duration);
+        background-color var(--theme-transition-duration),
+        border-left-color var(--menu-transition-duration),
+        transform var(--menu-transition-duration),
+        grid-template-rows var(--menu-transition-duration),
+        box-shadow var(--menu-transition-duration);
 
     min-height: 0;
     min-width: calc(min(24rem, 100vw));

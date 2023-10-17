@@ -5,6 +5,7 @@ export const enum PopupOption {
     SectionDetail = "section",
     UserDetail = "user",
     Filter = "filter",
+    ManageSchedules = "manage-schedules",
 }
 
 export type Popup =
@@ -22,4 +23,5 @@ export type Popup =
     | {
           option: PopupOption.Filter;
       }
+    | { option: PopupOption.ManageSchedules }
     | null;
