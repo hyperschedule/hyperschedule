@@ -89,14 +89,14 @@
     min-width: calc(min(24rem, 100vw));
 
     display: grid;
-    grid-template-areas: "top" "minimap" "schedule-select" "rendering" "selected";
+    grid-template-areas: "top" "minimap" "credits" "schedule-select" "rendering" "selected";
 
     &[data-tab="CourseSearch"] {
-        grid-template-rows: auto 33.33% auto auto 2fr;
+        grid-template-rows: auto 33.33% auto auto auto 1fr;
     }
 
     &[data-tab="Schedule"] {
-        grid-template-rows: auto 0 auto auto 2fr;
+        grid-template-rows: auto 0 auto auto auto 1fr;
     }
 
     background-color: var(--bg-0);

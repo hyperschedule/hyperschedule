@@ -204,6 +204,9 @@
         grid-area: code;
         font-weight: 600;
         white-space: nowrap;
+
+        overflow: clip;
+        text-overflow: ellipsis;
     }
 
     & .title {

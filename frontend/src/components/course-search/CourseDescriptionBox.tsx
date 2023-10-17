@@ -11,6 +11,7 @@ import * as Feather from "react-feather";
 import { combineLocations } from "@lib/schedule";
 import { computeMuddCredits } from "@lib/credits";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
+import { useState } from "react";
 
 // certain course descriptions contain links, such as PE 095B
 const linkHtmlMatcher = /<a +href="?([A-Za-z0-9:\/.%_-]+)"?.*>(.*)<\/a>/;
@@ -46,6 +47,9 @@ const campusCss = [
     Css.ptz,
 ];
 
+// 3 years if offered every semester
+const HISTORY_ENTRY_CUTOFF = 6;
+
 export default function CourseDescriptionBox(props: {
     section: APIv4.Section;
     showStatus: boolean;
@@ -55,6 +59,22 @@ export default function CourseDescriptionBox(props: {
     const historyEntry = offeringHistory.get(
         APIv4.stringifyCourseCode(props.section.course.code),
     );
+
+    const [renderAllHistory, setRenderAllHistory] = useState<boolean>(false);
+
+    let pastOfferings: JSX.Element | JSX.Element[];
+    if (historyEntry === undefined || historyEntry.length === 0) {
+        pastOfferings = <li className={Css.none}>(none since 2011)</li>;
+    } else {
+        pastOfferings = (
+            renderAllHistory || historyEntry.length < HISTORY_ENTRY_CUTOFF
+                ? historyEntry
+                : historyEntry.slice(0, HISTORY_ENTRY_CUTOFF)
+        ).map((term) => {
+            const termString = APIv4.stringifyTermIdentifier(term);
+            return <li key={termString}>{termString}</li>;
+        });
+    }
 
     if (!descriptions.data) return <></>;
 
@@ -156,15 +176,19 @@ export default function CourseDescriptionBox(props: {
                 <>
                     <h3>Past Offerings</h3>
                     <ul>
-                        {historyEntry === undefined ||
-                        historyEntry.length === 0 ? (
-                            <li className={Css.none}>(none since 2011)</li>
+                        {pastOfferings}
+                        {renderAllHistory ||
+                        (historyEntry ?? []).length < HISTORY_ENTRY_CUTOFF ? (
+                            <></>
                         ) : (
-                            historyEntry.map((t) => (
-                                <li key={APIv4.stringifyTermIdentifier(t)}>
-                                    {APIv4.stringifyTermIdentifier(t)}
-                                </li>
-                            ))
+                            <li
+                                className={Css.remaining}
+                                onClick={() => setRenderAllHistory(true)}
+                            >
+                                (&hellip;{" "}
+                                {historyEntry!.length - HISTORY_ENTRY_CUTOFF}{" "}
+                                more)
+                            </li>
                         )}
                     </ul>
                 </>

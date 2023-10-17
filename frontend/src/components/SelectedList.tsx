@@ -70,92 +70,99 @@ export default function SelectedList() {
     );
 
     return (
-        <div className={Css.container}>
-            <div className={Css.list}>
-                <div className={Css.textContainer}>
-                    {scheduleRenderingOptions.showConflicting ? (
-                        <span>
-                            {unconflictingSections
-                                .map(computeMuddCredits)
-                                .reduce((a, b) => a + b, 0)}{" "}
-                            credits displayed
-                        </span>
-                    ) : (
-                        <span>
-                            {selectedSections
-                                .map(computeMuddCredits)
-                                .reduce((a, b) => a + b, 0)}{" "}
-                            credits selected
-                        </span>
-                    )}
-                </div>
-                <DndCore.DndContext
-                    collisionDetection={DndCore.closestCenter}
-                    sensors={sensors}
-                    onDragEnd={(event) => {
-                        if (!event.over || event.active.id === event.over.id)
-                            return;
-
-                        const oldId = event.active.id;
-                        const newId = event.over.id;
-
-                        const oldIndex = activeSchedule.sections.findIndex(
-                            (entry) =>
-                                APIv4.stringifySectionCodeLong(
-                                    entry.section,
-                                ) === oldId,
-                        );
-
-                        const newIndex = activeSchedule.sections.findIndex(
-                            (entry) =>
-                                APIv4.stringifySectionCodeLong(
-                                    entry.section,
-                                ) === newId,
-                        );
-
-                        scheduleSetSections({
-                            scheduleId: activeScheduleId,
-                            sections: DndSortable.arrayMove(
-                                activeSchedule.sections,
-                                oldIndex,
-                                newIndex,
-                            ),
-                        });
-                    }}
-                >
-                    <DndSortable.SortableContext
-                        items={activeSchedule.sections.map((entry) =>
-                            APIv4.stringifySectionCodeLong(entry.section),
-                        )}
-                        strategy={DndSortable.verticalListSortingStrategy}
-                    >
-                        {activeSchedule.sections.map((entry) => {
-                            const sectionCode = APIv4.stringifySectionCodeLong(
-                                entry.section,
-                            );
-                            const unconflicting =
-                                unconflictingSet.has(sectionCode);
-                            return (
-                                <SectionEntry
-                                    key={sectionCode}
-                                    entry={entry}
-                                    scheduleId={activeScheduleId}
-                                    unconflicting={unconflicting}
-                                />
-                            );
-                        })}
-                    </DndSortable.SortableContext>
-                    <DndCore.DragOverlay></DndCore.DragOverlay>
-                </DndCore.DndContext>
+        <>
+            <div className={Css.credits}>
                 {scheduleRenderingOptions.showConflicting ? (
-                    <></>
+                    <span>
+                        {selectedSections
+                            .map(computeMuddCredits)
+                            .reduce((a, b) => a + b, 0)}{" "}
+                        credits selected
+                    </span>
                 ) : (
-                    <div className={Css.textContainer}>
-                        <span>(drag sections to reorder them)</span>
-                    </div>
+                    <span>
+                        {unconflictingSections
+                            .map(computeMuddCredits)
+                            .reduce((a, b) => a + b, 0)}{" "}
+                        credits displayed
+                    </span>
                 )}
             </div>
-        </div>
+
+            <div className={Css.container}>
+                <div className={Css.list}>
+                    <DndCore.DndContext
+                        collisionDetection={DndCore.closestCenter}
+                        sensors={sensors}
+                        onDragEnd={(event) => {
+                            if (
+                                !event.over ||
+                                event.active.id === event.over.id
+                            )
+                                return;
+
+                            const oldId = event.active.id;
+                            const newId = event.over.id;
+
+                            const oldIndex = activeSchedule.sections.findIndex(
+                                (entry) =>
+                                    APIv4.stringifySectionCodeLong(
+                                        entry.section,
+                                    ) === oldId,
+                            );
+
+                            const newIndex = activeSchedule.sections.findIndex(
+                                (entry) =>
+                                    APIv4.stringifySectionCodeLong(
+                                        entry.section,
+                                    ) === newId,
+                            );
+
+                            scheduleSetSections({
+                                scheduleId: activeScheduleId,
+                                sections: DndSortable.arrayMove(
+                                    activeSchedule.sections,
+                                    oldIndex,
+                                    newIndex,
+                                ),
+                            });
+                        }}
+                    >
+                        <DndSortable.SortableContext
+                            items={activeSchedule.sections.map((entry) =>
+                                APIv4.stringifySectionCodeLong(entry.section),
+                            )}
+                            strategy={DndSortable.verticalListSortingStrategy}
+                        >
+                            {activeSchedule.sections.map((entry) => {
+                                const sectionCode =
+                                    APIv4.stringifySectionCodeLong(
+                                        entry.section,
+                                    );
+                                const unconflicting =
+                                    unconflictingSet.has(sectionCode);
+                                return (
+                                    <SectionEntry
+                                        key={sectionCode}
+                                        entry={entry}
+                                        scheduleId={activeScheduleId}
+                                        unconflicting={unconflicting}
+                                    />
+                                );
+                            })}
+                        </DndSortable.SortableContext>
+                        <DndCore.DragOverlay></DndCore.DragOverlay>
+                    </DndCore.DndContext>
+                    {scheduleRenderingOptions.showConflicting ? (
+                        <></>
+                    ) : (
+                        <div className={Css.textContainer}>
+                            <span>(drag sections to reorder them)</span>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </>
     );
 }
 
