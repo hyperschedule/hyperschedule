@@ -20,7 +20,7 @@ export default function ErrorFallback(props: FallbackProps) {
                 <a
                     target="_blank"
                     href={
-                        "/json-viewer.html#" +
+                        "/errors/json-viewer.html#" +
                         btoa(
                             JSON.stringify(
                                 props.error,
@@ -56,7 +56,7 @@ export default function ErrorFallback(props: FallbackProps) {
                 <p>
                     If you have signed-in, your data is still available on the
                     server and can be downloaded again. Otherwise, you can{" "}
-                    <a href="/json-viewer.html" target="_blank">
+                    <a href="/errors/json-viewer.html" target="_blank">
                         view them here
                     </a>{" "}
                     before deleting them.

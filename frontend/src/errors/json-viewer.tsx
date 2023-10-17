@@ -4,6 +4,8 @@ import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
 import { MAIN_STORE_NAME, USER_STORE_NAME } from "@lib/constants";
 
+// we will only ever render this if there's a repeated UI crash.
+// do not use any hyperschedule UI component here
 function JSONViewer() {
     if (window.location.hash !== "") {
         const data = JSON.parse(atob(window.location.hash.slice(1)));
