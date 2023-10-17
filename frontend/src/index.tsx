@@ -5,6 +5,8 @@ import * as React from "react";
 import * as ReactQuery from "@tanstack/react-query";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./ErrorFallback";
 
 export default function Root() {
     // memoize `queryClient` with empty dependency list to ensure it only gets
@@ -14,7 +16,9 @@ export default function Root() {
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
             <React.StrictMode>
-                <App />
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                    <App />
+                </ErrorBoundary>
             </React.StrictMode>
             <ReactQueryDevtools initialIsOpen={false} />
         </ReactQuery.QueryClientProvider>

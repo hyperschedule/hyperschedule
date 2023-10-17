@@ -6,6 +6,7 @@ import type * as APIv4 from "hyperschedule-shared/api/v4";
 import type { Popup } from "@lib/popup";
 import type { WithSetters } from "@lib/store";
 import { pick } from "@lib/store";
+import { MAIN_STORE_NAME } from "@lib/constants";
 
 // we need this so we can correctly render filters with immutable keys.
 // without this there are subtle bugs with filter deletions
@@ -115,7 +116,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => ({
 const useStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
         ZustandMiddleware.persist(initStore, {
-            name: "hyperschedule-store",
+            name: MAIN_STORE_NAME,
             partialize: pick("mainTab", "scheduleRenderingOptions", "theme"),
         }),
     ),

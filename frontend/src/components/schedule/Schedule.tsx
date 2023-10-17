@@ -25,7 +25,7 @@ import {
 } from "@lib/schedule";
 import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
 import { PopupOption } from "@lib/popup";
-import { scheduleContainerId } from "@lib/constants";
+import { SCHEDULE_CONTAINER_ID } from "@lib/constants";
 import type { CSSProperties } from "react";
 
 export default function Schedule(props: ScheduleRenderingOptions) {
@@ -47,7 +47,7 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                     "--end-hour": endHour,
                 } as React.CSSProperties
             }
-            id={scheduleContainerId}
+            id={SCHEDULE_CONTAINER_ID}
         >
             <DayLabels />
             <TimeLabels startHour={startHour} endHour={endHour} />

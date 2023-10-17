@@ -9,6 +9,7 @@ import { pick } from "@lib/store";
 
 import { toast } from "react-toastify";
 import { apiFetch } from "@lib/api";
+import { USER_STORE_NAME } from "@lib/constants";
 
 export type Store = {
     hasConfirmedGuest: boolean;
@@ -233,7 +234,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
 export const useUserStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
         ZustandMiddleware.persist(init, {
-            name: "hyperschedule-user",
+            name: USER_STORE_NAME,
             partialize: pick(
                 "schedules",
                 "hasConfirmedGuest",

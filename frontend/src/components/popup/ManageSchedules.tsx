@@ -25,6 +25,9 @@ export default function ManageSchedules() {
         APIv4.stringifyTermIdentifier(CURRENT_TERM),
     );
     const [newScheduleName, setNewScheduleName] = useState<string>("");
+    const [selectedSchedule, setSelectedSchedule] = useState<string>(
+        schedulesSorted[0]![0],
+    );
 
     return (
         <div className={Css.container}>
