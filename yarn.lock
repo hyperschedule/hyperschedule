@@ -4788,6 +4788,7 @@ __metadata:
     md5: ^2.3.0
     postcss: ^8.4.30
     postcss-custom-media: ^10.0.1
+    postcss-mixins: ^9.0.4
     postcss-nesting: ^12.0.1
     postcss-reuse: ^2.2.0
     randomcolor: ^0.6.2
@@ -4826,7 +4827,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.7.2
     "@typescript-eslint/parser": ^6.7.2
     eslint: ^8.50.0
-    postcss-mixins: ^9.0.4
     prettier: ^3.0.3
     typescript: ^5.2.2
   languageName: unknown
