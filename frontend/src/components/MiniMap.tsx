@@ -231,8 +231,20 @@ function Card(props: {
         }%`;
     } else {
         if (props.isUnconflicting) {
-            marginLeft = "0";
-            marginRight = "0";
+            const half = props.card.section.identifier.half;
+
+            if (half !== null) {
+                if (half.number === 1) {
+                    marginLeft = "0";
+                    marginRight = "50%";
+                } else {
+                    marginLeft = "50%";
+                    marginRight = "0";
+                }
+            } else {
+                marginLeft = "0";
+                marginRight = "0";
+            }
         } else {
             marginRight = `${(1 - props.index / props.groupSize) * 100}%`;
             visibility = "hidden";
