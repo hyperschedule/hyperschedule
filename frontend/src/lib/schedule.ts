@@ -256,3 +256,7 @@ export function combineLocations(locations: string[]): string[] {
     const room = locations.map((s) => s.split(" ").slice(-1)[0]!);
     return [`${prefix[0]} ${room.join(", ")}`];
 }
+
+export function scheduleDisplayName(schedule: APIv4.UserSchedule) {
+    return `${schedule.name} (${APIv4.stringifyTermIdentifier(schedule.term)})`;
+}

@@ -13,10 +13,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import Slider from "@components/common/Slider";
 import { PopupOption } from "@lib/popup";
 import classNames from "classnames";
-
-function scheduleDisplayName(schedule: APIv4.UserSchedule) {
-    return `${schedule.name} (${APIv4.stringifyTermIdentifier(schedule.term)})`;
-}
+import { scheduleDisplayName } from "@lib/schedule";
 
 export default function Sidebar() {
     const { tab, show, setShow } = useStore(
@@ -92,7 +89,11 @@ function ScheduleSelect() {
                 <Dropdown
                     choices={scheduleChoices}
                     selected={selectedSchedule}
-                    emptyPlaceholder="no schedule selected"
+                    emptyPlaceholder={
+                        sortedSchedules.length > 0
+                            ? "no schedule selected"
+                            : "no schedule available"
+                    }
                     onSelect={(index) =>
                         setActiveScheduleId(sortedSchedules[index]![0])
                     }

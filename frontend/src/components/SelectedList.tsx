@@ -153,7 +153,8 @@ export default function SelectedList() {
                         </DndSortable.SortableContext>
                         <DndCore.DragOverlay></DndCore.DragOverlay>
                     </DndCore.DndContext>
-                    {scheduleRenderingOptions.showConflicting ? (
+                    {scheduleRenderingOptions.showConflicting ||
+                    activeSchedule.sections.length === 0 ? (
                         <></>
                     ) : (
                         <div className={Css.textContainer}>

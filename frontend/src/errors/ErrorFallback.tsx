@@ -48,7 +48,16 @@ export default function ErrorFallback(props: FallbackProps) {
                     If the error does not involve any data-corruption, this
                     should fix it.
                 </p>
-                <button onClick={window.location.reload}>Refresh</button>
+
+                <button
+                    onClick={() => {
+                        // this has to be a lambda function, if we just pass in window.location.reload we'll get
+                        // an illegal invocation error because how `this` binding works in javascript
+                        window.location.reload();
+                    }}
+                >
+                    Refresh
+                </button>
             </div>
 
             <h2>Option 3: clear some data</h2>
