@@ -13,13 +13,14 @@
         transform: rotate(90deg);
     }
 
+    /*
     [data-theme="dark"] & .titlebar {
         color: white;
     }
 
     [data-theme="light"] & .titlebar {
         color: black;
-    }
+    }*/
 }
 
 .titlebar {

@@ -39,10 +39,6 @@
         @mixin show-sidebar;
     }
 
-    /* `h` stands for highlight */
-    --hbg: #2878aa;
-    --hfg: #efeae4;
-
     --menu-transition-duration: 100ms;
     --theme-transition-duration: 200ms;
     --slider-transition-duration: 200ms;
@@ -54,7 +50,7 @@
     --shadow-color: #0008;
 
     &[data-theme="light"] {
-        --bg-0: #ffffff;
+        --bg-0: hsl(35, 35%, 98%);
         --bg-1: hsl(35, 30%, 90%);
         --bg-2: hsl(35, 25%, 80%);
         --bg-3: hsl(35, 20%, 70%);
@@ -69,9 +65,13 @@
 
         --shadow: #4b4b48;
 
-        --palette-red: #f87171;
-        --palette-orange: #eab308;
-        --palette-green: #22c55e;
+        /* `h` stands for highlight */
+        --hbg: hsl(200, 95%, 85%);
+        --hfg: hsl(80, 30%, 10%);
+
+        --palette-red: hsl(0, 90%, 70%);
+        --palette-orange: hsl(45, 95%, 50%);
+        --palette-green: hsl(145, 70%, 50%);
     }
 
     &[data-theme="dark"] {
@@ -80,9 +80,9 @@
         --bg-2: hsl(35, 10%, 45%);
         --bg-3: hsl(35, 10%, 60%);
 
-        --fg-0: hsl(40, 25%, 90%);
-        --fg-1: hsl(40, 25%, 80%);
-        --fg-2: hsl(40, 25%, 70%);
+        --fg-0: hsl(40, 25%, 95%);
+        --fg-1: hsl(40, 25%, 85%);
+        --fg-2: hsl(40, 25%, 75%);
 
         --highlight: #f80;
         --highlight-transparent: #f800;
@@ -90,9 +90,12 @@
 
         --shadow: #6d6c6b;
 
-        --palette-red: #ec4202;
-        --palette-orange: #da9a03;
-        --palette-green: #58a803;
+        --hbg: hsl(200, 60%, 40%);
+        --hfg: hsl(60, 30%, 95%);
+
+        --palette-red: hsl(0, 50%, 50%);
+        --palette-orange: hsl(45, 55%, 50%);
+        --palette-green: hsl(145, 30%, 50%);
     }
 
     & div {
@@ -121,6 +124,7 @@
 }
 
 button.defaultButton {
+    border-radius: 0.125em;
     font-size: 1em;
     font-family: inherit;
     appearance: none;
@@ -137,4 +141,5 @@ button.defaultButton {
     display: flex;
     gap: 0.375em;
     align-items: center;
+    justify-content: center;
 }
