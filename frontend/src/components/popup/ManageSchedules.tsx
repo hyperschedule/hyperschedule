@@ -50,6 +50,21 @@ function CreateSchedule(props: {
     );
     const [newScheduleName, setNewScheduleName] = useState<string>("");
 
+    function createSchedule() {
+        const name = newScheduleName.trim();
+        if (name === "") {
+            toast.error("Schedule name cannot be empty");
+            return;
+        }
+        setNewScheduleName("");
+        addSchedule({
+            name: newScheduleName,
+            term: APIv4.parseTermIdentifier(selectedTerm),
+        })
+            .then(props.setSelectedScheduleId)
+            .catch(() => {});
+    }
+
     return (
         <div className={Css.createScheduleContainer}>
             <h3 className={Css.title}>Create Schedule</h3>
@@ -68,26 +83,16 @@ function CreateSchedule(props: {
                 placeholder="Schedule Name"
                 value={newScheduleName}
                 onChange={(ev) => setNewScheduleName(ev.target.value)}
+                onKeyDown={(ev) => {
+                    if (ev.code === "Enter") createSchedule();
+                }}
             />
             <button
                 className={classNames(
                     AppCss.defaultButton,
                     Css.createScheduleButton,
                 )}
-                onClick={() => {
-                    const name = newScheduleName.trim();
-                    if (name === "") {
-                        toast.error("Schedule name cannot be empty");
-                        return;
-                    }
-                    setNewScheduleName("");
-                    addSchedule({
-                        name: newScheduleName,
-                        term: APIv4.parseTermIdentifier(selectedTerm),
-                    })
-                        .then(props.setSelectedScheduleId)
-                        .catch(() => {});
-                }}
+                onClick={createSchedule}
             >
                 <Feather.FilePlus className={AppCss.defaultButtonIcon} /> create
                 schedule
@@ -163,6 +168,20 @@ function EditSchedule(props: {
         })
             .then(props.setSelectedScheduleId)
             .catch(() => {});
+    }
+
+    function confirmPending() {
+        switch (pending) {
+            case EditSchedulePending.duplicate:
+                performScheduleDuplication();
+                break;
+            case EditSchedulePending.delete:
+                performScheduleDeletion();
+                break;
+            case EditSchedulePending.rename:
+                performScheduleRename();
+        }
+        setPending(null);
     }
 
     return (
@@ -244,19 +263,7 @@ function EditSchedule(props: {
                             AppCss.defaultButton,
                             Css.confirmButton,
                         )}
-                        onClick={() => {
-                            switch (pending) {
-                                case EditSchedulePending.duplicate:
-                                    performScheduleDuplication();
-                                    break;
-                                case EditSchedulePending.delete:
-                                    performScheduleDeletion();
-                                    break;
-                                case EditSchedulePending.rename:
-                                    performScheduleRename();
-                            }
-                            setPending(null);
-                        }}
+                        onClick={confirmPending}
                     >
                         <Feather.Check className={AppCss.defaultButtonIcon} />
                         confirm
@@ -276,6 +283,9 @@ function EditSchedule(props: {
                         placeholder="new name"
                         value={name}
                         onChange={(ev) => setName(ev.target.value)}
+                        onKeyDown={(ev) => {
+                            if (ev.code === "Enter") confirmPending();
+                        }}
                     />
                 </>
             )}
