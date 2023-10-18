@@ -12,7 +12,7 @@ export const schema = {
         post: {
             body: APIv4.AddScheduleRequest,
             return: APIv4.AddScheduleResponse,
-            status: 201,
+            status: 200,
         },
         delete: {
             body: APIv4.DeleteScheduleRequest,
