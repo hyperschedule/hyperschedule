@@ -61,6 +61,7 @@ export function useOfferingHistory(term: APIv4.TermIdentifier) {
         queryKey: ["last-offered", term] as const,
         queryFn: (ctx) => getOfferingHistory(ctx.queryKey[1]!),
         staleTime: 24 * 60 * 60 * 1000, // 1 day
+        gcTime: 24 * 60 * 60 * 1000,
         refetchInterval: 24 * 60 * 60 * 1000,
     });
 }

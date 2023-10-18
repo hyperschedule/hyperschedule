@@ -11,7 +11,17 @@ import ErrorFallback from "./errors/ErrorFallback";
 export default function Root() {
     // memoize `queryClient` with empty dependency list to ensure it only gets
     // constructed/initialized once throughout the app's lifecycle
-    const queryClient = React.useMemo(() => new ReactQuery.QueryClient(), []);
+    const queryClient = React.useMemo(
+        () =>
+            new ReactQuery.QueryClient({
+                defaultOptions: {
+                    queries: {
+                        gcTime: Infinity,
+                    },
+                },
+            }),
+        [],
+    );
     void prefetchDataForTerm(CURRENT_TERM, queryClient);
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>
@@ -20,7 +30,10 @@ export default function Root() {
                     <App />
                 </ErrorBoundary>
             </React.StrictMode>
-            <ReactQueryDevtools initialIsOpen={false} />
+            <ReactQueryDevtools
+                initialIsOpen={false}
+                buttonPosition="bottom-left"
+            />
         </ReactQuery.QueryClientProvider>
     );
 }

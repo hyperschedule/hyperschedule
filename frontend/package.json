@@ -64,8 +64,8 @@
   },
   "dependencies": {
     "@react-hookz/web": "^20.0.3",
-    "@tanstack/react-query": "^4.32.0",
-    "@tanstack/react-query-devtools": "^4.32.0",
+    "@tanstack/react-query": "^5.0.0",
+    "@tanstack/react-query-devtools": "^5.0.0",
     "@types/md5": "^2.3.2",
     "immer": "^10.0.2",
     "md5": "^2.3.0",
