@@ -1,0 +1,48 @@
+.alternativeContainer {
+    display: flex;
+    justify-content: space-evenly;
+
+    flex-direction: column;
+    height: 100%;
+
+    @media (--medium-and-up) {
+        flex-direction: row;
+        height: unset;
+    }
+
+    & .line {
+        display: flex;
+        box-sizing: content-box;
+        align-items: center;
+
+        &:before,
+        &:after {
+            content: "";
+            width: 50%;
+            height: 0;
+
+            border-top: 0.125em solid var(--bg-1);
+            border-left: 0.125em solid var(--bg-1);
+        }
+
+        @media (--medium-and-up) {
+            flex-direction: column;
+
+            &:before,
+            &:after {
+                width: 0;
+                height: 50%;
+            }
+        }
+
+        & .text {
+            /* uppercase so vertical alignment doesn't look a few pixels off */
+            text-transform: uppercase;
+            height: 3em;
+            width: 3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

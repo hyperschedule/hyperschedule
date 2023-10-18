@@ -1,37 +1,144 @@
-.container {
-    .createSchedule {
-        display: flex;
+.manageSchedules {
+    & button {
+        height: 1.75em;
     }
 
-    .editScheduleRow {
+    & input {
+        font-size: 1em;
+        height: 1.75em;
+        outline: none;
+        border: 0.125em solid var(--bg-1);
+        padding: 0.25em;
+        border-radius: 0.25em;
+        box-sizing: border-box;
+
+        background-color: transparent;
+
+        &:focus {
+            border: 0.125em solid var(--hbg);
+        }
+    }
+
+    & .title {
+        grid-area: title;
+        text-align: center;
+        font-weight: normal;
+    }
+
+    & .createScheduleContainer,
+    & .editScheduleContainer {
         display: grid;
         align-items: center;
+        gap: 0.25em;
+
+        grid-template-rows: 1fr 1.75em 1.75em 1.75em;
+        @media (--medium-and-up) {
+            grid-template-rows: 2fr 1.75em 1.75em 1.75em 1fr;
+            min-width: 15em;
+        }
+    }
+
+    & .createScheduleContainer {
+        grid-template-areas: "title" "input" "term" "button";
+
+        & .createScheduleButton {
+            grid-area: button;
+        }
+
+        & .createScheduleName {
+            grid-area: input;
+        }
+
+        & .createScheduleTerm {
+            grid-area: term;
+            height: 1.75em;
+        }
+    }
+
+    & .editScheduleContainer {
+        transition: opacity var(--menu-transition-duration);
 
         grid-template-areas:
-            "name delete gap new-name rename"
-            "name delete gap new-name duplicate";
+            "title title"
+            "dropdown dropdown"
+            "delete delete"
+            "rename duplicate";
 
-        grid-template-columns: auto auto 1fr auto auto;
-        gap: 0.5em;
-
-        .name {
-            grid-area: name;
+        & .editScheduleDropdown {
+            height: 100%;
+            grid-area: dropdown;
         }
 
-        .newName {
-            grid-area: new-name;
-        }
-
-        .deleteButton {
+        & .newName,
+        & .sectionCount,
+        & .deleteButton {
             grid-area: delete;
         }
 
-        .renameButton {
+        & .confirmButton,
+        & .renameButton {
             grid-area: rename;
         }
 
-        .duplicateButton {
+        & .cancelButton,
+        & .duplicateButton {
             grid-area: duplicate;
+        }
+
+        & .confirmButton {
+            color: var(--fg-0);
+            background-color: var(--palette-green);
+        }
+
+        & .cancelButton {
+            color: var(--fg-0);
+            background-color: var(--palette-red);
+        }
+
+        & .sectionCount {
+            text-align: center;
+        }
+
+        @define-mixin visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @define-mixin invisible {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        & .confirmButton,
+        & .cancelButton,
+        & .sectionCount,
+        & .newName {
+            @mixin invisible;
+        }
+
+        &[data-pending-action] {
+            & .confirmButton,
+            & .cancelButton {
+                @mixin visible;
+            }
+
+            & .duplicateButton,
+            & .renameButton,
+            & .deleteButton {
+                @mixin invisible;
+            }
+
+            &:not([data-pending-action="delete"]) {
+                & .newName {
+                    @mixin visible;
+                }
+            }
+
+            &[data-pending-action="delete"] {
+                & .sectionCount {
+                    @mixin visible;
+                }
+            }
         }
     }
 }

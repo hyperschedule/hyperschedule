@@ -13,7 +13,8 @@
 
     z-index: 1000;
 
-    & .popupBox {
+    & .popupBox,
+    & .popupContent {
         width: 100vw;
         height: 100vh;
         min-height: 30vh;
@@ -25,6 +26,9 @@
             height: unset;
             max-height: 80vh;
             border-radius: 0.25rem;
+
+            /*setting a bare grid so child containers will expand to full size*/
+            display: grid;
         }
 
         @media (--medium-only) {
@@ -36,6 +40,9 @@
             width: 60vw;
             min-height: 20vh;
         }
+    }
+
+    & .popupBox {
         background: var(--bg-0);
         position: absolute;
 
@@ -45,7 +52,7 @@
     }
 
     & .popupContent {
-        margin: 2rem;
+        padding: 2rem;
     }
 
     & .closeButton {

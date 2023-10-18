@@ -142,4 +142,8 @@ button.defaultButton {
     gap: 0.375em;
     align-items: center;
     justify-content: center;
+
+    &:hover {
+        filter: brightness(95%);
+    }
 }

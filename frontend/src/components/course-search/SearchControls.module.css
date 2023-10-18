@@ -7,11 +7,13 @@
         "input input"
         "term filter";
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1.75em;
     gap: 0.5em 1em;
 
     @media (--medium-and-up) {
         grid-template-areas: "term input filter";
         grid-template-columns: auto 1fr auto;
+        grid-template-rows: auto;
     }
 
     padding: 1rem;
@@ -33,7 +35,8 @@
     display: flex;
     flex-wrap: wrap-reverse;
 
-    border: 1px solid var(--bg-1);
+    border: 0.125em solid var(--bg-1);
+
     padding: 0.25rem;
     transition: border-color var(--theme-transition-duration);
 
@@ -51,5 +54,9 @@
         outline: none;
 
         flex-grow: 1;
+    }
+
+    &:focus-within {
+        border: 0.125em solid var(--hbg);
     }
 }
