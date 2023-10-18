@@ -3,8 +3,8 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useQuery } from "@tanstack/react-query";
 
 import { useMemo } from "react";
-import useStore from "@hooks/store";
 import { useUserStore } from "@hooks/store/user";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     const resp = await fetch(
@@ -36,12 +36,14 @@ export async function getOfferingHistory(term: APIv4.TermIdentifier) {
 }
 
 export function useSectionsQuery(term: APIv4.TermIdentifier) {
-    // only enable query _after_ a term has been specified
+    let timeout = 30 * 1000;
+    if (APIv4.termIsBefore(term, CURRENT_TERM)) timeout = 60 * 60 * 1000;
+
     return useQuery({
         queryKey: ["sections", term] as const,
         queryFn: (ctx) => getSectionsForTerm(ctx.queryKey[1]!),
-        staleTime: 30 * 1000,
-        refetchInterval: 30 * 1000,
+        staleTime: timeout,
+        refetchInterval: timeout,
     });
 }
 

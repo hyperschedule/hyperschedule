@@ -58,7 +58,7 @@ export default function App() {
             <Sidebar />
             <ToastContainer
                 position="top-center"
-                hideProgressBar
+                // hideProgressBar
                 theme={theme}
                 transition={Slide}
             />

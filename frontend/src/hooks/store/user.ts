@@ -80,7 +80,20 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
                 toast.error("invalid activeScheduleId");
                 return;
             }
+            const oldTerm = get().activeTerm;
+
             set({ activeScheduleId, activeTerm: schedule.term });
+
+            if (
+                oldTerm.term !== schedule.term.term ||
+                oldTerm.year !== schedule.term.year
+            ) {
+                toast.info(
+                    `Switched term to ${APIv4.stringifyTermIdentifier(
+                        schedule.term,
+                    )}`,
+                );
+            }
         },
         activeTerm: CURRENT_TERM,
         setActiveTerm: (term) => {
