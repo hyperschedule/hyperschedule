@@ -8,8 +8,14 @@ const DATA_VIEWER_PATH = "/data-viewer/data-viewer.html";
  */
 export default function ErrorFallback(props: FallbackProps) {
     return (
-        <div style={{ maxWidth: "45em", margin: "auto" }}>
-            <h1>Oops</h1>
+        <div
+            style={{
+                maxWidth: "45em",
+                margin: "auto",
+                fontFamily: "Inter, sans-serif",
+            }}
+        >
+            <h1>(☉﹏☉)</h1>
             <p>
                 If you are seeing this, the program has gone horribly wrong. We
                 cannot recover from the error. However, not all hope has lost.

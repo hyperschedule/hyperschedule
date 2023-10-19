@@ -272,7 +272,14 @@ function SectionEntry(props: {
                         </span>
                     </>
                 ) : (
-                    <></>
+                    <>
+                        <span className={Css.seats}>(-_-)</span>
+                        <span className={Css.badge}>
+                            <SectionStatusBadge
+                                status={APIv4.SectionStatus.unknown}
+                            />
+                        </span>
+                    </>
                 )}
             </div>
 

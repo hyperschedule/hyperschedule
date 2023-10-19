@@ -11,7 +11,7 @@ export default function SectionDetails(props: {
 
     const lookup = useActiveSectionsLookup();
     const s = lookup.get(APIv4.stringifySectionCodeLong(props.section));
-    if (s === undefined) return <>Section data not found</>;
+    if (s === undefined) return <>Section data not found 😔</>;
     return (
         <div className={Css.content}>
             <h3 className={Css.sectionTitle}>
