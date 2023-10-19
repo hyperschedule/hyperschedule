@@ -6,7 +6,7 @@ import * as ReactQuery from "@tanstack/react-query";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "./errors/ErrorFallback";
+import ErrorFallback from "@components/ErrorFallback";
 
 export default function Root() {
     // memoize `queryClient` with empty dependency list to ensure it only gets

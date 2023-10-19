@@ -8,14 +8,23 @@ import { useState } from "react";
 
 // this is rendered if there's a repeated UI crash or the user tried to view their data.
 // do not use any hyperschedule UI component here.
-function JSONViewer() {
+function DataViewer() {
     const [cloudData, setCloudData] = useState<
         Record<string, unknown> | string | undefined | null
     >(undefined);
 
+    let error: JSX.Element;
+
     if (window.location.hash !== "") {
         const data = JSON.parse(atob(window.location.hash.slice(1)));
-        return <JsonView src={data} displaySize="collapsed" />;
+        error = (
+            <>
+                <h3>Error detail</h3>{" "}
+                <JsonView src={data} displaySize="collapsed" />
+            </>
+        );
+    } else {
+        error = <></>;
     }
 
     function retrieveCloud() {
@@ -36,6 +45,7 @@ function JSONViewer() {
 
     return (
         <div>
+            {error}
             <h3>Cloud data</h3>
             {cloudData === undefined ? (
                 <button onClick={retrieveCloud}>Retrieve</button>
@@ -65,6 +75,6 @@ function JSONViewer() {
 createRoot(document.getElementById("root")!).render(
     // line-height is needed for https://github.com/YYsuni/react18-json-view/issues/24
     <div style={{ lineHeight: "1.25em", fontFamily: "Inter, sans-serif" }}>
-        <JSONViewer />
+        <DataViewer />
     </div>,
 );

@@ -1,6 +1,7 @@
 import type { FallbackProps } from "react-error-boundary";
 import { MAIN_STORE_NAME, USER_STORE_NAME } from "@lib/constants";
 
+const DATA_VIEWER_PATH = "/data-viewer/data-viewer.html";
 /**
  * if this function is called, something horribly wrong has happened (maybe an incorrect non-null assertion somewhere).
  * we can no longer trust anything in the store or any other hooks
@@ -20,7 +21,8 @@ export default function ErrorFallback(props: FallbackProps) {
                 <a
                     target="_blank"
                     href={
-                        "/errors/json-viewer.html#" +
+                        DATA_VIEWER_PATH +
+                        "#" +
                         btoa(
                             JSON.stringify(
                                 props.error,
@@ -65,7 +67,7 @@ export default function ErrorFallback(props: FallbackProps) {
                 <p>
                     If you have signed-in, your data is still available on the
                     server and can be downloaded again. Otherwise, you can{" "}
-                    <a href="/errors/json-viewer.html" target="_blank">
+                    <a href={DATA_VIEWER_PATH} target="_blank">
                         view them here
                     </a>{" "}
                     before deleting them.
