@@ -9,6 +9,6 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -a "export PATH=/srv/hyperschedule/node_modules/.bin:\$PATH"
 RUN npm install --global pure-prompt
 
-RUN ln -s "$(pwd)/hooks/pre-commit" .git/hooks/pre-commit
-RUN ln -s "$(pwd)/hooks/post-merge" .git/hooks/post-merge
-RUN ln -s "$(pwd)/hooks/post-checkout" .git/hooks/post-checkout
+RUN ln -s "../../hooks/pre-commit" .git/hooks/pre-commit
+RUN ln -s "../../hooks/post-merge" .git/hooks/post-merge
+RUN ln -s "../../hooks/post-checkout" .git/hooks/post-checkout
