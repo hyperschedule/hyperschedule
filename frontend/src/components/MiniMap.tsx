@@ -10,11 +10,6 @@ import { sectionColorStyle } from "@lib/color";
 import GridBackgroundColumns from "@components/schedule/GridBackgroundColumns";
 
 import classNames from "classnames";
-
-const MORNING_LINE_HOUR = 8;
-const NOON_LINE_HOUR = 13;
-const EVENING_LINE_HOUR = 18;
-
 import {
     type Card,
     cardKey,
@@ -24,6 +19,11 @@ import {
 } from "@lib/schedule";
 import { useState } from "react";
 import * as Feather from "react-feather";
+import { PopupOption } from "@lib/popup";
+
+const MORNING_LINE_HOUR = 8;
+const NOON_LINE_HOUR = 13;
+const EVENING_LINE_HOUR = 18;
 
 export default function MiniMap() {
     const { bounds, cards, expandCards, startHour, endHour, unconflicting } =
@@ -208,8 +208,7 @@ function Card(props: {
     hoverSection: string | null;
     setHoverSection: (val: string | null) => void;
 }) {
-    const setExpandKey = useStore((store) => store.setExpandKey);
-    const scrollToSection = useStore((store) => store.scrollToSection);
+    const setPopup = useStore((store) => store.setPopup);
     const renderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
@@ -269,8 +268,10 @@ function Card(props: {
                 ...sectionColorStyle(props.card.section.identifier, theme),
             }}
             onClick={() => {
-                setExpandKey(props.card.section.identifier);
-                scrollToSection(props.card.section.identifier);
+                setPopup({
+                    option: PopupOption.SectionDetail,
+                    section: props.card.section.identifier,
+                });
             }}
             onPointerEnter={() => props.setHoverSection(sectionCode)}
             onPointerLeave={() => props.setHoverSection(null)}

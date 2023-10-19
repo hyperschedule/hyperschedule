@@ -74,7 +74,7 @@ export default function Filter() {
 
     return (
         <div>
-            <h2> Filters </h2>
+            <h2 className={Css.title}> Filters </h2>
             <div>
                 When multiple filters are specified, only courses matching all
                 the criteria will be shown. You can add a filter by typing its
