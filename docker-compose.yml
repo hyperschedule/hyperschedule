@@ -5,6 +5,14 @@ services:
         build:
             context: .
             dockerfile: dev.dockerfile
+        volumes:
+            - node_modules:/srv/hyperschedule/node_modules
+            - ./yarn.lock:/srv/hyperschedule/yarn.lock:ro
+            - ./package.json:/srv/hyperschedule/package.json:ro
+            - ./frontend/package.json:/srv/hyperschedule/frontend/package.json:ro
+            - ./backend/package.json:/srv/hyperschedule/backend/package.json:ro
+            - ./shared/package.json:/srv/hyperschedule/shared/package.json:ro
+        command: yarn install --immutable
 
     db:
         image: mongo
@@ -17,40 +25,22 @@ services:
             MONGO_INITDB_ROOT_PASSWORD:
                 local_dev
 
-                #db-init:
-                #  image:  hyperschedule-dev-base
-                #  networks:
-                #    - backend
-                #  depends_on:
-                #    base:
-                #      condition: service_completed_successfully
-                #    db:
-                #      condition: service_started
-                #  volumes:
-                #    - ./backend:/srv/hyperschedule/backend:ro
-                #    - ./shared:/srv/hyperschedule/shared:ro
-                #    - ./data:/srv/hyperschedule/data:ro
-                #  working_dir: /srv/hyperschedule/backend
-                #  command: yarn dev-node ./src/db/init-db.ts
-                #  environment:
-                #    DB_URL: mongodb://hyperschedule:local_dev@db
-
     backend:
         image: hyperschedule-dev-base
         depends_on:
             base:
                 condition:
                     service_completed_successfully
-                    #db-init:
-                    #    condition: service_completed_successfully
         ports:
             - 8080:8080
         networks:
             - backend
         volumes:
+            - node_modules:/srv/hyperschedule/node_modules
             - ./backend:/srv/hyperschedule/backend:ro
             - ./shared:/srv/hyperschedule/shared:ro
             - ./data:/srv/hyperschedule/data:ro
+
         working_dir: /srv/hyperschedule/backend
         command: yarn serve
         environment:
@@ -65,6 +55,7 @@ services:
             - 5000:5000
         volumes:
             # this is not read-only because vite really wants to write some files
+            - node_modules:/srv/hyperschedule/node_modules
             - ./frontend:/srv/hyperschedule/frontend
             - ./shared:/srv/hyperschedule/shared:ro
             - ./data:/srv/hyperschedule/data:ro
@@ -87,3 +78,6 @@ services:
 
 networks:
     backend:
+
+volumes:
+    node_modules:
