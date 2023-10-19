@@ -2426,6 +2426,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-cookie@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@types/js-cookie@npm:3.0.5"
+  checksum: 4d91ae26445499fdde283928aac9ad149be3561ef9b4d959f77e44694608accd5939c8c68ba42c50c2cfc007ccd442cc566a41077d7f2766390088fa91b612ce
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.12":
   version: 7.0.13
   resolution: "@types/json-schema@npm:7.0.13"
@@ -4768,6 +4775,7 @@ __metadata:
     "@react-hookz/web": ^20.0.3
     "@tanstack/react-query": ^5.0.0
     "@tanstack/react-query-devtools": ^5.0.0
+    "@types/js-cookie": ^3.0.5
     "@types/md5": ^2.3.2
     "@types/randomcolor": ^0.5.7
     "@types/react": ^18.0.26
@@ -4780,6 +4788,7 @@ __metadata:
     html2canvas: ^1.4.1
     hyperschedule-shared: "workspace:^"
     immer: ^10.0.2
+    js-cookie: ^3.0.5
     md5: ^2.3.0
     postcss: ^8.4.30
     postcss-custom-media: ^10.0.1
@@ -5580,6 +5589,13 @@ __metadata:
   version: 3.1.1
   resolution: "joycon@npm:3.1.1"
   checksum: 8003c9c3fc79c5c7602b1c7e9f7a2df2e9916f046b0dbad862aa589be78c15734d11beb9fe846f5e06138df22cb2ad29961b6a986ba81c4920ce2b15a7f11067
+  languageName: node
+  linkType: hard
+
+"js-cookie@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "js-cookie@npm:3.0.5"
+  checksum: 2dbd2809c6180fbcf060c6957cb82dbb47edae0ead6bd71cbeedf448aa6b6923115003b995f7d3e3077bfe2cb76295ea6b584eb7196cca8ba0a09f389f64967a
   languageName: node
   linkType: hard
 
