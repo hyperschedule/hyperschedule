@@ -36,7 +36,7 @@
     "frontend": "yarn workspace hyperschedule-frontend run serve",
     "backend": "yarn workspace hyperschedule-backend run serve",
     "docker": "docker compose up --always-recreate-deps --wait",
-    "docker-load-db": "docker-compose exec -T db mongorestore --username 'hyperschedule' --password 'local_dev' --authenticationDatabase 'admin' --nsInclude 'hyperschedule.sections' --archive --gzip < 'data/db_dump'",
+    "docker-load-db": "docker compose exec -T db mongorestore --username 'hyperschedule' --password 'local_dev' --authenticationDatabase 'admin' --nsInclude 'hyperschedule.sections' --archive --gzip < 'data/db_dump'",
     "test": "FORCE_COLOR=true yarn workspaces foreach --since --parallel --interlaced --verbose run test",
     "typecheck": "yarn workspaces foreach --since --verbose --parallel run typecheck",
     "lint": "eslint . --cache --cache-strategy content",

@@ -5,7 +5,7 @@ services:
         image: hyperschedule-dev-base
         build:
             context: .
-            dockerfile: dev.dockerfile
+            dockerfile: base.dockerfile
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
             - ./yarn.lock:/srv/hyperschedule/yarn.lock:ro
@@ -26,14 +26,28 @@ services:
             MONGO_INITDB_ROOT_PASSWORD:
                 local_dev
         volumes:
-          - db-data:/data/db
+            - db-data:/data/db
+
+    frontend:
+        image: hyperschedule-dev-base
+        depends_on: &base
+            base:
+                condition: service_completed_successfully
+        ports:
+            - 5000:5000
+        volumes:
+            - node_modules:/srv/hyperschedule/node_modules
+            - ./frontend:/srv/hyperschedule/frontend:ro
+            - ./shared:/srv/hyperschedule/shared:ro
+            - ./data:/srv/hyperschedule/data:ro
+        working_dir: /srv/hyperschedule/frontend
+        command: yarn serve
+
 
     backend:
         image: hyperschedule-dev-base
         depends_on:
-            base:
-                condition:
-                    service_completed_successfully
+            <<: *base
             db:
                 condition:
                     service_started
@@ -52,26 +66,9 @@ services:
         environment:
             DB_URL: mongodb://hyperschedule:local_dev@db
 
-    frontend:
-        image: hyperschedule-dev-base
-        depends_on:
-            base:
-                condition: service_completed_successfully
-        ports:
-            - 5000:5000
-        volumes:
-            - node_modules:/srv/hyperschedule/node_modules
-            - ./frontend:/srv/hyperschedule/frontend:ro
-            - ./shared:/srv/hyperschedule/shared:ro
-            - ./data:/srv/hyperschedule/data:ro
-        working_dir: /srv/hyperschedule/frontend
-        command: yarn serve
-
     nginx:
         image: nginx:1.24.0
-        depends_on:
-            backend:
-                condition: service_started
+        depends_on: *base
         ports:
             - 80:80
             - 443:443
