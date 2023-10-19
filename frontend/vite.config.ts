@@ -41,6 +41,7 @@ export default defineConfig(({ command, mode }) => {
         root: "src",
         envDir: __dirname,
         publicDir: path.resolve(__dirname, "dist"),
+        cacheDir: path.resolve(__dirname, "..", "node_modules", ".vite"),
         plugins: [react()],
         define: {
             __API_URL__: JSON.stringify(env.HYPERSCHEDULE_API_URL),

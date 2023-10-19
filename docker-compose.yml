@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
     base:
         image: hyperschedule-dev-base
@@ -15,7 +16,7 @@ services:
         command: yarn install --immutable
 
     db:
-        image: mongo
+        image: mongo:7
         networks:
             - backend
         expose:
@@ -24,6 +25,8 @@ services:
             MONGO_INITDB_ROOT_USERNAME: hyperschedule
             MONGO_INITDB_ROOT_PASSWORD:
                 local_dev
+        volumes:
+          - db-data:/data/db
 
     backend:
         image: hyperschedule-dev-base
@@ -31,6 +34,9 @@ services:
             base:
                 condition:
                     service_completed_successfully
+            db:
+                condition:
+                    service_started
         ports:
             - 8080:8080
         networks:
@@ -54,9 +60,8 @@ services:
         ports:
             - 5000:5000
         volumes:
-            # this is not read-only because vite really wants to write some files
             - node_modules:/srv/hyperschedule/node_modules
-            - ./frontend:/srv/hyperschedule/frontend
+            - ./frontend:/srv/hyperschedule/frontend:ro
             - ./shared:/srv/hyperschedule/shared:ro
             - ./data:/srv/hyperschedule/data:ro
         working_dir: /srv/hyperschedule/frontend
@@ -81,3 +86,4 @@ networks:
 
 volumes:
     node_modules:
+    db-data:
