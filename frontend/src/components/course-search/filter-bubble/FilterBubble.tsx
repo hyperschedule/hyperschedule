@@ -5,10 +5,10 @@ import useStore from "@hooks/store";
 import React from "react";
 import * as Feather from "react-feather";
 
-import FilterBubbleTextInput from "./FilterBubbleTextInput";
+import { DaysFilterBubble, TextInputBubble } from "./TextInputBubble";
 import CourseAreaBubble from "./CourseAreaBubble";
 import CampusBubble from "./CampusBubble";
-import { TimeFilterBubble, CreditFilterBubble } from "./rangeFilter";
+import { TimeFilterBubble, CreditFilterBubble } from "./RangeFilter";
 
 export type FilterBubbleComponentProps<Data> = {
     onChange: (data: Data | null) => void;
@@ -22,13 +22,13 @@ export type FilterBubbleComponent<K extends Search.FilterKey> = React.FC<
 const FilterBubbleInput: {
     [K in Search.FilterKey]: FilterBubbleComponent<K>;
 } = {
-    [Search.FilterKey.Department]: FilterBubbleTextInput,
-    [Search.FilterKey.Instructor]: FilterBubbleTextInput,
-    [Search.FilterKey.Description]: FilterBubbleTextInput,
-    [Search.FilterKey.CourseCode]: FilterBubbleTextInput,
-    [Search.FilterKey.Title]: FilterBubbleTextInput,
-    [Search.FilterKey.Location]: FilterBubbleTextInput,
-    [Search.FilterKey.ScheduleDays]: FilterBubbleInputUnimplemented,
+    [Search.FilterKey.Department]: TextInputBubble,
+    [Search.FilterKey.Instructor]: TextInputBubble,
+    [Search.FilterKey.Description]: TextInputBubble,
+    [Search.FilterKey.CourseCode]: TextInputBubble,
+    [Search.FilterKey.Title]: TextInputBubble,
+    [Search.FilterKey.Location]: TextInputBubble,
+    [Search.FilterKey.ScheduleDays]: DaysFilterBubble,
     [Search.FilterKey.MeetingTime]: TimeFilterBubble,
     [Search.FilterKey.Credits]: CreditFilterBubble,
     [Search.FilterKey.CourseArea]: CourseAreaBubble,
@@ -111,8 +111,4 @@ export default function FilterBubble(props: {
             </span>
         </div>
     );
-}
-
-function FilterBubbleInputUnimplemented() {
-    return <>?</>;
 }

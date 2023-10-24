@@ -158,8 +158,9 @@ export const filterKeyRegexp = RegExp(
     "i",
 );
 
-export type TextFilter = { text: string };
-export type DaysFilter = { days: Set<APIv4.Weekday> };
+export type TextFilter = {
+    text: string;
+};
 export type CampusFilter = {
     campus: APIv4.School;
 };
@@ -178,7 +179,7 @@ export type FilterData = {
     [FilterKey.CourseCode]: TextFilter;
     [FilterKey.Title]: TextFilter;
     [FilterKey.Location]: TextFilter;
-    [FilterKey.ScheduleDays]: DaysFilter;
+    [FilterKey.ScheduleDays]: TextFilter;
     [FilterKey.MeetingTime]: RangeFilter;
     [FilterKey.CourseArea]: CourseAreaFilter;
     [FilterKey.Campus]: CampusFilter;
@@ -256,6 +257,27 @@ export function filterSection(
                     return false;
                 break;
             case FilterKey.ScheduleDays:
+                if (section.schedules.length === 1) {
+                    const s0 = section.schedules[0]!;
+                    if (
+                        s0.days.length === 0 &&
+                        s0.startTime === 0 &&
+                        s0.endTime === 0
+                    )
+                        // we exclude async classes because they would match everything (the filter is vacuously true)
+                        // in the future maybe we can add an option for this
+                        return false;
+                }
+                for (const schedule of section.schedules) {
+                    for (const day of schedule.days) {
+                        if (
+                            !filter.data.text
+                                .toLocaleLowerCase()
+                                .includes(day.toLocaleLowerCase())
+                        )
+                            return false;
+                    }
+                }
                 break;
             case FilterKey.CourseArea:
                 if (!section.courseAreas.includes(filter.data.area!))
@@ -372,7 +394,11 @@ export function parseRangeExp<T>(
 export function editDistance(
     start: string,
     end: string,
-    cost?: Partial<{ insert: number; delete: number; replace: number }>,
+    cost?: Partial<{
+        insert: number;
+        delete: number;
+        replace: number;
+    }>,
 ): number {
     const insertCost = cost?.insert ?? 1;
     const deleteCost = cost?.delete ?? 1;
