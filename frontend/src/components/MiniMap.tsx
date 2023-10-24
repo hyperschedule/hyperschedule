@@ -262,8 +262,8 @@ function Card(props: {
                 marginRight,
                 visibility,
                 gridColumn: props.card.day,
-                gridRow: `${props.card.startTime / 300} / ${
-                    props.card.endTime / 300
+                gridRow: `${props.card.startTime / 300 + 1} / ${
+                    props.card.endTime / 300 + 1
                 }`,
                 ...sectionColorStyle(props.card.section.identifier, theme),
             }}
