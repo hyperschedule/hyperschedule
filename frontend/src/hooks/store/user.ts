@@ -10,6 +10,8 @@ import { pick } from "@lib/store";
 import { toast } from "react-toastify";
 import { apiFetch } from "@lib/api";
 import { USER_STORE_NAME } from "@lib/constants";
+import Cookies from "js-cookie";
+import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
 
 export type Store = {
     hasConfirmedGuest: boolean;
@@ -55,6 +57,9 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
     }
 
     async function getUser() {
+        // if no auth token is set the account cannot possibly be logged in
+        if (Cookies.get(AUTH_TOKEN_COOKIE_NAME) === undefined) return;
+
         const user = await apiFetch.getUser();
 
         const activeSchedule = get().activeScheduleId;
@@ -71,6 +76,23 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
     }
 
     getUser().catch(() => {});
+
+    window.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            Promise.allSettled([
+                getUser(),
+                useUserStore.persist.rehydrate(),
+            ]).catch((e) => {
+                console.error(e);
+                toast.error(
+                    "Failed to reload page state. Please refresh the page.",
+                    {
+                        autoClose: false,
+                    },
+                );
+            });
+        }
+    });
 
     return {
         activeScheduleId: "s~default",

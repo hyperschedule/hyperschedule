@@ -51,67 +51,78 @@ export interface ScheduleRenderingOptions {
     showConflicting: boolean;
 }
 
-const initStore: Zustand.StateCreator<Store> = (set, get) => ({
-    mainTab: MainTab.CourseSearch,
-    setMainTab: (mainTab) => set({ mainTab }),
-    theme: window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? Theme.Dark
-        : Theme.Light,
-    toggleTheme: () =>
-        set({
-            theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
-        }),
-
-    searchText: "",
-    setSearchText: (searchText) =>
-        set({ searchText, expandKey: null, expandHeight: 0 }),
-
-    searchFilters: [],
-    setSearchFilters: (searchFilters) => set({ searchFilters }),
-    setSearchFilter(index, filter) {
-        const newFilters = get().searchFilters.slice();
-        const sf = newFilters[index];
-        if (sf === undefined) {
-            console.error(
-                "Nonexistent search index %d supplied to all filters %o",
-                index,
-                newFilters,
-            );
-            return;
+const initStore: Zustand.StateCreator<Store> = (set, get) => {
+    window.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            void useStore.persist.rehydrate();
         }
-        sf.filter = filter;
-        set({ searchFilters: newFilters });
-    },
-    addSearchFilter(filter) {
-        const newFilters = get().searchFilters.slice();
-        newFilters.push({ filter, key: filterKeyCount++ });
-        set({ searchFilters: newFilters });
-    },
-    removeSearchFilter: (index) => {
-        const newFilters = get().searchFilters.slice();
-        newFilters.splice(index, 1);
-        set({ searchFilters: newFilters });
-    },
+    });
 
-    expandKey: null,
-    setExpandKey: (expandKey) => set({ expandKey }),
-    expandHeight: 0,
-    setExpandHeight: (expandHeight) => set({ expandHeight }),
-    clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
+    return {
+        mainTab: MainTab.CourseSearch,
+        setMainTab: (mainTab) => set({ mainTab }),
+        theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? Theme.Dark
+            : Theme.Light,
+        toggleTheme: () =>
+            set({
+                theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
+            }),
 
-    popup: null,
-    setPopup: (popup) => set({ popup }),
+        searchText: "",
+        setSearchText: (searchText) =>
+            set({ searchText, expandKey: null, expandHeight: 0 }),
 
-    showSidebar: false,
-    setShowSidebar: (showSidebar) => set({ showSidebar }),
+        searchFilters: [],
+        setSearchFilters: (searchFilters) => set({ searchFilters }),
+        setSearchFilter(index, filter) {
+            const newFilters = get().searchFilters.slice();
+            const sf = newFilters[index];
+            if (sf === undefined) {
+                console.error(
+                    "Nonexistent search index %d supplied to all filters %o",
+                    index,
+                    newFilters,
+                );
+                return;
+            }
+            sf.filter = filter;
+            set({ searchFilters: newFilters });
+        },
+        addSearchFilter(filter) {
+            const newFilters = get().searchFilters.slice();
+            newFilters.push({ filter, key: filterKeyCount++ });
+            set({ searchFilters: newFilters });
+        },
+        removeSearchFilter: (index) => {
+            const newFilters = get().searchFilters.slice();
+            newFilters.splice(index, 1);
+            set({ searchFilters: newFilters });
+        },
 
-    scheduleRenderingOptions: { showConflicting: false, showDetails: false },
-    setScheduleRenderingOptions: (options) =>
-        set({ scheduleRenderingOptions: options }),
+        expandKey: null,
+        setExpandKey: (expandKey) => set({ expandKey }),
+        expandHeight: 0,
+        setExpandHeight: (expandHeight) => set({ expandHeight }),
+        clearExpand: () => set({ expandKey: null, expandHeight: 0 }),
 
-    scrollToSection: () => {},
-    setScrollToSection: (section) => set({ scrollToSection: section }),
-});
+        popup: null,
+        setPopup: (popup) => set({ popup }),
+
+        showSidebar: false,
+        setShowSidebar: (showSidebar) => set({ showSidebar }),
+
+        scheduleRenderingOptions: {
+            showConflicting: false,
+            showDetails: false,
+        },
+        setScheduleRenderingOptions: (options) =>
+            set({ scheduleRenderingOptions: options }),
+
+        scrollToSection: () => {},
+        setScrollToSection: (section) => set({ scrollToSection: section }),
+    };
+};
 
 const useStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
