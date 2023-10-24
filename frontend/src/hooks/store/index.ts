@@ -26,7 +26,6 @@ export type Store = WithSetters<{
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
     showSidebar: boolean;
-    scrollToSection: (section: APIv4.SectionIdentifier) => void;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -118,9 +117,6 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         },
         setScheduleRenderingOptions: (options) =>
             set({ scheduleRenderingOptions: options }),
-
-        scrollToSection: () => {},
-        setScrollToSection: (section) => set({ scrollToSection: section }),
     };
 };
 

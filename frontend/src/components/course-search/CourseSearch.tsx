@@ -15,7 +15,6 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { useUserStore } from "@hooks/store/user";
-import { PopupOption } from "@lib/popup";
 
 export default function CourseSearch() {
     const activeTerm = useUserStore((store) => store.activeTerm);
@@ -111,9 +110,6 @@ function CourseSearchResults(props: {
         shallow,
     );
 
-    const setScrollFunc = useStore((store) => store.setScrollToSection);
-    const setPopup = useStore((store) => store.setPopup);
-
     const [expandIndex, setExpandIndex] = React.useState<number | null>(null);
 
     const [indexStart, indexEnd] = React.useMemo(
@@ -148,39 +144,6 @@ function CourseSearchResults(props: {
     const sections = props.sections
         .slice(indexStart, indexEnd)
         .map((section, i) => ({ index: i + indexStart, section }));
-
-    const allSectionsToIndexMap = React.useMemo(() => {
-        const map = new Map<string, number>();
-        for (let i = 0; i < props.sections.length; i++) {
-            map.set(
-                APIv4.stringifySectionCodeLong(props.sections[i]!.identifier),
-                i,
-            );
-        }
-        return map;
-    }, [props.sections, props.searchKey]);
-
-    function scrollToSection(section: APIv4.SectionIdentifier) {
-        const index = allSectionsToIndexMap.get(
-            APIv4.stringifySectionCodeLong(section),
-        );
-        if (index === undefined || rowBounds === undefined) {
-            setPopup({
-                option: PopupOption.SectionDetail,
-                section,
-            });
-            return;
-        }
-
-        viewportRef.current?.scrollTo({
-            top: index * rowBounds.height,
-        });
-    }
-
-    React.useEffect(() => {
-        setScrollFunc(scrollToSection);
-        return () => setScrollFunc(() => {});
-    }, [props.sections, props.searchKey, rowBounds]);
 
     // always render expanded entry even if it's outside the viewport bounds, to
     // ensure height measurements/calculations are up-to-date

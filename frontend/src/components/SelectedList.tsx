@@ -1,7 +1,7 @@
 import { useActiveSchedule } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
 
-import useStore, { MainTab } from "@hooks/store";
+import useStore from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { sectionColorStyle } from "@lib/color";
@@ -176,9 +176,6 @@ function SectionEntry(props: {
     //const attrsMutation = useScheduleSectionAttrsMutation();
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
-    const mainTab = useStore((store) => store.mainTab);
-    const scrollToSection = useStore((store) => store.scrollToSection);
-    const setExpandKey = useStore((store) => store.setExpandKey);
     const scheduleRenderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
@@ -238,14 +235,10 @@ function SectionEntry(props: {
             <div
                 className={Css.sectionInfo}
                 onClick={() => {
-                    if (mainTab === MainTab.CourseSearch) {
-                        setExpandKey(props.entry.section);
-                        scrollToSection(props.entry.section);
-                    } else
-                        setPopup({
-                            option: PopupOption.SectionDetail,
-                            section: props.entry.section,
-                        });
+                    setPopup({
+                        option: PopupOption.SectionDetail,
+                        section: props.entry.section,
+                    });
                 }}
             >
                 <span className={Css.code}>
