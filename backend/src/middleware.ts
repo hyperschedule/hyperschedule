@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "@tinyhttp/app";
 import { createLogger } from "./logger";
 import { safeVerifyUser } from "./auth/token";
 import * as process from "process";
+import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
 
 const logger = createLogger("server.request");
 
@@ -27,7 +28,7 @@ export function middleware(req: Request, res: Response, next: NextFunction) {
     );
     req.id = reqId;
 
-    const token: string | undefined = req.cookies.token;
+    const token: string | undefined = req.cookies[AUTH_TOKEN_COOKIE_NAME];
 
     if (token !== undefined) {
         const u = safeVerifyUser(token);

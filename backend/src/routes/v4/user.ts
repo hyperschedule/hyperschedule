@@ -17,6 +17,7 @@ import { json as jsonParser } from "milliparsec";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { getAllSectionId } from "../../db/models/course";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
+import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
 
 const logger = createLogger("server.route.user");
 
@@ -54,14 +55,20 @@ userApp.get("/", async function (request: Request, response: Response) {
             "Cannot find user %s with a valid server signature",
             request.userToken.uuid,
         );
-        return response.status(401).cookie("token", "", { maxAge: 0 }).end();
+        return response
+            .status(401)
+            .cookie(AUTH_TOKEN_COOKIE_NAME, "", { maxAge: 0 })
+            .end();
     }
     return response.header("Content-Type", "application/json").send(user);
 });
 
 userApp.post("/logout", async function (request: Request, response: Response) {
     if (request.userToken === null) return response.status(401).end();
-    return response.status(204).cookie("token", "", { maxAge: 0 }).end();
+    return response
+        .status(204)
+        .cookie(AUTH_TOKEN_COOKIE_NAME, "", { maxAge: 0 })
+        .end();
 });
 
 userApp

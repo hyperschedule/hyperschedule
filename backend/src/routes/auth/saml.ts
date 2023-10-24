@@ -5,6 +5,7 @@ import { createLogger } from "../../logger";
 import { z } from "zod";
 import { getOrCreateUser } from "../../db/models/user";
 import { signUser } from "../../auth/token";
+import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
 
 const logger = createLogger("routes.auth.saml");
 
@@ -58,7 +59,7 @@ samlApp
             expires.setDate(expires.getDate() + 365);
 
             return response
-                .cookie("token", sig, {
+                .cookie(AUTH_TOKEN_COOKIE_NAME, sig, {
                     secure: true,
                     sameSite: "strict", // needed for redirect
                     expires,
