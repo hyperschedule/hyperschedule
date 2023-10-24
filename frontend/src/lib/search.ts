@@ -257,6 +257,7 @@ export function filterSection(
                     return false;
                 break;
             case FilterKey.ScheduleDays:
+                if (filter.data.text === "") break;
                 if (section.schedules.length === 1) {
                     const s0 = section.schedules[0]!;
                     if (
