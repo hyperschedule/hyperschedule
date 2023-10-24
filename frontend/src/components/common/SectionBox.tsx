@@ -9,7 +9,7 @@ export default function SectionBox(props: {
     const theme = useStore((store) => store.theme);
 
     return (
-        <div style={sectionColorStyle(props.section, theme)}>
+        <div style={sectionColorStyle(props.section, theme, false)}>
             {props.children}
         </div>
     );

@@ -154,17 +154,29 @@
         }
 
         &.hover {
-            border: 0.25em solid var(--section-highlight);
+            border: 0.125em solid var(--section-highlight);
         }
 
         &.highlight {
-            border: 0.125em dashed var(--highlight);
+            border: 0.125em dashed var(--section-highlight);
         }
     }
 
     & .expandOutline {
-        border: 0.125em dashed var(--highlight);
+        border: 0.125em dashed var(--section-highlight);
         border-radius: 0.25em;
+        background: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 0.5em,
+            var(--section-color) 0.5em,
+            var(--section-color) 0.75em
+        );
+
         z-index: 2;
+
+        &.conflict {
+            box-shadow: 0 0 0.5em var(--section-shadow);
+        }
     }
 }

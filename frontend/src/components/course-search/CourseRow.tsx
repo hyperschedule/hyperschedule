@@ -39,7 +39,11 @@ export default function CourseRow(props: {
         <div className={Css.padder}>
             <div
                 className={classNames(Css.box, { [Css.expand!]: props.expand })}
-                style={sectionColorStyle(props.section.identifier, theme)}
+                style={sectionColorStyle(
+                    props.section.identifier,
+                    theme,
+                    false,
+                )}
             >
                 <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={14} />

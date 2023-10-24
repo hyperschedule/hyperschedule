@@ -35,47 +35,67 @@ function hslArrayToCssString(color: Color, alpha: number = 1) {
     return `hsl(${h},${s}%,${l}%,${alpha})`;
 }
 
+function clamp(n: number) {
+    return Math.max(0, Math.min(n, 1));
+}
+
 /**************************************************
  * see all the brightness changing functions here
- * https://www.desmos.com/calculator/c7lr4x2qxm
+ * https://www.desmos.com/calculator/yyrh9fwvit
  *
  * most of the constants here are chosen somewhat
  * arbitrarily for a nice curve that still satisfies
  * the bounds.
  **************************************************/
-function scaledown(x: number) {
-    // assuming 0<=x<=1
+function shadow(x: number) {
     // this computes e^(1.25x-2) - e^(-2)
     return Math.exp(1.25 * x - 2) - 0.135335283237;
 }
 
-function scaleup(x: number) {
-    // assuming 0<=x<=1
+function highlight(x: number) {
     // this computes 1.3 - e^(-1.25x+1/3)
-    return 1.4 - Math.exp(-1.25 * x + 0.333333333);
+    return clamp(1.4 - Math.exp(-1.25 * x + 0.333333333));
 }
 
-function invScaleup(x: number) {
-    // assuming 0<=x<=1
-    // computes 4/15 - 0.8 ln(1.4 - x), the inverse function of scaleup
-    return 0.266666667 - 0.8 * Math.log(1.4 - x);
+function invHighlight(x: number) {
+    // computes 4/15 - 0.8 ln(1.4 - x), the inverse function of highlight
+    return clamp(0.266666667 - 0.8 * Math.log(1.4 - x));
+}
+
+function strongHighlight(x: number) {
+    // this computes 1.5 - e^(-1.25x+0.4)
+    return clamp(1.5 - Math.exp(-1.25 * x + 0.4));
+}
+
+function invStrongHighlight(x: number) {
+    // computes 0.32 - 0.8 ln(1.5 - x), the inverse function of highlightExtra
+    return clamp(0.32 - 0.8 * Math.log(1.5 - x));
 }
 
 function computeShadowColor(c: Color): Color {
     const [h, s, v] = c;
-    return [h, scaledown(s), scaledown(v)];
+    return [h, shadow(s), shadow(v)];
 }
 
 function computeHighlightColor(c: Color, theme: Theme): Color {
     const [h, s, v] = c;
-    if (theme === Theme.Dark) return [h, invScaleup(s), scaleup(v)];
+    if (theme === Theme.Dark) return [h, invHighlight(s), highlight(v)];
 
-    return [h, scaleup(s), invScaleup(v)];
+    return [h, highlight(s), invHighlight(v)];
+}
+
+function computeStrongHighlightColor(c: Color, theme: Theme): Color {
+    const [h, s, v] = c;
+    if (theme === Theme.Dark)
+        return [h, invStrongHighlight(s), strongHighlight(v)];
+
+    return [h, strongHighlight(s), invStrongHighlight(v)];
 }
 
 export function sectionColorStyle(
     section: APIv4.SectionIdentifier,
     theme: Theme,
+    strongHighlight: boolean,
 ): SectionCSSProperties {
     // the types published for this package is wrong,
     // actual output is formatted as [H (0-360), S (0-100), V (0-100)]
@@ -95,7 +115,11 @@ export function sectionColorStyle(
     return {
         "--section-color": hslArrayToCssString(hsvToHsl(color)),
         "--section-highlight": hslArrayToCssString(
-            hsvToHsl(computeHighlightColor(color, theme)),
+            hsvToHsl(
+                (strongHighlight
+                    ? computeStrongHighlightColor
+                    : computeHighlightColor)(color, theme),
+            ),
         ),
         "--section-shadow": hslArrayToCssString(
             hsvToHsl(computeShadowColor(color)),

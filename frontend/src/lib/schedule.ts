@@ -131,6 +131,12 @@ export function comparePriority(a: Readonly<Card>, b: Readonly<Card>) {
     return a.priority - b.priority;
 }
 
+export function cardOverlap(a: Readonly<Card>, b: Readonly<Card>) {
+    return (
+        a.day === b.day && a.startTime < b.endTime && b.startTime < a.endTime
+    );
+}
+
 export function mergeCards(cards: Readonly<Card>[]) {
     cards.sort(compareStartTime);
 
@@ -177,11 +183,7 @@ export function sectionsConflict(
         // quadratic, improve someday
         for (const cardA of byDayA[day])
             for (const cardB of byDayB[day]) {
-                if (
-                    cardA.startTime < cardB.endTime &&
-                    cardB.startTime < cardA.endTime
-                )
-                    return true;
+                if (cardOverlap(cardA, cardB)) return true;
             }
     }
 

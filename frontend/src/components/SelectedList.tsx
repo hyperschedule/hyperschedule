@@ -206,7 +206,7 @@ function SectionEntry(props: {
                 [Css.unselected]: !props.entry.attrs.selected,
             })}
             style={{
-                ...sectionColorStyle(props.entry.section, theme),
+                ...sectionColorStyle(props.entry.section, theme, true),
                 transform: DndUtil.CSS.Transform.toString(sortable.transform),
                 transition: sortable.transition,
             }}

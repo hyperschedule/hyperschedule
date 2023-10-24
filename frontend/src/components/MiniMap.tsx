@@ -13,6 +13,7 @@ import classNames from "classnames";
 import {
     type Card,
     cardKey,
+    cardOverlap,
     comparePriority,
     groupCardsByDay,
     mergeCards,
@@ -30,6 +31,13 @@ export default function MiniMap() {
         useActiveScheduleResolved();
     const theme = useStore((store) => store.theme);
     const expandKey = useStore((store) => store.expandKey);
+
+    const renderingOptions = useStore(
+        (store) => store.scheduleRenderingOptions,
+    );
+    const visibleCards = renderingOptions.showConflicting
+        ? cards
+        : cards.filter((card) => unconflicting.has(card.section));
 
     const isExpandSelected: boolean =
         expandKey !== null &&
@@ -142,22 +150,31 @@ export default function MiniMap() {
                     {isExpandSelected ? (
                         <></>
                     ) : (
-                        expandCards.map((card) => (
-                            <div
-                                key={`outline:${cardKey(card)}`}
-                                className={Css.expandOutline}
-                                style={{
-                                    gridColumn: card.day,
-                                    gridRow: `${
-                                        Math.floor(card.startTime / 300) + 1
-                                    } / ${Math.floor(card.endTime / 300) + 1}`,
-                                    ...sectionColorStyle(
-                                        card.section.identifier,
-                                        theme,
-                                    ),
-                                }}
-                            ></div>
-                        ))
+                        expandCards.map((card) => {
+                            return (
+                                <div
+                                    key={`outline:${cardKey(card)}`}
+                                    className={classNames(Css.expandOutline, {
+                                        [Css.conflict]: visibleCards.some((c) =>
+                                            cardOverlap(c, card),
+                                        ),
+                                    })}
+                                    style={{
+                                        gridColumn: card.day,
+                                        gridRow: `${
+                                            Math.floor(card.startTime / 300) + 1
+                                        } / ${
+                                            Math.floor(card.endTime / 300) + 1
+                                        }`,
+                                        ...sectionColorStyle(
+                                            card.section.identifier,
+                                            theme,
+                                            true,
+                                        ),
+                                    }}
+                                ></div>
+                            );
+                        })
                     )}
                     <MinimapCards cards={cards} unconflicting={unconflicting} />
                 </div>
@@ -265,7 +282,11 @@ function Card(props: {
                 gridRow: `${props.card.startTime / 300 + 1} / ${
                     props.card.endTime / 300 + 1
                 }`,
-                ...sectionColorStyle(props.card.section.identifier, theme),
+                ...sectionColorStyle(
+                    props.card.section.identifier,
+                    theme,
+                    true,
+                ),
             }}
             onClick={() => {
                 setPopup({

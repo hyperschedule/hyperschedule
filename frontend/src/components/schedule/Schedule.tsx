@@ -173,7 +173,11 @@ function Card(props: {
                     "--stack-order": props.orderFromTop,
                     "--reverse-stack-order": props.orderFromBottom,
                     "--group-size": props.totalCardsInGroup,
-                    ...sectionColorStyle(props.card.section.identifier, theme),
+                    ...sectionColorStyle(
+                        props.card.section.identifier,
+                        theme,
+                        false,
+                    ),
                 } as React.CSSProperties
             }
             onClick={() =>
