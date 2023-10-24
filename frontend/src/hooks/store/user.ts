@@ -9,7 +9,7 @@ import { pick } from "@lib/store";
 
 import { toast } from "react-toastify";
 import { apiFetch } from "@lib/api";
-import { USER_STORE_NAME } from "@lib/constants";
+import { DEFAULT_LOCAL_SCHEDULE_ID, USER_STORE_NAME } from "@lib/constants";
 import Cookies from "js-cookie";
 import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
 
@@ -95,7 +95,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
     });
 
     return {
-        activeScheduleId: "s~default",
+        activeScheduleId: DEFAULT_LOCAL_SCHEDULE_ID,
         setActiveScheduleId: (activeScheduleId) => {
             const schedule = get().schedules[activeScheduleId];
             if (!schedule) {
@@ -123,7 +123,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         },
         hasConfirmedGuest: false,
         schedules: {
-            "s~default": {
+            [DEFAULT_LOCAL_SCHEDULE_ID]: {
                 name: "Schedule 1",
                 term: CURRENT_TERM,
                 sections: [],
@@ -191,7 +191,11 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
                 )!.attrs = request.attrs;
             });
         },
-        confirmGuest: () => set({ hasConfirmedGuest: true }),
+        confirmGuest: () =>
+            set({
+                hasConfirmedGuest: true,
+                activeScheduleId: DEFAULT_LOCAL_SCHEDULE_ID,
+            }),
         addSchedule: async (request) => {
             let id: string;
 

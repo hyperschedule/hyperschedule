@@ -18,6 +18,7 @@ import { sectionColorStyle } from "@lib/color";
 import { toast } from "react-toastify";
 import { PopupOption } from "@lib/popup";
 import { pick } from "@lib/store";
+import { DEFAULT_LOCAL_SCHEDULE_ID } from "@lib/constants";
 
 export default function CourseRow(props: {
     section: APIv4.Section;
@@ -147,9 +148,8 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
                     setPopup({
                         option: PopupOption.Login,
                         continuation: () => {
-                            setActiveScheduleId("s~default");
                             user.scheduleAddSection({
-                                scheduleId: "s~default",
+                                scheduleId: DEFAULT_LOCAL_SCHEDULE_ID,
                                 section: props.section,
                             });
                         },
