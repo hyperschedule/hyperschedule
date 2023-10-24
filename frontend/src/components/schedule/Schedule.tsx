@@ -12,8 +12,6 @@ import classNames from "classnames";
 import GridBackgroundColumns from "@components/schedule/GridBackgroundColumns";
 import GridBackgroundRows from "@components/schedule/GridBackgroundRows";
 
-import SectionStatusBadge from "@components/common/SectionStatusBadge";
-
 import {
     type Card,
     cardKey,
@@ -27,6 +25,7 @@ import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import { SCHEDULE_CONTAINER_ID } from "@lib/constants";
 import type { CSSProperties } from "react";
+import { useState } from "react";
 
 export default function Schedule(props: ScheduleRenderingOptions) {
     const { cards, startHour, endHour, unconflicting } =
@@ -34,6 +33,9 @@ export default function Schedule(props: ScheduleRenderingOptions) {
 
     const weekend = hasWeekend(cards);
     const byDay = groupCardsByDay(cards);
+
+    const [hoverSection, setHoverSection] =
+        useState<APIv4.SectionIdentifier | null>(null);
 
     return (
         <div
@@ -75,6 +77,8 @@ export default function Schedule(props: ScheduleRenderingOptions) {
                                     orderFromTop={i}
                                     orderFromBottom={group.cards.length - 1 - i}
                                     totalCardsInGroup={group.cards.length}
+                                    hoverSection={hoverSection}
+                                    setHoverSection={setHoverSection}
                                 />
                             ));
                         });
@@ -144,6 +148,8 @@ function Card(props: {
     orderFromBottom: number;
     totalCardsInGroup: number;
     conflict: boolean;
+    hoverSection: APIv4.SectionIdentifier | null;
+    setHoverSection: (val: APIv4.SectionIdentifier | null) => void;
 }) {
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
@@ -158,11 +164,18 @@ function Card(props: {
 
     return (
         <div
+            data-conflict={props.conflict || undefined}
             className={classNames(Css.card, {
                 [Css.firstHalf]:
                     props.card.section.identifier.half?.number === 1,
                 [Css.secondHalf]:
                     props.card.section.identifier.half?.number === 2,
+                [Css.hover]:
+                    props.hoverSection !== null &&
+                    APIv4.compareSectionIdentifier(
+                        props.hoverSection,
+                        props.card.section.identifier,
+                    ),
             })}
             style={
                 {
@@ -186,7 +199,12 @@ function Card(props: {
                     section: props.card.section.identifier,
                 })
             }
-            data-conflict={props.conflict || undefined}
+            onPointerEnter={() => {
+                props.setHoverSection(props.card.section.identifier);
+            }}
+            onPointerLeave={() => {
+                props.setHoverSection(null);
+            }}
         >
             <div className={Css.code}>
                 {APIv4.stringifySectionCode(props.card.section.identifier)}

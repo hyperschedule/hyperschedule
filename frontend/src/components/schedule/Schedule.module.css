@@ -184,7 +184,11 @@
         visibility: hidden;
     }
 
-    &:hover {
+    /*
+    we use hover class here instead of :hover because they can be triggered by hovering over different
+    card from the same section
+    */
+    &.hover {
         background-color: var(--section-highlight);
         filter: drop-shadow(0 0 0.125em var(--section-shadow));
     }
@@ -238,7 +242,7 @@
 
     z-index: var(--reverse-stack-order);
 
-    opacity: calc(1 - 0.5 * var(--stack-order) / var(--group-size));
+    opacity: calc(1 - 0.5 * (var(--reverse-stack-order)) / var(--group-size));
 
     &[data-conflict] {
         visibility: inherit;
@@ -254,7 +258,7 @@
         0 0 calc(0.125em * (var(--reverse-stack-order))) var(--section-shadow)
     );
 
-    &:hover {
+    &.hover {
         filter: drop-shadow(
             0 0 calc(0.125em * (var(--group-size) + 1)) var(--section-shadow)
         );
