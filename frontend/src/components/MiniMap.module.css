@@ -154,7 +154,7 @@
         }
 
         &.hover {
-            border: 0.125em solid var(--highlight);
+            border: 0.25em solid var(--section-highlight);
         }
 
         &.highlight {

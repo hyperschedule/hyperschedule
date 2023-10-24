@@ -185,11 +185,8 @@
     }
 
     &:hover {
-        filter: drop-shadow(
-            0 0 calc(1px * var(--reverse-stack-order)) var(--section-shadow)
-        );
-        z-index: 25;
-        opacity: 1;
+        background-color: var(--section-highlight);
+        filter: drop-shadow(0 0 0.125em var(--section-shadow));
     }
 
     &.highlight {
@@ -251,5 +248,17 @@
     &.secondHalf {
         transform: unset;
         width: unset;
+    }
+
+    filter: drop-shadow(
+        0 0 calc(0.125em * (var(--reverse-stack-order))) var(--section-shadow)
+    );
+
+    &:hover {
+        filter: drop-shadow(
+            0 0 calc(0.125em * (var(--group-size) + 1)) var(--section-shadow)
+        );
+        z-index: 50;
+        opacity: 1;
     }
 }

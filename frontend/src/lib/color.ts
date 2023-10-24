@@ -5,9 +5,11 @@ import { Theme } from "@hooks/store";
 
 interface SectionCSSProperties extends React.CSSProperties {
     "--section-color": string;
+    "--section-highlight": string;
     "--section-shadow": string;
 }
 
+// an array in hue (0-360), saturation (0-1), value/lightness (0-1)
 type Color = [number, number, number];
 
 // implementing https://en.wikipedia.org/wiki/HSL_and_HSV#Interconversion
@@ -33,14 +35,42 @@ function hslArrayToCssString(color: Color, alpha: number = 1) {
     return `hsl(${h},${s}%,${l}%,${alpha})`;
 }
 
-// normally, the color of the shadow is the complementary color of
-// the light (e.g. during the day, the shadow is yellow tinted from
-// the blue skylight). here, we don't have a defined source of light,
-// so we'll simply approximate it by taking the complementary color of
-// the section color
+/**************************************************
+ * see all the brightness changing functions here
+ * https://www.desmos.com/calculator/c7lr4x2qxm
+ *
+ * most of the constants here are chosen somewhat
+ * arbitrarily for a nice curve that still satisfies
+ * the bounds.
+ **************************************************/
+function scaledown(x: number) {
+    // assuming 0<=x<=1
+    // this computes e^(1.25x-2) - e^(-2)
+    return Math.exp(1.25 * x - 2) - 0.135335283237;
+}
+
+function scaleup(x: number) {
+    // assuming 0<=x<=1
+    // this computes 1.3 - e^(-1.25x+1/3)
+    return 1.4 - Math.exp(-1.25 * x + 0.333333333);
+}
+
+function invScaleup(x: number) {
+    // assuming 0<=x<=1
+    // computes 4/15 - 0.8 ln(1.4 - x), the inverse function of scaleup
+    return 0.266666667 - 0.8 * Math.log(1.4 - x);
+}
+
 function computeShadowColor(c: Color): Color {
     const [h, s, v] = c;
-    return [Math.abs(180 - h), s, v * 0.5];
+    return [h, scaledown(s), scaledown(v)];
+}
+
+function computeHighlightColor(c: Color, theme: Theme): Color {
+    const [h, s, v] = c;
+    if (theme === Theme.Dark) return [h, invScaleup(s), scaleup(v)];
+
+    return [h, scaleup(s), invScaleup(v)];
 }
 
 export function sectionColorStyle(
@@ -64,6 +94,9 @@ export function sectionColorStyle(
     }
     return {
         "--section-color": hslArrayToCssString(hsvToHsl(color)),
+        "--section-highlight": hslArrayToCssString(
+            hsvToHsl(computeHighlightColor(color, theme)),
+        ),
         "--section-shadow": hslArrayToCssString(
             hsvToHsl(computeShadowColor(color)),
         ),
