@@ -103,7 +103,7 @@
     }
 
     &.disableTransparency {
-        & * {
+        & :not(svg) {
             opacity: unset !important;
         }
     }
@@ -115,9 +115,7 @@
     }
 
     &.disableRoundedCorners {
-        & div,
-        & button,
-        & span {
+        & * {
             border-radius: 0 !important;
         }
     }
