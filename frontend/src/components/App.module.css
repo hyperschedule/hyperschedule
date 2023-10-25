@@ -67,6 +67,7 @@
 
         /* `h` stands for highlight */
         --hbg: hsl(200, 95%, 85%);
+        --hbg-2: hsl(200, 75%, 75%);
         --hfg: hsl(80, 30%, 10%);
 
         --palette-red: hsl(0, 90%, 70%);
@@ -91,6 +92,7 @@
         --shadow: #6d6c6b;
 
         --hbg: hsl(200, 60%, 40%);
+        --hbg-2: hsl(200, 50%, 30%);
         --hfg: hsl(60, 30%, 95%);
 
         --palette-red: hsl(0, 50%, 50%);
@@ -146,7 +148,8 @@ button.defaultButton {
     font-size: 1em;
     font-family: inherit;
     appearance: none;
-    border: none;
+    box-sizing: border-box;
+    border: 0.125em solid var(--hbg-2);
     background-color: var(--hbg);
     color: var(--hfg);
     cursor: pointer;
@@ -162,6 +165,6 @@ button.defaultButton {
     justify-content: center;
 
     &:hover {
-        filter: brightness(95%);
+        background-color: var(--hbg-2);
     }
 }

@@ -8,6 +8,8 @@ import * as Feather from "react-feather";
 import classNames from "classnames";
 import { useUserStore } from "@hooks/store/user";
 import Cookies from "js-cookie";
+import { schoolCodeToName } from "hyperschedule-shared/api/v4";
+import { useState } from "react";
 
 export function Settings() {
     return (
@@ -36,19 +38,72 @@ function logout() {
 function AccountSettings() {
     const serverData = useUserStore((store) => store.server);
 
+    const [showAccountDetails, setShowAccountDetails] =
+        useState<boolean>(false);
+
     return (
         <div className={Css.account}>
             <h3 className={Css.title}>Account</h3>
             {serverData === null ? (
                 <>
-                    <p>You are currently using a local guest account.</p>
+                    <p>
+                        You are currently using a local guest account. To log in
+                        to an account, please log out first.{" "}
+                        <span className={Css.caution}>
+                            Caution: if you log out, all your data will be
+                            deleted.
+                        </span>{" "}
+                        Please check the data viewer below before proceeding
+                        (all persistent user data will be removed).
+                    </p>
                 </>
             ) : (
-                <></>
+                <>
+                    <p>You are currently logged in.</p>
+
+                    <div
+                        className={classNames(Css.accountDetails, {
+                            [Css.show]: showAccountDetails,
+                        })}
+                    >
+                        <span className={Css.userFieldDesc}>
+                            Hyperschedule User ID
+                        </span>
+                        <span className={Css.userFieldValue}>
+                            {serverData._id}
+                        </span>
+                        <span className={Css.userFieldDesc}>
+                            CAS Authentication ID
+                        </span>
+                        <span className={Css.userFieldValue}>
+                            {serverData.eppn}
+                        </span>
+                        <span className={Css.userFieldDesc}>Organization</span>
+                        <span className={Css.userFieldValue}>
+                            {schoolCodeToName(serverData.school)}
+                        </span>
+                    </div>
+                </>
             )}
-            <button onClick={serverData === null ? logoutLocal : logout}>
-                Log out
-            </button>
+            <span className={Css.buttons}>
+                {serverData !== null && !showAccountDetails ? (
+                    <button
+                        className={classNames(AppCss.defaultButton, Css.button)}
+                        onClick={() => setShowAccountDetails(true)}
+                    >
+                        Show account details
+                    </button>
+                ) : (
+                    <></>
+                )}
+
+                <button
+                    className={classNames(AppCss.defaultButton, Css.button)}
+                    onClick={serverData === null ? logoutLocal : logout}
+                >
+                    Log out
+                </button>
+            </span>
         </div>
     );
 }

@@ -1,24 +1,61 @@
 .settings {
-    h2.title {
-        text-align: center;
-        margin: 0;
-    }
-
-    .button {
-        height: 2em;
-    }
-
-    .appearance {
-        & .title {
-            grid-column: 1 / -1;
-        }
-
+    @define-mixin two-column-grid {
         display: grid;
         grid-template-columns: auto 1fr;
         justify-items: start;
         gap: 0.25em 0.5em;
     }
 
-    .account {
+    & h2.title {
+        text-align: center;
+        margin: 0;
+    }
+
+    & .button {
+        height: 2em;
+    }
+
+    & .appearance {
+        @mixin two-column-grid;
+
+        & .title {
+            grid-column: 1 / -1;
+        }
+    }
+
+    & .account {
+        & .caution {
+            color: red;
+            font-weight: 500;
+        }
+
+        & .accountDetails {
+            @mixin two-column-grid;
+
+            transition:
+                max-height var(--misc-transition-duration),
+                margin-bottom var(--misc-transition-duration);
+            max-height: 0;
+            overflow: clip;
+
+            & .userFieldDesc {
+                grid-column: 1;
+                font-weight: 500;
+            }
+
+            & .userFieldValue {
+                grid-column: 2;
+            }
+
+            &.show {
+                max-height: 10em;
+                margin-bottom: 1em;
+            }
+        }
+
+        & .buttons {
+            display: flex;
+            gap: 0.5em;
+        }
     }
 }
