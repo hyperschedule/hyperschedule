@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 export default function App() {
     const theme = useStore((store) => store.theme);
     const mainTab = useStore((store) => store.mainTab);
+    const appearanceOptions = useStore((store) => store.appearanceOptions);
 
     // we pass in schedule rendering options as props so we can make a screenshot of the schedule with only certain options
     // in the future
@@ -31,7 +32,13 @@ export default function App() {
 
     return (
         <div
-            className={Css.app}
+            className={classNames(Css.app, {
+                [Css.disableShadows]: appearanceOptions.disableShadows,
+                [Css.disableTransparency]:
+                    appearanceOptions.disableTransparency,
+                [Css.disableRoundedCorners]:
+                    appearanceOptions.disableRoundedCorners,
+            })}
             data-theme={theme}
             data-schedule-tab={onSearchTab ? "" : undefined}
             data-search-tab={!onSearchTab ? "" : undefined}

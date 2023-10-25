@@ -101,6 +101,26 @@
     & div {
         box-sizing: border-box;
     }
+
+    &.disableTransparency {
+        & * {
+            opacity: unset !important;
+        }
+    }
+
+    &.disableShadows {
+        & div {
+            --section-shadow: transparent !important;
+        }
+    }
+
+    &.disableRoundedCorners {
+        & div,
+        & button,
+        & span {
+            border-radius: 0 !important;
+        }
+    }
 }
 
 .main {

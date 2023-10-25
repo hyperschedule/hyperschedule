@@ -7,6 +7,7 @@ import SectionDetails from "./SectionDetails";
 import Filter from "./Filter";
 import ManageSchedules from "@components/popup/ManageSchedules";
 import classNames from "classnames";
+import { Settings } from "./Settings";
 
 function PopupBox(props: {
     children: JSX.Element;
@@ -69,6 +70,12 @@ export default function Popup() {
             return (
                 <PopupBox>
                     <ManageSchedules />
+                </PopupBox>
+            );
+        case PopupOption.Settings:
+            return (
+                <PopupBox>
+                    <Settings />
                 </PopupBox>
             );
         default:

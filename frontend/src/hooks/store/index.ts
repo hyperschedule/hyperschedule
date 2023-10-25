@@ -23,6 +23,7 @@ export type Store = WithSetters<{
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
 
+    appearanceOptions: AppearanceOptions;
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
     showSidebar: boolean;
@@ -50,6 +51,12 @@ export interface ScheduleRenderingOptions {
     showConflicting: boolean;
 }
 
+export type AppearanceOptions = {
+    disableShadows: boolean;
+    disableTransparency: boolean;
+    disableRoundedCorners: boolean;
+};
+
 const initStore: Zustand.StateCreator<Store> = (set, get) => {
     window.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") {
@@ -67,6 +74,13 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
             set({
                 theme: get().theme === Theme.Dark ? Theme.Light : Theme.Dark,
             }),
+
+        appearanceOptions: {
+            disableRoundedCorners: false,
+            disableShadows: false,
+            disableTransparency: false,
+        },
+        setAppearanceOptions: (options) => set({ appearanceOptions: options }),
 
         searchText: "",
         setSearchText: (searchText) =>
@@ -124,7 +138,12 @@ const useStore = Zustand.create<Store>()(
     ZustandMiddleware.devtools(
         ZustandMiddleware.persist(initStore, {
             name: MAIN_STORE_NAME,
-            partialize: pick("mainTab", "scheduleRenderingOptions", "theme"),
+            partialize: pick(
+                "mainTab",
+                "scheduleRenderingOptions",
+                "theme",
+                "appearanceOptions",
+            ),
         }),
     ),
 );
