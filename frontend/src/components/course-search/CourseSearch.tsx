@@ -102,13 +102,8 @@ function CourseSearchResults(props: {
 
     const [scroll, setScroll] = React.useState(0);
 
-    const { expandKey, expandHeight } = useStore(
-        (store) => ({
-            expandKey: store.expandKey,
-            expandHeight: store.expandHeight,
-        }),
-        shallow,
-    );
+    const expandKey = useStore((store) => store.expandKey);
+    const expandHeight = useStore((store) => store.expandHeight);
 
     const [expandIndex, setExpandIndex] = React.useState<number | null>(null);
 
@@ -212,16 +207,10 @@ function CourseSearchRow(props: {
     viewportHeight: number;
     expandIndex: number | null;
 }): JSX.Element | null {
-    const { setExpandKey, expandHeight, setExpandHeight, clearExpand } =
-        useStore(
-            (store) => ({
-                expandHeight: store.expandHeight,
-                setExpandKey: store.setExpandKey,
-                setExpandHeight: store.setExpandHeight,
-                clearExpand: store.clearExpand,
-            }),
-            shallow,
-        );
+    const setExpandKey = useStore((store) => store.setExpandKey);
+    const setExpandHeight = useStore((store) => store.setExpandHeight);
+    const expandHeight = useStore((store) => store.expandHeight);
+    const clearExpand = useStore((store) => store.clearExpand);
 
     const pos =
         props.index * props.rowHeight +

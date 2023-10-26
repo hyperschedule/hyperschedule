@@ -8,18 +8,17 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import { shallow } from "zustand/shallow";
 
 import Dropdown from "@components/common/Dropdown";
 import FilterBubble from "@components/course-search/filter-bubble/FilterBubble";
 import * as Search from "@lib/search";
-import { pick } from "@lib/store";
 import { useUserStore } from "@hooks/store/user";
 import AppCss from "@components/App.module.css";
 import classNames from "classnames";
 
 export default function SearchControls() {
-    const user = useUserStore(pick("activeTerm", "setActiveTerm"), shallow);
+    const activeTerm = useUserStore((user) => user.activeTerm);
+    const setActiveTerm = useUserStore((user) => user.setActiveTerm);
     const searchFilters = useStore((store) => store.searchFilters);
     const addSearchFilter = useStore((store) => store.addSearchFilter);
     const setSearchText = useStore((store) => store.setSearchText);
@@ -55,13 +54,13 @@ export default function SearchControls() {
         <div className={Css.searchControls}>
             <div className={Css.termSelect}>
                 <Dropdown
-                    selected={APIv4.stringifyTermIdentifier(user.activeTerm)}
+                    selected={APIv4.stringifyTermIdentifier(activeTerm)}
                     choices={allTerms.map(APIv4.stringifyTermIdentifier)}
                     emptyPlaceholder="no term selected"
                     onSelect={(index) => {
                         const term = allTerms[index]!;
                         void prefetchDataForTerm(term, queryClient);
-                        user.setActiveTerm(term);
+                        setActiveTerm(term);
                     }}
                 />
             </div>
