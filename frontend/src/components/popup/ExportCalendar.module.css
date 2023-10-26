@@ -1,5 +1,33 @@
 .exportCalendar {
+    a,
+    a:visited {
+        color: inherit;
+        text-decoration: none;
+        height: 1.5em;
+        width: fit-content;
+
+        & svg {
+            width: 1em;
+            height: 1em;
+        }
+    }
+
+    .icalLink {
+        background-color: var(--bg-1);
+        font-size: 1em;
+        font-family: var(--font-mono);
+        overflow-x: auto;
+        height: 2em;
+    }
+
     & .scheduleSelect {
         display: flex;
+    }
+
+    & .links {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 0.5em;
     }
 }
