@@ -160,3 +160,42 @@
         @mixin show-sidebar;
     }
 }
+
+.toolbar {
+    grid-area: toolbar;
+
+    display: grid;
+    grid-template-areas: "export login gap settings github about";
+    grid-column-gap: 0.25em;
+    grid-template-columns: auto auto 1fr auto auto;
+
+    & .button {
+        height: 1.75em;
+    }
+
+    & .iconOnlyButton {
+        & .icon {
+            width: 1.5em;
+            height: 1.5em;
+            stroke-width: 1.5;
+        }
+    }
+    .settingsButton {
+        grid-area: settings;
+    }
+    .loginButton {
+        grid-area: login;
+    }
+
+    .exportButton {
+        grid-area: export;
+    }
+
+    .aboutButton {
+        grid-area: about;
+    }
+
+    .githubButton {
+        grid-area: github;
+    }
+}
