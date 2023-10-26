@@ -7,9 +7,12 @@ import * as Feather from "react-feather";
 import { toast } from "react-toastify";
 
 export default function ExportCalendar() {
+    const activeScheduleId = useUserStore((user) => user.activeScheduleId);
     const serverData = useUserStore((user) => user.server);
 
-    const [scheduleId, setScheduleId] = useState<string>("");
+    const [scheduleId, setScheduleId] = useState<string>(
+        activeScheduleId ?? "",
+    );
 
     const icalLink = `${__API_URL__}/v4/calendar/${serverData?._id}/${scheduleId}`;
 
@@ -21,67 +24,79 @@ export default function ExportCalendar() {
     ) : (
         <div className={Css.exportCalendar}>
             <div className={Css.scheduleSelect}>
-                <span>Select schedule to export</span>
+                <span>Select a schedule </span>
                 <PopupScheduleSelector
                     selectedScheduleId={scheduleId}
                     setSelectedScheduleId={setScheduleId}
                 />
             </div>
-
-            <div>
-                <h3>Calendar Subscription Link</h3>
-                <code
-                    onClick={() => {
-                        navigator.clipboard
-                            .writeText(icalLink)
-                            .then(() => {
-                                toast.success("Link Copied");
-                            })
-                            .catch(() => {});
-                    }}
-                >
-                    <pre className={Css.icalLink}>{icalLink}</pre>
-                </code>
-                <a className={AppCss.defaultButton} href={icalLink} download>
-                    Download iCal File
-                </a>
-            </div>
-            <div>
-                <h3>How do calendar subscriptions work?</h3>
-                <p>
-                    Essentially, instead of reading from a file, your calendar
-                    program will import a link and periodically check for new
-                    updates. This way, all change you make on Hyperschedule can
-                    be automatically synchronized to your calendar.
-                </p>
-                <p>
-                    Here are the instructions for some popular calendar programs
-                </p>
-                <div className={Css.links}>
-                    <a
-                        className={AppCss.defaultButton}
-                        target="_blank"
-                        href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac"
-                    >
-                        Apple Calendar
-                        <Feather.ExternalLink />
-                    </a>
-                    <a
-                        className={AppCss.defaultButton}
-                        target="_blank"
-                        href="https://support.google.com/calendar/answer/37100#:~:text=Use%20a%20link%20to%20add%20a%20public%20calendar"
-                    >
-                        Google Calendar <Feather.ExternalLink />
-                    </a>
-                    <a
-                        className={AppCss.defaultButton}
-                        target="_blank"
-                        href="https://support.microsoft.com/en-us/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c#ID0EDL"
-                    >
-                        Outlook Calendar <Feather.ExternalLink />
-                    </a>
-                </div>
-            </div>
+            {scheduleId === "" ? (
+                <></>
+            ) : (
+                <>
+                    <div>
+                        <h3>Calendar Subscription Link</h3>
+                        <code
+                            onClick={() => {
+                                navigator.clipboard
+                                    .writeText(icalLink)
+                                    .then(() => {
+                                        toast.success("Link Copied");
+                                    })
+                                    .catch(() => {});
+                            }}
+                        >
+                            <pre className={Css.icalLink}>{icalLink}</pre>
+                        </code>
+                        <a
+                            className={AppCss.defaultButton}
+                            href={icalLink}
+                            download
+                        >
+                            <Feather.Download />
+                            Download iCal File
+                        </a>
+                    </div>
+                    <div>
+                        <h3>How do calendar subscriptions work?</h3>
+                        <p>
+                            Essentially, instead of reading from a file, your
+                            calendar program will import a link and periodically
+                            check for new updates. This way, all change you make
+                            on Hyperschedule can be automatically synchronized
+                            to your calendar.
+                        </p>
+                        <p>
+                            Here are the instructions for some popular calendar
+                            programs
+                        </p>
+                        <div className={Css.links}>
+                            <a
+                                className={AppCss.defaultButton}
+                                target="_blank"
+                                href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac"
+                            >
+                                Apple Calendar
+                                <Feather.ExternalLink />
+                            </a>
+                            <a
+                                className={AppCss.defaultButton}
+                                target="_blank"
+                                href="https://support.google.com/calendar/answer/37100#:~:text=Use%20a%20link%20to%20add%20a%20public%20calendar"
+                            >
+                                Google Calendar <Feather.ExternalLink />
+                            </a>
+                            <a
+                                className={AppCss.defaultButton}
+                                target="_blank"
+                                href="https://support.microsoft.com/en-us/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c#ID0EDL"
+                            >
+                                Outlook Calendar <Feather.ExternalLink />
+                            </a>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
