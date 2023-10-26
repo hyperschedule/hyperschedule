@@ -4,6 +4,7 @@ import MainSelectorCss from "@components/MainSelector.module.css";
 import MiniMap from "@components/MiniMap";
 import SelectedList from "@components/SelectedList";
 import * as React from "react";
+import { useDeferredValue, useState } from "react";
 import useStore, { MainTab } from "@hooks/store";
 import { useUserStore } from "@hooks/store/user";
 import * as Feather from "react-feather";
@@ -14,7 +15,6 @@ import Slider from "@components/common/Slider";
 import { PopupOption } from "@lib/popup";
 import classNames from "classnames";
 import { scheduleDisplayName } from "@lib/schedule";
-import { useDeferredValue, useState } from "react";
 import { createPortal } from "react-dom";
 import { GITHUB_LINK } from "@lib/constants";
 
@@ -196,6 +196,11 @@ function Toolbar() {
                         <Feather.Settings className={Css.icon} />
                     </button>
                     <button
+                        onClick={() =>
+                            setPopup({
+                                option: PopupOption.ExportCalendar,
+                            })
+                        }
                         className={classNames(
                             AppCss.defaultButton,
                             Css.button,

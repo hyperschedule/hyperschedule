@@ -8,6 +8,7 @@ import Filter from "./Filter";
 import ManageSchedules from "@components/popup/ManageSchedules";
 import classNames from "classnames";
 import { Settings } from "./Settings";
+import ExportCalendar from "@components/popup/ExportCalendar";
 
 function PopupBox(props: {
     children: JSX.Element;
@@ -76,6 +77,12 @@ export default function Popup() {
             return (
                 <PopupBox>
                     <Settings />
+                </PopupBox>
+            );
+        case PopupOption.ExportCalendar:
+            return (
+                <PopupBox>
+                    <ExportCalendar />
                 </PopupBox>
             );
         default:

@@ -11,6 +11,7 @@ import AppCss from "@components/App.module.css";
 import { toast } from "react-toastify";
 import { scheduleDisplayName } from "@lib/schedule";
 import PopupAlternativeLine from "./PopupAlternativeLine";
+import PopupScheduleSelector from "@components/popup/PopupScheduleSelector";
 
 export default function ManageSchedules() {
     const activeScheduleId = useUserStore((store) => store.activeScheduleId);
@@ -120,9 +121,6 @@ function EditSchedule(props: {
 
     const schedules = useUserStore((store) => store.schedules);
     const schedulesSorted = APIv4.getSchedulesSorted(schedules);
-    const scheduleChoices = schedulesSorted.map((s) =>
-        scheduleDisplayName(s[1]),
-    );
 
     const selectedSchedule = schedules[props.selectedScheduleId];
 
@@ -192,22 +190,7 @@ function EditSchedule(props: {
             <h3 className={Css.title}>Edit Existing Schedules</h3>
 
             <div className={Css.editScheduleDropdown}>
-                <Dropdown
-                    choices={scheduleChoices}
-                    selected={
-                        selectedSchedule === undefined
-                            ? ""
-                            : scheduleDisplayName(selectedSchedule)
-                    }
-                    onSelect={(index) => {
-                        props.setSelectedScheduleId(schedulesSorted[index]![0]);
-                    }}
-                    emptyPlaceholder={
-                        scheduleChoices.length > 0
-                            ? "no schedule selected"
-                            : "please create a schedule first"
-                    }
-                />
+                <PopupScheduleSelector {...props} />
             </div>
             {selectedSchedule === undefined ? (
                 <></>
