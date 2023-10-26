@@ -4,7 +4,7 @@ import MainSelectorCss from "@components/MainSelector.module.css";
 import MiniMap from "@components/MiniMap";
 import SelectedList from "@components/SelectedList";
 import * as React from "react";
-import { useDeferredValue, useState } from "react";
+import { useState } from "react";
 import useStore, { MainTab } from "@hooks/store";
 import { useUserStore } from "@hooks/store/user";
 import * as Feather from "react-feather";
@@ -188,6 +188,11 @@ function Toolbar() {
                     Css.aboutButton,
                     Css.iconOnlyButton,
                 )}
+                onClick={() =>
+                    setPopup({
+                        option: PopupOption.About,
+                    })
+                }
             >
                 <Feather.Info className={Css.icon} />
             </button>

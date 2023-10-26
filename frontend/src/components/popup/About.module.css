@@ -1,0 +1,17 @@
+.about {
+    a,
+    a:visited {
+        text-decoration: none;
+        color: var(--fg-0);
+        border-bottom: 0.125em dashed var(--fg-1);
+
+        display: inline-flex;
+        gap: 0.25em;
+        align-items: center;
+
+        & svg {
+            width: 1em;
+            height: 1em;
+        }
+    }
+}
