@@ -62,6 +62,7 @@
     "serve": "vite",
     "test": ":",
     "typecheck": "tsc --noEmit",
+    "prod": "vite build",
     "ci:test": ":"
   },
   "dependencies": {

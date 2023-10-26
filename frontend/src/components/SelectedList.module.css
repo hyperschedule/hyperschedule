@@ -35,8 +35,6 @@
         background-color: transparent;
         color: var(--fg-1);
 
-        //border: 0.125em solid var(--bg-1);
-
         & .badge {
             filter: saturate(50%);
         }
