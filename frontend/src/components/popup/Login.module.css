@@ -1,0 +1,81 @@
+.loginBox {
+    height: 100%;
+
+    & p,
+    h4 {
+        margin: 0;
+    }
+
+    .button {
+        height: 2em;
+    }
+
+    & .login {
+        grid-template-areas: "header" "button" "list" "footer";
+        grid-template-rows: 1.5em 2.5em auto 2em;
+    }
+
+    & .guest {
+        grid-template-areas: "button" "list";
+        grid-template-rows: 2.5em auto 1fr;
+    }
+
+    & .login,
+    & .guest {
+        display: grid;
+        grid-row-gap: 0.25em;
+        align-items: center;
+
+        @media (--medium-and-up) {
+            grid-template-areas: "header" "button" "list" "footer";
+            grid-template-rows: 1.5em 2.5em 1fr 2em;
+        }
+
+        & .button {
+            grid-area: button;
+        }
+
+        & .reasons {
+            grid-area: list;
+
+            display: grid;
+            grid-template-columns: 1em auto;
+            grid-template-rows: repeat(4, 3em);
+            align-items: center;
+            grid-column-gap: 0.5em;
+
+            & svg {
+                grid-column: 1;
+                width: 1em;
+                height: 1em;
+            }
+
+            & span {
+                grid-column: 2;
+            }
+
+            h4 {
+                text-align: center;
+                grid-column: 1 / -1;
+            }
+        }
+    }
+
+    & .login {
+        & .reasons svg {
+            color: var(--palette-green);
+        }
+    }
+
+    & .guest {
+        & .reasons svg {
+            color: var(--palette-red);
+        }
+    }
+
+    & .footnote {
+        grid-area: footer;
+        font-size: 0.75rem;
+        align-self: self-end;
+    }
+}
