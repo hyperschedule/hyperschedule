@@ -1,5 +1,6 @@
 import Css from "@components/Sidebar.module.css";
 import AppCss from "@components/App.module.css";
+import MainSelectorCss from "@components/MainSelector.module.css";
 import MiniMap from "@components/MiniMap";
 import SelectedList from "@components/SelectedList";
 import * as React from "react";
@@ -13,7 +14,8 @@ import Slider from "@components/common/Slider";
 import { PopupOption } from "@lib/popup";
 import classNames from "classnames";
 import { scheduleDisplayName } from "@lib/schedule";
-import { useState } from "react";
+import { useDeferredValue, useState } from "react";
+import { createPortal } from "react-dom";
 
 export default function Sidebar() {
     const tab = useStore((store) => store.mainTab);
@@ -22,11 +24,12 @@ export default function Sidebar() {
     const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
     const serverData = useUserStore((user) => user.server);
 
+    const teleportTarget = useDeferredValue(
+        document.querySelector(`div.${MainSelectorCss.showSidebar}`),
+    );
+
     return (
         <>
-            <button className={Css.handle} onClick={() => setShow(true)}>
-                <Feather.Menu className={Css.handleIcon} />
-            </button>
             <div
                 className={Css.overlay}
                 data-show={show || undefined}
@@ -37,11 +40,36 @@ export default function Sidebar() {
                 data-show={show || undefined}
                 data-tab={tab}
             >
-                <Toolbar />
-                <div className={Css.top}>
-                    <button onClick={() => setShow(false)}>
+                <div className={Css.toolbar}>
+                    {!show && teleportTarget !== null ? (
+                        createPortal(
+                            <button
+                                className={classNames(
+                                    Css.showSidebarButton,
+                                    AppCss.defaultButton,
+                                )}
+                                onClick={() => setShow(true)}
+                            >
+                                <Feather.Menu className={Css.showSidebarIcon} />
+                            </button>,
+                            teleportTarget,
+                        )
+                    ) : (
+                        <></>
+                    )}
+
+                    <button
+                        onClick={() => setShow(false)}
+                        className={classNames(
+                            AppCss.defaultButton,
+                            Css.iconOnlyButton,
+                            Css.button,
+                            Css.hideSidebarButton,
+                        )}
+                    >
                         <Feather.ChevronRight className={Css.icon} />
                     </button>
+                    <Toolbar />
                 </div>
                 {tab === MainTab.CourseSearch ? <MiniMap /> : <></>}
 
@@ -137,20 +165,7 @@ function Toolbar() {
     const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
 
     return (
-        <div className={Css.toolbar}>
-            {loggedIn ? (
-                <button
-                    className={classNames(
-                        AppCss.defaultButton,
-                        Css.button,
-                        Css.exportButton,
-                    )}
-                >
-                    Export calendar
-                </button>
-            ) : (
-                <></>
-            )}
+        <>
             <button
                 className={classNames(
                     AppCss.defaultButton,
@@ -179,6 +194,15 @@ function Toolbar() {
                     >
                         <Feather.Settings className={Css.icon} />
                     </button>
+                    <button
+                        className={classNames(
+                            AppCss.defaultButton,
+                            Css.button,
+                            Css.exportButton,
+                        )}
+                    >
+                        Export calendar
+                    </button>
                 </>
             ) : (
                 <>
@@ -190,8 +214,8 @@ function Toolbar() {
                         )}
                         onClick={() => setPopup({ option: PopupOption.Login })}
                     >
+                        <Feather.User className={Css.icon} />
                         Login
-                        <Feather.User className={AppCss.defaultButtonIcon} />
                     </button>
                 </>
             )}
@@ -205,6 +229,6 @@ function Toolbar() {
             >
                 <Feather.GitHub className={Css.icon} />
             </button>
-        </div>
+        </>
     );
 }

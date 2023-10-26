@@ -152,7 +152,7 @@
     }
 }
 
-button.defaultButton {
+.defaultButton {
     border-radius: 0.125em;
     font-size: 1em;
     font-family: inherit;
@@ -162,8 +162,9 @@ button.defaultButton {
     background-color: var(--hbg);
     color: var(--hfg);
     cursor: pointer;
+    padding: 0 0.25em;
 
-    & svg.defaultButtonIcon {
+    & .defaultButtonIcon {
         width: 1em;
         height: 1em;
     }

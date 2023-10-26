@@ -11,15 +11,22 @@ export default function MainSelector() {
     return (
         <div
             className={classNames(Css.container, {
-                [Css.alt!]: mainTab === MainTab.Schedule,
+                [Css.alt]: mainTab === MainTab.Schedule,
             })}
         >
-            <button onClick={() => setMainTab(MainTab.CourseSearch)}>
+            <button
+                className={Css.courseSearchButton}
+                onClick={() => setMainTab(MainTab.CourseSearch)}
+            >
                 Course Search
             </button>
-            <button onClick={() => setMainTab(MainTab.Schedule)}>
+            <button
+                className={Css.scheduleButton}
+                onClick={() => setMainTab(MainTab.Schedule)}
+            >
                 Schedule
             </button>
+            <div className={Css.showSidebar} />
         </div>
     );
 }

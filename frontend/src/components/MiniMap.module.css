@@ -13,7 +13,6 @@
     grid-template-areas:
         "day-label ."
         "minimap time-label";
-    padding: 0 1rem 1rem 1rem;
 
     & .minimapLabelTime,
     & .minimapLabelDay {

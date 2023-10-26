@@ -3,7 +3,7 @@
 
     display: grid;
     position: relative;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr auto;
     background-color: var(--bg-1);
     transition: background-color var(--theme-transition-duration);
 
@@ -11,10 +11,14 @@
         content: "";
         background-color: var(--bg-0);
         position: absolute;
-        width: 50%;
+        width: 100%;
         height: 100%;
+
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+
         transition:
-            transform 100ms,
+            transform var(--menu-transition-duration),
             background-color var(--theme-transition-duration);
     }
 
@@ -22,7 +26,8 @@
         transform: translateX(100%);
     }
 
-    & button {
+    & .courseSearchButton,
+    & .scheduleButton {
         font: inherit;
         padding: 0.5rem;
         border: none;
@@ -30,5 +35,31 @@
         background-color: transparent;
         color: inherit;
         position: relative;
+    }
+
+    &.alt {
+        & .scheduleButton {
+            cursor: initial;
+        }
+
+        & .courseSearchButton {
+            cursor: pointer;
+        }
+    }
+
+    .showSidebar {
+        & button {
+            height: 100%;
+            border-left: 0.125em solid var(--bg-2);
+            transition: border-left var(--menu-transition-duration);
+        }
+
+        .alt & {
+            background-color: var(--bg-1);
+
+            & button {
+                border-left: 0.125em solid transparent;
+            }
+        }
     }
 }

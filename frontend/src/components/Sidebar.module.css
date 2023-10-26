@@ -1,35 +1,3 @@
-.handle {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 3em;
-    height: 3em;
-    appearance: none;
-    box-sizing: border-box;
-    border-radius: 0.125em;
-    font-size: 1em;
-    font-family: inherit;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-    z-index: 10;
-
-    .handleIcon {
-        width: 2.5em;
-        height: 2.5em;
-    }
-
-    @media (--medium-only) {
-        [data-schedule-tab] & {
-            display: initial;
-        }
-    }
-
-    @media (--medium-and-up) {
-        display: none;
-    }
-}
-
 .overlay {
     position: absolute;
     inset: 0;
@@ -51,41 +19,6 @@
     }
 }
 
-.icon {
-    width: 1.5rem;
-}
-
-.renderingOptions {
-    grid-area: rendering;
-}
-
-.scheduleSelect {
-    grid-area: schedule-select;
-    margin: 0.5em 1em;
-
-    & .scheduleIcon {
-        width: 1.75em;
-        height: 1.75em;
-        stroke-width: 1.25;
-    }
-
-    &,
-    & .editScheduleButton {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0.25em;
-    }
-
-    & .dropdownContainer {
-        height: 1.75em;
-    }
-
-    & .editScheduleButton {
-        height: 1.75em;
-    }
-}
-
 .sidebar {
     transition:
         background-color var(--theme-transition-duration),
@@ -95,33 +28,23 @@
         box-shadow var(--menu-transition-duration);
 
     min-height: 0;
-    min-width: calc(min(24rem, 100vw));
+    min-width: calc(min(24em, 100vw));
 
     display: grid;
-    grid-template-areas: "top" "toolbar" "minimap" "credits" "schedule-select" "rendering" "selected";
+    grid-template-areas: "toolbar" "minimap" "credits" "schedule-select" "rendering" "selected";
+    grid-row-gap: 0.5em;
 
     &[data-tab="CourseSearch"] {
-        grid-template-rows: auto auto 33.33% auto auto auto 1fr;
+        grid-template-rows: auto 33.33% auto auto auto 1fr;
     }
 
     &[data-tab="Schedule"] {
-        grid-template-rows: auto auto 0 auto auto auto 1fr;
+        grid-template-rows: auto 0 auto auto auto 1fr;
     }
 
     background-color: var(--bg-0);
 
-    & .top {
-        display: flex;
-        justify-content: flex-end;
-
-        & button {
-            background: none;
-            color: inherit;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-    }
+    padding: 0.5em;
 
     position: absolute;
     right: 0;
@@ -139,15 +62,11 @@
         position: relative;
 
         grid-area: sidebar;
-        border-left: 1px solid var(--bg-1);
+        border-left: 0.125em solid var(--bg-1);
 
         box-shadow: none;
 
         min-width: 0;
-
-        & .top {
-            display: none;
-        }
     }
 
     @media (--medium-only) {
@@ -159,43 +78,122 @@
     @media (--viewport-large) {
         @mixin show-sidebar;
     }
-}
 
-.toolbar {
-    grid-area: toolbar;
-
-    display: grid;
-    grid-template-areas: "export login gap settings github about";
-    grid-column-gap: 0.25em;
-    grid-template-columns: auto auto 1fr auto auto;
-
-    & .button {
-        height: 1.75em;
+    .icon {
+        width: 1.5rem;
     }
 
-    & .iconOnlyButton {
-        & .icon {
-            width: 1.5em;
-            height: 1.5em;
-            stroke-width: 1.5;
+    .renderingOptions {
+        grid-area: rendering;
+    }
+
+    .scheduleSelect {
+        grid-area: schedule-select;
+
+        & .scheduleIcon {
+            width: 1.75em;
+            height: 1.75em;
+            stroke-width: 1.25;
+        }
+
+        &,
+        & .editScheduleButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.25em;
+        }
+
+        & .dropdownContainer {
+            height: 1.75em;
+        }
+
+        & .editScheduleButton {
+            height: 1.75em;
         }
     }
-    .settingsButton {
-        grid-area: settings;
+
+    .toolbar {
+        grid-area: toolbar;
+
+        display: grid;
+        grid-template-areas: "export login gap settings github about hide-sidebar";
+        grid-column-gap: 0.25em;
+        grid-template-columns: auto auto 1fr repeat(4, auto);
+
+        & .button {
+            height: 1.75em;
+
+            & .icon {
+                height: 1.25em;
+                width: 1.25em;
+            }
+        }
+
+        & .iconOnlyButton {
+            & .icon {
+                width: 1.5em;
+                height: 1.5em;
+                stroke-width: 1.5;
+            }
+        }
+
+        .settingsButton {
+            grid-area: settings;
+        }
+
+        .loginButton {
+            grid-area: login;
+        }
+
+        .exportButton {
+            grid-area: export;
+        }
+
+        .aboutButton {
+            grid-area: about;
+        }
+
+        .githubButton {
+            grid-area: github;
+        }
+
+        .hideSidebarButton {
+            grid-area: hide-sidebar;
+
+            .icon {
+                width: 100%;
+                height: 100%;
+                stroke-width: 2;
+            }
+        }
     }
-    .loginButton {
-        grid-area: login;
+}
+
+.showSidebarButton {
+    .showSidebarIcon {
+        width: 1.75em;
+        height: 1.75em;
+    }
+}
+
+.sidebar .hideSidebarButton,
+.showSidebarButton {
+    background: none;
+    border: 0;
+    padding: 0 0.5em;
+
+    &:hover {
+        background: none;
     }
 
-    .exportButton {
-        grid-area: export;
+    @media (--medium-and-up) {
+        display: none;
     }
 
-    .aboutButton {
-        grid-area: about;
-    }
-
-    .githubButton {
-        grid-area: github;
+    @media (--medium-only) {
+        [data-schedule-tab] & {
+            display: flex;
+        }
     }
 }
