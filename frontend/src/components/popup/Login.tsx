@@ -14,7 +14,6 @@ export default function Login(props: { continuation?: () => void }) {
         setPopup(null);
         props.continuation?.();
     }
-
     return (
         <div>
             {/*<button onClick={loginAsGuest}>Login as guest</button>*/}

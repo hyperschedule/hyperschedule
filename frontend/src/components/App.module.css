@@ -19,12 +19,12 @@
         color var(--theme-transition-duration);
 
     display: grid;
-    grid-template-areas: "toolbar sidebar-handle" "main main";
+    grid-template-areas: "main";
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
 
     @define-mixin show-sidebar {
-        grid-template-areas: "main toolbar" "main sidebar";
+        grid-template-areas: "main siebar" "main sidebar";
         grid-template-columns: 1fr calc(100% / 3);
         grid-template-rows: auto 1fr;
     }

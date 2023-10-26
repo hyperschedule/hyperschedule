@@ -2,55 +2,87 @@ import { useUserStore } from "@hooks/store/user";
 
 import Css from "./Toolbar.module.css";
 import AppCss from "@components/App.module.css";
-import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 import * as Feather from "react-feather";
 import useStore from "@hooks/store";
 import { PopupOption } from "@lib/popup";
+import classNames from "classnames";
 
 export default function Toolbar() {
     const setPopup = useStore((store) => store.setPopup);
 
-    const loggedIn = useUserStore((user) => user.server);
-
-    function loginThroughCAS() {
-        window.location.href = `${__API_URL__}/auth/saml`;
-    }
-
-    const user = useUserStore();
+    const loggedIn = useUserStore((user) => user.server) !== null;
+    const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
 
     return (
         <div className={Css.toolbar}>
-            {user.activeTerm.term === CURRENT_TERM.term &&
-            user.activeTerm.year ===
-                CURRENT_TERM.year ? null /*<button onClick={() => legacyImport.mutate()}>
-                    Import from legacy
-                </button>*/ : (
+            {loggedIn ? (
+                <button
+                    className={classNames(
+                        AppCss.defaultButton,
+                        Css.button,
+                        Css.exportButton,
+                    )}
+                >
+                    Export calendar
+                </button>
+            ) : (
                 <></>
             )}
-            <button>Report issues</button>
-            <button>Export calendar</button>
-            <Feather.GitHub />
-
             <button
-                className={AppCss.defaultButton}
-                onClick={() =>
-                    setPopup({
-                        option: PopupOption.Settings,
-                    })
-                }
+                className={classNames(
+                    AppCss.defaultButton,
+                    Css.button,
+                    Css.aboutButton,
+                    Css.iconOnlyButton,
+                )}
             >
-                <Feather.Settings className={AppCss.defaultButtonIcon} />
+                <Feather.Info className={Css.icon} />
             </button>
 
-            {loggedIn ? (
-                "logged in"
+            {loggedIn || confirmedGuest ? (
+                <>
+                    <button
+                        className={classNames(
+                            AppCss.defaultButton,
+                            Css.iconOnlyButton,
+                            Css.button,
+                            Css.settingsButton,
+                        )}
+                        onClick={() =>
+                            setPopup({
+                                option: PopupOption.Settings,
+                            })
+                        }
+                    >
+                        <Feather.Settings className={Css.icon} />
+                    </button>
+                </>
             ) : (
                 <>
-                    guest
-                    <button onClick={loginThroughCAS}>Login</button>
+                    <button
+                        className={classNames(
+                            AppCss.defaultButton,
+                            Css.button,
+                            Css.loginButton,
+                        )}
+                        onClick={() => setPopup({ option: PopupOption.Login })}
+                    >
+                        Login
+                        <Feather.User className={AppCss.defaultButtonIcon} />
+                    </button>
                 </>
             )}
+            <button
+                className={classNames(
+                    AppCss.defaultButton,
+                    Css.iconOnlyButton,
+                    Css.button,
+                    Css.githubButton,
+                )}
+            >
+                <Feather.GitHub className={Css.icon} />
+            </button>
         </div>
     );
 }

@@ -1,5 +1,23 @@
 .handle {
-    grid-area: sidebar-handle;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 3em;
+    height: 3em;
+    appearance: none;
+    box-sizing: border-box;
+    border-radius: 0.125em;
+    font-size: 1em;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    z-index: 10;
+
+    .handleIcon {
+        width: 2.5em;
+        height: 2.5em;
+    }
 
     @media (--medium-only) {
         [data-schedule-tab] & {
@@ -80,14 +98,14 @@
     min-width: calc(min(24rem, 100vw));
 
     display: grid;
-    grid-template-areas: "top" "minimap" "credits" "schedule-select" "rendering" "selected";
+    grid-template-areas: "top" "toolbar" "minimap" "credits" "schedule-select" "rendering" "selected";
 
     &[data-tab="CourseSearch"] {
-        grid-template-rows: auto 33.33% auto auto auto 1fr;
+        grid-template-rows: auto auto 33.33% auto auto auto 1fr;
     }
 
     &[data-tab="Schedule"] {
-        grid-template-rows: auto 0 auto auto auto 1fr;
+        grid-template-rows: auto auto 0 auto auto auto 1fr;
     }
 
     background-color: var(--bg-0);

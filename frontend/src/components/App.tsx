@@ -6,7 +6,6 @@ import classNames from "classnames";
 import CourseSearch from "./course-search/CourseSearch";
 import Schedule from "./schedule/Schedule";
 import MainSelector from "./MainSelector";
-import Toolbar from "./Toolbar";
 import Popup from "@components/popup/Popup";
 import { Slide, ToastContainer } from "react-toastify";
 
@@ -45,7 +44,6 @@ export default function App() {
             data-search-tab={!onSearchTab ? "" : undefined}
         >
             <Popup />
-            <Toolbar />
             <div className={Css.main}>
                 <MainSelector />
                 <div

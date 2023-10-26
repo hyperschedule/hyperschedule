@@ -5,7 +5,6 @@ import SelectedList from "@components/SelectedList";
 import * as React from "react";
 import useStore, { MainTab } from "@hooks/store";
 import { useUserStore } from "@hooks/store/user";
-import { shallow } from "zustand/shallow";
 import * as Feather from "react-feather";
 import ThemeSlider from "./ThemeSlider";
 import Dropdown from "@components/common/Dropdown";
@@ -14,16 +13,12 @@ import Slider from "@components/common/Slider";
 import { PopupOption } from "@lib/popup";
 import classNames from "classnames";
 import { scheduleDisplayName } from "@lib/schedule";
+import { useState } from "react";
+import Toolbar from "@components/Toolbar";
 
 export default function Sidebar() {
-    const { tab, show, setShow } = useStore(
-        (store) => ({
-            tab: store.mainTab,
-            show: store.showSidebar,
-            setShow: store.setShowSidebar,
-        }),
-        shallow,
-    );
+    const tab = useStore((store) => store.mainTab);
+    const [show, setShow] = useState<boolean>(false);
 
     const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
     const serverData = useUserStore((user) => user.server);
@@ -31,7 +26,7 @@ export default function Sidebar() {
     return (
         <>
             <button className={Css.handle} onClick={() => setShow(true)}>
-                <Feather.List />
+                <Feather.Menu className={Css.handleIcon} />
             </button>
             <div
                 className={Css.overlay}
@@ -43,6 +38,7 @@ export default function Sidebar() {
                 data-show={show || undefined}
                 data-tab={tab}
             >
+                <Toolbar />
                 <div className={Css.top}>
                     <button onClick={() => setShow(false)}>
                         <Feather.ChevronRight className={Css.icon} />

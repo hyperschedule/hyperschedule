@@ -26,7 +26,6 @@ export type Store = WithSetters<{
     appearanceOptions: AppearanceOptions;
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
-    showSidebar: boolean;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -123,9 +122,6 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
 
         popup: null,
         setPopup: (popup) => set({ popup }),
-
-        showSidebar: false,
-        setShowSidebar: (showSidebar) => set({ showSidebar }),
 
         scheduleRenderingOptions: {
             showConflicting: false,
