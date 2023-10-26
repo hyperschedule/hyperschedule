@@ -46,7 +46,13 @@ samlApp
                 );
                 return response
                     .status(400)
-                    .send("Cannot interpret response from CAS.");
+                    .header("Content-Type", "text/plain")
+                    .send(
+                        "Cannot interpret response from CAS. Can you log into Sakai or the library website?\n\n" +
+                            `If not, CAS broke. Otherwise, please file a bug report with this error ID: ${result.extract.response?.id}.\n\n` +
+                            "(Fun fact, portal doesn't go through CAS. Other school services that go through CAS include\n" +
+                            "the Claremont cash website, campus safety vehicle registration website, and Workday)",
+                    );
             }
 
             const user = await getOrCreateUser(
