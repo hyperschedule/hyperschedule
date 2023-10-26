@@ -6,6 +6,11 @@
         gap: 0.25em 0.5em;
     }
 
+    & a,
+    & a:visited {
+        text-decoration: none;
+    }
+
     & h2.title {
         text-align: center;
         margin: 0;
@@ -20,6 +25,13 @@
 
         & .title {
             grid-column: 1 / -1;
+        }
+    }
+
+    & .dataViewer {
+        a,
+        a:visited {
+            width: fit-content;
         }
     }
 
@@ -56,6 +68,22 @@
         & .buttons {
             display: flex;
             gap: 0.5em;
+        }
+    }
+
+    .issues {
+        & a,
+        & a:visited {
+            color: var(--fg-1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25em;
+            border-bottom: 0.125em var(--fg-1) dashed;
+
+            & svg {
+                width: 1em;
+                height: 1em;
+            }
         }
     }
 }

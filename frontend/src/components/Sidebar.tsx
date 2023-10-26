@@ -16,6 +16,7 @@ import classNames from "classnames";
 import { scheduleDisplayName } from "@lib/schedule";
 import { useDeferredValue, useState } from "react";
 import { createPortal } from "react-dom";
+import { GITHUB_LINK } from "@lib/constants";
 
 export default function Sidebar() {
     const tab = useStore((store) => store.mainTab);
@@ -219,16 +220,18 @@ function Toolbar() {
                     </button>
                 </>
             )}
-            <button
+            <a
                 className={classNames(
                     AppCss.defaultButton,
                     Css.iconOnlyButton,
                     Css.button,
                     Css.githubButton,
                 )}
+                href={GITHUB_LINK}
+                target="_blank"
             >
                 <Feather.GitHub className={Css.icon} />
-            </button>
+            </a>
         </>
     );
 }

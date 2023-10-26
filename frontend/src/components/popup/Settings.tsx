@@ -2,7 +2,11 @@ import Css from "./Settings.module.css";
 import AppCss from "@components/App.module.css";
 import Slider from "@components/common/Slider";
 import useStore from "@hooks/store";
-import { AUTH_COOKIE_DOMAIN, DATA_VIEWER_PATH } from "@lib/constants";
+import {
+    AUTH_COOKIE_DOMAIN,
+    DATA_VIEWER_PATH,
+    GITHUB_LINK,
+} from "@lib/constants";
 import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
 import * as Feather from "react-feather";
 import classNames from "classnames";
@@ -18,6 +22,7 @@ export function Settings() {
             <AppearanceSettings />
             <AccountSettings />
             <DataViewer />
+            <ReportIssues />
         </div>
     );
 }
@@ -110,19 +115,20 @@ function AccountSettings() {
 
 function DataViewer() {
     return (
-        <div>
+        <div className={Css.dataViewer}>
             <h3 className={Css.title}>Data</h3>
             <p>
                 You can view all the data about you stored on this site and on
                 the server in the data viewer.
             </p>
-            <button
+            <a
                 className={classNames(AppCss.defaultButton, Css.button)}
-                onClick={() => window.open(DATA_VIEWER_PATH, "_blank")}
+                href={DATA_VIEWER_PATH}
+                target="_blank"
             >
                 <Feather.Search className={AppCss.defaultButtonIcon} />
                 Open data viewer
-            </button>
+            </a>
         </div>
     );
 }
@@ -177,6 +183,29 @@ function AppearanceSettings() {
                 }
                 text=""
             />
+        </div>
+    );
+}
+
+function ReportIssues() {
+    return (
+        <div className={Css.issues}>
+            <h3>Issues</h3>
+            <p>
+                If you have encountered any bug related to the website please
+                either file a bug report on{" "}
+                <a href={`${GITHUB_LINK}/issues`} target="_blank">
+                    GitHub <Feather.ExternalLink />
+                </a>{" "}
+                or email us at hyperschedule@g.hmc.edu.
+            </p>
+            <p>
+                If you have found any incorrect or inaccurate course
+                information, please send us an email. We try our best to keep
+                everything as up-to-date as possible, but we cannot manually go
+                through the 20k+ classes in our database by hand and errors do
+                slip through.
+            </p>
         </div>
     );
 }
