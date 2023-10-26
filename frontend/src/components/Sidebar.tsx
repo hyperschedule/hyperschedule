@@ -25,9 +25,23 @@ export default function Sidebar() {
     const confirmedGuest = useUserStore((user) => user.hasConfirmedGuest);
     const serverData = useUserStore((user) => user.server);
 
-    const teleportTarget = useDeferredValue(
-        document.querySelector(`div.${MainSelectorCss.showSidebar}`),
+    // we need to teleport the button to MainSelector, but it's not necessarily
+    // rendered when sidebar is first rendered. however, once MainSelector is rendered
+    // it never disappears.
+    const [teleportTarget, setTeleportTarget] = useState<HTMLDivElement | null>(
+        null,
     );
+    const teleportSelector = `div.${MainSelectorCss.showSidebar}`;
+
+    React.useEffect(function recheckTeleport() {
+        const el = document.querySelector(teleportSelector);
+        if (el === null)
+            window.requestAnimationFrame(() => {
+                // this recursion is probably not necessary, but we are doing this just to be safe
+                recheckTeleport();
+            });
+        else setTeleportTarget(el as HTMLDivElement);
+    }, []);
 
     return (
         <>
