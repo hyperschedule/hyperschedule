@@ -12,20 +12,25 @@
         }
     }
 
-    .icalLink {
-        background-color: var(--bg-1);
-        font-size: 1em;
-        font-family: var(--font-mono);
-        overflow-x: auto;
-        height: 2em;
+    & .linkContainer {
+        position: relative;
+        cursor: pointer;
 
-        display: flex;
-        align-items: center;
-        padding-left: 1em;
-        padding-right: 1em;
-        width: fit-content;
-        max-width: 100%;
-        border-radius: 0.25em;
+        & .icalLink {
+            font-size: 1em;
+            font-family: var(--font-mono);
+            overflow-x: auto;
+            height: 2em;
+            background-color: var(--bg-1);
+            display: flex;
+            align-items: center;
+            padding-left: 1em;
+            padding-right: 1em;
+            width: fit-content;
+            border-radius: 0.25em;
+
+            max-width: calc(100% - 2em);
+        }
     }
 
     & .scheduleSelect {

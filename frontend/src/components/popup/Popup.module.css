@@ -30,9 +30,6 @@
             height: unset;
             max-height: 80vh;
             border-radius: 0.25rem;
-
-            /*setting a bare grid so child containers will expand to full size*/
-            display: grid;
         }
 
         @media (--medium-only) {

@@ -23,8 +23,8 @@ export default function ExportCalendar() {
         </div>
     ) : (
         <div className={Css.exportCalendar}>
+            <h2>Export Calendar</h2>
             <div className={Css.scheduleSelect}>
-                <span>Select a schedule </span>
                 <PopupScheduleSelector
                     selectedScheduleId={scheduleId}
                     setSelectedScheduleId={setScheduleId}
@@ -37,6 +37,7 @@ export default function ExportCalendar() {
                     <div>
                         <h3>Calendar Subscription Link</h3>
                         <code
+                            className={Css.linkContainer}
                             onClick={() => {
                                 navigator.clipboard
                                     .writeText(icalLink)
