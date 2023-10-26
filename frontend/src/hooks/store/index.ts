@@ -55,6 +55,7 @@ export type AppearanceOptions = {
     disableShadows: boolean;
     disableTransparency: boolean;
     disableRoundedCorners: boolean;
+    disableAnimations: boolean;
 };
 
 const initStore: Zustand.StateCreator<Store> = (set, get) => {
@@ -79,6 +80,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
             disableRoundedCorners: false,
             disableShadows: false,
             disableTransparency: false,
+            disableAnimations: false,
         },
         setAppearanceOptions: (options) => set({ appearanceOptions: options }),
 

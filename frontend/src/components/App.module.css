@@ -121,6 +121,15 @@
             border-radius: 0 !important;
         }
     }
+
+    &.disableAnimations {
+        &,
+        & *,
+        & *:before,
+        & *:after {
+            transition: none !important;
+        }
+    }
 }
 
 .main {

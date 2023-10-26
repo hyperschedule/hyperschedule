@@ -38,6 +38,7 @@ export default function App() {
                     appearanceOptions.disableTransparency,
                 [Css.disableRoundedCorners]:
                     appearanceOptions.disableRoundedCorners,
+                [Css.disableAnimations]: appearanceOptions.disableAnimations,
             })}
             data-theme={theme}
             data-schedule-tab={onSearchTab ? "" : undefined}

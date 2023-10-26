@@ -166,6 +166,17 @@ function AppearanceSettings() {
                 }
                 text=""
             />
+            <span>Disable Animations</span>
+            <Slider
+                value={options.disableAnimations}
+                onToggle={() =>
+                    setOptions({
+                        ...options,
+                        disableAnimations: !options.disableAnimations,
+                    })
+                }
+                text=""
+            />
         </div>
     );
 }
