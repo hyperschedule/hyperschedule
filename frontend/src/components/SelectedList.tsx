@@ -158,7 +158,7 @@ export default function SelectedList() {
                         <></>
                     ) : (
                         <div className={Css.textContainer}>
-                            <span>(drag sections to reorder them)</span>
+                            <span>(drag sections to change priorities)</span>
                         </div>
                     )}
                 </div>

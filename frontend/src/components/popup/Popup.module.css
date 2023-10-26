@@ -15,6 +15,10 @@
 
     & .popupBox,
     & .popupContent {
+        transition:
+            width var(--misc-transition-duration),
+            min-height var(--misc-transition-duration);
+
         width: 100vw;
         height: 100vh;
         min-height: 30vh;
@@ -32,12 +36,12 @@
         }
 
         @media (--medium-only) {
-            width: 80vw;
+            width: 40em;
             min-height: 30vh;
         }
 
         @media (--viewport-large) {
-            width: 60vw;
+            width: 50em;
             min-height: 20vh;
         }
     }
