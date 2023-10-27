@@ -21,6 +21,7 @@ export type Store = {
     activeTerm: APIv4.TermIdentifier;
 
     // mutators
+    getUser: () => Promise<void>;
     confirmGuest: () => void;
     scheduleAddSection: (request: APIv4.AddSectionRequest) => void;
     scheduleDeleteSection: (request: APIv4.DeleteSectionRequest) => void;
@@ -95,6 +96,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
     });
 
     return {
+        getUser,
         activeScheduleId: DEFAULT_LOCAL_SCHEDULE_ID,
         setActiveScheduleId: (activeScheduleId) => {
             const schedule = get().schedules[activeScheduleId];
