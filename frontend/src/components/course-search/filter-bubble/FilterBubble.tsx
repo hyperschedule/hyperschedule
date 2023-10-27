@@ -2,7 +2,7 @@ import * as Search from "@lib/search";
 
 import Css from "./FilterBubble.module.css";
 import useStore from "@hooks/store";
-import React from "react";
+import React, { startTransition } from "react";
 import * as Feather from "react-feather";
 import { memo } from "react";
 import { DaysFilterBubble, TextInputBubble } from "./TextInputBubble";
@@ -74,10 +74,12 @@ export default memo(function FilterBubble(props: {
                 <InputComponent
                     focusNext={() => props.focusOnFilter(props.index + 1, 0)}
                     onChange={(data) => {
-                        setSearchFilter(props.index, {
-                            key: props.filter.key,
-                            data,
-                        } as Search.Filter);
+                        startTransition(() =>
+                            setSearchFilter(props.index, {
+                                key: props.filter.key,
+                                data,
+                            } as Search.Filter),
+                        );
                     }}
                     onKeyDown={(ev) => {
                         const el = ev.currentTarget;

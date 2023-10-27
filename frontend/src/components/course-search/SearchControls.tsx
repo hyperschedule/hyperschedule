@@ -7,7 +7,7 @@ import { useAllTerms } from "@hooks/term";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { startTransition, useRef, useState } from "react";
 
 import Dropdown from "@components/common/Dropdown";
 import FilterBubble from "@components/course-search/filter-bubble/FilterBubble";
@@ -130,9 +130,21 @@ export default memo(function SearchControls() {
                         }
 
                         setSearchState(el.value);
+
+                        // we do this extremely complicated callback tree because
+                        // updating search text is probably the slowest synchronous
+                        // operation we have, and we need to run it as few times
+                        // as possible, especially when the user is typing
+
                         clearTimeout(timer);
                         setTimer(
-                            setTimeout(() => setSearchText(el.value), 150),
+                            setTimeout(
+                                () =>
+                                    startTransition(() =>
+                                        setSearchText(el.value),
+                                    ),
+                                200,
+                            ),
                         );
                     }}
                     onKeyDown={(ev) => {

@@ -12,32 +12,35 @@ import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
-import { useUserStore } from "@hooks/store/user";
-import { memo } from "react";
+import { memo, useCallback } from "react";
+import { useActiveSectionsQuery } from "@hooks/section";
 
 export default memo(function CourseSearch() {
-    const activeTerm = useUserStore((store) => store.activeTerm);
-    const query = useSectionsQuery(activeTerm);
+    const sections: APIv4.Section[] | undefined = useActiveSectionsQuery().data;
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
 
-    const sectionsToShow = React.useMemo(() => {
-        if (query.data === undefined) return undefined;
-        const filtered =
-            searchFilters.length === 0
-                ? query.data
-                : query.data.filter((s) =>
-                      Search.filterSection(
-                          s,
-                          searchFilters.map((s) => s.filter),
-                      ),
-                  );
-        if (searchText === "") return filtered;
+    const filteredSections: APIv4.Section[] | undefined = React.useMemo(() => {
+        if (sections === undefined) return undefined;
+
+        return searchFilters.length === 0
+            ? sections
+            : sections.filter((s) =>
+                  Search.filterSection(
+                      s,
+                      searchFilters.map((s) => s.filter),
+                  ),
+              );
+    }, [searchFilters, sections]);
+
+    const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
+        if (searchText === "") return filteredSections;
+        if (filteredSections === undefined) return undefined;
 
         let res: [number, APIv4.Section][] = [];
 
-        for (const s of filtered) {
+        for (const s of filteredSections) {
             const score = Search.matchesText(searchText, s, areas);
             if (score !== null) {
                 res.push([score, s]);
@@ -45,7 +48,7 @@ export default memo(function CourseSearch() {
         }
         const sorted = res.sort((a, b) => b[0] - a[0]);
         return sorted.map((a) => a[1]);
-    }, [query.data, searchText, searchFilters]);
+    }, [sections, searchText, searchFilters]);
 
     return (
         <div className={Css.container}>
@@ -219,6 +222,11 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
 
     const expand = props.index === props.expandIndex;
 
+    const onClick = useCallback(
+        () => (expand ? clearExpand() : setExpandKey(props.section.identifier)),
+        [expand],
+    );
+
     return (
         <div
             style={{ transform: `translateY(${pos}px)` }}
@@ -227,11 +235,7 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
             <CourseRow
                 section={props.section}
                 expand={expand}
-                onClick={() =>
-                    expand
-                        ? clearExpand()
-                        : setExpandKey(props.section.identifier)
-                }
+                onClick={onClick}
                 updateDetailsSize={expand ? setExpandHeight : undefined}
             />
         </div>
