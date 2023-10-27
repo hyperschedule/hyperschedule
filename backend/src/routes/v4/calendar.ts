@@ -11,6 +11,28 @@ const logger = createLogger("server.route.calendar");
 
 export const calendarApp = new App({ settings: { xPoweredBy: false } });
 
+// generated locally using https://www.npmjs.com/package/@touch4it/ical-timezones
+const ICAL_TIMEZONE_HEADER = `X-WR-TIMEZONE:America/Los_Angeles
+BEGIN:VTIMEZONE
+TZID:America/Los_Angeles
+X-LIC-LOCATION:America/Los_Angeles
+LAST-MODIFIED:20230517T170336Z
+BEGIN:DAYLIGHT
+TZNAME:PDT
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:PST
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE`;
+
 calendarApp.get(
     "/:userId/:scheduleId",
     async function (request: Request, response: Response) {
@@ -64,11 +86,21 @@ calendarApp.get(
                 .header("Content-Type", "text/plain")
                 .send(`Failure creating valid iCal calendar`);
         }
+
         // Safety: ics documentation:
         // > If a callback is not provided, [createEvents()] returns an object
         // > having the form { error, value }, where value is an iCal-compliant
         // > text string if error is null.
         // [https://www.npmjs.com/package/ics]
+        const patched = calendar
+            .value! // ical timezone patching from https://stackoverflow.com/a/58038439/7416363
+            .replaceAll("DTSTART:", "DTSTART;TZID=America/Los_Angeles:")
+            .replaceAll("DTEND:", "DTEND;TZID=America/Los_Angeles:")
+            .replace(
+                /PRODID:.*/,
+                "PRODID:hyperschedule\n" + ICAL_TIMEZONE_HEADER,
+            );
+
         return response
             .header("Content-Type", "text/calendar")
             .header(
@@ -76,7 +108,7 @@ calendarApp.get(
                 `attachment; filename="${schedule.name}.ics"`,
             )
             .header("Cache-Control", "public,max-age=600")
-            .send(calendar.value!);
+            .send(patched);
     },
 );
 
