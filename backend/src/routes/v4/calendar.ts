@@ -128,6 +128,8 @@ async function createCalendar(
             const title = section.course.title;
             const description = section.course.description;
             events.push({
+                startInputType: "local",
+                startOutputType: "local",
                 start,
                 end,
                 recurrenceRule,
