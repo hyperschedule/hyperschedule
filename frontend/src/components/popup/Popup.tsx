@@ -10,6 +10,7 @@ import classNames from "classnames";
 import { Settings } from "./Settings";
 import ExportCalendar from "@components/popup/ExportCalendar";
 import About from "@components/popup/About";
+import { memo } from "react";
 
 function PopupBox(props: {
     children: JSX.Element;
@@ -39,7 +40,7 @@ function PopupBox(props: {
     );
 }
 
-export default function Popup() {
+export default memo(function Popup() {
     const popup = useStore((store) => store.popup);
 
     const empty = (
@@ -95,4 +96,4 @@ export default function Popup() {
         default:
             return empty;
     }
-}
+});

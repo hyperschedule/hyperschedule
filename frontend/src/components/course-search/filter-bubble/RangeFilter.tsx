@@ -3,11 +3,11 @@ import React from "react";
 import Css from "./FilterBubble.module.css";
 import classNames from "classnames";
 import type { FilterBubbleComponentProps } from "./FilterBubble";
+import { memo } from "react";
 
-export const TimeFilterBubble = createRangeFilterBubble(parseTimeExp, 1);
-export const CreditFilterBubble = createRangeFilterBubble(
-    parseCreditExp,
-    0.0001,
+export const TimeFilterBubble = memo(createRangeFilterBubble(parseTimeExp, 1));
+export const CreditFilterBubble = memo(
+    createRangeFilterBubble(parseCreditExp, 0.0001),
 );
 
 const timeRegex =

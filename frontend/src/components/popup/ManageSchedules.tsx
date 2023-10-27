@@ -11,6 +11,7 @@ import AppCss from "@components/App.module.css";
 import { toast } from "react-toastify";
 import PopupAlternativeLine from "./PopupAlternativeLine";
 import PopupScheduleSelector from "@components/popup/PopupScheduleSelector";
+import { memo } from "react";
 
 export default function ManageSchedules() {
     const activeScheduleId = useUserStore((store) => store.activeScheduleId);
@@ -39,7 +40,7 @@ export default function ManageSchedules() {
     );
 }
 
-function CreateSchedule(props: {
+const CreateSchedule = memo(function CreateSchedule(props: {
     setSelectedScheduleId: (val: string) => void;
 }) {
     const addSchedule = useUserStore((store) => store.addSchedule);
@@ -99,7 +100,7 @@ function CreateSchedule(props: {
             </button>
         </div>
     );
-}
+});
 
 const enum EditSchedulePending {
     delete = "delete",
@@ -107,7 +108,7 @@ const enum EditSchedulePending {
     rename = "rename",
 }
 
-function EditSchedule(props: {
+const EditSchedule = memo(function EditSchedule(props: {
     selectedScheduleId: string;
     setSelectedScheduleId: (val: string) => void;
 }) {
@@ -273,4 +274,4 @@ function EditSchedule(props: {
             )}
         </div>
     );
-}
+});

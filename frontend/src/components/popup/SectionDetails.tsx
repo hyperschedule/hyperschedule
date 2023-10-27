@@ -3,8 +3,9 @@ import Css from "./SectionDetails.module.css";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 import { useActiveSectionsLookup } from "@hooks/section";
 import { useUserStore } from "@hooks/store/user";
+import { memo } from "react";
 
-export default function SectionDetails(props: {
+export default memo(function SectionDetails(props: {
     section: APIv4.SectionIdentifier;
 }): JSX.Element {
     const activeTerm = useUserStore((store) => store.activeTerm);
@@ -25,4 +26,4 @@ export default function SectionDetails(props: {
             <CourseDescriptionBox section={s} showStatus={true} />
         </div>
     );
-}
+});

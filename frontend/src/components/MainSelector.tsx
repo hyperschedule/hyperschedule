@@ -3,8 +3,9 @@ import Css from "./MainSelector.module.css";
 import classNames from "classnames";
 
 import useStore, { MainTab } from "@hooks/store";
+import { memo } from "react";
 
-export default function MainSelector() {
+export default memo(function MainSelector() {
     const mainTab = useStore((store) => store.mainTab);
     const setMainTab = useStore((store) => store.setMainTab);
 
@@ -29,4 +30,4 @@ export default function MainSelector() {
             <div className={Css.showSidebar} />
         </div>
     );
-}
+});

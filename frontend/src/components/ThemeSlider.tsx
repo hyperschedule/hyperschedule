@@ -1,9 +1,9 @@
 import Css from "./ThemeSlider.module.css";
 import * as Feather from "react-feather";
-
+import { memo } from "react";
 import useStore, { Theme } from "@hooks/store";
 
-export default function ThemeSlider(): JSX.Element {
+export default memo(function ThemeSlider(): JSX.Element {
     const theme = useStore((store) => store.theme);
     const toggleTheme = useStore((store) => store.toggleTheme);
 
@@ -16,4 +16,4 @@ export default function ThemeSlider(): JSX.Element {
             </div>
         </button>
     );
-}
+});

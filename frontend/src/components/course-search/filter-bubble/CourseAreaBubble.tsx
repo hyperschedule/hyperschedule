@@ -6,6 +6,7 @@ import React from "react";
 import classNames from "classnames";
 import type { FilterBubbleComponentProps } from "./FilterBubble";
 import AutoComplete from "./AutoComplete";
+import { memo } from "react";
 
 const campusCss = [
     // this is ordered by the year the school is established
@@ -16,7 +17,7 @@ const campusCss = [
     Css.ptz,
 ];
 
-export default function CourseAreaBubble(
+export default memo(function CourseAreaBubble(
     props: FilterBubbleComponentProps<Search.CourseAreaFilter>,
 ) {
     const courseAreaDescription = useCourseAreaDescription();
@@ -69,4 +70,4 @@ export default function CourseAreaBubble(
             }}
         />
     );
-}
+});

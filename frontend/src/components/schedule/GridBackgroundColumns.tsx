@@ -3,8 +3,9 @@ import classNames from "classnames";
 import Css from "./GridBackgroundColumns.module.css";
 
 import { dayOrder } from "@lib/schedule";
+import { memo } from "react";
 
-export default function GridBackground() {
+export default memo(function GridBackground() {
     return (
         <>
             {dayOrder.map((day, i) => (
@@ -19,4 +20,4 @@ export default function GridBackground() {
             ))}
         </>
     );
-}
+});

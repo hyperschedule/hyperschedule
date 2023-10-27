@@ -4,7 +4,7 @@ import Css from "./FilterBubble.module.css";
 import useStore from "@hooks/store";
 import React from "react";
 import * as Feather from "react-feather";
-
+import { memo } from "react";
 import { DaysFilterBubble, TextInputBubble } from "./TextInputBubble";
 import CourseAreaBubble from "./CourseAreaBubble";
 import CampusBubble from "./CampusBubble";
@@ -36,7 +36,7 @@ const FilterBubbleInput: {
 };
 
 // non-interactive example bubble used in the filter popup
-export function ExampleFilterBubble(props: {
+export const ExampleFilterBubble = memo(function ExampleFilterBubble(props: {
     filterKey: string;
     data: string;
 }) {
@@ -48,9 +48,9 @@ export function ExampleFilterBubble(props: {
             </span>
         </div>
     );
-}
+});
 
-export default function FilterBubble(props: {
+export default memo(function FilterBubble(props: {
     filter: Search.Filter;
     index: number;
     focusOnFilter: (index: number, cursor: number) => void;
@@ -111,4 +111,4 @@ export default function FilterBubble(props: {
             </span>
         </div>
     );
-}
+});

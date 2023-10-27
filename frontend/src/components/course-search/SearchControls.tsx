@@ -15,8 +15,9 @@ import * as Search from "@lib/search";
 import { useUserStore } from "@hooks/store/user";
 import AppCss from "@components/App.module.css";
 import classNames from "classnames";
+import { memo } from "react";
 
-export default function SearchControls() {
+export default memo(function SearchControls() {
     const activeTerm = useUserStore((user) => user.activeTerm);
     const setActiveTerm = useUserStore((user) => user.setActiveTerm);
     const searchFilters = useStore((store) => store.searchFilters);
@@ -171,4 +172,4 @@ export default function SearchControls() {
             </button>
         </div>
     );
-}
+});

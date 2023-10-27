@@ -5,7 +5,7 @@ import {
 } from "@hooks/api/course";
 
 import { formatTime12 } from "@lib/time";
-
+import { memo } from "react";
 import Css from "./CourseDescriptionBox.module.css";
 import * as Feather from "react-feather";
 import { combineLocations } from "@lib/schedule";
@@ -52,7 +52,7 @@ const campusCss = [
 // 3 years if offered every semester
 const HISTORY_ENTRY_CUTOFF = 6;
 
-export default function CourseDescriptionBox(props: {
+export default memo(function CourseDescriptionBox(props: {
     section: APIv4.Section;
     showStatus: boolean;
 }) {
@@ -218,4 +218,4 @@ export default function CourseDescriptionBox(props: {
             )}
         </div>
     );
-}
+});

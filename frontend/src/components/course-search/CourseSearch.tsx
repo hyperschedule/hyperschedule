@@ -13,8 +13,9 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { useUserStore } from "@hooks/store/user";
+import { memo } from "react";
 
-export default function CourseSearch() {
+export default memo(function CourseSearch() {
     const activeTerm = useUserStore((store) => store.activeTerm);
     const query = useSectionsQuery(activeTerm);
     const searchText = useStore((store) => store.searchText);
@@ -59,11 +60,11 @@ export default function CourseSearch() {
             )}
         </div>
     );
-}
+});
 
-function CourseSearchEnd(props: { text: string }) {
+const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
     return <div className={Css.end}>({props.text})</div>;
-}
+});
 
 function computeIndices(state: {
     rowHeight: number;
@@ -90,7 +91,7 @@ function computeIndices(state: {
     ];
 }
 
-function CourseSearchResults(props: {
+const CourseSearchResults = memo(function CourseSearchResults(props: {
     sections: APIv4.Section[];
     searchKey: string;
 }) {
@@ -195,9 +196,9 @@ function CourseSearchResults(props: {
             </div>
         </>
     );
-}
+});
 
-function CourseSearchRow(props: {
+const CourseSearchRow = memo(function CourseSearchRow(props: {
     index: number;
     section: APIv4.Section;
     scroll: number;
@@ -235,4 +236,4 @@ function CourseSearchRow(props: {
             />
         </div>
     );
-}
+});

@@ -19,8 +19,9 @@ import { toast } from "react-toastify";
 import { PopupOption } from "@lib/popup";
 import { pick } from "@lib/store";
 import { DEFAULT_LOCAL_SCHEDULE_ID } from "@lib/constants";
+import { memo } from "react";
 
-export default function CourseRow(props: {
+export default memo(function CourseRow(props: {
     section: APIv4.Section;
     expand: boolean;
     onClick?: () => void;
@@ -119,9 +120,11 @@ export default function CourseRow(props: {
             </div>
         </div>
     );
-}
+});
 
-function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
+const ToggleButton = memo(function ToggleButton(props: {
+    section: APIv4.SectionIdentifier;
+}) {
     const user = useUserStore(
         pick(
             "server",
@@ -177,4 +180,4 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
             {inSchedule ? <Feather.X size={14} /> : <Feather.Plus size={14} />}
         </button>
     );
-}
+});

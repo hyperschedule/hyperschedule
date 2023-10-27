@@ -22,8 +22,9 @@ import { toast } from "react-toastify";
 import * as Schedule from "@lib/schedule";
 import classNames from "classnames";
 import { computeMuddCredits } from "@lib/credits";
+import { memo } from "react";
 
-export default function SelectedList() {
+export default memo(function SelectedList() {
     const scheduleRenderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
@@ -165,9 +166,9 @@ export default function SelectedList() {
             </div>
         </>
     );
-}
+});
 
-function SectionEntry(props: {
+const SectionEntry = memo(function SectionEntry(props: {
     entry: APIv4.UserSection;
     scheduleId: APIv4.ScheduleId;
     unconflicting: boolean;
@@ -289,4 +290,4 @@ function SectionEntry(props: {
             </button>
         </div>
     );
-}
+});

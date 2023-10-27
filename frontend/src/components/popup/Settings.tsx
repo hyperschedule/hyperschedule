@@ -14,8 +14,9 @@ import { useUserStore } from "@hooks/store/user";
 import Cookies from "js-cookie";
 import { schoolCodeToName } from "hyperschedule-shared/api/v4";
 import { useState } from "react";
+import { memo } from "react";
 
-export function Settings() {
+export const Settings = memo(function Settings() {
     return (
         <div className={Css.settings}>
             <h2 className={Css.title}>Settings</h2>
@@ -25,7 +26,7 @@ export function Settings() {
             <ReportIssues />
         </div>
     );
-}
+});
 
 function logoutLocal() {
     useUserStore.persist.clearStorage();
@@ -40,7 +41,7 @@ function logout() {
     logoutLocal();
 }
 
-function AccountSettings() {
+const AccountSettings = memo(function AccountSettings() {
     const serverData = useUserStore((store) => store.server);
 
     const [showAccountDetails, setShowAccountDetails] =
@@ -111,9 +112,9 @@ function AccountSettings() {
             </span>
         </div>
     );
-}
+});
 
-function DataViewer() {
+const DataViewer = memo(function DataViewer() {
     return (
         <div className={Css.dataViewer}>
             <h3 className={Css.title}>Data</h3>
@@ -131,9 +132,9 @@ function DataViewer() {
             </a>
         </div>
     );
-}
+});
 
-function AppearanceSettings() {
+const AppearanceSettings = memo(function AppearanceSettings() {
     const options = useStore((store) => store.appearanceOptions);
     const setOptions = useStore((store) => store.setAppearanceOptions);
     return (
@@ -185,9 +186,9 @@ function AppearanceSettings() {
             />
         </div>
     );
-}
+});
 
-function ReportIssues() {
+const ReportIssues = memo(function ReportIssues() {
     return (
         <div className={Css.issues}>
             <h3>Issues</h3>
@@ -208,4 +209,4 @@ function ReportIssues() {
             </p>
         </div>
     );
-}
+});

@@ -18,7 +18,7 @@ import {
     groupCardsByDay,
     mergeCards,
 } from "@lib/schedule";
-import { useState } from "react";
+import { useState, memo } from "react";
 import * as Feather from "react-feather";
 import { PopupOption } from "@lib/popup";
 
@@ -26,7 +26,7 @@ const MORNING_LINE_HOUR = 8;
 const NOON_LINE_HOUR = 13;
 const EVENING_LINE_HOUR = 18;
 
-export default function MiniMap() {
+export default memo(function MiniMap() {
     const { bounds, cards, expandCards, startHour, endHour, unconflicting } =
         useActiveScheduleResolved();
     const theme = useStore((store) => store.theme);
@@ -181,9 +181,9 @@ export default function MiniMap() {
             </div>
         </div>
     );
-}
+});
 
-function MinimapCards(props: {
+const MinimapCards = memo(function MinimapCards(props: {
     cards: Card[];
     unconflicting: Set<APIv4.Section>;
 }) {
@@ -215,9 +215,9 @@ function MinimapCards(props: {
             )}
         </>
     );
-}
+});
 
-function Card(props: {
+const Card = memo(function Card(props: {
     card: Card;
     isUnconflicting: boolean;
     index: number;
@@ -298,4 +298,4 @@ function Card(props: {
             onPointerLeave={() => props.setHoverSection(null)}
         ></div>
     );
-}
+});

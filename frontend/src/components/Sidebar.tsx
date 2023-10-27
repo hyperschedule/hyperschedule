@@ -17,6 +17,7 @@ import classNames from "classnames";
 import { scheduleDisplayName } from "@lib/schedule";
 import { createPortal } from "react-dom";
 import { GITHUB_LINK } from "@lib/constants";
+import { memo } from "react";
 
 export default function Sidebar() {
     const tab = useStore((store) => store.mainTab);
@@ -104,7 +105,7 @@ export default function Sidebar() {
     );
 }
 
-function ScheduleSelect() {
+const ScheduleSelect = memo(function ScheduleSelect() {
     const activeScheduleId = useUserStore((store) => store.activeScheduleId);
     const setActiveScheduleId = useUserStore(
         (store) => store.setActiveScheduleId,
@@ -151,9 +152,9 @@ function ScheduleSelect() {
             </button>
         </div>
     );
-}
+});
 
-function ScheduleRendering() {
+const ScheduleRendering = memo(function ScheduleRendering() {
     const options = useStore((store) => store.scheduleRenderingOptions);
     const setOptions = useStore((store) => store.setScheduleRenderingOptions);
 
@@ -171,9 +172,9 @@ function ScheduleRendering() {
             />
         </div>
     );
-}
+});
 
-function Toolbar() {
+const Toolbar = memo(function Toolbar() {
     const setPopup = useStore((store) => store.setPopup);
 
     const loggedIn = useUserStore((user) => user.server) !== null;
@@ -258,4 +259,4 @@ function Toolbar() {
             </a>
         </>
     );
-}
+});

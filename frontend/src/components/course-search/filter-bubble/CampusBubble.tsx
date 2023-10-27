@@ -4,8 +4,9 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import React from "react";
 import type { FilterBubbleComponentProps } from "./FilterBubble";
 import AutoComplete from "./AutoComplete";
+import { memo } from "react";
 
-export default function CampusBubble(
+export default memo(function CampusBubble(
     props: FilterBubbleComponentProps<Search.CampusFilter>,
 ) {
     const activeSections = useActiveSectionsQuery().data;
@@ -36,4 +37,4 @@ export default function CampusBubble(
             }}
         />
     );
-}
+});

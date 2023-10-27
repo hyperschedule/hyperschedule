@@ -1,6 +1,7 @@
 import Css from "./GridBackgroundRows.module.css";
+import { memo } from "react";
 
-export default function GridBackgroundRows() {
+export default memo(function GridBackgroundRows() {
     const gridLines: JSX.Element[] = [];
     for (let i = 0; i < 24; ++i)
         gridLines.push(
@@ -12,4 +13,4 @@ export default function GridBackgroundRows() {
         );
 
     return <>{gridLines}</>;
-}
+});

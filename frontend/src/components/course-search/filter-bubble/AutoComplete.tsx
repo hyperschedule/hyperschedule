@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Css from "./FilterBubble.module.css";
+import { memo } from "react";
 
-export default function AutoComplete(props: {
+export default memo(function AutoComplete(props: {
     onSelect: (index: number) => void;
     onKeyDown: (ev: React.KeyboardEvent<HTMLInputElement>) => void;
     choices: string[];
@@ -148,4 +149,4 @@ export default function AutoComplete(props: {
             </div>
         </div>
     );
-}
+});

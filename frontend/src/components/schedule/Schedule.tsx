@@ -11,6 +11,7 @@ import classNames from "classnames";
 
 import GridBackgroundColumns from "@components/schedule/GridBackgroundColumns";
 import GridBackgroundRows from "@components/schedule/GridBackgroundRows";
+import { memo } from "react";
 
 import {
     type Card,
@@ -27,7 +28,7 @@ import { SCHEDULE_CONTAINER_ID } from "@lib/constants";
 import type { CSSProperties } from "react";
 import { useState } from "react";
 
-export default function Schedule(props: ScheduleRenderingOptions) {
+export default memo(function Schedule(props: ScheduleRenderingOptions) {
     const { cards, startHour, endHour, unconflicting } =
         useActiveScheduleResolved();
 
@@ -87,9 +88,12 @@ export default function Schedule(props: ScheduleRenderingOptions) {
             </div>
         </div>
     );
-}
+});
 
-function TimeLabels(props: { startHour: number; endHour: number }) {
+const TimeLabels = memo(function TimeLabels(props: {
+    startHour: number;
+    endHour: number;
+}) {
     const labels: JSX.Element[] = [];
     for (let h = 0; h < 24; ++h)
         labels.push(
@@ -109,7 +113,7 @@ function TimeLabels(props: { startHour: number; endHour: number }) {
             <div className={Css.labelGrid}>{labels}</div>
         </div>
     );
-}
+});
 
 const weekdays = [
     "Sunday",
@@ -121,7 +125,7 @@ const weekdays = [
     "Saturday",
 ];
 
-function DayLabels() {
+const DayLabels = memo(function DayLabels() {
     return (
         <div className={Css.dayLabelViewport}>
             <div className={Css.labelGrid}>
@@ -140,9 +144,9 @@ function DayLabels() {
             </div>
         </div>
     );
-}
+});
 
-function Card(props: {
+const Card = memo(function Card(props: {
     card: Readonly<Card>;
     orderFromTop: number;
     orderFromBottom: number;
@@ -227,4 +231,4 @@ function Card(props: {
             )}
         </div>
     );
-}
+});
