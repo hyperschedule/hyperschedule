@@ -1,19 +1,3 @@
-/* eslint-disable */
-// we need to do this because https://github.com/DefinitelyTyped/DefinitelyTyped/issues/60924
-// once this is resolved we can also remove the dependency on undici
-import * as process from "process";
-
-declare global {
-    export const {
-        fetch,
-        FormData,
-        Headers,
-        Request,
-        Response,
-    }: typeof import("undici");
-}
-export {};
-/* eslint-enable */
 import { createLogger } from "../../logger";
 import { endpoints, endpointAuthorization } from "./endpoints";
 import * as APIv4 from "hyperschedule-shared/api/v4";
