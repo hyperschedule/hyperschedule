@@ -71,6 +71,11 @@ calendarApp.get(
         // [https://www.npmjs.com/package/ics]
         return response
             .header("Content-Type", "text/calendar")
+            .header(
+                "Content-Disposition",
+                `attachment; filename="${schedule.name}.ics"`,
+            )
+            .header("Cache-Control", "public,max-age=600")
             .send(calendar.value!);
     },
 );
