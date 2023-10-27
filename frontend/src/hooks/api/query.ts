@@ -1,5 +1,4 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-
 import { useQuery } from "@tanstack/react-query";
 import {
     getAllTerms,
@@ -7,9 +6,18 @@ import {
     getCourseAreaDescription,
     getOfferingHistory,
 } from "@hooks/api/fetch";
-import { useMemo } from "react";
-import { useUserStore } from "@hooks/store/user";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
+import * as ReactQuery from "@tanstack/react-query";
+
+export const queryClient = new ReactQuery.QueryClient({
+    defaultOptions: {
+        queries: {
+            networkMode: "offlineFirst",
+            gcTime: Infinity,
+            retry: 1,
+        },
+    },
+});
 
 export function useAllTermsQuery() {
     return useQuery({

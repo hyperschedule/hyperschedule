@@ -186,6 +186,12 @@ export const OfferingHistory = z.object({
 });
 export type OfferingHistory = z.infer<typeof OfferingHistory>;
 
+export const CourseAreaDescription = z.object({
+    area: z.string(),
+    description: z.string(),
+});
+export type CourseAreaDescription = z.infer<typeof CourseAreaDescription>;
+
 export const CxSectionIdentifierString = z.string().regex(CxSectionIdRegex);
 export const CxCourseCodeString = z.string().regex(CxCourseCodeRegex);
 export const SessionString = z

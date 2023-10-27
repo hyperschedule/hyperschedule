@@ -67,6 +67,8 @@ export default function App() {
                 // hideProgressBar
                 theme={theme}
                 transition={Slide}
+                pauseOnHover={true}
+                pauseOnFocusLoss={true}
             />
         </div>
     );

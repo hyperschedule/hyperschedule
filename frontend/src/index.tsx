@@ -7,23 +7,9 @@ import { prefetchDataForTerm } from "@hooks/api/prefetch";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@components/ErrorFallback";
+import { queryClient } from "@hooks/api/query";
 
 export default function Root() {
-    // memoize `queryClient` with empty dependency list to ensure it only gets
-    // constructed/initialized once throughout the app's lifecycle
-    const queryClient = React.useMemo(
-        () =>
-            new ReactQuery.QueryClient({
-                defaultOptions: {
-                    queries: {
-                        networkMode: "offlineFirst",
-                        gcTime: Infinity,
-                        retry: 2,
-                    },
-                },
-            }),
-        [],
-    );
     void prefetchDataForTerm(CURRENT_TERM, queryClient);
     return (
         <ReactQuery.QueryClientProvider client={queryClient}>

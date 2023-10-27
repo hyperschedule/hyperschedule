@@ -61,7 +61,18 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         // if no auth token is set the account cannot possibly be logged in
         if (Cookies.get(AUTH_TOKEN_COOKIE_NAME) === undefined) return;
 
-        const user = await apiFetch.getUser();
+        let user: APIv4.ServerUser;
+
+        try {
+            user = await apiFetch.getUser();
+        } catch (e) {
+            if (get().server !== null) {
+                // if we have loaded this data successfully in the past then something went wrong
+                toast.error("Failed to load user data from the server");
+                console.error(e);
+            }
+            return;
+        }
 
         const activeSchedule = get().activeScheduleId;
         if (activeSchedule !== null) {
