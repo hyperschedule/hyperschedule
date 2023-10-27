@@ -133,9 +133,7 @@ function ToggleButton(props: { section: APIv4.SectionIdentifier }) {
     );
     const activeScheduleLookup = useActiveScheduleLookup();
     const setPopup = useStore((store) => store.setPopup);
-    const { activeScheduleId, setActiveScheduleId } = useUserStore(
-        pick("activeScheduleId", "setActiveScheduleId"),
-    );
+    const activeScheduleId = useUserStore((store) => store.activeScheduleId);
 
     const inSchedule = activeScheduleLookup.has(
         APIv4.stringifySectionCodeLong(props.section),

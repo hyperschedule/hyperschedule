@@ -9,7 +9,6 @@ import * as Feather from "react-feather";
 import classNames from "classnames";
 import AppCss from "@components/App.module.css";
 import { toast } from "react-toastify";
-import { scheduleDisplayName } from "@lib/schedule";
 import PopupAlternativeLine from "./PopupAlternativeLine";
 import PopupScheduleSelector from "@components/popup/PopupScheduleSelector";
 

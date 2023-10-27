@@ -2,8 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { computeOfferingHistory, getAllSections } from "../../db/models/course";
 import { App } from "@tinyhttp/app";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
-import { loadDataFile } from "hyperschedule-data";
-import { loadCourseFiles, loadStatic } from "../../hmc-api/fetcher/utils";
+import { loadStatic } from "../../hmc-api/fetcher/utils";
 import { endpoints } from "../../hmc-api/fetcher/endpoints";
 
 const courseApp = new App({ settings: { xPoweredBy: false } });
