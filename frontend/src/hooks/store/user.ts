@@ -66,11 +66,9 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         try {
             user = await apiFetch.getUser();
         } catch (e) {
-            if (get().server !== null) {
-                // if we have loaded this data successfully in the past then something went wrong
-                toast.error("Failed to load user data from the server");
-                console.error(e);
-            }
+            toast.error("Failed to load user data");
+            console.error(e);
+
             return;
         }
 

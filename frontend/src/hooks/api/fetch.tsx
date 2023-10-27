@@ -20,9 +20,10 @@ function errorMessageWithRetry(description?: string) {
 
     const message = (
         <div>
-            <strong>Network error:</strong> cannot load{" "}
-            {description ?? `${networkStatus.sourceCount} different endpoints`}.
-            Please check your internet connection.{" "}
+            <strong>Network error:</strong> failed to load{" "}
+            {description ??
+                `data from ${networkStatus.sourceCount} different sources`}
+            . Please check your internet connection.{" "}
             <button
                 onClick={() => {
                     void queryClient.refetchQueries();

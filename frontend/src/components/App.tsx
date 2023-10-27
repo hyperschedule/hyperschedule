@@ -13,8 +13,6 @@ import useStore, { MainTab } from "@hooks/store";
 import Sidebar from "./Sidebar";
 
 import "react-toastify/dist/ReactToastify.min.css";
-//import { useUserQuery } from "@hooks/api/user";
-//import {useUserStore} from '@hooks/store/user'
 
 export default function App() {
     const theme = useStore((store) => store.theme);
