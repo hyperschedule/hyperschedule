@@ -56,7 +56,7 @@ export default memo(function CourseDescriptionBox(props: {
     section: APIv4.Section;
     showStatus: boolean;
 }) {
-    const descriptions = useCourseAreaDescription();
+    const descriptions = useCourseAreaDescription().data;
     const offeringHistory = useOfferingHistoryLookup();
     const allTerms = useAllTerms();
     let minYear = CURRENT_TERM.year;
@@ -87,8 +87,6 @@ export default memo(function CourseDescriptionBox(props: {
     const instructors = props.section.instructors
         .map((i) => i.name.trim())
         .filter((s) => s !== "");
-
-    if (!descriptions.data) return <></>;
 
     return (
         <div className={Css.root}>
@@ -144,18 +142,22 @@ export default memo(function CourseDescriptionBox(props: {
             <section className={Css.areas}>
                 <h3>Course Areas</h3>
                 <ul>
-                    {props.section.courseAreas.map((code) => {
-                        const campus = code.charCodeAt(0) - 48 - 1; // 48 is the ascii code for '0'
-                        let cls: string;
-                        if (campus < 5) cls = campusCss[campus]!;
-                        else cls = "";
+                    {descriptions === undefined ? (
+                        <span>No data</span>
+                    ) : (
+                        props.section.courseAreas.map((code) => {
+                            const campus = code.charCodeAt(0) - 48 - 1; // 48 is the ascii code for '0'
+                            let cls: string;
+                            if (campus < 5) cls = campusCss[campus]!;
+                            else cls = "";
 
-                        return (
-                            <li key={code} className={cls}>
-                                {descriptions.data.get(code) ?? code}
-                            </li>
-                        );
-                    })}
+                            return (
+                                <li key={code} className={cls}>
+                                    {descriptions.get(code) ?? code}
+                                </li>
+                            );
+                        })
+                    )}
                 </ul>
             </section>
             <section className={Css.schedule}>
