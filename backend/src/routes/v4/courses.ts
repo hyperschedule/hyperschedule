@@ -1,8 +1,10 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { computeOfferingHistory, getAllSections } from "../../db/models/course";
 import { App } from "@tinyhttp/app";
-import { courseAreaDescriptions } from "../../hmc-api/course-area-descriptions";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
+import { loadDataFile } from "hyperschedule-data";
+import { loadCourseFiles, loadStatic } from "../../hmc-api/fetcher/utils";
+import { endpoints } from "../../hmc-api/fetcher/endpoints";
 
 const courseApp = new App({ settings: { xPoweredBy: false } });
 
@@ -43,15 +45,23 @@ courseApp.get("/sections/:term", async (request, response) => {
 });
 
 courseApp.get("/course-areas", async function (request, reply) {
-    // this is only a temporary measure. ideally we will serve out content from the live data stream
+    try {
+        const file = await loadStatic(
+            endpoints.courseAreaDescription,
+            // course area files are the same for every semester
+            CURRENT_TERM,
+        );
 
-    return reply
-        .header("Content-Type", "application/json")
-        .header(
-            "Cache-Control",
-            "public,s-max-age=86400,max-age=86400,proxy-revalidate,stale-while-revalidate=3600",
-        )
-        .send(JSON.stringify(courseAreaDescriptions));
+        return reply
+            .header("Content-Type", "application/json")
+            .header(
+                "Cache-Control",
+                "public,s-max-age=86400,max-age=86400,proxy-revalidate,stale-while-revalidate=3600",
+            )
+            .send(file);
+    } catch {
+        return reply.status(404).end();
+    }
 });
 
 courseApp.get("/offering-history/:term", async (request, response) => {
