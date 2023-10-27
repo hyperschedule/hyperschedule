@@ -100,7 +100,7 @@
         z-index: 2;
         background-color: var(--bg-1);
 
-        max-height: min(24em, 80vh);
+        max-height: min(24em, 80dvh);
         box-shadow: 0 0 0.5em var(--shadow-color);
         overflow-y: auto;
 

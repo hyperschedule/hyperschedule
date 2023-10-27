@@ -4,7 +4,7 @@
     left: 0;
     overflow: hidden;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     @media (--medium-and-up) {
         backdrop-filter: blur(4px) brightness(50%);
     }
@@ -20,26 +20,26 @@
             min-height var(--misc-transition-duration);
 
         width: 100vw;
-        height: 100vh;
-        min-height: 30vh;
+        height: 100dvh;
+        min-height: 30dvh;
 
         overflow-y: auto;
 
         @media (--medium-and-up) {
             box-shadow: 0 0 0.5em var(--shadow-color);
             height: unset;
-            max-height: 80vh;
+            max-height: 80dvh;
             border-radius: 0.25rem;
         }
 
         @media (--medium-only) {
             width: 40em;
-            min-height: 30vh;
+            min-height: 30dvh;
         }
 
         @media (--viewport-large) {
             width: 50em;
-            min-height: 20vh;
+            min-height: 20dvh;
         }
     }
 
