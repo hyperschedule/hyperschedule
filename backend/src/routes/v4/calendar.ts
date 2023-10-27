@@ -92,6 +92,9 @@ async function createCalendar(
         if (!sectionIdSet.has(sectionIdString)) continue;
 
         for (const schedule of section.schedules) {
+            // async classes, also sometimes the registrar input incorrect data
+            if (schedule.endTime <= schedule.startTime) continue;
+
             const startDate = new Date(
                 section.startDate.year,
                 section.startDate.month - 1, // Date month is 0-indexed
