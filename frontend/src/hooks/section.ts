@@ -1,4 +1,4 @@
-import { useSectionsQuery } from "@hooks/api/course";
+import { useSectionsQuery } from "@hooks/api/query";
 
 import { useMemo } from "react";
 

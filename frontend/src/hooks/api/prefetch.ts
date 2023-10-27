@@ -2,7 +2,7 @@ import {
     getCourseAreaDescription,
     getSectionsForTerm,
     getOfferingHistory,
-} from "./course";
+} from "./fetch";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import type { QueryClient } from "@tanstack/react-query";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
@@ -16,7 +16,7 @@ export function prefetchDataForTerm(
 
     return Promise.all([
         queryClient.prefetchQuery({
-            queryKey: ["course-areas"],
+            queryKey: ["course areas"],
             queryFn: getCourseAreaDescription,
             staleTime: timeout,
         }),
@@ -26,7 +26,7 @@ export function prefetchDataForTerm(
             staleTime: timeout,
         }),
         queryClient.prefetchQuery({
-            queryKey: ["last-offered", term],
+            queryKey: ["offering history", term],
             queryFn: () => getOfferingHistory(term),
             staleTime: timeout,
         }),

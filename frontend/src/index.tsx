@@ -16,7 +16,9 @@ export default function Root() {
             new ReactQuery.QueryClient({
                 defaultOptions: {
                     queries: {
+                        networkMode: "offlineFirst",
                         gcTime: Infinity,
+                        retry: 2,
                     },
                 },
             }),
@@ -41,12 +43,15 @@ export default function Root() {
 // https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-client-rendering-apis
 createRoot(document.getElementById("root")!).render(<Root />);
 
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-        .register("/sw.js", {
-            scope: "/",
-        })
-        .catch((err) => {
-            console.error("Cannot install service worker %o", err);
-        });
+// service worker is dev only because it's not production ready yet
+if (import.meta.env.DEV) {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+            .register("/sw.js", {
+                scope: "/",
+            })
+            .catch((err) => {
+                console.error("Cannot install service worker %o", err);
+            });
+    }
 }

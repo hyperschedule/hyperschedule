@@ -1,4 +1,4 @@
-import { useAllTermsQuery } from "@hooks/api/term";
+import { useAllTermsQuery } from "@hooks/api/query";
 
 export function useAllTerms() {
     const allTermsQuery = useAllTermsQuery();

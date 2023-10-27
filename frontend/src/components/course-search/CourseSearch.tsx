@@ -4,7 +4,7 @@ import { useMeasure } from "@react-hookz/web";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { useCourseAreaDescription, useSectionsQuery } from "@hooks/api/course";
+import { useCourseAreaDescription } from "@hooks/api/query";
 import useStore from "@hooks/store";
 import * as Search from "@lib/search";
 

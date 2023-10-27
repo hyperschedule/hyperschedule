@@ -1,6 +1,6 @@
 import Css from "./FilterBubble.module.css";
 import type * as Search from "@lib/search";
-import { useCourseAreaDescription } from "@hooks/api/course";
+import { useCourseAreaDescription } from "@hooks/api/query";
 import { useActiveSectionsQuery } from "@hooks/section";
 import React from "react";
 import classNames from "classnames";

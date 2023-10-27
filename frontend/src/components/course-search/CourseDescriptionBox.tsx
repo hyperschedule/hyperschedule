@@ -1,8 +1,6 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import {
-    useCourseAreaDescription,
-    useOfferingHistoryLookup,
-} from "@hooks/api/course";
+import { useCourseAreaDescription } from "@hooks/api/query";
+import { useOfferingHistoryLookup } from "@hooks/history";
 
 import { formatTime12 } from "@lib/time";
 import { memo } from "react";
