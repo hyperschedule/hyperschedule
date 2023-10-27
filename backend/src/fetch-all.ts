@@ -3,6 +3,9 @@
  */
 
 import { fetchAllForTerm, loadAllForTerm } from "./hmc-api/fetcher/fetch";
+import { createLogger } from "./logger";
+
+const logger = createLogger("fetch-all");
 
 const prefix = process.env.FETCHER_PREFIX;
 if (prefix === undefined) {
@@ -18,12 +21,19 @@ import { linkCourseData } from "./hmc-api/data-linker";
 import { termIsBefore } from "hyperschedule-shared/api/v4";
 
 await connectToDb(DB_URL);
-for (let year = 2011; year <= CURRENT_TERM.year; year++) {
+
+// we loop through them one-by-one instead of in-parallel to not overload the
+// school server
+outer: for (let year = 2011; year <= CURRENT_TERM.year; year++) {
     for (const term of [APIv4.Term.fall, APIv4.Term.spring]) {
         const termId: APIv4.TermIdentifier = { term, year };
         if (!termIsBefore(termId, CURRENT_TERM))
             // this should not be used to fetch current term data
-            break;
+            break outer;
+        logger.info(
+            "Fetching all data for %s",
+            APIv4.stringifyTermIdentifier(termId),
+        );
         await fetchAllForTerm(prefix, termId);
         const files = await loadAllForTerm(termId);
         const sections = linkCourseData(files, termId);
