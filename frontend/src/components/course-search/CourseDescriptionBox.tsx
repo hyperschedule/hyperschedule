@@ -12,6 +12,8 @@ import { combineLocations } from "@lib/schedule";
 import { computeMuddCredits } from "@lib/credits";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 import { useState } from "react";
+import { useAllTerms } from "@hooks/term";
+import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
 // certain course descriptions contain links, such as PE 095B
 const linkHtmlMatcher = /<a +href="?([A-Za-z0-9:\/.%_-]+)"?.*>(.*)<\/a>/;
@@ -56,6 +58,12 @@ export default function CourseDescriptionBox(props: {
 }) {
     const descriptions = useCourseAreaDescription();
     const offeringHistory = useOfferingHistoryLookup();
+    const allTerms = useAllTerms();
+    let minYear = CURRENT_TERM.year;
+    for (const t of allTerms ?? []) {
+        if (t.year < minYear) minYear = t.year;
+    }
+
     const historyEntry = offeringHistory.get(
         APIv4.stringifyCourseCode(props.section.course.code),
     );
@@ -64,7 +72,7 @@ export default function CourseDescriptionBox(props: {
 
     let pastOfferings: JSX.Element | JSX.Element[];
     if (historyEntry === undefined || historyEntry.length === 0) {
-        pastOfferings = <li className={Css.none}>(none since 2011)</li>;
+        pastOfferings = <li className={Css.none}>(none since {minYear})</li>;
     } else {
         pastOfferings = (
             renderAllHistory || historyEntry.length < HISTORY_ENTRY_CUTOFF
