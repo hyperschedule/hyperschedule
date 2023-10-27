@@ -117,12 +117,13 @@ const CreateSchedule = memo(function CreateSchedule(props: {
 
                     (async () => {
                         const { scheduleId } = await importFromLegacy();
-                        toast.success(
+                        const toastId = toast.success(
                             "Successfully imported, loading new data",
                         );
                         await getUser();
                         setActiveScheduleId(scheduleId);
                         props.setSelectedScheduleId(scheduleId);
+                        toast.dismiss(toastId);
                         toast.success("Legacy import completed successfully");
                     })().catch(() =>
                         toast.error(
