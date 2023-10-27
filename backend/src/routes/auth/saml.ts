@@ -6,6 +6,7 @@ import { z } from "zod";
 import { getOrCreateUser } from "../../db/models/user";
 import { signUser } from "../../auth/token";
 import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
+import { COOKIE_DOMAIN } from "../cookie-domain";
 
 const logger = createLogger("routes.auth.saml");
 
@@ -66,6 +67,7 @@ samlApp
 
             return response
                 .cookie(AUTH_TOKEN_COOKIE_NAME, sig, {
+                    domain: COOKIE_DOMAIN,
                     secure: true,
                     sameSite: "strict", // needed for redirect
                     expires,

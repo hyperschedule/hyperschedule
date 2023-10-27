@@ -63,6 +63,7 @@ export function middleware(req: Request, res: Response, next: NextFunction) {
                 break;
             case "hyperschedule.io":
             case "www.hyperschedule.io":
+            case "beta.hyperschedule.io":
             case "hyperschedule.github.io":
                 res.header("Access-Control-Allow-Origin", parsed.origin);
                 res.header("Vary", "Origin");

@@ -18,6 +18,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { getAllSectionId } from "../../db/models/course";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
+import { COOKIE_DOMAIN } from "../cookie-domain";
 
 const logger = createLogger("server.route.user");
 
@@ -57,18 +58,13 @@ userApp.get("/", async function (request: Request, response: Response) {
         );
         return response
             .status(401)
-            .cookie(AUTH_TOKEN_COOKIE_NAME, "", { maxAge: 0 })
+            .cookie(AUTH_TOKEN_COOKIE_NAME, "", {
+                maxAge: 0,
+                domain: COOKIE_DOMAIN,
+            })
             .end();
     }
     return response.header("Content-Type", "application/json").send(user);
-});
-
-userApp.post("/logout", async function (request: Request, response: Response) {
-    if (request.userToken === null) return response.status(401).end();
-    return response
-        .status(204)
-        .cookie(AUTH_TOKEN_COOKIE_NAME, "", { maxAge: 0 })
-        .end();
 });
 
 userApp
