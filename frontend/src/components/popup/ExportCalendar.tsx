@@ -24,11 +24,25 @@ export default function ExportCalendar() {
     ) : (
         <div className={Css.exportCalendar}>
             <h2>Export Calendar</h2>
-            <div className={Css.scheduleSelect}>
-                <PopupScheduleSelector
-                    selectedScheduleId={scheduleId}
-                    setSelectedScheduleId={setScheduleId}
-                />
+            <div className={Css.scheduleWrapper}>
+                <div className={Css.scheduleSelect}>
+                    <PopupScheduleSelector
+                        selectedScheduleId={scheduleId}
+                        setSelectedScheduleId={setScheduleId}
+                    />
+                </div>
+                {scheduleId === "" ? (
+                    <></>
+                ) : (
+                    <a
+                        className={AppCss.defaultButton}
+                        href={icalLink}
+                        download
+                    >
+                        <Feather.Download />
+                        Download iCal File
+                    </a>
+                )}
             </div>
             {scheduleId === "" ? (
                 <></>
@@ -49,14 +63,6 @@ export default function ExportCalendar() {
                         >
                             <pre className={Css.icalLink}>{icalLink}</pre>
                         </code>
-                        <a
-                            className={AppCss.defaultButton}
-                            href={icalLink}
-                            download
-                        >
-                            <Feather.Download />
-                            Download iCal File
-                        </a>
                     </div>
                     <div>
                         <h3>How do calendar subscriptions work?</h3>

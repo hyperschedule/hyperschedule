@@ -33,12 +33,17 @@
         }
     }
 
-    & .scheduleSelect {
+    & .scheduleWrapper {
         display: flex;
-        height: 1.5em;
-        gap: 0.25em;
-        justify-content: flex-start;
-        align-items: center;
+        gap: 0.5em;
+
+        & .scheduleSelect {
+            display: flex;
+            height: 1.75em;
+            gap: 0.25em;
+            justify-content: flex-start;
+            align-items: center;
+        }
     }
 
     & .links {
