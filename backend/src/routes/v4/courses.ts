@@ -26,10 +26,7 @@ courseApp.get("/sections/:term", async (request, response) => {
         return response.status(404).end();
 
     if (APIv4.termIsBefore(requestedTerm, CURRENT_TERM)) {
-        response.header(
-            "Cache-Control",
-            `public,immutable,max-age=${7 * 24 * 3600}`,
-        );
+        response.header("Cache-Control", `public,immutable,max-age=3600`);
     } else {
         response.header(
             "Cache-Control",
@@ -55,7 +52,7 @@ courseApp.get("/course-areas", async function (request, reply) {
             .header("Content-Type", "application/json")
             .header(
                 "Cache-Control",
-                "public,s-max-age=86400,max-age=86400,proxy-revalidate,stale-while-revalidate=3600",
+                "public,s-max-age=3600,max-age=3600,proxy-revalidate,stale-while-revalidate=3600",
             )
             .send(file);
     } catch {
@@ -72,7 +69,7 @@ courseApp.get("/offering-history/:term", async (request, response) => {
         .header("Content-Type", "application/json")
         .header(
             "Cache-Control",
-            "public,s-max-age=86400,max-age=86400,proxy-revalidate,stale-while-revalidate=3600",
+            "public,s-max-age=3600,max-age=3600,proxy-revalidate,stale-while-revalidate=3600",
         )
         .send(lastOffered);
 });
