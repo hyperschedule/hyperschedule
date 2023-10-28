@@ -17,7 +17,6 @@ if (token === undefined)
     // we need API token because we would hit rate limit otherwise. for testing, a personal access token
     // with no permission is enough (it raises the rate limit from 60/hr to 5000/hr)
     throw Error("Please supply a GitHub API token as the first command-line argument");
-console.log(process.argv);
 
 const API_TOKEN = `Bearer ${token}`;
 
@@ -80,14 +79,19 @@ await treeFetch(
     `https://api.github.com/repos/hyperschedule/hyperschedule/commits?per_page=100`,
     commit
 );
+console.log("Loaded contributors from v2")
+
 await treeFetch(
     `https://api.github.com/repos/hyperschedule/hyperschedule/commits?per_page=100&sha=${masterSHA}`,
     commit
 );
+console.log("Loaded contributors from master")
+
 await treeFetch(
     "https://api.github.com/repos/hyperschedule/hyperschedule/issues?state=all&per_page=100",
     issue
 );
+console.log("Loaded contributors from issues and PRs")
 
 const filtered = [...names].filter((n) => n && !n.endsWith("[bot]"));
 
@@ -105,5 +109,7 @@ const result = await Promise.all(filtered.map(
         return { username, name: profile.name ?? null };
     }
 ));
+
+console.log("All names resolved")
 
 writeFileSync("contributors.json", JSON.stringify(result, null, 2));

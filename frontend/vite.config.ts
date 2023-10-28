@@ -1,10 +1,30 @@
 import * as path from "node:path";
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
-import contributors from "./contributors.json";
+import { readFileSync } from "fs";
 
 // list of usernames to exclude from contributors
 const maintainerGithubUsernames: string[] = ["mia1024", "kwshi", "raxod502"];
+let contributors: string;
+try {
+    const fileData = JSON.parse(
+        readFileSync(path.resolve(__dirname, "contributors.json"), {
+            encoding: "utf-8",
+        }),
+    );
+    contributors = JSON.stringify(
+        fileData.filter(
+            ({ username }) => !maintainerGithubUsernames.includes(username),
+        ),
+    );
+} catch {
+    contributors = JSON.stringify([
+        {
+            username: "",
+            name: "Contributor placeholder (run `yarn get-contributor` then restart frontend)",
+        },
+    ]);
+}
 
 // fix the weird thing with use-sync-external-store, imported by both zustand and react-query
 // this is only needed for production build. this module doesn't even matter because we are
@@ -48,15 +68,9 @@ export default defineConfig(({ command, mode }) => {
         cacheDir: path.resolve(__dirname, "..", "node_modules", ".vite"),
         plugins: [react()],
         define: {
+            // we need to use JSON.stringify to quote them because this is basically text replacement
             __API_URL__: JSON.stringify(env.HYPERSCHEDULE_API_URL),
-            __CONTRIBUTOR_GH_NAMES__: JSON.stringify(
-                contributors.filter(
-                    (contributor) =>
-                        !maintainerGithubUsernames.includes(
-                            contributor.username,
-                        ),
-                ),
-            ),
+            __CONTRIBUTOR_GH_NAMES__: contributors,
         },
         resolve: {
             extensions: [".ts", ".tsx"],
