@@ -6,11 +6,15 @@
 .list {
     overflow-y: auto;
     height: 100%;
+    touch-action: manipulation;
 
     .textContainer {
         display: flex;
         width: 100%;
         justify-content: space-evenly;
+    }
+    &.isDragging {
+        cursor: move;
     }
 }
 

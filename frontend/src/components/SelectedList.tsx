@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 import * as Schedule from "@lib/schedule";
 import classNames from "classnames";
 import { computeMuddCredits } from "@lib/credits";
-import { memo } from "react";
+import { memo, startTransition, useState } from "react";
 
 export default memo(function SelectedList() {
     const scheduleRenderingOptions = useStore(
@@ -35,11 +35,22 @@ export default memo(function SelectedList() {
         (store) => store.scheduleSetSections,
     );
     const sectionsLookup = useActiveSectionsLookup();
+    const [isDragging, setIsDragging] = useState<boolean>(false);
+
+    const em = parseFloat(
+        window.getComputedStyle(document.body).getPropertyValue("font-size"),
+    );
 
     const sensors = DndCore.useSensors(
-        DndCore.useSensor(DndCore.PointerSensor, {
+        DndCore.useSensor(DndCore.MouseSensor, {
             activationConstraint: {
-                distance: 10,
+                distance: 2 * em,
+            },
+        }),
+        DndCore.useSensor(DndCore.TouchSensor, {
+            activationConstraint: {
+                delay: 0.5,
+                tolerance: 0.5 * em,
             },
         }),
     );
@@ -70,6 +81,57 @@ export default memo(function SelectedList() {
         ),
     );
 
+    function dragHandler(isDragEnd: boolean) {
+        return (event: DndCore.DragOverEvent) => {
+            if (activeSchedule === undefined) return;
+            let sections: APIv4.UserSection[];
+
+            // if the move doesn't produce a swap and the user is
+            // still in the process of moving things, then we just
+            // do nothing. otherwise, we will update the final
+            // result to the server (even if nothing ended up changing)
+            if (!event.over || event.active.id === event.over.id) {
+                if (isDragEnd) {
+                    sections = activeSchedule.sections;
+                } else {
+                    return;
+                }
+            } else {
+                const oldId = event.active.id;
+                const newId = event.over.id;
+
+                const oldIndex = activeSchedule.sections.findIndex(
+                    (entry) =>
+                        APIv4.stringifySectionCodeLong(entry.section) === oldId,
+                );
+
+                const newIndex = activeSchedule.sections.findIndex(
+                    (entry) =>
+                        APIv4.stringifySectionCodeLong(entry.section) === newId,
+                );
+
+                sections = DndSortable.arrayMove(
+                    activeSchedule.sections,
+                    oldIndex,
+                    newIndex,
+                );
+            }
+
+            // setting those will cause pretty much the entire screen to
+            // re-render, and we don't want the laggy feeling
+            startTransition(() => {
+                setIsDragging(!isDragEnd);
+                scheduleSetSections(
+                    {
+                        scheduleId: activeScheduleId!,
+                        sections,
+                    },
+                    isDragEnd,
+                );
+            });
+        };
+    }
+
     return (
         <>
             <div className={Css.credits}>
@@ -91,43 +153,19 @@ export default memo(function SelectedList() {
             </div>
 
             <div className={Css.container}>
-                <div className={Css.list}>
+                <div
+                    className={classNames(Css.list, {
+                        [Css.isDragging]: isDragging,
+                    })}
+                >
                     <DndCore.DndContext
                         collisionDetection={DndCore.closestCenter}
                         sensors={sensors}
-                        onDragEnd={(event) => {
-                            if (
-                                !event.over ||
-                                event.active.id === event.over.id
-                            )
-                                return;
-
-                            const oldId = event.active.id;
-                            const newId = event.over.id;
-
-                            const oldIndex = activeSchedule.sections.findIndex(
-                                (entry) =>
-                                    APIv4.stringifySectionCodeLong(
-                                        entry.section,
-                                    ) === oldId,
-                            );
-
-                            const newIndex = activeSchedule.sections.findIndex(
-                                (entry) =>
-                                    APIv4.stringifySectionCodeLong(
-                                        entry.section,
-                                    ) === newId,
-                            );
-
-                            scheduleSetSections({
-                                scheduleId: activeScheduleId,
-                                sections: DndSortable.arrayMove(
-                                    activeSchedule.sections,
-                                    oldIndex,
-                                    newIndex,
-                                ),
-                            });
-                        }}
+                        onDragStart={() =>
+                            startTransition(() => setIsDragging(true))
+                        }
+                        onDragOver={dragHandler(false)}
+                        onDragEnd={dragHandler(true)}
                     >
                         <DndSortable.SortableContext
                             items={activeSchedule.sections.map((entry) =>

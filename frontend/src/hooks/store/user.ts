@@ -25,7 +25,10 @@ export type Store = {
     confirmGuest: () => void;
     scheduleAddSection: (request: APIv4.AddSectionRequest) => void;
     scheduleDeleteSection: (request: APIv4.DeleteSectionRequest) => void;
-    scheduleSetSections: (request: APIv4.ReplaceSectionsRequest) => void;
+    scheduleSetSections: (
+        request: APIv4.ReplaceSectionsRequest,
+        propagateToServer: boolean,
+    ) => void;
     scheduleSetSectionAttrs: (request: APIv4.SetSectionAttrRequest) => void;
     addSchedule: (
         request: APIv4.AddScheduleRequest,
@@ -194,8 +197,10 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             });
         },
 
-        scheduleSetSections: (request) => {
-            if (get().server) apiFetch.replaceSections(request).catch(() => {});
+        scheduleSetSections: (request, propagateToServer) => {
+            // propagateToServer is false if the user is currently dragging (i.e. previewing) the change
+            if (propagateToServer && get().server)
+                apiFetch.replaceSections(request).catch(() => {});
             update((store) => {
                 store.schedules[request.scheduleId]!.sections =
                     request.sections;
