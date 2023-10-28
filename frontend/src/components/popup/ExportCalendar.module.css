@@ -6,6 +6,8 @@
         height: 1.75em;
         width: fit-content;
 
+        white-space: nowrap;
+
         & svg {
             width: 1em;
             height: 1em;
