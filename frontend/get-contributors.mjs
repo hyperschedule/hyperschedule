@@ -12,24 +12,43 @@ import { writeFileSync } from "fs";
 
 const names = new Set();
 
+const token = process.argv[2];
+if (token === undefined)
+    // we need API token because we would hit rate limit otherwise. for testing, a personal access token
+    // with no permission is enough (it raises the rate limit from 60/hr to 5000/hr)
+    throw Error("Please supply a GitHub API token as the first command-line argument");
+console.log(process.argv);
+
+const API_TOKEN = `Bearer ${token}`;
+
 // API at https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-commits
 async function treeFetch(start, getName) {
     const contents = [];
     let next = start,
         last;
+    let completed = false;
     do {
+        if (next === last) completed = true;
+
         let resp = await fetch(next, {
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
                 Accept: "application/json",
-            },
+                Authorization: API_TOKEN
+            }
         });
+        if (!resp.ok) {
+            console.error(resp.headers);
+            throw Error(resp.statusText);
+        }
+
         // we are using vanilla javascript so we get to use horribly unsafe code
         [next, last] = [...resp.headers.get("Link").matchAll(/<(.*?)>/g)].map(
-            (m) => m[1],
+            (m) => m[1]
         );
+
         contents.push(resp.json());
-    } while (next !== last);
+    } while (!completed);
 
     const allData = await Promise.all(contents);
     for (const data of allData) {
@@ -46,8 +65,9 @@ const masterSHA = await (
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
                 Accept: "application/vnd.github.sha",
-            },
-        },
+                Authorization: API_TOKEN
+            }
+        }
     )
 ).text();
 
@@ -58,18 +78,32 @@ const issue = (obj) => obj.user?.login;
 // and we want to have the new code first, then the old code, and lastly issues
 await treeFetch(
     `https://api.github.com/repos/hyperschedule/hyperschedule/commits?per_page=100`,
-    commit,
+    commit
 );
 await treeFetch(
     `https://api.github.com/repos/hyperschedule/hyperschedule/commits?per_page=100&sha=${masterSHA}`,
-    commit,
+    commit
 );
 await treeFetch(
     "https://api.github.com/repos/hyperschedule/hyperschedule/issues?state=all&per_page=100",
-    issue,
+    issue
 );
 
 const filtered = [...names].filter((n) => n && !n.endsWith("[bot]"));
-console.log(filtered);
 
-writeFileSync("contributors.json", JSON.stringify(filtered, null, 2));
+const result = await Promise.all(filtered.map(
+    async (username) => {
+        const resp = await fetch("https://api.github.com/users/" + username, {
+            headers: {
+                "X-GitHub-Api-Version": "2022-11-28",
+                Accept: "application/json",
+                Authorization: API_TOKEN
+            }
+        });
+        const profile = await resp.json();
+
+        return { username, name: profile.name ?? null };
+    }
+));
+
+writeFileSync("contributors.json", JSON.stringify(result, null, 2));

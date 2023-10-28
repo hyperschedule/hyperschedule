@@ -30,7 +30,10 @@ const previousMaintainers: Maintainer[] = [
     },
 ];
 
-const GitHubLink = memo(function (props: { name?: string; username: string }) {
+const GitHubLink = memo(function (props: {
+    name: string | null;
+    username: string;
+}) {
     return (
         <a href={`https://github.com/${props.username}`} target="_blank">
             {props.name ?? props.username}
@@ -65,8 +68,12 @@ export default memo(function About() {
 
             <h3>Contributors</h3>
             <div className={Css.contributors}>
-                {__CONTRIBUTOR_GH_NAMES__.map((name) => (
-                    <GitHubLink key={name} username={name} />
+                {__CONTRIBUTOR_GH_NAMES__.map(({ name, username }) => (
+                    <GitHubLink
+                        key={username}
+                        username={username}
+                        name={name}
+                    />
                 ))}
             </div>
         </div>
