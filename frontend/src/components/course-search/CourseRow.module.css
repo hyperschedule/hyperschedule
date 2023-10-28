@@ -44,21 +44,67 @@
 
     & .status {
         display: grid;
-        grid-template-areas: "badge" "seats";
+        grid-column-gap: 0.5em;
+        grid-template-areas: "perm badge" "seats seats";
 
         & .badge {
             justify-self: end;
         }
+
+        & .seats {
+            justify-self: end;
+        }
     }
 
-    @media (--viewport-large) {
+    @media (--medium-and-up) {
         & .summary {
             grid-template-areas: "code title";
             justify-content: left;
         }
 
         & .status {
-            grid-template-areas: "badge seats";
+            grid-template-areas: "badge perm seats";
+            grid-column-gap: 0;
+        }
+    }
+
+    & .status {
+        margin-left: auto;
+        font-weight: normal;
+        font-size: calc(15em / 16);
+        justify-items: end;
+
+        & .seats {
+            grid-area: seats;
+        }
+
+        & .seatsFilled {
+            display: inline-block;
+            text-align: right;
+            width: 3.5ex;
+            font-weight: 500;
+        }
+
+        & .seatsTotal {
+            display: inline-block;
+            width: 3.5ex;
+            font-weight: 500;
+        }
+
+        & .permCountLabel {
+            grid-area: perm;
+            visibility: hidden;
+
+            &.nonzero {
+                visibility: inherit;
+            }
+        }
+
+        & .permCount {
+            display: inline-block;
+            text-align: center;
+            font-weight: 500;
+            width: 3.5ex;
         }
     }
 
@@ -80,6 +126,7 @@
         & .department {
             width: 5.5ex;
         }
+
         & .courseNumber {
             margin-right: 0.5em;
             font-weight: 700;
@@ -87,55 +134,24 @@
             opacity: 0.875;
             min-width: 8.5em;
         }
+
         & .affiliation {
             width: 4.5ex;
             text-align: right;
+
             &::after {
                 content: "-";
             }
         }
+
         & .sectionNumber {
             min-width: 3ex;
         }
+
         & .title {
             font-weight: 500;
             overflow-x: hidden;
             text-overflow: ellipsis;
-        }
-    }
-    & .status {
-        margin-left: auto;
-        font-weight: normal;
-        font-size: calc(15em / 16);
-        justify-items: end;
-
-        & .seats {
-        }
-
-        & .seatsFilled {
-            display: inline-block;
-            text-align: right;
-            width: 3.5ex;
-            font-weight: 500;
-        }
-        & .seatsTotal {
-            display: inline-block;
-            width: 3.5ex;
-            font-weight: 500;
-        }
-
-        & .permCountLabel {
-            visibility: hidden;
-            &.nonzero {
-                visibility: inherit;
-            }
-        }
-
-        & .permCount {
-            display: inline-block;
-            text-align: center;
-            font-weight: 500;
-            width: 3.5ex;
         }
     }
 

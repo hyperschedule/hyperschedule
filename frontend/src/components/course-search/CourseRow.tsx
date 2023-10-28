@@ -60,18 +60,18 @@ export default memo(function CourseRow(props: {
                     </span>
                     <span className={Css.status}>
                         <SectionStatusBadge status={props.section.status} />
-                        <span className={Css.seats}>
-                            <span
-                                className={classNames(Css.permCountLabel, {
-                                    [Css.nonzero!]:
-                                        props.section.permCount !== 0,
-                                })}
-                            >
-                                <span className={Css.permCount}>
-                                    {props.section.permCount}
-                                </span>
-                                PERMs,
+
+                        <span
+                            className={classNames(Css.permCountLabel, {
+                                [Css.nonzero!]: props.section.permCount !== 0,
+                            })}
+                        >
+                            <span className={Css.permCount}>
+                                {props.section.permCount}
                             </span>
+                            PERMs
+                        </span>
+                        <span className={Css.seats}>
                             <span className={Css.seatsFilled}>
                                 {props.section.seatsFilled}
                             </span>
