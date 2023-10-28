@@ -188,6 +188,7 @@
     we use hover class here instead of :hover because they can be triggered by hovering over different
     card from the same section
     */
+
     &.hover {
         background-color: var(--section-highlight);
         filter: drop-shadow(0 0 0.125em var(--section-shadow));
@@ -226,19 +227,20 @@
 
     &.firstHalf,
     &.secondHalf {
-        width: 50%;
+        /* exclude margin-left and margin-right, which is 0.125em each */
+        width: calc(50% - 0.25em);
     }
 
     &.secondHalf {
-        transform: translateX(100%);
+        transform: translateX(calc(100% + 0.125em));
     }
 }
 
 [data-show-conflict] .card {
-    --offset-x: calc((40% - 0.25rem) / var(--group-size));
+    --offset-x: calc((40% - 0.25em) / var(--group-size));
 
-    margin-left: calc(0.125rem + var(--stack-order) * var(--offset-x));
-    margin-right: calc(0.125rem + var(--reverse-stack-order) * var(--offset-x));
+    margin-left: calc(0.125em + var(--stack-order) * var(--offset-x));
+    margin-right: calc(0.125em + var(--reverse-stack-order) * var(--offset-x));
 
     z-index: var(--reverse-stack-order);
 
