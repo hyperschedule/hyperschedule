@@ -59,6 +59,7 @@
     "vite": "^4.4.9"
   },
   "scripts": {
+    "get-contributors": "node get-contributors.mjs",
     "serve": "vite",
     "test": ":",
     "typecheck": "tsc --noEmit",

@@ -1,6 +1,10 @@
 import * as path from "node:path";
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
+import contributors from "./contributors.json";
+
+// list of usernames to exclude from contributors
+const maintainerGithubNames: string[] = ["mia1024", "kwshi", "raxod502"];
 
 // fix the weird thing with use-sync-external-store, imported by both zustand and react-query
 // this is only needed for production build. this module doesn't even matter because we are
@@ -45,6 +49,11 @@ export default defineConfig(({ command, mode }) => {
         plugins: [react()],
         define: {
             __API_URL__: JSON.stringify(env.HYPERSCHEDULE_API_URL),
+            __CONTRIBUTOR_GH_NAMES__: JSON.stringify(
+                contributors.filter(
+                    (name) => !maintainerGithubNames.includes(name),
+                ),
+            ),
         },
         resolve: {
             extensions: [".ts", ".tsx"],

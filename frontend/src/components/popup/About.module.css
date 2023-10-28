@@ -10,8 +10,15 @@
         align-items: center;
 
         & svg {
-            width: 1em;
-            height: 1em;
+            width: 0.75em;
+            height: 0.75em;
         }
+    }
+
+    & .contributors {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 0.5em;
+        column-gap: 1em;
     }
 }
