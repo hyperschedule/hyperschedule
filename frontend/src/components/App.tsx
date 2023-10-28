@@ -26,9 +26,24 @@ export default function App() {
     );
 
     const onSearchTab = mainTab === MainTab.Schedule;
+    const appRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if (appRef.current === null) return;
+        document
+            .querySelectorAll('head meta[name="theme-color"]')
+            .forEach((node) => node.remove());
+        const meta = document.createElement("meta");
+        meta.name = "theme-color";
+        meta.content = getComputedStyle(appRef.current).getPropertyValue(
+            "--bg-0",
+        );
+        document.head.appendChild(meta);
+    }, [theme]);
 
     return (
         <div
+            ref={appRef}
             className={classNames(Css.app, {
                 [Css.disableShadows]: appearanceOptions.disableShadows,
                 [Css.disableTransparency]:

@@ -50,6 +50,10 @@
     --shadow-color: #0008;
 
     &[data-theme="light"] {
+        :root {
+            color-scheme: light;
+        }
+
         --bg-0: hsl(35, 35%, 98%);
         --bg-1: hsl(35, 30%, 90%);
         --bg-2: hsl(35, 25%, 80%);
@@ -76,6 +80,10 @@
     }
 
     &[data-theme="dark"] {
+        :root {
+            color-scheme: dark;
+        }
+
         --bg-0: hsl(35, 10%, 15%);
         --bg-1: hsl(35, 10%, 30%);
         --bg-2: hsl(35, 10%, 45%);
