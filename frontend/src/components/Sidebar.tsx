@@ -18,6 +18,7 @@ import { scheduleDisplayName } from "@lib/schedule";
 import { createPortal } from "react-dom";
 import { GITHUB_LINK } from "@lib/constants";
 import { memo } from "react";
+import { useActiveSchedule } from "@hooks/schedule";
 
 export default function Sidebar() {
     const tab = useStore((store) => store.mainTab);
@@ -106,7 +107,7 @@ export default function Sidebar() {
 }
 
 const ScheduleSelect = memo(function ScheduleSelect() {
-    const activeScheduleId = useUserStore((store) => store.activeScheduleId);
+    const activeSchedule = useActiveSchedule();
     const setActiveScheduleId = useUserStore(
         (store) => store.setActiveScheduleId,
     );
@@ -117,17 +118,16 @@ const ScheduleSelect = memo(function ScheduleSelect() {
     const scheduleChoices = sortedSchedules.map((s) =>
         scheduleDisplayName(s[1]),
     );
-    const selectedSchedule =
-        activeScheduleId === null
-            ? ""
-            : scheduleDisplayName(userSchedules[activeScheduleId]!);
+
+    const selectedScheduleName =
+        activeSchedule === undefined ? "" : scheduleDisplayName(activeSchedule);
     return (
         <div className={Css.scheduleSelect}>
             <Feather.List className={Css.scheduleIcon} />
             <div className={Css.dropdownContainer}>
                 <Dropdown
                     choices={scheduleChoices}
-                    selected={selectedSchedule}
+                    selected={selectedScheduleName}
                     emptyPlaceholder={
                         sortedSchedules.length > 0
                             ? "no schedule selected"

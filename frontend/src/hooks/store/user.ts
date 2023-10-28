@@ -59,14 +59,30 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
 
     async function getUser() {
         // if no auth token is set the account cannot possibly be logged in
-        if (Cookies.get(AUTH_TOKEN_COOKIE_NAME) === undefined) return;
+        if (Cookies.get(AUTH_TOKEN_COOKIE_NAME) === undefined) {
+            if (get().server !== null) {
+                console.error("no cookie");
+                toast.error(
+                    "Your user session has expired or your browser deleted your cookies. " +
+                        "Please refresh your page and log in again.",
+                    {
+                        autoClose: false,
+                    },
+                );
+                useUserStore.persist.clearStorage();
+            }
+
+            return;
+        }
 
         let user: APIv4.ServerUser;
 
         try {
             user = await apiFetch.getUser();
         } catch (e) {
-            toast.error("Failed to load user data");
+            toast.error(
+                "Failed to synchronize user data. If this issue persists, please try logging out and back in.",
+            );
             console.error(e);
 
             return;
@@ -85,7 +101,8 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
         });
     }
 
-    getUser().catch(() => {});
+    // wait for first page render before fetching so all the data can be correctly populated
+    window.requestAnimationFrame(() => void getUser().catch(() => {}));
 
     window.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") {
@@ -133,13 +150,7 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             set({ activeTerm: term, activeScheduleId: null });
         },
         hasConfirmedGuest: false,
-        schedules: {
-            [DEFAULT_LOCAL_SCHEDULE_ID]: {
-                name: "Schedule 1",
-                term: CURRENT_TERM,
-                sections: [],
-            } satisfies APIv4.UserSchedule,
-        },
+        schedules: {},
         server: null,
         scheduleAddSection: (request) => {
             if (get().server) apiFetch.addSection(request).catch(() => {});
@@ -203,9 +214,19 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             });
         },
         confirmGuest: () =>
+            // this erases any lingering data we might have from a logged in user with
+            // invalid or expired cookie, or if the browser cleared all cookies
             set({
                 hasConfirmedGuest: true,
+                server: null,
                 activeScheduleId: DEFAULT_LOCAL_SCHEDULE_ID,
+                schedules: {
+                    [DEFAULT_LOCAL_SCHEDULE_ID]: {
+                        name: "Schedule 1",
+                        term: CURRENT_TERM,
+                        sections: [],
+                    } satisfies APIv4.UserSchedule,
+                },
             }),
         addSchedule: async (request) => {
             let id: string;
@@ -290,6 +311,7 @@ export const useUserStore = Zustand.create<Store>()(
                 "hasConfirmedGuest",
                 "activeScheduleId",
                 "activeTerm",
+                "server",
             ),
         }),
     ),
