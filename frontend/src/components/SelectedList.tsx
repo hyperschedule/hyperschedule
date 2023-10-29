@@ -49,7 +49,7 @@ export default memo(function SelectedList() {
         }),
         DndCore.useSensor(DndCore.TouchSensor, {
             activationConstraint: {
-                delay: 0.5,
+                delay: 500,
                 tolerance: 0.5 * em,
             },
         }),
