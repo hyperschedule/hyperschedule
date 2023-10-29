@@ -3,7 +3,8 @@
     grid-template-columns: auto auto;
 
     & .filterKey {
-        display: block;
+        display: flex;
+        align-items: center;
         background-color: var(--bg-2);
 
         border-bottom-left-radius: 0.5em;

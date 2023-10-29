@@ -66,12 +66,17 @@ const CreateSchedule = memo(function CreateSchedule(props: {
             toast.error("Schedule name cannot be empty");
             return;
         }
-        setNewScheduleName("");
         addSchedule({
             name: newScheduleName,
             term: APIv4.parseTermIdentifier(selectedTerm),
         })
-            .then(props.setSelectedScheduleId)
+            .then((id) => {
+                props.setSelectedScheduleId(id);
+                setNewScheduleName("");
+                toast.success(
+                    `"${newScheduleName}" (${selectedTerm}) has been created`,
+                );
+            })
             .catch(() => {});
     }
 

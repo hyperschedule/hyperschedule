@@ -188,7 +188,7 @@ export default memo(function CourseDescriptionBox(props: {
                     <ul>
                         {pastOfferings}
                         {renderAllHistory ||
-                        (historyEntry ?? []).length < HISTORY_ENTRY_CUTOFF ? (
+                        (historyEntry ?? []).length <= HISTORY_ENTRY_CUTOFF ? (
                             <></>
                         ) : (
                             <li
