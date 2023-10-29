@@ -13,8 +13,15 @@
         width: 100%;
         justify-content: space-evenly;
     }
+
     &.isDragging {
         cursor: move;
+        outline: 0.25em dashed var(--hbg-2);
+        outline-offset: 0.25em;
+
+        & .textContainer {
+            visibility: hidden;
+        }
     }
 }
 
