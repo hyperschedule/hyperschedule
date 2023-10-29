@@ -14,7 +14,7 @@ type FilterSpec = {
 const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
     [Search.FilterKey.CourseCode]: {
         name: "Course Code",
-        example: ["cs5", "csci5", "sc005"],
+        example: ["cs5", "csci005", "e79"],
     },
     [Search.FilterKey.Department]: {
         name: "Department",
@@ -22,7 +22,7 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
     },
     [Search.FilterKey.Title]: {
         name: "Title",
-        example: ["Computer Science", "intro"],
+        example: ["colloquium", "research"],
     },
     [Search.FilterKey.Campus]: {
         name: "Campus",
@@ -30,19 +30,19 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
     },
     [Search.FilterKey.Description]: {
         name: "Course Description",
-        example: ["machine language"],
+        example: ["ballroom"],
     },
     [Search.FilterKey.Instructor]: {
         name: "Instructor",
-        example: ["Dodds", "zach"],
+        example: ["dodds"],
     },
     [Search.FilterKey.Location]: {
         name: "Location",
-        example: ["McGregor", "greg"],
+        example: ["McGregor", "shan"],
     },
     [Search.FilterKey.CourseArea]: {
         name: "Course Area",
-        example: ["HM Common Core", "PO Area 5 Requirement"],
+        example: ["HM HSA Writing Intensive", "PO Area 5 Requirement"],
     },
     [Search.FilterKey.ScheduleDays]: {
         name: "Days",
