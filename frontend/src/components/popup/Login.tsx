@@ -33,7 +33,7 @@ export default function Login(props: { continuation?: () => void }) {
                             )}
                             onClick={loginThroughCAS}
                         >
-                            Login with CAS
+                            Login with School Account
                         </button>
 
                         <div className={Css.reasons}>
