@@ -225,12 +225,16 @@ export function filterSection(
                 break;
             case FilterKey.CourseCode:
                 const tokens = Array.from(
-                    filter.data.text.matchAll(tokensRegex),
+                    filter.data.text.toLocaleLowerCase().matchAll(tokensRegex),
                 ).map((v) => v[0]);
                 if (tokens.length > 3) return false;
                 switch (tokens.length) {
                     case 3:
-                        if (!section.identifier.suffix.includes(tokens[2]!))
+                        if (
+                            !section.identifier.suffix
+                                .toLocaleLowerCase()
+                                .includes(tokens[2]!)
+                        )
                             return false;
                     case 2:
                         if (
@@ -243,7 +247,7 @@ export function filterSection(
                     case 1:
                         if (
                             !section.identifier.department
-                                .toLowerCase()
+                                .toLocaleLowerCase()
                                 .includes(tokens[0]!)
                         )
                             return false;
