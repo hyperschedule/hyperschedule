@@ -16,7 +16,9 @@ const token = process.argv[2];
 if (token === undefined)
     // we need API token because we would hit rate limit otherwise. for testing, a personal access token
     // with no permission is enough (it raises the rate limit from 60/hr to 5000/hr)
-    throw Error("Please supply a GitHub API token as the first command-line argument");
+    throw Error(
+        "Please supply a GitHub API token as the first command-line argument",
+    );
 
 const API_TOKEN = `Bearer ${token}`;
 
@@ -33,18 +35,26 @@ async function treeFetch(start, getName) {
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
                 Accept: "application/json",
-                Authorization: API_TOKEN
-            }
+                Authorization: API_TOKEN,
+            },
         });
         if (!resp.ok) {
             console.error(resp.headers);
             throw Error(resp.statusText);
         }
 
-        // we are using vanilla javascript so we get to use horribly unsafe code
-        [next, last] = [...resp.headers.get("Link").matchAll(/<(.*?)>/g)].map(
-            (m) => m[1]
+        const links = resp.headers.get("Link").toLocaleLowerCase().split(",");
+        const rel = new Map(
+            links.map((l) =>
+                l
+                    .match(/<(.+?)>; rel="(.+?)"/)
+                    .slice(1, 3)
+                    .reverse(),
+            ),
         );
+
+        next = rel.get("next");
+        last = rel.get("last");
 
         contents.push(resp.json());
     } while (!completed);
@@ -64,9 +74,9 @@ const masterSHA = await (
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
                 Accept: "application/vnd.github.sha",
-                Authorization: API_TOKEN
-            }
-        }
+                Authorization: API_TOKEN,
+            },
+        },
     )
 ).text();
 
@@ -77,39 +87,39 @@ const issue = (obj) => obj.user?.login;
 // and we want to have the new code first, then the old code, and lastly issues
 await treeFetch(
     `https://api.github.com/repos/hyperschedule/hyperschedule/commits?per_page=100`,
-    commit
+    commit,
 );
-console.log("Loaded contributors from v2")
+console.log("Loaded contributors from v2");
 
 await treeFetch(
     `https://api.github.com/repos/hyperschedule/hyperschedule/commits?per_page=100&sha=${masterSHA}`,
-    commit
+    commit,
 );
-console.log("Loaded contributors from master")
+console.log("Loaded contributors from master");
 
 await treeFetch(
     "https://api.github.com/repos/hyperschedule/hyperschedule/issues?state=all&per_page=100",
-    issue
+    issue,
 );
-console.log("Loaded contributors from issues and PRs")
+console.log("Loaded contributors from issues and PRs");
 
 const filtered = [...names].filter((n) => n && !n.endsWith("[bot]"));
 
-const result = await Promise.all(filtered.map(
-    async (username) => {
+const result = await Promise.all(
+    filtered.map(async (username) => {
         const resp = await fetch("https://api.github.com/users/" + username, {
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
                 Accept: "application/json",
-                Authorization: API_TOKEN
-            }
+                Authorization: API_TOKEN,
+            },
         });
         const profile = await resp.json();
 
         return { username, name: profile.name ?? null };
-    }
-));
+    }),
+);
 
-console.log("All names resolved")
+console.log("All names resolved");
 
 writeFileSync("contributors.json", JSON.stringify(result, null, 2));
