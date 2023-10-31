@@ -211,9 +211,11 @@
         /*
         allows ellipsis to happen. if overflow-y is set then this doesn't render 
         correctly on safari when width is not enough (the code, instead of the location, 
-        would get clipped)
+        would get clipped). but of course this doesn't work on firefox, so we also need
+        to set min-height.
         */
         overflow-x: clip;
+        min-height: 1.25em;
         text-overflow: ellipsis;
     }
 
