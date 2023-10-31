@@ -8,7 +8,11 @@ import { memo } from "react";
 import { DaysFilterBubble, TextInputBubble } from "./TextInputBubble";
 import CourseAreaBubble from "./CourseAreaBubble";
 import CampusBubble from "./CampusBubble";
-import { TimeFilterBubble, CreditFilterBubble } from "./RangeFilter";
+import {
+    TimeFilterBubble,
+    CreditFilterBubble,
+    CourseNumberFilterBubble,
+} from "./RangeFilter";
 
 export type FilterBubbleComponentProps<Data> = {
     onChange: (data: Data | null) => void;
@@ -33,6 +37,7 @@ const FilterBubbleInput: {
     [Search.FilterKey.Credits]: CreditFilterBubble,
     [Search.FilterKey.CourseArea]: CourseAreaBubble,
     [Search.FilterKey.Campus]: CampusBubble,
+    [Search.FilterKey.Number]: CourseNumberFilterBubble,
 };
 
 // non-interactive example bubble used in the filter popup

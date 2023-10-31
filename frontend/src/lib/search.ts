@@ -142,6 +142,7 @@ export function matchesText(
 export enum FilterKey {
     Department = "dept",
     Title = "title",
+    Number = "number",
     Campus = "campus",
     Description = "desc",
     CourseCode = "code",
@@ -184,6 +185,7 @@ export type FilterData = {
     [FilterKey.CourseArea]: CourseAreaFilter;
     [FilterKey.Campus]: CampusFilter;
     [FilterKey.Credits]: RangeFilter;
+    [FilterKey.Number]: RangeFilter;
 };
 
 export type Filter = {
@@ -323,6 +325,17 @@ export function filterSection(
                 )
                     return false;
                 break;
+            case FilterKey.Number:
+                if (
+                    filter.data.start &&
+                    filter.data.start > section.identifier.courseNumber
+                )
+                    return false;
+                if (
+                    filter.data.end &&
+                    filter.data.end < section.identifier.courseNumber
+                )
+                    return false;
         }
     }
     return true;

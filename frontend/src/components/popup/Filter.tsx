@@ -20,6 +20,10 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
         name: "Department",
         example: ["CSCI", "cs"],
     },
+    [Search.FilterKey.Number]: {
+        name: "Course Number",
+        example: ["<100", ">=200", "=181"],
+    },
     [Search.FilterKey.Title]: {
         name: "Title",
         example: ["colloquium", "research"],

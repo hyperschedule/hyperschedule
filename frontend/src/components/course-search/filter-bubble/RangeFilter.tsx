@@ -9,6 +9,9 @@ export const TimeFilterBubble = memo(createRangeFilterBubble(parseTimeExp, 1));
 export const CreditFilterBubble = memo(
     createRangeFilterBubble(parseCreditExp, 0.0001),
 );
+export const CourseNumberFilterBubble = memo(
+    createRangeFilterBubble(parseIntegerExp, 0.1),
+);
 
 const timeRegex =
     /^(?<hour>\d{1,2})(?::(?<minute>[0-5][0-9]))?\s*(?<ampm>am|pm)?$/i;
@@ -49,6 +52,20 @@ function parseCreditExp(value: string): number | null {
     if (match === null) return null;
 
     const n = parseFloat(value);
+    // this really shouldn't happen because of the regex but we still check just in case
+    if (Number.isNaN(n)) return null;
+
+    return n;
+}
+
+const integerRegex = /^\d{1,4}$/;
+
+function parseIntegerExp(value: string): number | null {
+    if (value === "") return null;
+    const match = value.match(integerRegex);
+    if (match === null) return null;
+
+    const n = parseInt(value, 10);
     // this really shouldn't happen because of the regex but we still check just in case
     if (Number.isNaN(n)) return null;
 
