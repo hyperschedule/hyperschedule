@@ -2,6 +2,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { toast, type Id } from "react-toastify";
 import type { z } from "zod";
 import { queryClient } from "@hooks/api/query";
+import md5 from "md5";
 
 type ErrorMessageStatus = {
     lastId: Id | null;
@@ -103,6 +104,31 @@ export async function getAllTerms() {
     );
 }
 
+function sortSection(
+    a: APIv4.SectionIdentifier,
+    b: APIv4.SectionIdentifier,
+): number {
+    // we want to group sections by their departments but shuffle which department
+    // is on top.
+    if (a.department !== b.department)
+        // since all md5 have the same length, doing string comparison is the same
+        // as doing numerical comparison
+        return md5(a.department).localeCompare(md5(b.department));
+
+    if (a.courseNumber !== b.courseNumber)
+        return a.courseNumber - b.courseNumber;
+
+    if (a.suffix !== b.suffix) return a.suffix.localeCompare(b.suffix);
+
+    if (a.affiliation !== b.affiliation)
+        return a.affiliation.localeCompare(b.affiliation);
+
+    if (a.sectionNumber !== b.sectionNumber)
+        return a.sectionNumber - b.sectionNumber;
+
+    return 0;
+}
+
 export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     const termString = APIv4.stringifyTermIdentifier(term);
     const sections = await getData(
@@ -111,6 +137,7 @@ export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
         `course data for ${termString}`,
     );
 
+    sections.sort((a, b) => sortSection(a.identifier, b.identifier));
     // we want the areas for schools to appear last, which is sorted numerically
     sections.forEach((s) => s.courseAreas.reverse());
     return sections;
