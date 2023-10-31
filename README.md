@@ -1,5 +1,8 @@
 # Hyperschedule v2
 
+Hyperschedule is a fast course scheduler for the Claremont Colleges. Currently live at [https://beta.hyperschedule.io/](https://beta.hyperschedule.io/).
+![](docs/demo.gif)
+
 ## Basic Dependencies
 
 To run the code, you need to have at least one of these installed on your computer:
