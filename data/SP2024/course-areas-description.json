@@ -600,10 +600,6 @@
     "description" : "Mathemat/Comput Biology"
   },
   {
-    "area" : "4PFL",
-    "description" : "HM First Year PE"
-  },
-  {
     "area" : "CMS",
     "description" : "CMS Varsity Sports"
   },
@@ -625,7 +621,7 @@
   },
   {
     "area" : "4HSA",
-    "description" : "HM HSA Courses"
+    "description" : "HM Dept HSA Courses"
   },
   {
     "area" : "3HAR",
@@ -814,5 +810,9 @@
   {
     "area" : "SCI",
     "description" : "Integrated Sciences"
+  },
+  {
+    "area" : "4HSS",
+    "description" : "HM 5C HSA Courses"
   }
 ]

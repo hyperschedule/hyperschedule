@@ -1,0 +1,1966 @@
+[
+  {
+    "courseSectionId" : "AFRI010A AF-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "AFRI110  PZ-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "AFRI116  AF-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "AFRI120  PZ-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "AMST113  SC-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "AMST140  SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "AMST191  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ANTH001  PZ-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ANTH002  PO-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ANTH002  SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ANTH002  SC-02 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ANTH012  PZ-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ANTH025  SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ANTH027  SC-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ANTH107  PO-01 SP2024",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ANTH112  PZ-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ANTH113  SC-01 SP2024",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ANTH114  SC-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ANTH185P SC-01 SP2024",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ARCN120  SC-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ARHI123  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ARHI131  PO-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ARHI154  SC-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ARHI186C SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ARHI186M SC-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ARHI186N SC-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ARHI187  SC-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 005  PO-01 SP2024",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "ART 010  PO-01 SP2024",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "ART 015  PZ-01 SP2024",
+    "permCount" : "66"
+  },
+  {
+    "courseSectionId" : "ART 021  PO-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "ART 024  PO-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ART 030  PZ-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 105  SC-01 SP2024",
+    "permCount" : "30"
+  },
+  {
+    "courseSectionId" : "ART 106  SC-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ART 115  PO-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ART 120  PZ-01 SP2024",
+    "permCount" : "33"
+  },
+  {
+    "courseSectionId" : "ART 120  PZ-02 SP2024",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ART 121  SC-01 SP2024",
+    "permCount" : "50"
+  },
+  {
+    "courseSectionId" : "ART 122  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ART 123  PO-01 SP2024",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "ART 125  SC-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 126B PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ART 126B SC-01 SP2024",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ART 127  PZ-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ART 134  SC-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ART 135  SC-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ART 136  SC-01 SP2024",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "ART 139  PO-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ART 140  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ART 141  SC-01 SP2024",
+    "permCount" : "25"
+  },
+  {
+    "courseSectionId" : "ART 142  SC-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "ART 143  SC-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ART 145  SC-01 SP2024",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "ART 146  SC-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 148  SC-01 SP2024",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "ART 179V HM-01 SP2024",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "ART 181D SC-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 188  PO-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ART 193  SC-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ASAM085  PZ-01 SP2024",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "ASAM089  PZ-01 SP2024",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "ASAM123  HM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ASAM124  HM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ASAM130  PZ-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ASAM172  PZ-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ASTR002  PO-01 SP2024",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "ASTR066L KS-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL044L KS-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL044L KS-04 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-03 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-04 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL044LXKS-09 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL047  PO-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "BIOL111  KS-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "BIOL112  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL119  KS-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "BIOL131  KS-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL138  KS-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "BIOL138L KS-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "BIOL141L KS-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "BIOL142L KS-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "BIOL152  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL160  HM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "BIOL164  KS-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "BIOL168L KS-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "BIOL169  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL170  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL173  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "BIOL174  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL175  KS-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL187M KS-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "BIOL196  KS-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CASA101  PZ-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CASA105  PZ-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CASA200  PZ-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "CHEM029L KS-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "CHEM070L KS-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM106  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM117LXKS-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CHEM121  KS-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHEM152  HM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CHEM156  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHST028  CH-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CHST132  CH-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "COGS011  PZ-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "COGS123L JT-01 SP2024",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "CORE079  HM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CORE079R HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CORE079R HM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CORE079R HM-05 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CORE079R HM-06 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CORE079R HM-07 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI005  HM-01 SP2024",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "CSCI005  HM-02 SP2024",
+    "permCount" : "21"
+  },
+  {
+    "courseSectionId" : "CSCI046  CM-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CSCI046  CM-02 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CSCI046L CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI046L CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI054  PO-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CSCI060  HM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CSCI060  HM-02 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "CSCI062  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CSCI070  HM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CSCI070  HM-02 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CSCI070  HM-03 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "CSCI081  HM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CSCI081  HM-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CSCI101  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI105  HM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI105  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI123  HM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "CSCI131  HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI140  HM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI140  HM-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI140  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI140  PO-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI143  CM-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "CSCI143  CM-02 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CSCI144  HM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI152  HM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "CSCI158  HM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CSCI158  HM-02 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "CSCI159  HM-01 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "CSCI181G PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI181S PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "CSCI188  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI195  HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "CSCI195  HM-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "DANC111A SC-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "DANC114A SC-01 SP2024",
+    "permCount" : "27"
+  },
+  {
+    "courseSectionId" : "DANC114B SC-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "DANC131  SC-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "DANC173  PO-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "DANC173  PO-02 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "DS  108  PZ-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "DS  180  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "EA  010  PO-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "EA  010  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "EA  020  PO-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "EA  020  PO-02 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "EA  030L KS-01 SP2024",
+    "permCount" : "29"
+  },
+  {
+    "courseSectionId" : "EA  101  PO-01 SP2024",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "EA  134  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "EA  197  PZ-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON050  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON050  CM-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON051  PO-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON051  PZ-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON051  PZ-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON051  PZ-03 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON052  PO-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON052  PO-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON052  PZ-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON052  PZ-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON053  HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON057  PO-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON057B PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-02 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-03 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-04 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-05 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "ECON086  CM-06 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON089A PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON091  PZ-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON100  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-03 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-04 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-05 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ECON101  CM-06 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON101  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-03 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-04 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON102  CM-05 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON104  PZ-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON107  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON114  SC-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON115  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON117  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON120  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON120  CM-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON121  PO-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "ECON122  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON125  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON125  CM-03 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON125  SC-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON130  PO-01 SP2024",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-03 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-04 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON134  CM-05 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON134B CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON136  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON141  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON141  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON150  CM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ECON151  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON154  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON154  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON155  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON155  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON157  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON160  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON171  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON172  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON172  CM-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON175  PZ-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ECON175  SC-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ECON179F HM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ECON181  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON185  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON191  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ECON197SBCM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL030  PZ-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "ENGL047  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL060  PZ-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGL064A PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ENGL064B PO-01 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "ENGL087F PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ENGL102  SC-01 SP2024",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "ENGL110  PZ-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ENGL115  SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ENGL130  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGL168S SC-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "ENGL180  SC-01 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "ENGL193  SC-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGL197N SC-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGR004  HM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGR004  HM-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ENGR004L HM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ENGR004L HM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGR004L HM-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGR113  HM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ENGR185B HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ENGR190BAHM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "ENGR190BFHM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FGSS177  SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "FGSS183  SC-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "FGSS186  SC-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "FGSS188E SC-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-06 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FHS 010  CM-09 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "FREN001  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "FREN001  SC-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "FREN002  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GEOG179I HM-01 SP2024",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "GEOL015  PO-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "GEOL020A PO-02 SP2024",
+    "permCount" : "20"
+  },
+  {
+    "courseSectionId" : "GEOL020C PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GEOL133  PO-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-03 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-04 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-05 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-06 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GOVT020  CM-07 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GOVT060  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "GOVT070  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT070  CM-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT070H CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GOVT080  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GOVT080  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GOVT101  CM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "GOVT112B CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GOVT117  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT123  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "GOVT129A CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GOVT131  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GOVT137  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT142E CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "GOVT142E CM-02 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GOVT143C CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GOVT146A CM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "GOVT149  CM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "GOVT156E CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "GOVT178  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GWS 070  PO-01 SP2024",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "GWS 081  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "GWS 166  PO-01 SP2024",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "GWS 191  PO-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HIST069  PZ-01 SP2024",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "HIST116IOCM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "HIST118  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "HIST190  CM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "HIST199  PZ-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ID  076  JT-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ID  080  CM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "IR  118  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "ITAL022  SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "LEAD041  CM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "LEAD101  HM-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "LEAD143  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "LEAD151  HM-01 SP2024",
+    "permCount" : "19"
+  },
+  {
+    "courseSectionId" : "LGCS010  PO-01 SP2024",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "LGCS010  PO-02 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "LGCS011  PO-02 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "LGCS112  PZ-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "LGCS114  PO-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "LGCS115  PZ-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "LGCS117  PO-01 SP2024",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "LGCS119  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "LIT 038  CM-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "LIT 129IOCM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "LIT 130  CM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MATH015B PZ-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-02 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-03 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH030  CM-04 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "MATH032  CM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MATH052  CM-01 SP2024",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "MATH055  CM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MATH060  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MATH062  HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH062  HM-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH062  HM-03 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MATH073  HM-05 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH073  HM-06 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH111  CM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MATH145A PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-04 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MATH197  HM-05 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MCBI118B HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MLLC021  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MLLC021  PZ-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MLLC033  PZ-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MLLC144  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MLLC155  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MS  050  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MS  051  PZ-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MS  082  PZ-01 SP2024",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "MS  090  PZ-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MS  102  PZ-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MS  124  PZ-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "MS  125  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MS  194  PZ-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "MS  196  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 007  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "MUS 007  PO-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MUS 008  PO-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "MUS 046  HM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 068  PO-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 089  SC-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 170F SC-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 170H SC-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 170H SC-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MUS 171H SC-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 171H SC-02 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "MUS 171H SC-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 173  JM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "MUS 175  JM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "MUS 177  PO-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "MUS 177F SC-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "NEUR089A PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "NEUR095L JT-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "NEUR125L JT-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "NEUR181  KS-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "ORST089  PZ-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "ORST135  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHIL030  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHIL033  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHIL035  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PHIL037  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHIL038  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHIL179F HM-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PHYS017  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-04 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-05 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-06 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-07 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-08 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-09 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-10 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-11 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024  HM-12 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS024A HM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS049B HM-01 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "PHYS049B HM-02 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "PHYS108  KS-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PHYS134  HM-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "POLI003  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "POLI003  PO-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "POLI033B PO-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "POLI090  PO-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "POLI118  SC-01 SP2024",
+    "permCount" : "9"
+  },
+  {
+    "courseSectionId" : "POLI123  SC-01 SP2024",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "POLI133  JT-01 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "POLI146  SC-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "POLI148  SC-01 SP2024",
+    "permCount" : "11"
+  },
+  {
+    "courseSectionId" : "POLI153  SC-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "POLI158  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "POLI162  PO-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "POLI168  PO-01 SP2024",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "POLI171  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "POLI177  PO-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "POLI189H PO-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PPE 100  PO-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-03 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-04 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PSYC030  CM-06 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC037  CM-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC040  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC051  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC051  PO-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC052  SC-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PSYC065  CM-01 SP2024",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "PSYC070  CM-01 SP2024",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "PSYC081  CM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PSYC091  PZ-01 SP2024",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "PSYC091P PZ-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PSYC092  CM-01 SP2024",
+    "permCount" : "13"
+  },
+  {
+    "courseSectionId" : "PSYC092  PZ-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PSYC092P PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC097  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PSYC101  PZ-01 SP2024",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "PSYC103  SC-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC104  SC-01 SP2024",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "PSYC104L SC-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "PSYC109  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC113  SC-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC116  PZ-01 SP2024",
+    "permCount" : "24"
+  },
+  {
+    "courseSectionId" : "PSYC120  CM-01 SP2024",
+    "permCount" : "5"
+  },
+  {
+    "courseSectionId" : "PSYC124  SC-01 SP2024",
+    "permCount" : "26"
+  },
+  {
+    "courseSectionId" : "PSYC127  PZ-01 SP2024",
+    "permCount" : "10"
+  },
+  {
+    "courseSectionId" : "PSYC131  PO-01 SP2024",
+    "permCount" : "17"
+  },
+  {
+    "courseSectionId" : "PSYC132  CM-01 SP2024",
+    "permCount" : "15"
+  },
+  {
+    "courseSectionId" : "PSYC133  SC-01 SP2024",
+    "permCount" : "23"
+  },
+  {
+    "courseSectionId" : "PSYC140A  PZ-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "PSYC143  CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC144  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC154  CM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PSYC154  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC162  PO-01 SP2024",
+    "permCount" : "6"
+  },
+  {
+    "courseSectionId" : "PSYC164  SC-01 SP2024",
+    "permCount" : "22"
+  },
+  {
+    "courseSectionId" : "PSYC166  CM-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "PSYC175  SC-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "PSYC180  CM-01 SP2024",
+    "permCount" : "14"
+  },
+  {
+    "courseSectionId" : "PSYC188  CM-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "PSYC197A CM-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "PSYC197A CM-03 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "RLST083  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "RLST125  CM-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "SOC 001X PZ-01 SP2024",
+    "permCount" : "8"
+  },
+  {
+    "courseSectionId" : "SOC 001X PZ-02 SP2024",
+    "permCount" : "18"
+  },
+  {
+    "courseSectionId" : "SOC 051  PO-02 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SOC 069  PZ-01 SP2024",
+    "permCount" : "12"
+  },
+  {
+    "courseSectionId" : "SOC 072  PZ-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "SOC 154  PO-01 SP2024",
+    "permCount" : "3"
+  },
+  {
+    "courseSectionId" : "SOC 157  PZ-01 SP2024",
+    "permCount" : "2"
+  },
+  {
+    "courseSectionId" : "THEA002  PO-01 SP2024",
+    "permCount" : "4"
+  },
+  {
+    "courseSectionId" : "THEA017  PO-01 SP2024",
+    "permCount" : "16"
+  },
+  {
+    "courseSectionId" : "THEA026  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA081  PO-01 SP2024",
+    "permCount" : "7"
+  },
+  {
+    "courseSectionId" : "THEA132  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "THEA188  PO-01 SP2024",
+    "permCount" : "1"
+  },
+  {
+    "courseSectionId" : "WRIT140  SC-01 SP2024",
+    "permCount" : "7"
+  }
+]

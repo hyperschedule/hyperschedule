@@ -1,0 +1,17 @@
+[
+  {
+    "externalId" : "SP2024",
+    "beginDate" : "20240116",
+    "endDate" : "20240510"
+  },
+  {
+    "externalId" : "SP2024P1",
+    "beginDate" : "20240116",
+    "endDate" : "20240301"
+  },
+  {
+    "externalId" : "SP2024P2",
+    "beginDate" : "20240304",
+    "endDate" : "20240510"
+  }
+]
