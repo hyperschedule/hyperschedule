@@ -18,6 +18,28 @@
 @tailwind components;
 @tailwind utilities;
 
+body.show-motd {
+  #motd {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    column-gap: 1.5em;
+    height: 3rem;
+    align-items: center;
+    white-space: nowrap;
+    overflow-x: clip;
+    text-overflow: elipsis;
+
+    a {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  main {
+    top: 3rem;
+    height: calc(100vh - 3rem);
+  }
+}
+
 body.preload * {
   -webkit-transition: none !important;
   -moz-transition: none !important;
@@ -153,10 +175,8 @@ main {
 
 #motd {
   display: none;
-  padding: 0.5rem 20%;
   text-align: center;
   font-size: 0.875em;
-  font-weight: bold;
 
   &.visible {
     display: block;

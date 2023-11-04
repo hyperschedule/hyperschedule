@@ -42,7 +42,7 @@
       href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
     /-->
   </head>
-  <body>
+  <body class="show-motd">
     <!--[if lte IE 9]>
       <p class="browserupgrade">
         You are using an <strong>outdated</strong> browser. Please
@@ -50,7 +50,14 @@
         your experience and security.
       </p>
     <![endif]-->
-    <div id="motd"></div>
+    <div id="motd" class="priority-med">
+      <div style="grid-column: 1 / -1;">
+        A new beta version of Hyperschedule has been released
+      </div>
+      <a style="justify-self: end;" href="https://beta.hyperschedule.io/">Try it</a>
+       <a style="justify-self: center;" href="https://github.com/hyperschedule/hyperschedule/blob/v2/docs/v2-new-features.md" target="_blank">Learn more</a>
+      <a style="justify-self: start" href="#" onclick="document.body.classList.remove('show-motd')">Dismiss</a> 
+    </div>
     <main>
       <div id="course-search-schedule-column">
         <div class="toolbar pt-4 px-4">
