@@ -7,10 +7,10 @@
 - Option to show overlapping classes
 - Better filters
 - Access to data from past semesters
-  
+- Data for course areas
 - Features only available to logged in accounts:
   - Cross-device synchronization
   - Synchronization between your favorite calendar program and Hyperschedule using iCal subscription
 
 
-![](docs/demo.gif)
+![](./demo.gif)
