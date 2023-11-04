@@ -20,6 +20,8 @@
 
     display: grid;
     grid-template-areas: "main";
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
 
     @define-mixin show-sidebar {
         grid-template-areas: "main siebar" "main sidebar";
