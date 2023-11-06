@@ -84,7 +84,9 @@ function validateResponse<Schema extends Schema.MethodSchemaAny>(
     };
 }
 
-export async function fetchWithToast(...args: Parameters<typeof fetch>) {
+export async function fetchWithToast(
+    ...args: Parameters<typeof fetch>
+): Promise<Response> {
     try {
         return await fetch(...args);
     } catch (e) {

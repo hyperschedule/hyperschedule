@@ -423,7 +423,7 @@ export function editDistance(
     const replaceCost = cost?.replace ?? 1;
 
     const table: number[] = [];
-    const index = (i: number, j: number) => i * (end.length + 1) + j;
+    const index = (i: number, j: number): number => i * (end.length + 1) + j;
 
     for (let i = 0; i <= start.length; ++i) table[index(i, 0)] = i * deleteCost;
     for (let j = 0; j <= end.length; ++j) table[index(0, j)] = j * insertCost;

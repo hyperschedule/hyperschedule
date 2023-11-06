@@ -48,6 +48,8 @@ export function v3CourseFromV4Section(s: APIv4.Section): APIv3.Course {
     };
 }
 
+// it's legacy stuff no point in typing it
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function v3CourseListFromV4SectionList(sections: APIv4.Section[]) {
     const courses: Record<string, APIv3.Course> = {};
     for (const section of sections) {

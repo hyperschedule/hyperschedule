@@ -21,7 +21,7 @@ export default memo(function CourseAreaBubble(
     props: FilterBubbleComponentProps<Search.CourseAreaFilter>,
 ) {
     const courseAreaDescription = useCourseAreaDescription();
-    const activeSections = useActiveSectionsQuery().data;
+    const activeSections = useActiveSectionsQuery();
 
     const relevantAreas = React.useMemo(() => {
         // not all areas exist in a semester

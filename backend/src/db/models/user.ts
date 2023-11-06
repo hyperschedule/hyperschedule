@@ -11,7 +11,7 @@ const logger = createLogger("db.user");
 function filterUserWithSchedule(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
-) {
+): Record<string, string | { $exists: true }> {
     return {
         _id: userId,
         [`schedules.${scheduleId}`]: { $exists: true },
@@ -148,7 +148,7 @@ export async function renameSchedule(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
     newName: string,
-) {
+): Promise<void> {
     logger.info(
         `Renaming schedule ${scheduleId} for user ${userId} to "${newName}"`,
     );
@@ -172,7 +172,7 @@ export async function addSection(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
     section: APIv4.SectionIdentifier,
-) {
+): Promise<void> {
     const user = await collections.users.findOne(
         filterUserWithSchedule(userId, scheduleId),
     );
@@ -226,7 +226,7 @@ export async function addSection(
 export async function deleteSchedule(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
-) {
+): Promise<void> {
     const user = await collections.users.findOne(
         filterUserWithSchedule(userId, scheduleId),
     );
@@ -262,7 +262,7 @@ export async function replaceSections(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
     sections: APIv4.UserSection[],
-) {
+): Promise<void> {
     logger.info(`Replacing sections for ${userId}`);
     const user = await collections.users.findOne(
         filterUserWithSchedule(userId, scheduleId),
@@ -290,7 +290,7 @@ export async function duplicateSchedule(
     userId: APIv4.UserId,
     fromScheduleId: APIv4.ScheduleId,
     scheduleName: string,
-) {
+): Promise<APIv4.ScheduleId> {
     const user = await collections.users.findOne(
         filterUserWithSchedule(userId, fromScheduleId),
     );
@@ -344,7 +344,7 @@ export async function deleteSection(
     userId: APIv4.UserId,
     scheduleId: APIv4.ScheduleId,
     section: APIv4.SectionIdentifier,
-) {
+): Promise<void> {
     const user = await collections.users.findOne(
         filterUserWithSchedule(userId, scheduleId),
     );
@@ -385,7 +385,7 @@ export async function setSectionAttrs(
     scheduleId: APIv4.ScheduleId,
     sectionId: APIv4.SectionIdentifier,
     attrs: Partial<APIv4.UserSectionAttrs>,
-) {
+): Promise<void> {
     const user = await collections.users.findOne(
         filterUserWithSchedule(userId, scheduleId),
     );

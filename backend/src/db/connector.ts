@@ -18,7 +18,7 @@ export let connector: DBConnector = {
     connected: false,
 };
 
-export async function connectToDb(url: string) {
+export async function connectToDb(url: string): Promise<void> {
     const client = new MongoClient(url);
 
     logger.info("Initializing database connection");
@@ -36,7 +36,7 @@ export async function connectToDb(url: string) {
     });
 }
 
-export async function closeDb() {
+export async function closeDb(): Promise<void> {
     // if it's not connected do nothing
     if (!connector.connected) return;
 

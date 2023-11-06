@@ -6,6 +6,7 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import { createLogger } from "../../logger";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { z } from "zod";
+import type { BulkWriteResult } from "mongodb";
 
 const logger = createLogger("db.course");
 
@@ -15,7 +16,7 @@ const logger = createLogger("db.course");
 export async function updateSections(
     sections: APIv4.Section[],
     term: APIv4.TermIdentifier,
-) {
+): Promise<BulkWriteResult> {
     logger.info(`Initiating section update with ${sections.length} sections`);
     const dbSections: DBSection[] = sections
         .filter(
@@ -94,7 +95,7 @@ export async function getAllSectionId(
 function sortTermIdentifierReverse(
     a: APIv4.TermIdentifier,
     b: APIv4.TermIdentifier,
-) {
+): number {
     if (APIv4.termIsBefore(a, b)) return 1;
     if (a.year === b.year && a.term === b.term) return 0;
     return -1;
@@ -105,7 +106,9 @@ const AggregationOutput = z.object({
     code: APIv4.CourseCodeString,
 });
 
-export async function computeOfferingHistory(term: APIv4.TermIdentifier) {
+export async function computeOfferingHistory(
+    term: APIv4.TermIdentifier,
+): Promise<APIv4.OfferingHistory[]> {
     logger.info("DB query start for last offered");
     const aggr = await collections.sections
         .aggregate([
@@ -177,7 +180,7 @@ export async function computeOfferingHistory(term: APIv4.TermIdentifier) {
 }
 
 // figure out which terms we have data for
-export async function computeAllTerms() {
+export async function computeAllTerms(): Promise<APIv4.TermIdentifier[]> {
     logger.info("DB query start for all terms");
     const result = await collections.sections
         .aggregate([

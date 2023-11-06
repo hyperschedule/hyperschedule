@@ -39,13 +39,16 @@ export const dayOrder = [
     APIv4.Weekday.saturday,
 ] as const;
 
-export function cardKey(card: Readonly<Card>) {
+export function cardKey(card: Readonly<Card>): string {
     return `${APIv4.stringifySectionCodeLong(card.section.identifier)}:${
         card.day
     }/${card.startTime}-${card.endTime}`;
 }
 
-export function getCards(section: Readonly<APIv4.Section>, priority: number) {
+export function getCards(
+    section: Readonly<APIv4.Section>,
+    priority: number,
+): Card[] {
     const cards: Card[] = [];
     for (const schedule of section.schedules) {
         if (schedule.startTime === schedule.endTime) continue;
@@ -63,7 +66,9 @@ export function getCards(section: Readonly<APIv4.Section>, priority: number) {
     return cards;
 }
 
-export function groupCardsByDay(cards: readonly Readonly<Card>[]) {
+export function groupCardsByDay(
+    cards: readonly Readonly<Card>[],
+): Record<APIv4.Weekday, Readonly<Card>[]> {
     const byDay: Record<APIv4.Weekday, Readonly<Card>[]> = {
         [APIv4.Weekday.monday]: [],
         [APIv4.Weekday.tuesday]: [],
@@ -77,7 +82,7 @@ export function groupCardsByDay(cards: readonly Readonly<Card>[]) {
     return byDay;
 }
 
-export function stackCards(cards: Readonly<Card>[]) {
+export function stackCards(cards: Readonly<Card>[]): number[] {
     const order: number[] = [0];
     cards.sort(compareEndTime);
 
@@ -97,7 +102,7 @@ export function stackCards(cards: Readonly<Card>[]) {
     return order;
 }
 
-export function stackCardsReverse(cards: Readonly<Card>[]) {
+export function stackCardsReverse(cards: Readonly<Card>[]): number[] {
     const order: number[] = [];
     order[cards.length - 1] = 0;
 
@@ -119,25 +124,25 @@ export function stackCardsReverse(cards: Readonly<Card>[]) {
     return order;
 }
 
-export function compareEndTime(a: Readonly<Card>, b: Readonly<Card>) {
+export function compareEndTime(a: Readonly<Card>, b: Readonly<Card>): number {
     return a.endTime - b.endTime || a.startTime - b.startTime;
 }
 
-export function compareStartTime(a: Readonly<Card>, b: Readonly<Card>) {
+export function compareStartTime(a: Readonly<Card>, b: Readonly<Card>): number {
     return a.startTime - b.startTime || a.endTime - b.endTime;
 }
 
-export function comparePriority(a: Readonly<Card>, b: Readonly<Card>) {
+export function comparePriority(a: Readonly<Card>, b: Readonly<Card>): number {
     return a.priority - b.priority;
 }
 
-export function cardOverlap(a: Readonly<Card>, b: Readonly<Card>) {
+export function cardOverlap(a: Readonly<Card>, b: Readonly<Card>): boolean {
     return (
         a.day === b.day && a.startTime < b.endTime && b.startTime < a.endTime
     );
 }
 
-export function mergeCards(cards: Readonly<Card>[]) {
+export function mergeCards(cards: Readonly<Card>[]): Group[] {
     cards.sort(compareStartTime);
 
     const first = cards[0];
@@ -171,7 +176,7 @@ export function mergeCards(cards: Readonly<Card>[]) {
 export function sectionsConflict(
     a: Readonly<APIv4.Section>,
     b: Readonly<APIv4.Section>,
-) {
+): boolean {
     const byDayA = groupCardsByDay(getCards(a, 0));
     const byDayB = groupCardsByDay(getCards(b, 0));
 
@@ -193,7 +198,7 @@ export function sectionsConflict(
 export function greedyCollect<A>(
     items: readonly Readonly<A>[],
     conflict: (a: Readonly<A>, b: Readonly<A>) => boolean,
-) {
+): Set<A> {
     // this is quadratic; some day we might care about finding a better algorithm
     const select = new Set<A>();
     for (const current of items) {
@@ -205,7 +210,10 @@ export function greedyCollect<A>(
     return select;
 }
 
-export function timeHull(cards: readonly Readonly<Card>[]) {
+export function timeHull(cards: readonly Readonly<Card>[]): {
+    startTime: number;
+    endTime: number;
+} {
     let min = 24 * 3600;
     let max = 0;
     for (const card of cards) {
@@ -215,7 +223,10 @@ export function timeHull(cards: readonly Readonly<Card>[]) {
     return { startTime: min, endTime: max };
 }
 
-export function hasWeekend(cards: readonly Readonly<Card>[]) {
+export function hasWeekend(cards: readonly Readonly<Card>[]): {
+    sunday: boolean;
+    saturday: boolean;
+} {
     const weekend = { sunday: false, saturday: false };
     for (const card of cards) {
         weekend.sunday ||= card.day === APIv4.Weekday.sunday;
@@ -224,7 +235,10 @@ export function hasWeekend(cards: readonly Readonly<Card>[]) {
     return weekend;
 }
 
-export function updateBounds(bounds: Bounds, section: Readonly<APIv4.Section>) {
+export function updateBounds(
+    bounds: Bounds,
+    section: Readonly<APIv4.Section>,
+): void {
     for (const schedule of section.schedules) {
         if (schedule.startTime === schedule.endTime) continue;
         bounds.startTime = Math.min(schedule.startTime, bounds.startTime);
@@ -237,13 +251,16 @@ export function updateBounds(bounds: Bounds, section: Readonly<APIv4.Section>) {
     }
 }
 
-export function combineBounds(a: Readonly<Bounds>, b: Readonly<Bounds>) {
+export function combineBounds(
+    a: Readonly<Bounds>,
+    b: Readonly<Bounds>,
+): Bounds {
     return {
         startTime: Math.min(a.startTime, b.startTime),
         endTime: Math.max(a.endTime, b.endTime),
         sunday: a.sunday || b.sunday,
         saturday: a.saturday || b.saturday,
-    } satisfies Bounds;
+    };
 }
 
 /**
@@ -259,6 +276,6 @@ export function combineLocations(locations: string[]): string[] {
     return [`${prefix[0]} ${room.join(", ")}`];
 }
 
-export function scheduleDisplayName(schedule: APIv4.UserSchedule) {
+export function scheduleDisplayName(schedule: APIv4.UserSchedule): string {
     return `${schedule.name} (${APIv4.stringifyTermIdentifier(schedule.term)})`;
 }

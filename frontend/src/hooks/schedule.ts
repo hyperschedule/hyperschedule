@@ -32,7 +32,16 @@ export function useActiveScheduleLookup(): Map<string, APIv4.UserSection> {
     }, [entries]);
 }
 
-export function useActiveScheduleResolved() {
+// TODO: split this function up
+export function useActiveScheduleResolved(): {
+    sections: Readonly<APIv4.Section>[];
+    cards: Lib.Card[];
+    expandCards: Lib.Card[];
+    bounds: Lib.Bounds;
+    startHour: number;
+    endHour: number;
+    unconflicting: Set<Readonly<APIv4.Section>>;
+} {
     const entries = useActiveScheduleEntries();
     const lookup = useActiveSectionsLookup();
 

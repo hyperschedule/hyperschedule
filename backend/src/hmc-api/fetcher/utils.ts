@@ -27,7 +27,7 @@ export function computeParams(term: APIv4.TermIdentifier): Params {
 export function computeFilePath(
     endpoint: Endpoint,
     term: APIv4.TermIdentifier,
-) {
+): string {
     return resolve(
         DATA_DIR_PATH,
         APIv4.stringifyTermIdentifier(term),
@@ -58,7 +58,7 @@ export async function saveStatic(
     content: string,
     endpoint: Endpoint,
     term: APIv4.TermIdentifier,
-) {
+): Promise<void> {
     const path = computeFilePath(endpoint, term);
 
     // TODO: figure out somewhere else to call this so we don't try to run mkdir for every new file

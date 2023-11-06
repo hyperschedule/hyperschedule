@@ -12,7 +12,7 @@ export function importFromLegacy(): Promise<APIv4.ImportV3Response> {
 
         let win: Window;
 
-        function listener(ev: MessageEvent) {
+        function listener(ev: MessageEvent): void {
             const payload = APIv4.ImportV3Request.safeParse(ev.data);
             // some extensions post messages too, and we want to ignore those
             if (!payload.success) return;

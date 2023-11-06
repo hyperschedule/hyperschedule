@@ -11,7 +11,7 @@ async function doFetch(
     prefix: string,
     endpoint: Endpoint,
     term: APIv4.TermIdentifier,
-) {
+): Promise<Response> {
     const params = computeParams(term);
 
     let link = prefix + endpoint.link;
@@ -74,7 +74,7 @@ export async function fetchAndSave(
 export async function fetchAllForTerm(
     prefix: string,
     term: APIv4.TermIdentifier,
-) {
+): Promise<void> {
     const jobs = Object.values(endpoints).map((endpoint) =>
         fetchAndSave(prefix, endpoint, term),
     );

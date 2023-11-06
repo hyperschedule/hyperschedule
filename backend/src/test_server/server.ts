@@ -23,7 +23,7 @@ const endpointFilePaths: Record<string, Endpoint> = Object.fromEntries(
     Object.values(endpoints).map((endpoint) => [endpoint.link, endpoint]),
 );
 
-function send_bad_request_response(res: Response, text: string) {
+function send_bad_request_response(res: Response, text: string): void {
     res.status(HttpStatus.BadRequest)
         .header("Content-Type", "text/plain")
         .send(text);

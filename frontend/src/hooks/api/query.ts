@@ -1,5 +1,5 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import {
     getAllTerms,
     getSectionsForTerm,
@@ -19,7 +19,7 @@ export const queryClient = new ReactQuery.QueryClient({
     },
 });
 
-export function useAllTermsQuery() {
+export function useAllTermsQuery(): UseQueryResult<APIv4.TermIdentifier[]> {
     return useQuery({
         queryKey: ["all terms"],
         queryFn: getAllTerms,
@@ -28,7 +28,9 @@ export function useAllTermsQuery() {
     });
 }
 
-export function useSectionsQuery(term: APIv4.TermIdentifier) {
+export function useSectionsQuery(
+    term: APIv4.TermIdentifier,
+): UseQueryResult<APIv4.Section[]> {
     let timeout = 30 * 1000;
     if (APIv4.termIsBefore(term, CURRENT_TERM)) timeout = 60 * 60 * 1000;
 
@@ -40,7 +42,9 @@ export function useSectionsQuery(term: APIv4.TermIdentifier) {
     });
 }
 
-export function useCourseAreaDescription() {
+export function useCourseAreaDescription(): UseQueryResult<
+    Map<string, string>
+> {
     return useQuery({
         queryKey: ["course areas"],
         queryFn: getCourseAreaDescription,
@@ -49,7 +53,9 @@ export function useCourseAreaDescription() {
     });
 }
 
-export function useOfferingHistory(term: APIv4.TermIdentifier) {
+export function useOfferingHistory(
+    term: APIv4.TermIdentifier,
+): UseQueryResult<APIv4.OfferingHistory[]> {
     return useQuery({
         queryKey: ["last offered", term] as const,
         queryFn: (ctx) => getOfferingHistory(ctx.queryKey[1]!),

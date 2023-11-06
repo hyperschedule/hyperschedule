@@ -16,7 +16,7 @@ import { memo, useCallback } from "react";
 import { useActiveSectionsQuery } from "@hooks/section";
 
 export default memo(function CourseSearch() {
-    const sections: APIv4.Section[] | undefined = useActiveSectionsQuery().data;
+    const sections: APIv4.Section[] | undefined = useActiveSectionsQuery();
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;

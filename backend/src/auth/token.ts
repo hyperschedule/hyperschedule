@@ -9,7 +9,7 @@ export interface UserToken {
 const SIGNING_ALGORITHM = "ES512";
 const TOKEN_VALIDITY = "365d";
 
-export function signUser(uuid: UserToken) {
+export function signUser(uuid: UserToken): string {
     return jwt.sign(uuid, PRIVKEY, {
         algorithm: SIGNING_ALGORITHM,
         expiresIn: TOKEN_VALIDITY,

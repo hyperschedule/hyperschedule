@@ -9,7 +9,7 @@ import { updateSections } from "../../db/models/course";
 import process from "node:process";
 
 // we wrap everything in this function so nothing happens on import
-export async function runScheduler(prefix: string) {
+export async function runScheduler(prefix: string): Promise<void> {
     const logger = createLogger("hmc.fetch.scheduler");
     let endpointsScheduled: number = 0;
     let dbWriteInProcess: number = 0;
@@ -42,7 +42,7 @@ export async function runScheduler(prefix: string) {
         }
     }
 
-    async function scheduleEndpoint(e: Endpoint) {
+    async function scheduleEndpoint(e: Endpoint): Promise<void> {
         logger.info(
             "Scheduling fetch for %s with interval of %ds, %d/%d",
             e.saveAs,
@@ -89,7 +89,7 @@ export async function runScheduler(prefix: string) {
         /* eslint-enable */
     }
 
-    function signalHandler(signal: string) {
+    function signalHandler(signal: string): void {
         logger.info("Signal %s received", signal);
         shouldExit = true;
         if (dbWriteInProcess === 0) {

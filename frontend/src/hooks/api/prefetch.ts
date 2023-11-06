@@ -7,14 +7,14 @@ import * as APIv4 from "hyperschedule-shared/api/v4";
 import type { QueryClient } from "@tanstack/react-query";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 
-export function prefetchDataForTerm(
+export async function prefetchDataForTerm(
     term: APIv4.TermIdentifier,
     queryClient: QueryClient,
-) {
+): Promise<void> {
     let timeout = 30 * 1000;
     if (APIv4.termIsBefore(term, CURRENT_TERM)) timeout = 60 * 60 * 1000;
 
-    return Promise.all([
+    await Promise.all([
         queryClient.prefetchQuery({
             queryKey: ["course areas"],
             queryFn: getCourseAreaDescription,

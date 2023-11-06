@@ -27,7 +27,10 @@ export function hsvToHsl(c: Color): Color {
     return [h, sl, l];
 }
 
-function hslArrayToCssString(color: Color, alpha: number = 1) {
+function hslArrayToCssString(
+    color: Color,
+    alpha: number = 1,
+): `hsl(${number},${number}%,${number}%,${number})` {
     let [h, s, l] = color;
     s = Math.round(s * 100);
     l = Math.round(l * 100);
@@ -35,7 +38,7 @@ function hslArrayToCssString(color: Color, alpha: number = 1) {
     return `hsl(${h},${s}%,${l}%,${alpha})`;
 }
 
-function clamp(n: number) {
+function clamp(n: number): number {
     return Math.max(0, Math.min(n, 1));
 }
 
@@ -47,30 +50,32 @@ function clamp(n: number) {
  * arbitrarily for a nice curve that still satisfies
  * the bounds.
  **************************************************/
-function shadow(x: number) {
+function shadow(x: number): number {
     // this computes e^(1.25x-2) - e^(-2)
     return Math.exp(1.25 * x - 2) - 0.135335283237;
 }
 
-function highlight(x: number) {
+function highlight(x: number): number {
     // this computes 1.3 - e^(-1.25x+1/3)
     return clamp(1.4 - Math.exp(-1.25 * x + 0.333333333));
 }
 
-function invHighlight(x: number) {
+function invHighlight(x: number): number {
     // computes 4/15 - 0.8 ln(1.4 - x), the inverse function of highlight
     return clamp(0.266666667 - 0.8 * Math.log(1.4 - x));
 }
 
-function strongHighlight(x: number) {
+function strongHighlight(x: number): number {
     // this computes 1.5 - e^(-1.25x+0.4)
     return clamp(1.5 - Math.exp(-1.25 * x + 0.4));
 }
 
-function invStrongHighlight(x: number) {
+function invStrongHighlight(x: number): number {
     // computes 0.32 - 0.8 ln(1.5 - x), the inverse function of highlightExtra
     return clamp(0.32 - 0.8 * Math.log(1.5 - x));
 }
+
+/**************************************************/
 
 function computeShadowColor(c: Color): Color {
     const [h, s, v] = c;

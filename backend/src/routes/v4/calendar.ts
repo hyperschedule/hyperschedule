@@ -185,7 +185,7 @@ function createDateTimeArray(
     return [date.year, date.month, date.day, hour, minute];
 }
 
-function createRRule(endDate: APIv4.CourseDate, days: APIv4.Weekday[]) {
+function createRRule(endDate: APIv4.CourseDate, days: APIv4.Weekday[]): string {
     const daysString = days.map(weekdayToRRuleDay).join(",");
     const monthString = String(endDate.month).padStart(2, "0");
     const dayString = String(endDate.day).padStart(2, "0");

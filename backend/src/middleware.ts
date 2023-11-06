@@ -8,7 +8,11 @@ const logger = createLogger("server.request");
 
 let counter = 1;
 
-export function middleware(req: Request, res: Response, next: NextFunction) {
+export function middleware(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): void {
     const reqId = counter++;
     logger.info(
         {

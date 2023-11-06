@@ -129,7 +129,9 @@ function sortSection(
     return 0;
 }
 
-export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
+export async function getSectionsForTerm(
+    term: APIv4.TermIdentifier,
+): Promise<APIv4.Section[]> {
     const termString = APIv4.stringifyTermIdentifier(term);
     const sections = await getData(
         `${__API_URL__}/v4/sections/${termString}`,
@@ -143,7 +145,7 @@ export async function getSectionsForTerm(term: APIv4.TermIdentifier) {
     return sections;
 }
 
-export async function getCourseAreaDescription() {
+export async function getCourseAreaDescription(): Promise<Map<string, string>> {
     const data = await getData(
         `${__API_URL__}/v4/course-areas`,
         APIv4.CourseAreaDescription.array(),
@@ -157,7 +159,9 @@ export async function getCourseAreaDescription() {
     );
 }
 
-export async function getOfferingHistory(term: APIv4.TermIdentifier) {
+export async function getOfferingHistory(
+    term: APIv4.TermIdentifier,
+): Promise<APIv4.OfferingHistory[]> {
     const termString = APIv4.stringifyTermIdentifier(term);
 
     return getData(

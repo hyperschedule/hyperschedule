@@ -50,17 +50,17 @@ function firstValidScheduleId(
     return sorted[0]![0];
 }
 
-function generateOfflineScheduleId() {
+function generateOfflineScheduleId(): APIv4.ScheduleId {
     // some browsers don't have the randomUUID function
     return `s~${window.crypto.randomUUID()}`;
 }
 
 const init: Zustand.StateCreator<Store> = (set, get) => {
-    function update(f: (store: Store) => void) {
+    function update(f: (store: Store) => void): void {
         set(produce(f));
     }
 
-    async function getUser() {
+    async function getUser(): Promise<void> {
         // if no auth token is set the account cannot possibly be logged in
         if (Cookies.get(AUTH_TOKEN_COOKIE_NAME) === undefined) {
             if (get().server !== null) {

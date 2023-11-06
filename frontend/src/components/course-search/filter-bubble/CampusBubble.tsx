@@ -9,7 +9,7 @@ import { memo } from "react";
 export default memo(function CampusBubble(
     props: FilterBubbleComponentProps<Search.CampusFilter>,
 ) {
-    const activeSections = useActiveSectionsQuery().data;
+    const activeSections = useActiveSectionsQuery();
     const filteredSchoolCodes: APIv4.School[] = React.useMemo(() => {
         if (activeSections === undefined) return [];
         const campuses = new Set<APIv4.School>();

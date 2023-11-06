@@ -139,7 +139,7 @@ function parseBuildingCode(code: string): string {
 function processCourse(
     courseMap: Map<string, APIv4.Course>,
     courseParsed: CourseOutput[],
-) {
+): void {
     const allCampuses: string[] = Object.values(APIv4.School);
     for (let c of courseParsed) {
         let potentialError = courseMap.has(c.code);
@@ -194,7 +194,7 @@ function processStaff(
     staffMap: Map<string, APIv4.Instructor>,
     staffParsed: StaffOutput,
     altstaffParsed: AltStaffOutput,
-) {
+): void {
     for (let staff of staffParsed) {
         let name: string;
         if (staff.firstName === "" && staff.lastName === "")
@@ -229,7 +229,7 @@ function processCourseSection(
     courseMap: Map<string, APIv4.Course>,
     courseAreaMap: Map<string, string[]>,
     courseSectionParsed: CourseSectionOutput,
-) {
+): void {
     const allSectionStatus = ["O", "C", "R"];
 
     for (const section of courseSectionParsed) {
@@ -315,7 +315,7 @@ function processSectionInstructor(
     dupeMap: Map<string, number>,
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
     sectionInstructorParsed: SectionInstructorOutput,
-) {
+): void {
     for (let sectionInstructor of sectionInstructorParsed) {
         const sectionIdentifierString = APIv4.stringifySectionCodeLong(
             sectionInstructor.sectionId,
@@ -350,7 +350,7 @@ function processSectionInstructor(
 function processPermCount(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
     permCountParsed: PermCountOutput,
-) {
+): void {
     for (let perm of permCountParsed) {
         const sectionIdentifierString = APIv4.stringifySectionCodeLong(
             perm.sectionId,
@@ -371,7 +371,7 @@ function processCalendar(
     calendarSessionParsed: CalendarSessionOutput,
     calendarSessionSectionParsed: CalendarSessionSectionOutput,
     term: APIv4.TermIdentifier,
-) {
+): void {
     let calendarMap: Map<
         string,
         {
@@ -441,7 +441,7 @@ function processCalendar(
 function processSectionSchedule(
     courseSectionMap: Map<string, Partial<APIv4.Section>>,
     courseSectionScheduleParsed: CourseSectionScheduleOutput,
-) {
+): void {
     for (let schedule of courseSectionScheduleParsed) {
         const sectionIdString = APIv4.stringifySectionCodeLong(
             schedule.sectionId,
@@ -492,7 +492,7 @@ function processSectionSchedule(
 function processCourseAreas(
     courseAreasParsed: CourseAreaOutput,
     courseAreaMap: Map<string, string[]>,
-) {
+): void {
     for (let area of courseAreasParsed) {
         // TODO: check catalog year
         const courseCodeString = APIv4.stringifyCourseCode(area.courseCode);

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import type {
     PomApiCourseAreaCourse,
     PomApiCourseArea,
@@ -11,14 +12,6 @@ const POM_API_ENDPOINT = "https://jicsweb.pomona.edu/api/";
 
 // we have to wait until https://github.com/DefinitelyTyped/DefinitelyTyped/issues/60924
 // is fixed
-/*
-eslint-disable
-@typescript-eslint/no-unsafe-member-access,
-@typescript-eslint/no-unsafe-assignment,
-@typescript-eslint/no-unsafe-argument,
-@typescript-eslint/no-unsafe-call,
-@typescript-eslint/no-unsafe-return
-*/
 async function get(uri: string): Promise<{ status: number; res: any }> {
     const res = await fetch(POM_API_ENDPOINT + uri, {
         method: "GET",
@@ -44,7 +37,6 @@ async function get(uri: string): Promise<{ status: number; res: any }> {
     }
 }
 
-/* eslint-enable */
 /**
  * Retrieve the most recent term according to API
  */
