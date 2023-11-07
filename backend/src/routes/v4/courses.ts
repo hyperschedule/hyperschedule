@@ -13,7 +13,8 @@ courseApp.get("/sections", async function (request, reply) {
         .header("Content-Type", "application/json")
         .header(
             "Cache-Control",
-            "public,s-max-age=15,max-age=60,proxy-revalidate,stale-while-revalidate=30",
+            // if the server is down, serve cached data for at most another day
+            "public,immutable,s-max-age=15,max-age=30,stale-while-revalidate=60,stale-if-error=86400",
         )
         .send(JSON.stringify(sections));
 });
@@ -30,7 +31,10 @@ courseApp.get("/sections/:term", async (request, response) => {
     } else {
         response.header(
             "Cache-Control",
-            "public,s-max-age=15,max-age=60,proxy-revalidate,stale-while-revalidate=30",
+            // if the server is down, serve cached data for at most another day.
+            // we use immutable here to reduce server load, as the max age is
+            // very short
+            "public,immutable,s-max-age=15,max-age=30,stale-while-revalidate=60,stale-if-error=86400",
         );
     }
     const sections = await getAllSections(requestedTerm);
@@ -52,7 +56,9 @@ courseApp.get("/course-areas", async function (request, reply) {
             .header("Content-Type", "application/json")
             .header(
                 "Cache-Control",
-                "public,s-max-age=3600,max-age=3600,proxy-revalidate,stale-while-revalidate=3600",
+                // we have s shorter s-max-age because we can manually purge
+                // those cache
+                "public,s-max-age=3600,max-age=1800,stale-while-revalidate=3600,stale-if-error=86400",
             )
             .send(file);
     } catch {
@@ -69,7 +75,7 @@ courseApp.get("/offering-history/:term", async (request, response) => {
         .header("Content-Type", "application/json")
         .header(
             "Cache-Control",
-            "public,s-max-age=3600,max-age=3600,proxy-revalidate,stale-while-revalidate=3600",
+            "public,s-max-age=3600,max-age=1800,stale-while-revalidate=3600,stale-if-error=86400",
         )
         .send(lastOffered);
 });

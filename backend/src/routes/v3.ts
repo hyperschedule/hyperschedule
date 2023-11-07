@@ -18,7 +18,7 @@ v3App.get("/courses", async function (request: Request, response: Response) {
     return response
         .header(
             "Cache-Control",
-            "public,s-max-age=15,max-age=5,proxy-revalidate,stale-while-revalidate=30",
+            "public,immutable,s-max-age=15,max-age=30,stale-while-revalidate=60,stale-if-error=86400",
         )
         .header("Content-Type", "application/json")
         .send(v3Courses);
