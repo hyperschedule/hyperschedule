@@ -84,19 +84,19 @@ export const endpoints: Endpoints = {
         interval: 3600,
         saveAs: "calendar-session-section.json",
     },
-    // fetch once per day
+    // fetch once per two hours
     courseAreas: {
         name: "courseAreas",
         link: "course-area",
         params: null,
-        interval: 3600 * 24,
+        interval: 3600 * 2,
         saveAs: "course-area.json",
     },
     courseAreaDescription: {
         name: "courseAreaDescription",
         link: "course-area-description",
         params: null,
-        interval: 3600 * 24,
+        interval: 3600 * 2,
         saveAs: "course-areas-description.json",
     },
 };
