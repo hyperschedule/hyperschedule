@@ -18,6 +18,7 @@ import {
     cardKey,
     combineLocations,
     comparePriority,
+    computeCardRows,
     groupCardsByDay,
     hasWeekend,
     mergeCards,
@@ -184,9 +185,7 @@ const Card = memo(function Card(props: {
             style={
                 {
                     gridColumn: props.card.day,
-                    gridRow: `${Math.floor(props.card.startTime / 300) + 1} / ${
-                        Math.floor(props.card.endTime / 300) + 1
-                    }`,
+                    gridRow: computeCardRows(props.card),
                     "--stack-order": props.orderFromTop,
                     "--reverse-stack-order": props.orderFromBottom,
                     "--group-size": props.totalCardsInGroup,

@@ -15,6 +15,7 @@ import {
     cardKey,
     cardOverlap,
     comparePriority,
+    computeCardRows,
     groupCardsByDay,
     mergeCards,
 } from "@lib/schedule";
@@ -161,11 +162,7 @@ export default memo(function MiniMap() {
                                     })}
                                     style={{
                                         gridColumn: card.day,
-                                        gridRow: `${
-                                            Math.floor(card.startTime / 300) + 1
-                                        } / ${
-                                            Math.floor(card.endTime / 300) + 1
-                                        }`,
+                                        gridRow: computeCardRows(card),
                                         ...sectionColorStyle(
                                             card.section.identifier,
                                             theme,
@@ -279,9 +276,7 @@ const Card = memo(function Card(props: {
                 marginRight,
                 visibility,
                 gridColumn: props.card.day,
-                gridRow: `${props.card.startTime / 300 + 1} / ${
-                    props.card.endTime / 300 + 1
-                }`,
+                gridRow: computeCardRows(props.card),
                 ...sectionColorStyle(
                     props.card.section.identifier,
                     theme,

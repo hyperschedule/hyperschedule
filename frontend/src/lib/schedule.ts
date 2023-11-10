@@ -279,3 +279,12 @@ export function combineLocations(locations: string[]): string[] {
 export function scheduleDisplayName(schedule: APIv4.UserSchedule): string {
     return `${schedule.name} (${APIv4.stringifyTermIdentifier(schedule.term)})`;
 }
+
+export function computeCardRows(card: Card): string {
+    // round to the nearest 5-minutes (300 seconds) block
+    // some classes, such as ASTR 066LX KS-02 FA2023 and CHEM 110 HM-01 SP2024,
+    // have start and end times not aligned to the 5 minutes block
+    return `${Math.round(card.startTime / 300) + 1} / ${
+        Math.round(card.endTime / 300) + 1
+    }`;
+}
