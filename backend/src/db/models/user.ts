@@ -44,7 +44,7 @@ export async function getOrCreateUser(
             school = APIv4.School.POM;
             break;
         case "Pitzer College":
-            school = APIv4.School.POM;
+            school = APIv4.School.PTZ;
             break;
         case "Claremont McKenna College":
             school = APIv4.School.CMC;
