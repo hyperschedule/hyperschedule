@@ -12,14 +12,21 @@ To run the code, you need to have at least one of these installed on your comput
 
 ## Docker Compose Stack
 
-First time setup:
+**Services:**
+
+- Frontend (port 5000)
+- Backend (port 8080)
+- Database (mongoDB)
+- Web Server (nginx, port 80, only needed for SAML flow) 
+
+**First time setup:**
 
 At project root, run `yarn install`. Then, run `docker compose build`. Lastly, run `yarn docker-load-db` to load
 test data. 
 
-After:
+**After:**
 
-Run `yarn docker` to start the stack. 
+Run `yarn docker` to start the stack. Then go to `http://localhost:5000` in your browser. 
 
 ## Git hooks
 
