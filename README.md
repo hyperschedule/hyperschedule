@@ -7,33 +7,19 @@ Hyperschedule is a fast course scheduler for the Claremont Colleges. Currently l
 
 To run the code, you need to have at least one of these installed on your computer:
 
-- [NodeJS](https://nodejs.org/en) and [Yarn](https://yarnpkg.com/getting-started/install)
+- [NodeJS 18](https://nodejs.org/en) and [Yarn](https://yarnpkg.com/getting-started/install)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
 
-## Docker with Dev Containers
+## Docker Compose Stack
 
-Remember the dev containers from CS70? If you liked it, you can use dev containers to develop Hyperschedule too. In
-fact, you don't need to install anything else other than Docker. Just open the project in VSCode and you should be
-all-set. If you don't want to use VSCode, run `yarn docker-dev` at the project root and you should get basically the
-same thing (except its faster than VSCode and you can use IDE of your
-choosing). If you don't have `yarn` installed either, run this in you terminal and it should drop you into a dev
-container shell (fun fact: `yarn docker-dev` is a shortcut for this particular command)
+First time setup:
 
-```
-docker compose \
-    -f docker-compose.yml -f .devcontainer/docker-compose.yml \
-    up --always-recreate-deps --wait && \
-    docker compose exec dev /bin/zsh
-```
+At project root, run `yarn install`. Then, run `docker compose build`. Lastly, run `yarn docker-load-db` to load
+test data. 
 
-The first time you set up your dev containers, you should run `yarn docker-load-db` to load the test data.
+After:
 
-## Docker without Dev Containers
-
-If you don't want to use a dev container and have some fancy editor setup (the previous and current Hyperschedule
-maintainers have been big fans of emacs, vim, and WebStorm, respectively), you can still set up most of the stack with
-Docker compose. Run `yarn install` at project root, and then run `yarn docker`. Similar to dev containers, you should
-also run `yarn docker-load-db` to load the test data.
+Run `yarn docker` to start the stack. 
 
 ## Git hooks
 
