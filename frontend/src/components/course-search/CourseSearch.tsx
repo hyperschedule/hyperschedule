@@ -13,7 +13,10 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { memo, useCallback } from "react";
-import { useActiveSectionsLookup, useActiveSectionsQuery } from "@hooks/section";
+import {
+    useActiveSectionsLookup,
+    useActiveSectionsQuery,
+} from "@hooks/section";
 import { useActiveSchedule } from "@hooks/schedule";
 import { sectionsConflict } from "@lib/schedule";
 
@@ -22,7 +25,9 @@ export default memo(function CourseSearch() {
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
-    const showOnlyNonConflicting = useStore((store) => store.showOnlyNonConflicting);
+    const showOnlyNonConflicting = useStore(
+        (store) => store.showOnlyNonConflicting,
+    );
     const activeSchedule = useActiveSchedule();
     const sectionsLookup = useActiveSectionsLookup();
     const selectedSections: APIv4.Section[] = activeSchedule?.sections
@@ -32,16 +37,20 @@ export default memo(function CourseSearch() {
         )
         .filter((s) => s !== undefined) as APIv4.Section[];
 
-    function getNonConflictingSections(selectedSections: APIv4.Section[] | undefined,
-        sections: APIv4.Section[] | undefined
+    function getNonConflictingSections(
+        selectedSections: APIv4.Section[] | undefined,
+        sections: APIv4.Section[] | undefined,
     ): APIv4.Section[] | undefined {
         if (!sections) {
             return undefined;
         } else if (!selectedSections) {
             return sections;
         } else {
-            return sections.filter(section => {
-                return selectedSections.some(selectedSection => !sectionsConflict(selectedSection, section));
+            return sections.filter((section) => {
+                return selectedSections.some(
+                    (selectedSection) =>
+                        !sectionsConflict(selectedSection, section),
+                );
             });
         }
     }

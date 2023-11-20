@@ -66,8 +66,12 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
 export default memo(function Filter() {
     const setPopup = useStore((store) => store.setPopup);
     const addFilter = useStore((store) => store.addSearchFilter);
-    const showOnlyNonConflicting = useStore((store) => store.showOnlyNonConflicting);
-    const setShowOnlyNonConflicting = useStore((store) => store.setShowOnlyNonConflicting);
+    const showOnlyNonConflicting = useStore(
+        (store) => store.showOnlyNonConflicting,
+    );
+    const setShowOnlyNonConflicting = useStore(
+        (store) => store.setShowOnlyNonConflicting,
+    );
 
     return (
         <div>
