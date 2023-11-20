@@ -132,7 +132,8 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
             set({ scheduleRenderingOptions: options }),
 
         showOnlyNonConflicting: false,
-        setShowOnlyNonConflicting: (showOnlyNonConflicting) => set({ showOnlyNonConflicting }),
+        setShowOnlyNonConflicting: (showOnlyNonConflicting) =>
+            set({ showOnlyNonConflicting }),
     };
 };
 
