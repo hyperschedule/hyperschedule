@@ -66,21 +66,21 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
 export default memo(function Filter() {
     const setPopup = useStore((store) => store.setPopup);
     const addFilter = useStore((store) => store.addSearchFilter);
-    const showOnlyNonConflicting = useStore(
-        (store) => store.showOnlyNonConflicting,
+    const hideConflictingSections = useStore(
+        (store) => store.hideConflictingSections,
     );
-    const setShowOnlyNonConflicting = useStore(
-        (store) => store.setShowOnlyNonConflicting,
+    const setHideConflictingSections = useStore(
+        (store) => store.setHideConflictingSections,
     );
 
     return (
         <div>
             <div>
                 <Slider
-                    value={showOnlyNonConflicting}
+                    value={hideConflictingSections}
                     text="Hide sections conflicting with schedule"
                     onToggle={() => {
-                        setShowOnlyNonConflicting(!showOnlyNonConflicting);
+                        setHideConflictingSections(!hideConflictingSections);
                     }}
                 />
             </div>

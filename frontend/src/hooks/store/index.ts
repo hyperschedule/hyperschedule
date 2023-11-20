@@ -20,7 +20,7 @@ export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
     searchFilters: StoreFilter[];
-    showOnlyNonConflicting: boolean;
+    hideConflictingSections: boolean;
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
 
@@ -131,9 +131,9 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         setScheduleRenderingOptions: (options) =>
             set({ scheduleRenderingOptions: options }),
 
-        showOnlyNonConflicting: false,
-        setShowOnlyNonConflicting: (showOnlyNonConflicting) =>
-            set({ showOnlyNonConflicting }),
+        hideConflictingSections: false,
+        setHideConflictingSections: (hideConflictingSections) =>
+            set({ hideConflictingSections: hideConflictingSections }),
     };
 };
 

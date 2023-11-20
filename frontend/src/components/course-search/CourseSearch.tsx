@@ -25,8 +25,8 @@ export default memo(function CourseSearch() {
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
-    const showOnlyNonConflicting = useStore(
-        (store) => store.showOnlyNonConflicting,
+    const hideConflictingSections = useStore(
+        (store) => store.hideConflictingSections,
     );
     const activeSchedule = useActiveSchedule();
     const sectionsLookup = useActiveSectionsLookup();
@@ -65,7 +65,8 @@ export default memo(function CourseSearch() {
     }, [searchFilters, sections]);
 
     const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
-        if (searchText === "") return filteredSections;
+        if (searchText === "" && !hideConflictingSections)
+            return filteredSections;
         if (filteredSections === undefined) return undefined;
 
         let res: [number, APIv4.Section][] = [];
@@ -79,7 +80,7 @@ export default memo(function CourseSearch() {
         const sorted = res.sort((a, b) => b[0] - a[0]);
         const sortedSections = sorted.map((a) => a[1]);
 
-        return showOnlyNonConflicting
+        return hideConflictingSections
             ? getNonConflictingSections(selectedSections, sortedSections)
             : sortedSections;
     }, [
@@ -87,7 +88,7 @@ export default memo(function CourseSearch() {
         searchText,
         searchFilters,
         selectedSections,
-        showOnlyNonConflicting,
+        hideConflictingSections,
     ]);
 
     return (
