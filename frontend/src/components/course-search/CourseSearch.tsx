@@ -13,13 +13,38 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { memo, useCallback } from "react";
-import { useActiveSectionsQuery } from "@hooks/section";
+import { useActiveSectionsLookup, useActiveSectionsQuery } from "@hooks/section";
+import { useActiveSchedule } from "@hooks/schedule";
+import { sectionsConflict } from "@lib/schedule";
 
 export default memo(function CourseSearch() {
     const sections: APIv4.Section[] | undefined = useActiveSectionsQuery();
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
+    const showOnlyNonConflicting = useStore((store) => store.showOnlyNonConflicting);
+    const activeSchedule = useActiveSchedule();
+    const sectionsLookup = useActiveSectionsLookup();
+    const selectedSections: APIv4.Section[] = activeSchedule?.sections
+        .filter((us) => us.attrs.selected)
+        .map((us) =>
+            sectionsLookup.get(APIv4.stringifySectionCodeLong(us.section)),
+        )
+        .filter((s) => s !== undefined) as APIv4.Section[];
+
+    function getNonConflictingSections(selectedSections: APIv4.Section[] | undefined,
+        sections: APIv4.Section[] | undefined
+    ): APIv4.Section[] | undefined {
+        if (!sections) {
+            return undefined;
+        } else if (!selectedSections) {
+            return sections;
+        } else {
+            return sections.filter(section => {
+                return selectedSections.some(selectedSection => !sectionsConflict(selectedSection, section));
+            });
+        }
+    }
 
     const filteredSections: APIv4.Section[] | undefined = React.useMemo(() => {
         if (sections === undefined) return undefined;
@@ -47,8 +72,12 @@ export default memo(function CourseSearch() {
             }
         }
         const sorted = res.sort((a, b) => b[0] - a[0]);
-        return sorted.map((a) => a[1]);
-    }, [sections, searchText, searchFilters]);
+        const sortedSections = sorted.map((a) => a[1]);
+
+        return showOnlyNonConflicting
+            ? getNonConflictingSections(selectedSections, sortedSections)
+            : sortedSections;
+    }, [sections, searchText, searchFilters, showOnlyNonConflicting]);
 
     return (
         <div className={Css.container}>

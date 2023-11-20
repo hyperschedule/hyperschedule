@@ -5,6 +5,7 @@ import * as Search from "@lib/search";
 import useStore from "@hooks/store";
 import { memo, Fragment } from "react";
 import classNames from "classnames";
+import Slider from "@components/common/Slider";
 
 type FilterSpec = {
     name: string;
@@ -65,9 +66,21 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
 export default memo(function Filter() {
     const setPopup = useStore((store) => store.setPopup);
     const addFilter = useStore((store) => store.addSearchFilter);
+    const showOnlyNonConflicting = useStore((store) => store.showOnlyNonConflicting);
+    const setShowOnlyNonConflicting = useStore((store) => store.setShowOnlyNonConflicting);
 
     return (
         <div>
+            <div>
+                <Slider
+                    value={showOnlyNonConflicting}
+                    text="show only non-conflicting sections"
+                    onToggle={() => {
+                        setShowOnlyNonConflicting(!showOnlyNonConflicting);
+                    }}
+                />
+            </div>
+
             <h2 className={Css.title}> Filters </h2>
             <div>
                 All filters are case-insensitive. When multiple filters are
