@@ -78,7 +78,7 @@ export default memo(function Filter() {
             <div>
                 <Slider
                     value={showOnlyNonConflicting}
-                    text="show only non-conflicting sections"
+                    text="Hide sections conflicting with schedule"
                     onToggle={() => {
                         setShowOnlyNonConflicting(!showOnlyNonConflicting);
                     }}

@@ -38,21 +38,17 @@ export default memo(function CourseSearch() {
         .filter((s) => s !== undefined) as APIv4.Section[];
 
     function getNonConflictingSections(
-        selectedSections: APIv4.Section[] | undefined,
-        sections: APIv4.Section[] | undefined,
-    ): APIv4.Section[] | undefined {
-        if (!sections) {
-            return undefined;
-        } else if (!selectedSections) {
-            return sections;
-        } else {
-            return sections.filter((section) => {
-                return selectedSections.some(
-                    (selectedSection) =>
-                        !sectionsConflict(selectedSection, section),
-                );
-            });
-        }
+        selectedSections: APIv4.Section[],
+        sections: APIv4.Section[],
+    ): APIv4.Section[] {
+        return sections.filter((section) => {
+            for (let selectedSection of selectedSections) {
+                if (sectionsConflict(selectedSection, section)) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 
     const filteredSections: APIv4.Section[] | undefined = React.useMemo(() => {
@@ -86,7 +82,13 @@ export default memo(function CourseSearch() {
         return showOnlyNonConflicting
             ? getNonConflictingSections(selectedSections, sortedSections)
             : sortedSections;
-    }, [sections, searchText, searchFilters, showOnlyNonConflicting]);
+    }, [
+        sections,
+        searchText,
+        searchFilters,
+        selectedSections,
+        showOnlyNonConflicting,
+    ]);
 
     return (
         <div className={Css.container}>
