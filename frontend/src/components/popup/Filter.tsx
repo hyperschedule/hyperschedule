@@ -75,6 +75,8 @@ export default memo(function Filter() {
 
     return (
         <div>
+            <h2 className={Css.title}> Filters </h2>
+
             <div>
                 <Slider
                     value={hideConflictingSections}
@@ -85,12 +87,6 @@ export default memo(function Filter() {
                 />
             </div>
 
-            <h2 className={Css.title}> Filters </h2>
-            <div>
-                All filters are case-insensitive. When multiple filters are
-                specified, only courses matching all the criteria will be shown
-                (logical AND).
-            </div>
             <div className={Css.filterTable}>
                 <span className={Css.tableHeader}>Filter for</span>
                 <span className={Css.tableHeader}>Type into search box</span>
@@ -142,6 +138,12 @@ export default memo(function Filter() {
                         </Fragment>
                     );
                 })}
+            </div>
+
+            <div>
+                All filters are case-insensitive. When multiple filters are
+                specified, only courses matching all the criteria will be shown
+                (logical AND).
             </div>
         </div>
     );
