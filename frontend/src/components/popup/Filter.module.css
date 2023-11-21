@@ -1,9 +1,10 @@
 .title {
-    margin: 0;
+    margin: 0 0 0.25em 0;
 }
 
 .filterTable {
-    margin-top: 1.5em;
+    margin-top: 1.25em;
+    margin-bottom: 1.5em;
     display: grid;
     grid-template-columns: 1fr 1fr 2fr;
     grid-row-gap: 1em;

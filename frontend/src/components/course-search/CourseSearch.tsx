@@ -42,9 +42,15 @@ export default memo(function CourseSearch() {
         sections: APIv4.Section[],
     ): APIv4.Section[] {
         return sections.filter((section) => {
-            for (let selectedSection of selectedSections) {
-                if (sectionsConflict(selectedSection, section)) {
-                    return false;
+            for (const selectedSection of selectedSections) {
+                // decide to have sections of the same course be non-conflicting with its own section
+                if (
+                    section.identifier.courseNumber ===
+                    selectedSection.identifier.courseNumber
+                ) {
+                    return true;
+                } else {
+                    return !sectionsConflict(selectedSection, section);
                 }
             }
             return true;
