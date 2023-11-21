@@ -45,12 +45,16 @@ export default memo(function CourseSearch() {
             for (const selectedSection of selectedSections) {
                 // decide to have sections of the same course be non-conflicting with its own section
                 if (
+                    section.identifier.affiliation ===
+                        selectedSection.identifier.affiliation &&
                     section.identifier.courseNumber ===
-                    selectedSection.identifier.courseNumber
+                        selectedSection.identifier.courseNumber &&
+                    section.identifier.department ===
+                        selectedSection.identifier.department
                 ) {
                     return true;
-                } else {
-                    return !sectionsConflict(selectedSection, section);
+                } else if (sectionsConflict(selectedSection, section)) {
+                    return false;
                 }
             }
             return true;
