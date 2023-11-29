@@ -20,7 +20,10 @@ export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
     searchFilters: StoreFilter[];
+
+    //TODO: have an option for this!
     hideConflictingSections: boolean;
+
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
 
