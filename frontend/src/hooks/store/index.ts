@@ -20,13 +20,10 @@ export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
     searchFilters: StoreFilter[];
-
-    //TODO: have an option for this!
     hideConflictingSectionsOptions: {
         selected: boolean;
         alsoHideSectionsOfSelectedCourse: boolean;
     };
-
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
 

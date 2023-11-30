@@ -28,6 +28,14 @@
         }
     }
 
+    & .filters {
+        @mixin two-column-grid;
+
+        & .title {
+            grid-column: 1 / -1;
+        }
+    }
+
     & .dataViewer {
         a,
         a:visited {
