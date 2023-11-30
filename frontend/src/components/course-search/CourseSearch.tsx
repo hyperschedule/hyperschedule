@@ -25,8 +25,8 @@ export default memo(function CourseSearch() {
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
-    const hideConflictingSections = useStore(
-        (store) => store.hideConflictingSections,
+    const hideConflictingSectionsOptions = useStore(
+        (store) => store.hideConflictingSectionsOptions,
     );
 
     const activeSchedule = useActiveSchedule();
@@ -38,49 +38,45 @@ export default memo(function CourseSearch() {
         )
         .filter((s) => s !== undefined) as APIv4.Section[];
 
-    function removeConflictingSectionsOfNonSelectedCourses(
-        sections: APIv4.Section[],
-        selectedSections: APIv4.Section[],
-    ): APIv4.Section[] {
-        return sections.filter((section) => {
-            /* @desc    Check if the section belongs to one of the selected COURSES first
-             *          in case the user intentionally added this section even though
-             *          it conflicts with other selected sections
-             */
-            for (const selectedSection of selectedSections) {
-                if (
-                    section.identifier.affiliation ===
-                        selectedSection.identifier.affiliation &&
-                    section.identifier.courseNumber ===
-                        selectedSection.identifier.courseNumber &&
-                    section.identifier.department ===
-                        selectedSection.identifier.department
-                ) {
-                    return true;
-                }
-            }
-            for (const selectedSection of selectedSections) {
-                if (sectionsConflict(section, selectedSection)) {
-                    return false;
-                }
-            }
-            return true;
-        });
-    }
-
     function removeConflictingSections(
         sections: APIv4.Section[],
         selectedSections: APIv4.Section[],
+        hideConflictingSectionsOptions: {
+            selected: boolean;
+            alsoHideSectionsOfSelectedCourse: boolean;
+        },
     ): APIv4.Section[] {
+        const alsoHideSectionsOfSelectedCourse =
+            hideConflictingSectionsOptions.alsoHideSectionsOfSelectedCourse;
+
         return sections.filter((section) => {
-            /* @desc    Check if the section is one of the selected SECTIONS first
-             *          in case the user intentionally added this section even though
-             *          it conflicts with other selected sections
-             */
-            for (const selectedSection of selectedSections) {
-                // a particular section is non-conflicting with itself
-                if (section.identifier === selectedSection.identifier) {
-                    return true;
+            if (alsoHideSectionsOfSelectedCourse) {
+                /* @desc    Check if the section is one of the selected SECTIONS first
+                 *          in case the user intentionally added this section even though
+                 *          it conflicts with other selected sections
+                 */
+                for (const selectedSection of selectedSections) {
+                    // a particular section is non-conflicting with itself
+                    if (section.identifier === selectedSection.identifier) {
+                        return true;
+                    }
+                }
+            } else {
+                /* @desc    Check if the section belongs to one of the selected COURSES first
+                 *          in case the user intentionally added this section even though
+                 *          it conflicts with other selected sections
+                 */
+                for (const selectedSection of selectedSections) {
+                    if (
+                        section.identifier.affiliation ===
+                            selectedSection.identifier.affiliation &&
+                        section.identifier.courseNumber ===
+                            selectedSection.identifier.courseNumber &&
+                        section.identifier.department ===
+                            selectedSection.identifier.department
+                    ) {
+                        return true;
+                    }
                 }
             }
             for (const selectedSection of selectedSections) {
@@ -106,7 +102,7 @@ export default memo(function CourseSearch() {
     }, [searchFilters, sections]);
 
     const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
-        if (searchText === "" && !hideConflictingSections)
+        if (searchText === "" && !hideConflictingSectionsOptions.selected)
             return filteredSections;
         if (filteredSections === undefined) return undefined;
 
@@ -120,15 +116,19 @@ export default memo(function CourseSearch() {
         const sorted = res.sort((a, b) => b[0] - a[0]);
         const sortedSections = sorted.map((a) => a[1]);
 
-        return hideConflictingSections
-            ? removeConflictingSections(sortedSections, selectedSections)
+        return hideConflictingSectionsOptions.selected
+            ? removeConflictingSections(
+                  sortedSections,
+                  selectedSections,
+                  hideConflictingSectionsOptions,
+              )
             : sortedSections;
     }, [
         sections,
         searchText,
         searchFilters,
         selectedSections,
-        hideConflictingSections,
+        hideConflictingSectionsOptions,
     ]);
 
     return (
