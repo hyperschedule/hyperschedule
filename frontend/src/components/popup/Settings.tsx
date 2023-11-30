@@ -21,6 +21,7 @@ export const Settings = memo(function Settings() {
         <div className={Css.settings}>
             <h2 className={Css.title}>Settings</h2>
             <AppearanceSettings />
+            <FilterSettings />
             <AccountSettings />
             <DataViewer />
             <ReportIssues />
@@ -183,6 +184,34 @@ const AppearanceSettings = memo(function AppearanceSettings() {
                     })
                 }
                 text=""
+            />
+        </div>
+    );
+});
+
+const FilterSettings = memo(function FilterSettings() {
+    const hideConflictingSectionsOptions = useStore(
+        (store) => store.hideConflictingSectionsOptions,
+    );
+    const setHideConflictingSectionsOptions = useStore(
+        (store) => store.setHideConflictingSectionsOptions,
+    );
+
+    return (
+        <div className={Css.filters}>
+            <h3 className={Css.title}>Filters</h3>
+            <Slider
+                value={
+                    hideConflictingSectionsOptions.alsoHideSectionsOfSelectedCourse
+                }
+                onToggle={() => {
+                    setHideConflictingSectionsOptions({
+                        ...hideConflictingSectionsOptions,
+                        alsoHideSectionsOfSelectedCourse:
+                            !hideConflictingSectionsOptions.alsoHideSectionsOfSelectedCourse,
+                    });
+                }}
+                text="Also hide other sections of the selected course when hiding the conflicting sections"
             />
         </div>
     );
