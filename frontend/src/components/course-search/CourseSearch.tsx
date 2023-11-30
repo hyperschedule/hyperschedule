@@ -5,7 +5,7 @@ import { useMeasure } from "@react-hookz/web";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useCourseAreaDescription } from "@hooks/api/query";
-import useStore from "@hooks/store";
+import useStore, { type HideConflictingSectionsOptions } from "@hooks/store";
 import * as Search from "@lib/search";
 
 import SearchControls from "@components/course-search/SearchControls";
@@ -38,54 +38,55 @@ export default memo(function CourseSearch() {
         )
         .filter((s) => s !== undefined) as APIv4.Section[];
 
-    function removeConflictingSections(
+    function getNonConflictingSections(
         sections: APIv4.Section[],
         selectedSections: APIv4.Section[],
-        hideConflictingSectionsOptions: {
-            selected: boolean;
-            alsoHideSectionsOfSelectedCourse: boolean;
-        },
+        hideConflictingSectionsOptions: HideConflictingSectionsOptions,
     ): APIv4.Section[] {
-        const alsoHideSectionsOfSelectedCourse =
-            hideConflictingSectionsOptions.alsoHideSectionsOfSelectedCourse;
+        const { selected, alsoHideSectionsOfSelectedCourse } =
+            hideConflictingSectionsOptions;
 
-        return sections.filter((section) => {
-            if (alsoHideSectionsOfSelectedCourse) {
-                /* @desc    Check if the section is one of the selected SECTIONS first
-                 *          in case the user intentionally added this section even though
-                 *          it conflicts with other selected sections
-                 */
-                for (const selectedSection of selectedSections) {
-                    // a particular section is non-conflicting with itself
-                    if (section.identifier === selectedSection.identifier) {
-                        return true;
+        if (!selected) {
+            return sections;
+        } else {
+            return sections.filter((section) => {
+                if (alsoHideSectionsOfSelectedCourse) {
+                    /* @desc    Check if the section is one of the selected SECTIONS first
+                     *          in case the user intentionally added this section even though
+                     *          it conflicts with other selected sections
+                     */
+                    for (const selectedSection of selectedSections) {
+                        // a particular section is non-conflicting with itself
+                        if (section.identifier === selectedSection.identifier) {
+                            return true;
+                        }
+                    }
+                } else {
+                    /* @desc    Check if the section belongs to one of the selected COURSES first
+                     *          in case the user intentionally added this section even though
+                     *          it conflicts with other selected sections
+                     */
+                    for (const selectedSection of selectedSections) {
+                        if (
+                            section.identifier.affiliation ===
+                                selectedSection.identifier.affiliation &&
+                            section.identifier.courseNumber ===
+                                selectedSection.identifier.courseNumber &&
+                            section.identifier.department ===
+                                selectedSection.identifier.department
+                        ) {
+                            return true;
+                        }
                     }
                 }
-            } else {
-                /* @desc    Check if the section belongs to one of the selected COURSES first
-                 *          in case the user intentionally added this section even though
-                 *          it conflicts with other selected sections
-                 */
                 for (const selectedSection of selectedSections) {
-                    if (
-                        section.identifier.affiliation ===
-                            selectedSection.identifier.affiliation &&
-                        section.identifier.courseNumber ===
-                            selectedSection.identifier.courseNumber &&
-                        section.identifier.department ===
-                            selectedSection.identifier.department
-                    ) {
-                        return true;
+                    if (sectionsConflict(section, selectedSection)) {
+                        return false;
                     }
                 }
-            }
-            for (const selectedSection of selectedSections) {
-                if (sectionsConflict(section, selectedSection)) {
-                    return false;
-                }
-            }
-            return true;
-        });
+                return true;
+            });
+        }
     }
 
     const filteredSections: APIv4.Section[] | undefined = React.useMemo(() => {
@@ -116,13 +117,11 @@ export default memo(function CourseSearch() {
         const sorted = res.sort((a, b) => b[0] - a[0]);
         const sortedSections = sorted.map((a) => a[1]);
 
-        return hideConflictingSectionsOptions.selected
-            ? removeConflictingSections(
-                  sortedSections,
-                  selectedSections,
-                  hideConflictingSectionsOptions,
-              )
-            : sortedSections;
+        return getNonConflictingSections(
+            sortedSections,
+            selectedSections,
+            hideConflictingSectionsOptions,
+        );
     }, [
         sections,
         searchText,
