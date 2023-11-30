@@ -22,7 +22,10 @@ export type Store = WithSetters<{
     searchFilters: StoreFilter[];
 
     //TODO: have an option for this!
-    hideConflictingSections: boolean;
+    hideConflictingSectionsOptions: {
+        selected: boolean;
+        alsoHideSectionsOfSelectedCourse: boolean;
+    };
 
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
@@ -134,9 +137,12 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         setScheduleRenderingOptions: (options) =>
             set({ scheduleRenderingOptions: options }),
 
-        hideConflictingSections: false,
-        setHideConflictingSections: (hideConflictingSections) =>
-            set({ hideConflictingSections: hideConflictingSections }),
+        hideConflictingSectionsOptions: {
+            selected: false,
+            alsoHideSectionsOfSelectedCourse: false,
+        },
+        setHideConflictingSectionsOptions: (options) =>
+            set({ hideConflictingSectionsOptions: options }),
     };
 };
 
