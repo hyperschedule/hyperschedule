@@ -20,10 +20,7 @@ export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
     searchFilters: StoreFilter[];
-    hideConflictingSectionsOptions: {
-        selected: boolean;
-        alsoHideSectionsOfSelectedCourse: boolean;
-    };
+    hideConflictingSectionsOptions: HideConflictingSectionsOptions;
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
 
@@ -59,6 +56,11 @@ export type AppearanceOptions = {
     disableTransparency: boolean;
     disableRoundedCorners: boolean;
     disableAnimations: boolean;
+};
+
+export type HideConflictingSectionsOptions = {
+    selected: boolean;
+    alsoHideSectionsOfSelectedCourse: boolean;
 };
 
 const initStore: Zustand.StateCreator<Store> = (set, get) => {
