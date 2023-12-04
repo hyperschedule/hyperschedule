@@ -21,7 +21,7 @@ export const Settings = memo(function Settings() {
         <div className={Css.settings}>
             <h2 className={Css.title}>Settings</h2>
             <AppearanceSettings />
-            <FilterSettings />
+            <SectionConflictSettings />
             <AccountSettings />
             <DataViewer />
             <ReportIssues />
@@ -189,7 +189,7 @@ const AppearanceSettings = memo(function AppearanceSettings() {
     );
 });
 
-const FilterSettings = memo(function FilterSettings() {
+const SectionConflictSettings = memo(function SectionConflictSettings() {
     const conflictingSectionsOptions = useStore(
         (store) => store.conflictingSectionsOptions,
     );
@@ -198,8 +198,9 @@ const FilterSettings = memo(function FilterSettings() {
     );
 
     return (
-        <div className={Css.filters}>
-            <h3 className={Css.title}>Conflicting Sections</h3>
+        <div className={Css.sectionConflict}>
+            <h3 className={Css.title}>Section Conflict</h3>
+            <span>Skip checking sections of selected courses</span>
             <Slider
                 value={conflictingSectionsOptions.skipSectionsOfSelectedCourse}
                 onToggle={() => {
@@ -209,7 +210,19 @@ const FilterSettings = memo(function FilterSettings() {
                             !conflictingSectionsOptions.skipSectionsOfSelectedCourse,
                     });
                 }}
-                text="Skip checking sections of selected courses"
+                text=""
+            />
+            <span>Also hide asynchronous sections</span>
+            <Slider
+                value={conflictingSectionsOptions.hideAsyncSections}
+                onToggle={() => {
+                    setConflictingSectionsOptions({
+                        ...conflictingSectionsOptions,
+                        hideAsyncSections:
+                            !conflictingSectionsOptions.hideAsyncSections,
+                    });
+                }}
+                text=""
             />
         </div>
     );
