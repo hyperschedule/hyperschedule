@@ -43,34 +43,39 @@ export default memo(function CourseSearch() {
         selectedSections: APIv4.Section[],
         conflictingSectionsOptions: ConflictingSectionsOptions,
     ): APIv4.Section[] {
-        const { hidden, skipSectionsOfSelectedCourse } =
+        const { hidden, skipSectionsOfSelectedCourse, hideAsyncSections } =
             conflictingSectionsOptions;
 
         if (!hidden) {
             return sections;
         } else {
             return sections.filter((section) => {
-                if (!skipSectionsOfSelectedCourse) {
-                    /* @desc    Check if the section is one of the selected SECTIONS first
-                     *          in case the user intentionally added this section even though
-                     *          it conflicts with other selected sections (Default)
-                     */
-                    for (const selectedSection of selectedSections) {
-                        // a particular section is non-conflicting with itself
-                        if (
-                            Object.is(
-                                section.identifier,
-                                selectedSection.identifier,
-                            )
-                        ) {
-                            return true;
+                /* @desc    Check if the section belongs to one of the selected COURSES first
+                 *          in case the user intentionally added this section even though
+                 *          it conflicts with other selected sections
+                 */
+                for (const selectedSection of selectedSections) {
+                    // a particular section is non-conflicting with itself
+                    if (
+                        Object.is(
+                            section.identifier,
+                            selectedSection.identifier,
+                        )
+                    ) {
+                        return true;
+                    }
+                }
+
+                if (hideAsyncSections) {
+                    // An asynchronous section has an empty array of scheduled days
+                    for (const schedule of section.schedules) {
+                        if (schedule.days.length === 0) {
+                            return false;
                         }
                     }
-                } else {
-                    /* @desc    Check if the section belongs to one of the selected COURSES first
-                     *          in case the user intentionally added this section even though
-                     *          it conflicts with other selected sections
-                     */
+                }
+
+                if (skipSectionsOfSelectedCourse) {
                     for (const selectedSection of selectedSections) {
                         if (
                             APIv4.compareCourseCode(
@@ -82,6 +87,7 @@ export default memo(function CourseSearch() {
                         }
                     }
                 }
+
                 for (const selectedSection of selectedSections) {
                     if (sectionsConflict(section, selectedSection)) {
                         return false;

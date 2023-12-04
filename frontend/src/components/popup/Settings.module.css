@@ -28,7 +28,7 @@
         }
     }
 
-    & .filters {
+    & .sectionConflict {
         @mixin two-column-grid;
 
         & .title {

@@ -61,6 +61,7 @@ export type AppearanceOptions = {
 export type ConflictingSectionsOptions = {
     hidden: boolean;
     skipSectionsOfSelectedCourse: boolean;
+    hideAsyncSections: boolean;
 };
 
 const initStore: Zustand.StateCreator<Store> = (set, get) => {
@@ -136,9 +137,12 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         setScheduleRenderingOptions: (options) =>
             set({ scheduleRenderingOptions: options }),
 
+        // TODO: add hide async classes
+        // checking for async -> start-time == end-time || no day (empty array)
         conflictingSectionsOptions: {
             hidden: false,
-            skipSectionsOfSelectedCourse: true,
+            skipSectionsOfSelectedCourse: false,
+            hideAsyncSections: false,
         },
         setConflictingSectionsOptions: (options) =>
             set({ conflictingSectionsOptions: options }),
