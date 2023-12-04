@@ -25,6 +25,9 @@ export default memo(function CourseSearch() {
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
+    const hideConflictingSections = useStore(
+        (store) => store.hideConflictingSections,
+    );
     const conflictingSectionsOptions = useStore(
         (store) => store.conflictingSectionsOptions,
     );
@@ -43,21 +46,39 @@ export default memo(function CourseSearch() {
         selectedSections: APIv4.Section[],
         conflictingSectionsOptions: ConflictingSectionsOptions,
     ): APIv4.Section[] {
-        const { hidden, skipSectionsOfSelectedCourse, hideAsyncSections } =
+        const { skipSectionsOfSelectedCourse, hideAsyncSections } =
             conflictingSectionsOptions;
 
-        if (!hidden) {
-            return sections;
-        } else {
-            return sections.filter((section) => {
-                /* @desc    Check if the section belongs to one of the selected COURSES first
-                 *          in case the user intentionally added this section even though
-                 *          it conflicts with other selected sections
+        return sections.filter((section) => {
+            /* @desc    Check if the section belongs to one of the selected COURSES first
+             *          in case the user intentionally added this section even though
+             *          it conflicts with other selected sections
+             */
+            for (const selectedSection of selectedSections) {
+                // a particular section is non-conflicting with itself
+                if (Object.is(section.identifier, selectedSection.identifier)) {
+                    return true;
+                }
+            }
+
+            if (hideAsyncSections) {
+                /* @desc    An asynchronous section has an empty array of scheduled days
+                 *          or the same startTime and endTime
                  */
-                for (const selectedSection of selectedSections) {
-                    // a particular section is non-conflicting with itself
+                for (const schedule of section.schedules) {
                     if (
-                        Object.is(
+                        schedule.days.length === 0 ||
+                        schedule.startTime === schedule.endTime
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            if (skipSectionsOfSelectedCourse) {
+                for (const selectedSection of selectedSections) {
+                    if (
+                        APIv4.compareCourseCode(
                             section.identifier,
                             selectedSection.identifier,
                         )
@@ -65,37 +86,15 @@ export default memo(function CourseSearch() {
                         return true;
                     }
                 }
+            }
 
-                if (hideAsyncSections) {
-                    // An asynchronous section has an empty array of scheduled days
-                    for (const schedule of section.schedules) {
-                        if (schedule.days.length === 0) {
-                            return false;
-                        }
-                    }
+            for (const selectedSection of selectedSections) {
+                if (sectionsConflict(section, selectedSection)) {
+                    return false;
                 }
-
-                if (skipSectionsOfSelectedCourse) {
-                    for (const selectedSection of selectedSections) {
-                        if (
-                            APIv4.compareCourseCode(
-                                section.identifier,
-                                selectedSection.identifier,
-                            )
-                        ) {
-                            return true;
-                        }
-                    }
-                }
-
-                for (const selectedSection of selectedSections) {
-                    if (sectionsConflict(section, selectedSection)) {
-                        return false;
-                    }
-                }
-                return true;
-            });
-        }
+            }
+            return true;
+        });
     }
 
     const filteredSections: APIv4.Section[] | undefined = React.useMemo(() => {
@@ -112,7 +111,7 @@ export default memo(function CourseSearch() {
     }, [searchFilters, sections]);
 
     const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
-        if (searchText === "" && !conflictingSectionsOptions.hidden)
+        if (searchText === "" && !hideConflictingSections)
             return filteredSections;
         if (filteredSections === undefined) return undefined;
 
@@ -126,16 +125,19 @@ export default memo(function CourseSearch() {
         const sorted = res.sort((a, b) => b[0] - a[0]);
         const sortedSections = sorted.map((a) => a[1]);
 
-        return getNonConflictingSections(
-            sortedSections,
-            selectedSections,
-            conflictingSectionsOptions,
-        );
+        return hideConflictingSections
+            ? getNonConflictingSections(
+                  sortedSections,
+                  selectedSections,
+                  conflictingSectionsOptions,
+              )
+            : sortedSections;
     }, [
         sections,
         searchText,
         searchFilters,
         selectedSections,
+        hideConflictingSections,
         conflictingSectionsOptions,
     ]);
 
