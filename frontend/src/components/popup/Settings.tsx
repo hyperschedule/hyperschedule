@@ -190,28 +190,26 @@ const AppearanceSettings = memo(function AppearanceSettings() {
 });
 
 const FilterSettings = memo(function FilterSettings() {
-    const hideConflictingSectionsOptions = useStore(
-        (store) => store.hideConflictingSectionsOptions,
+    const conflictingSectionsOptions = useStore(
+        (store) => store.conflictingSectionsOptions,
     );
-    const setHideConflictingSectionsOptions = useStore(
-        (store) => store.setHideConflictingSectionsOptions,
+    const setConflictingSectionsOptions = useStore(
+        (store) => store.setConflictingSectionsOptions,
     );
 
     return (
         <div className={Css.filters}>
-            <h3 className={Css.title}>Filters</h3>
+            <h3 className={Css.title}>Conflicting Sections</h3>
             <Slider
-                value={
-                    hideConflictingSectionsOptions.alsoHideSectionsOfSelectedCourse
-                }
+                value={conflictingSectionsOptions.skipSectionsOfSelectedCourse}
                 onToggle={() => {
-                    setHideConflictingSectionsOptions({
-                        ...hideConflictingSectionsOptions,
-                        alsoHideSectionsOfSelectedCourse:
-                            !hideConflictingSectionsOptions.alsoHideSectionsOfSelectedCourse,
+                    setConflictingSectionsOptions({
+                        ...conflictingSectionsOptions,
+                        skipSectionsOfSelectedCourse:
+                            !conflictingSectionsOptions.skipSectionsOfSelectedCourse,
                     });
                 }}
-                text="Also hide other sections of the selected course when hiding the conflicting sections"
+                text="Skip checking sections of selected courses"
             />
         </div>
     );

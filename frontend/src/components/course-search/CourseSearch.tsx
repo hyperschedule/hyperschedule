@@ -5,7 +5,7 @@ import { useMeasure } from "@react-hookz/web";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useCourseAreaDescription } from "@hooks/api/query";
-import useStore, { type HideConflictingSectionsOptions } from "@hooks/store";
+import useStore, { type ConflictingSectionsOptions } from "@hooks/store";
 import * as Search from "@lib/search";
 
 import SearchControls from "@components/course-search/SearchControls";
@@ -25,8 +25,8 @@ export default memo(function CourseSearch() {
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
-    const hideConflictingSectionsOptions = useStore(
-        (store) => store.hideConflictingSectionsOptions,
+    const conflictingSectionsOptions = useStore(
+        (store) => store.conflictingSectionsOptions,
     );
 
     const activeSchedule = useActiveSchedule();
@@ -41,23 +41,28 @@ export default memo(function CourseSearch() {
     function getNonConflictingSections(
         sections: APIv4.Section[],
         selectedSections: APIv4.Section[],
-        hideConflictingSectionsOptions: HideConflictingSectionsOptions,
+        conflictingSectionsOptions: ConflictingSectionsOptions,
     ): APIv4.Section[] {
-        const { selected, alsoHideSectionsOfSelectedCourse } =
-            hideConflictingSectionsOptions;
+        const { hidden, skipSectionsOfSelectedCourse } =
+            conflictingSectionsOptions;
 
-        if (!selected) {
+        if (!hidden) {
             return sections;
         } else {
             return sections.filter((section) => {
-                if (alsoHideSectionsOfSelectedCourse) {
+                if (!skipSectionsOfSelectedCourse) {
                     /* @desc    Check if the section is one of the selected SECTIONS first
                      *          in case the user intentionally added this section even though
-                     *          it conflicts with other selected sections
+                     *          it conflicts with other selected sections (Default)
                      */
                     for (const selectedSection of selectedSections) {
                         // a particular section is non-conflicting with itself
-                        if (section.identifier === selectedSection.identifier) {
+                        if (
+                            Object.is(
+                                section.identifier,
+                                selectedSection.identifier,
+                            )
+                        ) {
                             return true;
                         }
                     }
@@ -68,12 +73,10 @@ export default memo(function CourseSearch() {
                      */
                     for (const selectedSection of selectedSections) {
                         if (
-                            section.identifier.affiliation ===
-                                selectedSection.identifier.affiliation &&
-                            section.identifier.courseNumber ===
-                                selectedSection.identifier.courseNumber &&
-                            section.identifier.department ===
-                                selectedSection.identifier.department
+                            APIv4.compareCourseCode(
+                                section.identifier,
+                                selectedSection.identifier,
+                            )
                         ) {
                             return true;
                         }
@@ -103,7 +106,7 @@ export default memo(function CourseSearch() {
     }, [searchFilters, sections]);
 
     const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
-        if (searchText === "" && !hideConflictingSectionsOptions.selected)
+        if (searchText === "" && !conflictingSectionsOptions.hidden)
             return filteredSections;
         if (filteredSections === undefined) return undefined;
 
@@ -120,14 +123,14 @@ export default memo(function CourseSearch() {
         return getNonConflictingSections(
             sortedSections,
             selectedSections,
-            hideConflictingSectionsOptions,
+            conflictingSectionsOptions,
         );
     }, [
         sections,
         searchText,
         searchFilters,
         selectedSections,
-        hideConflictingSectionsOptions,
+        conflictingSectionsOptions,
     ]);
 
     return (
