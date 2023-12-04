@@ -20,6 +20,7 @@ export type Store = WithSetters<{
     mainTab: MainTab;
     searchText: string;
     searchFilters: StoreFilter[];
+    hideConflictingSections: boolean;
     conflictingSectionsOptions: ConflictingSectionsOptions;
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
@@ -59,7 +60,6 @@ export type AppearanceOptions = {
 };
 
 export type ConflictingSectionsOptions = {
-    hidden: boolean;
     skipSectionsOfSelectedCourse: boolean;
     hideAsyncSections: boolean;
 };
@@ -137,10 +137,11 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         setScheduleRenderingOptions: (options) =>
             set({ scheduleRenderingOptions: options }),
 
-        // TODO: add hide async classes
-        // checking for async -> start-time == end-time || no day (empty array)
+        hideConflictingSections: false,
+        setHideConflictingSections: (hideConflictingSections) =>
+            set({ hideConflictingSections }),
+
         conflictingSectionsOptions: {
-            hidden: false,
             skipSectionsOfSelectedCourse: false,
             hideAsyncSections: false,
         },
@@ -158,6 +159,7 @@ const useStore = Zustand.create<Store>()(
                 "scheduleRenderingOptions",
                 "theme",
                 "appearanceOptions",
+                "conflictingSectionsOptions",
             ),
         }),
     ),
