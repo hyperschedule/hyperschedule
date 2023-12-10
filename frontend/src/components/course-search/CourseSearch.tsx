@@ -5,7 +5,12 @@ import { useMeasure } from "@react-hookz/web";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { useCourseAreaDescription } from "@hooks/api/query";
-import useStore, { type ConflictingSectionsOptions } from "@hooks/store";
+import useStore from "@hooks/store";
+import { useActiveSchedule } from "@hooks/schedule";
+import {
+    useActiveSectionsLookup,
+    useActiveSectionsQuery,
+} from "@hooks/section";
 import * as Search from "@lib/search";
 
 import SearchControls from "@components/course-search/SearchControls";
@@ -13,89 +18,30 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { memo, useCallback } from "react";
-import {
-    useActiveSectionsLookup,
-    useActiveSectionsQuery,
-} from "@hooks/section";
-import { useActiveSchedule } from "@hooks/schedule";
-import { sectionsConflict } from "@lib/schedule";
 
 export default memo(function CourseSearch() {
     const sections: APIv4.Section[] | undefined = useActiveSectionsQuery();
     const searchText = useStore((store) => store.searchText);
     const searchFilters = useStore((store) => store.searchFilters);
     const areas = useCourseAreaDescription().data;
+    const activeSchedule = useActiveSchedule();
+    const sectionsLookup = useActiveSectionsLookup();
+    const selectedSections = activeSchedule
+        ? (activeSchedule.sections
+              .filter((us) => us.attrs.selected)
+              .map((us) =>
+                  sectionsLookup.get(
+                      APIv4.stringifySectionCodeLong(us.section),
+                  ),
+              )
+              .filter((s) => s !== undefined) as APIv4.Section[])
+        : undefined;
     const hideConflictingSections = useStore(
         (store) => store.hideConflictingSections,
     );
     const conflictingSectionsOptions = useStore(
         (store) => store.conflictingSectionsOptions,
     );
-
-    const activeSchedule = useActiveSchedule();
-    const sectionsLookup = useActiveSectionsLookup();
-    const selectedSections: APIv4.Section[] = activeSchedule?.sections
-        .filter((us) => us.attrs.selected)
-        .map((us) =>
-            sectionsLookup.get(APIv4.stringifySectionCodeLong(us.section)),
-        )
-        .filter((s) => s !== undefined) as APIv4.Section[];
-
-    function getNonConflictingSections(
-        sections: APIv4.Section[],
-        selectedSections: APIv4.Section[],
-        conflictingSectionsOptions: ConflictingSectionsOptions,
-    ): APIv4.Section[] {
-        const { skipSectionsOfSelectedCourse, hideAsyncSections } =
-            conflictingSectionsOptions;
-
-        return sections.filter((section) => {
-            /* @desc    Check if the section belongs to one of the selected COURSES first
-             *          in case the user intentionally added this section even though
-             *          it conflicts with other selected sections
-             */
-            for (const selectedSection of selectedSections) {
-                // a particular section is non-conflicting with itself
-                if (Object.is(section.identifier, selectedSection.identifier)) {
-                    return true;
-                }
-            }
-
-            if (hideAsyncSections) {
-                /* @desc    An asynchronous section has an empty array of scheduled days
-                 *          or the same startTime and endTime
-                 */
-                for (const schedule of section.schedules) {
-                    if (
-                        schedule.days.length === 0 ||
-                        schedule.startTime === schedule.endTime
-                    ) {
-                        return false;
-                    }
-                }
-            }
-
-            if (skipSectionsOfSelectedCourse) {
-                for (const selectedSection of selectedSections) {
-                    if (
-                        APIv4.compareCourseCode(
-                            section.identifier,
-                            selectedSection.identifier,
-                        )
-                    ) {
-                        return true;
-                    }
-                }
-            }
-
-            for (const selectedSection of selectedSections) {
-                if (sectionsConflict(section, selectedSection)) {
-                    return false;
-                }
-            }
-            return true;
-        });
-    }
 
     const filteredSections: APIv4.Section[] | undefined = React.useMemo(() => {
         if (sections === undefined) return undefined;
@@ -126,7 +72,7 @@ export default memo(function CourseSearch() {
         const sortedSections = sorted.map((a) => a[1]);
 
         return hideConflictingSections
-            ? getNonConflictingSections(
+            ? Search.getNonConflictingSections(
                   sortedSections,
                   selectedSections,
                   conflictingSectionsOptions,
