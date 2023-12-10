@@ -1,5 +1,7 @@
-import type * as APIv4 from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
 import { computeMuddCredits } from "@lib/credits";
+import { sectionsConflict } from "@lib/schedule";
+import { type ConflictingSectionsOptions } from "@hooks/store";
 
 const tokensRegex = /[0-9]+|[a-z]+/g;
 
@@ -439,4 +441,66 @@ export function editDistance(
         }
 
     return table[index(start.length, end.length)]!;
+}
+
+export function getNonConflictingSections(
+    sections: APIv4.Section[] | undefined,
+    selectedSections: APIv4.Section[] | undefined,
+    conflictingSectionsOptions: ConflictingSectionsOptions,
+): APIv4.Section[] | undefined {
+    if (sections === undefined) {
+        return undefined;
+    } else if (selectedSections === undefined) {
+        return sections;
+    } else {
+        const { skipSectionsOfSelectedCourse, hideAsyncSections } =
+            conflictingSectionsOptions;
+
+        return sections.filter((section) => {
+            /* @desc    Check if the section belongs to one of the selected COURSES first
+             *          in case the user intentionally added this section even though
+             *          it conflicts with other selected sections
+             */
+            for (const selectedSection of selectedSections) {
+                // a particular section is non-conflicting with itself
+                if (Object.is(section.identifier, selectedSection.identifier)) {
+                    return true;
+                }
+            }
+
+            if (hideAsyncSections) {
+                /* @desc    An asynchronous section has an empty array of scheduled days
+                 *          or the same startTime and endTime
+                 */
+                for (const schedule of section.schedules) {
+                    if (
+                        schedule.days.length === 0 ||
+                        schedule.startTime === schedule.endTime
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            if (skipSectionsOfSelectedCourse) {
+                for (const selectedSection of selectedSections) {
+                    if (
+                        APIv4.compareCourseCode(
+                            section.identifier,
+                            selectedSection.identifier,
+                        )
+                    ) {
+                        return true;
+                    }
+                }
+            }
+
+            for (const selectedSection of selectedSections) {
+                if (sectionsConflict(section, selectedSection)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
 }
