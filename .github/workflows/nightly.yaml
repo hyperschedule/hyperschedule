@@ -1,8 +1,8 @@
-name: Build website
+name: Build nightly
 
 on:
     workflow_run:
-        workflows: ["test"]
+        workflows: ["Run all automated checks"]
         branches: ["v2"]
         types: ["requested"]
     workflow_dispatch:
@@ -21,10 +21,6 @@ concurrency:
 jobs:
     # Single deploy job since we're just deploying
     deploy:
-        defaults:
-            run:
-                shell: bash
-                working-directory: hyperschedule
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
