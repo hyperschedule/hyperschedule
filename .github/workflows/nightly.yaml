@@ -4,7 +4,7 @@ on:
     workflow_run:
         workflows: ["Run all automated checks"]
         branches: ["v2"]
-        types: ["requested"]
+        types: ["completed"]
     workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
