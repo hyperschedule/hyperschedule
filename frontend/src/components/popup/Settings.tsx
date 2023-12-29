@@ -238,13 +238,16 @@ const ExperimentalFeaturesSettings = memo(
         const setExperimentalFeaturesOptions = useStore(
             (store) => store.setExperimentalFeaturesOptions,
         );
+        const rangeOptions = [2, 4, 6, 8, 10];
 
         return (
             <div className={Css.experimentalFeatures}>
                 <h3 className={Css.title}>Experimental Features</h3>
                 <span>
-                    Enable historical sections search when no course is found
+                    Search through sections of recent terms when no course is
+                    found
                 </span>
+
                 <Slider
                     value={experimentalFeaturesOptions.enableHistoricalSearch}
                     onToggle={() => {
@@ -256,17 +259,23 @@ const ExperimentalFeaturesSettings = memo(
                     }}
                     text=""
                 />
-                <span>How many latest terms do you want to search?</span>
+                <span>
+                    How many recent terms do you want to search?{" "}
+                    <span className={Css.warning}>
+                        {" "}
+                        (this may affect performance!)
+                    </span>
+                </span>
                 <Dropdown
-                    choices={[2, 4, 6, 8, 10]}
+                    choices={rangeOptions}
                     selected={experimentalFeaturesOptions.historicalSearchRange}
                     onSelect={(index) => {
                         setExperimentalFeaturesOptions({
                             ...experimentalFeaturesOptions,
-                            historicalSearchRange: (index + 1) * 2,
+                            historicalSearchRange: rangeOptions[index] ?? 4,
                         });
                     }}
-                    emptyPlaceholder={1}
+                    emptyPlaceholder={4}
                 />
             </div>
         );

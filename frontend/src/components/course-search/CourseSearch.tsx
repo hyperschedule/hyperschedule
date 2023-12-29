@@ -8,6 +8,7 @@ import {
     useCourseAreaDescription,
     useSectionsForTermsQuery,
 } from "@hooks/api/query";
+import { useAllTerms } from "@hooks/term";
 import useStore from "@hooks/store";
 import { useActiveSchedule } from "@hooks/schedule";
 import {
@@ -21,7 +22,6 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { memo, useCallback } from "react";
-import { useAllTerms } from "@hooks/term";
 
 export default memo(function CourseSearch() {
     const sections: APIv4.Section[] | undefined = useActiveSectionsQuery();
@@ -95,18 +95,45 @@ export default memo(function CourseSearch() {
     const { enableHistoricalSearch, historicalSearchRange } = useStore(
         (store) => store.experimentalFeaturesOptions,
     );
-
-    const allTerms = useAllTerms();
-    const range = Math.min(allTerms?.length ?? 0, historicalSearchRange);
-    const allSections = useSectionsForTermsQuery(
-        allTerms?.slice(0, range) ?? [],
+    const allTerms = useAllTerms() ?? [];
+    const range = Math.min(allTerms.length, historicalSearchRange);
+    const historicalSections = useSectionsForTermsQuery(
+        enableHistoricalSearch && sectionsToShow?.length === 0,
+        allTerms.slice(0, range),
     ).data;
 
-    if (sectionsToShow?.length === 0 && enableHistoricalSearch === true) {
-        // console.log(
-        //     `Historical Search is ready to use!\nLooked up latest ${range} terms!\nFound ${allSections?.length} sections total!`,
-        // );
-    }
+    const matchingHistoricalSections: APIv4.Section[] | undefined =
+        React.useMemo(() => {
+            if (historicalSections === undefined) return undefined;
+
+            const filteredHistoricalSections =
+                searchFilters.length === 0
+                    ? historicalSections
+                    : historicalSections.filter((s) =>
+                          Search.filterSection(
+                              s,
+                              searchFilters.map((s) => s.filter),
+                          ),
+                      );
+
+            if (searchText === "") return filteredHistoricalSections;
+
+            let res: [number, APIv4.Section][] = [];
+            for (const s of filteredHistoricalSections) {
+                const score = Search.matchesText(searchText, s, areas);
+                if (score !== null) {
+                    res.push([score, s]);
+                }
+            }
+            const sorted = res.sort((a, b) => b[0] - a[0]);
+            return sorted.map((a) => a[1]);
+        }, [
+            historicalSections,
+            searchText,
+            searchFilters,
+            enableHistoricalSearch,
+            historicalSearchRange,
+        ]);
 
     return (
         <div className={Css.container}>

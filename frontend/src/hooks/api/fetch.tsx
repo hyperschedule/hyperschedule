@@ -145,7 +145,6 @@ export async function getSectionsForTerm(
     return sections;
 }
 
-//TODO: get sections of multiple semesters at once
 export async function getSectionsForTerms(
     terms: APIv4.TermIdentifier[],
 ): Promise<APIv4.Section[]> {

@@ -43,17 +43,18 @@ export function useSectionsQuery(
     });
 }
 
-//TODO: modify or implement a new hook that gather sections for multiple terms
 export function useSectionsForTermsQuery(
+    enabled: boolean,
     terms: APIv4.TermIdentifier[],
 ): UseQueryResult<APIv4.Section[]> {
-    let timeout = terms.length * 30 * 1000; // to be adjusted
+    let timeout = terms.length * 30 * 1000;
 
     return useQuery({
-        queryKey: ["sectionsForTerms", terms] as const,
-        queryFn: (ctx) => getSectionsForTerms(ctx.queryKey[1]!),
+        queryKey: ["sections", "historical", terms] as const,
+        queryFn: (ctx) => getSectionsForTerms(ctx.queryKey[2]!),
         staleTime: timeout,
         refetchInterval: timeout,
+        enabled: enabled,
     });
 }
 
