@@ -145,6 +145,17 @@ export async function getSectionsForTerm(
     return sections;
 }
 
+//TODO: get sections of multiple semesters at once
+export async function getSectionsForTerms(
+    terms: APIv4.TermIdentifier[],
+): Promise<APIv4.Section[]> {
+    let sections: APIv4.Section[] = [];
+    for (const term of terms) {
+        Array.prototype.push.apply(sections, await getSectionsForTerm(term));
+    }
+    return sections;
+}
+
 export async function getCourseAreaDescription(): Promise<Map<string, string>> {
     const data = await getData(
         `${__API_URL__}/v4/course-areas`,

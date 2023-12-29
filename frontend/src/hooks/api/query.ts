@@ -5,6 +5,7 @@ import {
     getSectionsForTerm,
     getCourseAreaDescription,
     getOfferingHistory,
+    getSectionsForTerms,
 } from "@hooks/api/fetch";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import * as ReactQuery from "@tanstack/react-query";
@@ -62,5 +63,19 @@ export function useOfferingHistory(
         staleTime: 24 * 60 * 60 * 1000, // 1 day
         gcTime: 24 * 60 * 60 * 1000,
         refetchInterval: 24 * 60 * 60 * 1000,
+    });
+}
+
+//TODO: modify or implement a new hook that gather sections of multiple terms
+export function useHistoricalSectionsQuery(
+    terms: APIv4.TermIdentifier[],
+): UseQueryResult<APIv4.Section[]> {
+    let timeout = 60 * 1000; // to be adjusted
+
+    return useQuery({
+        queryKey: ["historicalSections", terms] as const,
+        queryFn: (ctx) => getSectionsForTerms(ctx.queryKey[1]!),
+        staleTime: timeout,
+        refetchInterval: timeout,
     });
 }

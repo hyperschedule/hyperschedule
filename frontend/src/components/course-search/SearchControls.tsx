@@ -17,6 +17,8 @@ import AppCss from "@components/App.module.css";
 import classNames from "classnames";
 import { memo } from "react";
 
+import { getSectionsForTerms } from "@hooks/api/fetch";
+
 export default memo(function SearchControls() {
     const activeTerm = useUserStore((user) => user.activeTerm);
     const setActiveTerm = useUserStore((user) => user.setActiveTerm);
@@ -34,6 +36,15 @@ export default memo(function SearchControls() {
 
     const textBoxRef = useRef<HTMLInputElement>(null);
     const filterGroupRef = useRef<HTMLDivElement>(null);
+
+    if (allTerms) {
+        let allSections: APIv4.Section[] = [];
+        getSectionsForTerms(allTerms)
+            .then((sections) => {
+                allSections = sections;
+            })
+            .catch((err) => console.error(err));
+    }
 
     function focusOnFilter(index: number, cursor: number) {
         if (index >= searchFilters.length) {
