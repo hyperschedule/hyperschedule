@@ -43,6 +43,20 @@ export function useSectionsQuery(
     });
 }
 
+//TODO: modify or implement a new hook that gather sections for multiple terms
+export function useSectionsForTermsQuery(
+    terms: APIv4.TermIdentifier[],
+): UseQueryResult<APIv4.Section[]> {
+    let timeout = terms.length * 30 * 1000; // to be adjusted
+
+    return useQuery({
+        queryKey: ["sectionsForTerms", terms] as const,
+        queryFn: (ctx) => getSectionsForTerms(ctx.queryKey[1]!),
+        staleTime: timeout,
+        refetchInterval: timeout,
+    });
+}
+
 export function useCourseAreaDescription(): UseQueryResult<
     Map<string, string>
 > {
@@ -63,19 +77,5 @@ export function useOfferingHistory(
         staleTime: 24 * 60 * 60 * 1000, // 1 day
         gcTime: 24 * 60 * 60 * 1000,
         refetchInterval: 24 * 60 * 60 * 1000,
-    });
-}
-
-//TODO: modify or implement a new hook that gather sections of multiple terms
-export function useHistoricalSectionsQuery(
-    terms: APIv4.TermIdentifier[],
-): UseQueryResult<APIv4.Section[]> {
-    let timeout = 60 * 1000; // to be adjusted
-
-    return useQuery({
-        queryKey: ["historicalSections", terms] as const,
-        queryFn: (ctx) => getSectionsForTerms(ctx.queryKey[1]!),
-        staleTime: timeout,
-        refetchInterval: timeout,
     });
 }

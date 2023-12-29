@@ -4,7 +4,10 @@ import { useMeasure } from "@react-hookz/web";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { useCourseAreaDescription } from "@hooks/api/query";
+import {
+    useCourseAreaDescription,
+    useSectionsForTermsQuery,
+} from "@hooks/api/query";
 import useStore from "@hooks/store";
 import { useActiveSchedule } from "@hooks/schedule";
 import {
@@ -18,6 +21,7 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { memo, useCallback } from "react";
+import { useAllTerms } from "@hooks/term";
 
 export default memo(function CourseSearch() {
     const sections: APIv4.Section[] | undefined = useActiveSectionsQuery();
@@ -86,6 +90,23 @@ export default memo(function CourseSearch() {
         hideConflictingSections,
         conflictingSectionsOptions,
     ]);
+
+    //TODO: determine how to display the historical search results
+    const { enableHistoricalSearch, historicalSearchRange } = useStore(
+        (store) => store.experimentalFeaturesOptions,
+    );
+
+    const allTerms = useAllTerms();
+    const range = Math.min(allTerms?.length ?? 0, historicalSearchRange);
+    const allSections = useSectionsForTermsQuery(
+        allTerms?.slice(0, range) ?? [],
+    ).data;
+
+    if (sectionsToShow?.length === 0 && enableHistoricalSearch === true) {
+        // console.log(
+        //     `Historical Search is ready to use!\nLooked up latest ${range} terms!\nFound ${allSections?.length} sections total!`,
+        // );
+    }
 
     return (
         <div className={Css.container}>

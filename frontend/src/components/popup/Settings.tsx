@@ -1,18 +1,19 @@
 import Css from "./Settings.module.css";
 import AppCss from "@components/App.module.css";
 import Slider from "@components/common/Slider";
+import Dropdown from "@components/common/Dropdown";
 import useStore from "@hooks/store";
+import { useUserStore } from "@hooks/store/user";
 import {
     AUTH_COOKIE_DOMAIN,
     DATA_VIEWER_PATH,
     GITHUB_LINK,
 } from "@lib/constants";
 import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
+import { schoolCodeToName } from "hyperschedule-shared/api/v4";
 import * as Feather from "react-feather";
 import classNames from "classnames";
-import { useUserStore } from "@hooks/store/user";
 import Cookies from "js-cookie";
-import { schoolCodeToName } from "hyperschedule-shared/api/v4";
 import { useState } from "react";
 import { memo } from "react";
 
@@ -22,6 +23,7 @@ export const Settings = memo(function Settings() {
             <h2 className={Css.title}>Settings</h2>
             <AppearanceSettings />
             <SectionConflictSettings />
+            <ExperimentalFeaturesSettings />
             <AccountSettings />
             <DataViewer />
             <ReportIssues />
@@ -227,6 +229,49 @@ const SectionConflictSettings = memo(function SectionConflictSettings() {
         </div>
     );
 });
+
+const ExperimentalFeaturesSettings = memo(
+    function ExperimentalFeaturesSettings() {
+        const experimentalFeaturesOptions = useStore(
+            (store) => store.experimentalFeaturesOptions,
+        );
+        const setExperimentalFeaturesOptions = useStore(
+            (store) => store.setExperimentalFeaturesOptions,
+        );
+
+        return (
+            <div className={Css.experimentalFeatures}>
+                <h3 className={Css.title}>Experimental Features</h3>
+                <span>
+                    Enable historical sections search when no course is found
+                </span>
+                <Slider
+                    value={experimentalFeaturesOptions.enableHistoricalSearch}
+                    onToggle={() => {
+                        setExperimentalFeaturesOptions({
+                            ...experimentalFeaturesOptions,
+                            enableHistoricalSearch:
+                                !experimentalFeaturesOptions.enableHistoricalSearch,
+                        });
+                    }}
+                    text=""
+                />
+                <span>How many latest terms do you want to search?</span>
+                <Dropdown
+                    choices={[2, 4, 6, 8, 10]}
+                    selected={experimentalFeaturesOptions.historicalSearchRange}
+                    onSelect={(index) => {
+                        setExperimentalFeaturesOptions({
+                            ...experimentalFeaturesOptions,
+                            historicalSearchRange: (index + 1) * 2,
+                        });
+                    }}
+                    emptyPlaceholder={1}
+                />
+            </div>
+        );
+    },
+);
 
 const ReportIssues = memo(function ReportIssues() {
     return (
