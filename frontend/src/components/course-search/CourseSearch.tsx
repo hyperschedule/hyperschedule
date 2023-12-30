@@ -135,14 +135,24 @@ export default memo(function CourseSearch() {
             historicalSearchRange,
         ]);
 
+    //TODO: add HistoricalSearch component conditionally
     return (
         <div className={Css.container}>
             <SearchControls />
             {sectionsToShow !== undefined ? (
-                <CourseSearchResults
-                    sections={sectionsToShow}
-                    searchKey={btoa(searchText)}
-                />
+                <div>
+                    <CourseSearchResults
+                        sections={sectionsToShow}
+                        searchKey={btoa(searchText)}
+                    />
+                    {enableHistoricalSearch && sectionsToShow.length === 0 ? (
+                        <HistoricalSearchResults
+                            sections={matchingHistoricalSections}
+                        />
+                    ) : (
+                        <div />
+                    )}
+                </div>
             ) : (
                 <CourseSearchEnd text="loading courses..." />
             )}
@@ -152,6 +162,19 @@ export default memo(function CourseSearch() {
 
 const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
     return <div className={Css.end}>({props.text})</div>;
+});
+
+const HistoricalSearchResults = memo(function HistoricalSearch(props: {
+    sections: APIv4.Section[] | undefined;
+}) {
+    if (props.sections === undefined || props.sections.length === 0) {
+        return <div> (no historical records of courses found) </div>;
+    }
+
+    const sectionsToShow = props.sections.map((section) => (
+        <li>{APIv4.stringifySectionCodeLong(section.identifier)}</li>
+    ));
+    return <ul>{sectionsToShow}</ul>;
 });
 
 function computeIndices(state: {
