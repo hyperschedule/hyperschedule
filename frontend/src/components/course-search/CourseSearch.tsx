@@ -91,7 +91,6 @@ export default memo(function CourseSearch() {
         conflictingSectionsOptions,
     ]);
 
-    //TODO: determine how to display the historical search results
     const { enableHistoricalSearch, historicalSearchRange } = useStore(
         (store) => store.experimentalFeaturesOptions,
     );
@@ -135,7 +134,6 @@ export default memo(function CourseSearch() {
             historicalSearchRange,
         ]);
 
-    //TODO: add HistoricalSearch component conditionally
     return (
         <div className={Css.container}>
             <SearchControls />
@@ -164,17 +162,29 @@ const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
     return <div className={Css.end}>({props.text})</div>;
 });
 
+//TODO: determine how to display the historical search results
 const HistoricalSearchResults = memo(function HistoricalSearch(props: {
     sections: APIv4.Section[] | undefined;
 }) {
     if (props.sections === undefined || props.sections.length === 0) {
-        return <div> (no historical records of courses found) </div>;
+        return (
+            <div className={Css.historicalSearchResults}>
+                (no historical records of courses found)
+            </div>
+        );
     }
 
-    const sectionsToShow = props.sections.map((section) => (
-        <li>{APIv4.stringifySectionCodeLong(section.identifier)}</li>
+    const matchingHistoricalSections = props.sections.map((section) => (
+        <li key={APIv4.stringifySectionCode(section.identifier)}>
+            {APIv4.stringifySectionCodeLong(section.identifier)}
+        </li>
     ));
-    return <ul>{sectionsToShow}</ul>;
+    return (
+        <div className={Css.historicalSearchResults}>
+            <div>Are you looking for these courses from other terms?</div>
+            <ol>{matchingHistoricalSections}</ol>
+        </div>
+    );
 });
 
 function computeIndices(state: {
@@ -262,7 +272,7 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
     //    });
 
     if (props.sections.length === 0)
-        return <CourseSearchEnd text="no courses found" />;
+        return <CourseSearchEnd text="no courses found " />;
 
     return (
         <>

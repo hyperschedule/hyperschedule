@@ -238,7 +238,7 @@ const ExperimentalFeaturesSettings = memo(
         const setExperimentalFeaturesOptions = useStore(
             (store) => store.setExperimentalFeaturesOptions,
         );
-        const rangeOptions = [2, 4, 6, 8, 10];
+        const rangeOptions = [2, 4, 6, 8, 10, "all"];
 
         return (
             <div className={Css.experimentalFeatures}>
@@ -268,14 +268,25 @@ const ExperimentalFeaturesSettings = memo(
                 </span>
                 <Dropdown
                     choices={rangeOptions}
-                    selected={experimentalFeaturesOptions.historicalSearchRange}
+                    selected={
+                        experimentalFeaturesOptions.historicalSearchRange !==
+                        Infinity
+                            ? experimentalFeaturesOptions.historicalSearchRange
+                            : "all"
+                    }
                     onSelect={(index) => {
+                        let range: number;
+                        if (rangeOptions[index] === "all") {
+                            range = Infinity;
+                        } else {
+                            range = rangeOptions[index] as number;
+                        }
                         setExperimentalFeaturesOptions({
                             ...experimentalFeaturesOptions,
-                            historicalSearchRange: rangeOptions[index] ?? 4,
+                            historicalSearchRange: range,
                         });
                     }}
-                    emptyPlaceholder={4}
+                    emptyPlaceholder={NaN}
                 />
             </div>
         );

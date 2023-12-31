@@ -37,10 +37,19 @@
 
 .end {
     padding-top: 1rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     text-align: center;
     color: var(--fg-1);
     display: block;
     left: 0;
     right: 0;
+}
+
+.historicalSearchResults {
+    text-align: center;
+    padding: 1rem;
+
+    & li {
+        text-align: left;
+    }
 }

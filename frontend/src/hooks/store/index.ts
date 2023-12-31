@@ -156,7 +156,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
 
         experimentalFeaturesOptions: {
             enableHistoricalSearch: false,
-            historicalSearchRange: 4, // select 4 terms as a default value
+            historicalSearchRange: 6,
         },
         setExperimentalFeaturesOptions: (options) =>
             set({ experimentalFeaturesOptions: options }),

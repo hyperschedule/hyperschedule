@@ -37,15 +37,15 @@
     }
 
     & .experimentalFeatures {
-        & .warning {
-            color: yellow;
-            font-weight: 500;
-        }
-
         @mixin two-column-grid;
 
         & .title {
             grid-column: 1 / -1;
+        }
+
+        & .warning {
+            color: yellow;
+            font-weight: 500;
         }
     }
 
