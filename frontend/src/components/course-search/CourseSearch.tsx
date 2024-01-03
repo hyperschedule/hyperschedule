@@ -22,6 +22,7 @@ import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { memo, useCallback } from "react";
+import { useUserStore } from "@hooks/store/user";
 
 export default memo(function CourseSearch() {
     const sections: APIv4.Section[] | undefined = useActiveSectionsQuery();
@@ -97,7 +98,7 @@ export default memo(function CourseSearch() {
     const allTerms = useAllTerms() ?? [];
     const range = Math.min(allTerms.length, historicalSearchRange);
     const historicalSections = useSectionsForTermsQuery(
-        enableHistoricalSearch && sectionsToShow?.length === 0,
+        enableHistoricalSearch,
         allTerms.slice(0, range),
     ).data;
 
@@ -143,12 +144,12 @@ export default memo(function CourseSearch() {
                         sections={sectionsToShow}
                         searchKey={btoa(searchText)}
                     />
-                    {enableHistoricalSearch && sectionsToShow.length === 0 ? (
+                    {enableHistoricalSearch ? (
                         <HistoricalSearchResults
                             sections={matchingHistoricalSections}
                         />
                     ) : (
-                        <div />
+                        <></>
                     )}
                 </div>
             ) : (
@@ -162,7 +163,6 @@ const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
     return <div className={Css.end}>({props.text})</div>;
 });
 
-//TODO: determine how to display the historical search results
 const HistoricalSearchResults = memo(function HistoricalSearch(props: {
     sections: APIv4.Section[] | undefined;
 }) {
@@ -174,15 +174,25 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
         );
     }
 
-    const matchingHistoricalSections = props.sections.map((section) => (
-        <li key={APIv4.stringifySectionCode(section.identifier)}>
-            {APIv4.stringifySectionCodeLong(section.identifier)}
-        </li>
-    ));
+    const setActiveTerm = useUserStore((user) => user.setActiveTerm);
+    const sections = props.sections;
     return (
         <div className={Css.historicalSearchResults}>
-            <div>Are you looking for these courses from other terms?</div>
-            <ol>{matchingHistoricalSections}</ol>
+            <div>Are you looking for these sections from recent terms?</div>
+            {sections.map((section) => (
+                <CourseRow
+                    key={APIv4.stringifySectionCodeLong(section.identifier)}
+                    section={section}
+                    expand={false}
+                    fromOtherTerm={true}
+                    onClick={() => {
+                        setActiveTerm({
+                            term: section.identifier.term,
+                            year: section.identifier.year,
+                        });
+                    }}
+                />
+            ))}
         </div>
     );
 });
