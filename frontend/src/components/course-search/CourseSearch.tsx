@@ -98,7 +98,7 @@ export default memo(function CourseSearch() {
     const allTerms = useAllTerms() ?? [];
     const range = Math.min(allTerms.length, historicalSearchRange);
     const historicalSections = useSectionsForTermsQuery(
-        enableHistoricalSearch,
+        enableHistoricalSearch && sectionsToShow?.length === 0,
         allTerms.slice(0, range),
     ).data;
 
@@ -139,21 +139,20 @@ export default memo(function CourseSearch() {
         <div className={Css.container}>
             <SearchControls />
             {sectionsToShow !== undefined ? (
-                <div>
-                    <CourseSearchResults
-                        sections={sectionsToShow}
-                        searchKey={btoa(searchText)}
-                    />
-                    {enableHistoricalSearch ? (
-                        <HistoricalSearchResults
-                            sections={matchingHistoricalSections}
-                        />
-                    ) : (
-                        <></>
-                    )}
-                </div>
+                <CourseSearchResults
+                    sections={sectionsToShow}
+                    searchKey={btoa(searchText)}
+                />
             ) : (
                 <CourseSearchEnd text="loading courses..." />
+            )}
+
+            {enableHistoricalSearch && sectionsToShow?.length === 0 ? (
+                <HistoricalSearchResults
+                    sections={matchingHistoricalSections}
+                />
+            ) : (
+                <></>
             )}
         </div>
     );
@@ -166,7 +165,17 @@ const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
 const HistoricalSearchResults = memo(function HistoricalSearch(props: {
     sections: APIv4.Section[] | undefined;
 }) {
-    if (props.sections === undefined || props.sections.length === 0) {
+    const setActiveTerm = useUserStore((user) => user.setActiveTerm);
+    const sections = props.sections;
+
+    if (sections === undefined) {
+        return (
+            <div className={Css.historicalSearchResults}>
+                (loading courses from other terms...)
+            </div>
+        );
+    }
+    if (sections.length === 0) {
         return (
             <div className={Css.historicalSearchResults}>
                 (no historical records of courses found)
@@ -174,27 +183,27 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
         );
     }
 
-    const setActiveTerm = useUserStore((user) => user.setActiveTerm);
-    const sections = props.sections;
     return (
         <div className={Css.historicalSearchResults}>
             <hr />
             <h4>Are you looking for these sections from recent terms?</h4>
             <div>Click on the section to go to its respective term!</div>
-            {sections.map((section) => (
-                <CourseRow
-                    key={APIv4.stringifySectionCodeLong(section.identifier)}
-                    section={section}
-                    expand={false}
-                    fromOtherTerm={true}
-                    onClick={() => {
-                        setActiveTerm({
-                            term: section.identifier.term,
-                            year: section.identifier.year,
-                        });
-                    }}
-                />
-            ))}
+            <div className={Css.resultsContainer}>
+                {sections.map((section) => (
+                    <CourseRow
+                        key={APIv4.stringifySectionCodeLong(section.identifier)}
+                        section={section}
+                        expand={false}
+                        fromOtherTerm={true}
+                        onClick={() => {
+                            setActiveTerm({
+                                term: section.identifier.term,
+                                year: section.identifier.year,
+                            });
+                        }}
+                    />
+                ))}
+            </div>
         </div>
     );
 });

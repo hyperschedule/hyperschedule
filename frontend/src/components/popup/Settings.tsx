@@ -244,7 +244,8 @@ const ExperimentalFeaturesSettings = memo(
             <div className={Css.experimentalFeatures}>
                 <h3 className={Css.title}>Experimental Features</h3>
                 <span>
-                    Search for matching sections from multiple recent terms
+                    Search for matching courses from recent terms when no course
+                    is found
                 </span>
 
                 <Slider
