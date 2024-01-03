@@ -243,7 +243,9 @@ const ExperimentalFeaturesSettings = memo(
         return (
             <div className={Css.experimentalFeatures}>
                 <h3 className={Css.title}>Experimental Features</h3>
-                <span>Also show matching sections from recent terms</span>
+                <span>
+                    Search for matching sections from multiple recent terms
+                </span>
 
                 <Slider
                     value={experimentalFeaturesOptions.enableHistoricalSearch}

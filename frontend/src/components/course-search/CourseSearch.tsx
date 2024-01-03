@@ -178,7 +178,9 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
     const sections = props.sections;
     return (
         <div className={Css.historicalSearchResults}>
-            <div>Are you looking for these sections from recent terms?</div>
+            <hr />
+            <h4>Are you looking for these sections from recent terms?</h4>
+            <div>Click on the section to go to its respective term!</div>
             {sections.map((section) => (
                 <CourseRow
                     key={APIv4.stringifySectionCodeLong(section.identifier)}
@@ -282,7 +284,7 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
     //    });
 
     if (props.sections.length === 0)
-        return <CourseSearchEnd text="no courses found " />;
+        return <CourseSearchEnd text="no courses found" />;
 
     return (
         <>
