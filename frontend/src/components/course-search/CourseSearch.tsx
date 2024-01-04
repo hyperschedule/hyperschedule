@@ -138,71 +138,23 @@ export default memo(function CourseSearch() {
     return (
         <div className={Css.container}>
             <SearchControls />
-            {sectionsToShow !== undefined ? (
-                <CourseSearchResults
-                    sections={sectionsToShow}
-                    searchKey={btoa(searchText)}
-                />
-            ) : (
-                <CourseSearchEnd text="loading courses..." />
-            )}
-
-            {enableHistoricalSearch && sectionsToShow?.length === 0 ? (
-                <HistoricalSearchResults
-                    sections={matchingHistoricalSections}
-                />
-            ) : (
-                <></>
-            )}
-        </div>
-    );
-});
-
-const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
-    return <div className={Css.end}>({props.text})</div>;
-});
-
-const HistoricalSearchResults = memo(function HistoricalSearch(props: {
-    sections: APIv4.Section[] | undefined;
-}) {
-    const setActiveTerm = useUserStore((user) => user.setActiveTerm);
-    const sections = props.sections;
-
-    if (sections === undefined) {
-        return (
-            <div className={Css.historicalSearchResults}>
-                (loading courses from other terms...)
-            </div>
-        );
-    }
-    if (sections.length === 0) {
-        return (
-            <div className={Css.historicalSearchResults}>
-                (no historical records of courses found)
-            </div>
-        );
-    }
-
-    return (
-        <div className={Css.historicalSearchResults}>
-            <hr />
-            <h4>Are you looking for these sections from recent terms?</h4>
-            <div>Click on the section to go to its respective term!</div>
             <div className={Css.resultsContainer}>
-                {sections.map((section) => (
-                    <CourseRow
-                        key={APIv4.stringifySectionCodeLong(section.identifier)}
-                        section={section}
-                        expand={false}
-                        fromOtherTerm={true}
-                        onClick={() => {
-                            setActiveTerm({
-                                term: section.identifier.term,
-                                year: section.identifier.year,
-                            });
-                        }}
+                {sectionsToShow !== undefined ? (
+                    <CourseSearchResults
+                        sections={sectionsToShow}
+                        searchKey={btoa(searchText)}
                     />
-                ))}
+                ) : (
+                    <CourseSearchEnd text="loading courses..." />
+                )}
+
+                {enableHistoricalSearch && sectionsToShow?.length === 0 ? (
+                    <HistoricalSearchResults
+                        sections={matchingHistoricalSections}
+                    />
+                ) : (
+                    <></>
+                )}
             </div>
         </div>
     );
@@ -377,6 +329,56 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
                 onClick={onClick}
                 updateDetailsSize={expand ? setExpandHeight : undefined}
             />
+        </div>
+    );
+});
+
+const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
+    return <div className={Css.end}>({props.text})</div>;
+});
+
+const HistoricalSearchResults = memo(function HistoricalSearch(props: {
+    sections: APIv4.Section[] | undefined;
+}) {
+    const setActiveTerm = useUserStore((user) => user.setActiveTerm);
+    const sections = props.sections;
+
+    if (sections === undefined) {
+        return (
+            <div className={Css.historicalSearchResults}>
+                (loading courses from other terms...)
+            </div>
+        );
+    }
+    if (sections.length === 0) {
+        return (
+            <div className={Css.historicalSearchResults}>
+                (no historical records of courses found)
+            </div>
+        );
+    }
+
+    return (
+        <div className={Css.historicalSearchResults}>
+            <hr />
+            <h4>Are you looking for these sections from recent terms?</h4>
+            <div>Click on any section to go to its respective term!</div>
+            <div className={Css.resultsContainer}>
+                {sections.map((section) => (
+                    <CourseRow
+                        key={APIv4.stringifySectionCodeLong(section.identifier)}
+                        section={section}
+                        expand={false}
+                        fromOtherTerm={true}
+                        onClick={() => {
+                            setActiveTerm({
+                                term: section.identifier.term,
+                                year: section.identifier.year,
+                            });
+                        }}
+                    />
+                ))}
+            </div>
         </div>
     );
 });
