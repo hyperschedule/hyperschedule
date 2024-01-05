@@ -66,8 +66,7 @@ export default memo(function CourseRow(props: {
                             </span>
                         </span>
 
-                        {/* TODO: finalize styling for term identifier */}
-                        <span className={"toBeDetermined"}>
+                        <span className={Css.term}>
                             {props.section.identifier.term}
                             {props.section.identifier.year}
                         </span>

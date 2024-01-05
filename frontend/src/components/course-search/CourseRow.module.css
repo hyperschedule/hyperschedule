@@ -186,3 +186,13 @@
     padding: 0.5rem 1rem;
     line-height: 1.5em;
 }
+
+.term {
+    font-size: 0.875em;
+    font-weight: 500;
+    background-color: var(--bg-2);
+    padding: 0.125em 0.5em;
+    border-radius: 0.25em;
+    margin: 0 0.125rem;
+    transition: background-color var(--theme-transition-duration);
+}
