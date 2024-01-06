@@ -92,19 +92,23 @@ export default memo(function CourseSearch() {
         conflictingSectionsOptions,
     ]);
 
-    const { enableHistoricalSearch, historicalSearchRange } = useStore(
-        (store) => store.experimentalFeaturesOptions,
+    const { enable, range } = useStore(
+        (store) => store.historicalSearchOptions,
     );
     const allTerms = useAllTerms() ?? [];
-    const range = Math.min(allTerms.length, historicalSearchRange);
+    const doHistoricalSearch = sectionsToShow
+        ? enable && sectionsToShow.length <= 4
+        : false;
     const historicalSections = useSectionsForTermsQuery(
-        enableHistoricalSearch && sectionsToShow?.length === 0,
+        doHistoricalSearch,
         allTerms.slice(0, range),
     ).data;
 
     const matchingHistoricalSections: APIv4.Section[] | undefined =
         React.useMemo(() => {
-            if (historicalSections === undefined) return undefined;
+            if (!doHistoricalSearch || !historicalSections) {
+                return undefined;
+            }
 
             const filteredHistoricalSections =
                 searchFilters.length === 0
@@ -131,8 +135,8 @@ export default memo(function CourseSearch() {
             historicalSections,
             searchText,
             searchFilters,
-            enableHistoricalSearch,
-            historicalSearchRange,
+            doHistoricalSearch,
+            range,
         ]);
 
     return (
@@ -148,7 +152,7 @@ export default memo(function CourseSearch() {
                     <CourseSearchEnd text="loading courses..." />
                 )}
 
-                {enableHistoricalSearch && sectionsToShow?.length === 0 ? (
+                {doHistoricalSearch ? (
                     <HistoricalSearchResults
                         sections={matchingHistoricalSections}
                     />
@@ -340,8 +344,14 @@ const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
 const HistoricalSearchResults = memo(function HistoricalSearch(props: {
     sections: APIv4.Section[] | undefined;
 }) {
+    const activeTerm = useUserStore((user) => user.activeTerm);
     const setActiveTerm = useUserStore((user) => user.setActiveTerm);
-    const sections = props.sections;
+    const sections = props.sections?.filter((section) => {
+        return !(
+            section.identifier.term === activeTerm.term &&
+            section.identifier.year === activeTerm.year
+        );
+    });
 
     if (sections === undefined) {
         return (

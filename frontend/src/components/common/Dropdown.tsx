@@ -1,10 +1,10 @@
 import Css from "./Dropdown.module.css";
 import * as Feather from "react-feather";
 export default function Dropdown(props: {
-    choices: (string | number)[];
-    selected: string | number;
+    choices: string[];
+    selected: string;
     onSelect: (selected: number) => void;
-    emptyPlaceholder: string | number;
+    emptyPlaceholder: string;
 }) {
     return (
         <div className={Css.dropdown}>

@@ -36,7 +36,7 @@
         }
     }
 
-    & .experimentalFeatures {
+    & .historicalSearch {
         @mixin two-column-grid;
 
         & .title {
@@ -44,7 +44,7 @@
         }
 
         & .warning {
-            color: yellow;
+            color: var(--palette-orange);
             font-weight: 500;
         }
     }

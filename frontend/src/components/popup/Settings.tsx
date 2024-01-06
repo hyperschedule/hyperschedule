@@ -16,6 +16,7 @@ import classNames from "classnames";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { memo } from "react";
+import { useAllTerms } from "@hooks/term";
 
 export const Settings = memo(function Settings() {
     return (
@@ -23,7 +24,7 @@ export const Settings = memo(function Settings() {
             <h2 className={Css.title}>Settings</h2>
             <AppearanceSettings />
             <SectionConflictSettings />
-            <ExperimentalFeaturesSettings />
+            <HistoricalSearchSettings />
             <AccountSettings />
             <DataViewer />
             <ReportIssues />
@@ -230,68 +231,67 @@ const SectionConflictSettings = memo(function SectionConflictSettings() {
     );
 });
 
-const ExperimentalFeaturesSettings = memo(
-    function ExperimentalFeaturesSettings() {
-        const experimentalFeaturesOptions = useStore(
-            (store) => store.experimentalFeaturesOptions,
-        );
-        const setExperimentalFeaturesOptions = useStore(
-            (store) => store.setExperimentalFeaturesOptions,
-        );
-        const rangeOptions = [2, 4, 6, 8, 10, "all"];
+const HistoricalSearchSettings = memo(function HistoricalSearchSettings() {
+    const historicalSearchOptions = useStore(
+        (store) => store.historicalSearchOptions,
+    );
+    const setHistoricalSearchOptions = useStore(
+        (store) => store.setHistoricalSearchOptions,
+    );
 
-        return (
-            <div className={Css.experimentalFeatures}>
-                <h3 className={Css.title}>Experimental Features</h3>
-                <span>
-                    Search for matching courses from recent terms when no course
-                    is found
-                </span>
+    const allTerms = useAllTerms() ?? [];
+    function createPossibleRanges(numTerms: number): number[] {
+        let results = [];
+        for (let i = 0; i < Math.log2(numTerms); i++) {
+            if (i !== 0) {
+                results.push(2 ** i);
+            }
+        }
+        results.push(numTerms);
+        return results;
+    }
+    const rangeOptions = createPossibleRanges(allTerms.length);
 
-                <Slider
-                    value={experimentalFeaturesOptions.enableHistoricalSearch}
-                    onToggle={() => {
-                        setExperimentalFeaturesOptions({
-                            ...experimentalFeaturesOptions,
-                            enableHistoricalSearch:
-                                !experimentalFeaturesOptions.enableHistoricalSearch,
-                        });
-                    }}
-                    text=""
-                />
-                <span>
-                    How many recent terms do you want to search?{" "}
-                    <span className={Css.warning}>
-                        {" "}
-                        (this may affect performance!)
-                    </span>
+    return (
+        <div className={Css.historicalSearch}>
+            <h3 className={Css.title}>Historical Search</h3>
+            <span>
+                Search for matching courses from recent terms when only a few
+                courses are found
+            </span>
+
+            <Slider
+                value={historicalSearchOptions.enable}
+                onToggle={() => {
+                    setHistoricalSearchOptions({
+                        ...historicalSearchOptions,
+                        enable: !historicalSearchOptions.enable,
+                    });
+                }}
+                text=""
+            />
+            <span>
+                How many recent terms do you want to search?{" "}
+                <span className={Css.warning}>
+                    {" "}
+                    (this may affect performance!)
                 </span>
-                <Dropdown
-                    choices={rangeOptions}
-                    selected={
-                        experimentalFeaturesOptions.historicalSearchRange !==
-                        Infinity
-                            ? experimentalFeaturesOptions.historicalSearchRange
-                            : "all"
-                    }
-                    onSelect={(index) => {
-                        let range: number;
-                        if (rangeOptions[index] === "all") {
-                            range = Infinity;
-                        } else {
-                            range = rangeOptions[index] as number;
-                        }
-                        setExperimentalFeaturesOptions({
-                            ...experimentalFeaturesOptions,
-                            historicalSearchRange: range,
-                        });
-                    }}
-                    emptyPlaceholder={NaN}
-                />
-            </div>
-        );
-    },
-);
+            </span>
+            <Dropdown
+                choices={rangeOptions.map((range) => range.toString())}
+                selected={historicalSearchOptions.range.toString()}
+                onSelect={(index) => {
+                    const selectedRange = rangeOptions[index] ?? 4;
+                    setHistoricalSearchOptions({
+                        ...historicalSearchOptions,
+                        range: selectedRange,
+                    });
+                }}
+                emptyPlaceholder={"none selected"}
+            />
+        </div>
+    );
+});
 
 const ReportIssues = memo(function ReportIssues() {
     return (

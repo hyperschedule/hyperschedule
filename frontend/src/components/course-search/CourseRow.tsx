@@ -41,9 +41,7 @@ export default memo(function CourseRow(props: {
         return (
             <div className={Css.padder}>
                 <div
-                    className={classNames(Css.box, {
-                        [Css.expand!]: props.expand,
-                    })}
+                    className={classNames(Css.box)}
                     style={sectionColorStyle(
                         props.section.identifier,
                         theme,

@@ -28,7 +28,7 @@ export type Store = WithSetters<{
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
     conflictingSectionsOptions: ConflictingSectionsOptions;
-    experimentalFeaturesOptions: ExperimentalFeaturesOptions;
+    historicalSearchOptions: HistoricalSearchOptions;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -65,9 +65,9 @@ export type ConflictingSectionsOptions = {
     hideAsyncSections: boolean;
 };
 
-export type ExperimentalFeaturesOptions = {
-    enableHistoricalSearch: boolean;
-    historicalSearchRange: number;
+export type HistoricalSearchOptions = {
+    enable: boolean;
+    range: number;
 };
 
 const initStore: Zustand.StateCreator<Store> = (set, get) => {
@@ -154,12 +154,12 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         setConflictingSectionsOptions: (options) =>
             set({ conflictingSectionsOptions: options }),
 
-        experimentalFeaturesOptions: {
-            enableHistoricalSearch: false,
-            historicalSearchRange: 6,
+        historicalSearchOptions: {
+            enable: false,
+            range: 4,
         },
-        setExperimentalFeaturesOptions: (options) =>
-            set({ experimentalFeaturesOptions: options }),
+        setHistoricalSearchOptions: (options) =>
+            set({ historicalSearchOptions: options }),
     };
 };
 
@@ -173,7 +173,7 @@ const useStore = Zustand.create<Store>()(
                 "theme",
                 "appearanceOptions",
                 "conflictingSectionsOptions",
-                "experimentalFeaturesOptions",
+                "historicalSearchOptions",
             ),
         }),
     ),
