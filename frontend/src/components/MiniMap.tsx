@@ -286,7 +286,7 @@ const Card = memo(function Card(props: {
             onClick={() => {
                 setPopup({
                     option: PopupOption.SectionDetail,
-                    section: props.card.section.identifier,
+                    section: props.card.section,
                 });
             }}
             onPointerEnter={() => props.setHoverSection(sectionCode)}

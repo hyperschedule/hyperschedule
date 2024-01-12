@@ -16,6 +16,7 @@ import {
     useActiveSectionsQuery,
 } from "@hooks/section";
 import * as Search from "@lib/search";
+import { PopupOption } from "@lib/popup";
 
 import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
@@ -345,7 +346,8 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
     sections: APIv4.Section[] | undefined;
 }) {
     const activeTerm = useUserStore((user) => user.activeTerm);
-    const setActiveTerm = useUserStore((user) => user.setActiveTerm);
+    const setPopup = useStore((store) => store.setPopup);
+
     const sections = props.sections?.filter((section) => {
         return !(
             section.identifier.term === activeTerm.term &&
@@ -372,7 +374,7 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
         <div className={Css.historicalSearchResults}>
             <hr />
             <h4>Are you looking for these sections from recent terms?</h4>
-            <div>Click on any section to go to its respective term!</div>
+            <div>Click on any section to see its details!</div>
             <div className={Css.resultsContainer}>
                 {sections.map((section) => (
                     <CourseRow
@@ -381,9 +383,9 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
                         expand={false}
                         fromOtherTerm={true}
                         onClick={() => {
-                            setActiveTerm({
-                                term: section.identifier.term,
-                                year: section.identifier.year,
+                            setPopup({
+                                option: PopupOption.SectionDetail,
+                                section: section,
                             });
                         }}
                     />
