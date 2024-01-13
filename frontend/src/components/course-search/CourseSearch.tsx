@@ -357,14 +357,14 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
 
     if (sections === undefined) {
         return (
-            <div className={Css.historicalSearchResults}>
+            <div className={Css.emptyHistoricalSearchResults}>
                 (loading courses from other terms...)
             </div>
         );
     }
     if (sections.length === 0) {
         return (
-            <div className={Css.historicalSearchResults}>
+            <div className={Css.emptyHistoricalSearchResults}>
                 (no historical records of courses found)
             </div>
         );
@@ -372,7 +372,6 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
 
     return (
         <div className={Css.historicalSearchResults}>
-            <hr />
             <h4>Are you looking for these sections from recent terms?</h4>
             <div>Click on any section to see its details!</div>
             <div className={Css.resultsContainer}>

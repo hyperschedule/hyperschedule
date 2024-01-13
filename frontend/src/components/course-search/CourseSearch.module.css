@@ -45,7 +45,18 @@
     right: 0;
 }
 
+.emptyHistoricalSearchResults {
+    text-align: center;
+}
+
 .historicalSearchResults {
     text-align: center;
-    padding: 0.5rem;
+    border: 0.125rem dashed;
+    margin: 0.5rem;
+    padding-bottom: 1rem;
+
+    & h4 {
+        padding: 1rem;
+        margin: 0;
+    }
 }
