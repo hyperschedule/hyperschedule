@@ -51,9 +51,9 @@
 
 .historicalSearchResults {
     text-align: center;
-    border: 0.125rem dashed;
+    padding-top: 0.5rem;
+    border-top: 0.125rem dotted;
     margin: 0.5rem;
-    padding-bottom: 1rem;
 
     & h4 {
         padding: 1rem;

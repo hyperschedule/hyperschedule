@@ -49,10 +49,7 @@ export default memo(function CourseRow(props: {
                     )}
                 >
                     <div className={Css.titlebar} onClick={props.onClick}>
-                        <Feather.ChevronsRight
-                            className={Css.arrow}
-                            size={14}
-                        />
+                        <div />
                         <span className={Css.summary}>
                             <span className={Css.courseNumber}>
                                 {APIv4.stringifySectionCode(

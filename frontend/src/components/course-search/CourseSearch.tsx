@@ -372,8 +372,7 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
 
     return (
         <div className={Css.historicalSearchResults}>
-            <h4>Are you looking for these sections from recent terms?</h4>
-            <div>Click on any section to see its details!</div>
+            <h4>Also found these results from previous terms!</h4>
             <div className={Css.resultsContainer}>
                 {sections.map((section) => (
                     <CourseRow
