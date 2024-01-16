@@ -159,11 +159,13 @@ async function createCalendar(
             const recurrenceRule = createRRule(section.endDate, schedule.days);
             const title = section.course.title;
             const description = section.course.description;
+            const location = schedule.locations.join("; ");
             events.push({
                 startInputType: "local",
                 startOutputType: "local",
                 start,
                 end,
+                location,
                 recurrenceRule,
                 title,
                 description,
