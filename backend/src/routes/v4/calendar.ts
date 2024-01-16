@@ -131,6 +131,8 @@ async function createCalendar(
         for (const schedule of section.schedules) {
             // async classes, also sometimes the registrar input incorrect data
             if (schedule.endTime <= schedule.startTime) continue;
+            // invalid calendar entry
+            if (schedule.days.length === 0) continue;
 
             const startDate = new Date(
                 section.startDate.year,
