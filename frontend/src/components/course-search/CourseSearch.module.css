@@ -45,18 +45,14 @@
     right: 0;
 }
 
-.emptyHistoricalSearchResults {
-    text-align: center;
-}
-
 .historicalSearchResults {
     text-align: center;
-    padding-top: 0.5rem;
     border-top: 0.125rem dotted;
     margin: 0.5rem;
 
     & h4 {
-        padding: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
         margin: 0;
     }
 }

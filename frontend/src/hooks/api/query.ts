@@ -73,7 +73,7 @@ export function useOfferingHistory(
     terms: APIv4.TermIdentifier[],
 ): UseQueryResult<APIv4.OfferingHistory[]> {
     return useQuery({
-        queryKey: ["last offered", terms] as const,
+        queryKey: ["offering history", terms] as const,
         queryFn: (ctx) => getOfferingHistory(ctx.queryKey[1]!),
         staleTime: 24 * 60 * 60 * 1000, // 1 day
         gcTime: 24 * 60 * 60 * 1000,

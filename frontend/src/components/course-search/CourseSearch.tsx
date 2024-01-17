@@ -143,24 +143,15 @@ export default memo(function CourseSearch() {
     return (
         <div className={Css.container}>
             <SearchControls />
-            <div className={Css.resultsContainer}>
-                {sectionsToShow !== undefined ? (
-                    <CourseSearchResults
-                        sections={sectionsToShow}
-                        searchKey={btoa(searchText)}
-                    />
-                ) : (
-                    <CourseSearchEnd text="loading courses..." />
-                )}
-
-                {doHistoricalSearch ? (
-                    <HistoricalSearchResults
-                        sections={matchingHistoricalSections}
-                    />
-                ) : (
-                    <></>
-                )}
-            </div>
+            {sectionsToShow !== undefined ? (
+                <CourseSearchResults
+                    sections={sectionsToShow}
+                    doHistoricalSearch={doHistoricalSearch}
+                    historicalSections={matchingHistoricalSections}
+                />
+            ) : (
+                <CourseSearchEnd text="loading courses..." />
+            )}
         </div>
     );
 });
@@ -192,7 +183,8 @@ function computeIndices(state: {
 
 const CourseSearchResults = memo(function CourseSearchResults(props: {
     sections: APIv4.Section[];
-    searchKey: string;
+    doHistoricalSearch: boolean;
+    historicalSections: APIv4.Section[] | undefined;
 }) {
     // https://github.com/streamich/react-use/issues/1264#issuecomment-721645100
     const [rowBounds, rowMeasureRef] = useMeasure<HTMLDivElement>();
@@ -250,11 +242,24 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
     //    });
 
     if (props.sections.length === 0)
-        return <CourseSearchEnd text="no courses found" />;
+        return (
+            <div>
+                <CourseSearchEnd text="no courses in active term found" />
+
+                {props.doHistoricalSearch ? (
+                    <HistoricalSearchResults
+                        historicalSections={props.historicalSections}
+                    />
+                ) : (
+                    <></>
+                )}
+            </div>
+        );
 
     return (
         <>
             <div
+                className={Css.resultsContainer}
                 ref={viewportRef}
                 onScroll={(ev) => setScroll(ev.currentTarget.scrollTop)}
             >
@@ -285,6 +290,14 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                         </div>
                         <CourseSearchEnd text="end of search results" />
                     </>
+                )}
+
+                {props.doHistoricalSearch ? (
+                    <HistoricalSearchResults
+                        historicalSections={props.historicalSections}
+                    />
+                ) : (
+                    <></>
                 )}
             </div>
             <div className={Css.hiddenMeasureContainer}>
@@ -342,12 +355,12 @@ const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
 });
 
 const HistoricalSearchResults = memo(function HistoricalSearch(props: {
-    sections: APIv4.Section[] | undefined;
+    historicalSections: APIv4.Section[] | undefined;
 }) {
     const activeTerm = useUserStore((user) => user.activeTerm);
     const setPopup = useStore((store) => store.setPopup);
 
-    const sections = props.sections?.filter((section) => {
+    const sections = props.historicalSections?.filter((section) => {
         return !(
             section.identifier.term === activeTerm.term &&
             section.identifier.year === activeTerm.year
@@ -356,14 +369,12 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
 
     if (sections === undefined) {
         return (
-            <div className={Css.emptyHistoricalSearchResults}>
-                (loading courses from other terms...)
-            </div>
+            <div className={Css.end}>(loading courses from other terms...)</div>
         );
     }
     if (sections.length === 0) {
         return (
-            <div className={Css.emptyHistoricalSearchResults}>
+            <div className={Css.end}>
                 (no historical records of courses found)
             </div>
         );
