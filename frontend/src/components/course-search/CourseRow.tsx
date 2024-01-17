@@ -49,7 +49,7 @@ export default memo(function CourseRow(props: {
                     )}
                 >
                     <div className={Css.titlebar} onClick={props.onClick}>
-                        <div />
+                        <Feather.Archive className={Css.archive} size={14} />
                         <span className={Css.summary}>
                             <span className={Css.courseNumber}>
                                 {APIv4.stringifySectionCode(

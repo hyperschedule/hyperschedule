@@ -98,7 +98,7 @@ export default memo(function CourseSearch() {
     );
     const allTerms = useAllTerms() ?? [];
     const doHistoricalSearch = sectionsToShow
-        ? enable && sectionsToShow.length <= 4
+        ? enable && sectionsToShow.length < 5
         : false;
     const historicalSections = useSectionsForTermsQuery(
         doHistoricalSearch,
@@ -256,7 +256,6 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
         <>
             <div
                 ref={viewportRef}
-                className={Css.resultsContainer}
                 onScroll={(ev) => setScroll(ev.currentTarget.scrollTop)}
             >
                 {viewportBounds && rowBounds && (
@@ -373,22 +372,20 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
     return (
         <div className={Css.historicalSearchResults}>
             <h4>Also found these results from previous terms!</h4>
-            <div className={Css.resultsContainer}>
-                {sections.map((section) => (
-                    <CourseRow
-                        key={APIv4.stringifySectionCodeLong(section.identifier)}
-                        section={section}
-                        expand={false}
-                        fromOtherTerm={true}
-                        onClick={() => {
-                            setPopup({
-                                option: PopupOption.SectionDetail,
-                                section: section,
-                            });
-                        }}
-                    />
-                ))}
-            </div>
+            {sections.map((section) => (
+                <CourseRow
+                    key={APIv4.stringifySectionCodeLong(section.identifier)}
+                    section={section}
+                    expand={false}
+                    fromOtherTerm={true}
+                    onClick={() => {
+                        setPopup({
+                            option: PopupOption.SectionDetail,
+                            section: section,
+                        });
+                    }}
+                />
+            ))}
         </div>
     );
 });

@@ -27,7 +27,7 @@ export async function prefetchDataForTerm(
         }),
         queryClient.prefetchQuery({
             queryKey: ["offering history", term],
-            queryFn: () => getOfferingHistory(term),
+            queryFn: () => getOfferingHistory([term]),
             staleTime: timeout,
         }),
     ]);

@@ -70,10 +70,10 @@ export function useCourseAreaDescription(): UseQueryResult<
 }
 
 export function useOfferingHistory(
-    term: APIv4.TermIdentifier,
+    terms: APIv4.TermIdentifier[],
 ): UseQueryResult<APIv4.OfferingHistory[]> {
     return useQuery({
-        queryKey: ["last offered", term] as const,
+        queryKey: ["last offered", terms] as const,
         queryFn: (ctx) => getOfferingHistory(ctx.queryKey[1]!),
         staleTime: 24 * 60 * 60 * 1000, // 1 day
         gcTime: 24 * 60 * 60 * 1000,

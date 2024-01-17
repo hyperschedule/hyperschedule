@@ -115,6 +115,12 @@
         margin-left: 0.125rem;
     }
 
+    & .archive {
+        align-self: center;
+        margin-right: 0.25rem;
+        margin-left: 0.125rem;
+    }
+
     & .summary,
     & .status {
         padding: 0.25rem 0;
