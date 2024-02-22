@@ -149,7 +149,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         },
         setConflictingSectionsOptions: (options) =>
             set({ conflictingSectionsOptions: options }),
-        
+
         hoverSection: null,
         setHoverSection: (hoverSection) => set({ hoverSection }),
     };

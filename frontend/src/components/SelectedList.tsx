@@ -36,7 +36,7 @@ export default memo(function SelectedList() {
     );
     const sectionsLookup = useActiveSectionsLookup();
     const [isDragging, setIsDragging] = useState<boolean>(false);
- 
+
     const em = parseFloat(
         window.getComputedStyle(document.body).getPropertyValue("font-size"),
     );

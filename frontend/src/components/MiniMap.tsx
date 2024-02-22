@@ -263,7 +263,7 @@ const Card = memo(function Card(props: {
     return (
         <div
             className={classNames(Css.slice, {
-                [Css.hover]: 
+                [Css.hover]:
                     hoverSection !== null &&
                     APIv4.compareSectionIdentifier(
                         hoverSection,
@@ -291,7 +291,9 @@ const Card = memo(function Card(props: {
                     section: props.card.section.identifier,
                 });
             }}
-            onPointerEnter={() => setHoverSection(props.card.section.identifier)}
+            onPointerEnter={() =>
+                setHoverSection(props.card.section.identifier)
+            }
             onPointerLeave={() => setHoverSection(null)}
         ></div>
     );
