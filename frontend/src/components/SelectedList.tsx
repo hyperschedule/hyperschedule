@@ -36,7 +36,7 @@ export default memo(function SelectedList() {
     );
     const sectionsLookup = useActiveSectionsLookup();
     const [isDragging, setIsDragging] = useState<boolean>(false);
-
+ 
     const em = parseFloat(
         window.getComputedStyle(document.body).getPropertyValue("font-size"),
     );
@@ -215,6 +215,7 @@ const SectionEntry = memo(function SectionEntry(props: {
     //const attrsMutation = useScheduleSectionAttrsMutation();
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
+    const setHoverSection = useStore((store) => store.setHoverSection);
     const scheduleRenderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
@@ -251,6 +252,12 @@ const SectionEntry = memo(function SectionEntry(props: {
             }
             {...sortable.attributes}
             {...sortable.listeners}
+            onPointerEnter={() => {
+                setHoverSection(props.entry.section);
+            }}
+            onPointerLeave={() => {
+                setHoverSection(null);
+            }}
         >
             <button
                 className={Css.selectButton}
