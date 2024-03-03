@@ -33,7 +33,8 @@
     position: relative;
     transition:
         filter var(--misc-transition-duration),
-        background-color var(--misc-transition-duration);
+        background-color var(--misc-transition-duration),
+        border-color var(--misc-transition-duration);
 
     padding: 0.125rem;
     margin-bottom: 0.5rem;
@@ -49,6 +50,11 @@
         & .badge {
             filter: saturate(50%);
         }
+    }
+
+    &.hover {
+        background-color: var(--section-highlight);
+        border-color: var(--section-highlight);
     }
 
     & .sectionInfo {
