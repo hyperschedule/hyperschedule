@@ -28,6 +28,8 @@ export type Store = WithSetters<{
     appearanceOptions: AppearanceOptions;
     popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
+
+    hoverSection: APIv4.SectionIdentifier | null;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -147,6 +149,9 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         },
         setConflictingSectionsOptions: (options) =>
             set({ conflictingSectionsOptions: options }),
+
+        hoverSection: null,
+        setHoverSection: (hoverSection) => set({ hoverSection }),
     };
 };
 

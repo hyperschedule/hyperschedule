@@ -30,6 +30,7 @@ export default memo(function CourseRow(props: {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
     const height = detailsBounds?.height ?? 0;
     const theme = useStore((store) => store.theme);
+    const setHoverSection = useStore((store) => store.setHoverSection);
 
     useEffect(() => {
         if (!props.updateDetailsSize || !detailsBounds || !props.expand) return;
@@ -45,6 +46,12 @@ export default memo(function CourseRow(props: {
                     theme,
                     false,
                 )}
+                onPointerEnter={() => {
+                    setHoverSection(props.section.identifier);
+                }}
+                onPointerLeave={() => {
+                    setHoverSection(null);
+                }}
             >
                 <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={14} />
