@@ -24,7 +24,6 @@ export const Settings = memo(function Settings() {
             <h2 className={Css.title}>Settings</h2>
             <AppearanceSettings />
             <SectionConflictSettings />
-            <HistoricalSearchSettings />
             <AccountSettings />
             <DataViewer />
             <ReportIssues />
@@ -226,68 +225,6 @@ const SectionConflictSettings = memo(function SectionConflictSettings() {
                     });
                 }}
                 text=""
-            />
-        </div>
-    );
-});
-
-const HistoricalSearchSettings = memo(function HistoricalSearchSettings() {
-    const historicalSearchOptions = useStore(
-        (store) => store.historicalSearchOptions,
-    );
-    const setHistoricalSearchOptions = useStore(
-        (store) => store.setHistoricalSearchOptions,
-    );
-
-    const allTerms = useAllTerms() ?? [];
-    function createPossibleRanges(numTerms: number): number[] {
-        let results = [];
-        for (let i = 0; i < Math.log2(numTerms); i++) {
-            if (i !== 0) {
-                results.push(2 ** i);
-            }
-        }
-        results.push(numTerms);
-        return results;
-    }
-    const rangeOptions = createPossibleRanges(allTerms.length);
-
-    return (
-        <div className={Css.historicalSearch}>
-            <h3 className={Css.title}>Historical Search</h3>
-            <span>
-                Search for matching courses from recent terms when only a few
-                courses are found
-            </span>
-
-            <Slider
-                value={historicalSearchOptions.enable}
-                onToggle={() => {
-                    setHistoricalSearchOptions({
-                        ...historicalSearchOptions,
-                        enable: !historicalSearchOptions.enable,
-                    });
-                }}
-                text=""
-            />
-            <span>
-                How many recent terms do you want to search?{" "}
-                <span className={Css.warning}>
-                    {" "}
-                    (this may affect performance!)
-                </span>
-            </span>
-            <Dropdown
-                choices={rangeOptions.map((range) => range.toString())}
-                selected={historicalSearchOptions.range.toString()}
-                onSelect={(index) => {
-                    const selectedRange = rangeOptions[index] ?? 4;
-                    setHistoricalSearchOptions({
-                        ...historicalSearchOptions,
-                        range: selectedRange,
-                    });
-                }}
-                emptyPlaceholder={"none selected"}
             />
         </div>
     );

@@ -36,19 +36,6 @@
         }
     }
 
-    & .historicalSearch {
-        @mixin two-column-grid;
-
-        & .title {
-            grid-column: 1 / -1;
-        }
-
-        & .warning {
-            color: var(--palette-orange);
-            font-weight: 500;
-        }
-    }
-
     & .dataViewer {
         a,
         a:visited {

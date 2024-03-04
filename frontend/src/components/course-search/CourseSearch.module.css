@@ -45,14 +45,34 @@
     right: 0;
 }
 
+.historicalSearchMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-top: 0.125rem dotted;
+    padding: 1rem 0 0 0;
+
+    & .element {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        justify-items: start;
+        gap: 0.25em 0.5em;
+        padding-top: 0.5rem;
+    }
+
+    & .warning {
+        color: var(--palette-orange);
+        font-weight: 500;
+    }
+}
+
 .historicalSearchResults {
     text-align: center;
-    border-top: 0.125rem dotted;
     margin: 0.5rem;
 
     & h4 {
-        padding-top: 1rem;
-        padding-bottom: 0.5rem;
+        padding: 1rem;
         margin: 0;
     }
 }

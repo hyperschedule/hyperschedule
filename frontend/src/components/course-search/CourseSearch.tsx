@@ -4,6 +4,9 @@ import { useMeasure } from "@react-hookz/web";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
+import Slider from "@components/common/Slider";
+import Dropdown from "@components/common/Dropdown";
+
 import {
     useCourseAreaDescription,
     useSectionsForTermsQuery,
@@ -245,6 +248,7 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
         return (
             <div>
                 <CourseSearchEnd text="no courses in active term found" />
+                <HistoricalSearchMenu />
 
                 {props.doHistoricalSearch ? (
                     <HistoricalSearchResults
@@ -289,6 +293,7 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                             ))}
                         </div>
                         <CourseSearchEnd text="end of search results" />
+                        <HistoricalSearchMenu />
                     </>
                 )}
 
@@ -351,7 +356,88 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
 });
 
 const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
+    const historicalSearchOptions = useStore(
+        (store) => store.historicalSearchOptions,
+    );
+    const setHistoricalSearchOptions = useStore(
+        (store) => store.setHistoricalSearchOptions,
+    );
+
+    const allTerms = useAllTerms() ?? [];
+    function createPossibleRanges(numTerms: number): number[] {
+        let results = [];
+        for (let i = 0; i < Math.log2(numTerms); i++) {
+            if (i !== 0) {
+                results.push(2 ** i);
+            }
+        }
+        results.push(numTerms);
+        return results;
+    }
+    const rangeOptions = createPossibleRanges(allTerms.length);
+
     return <div className={Css.end}>({props.text})</div>;
+});
+
+const HistoricalSearchMenu = memo(function HistoricalSearchMenu() {
+    const historicalSearchOptions = useStore(
+        (store) => store.historicalSearchOptions,
+    );
+    const setHistoricalSearchOptions = useStore(
+        (store) => store.setHistoricalSearchOptions,
+    );
+
+    const allTerms = useAllTerms() ?? [];
+    function createPossibleRanges(numTerms: number): number[] {
+        let results = [];
+        for (let i = 0; i < Math.log2(numTerms); i++) {
+            if (i !== 0) {
+                results.push(2 ** i);
+            }
+        }
+        results.push(numTerms);
+        return results;
+    }
+    const rangeOptions = createPossibleRanges(allTerms.length);
+
+    return (
+        <div className={Css.historicalSearchMenu}>
+            <div className={Css.element}>
+                <span>Search for courses from previous semesters</span>
+                <Slider
+                    value={historicalSearchOptions.enable}
+                    onToggle={() => {
+                        setHistoricalSearchOptions({
+                            ...historicalSearchOptions,
+                            enable: !historicalSearchOptions.enable,
+                        });
+                    }}
+                    text=""
+                />
+            </div>
+            <div className={Css.element}>
+                <span>
+                    How many recent semesters do you want to search?{" "}
+                    <span className={Css.warning}>
+                        {" "}
+                        (this may affect performance!)
+                    </span>
+                </span>
+                <Dropdown
+                    choices={rangeOptions.map((range) => range.toString())}
+                    selected={historicalSearchOptions.range.toString()}
+                    onSelect={(index) => {
+                        const selectedRange = rangeOptions[index] ?? 4;
+                        setHistoricalSearchOptions({
+                            ...historicalSearchOptions,
+                            range: selectedRange,
+                        });
+                    }}
+                    emptyPlaceholder={"none selected"}
+                />
+            </div>
+        </div>
+    );
 });
 
 const HistoricalSearchResults = memo(function HistoricalSearch(props: {

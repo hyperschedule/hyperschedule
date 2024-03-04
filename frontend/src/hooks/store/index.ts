@@ -173,7 +173,6 @@ const useStore = Zustand.create<Store>()(
                 "theme",
                 "appearanceOptions",
                 "conflictingSectionsOptions",
-                "historicalSearchOptions",
             ),
         }),
     ),
