@@ -216,6 +216,7 @@ const SectionEntry = memo(function SectionEntry(props: {
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
     const setHoverSection = useStore((store) => store.setHoverSection);
+    const hoverSection = useStore((store) => store.hoverSection);
     const scheduleRenderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
@@ -241,6 +242,12 @@ const SectionEntry = memo(function SectionEntry(props: {
             ref={sortable.setNodeRef}
             className={classNames(Css.entry, {
                 [Css.unselected]: !props.entry.attrs.selected,
+                [Css.hover]:
+                    hoverSection !== null &&
+                    APIv4.compareSectionIdentifier(
+                        hoverSection,
+                        props.entry.section,
+                    ),
             })}
             style={{
                 ...sectionColorStyle(props.entry.section, theme, true),
@@ -253,10 +260,12 @@ const SectionEntry = memo(function SectionEntry(props: {
             {...sortable.attributes}
             {...sortable.listeners}
             onPointerEnter={() => {
-                setHoverSection(props.entry.section);
+                if (props.entry.attrs.selected) {
+                    setHoverSection(props.entry.section);
+                }
             }}
             onPointerLeave={() => {
-                setHoverSection(null);
+                setHoverSection(null); // Edge Case: If all courses are deselected then the hovered section will stay highlighted until cursor leaves
             }}
         >
             <button
