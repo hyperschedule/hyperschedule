@@ -100,17 +100,14 @@ export default memo(function CourseSearch() {
         (store) => store.historicalSearchOptions,
     );
     const allTerms = useAllTerms() ?? [];
-    const doHistoricalSearch = sectionsToShow
-        ? enable && sectionsToShow.length < 5
-        : false;
     const historicalSections = useSectionsForTermsQuery(
-        doHistoricalSearch,
+        enable,
         allTerms.slice(0, range),
     ).data;
 
     const matchingHistoricalSections: APIv4.Section[] | undefined =
         React.useMemo(() => {
-            if (!doHistoricalSearch || !historicalSections) {
+            if (!enable || !historicalSections) {
                 return undefined;
             }
 
@@ -135,13 +132,7 @@ export default memo(function CourseSearch() {
             }
             const sorted = res.sort((a, b) => b[0] - a[0]);
             return sorted.map((a) => a[1]);
-        }, [
-            historicalSections,
-            searchText,
-            searchFilters,
-            doHistoricalSearch,
-            range,
-        ]);
+        }, [historicalSections, searchText, searchFilters, enable, range]);
 
     return (
         <div className={Css.container}>
@@ -149,7 +140,7 @@ export default memo(function CourseSearch() {
             {sectionsToShow !== undefined ? (
                 <CourseSearchResults
                     sections={sectionsToShow}
-                    doHistoricalSearch={doHistoricalSearch}
+                    HistoricalSearchEnabled={enable}
                     historicalSections={matchingHistoricalSections}
                 />
             ) : (
@@ -186,7 +177,7 @@ function computeIndices(state: {
 
 const CourseSearchResults = memo(function CourseSearchResults(props: {
     sections: APIv4.Section[];
-    doHistoricalSearch: boolean;
+    HistoricalSearchEnabled: boolean;
     historicalSections: APIv4.Section[] | undefined;
 }) {
     // https://github.com/streamich/react-use/issues/1264#issuecomment-721645100
@@ -250,7 +241,7 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                 <CourseSearchEnd text="no courses in active term found" />
                 <HistoricalSearchMenu />
 
-                {props.doHistoricalSearch ? (
+                {props.HistoricalSearchEnabled ? (
                     <HistoricalSearchResults
                         historicalSections={props.historicalSections}
                     />
@@ -297,7 +288,7 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                     </>
                 )}
 
-                {props.doHistoricalSearch ? (
+                {props.HistoricalSearchEnabled ? (
                     <HistoricalSearchResults
                         historicalSections={props.historicalSections}
                     />
@@ -356,26 +347,6 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
 });
 
 const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
-    const historicalSearchOptions = useStore(
-        (store) => store.historicalSearchOptions,
-    );
-    const setHistoricalSearchOptions = useStore(
-        (store) => store.setHistoricalSearchOptions,
-    );
-
-    const allTerms = useAllTerms() ?? [];
-    function createPossibleRanges(numTerms: number): number[] {
-        let results = [];
-        for (let i = 0; i < Math.log2(numTerms); i++) {
-            if (i !== 0) {
-                results.push(2 ** i);
-            }
-        }
-        results.push(numTerms);
-        return results;
-    }
-    const rangeOptions = createPossibleRanges(allTerms.length);
-
     return <div className={Css.end}>({props.text})</div>;
 });
 
@@ -403,7 +374,7 @@ const HistoricalSearchMenu = memo(function HistoricalSearchMenu() {
     return (
         <div className={Css.historicalSearchMenu}>
             <div className={Css.element}>
-                <span>Search for courses from previous semesters</span>
+                <span>Search for courses from other recent semesters</span>
                 <Slider
                     value={historicalSearchOptions.enable}
                     onToggle={() => {
@@ -455,34 +426,38 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
 
     if (sections === undefined) {
         return (
-            <div className={Css.end}>(loading courses from other terms...)</div>
-        );
-    }
-    if (sections.length === 0) {
-        return (
             <div className={Css.end}>
-                (no historical records of courses found)
+                (loading courses from other semesters...)
             </div>
         );
     }
 
     return (
-        <div className={Css.historicalSearchResults}>
-            <h4>Also found these results from previous terms!</h4>
-            {sections.map((section) => (
-                <CourseRow
-                    key={APIv4.stringifySectionCodeLong(section.identifier)}
-                    section={section}
-                    expand={false}
-                    fromOtherTerm={true}
-                    onClick={() => {
-                        setPopup({
-                            option: PopupOption.SectionDetail,
-                            section: section,
-                        });
-                    }}
-                />
-            ))}
-        </div>
+        <>
+            <div className={Css.historicalSearchResults}>
+                {sections.map((section) => (
+                    <CourseRow
+                        key={APIv4.stringifySectionCodeLong(section.identifier)}
+                        section={section}
+                        expand={false}
+                        fromOtherTerm={true}
+                        onClick={() => {
+                            setPopup({
+                                option: PopupOption.SectionDetail,
+                                section: section,
+                            });
+                        }}
+                    />
+                ))}
+            </div>
+
+            <CourseSearchEnd
+                text={
+                    sections.length === 0
+                        ? "no historical records of courses found"
+                        : "end of recent semesters search results"
+                }
+            />
+        </>
     );
 });

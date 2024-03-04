@@ -1,7 +1,6 @@
 import Css from "./Settings.module.css";
 import AppCss from "@components/App.module.css";
 import Slider from "@components/common/Slider";
-import Dropdown from "@components/common/Dropdown";
 import useStore from "@hooks/store";
 import { useUserStore } from "@hooks/store/user";
 import {
@@ -16,7 +15,6 @@ import classNames from "classnames";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { memo } from "react";
-import { useAllTerms } from "@hooks/term";
 
 export const Settings = memo(function Settings() {
     return (
