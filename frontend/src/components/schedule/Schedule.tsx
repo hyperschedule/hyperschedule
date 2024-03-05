@@ -27,7 +27,6 @@ import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import { SCHEDULE_CONTAINER_ID } from "@lib/constants";
 import type { CSSProperties } from "react";
-import { useState } from "react";
 
 export default memo(function Schedule(props: ScheduleRenderingOptions) {
     const { cards, startHour, endHour, unconflicting } =

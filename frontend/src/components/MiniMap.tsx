@@ -19,7 +19,7 @@ import {
     groupCardsByDay,
     mergeCards,
 } from "@lib/schedule";
-import { useState, memo } from "react";
+import { memo } from "react";
 import * as Feather from "react-feather";
 import { PopupOption } from "@lib/popup";
 
