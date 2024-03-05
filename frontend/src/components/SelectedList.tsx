@@ -243,7 +243,6 @@ const SectionEntry = memo(function SectionEntry(props: {
             className={classNames(Css.entry, {
                 [Css.unselected]: !props.entry.attrs.selected,
                 [Css.hover]:
-                    props.entry.attrs.selected &&
                     hoverSection !== null &&
                     APIv4.compareSectionIdentifier(
                         hoverSection,
@@ -261,9 +260,7 @@ const SectionEntry = memo(function SectionEntry(props: {
             {...sortable.attributes}
             {...sortable.listeners}
             onPointerEnter={() => {
-                if (props.entry.attrs.selected) {
-                    setHoverSection(props.entry.section);
-                }
+                setHoverSection(props.entry.section);
             }}
             onPointerLeave={() => {
                 setHoverSection(null);
