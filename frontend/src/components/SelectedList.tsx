@@ -243,6 +243,7 @@ const SectionEntry = memo(function SectionEntry(props: {
             className={classNames(Css.entry, {
                 [Css.unselected]: !props.entry.attrs.selected,
                 [Css.hover]:
+                    props.entry.attrs.selected &&
                     hoverSection !== null &&
                     APIv4.compareSectionIdentifier(
                         hoverSection,
@@ -265,7 +266,7 @@ const SectionEntry = memo(function SectionEntry(props: {
                 }
             }}
             onPointerLeave={() => {
-                setHoverSection(null); // Edge Case: If all courses are deselected then the hovered section will stay highlighted until cursor leaves
+                setHoverSection(null);
             }}
         >
             <button
