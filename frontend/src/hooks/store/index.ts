@@ -23,12 +23,12 @@ export type Store = WithSetters<{
     hideConflictingSections: boolean;
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
+    popup: Popup;
 
     appearanceOptions: AppearanceOptions;
-    popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
     conflictingSectionsOptions: ConflictingSectionsOptions;
-    historicalSearchOptions: HistoricalSearchOptions;
+    multiTermsSearchOptions: MultiTermsSearchOptions;
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -65,7 +65,7 @@ export type ConflictingSectionsOptions = {
     hideAsyncSections: boolean;
 };
 
-export type HistoricalSearchOptions = {
+export type MultiTermsSearchOptions = {
     enable: boolean;
     range: number;
 };
@@ -154,12 +154,12 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         setConflictingSectionsOptions: (options) =>
             set({ conflictingSectionsOptions: options }),
 
-        historicalSearchOptions: {
+        multiTermsSearchOptions: {
             enable: false,
             range: 4,
         },
-        setHistoricalSearchOptions: (options) =>
-            set({ historicalSearchOptions: options }),
+        setMultiTermsSearchOptions: (options) =>
+            set({ multiTermsSearchOptions: options }),
     };
 };
 

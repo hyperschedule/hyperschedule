@@ -97,34 +97,34 @@ export default memo(function CourseSearch() {
     ]);
 
     const { enable, range } = useStore(
-        (store) => store.historicalSearchOptions,
+        (store) => store.multiTermsSearchOptions,
     );
     const allTerms = useAllTerms() ?? [];
-    const historicalSections = useSectionsForTermsQuery(
+    const multiTermsSections = useSectionsForTermsQuery(
         enable,
         allTerms.slice(0, range),
     ).data;
 
-    const matchingHistoricalSections: APIv4.Section[] | undefined =
+    const matchingMultiTermsSections: APIv4.Section[] | undefined =
         React.useMemo(() => {
-            if (!enable || !historicalSections) {
+            if (!enable || !multiTermsSections) {
                 return undefined;
             }
 
-            const filteredHistoricalSections =
+            const filteredMultiTermsSections =
                 searchFilters.length === 0
-                    ? historicalSections
-                    : historicalSections.filter((s) =>
+                    ? multiTermsSections
+                    : multiTermsSections.filter((s) =>
                           Search.filterSection(
                               s,
                               searchFilters.map((s) => s.filter),
                           ),
                       );
 
-            if (searchText === "") return filteredHistoricalSections;
+            if (searchText === "") return filteredMultiTermsSections;
 
             let res: [number, APIv4.Section][] = [];
-            for (const s of filteredHistoricalSections) {
+            for (const s of filteredMultiTermsSections) {
                 const score = Search.matchesText(searchText, s, areas);
                 if (score !== null) {
                     res.push([score, s]);
@@ -132,7 +132,7 @@ export default memo(function CourseSearch() {
             }
             const sorted = res.sort((a, b) => b[0] - a[0]);
             return sorted.map((a) => a[1]);
-        }, [historicalSections, searchText, searchFilters, enable, range]);
+        }, [multiTermsSections, searchText, searchFilters, enable, range]);
 
     return (
         <div className={Css.container}>
@@ -140,8 +140,8 @@ export default memo(function CourseSearch() {
             {sectionsToShow !== undefined ? (
                 <CourseSearchResults
                     sections={sectionsToShow}
-                    HistoricalSearchEnabled={enable}
-                    historicalSections={matchingHistoricalSections}
+                    multiTermsSearchEnabled={enable}
+                    multiTermsSections={matchingMultiTermsSections}
                 />
             ) : (
                 <CourseSearchEnd text="loading courses..." />
@@ -177,8 +177,8 @@ function computeIndices(state: {
 
 const CourseSearchResults = memo(function CourseSearchResults(props: {
     sections: APIv4.Section[];
-    HistoricalSearchEnabled: boolean;
-    historicalSections: APIv4.Section[] | undefined;
+    multiTermsSearchEnabled: boolean;
+    multiTermsSections: APIv4.Section[] | undefined;
 }) {
     // https://github.com/streamich/react-use/issues/1264#issuecomment-721645100
     const [rowBounds, rowMeasureRef] = useMeasure<HTMLDivElement>();
@@ -239,11 +239,11 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
         return (
             <div>
                 <CourseSearchEnd text="no courses in active term found" />
-                <HistoricalSearchMenu />
+                <MultiTermsSearchMenu />
 
-                {props.HistoricalSearchEnabled ? (
-                    <HistoricalSearchResults
-                        historicalSections={props.historicalSections}
+                {props.multiTermsSearchEnabled ? (
+                    <MultiTermsSearchResults
+                        multiTermsSections={props.multiTermsSections}
                     />
                 ) : (
                     <></>
@@ -284,13 +284,13 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                             ))}
                         </div>
                         <CourseSearchEnd text="end of search results" />
-                        <HistoricalSearchMenu />
+                        <MultiTermsSearchMenu />
                     </>
                 )}
 
-                {props.HistoricalSearchEnabled ? (
-                    <HistoricalSearchResults
-                        historicalSections={props.historicalSections}
+                {props.multiTermsSearchEnabled ? (
+                    <MultiTermsSearchResults
+                        multiTermsSections={props.multiTermsSections}
                     />
                 ) : (
                     <></>
@@ -350,12 +350,12 @@ const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
     return <div className={Css.end}>({props.text})</div>;
 });
 
-const HistoricalSearchMenu = memo(function HistoricalSearchMenu() {
-    const historicalSearchOptions = useStore(
-        (store) => store.historicalSearchOptions,
+const MultiTermsSearchMenu = memo(function MultiTermsSearchMenu() {
+    const multiTermsSearchOptions = useStore(
+        (store) => store.multiTermsSearchOptions,
     );
-    const setHistoricalSearchOptions = useStore(
-        (store) => store.setHistoricalSearchOptions,
+    const setMultiTermsSearchOptions = useStore(
+        (store) => store.setMultiTermsSearchOptions,
     );
 
     const allTerms = useAllTerms() ?? [];
@@ -372,52 +372,56 @@ const HistoricalSearchMenu = memo(function HistoricalSearchMenu() {
     const rangeOptions = createPossibleRanges(allTerms.length);
 
     return (
-        <div className={Css.historicalSearchMenu}>
+        <div className={Css.multiTermsSearchMenu}>
             <div className={Css.element}>
                 <span>Search for courses from other recent semesters</span>
                 <Slider
-                    value={historicalSearchOptions.enable}
+                    value={multiTermsSearchOptions.enable}
                     onToggle={() => {
-                        setHistoricalSearchOptions({
-                            ...historicalSearchOptions,
-                            enable: !historicalSearchOptions.enable,
+                        setMultiTermsSearchOptions({
+                            ...multiTermsSearchOptions,
+                            enable: !multiTermsSearchOptions.enable,
                         });
                     }}
                     text=""
                 />
             </div>
-            <div className={Css.element}>
-                <span>
-                    How many recent semesters do you want to search?{" "}
-                    <span className={Css.warning}>
-                        {" "}
-                        (this may affect performance!)
+            {multiTermsSearchOptions.enable ? (
+                <div className={Css.element}>
+                    <span>
+                        How many recent semesters do you want to search?{" "}
+                        <span className={Css.warning}>
+                            {" "}
+                            (this may affect performance!)
+                        </span>
                     </span>
-                </span>
-                <Dropdown
-                    choices={rangeOptions.map((range) => range.toString())}
-                    selected={historicalSearchOptions.range.toString()}
-                    onSelect={(index) => {
-                        const selectedRange = rangeOptions[index] ?? 4;
-                        setHistoricalSearchOptions({
-                            ...historicalSearchOptions,
-                            range: selectedRange,
-                        });
-                    }}
-                    emptyPlaceholder={"none selected"}
-                />
-            </div>
+                    <Dropdown
+                        choices={rangeOptions.map((range) => range.toString())}
+                        selected={multiTermsSearchOptions.range.toString()}
+                        onSelect={(index) => {
+                            const selectedRange = rangeOptions[index] ?? 4;
+                            setMultiTermsSearchOptions({
+                                ...multiTermsSearchOptions,
+                                range: selectedRange,
+                            });
+                        }}
+                        emptyPlaceholder={"none selected"}
+                    />
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
     );
 });
 
-const HistoricalSearchResults = memo(function HistoricalSearch(props: {
-    historicalSections: APIv4.Section[] | undefined;
+const MultiTermsSearchResults = memo(function MultiTermsSearchResults(props: {
+    multiTermsSections: APIv4.Section[] | undefined;
 }) {
     const activeTerm = useUserStore((user) => user.activeTerm);
     const setPopup = useStore((store) => store.setPopup);
 
-    const sections = props.historicalSections?.filter((section) => {
+    const sections = props.multiTermsSections?.filter((section) => {
         return !(
             section.identifier.term === activeTerm.term &&
             section.identifier.year === activeTerm.year
@@ -434,7 +438,7 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
 
     return (
         <>
-            <div className={Css.historicalSearchResults}>
+            <div className={Css.multiTermsSearchResults}>
                 {sections.map((section) => (
                     <CourseRow
                         key={APIv4.stringifySectionCodeLong(section.identifier)}
@@ -454,7 +458,7 @@ const HistoricalSearchResults = memo(function HistoricalSearch(props: {
             <CourseSearchEnd
                 text={
                     sections.length === 0
-                        ? "no historical records of courses found"
+                        ? "no recent records of courses found"
                         : "end of recent semesters search results"
                 }
             />

@@ -13,7 +13,7 @@ export function useOfferingHistoryLookup(): Map<
     const allTerms = useAllTerms() ?? [];
 
     const { enable, range } = useStore(
-        (store) => store.historicalSearchOptions,
+        (store) => store.multiTermsSearchOptions,
     );
 
     const lookupTerms = enable ? allTerms.slice(0, range) : [activeTerm];
