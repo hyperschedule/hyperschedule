@@ -27,7 +27,6 @@ import useStore, { type ScheduleRenderingOptions } from "@hooks/store";
 import { PopupOption } from "@lib/popup";
 import { SCHEDULE_CONTAINER_ID } from "@lib/constants";
 import type { CSSProperties } from "react";
-import { useState } from "react";
 
 export default memo(function Schedule(props: ScheduleRenderingOptions) {
     const { cards, startHour, endHour, unconflicting } =
@@ -35,9 +34,6 @@ export default memo(function Schedule(props: ScheduleRenderingOptions) {
 
     const weekend = hasWeekend(cards);
     const byDay = groupCardsByDay(cards);
-
-    const [hoverSection, setHoverSection] =
-        useState<APIv4.SectionIdentifier | null>(null);
 
     return (
         <div
@@ -79,8 +75,6 @@ export default memo(function Schedule(props: ScheduleRenderingOptions) {
                                     orderFromTop={i}
                                     orderFromBottom={group.cards.length - 1 - i}
                                     totalCardsInGroup={group.cards.length}
-                                    hoverSection={hoverSection}
-                                    setHoverSection={setHoverSection}
                                 />
                             ));
                         });
@@ -153,11 +147,11 @@ const Card = memo(function Card(props: {
     orderFromBottom: number;
     totalCardsInGroup: number;
     conflict: boolean;
-    hoverSection: APIv4.SectionIdentifier | null;
-    setHoverSection: (val: APIv4.SectionIdentifier | null) => void;
 }) {
     const theme = useStore((store) => store.theme);
     const setPopup = useStore((store) => store.setPopup);
+    const setHoverSection = useStore((store) => store.setHoverSection);
+    const hoverSection = useStore((store) => store.hoverSection);
     const sectionsLookup = useActiveSectionsLookup();
 
     const section = sectionsLookup.get(
@@ -176,9 +170,9 @@ const Card = memo(function Card(props: {
                 [Css.secondHalf]:
                     props.card.section.identifier.half?.number === 2,
                 [Css.hover]:
-                    props.hoverSection !== null &&
+                    hoverSection !== null &&
                     APIv4.compareSectionIdentifier(
-                        props.hoverSection,
+                        hoverSection,
                         props.card.section.identifier,
                     ),
             })}
@@ -203,10 +197,10 @@ const Card = memo(function Card(props: {
                 })
             }
             onPointerEnter={() => {
-                props.setHoverSection(props.card.section.identifier);
+                setHoverSection(props.card.section.identifier);
             }}
             onPointerLeave={() => {
-                props.setHoverSection(null);
+                setHoverSection(null);
             }}
         >
             <div className={Css.code}>

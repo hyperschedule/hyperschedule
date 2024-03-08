@@ -8,18 +8,28 @@ import { signUser } from "../../auth/token";
 import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
 import { COOKIE_DOMAIN } from "../cookie-domain";
 
+const EPPN_URN = "urn:oid:1.3.6.1.4.1.5923.1.1.1.6";
+
 const logger = createLogger("routes.auth.saml");
 
 const samlApp = new App({ settings: { xPoweredBy: false } });
 
-const SamlResponseFormat = z.object({
-    audience: z.literal("https://hyperschedule.io/"),
-    attributes: z.object({
-        eppn: z.string().email(),
-        orgName: z.string(),
-        displayName: z.string().optional(),
-    }),
-});
+const SamlResponseFormat = z
+    .object({
+        audience: z.literal("https://hyperschedule.io/"),
+        attributes: z.object({
+            eppn: z.string().email().optional(),
+            [EPPN_URN]: z.string().email().optional(),
+            orgName: z.string(),
+            displayName: z.string().optional(),
+        }),
+    })
+    .refine(
+        (o) =>
+            o.attributes.eppn !== undefined ||
+            o.attributes[EPPN_URN] !== undefined,
+        { message: "eduPersonPrincipleName is not supplied" },
+    );
 type SamlResponseFormat = z.infer<typeof SamlResponseFormat>;
 
 // this path is hard coded into the metadata sent to TCCS. Do not change
@@ -38,7 +48,7 @@ samlApp
                 body: request.body,
             });
             logger.info(result.extract, "SAML request completed");
-            const data = SamlResponseFormat.strip().safeParse(result.extract);
+            const data = SamlResponseFormat.safeParse(result.extract);
             if (!data.success) {
                 logger.error(
                     "Cannot parse SAML response from CAS. %o. Error: %o",
@@ -57,7 +67,7 @@ samlApp
             }
 
             const user = await getOrCreateUser(
-                data.data.attributes.eppn,
+                (data.data.attributes.eppn ?? data.data.attributes[EPPN_URN])!,
                 data.data.attributes.orgName,
             );
 

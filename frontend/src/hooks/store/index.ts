@@ -29,6 +29,8 @@ export type Store = WithSetters<{
     scheduleRenderingOptions: ScheduleRenderingOptions;
     conflictingSectionsOptions: ConflictingSectionsOptions;
     multiTermsSearchOptions: MultiTermsSearchOptions;
+    hoverSection: APIv4.SectionIdentifier | null;
+
 }> & {
     theme: Theme;
     toggleTheme: () => void;
@@ -160,6 +162,9 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         },
         setMultiTermsSearchOptions: (options) =>
             set({ multiTermsSearchOptions: options }),
+      
+        hoverSection: null,
+        setHoverSection: (hoverSection) => set({ hoverSection }),
     };
 };
 

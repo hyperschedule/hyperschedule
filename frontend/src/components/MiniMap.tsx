@@ -19,7 +19,7 @@ import {
     groupCardsByDay,
     mergeCards,
 } from "@lib/schedule";
-import { useState, memo } from "react";
+import { memo } from "react";
 import * as Feather from "react-feather";
 import { PopupOption } from "@lib/popup";
 
@@ -185,7 +185,6 @@ const MinimapCards = memo(function MinimapCards(props: {
     unconflicting: Set<APIv4.Section>;
 }) {
     const byDay = groupCardsByDay(props.cards);
-    const [hoverSection, setHoverSection] = useState<string | null>(null);
 
     return (
         <>
@@ -204,8 +203,6 @@ const MinimapCards = memo(function MinimapCards(props: {
                                     card.section,
                                 )}
                                 groupSize={group.cards.length}
-                                hoverSection={hoverSection}
-                                setHoverSection={setHoverSection}
                             />
                         ));
                 }),
@@ -219,10 +216,10 @@ const Card = memo(function Card(props: {
     isUnconflicting: boolean;
     index: number;
     groupSize: number;
-    hoverSection: string | null;
-    setHoverSection: (val: string | null) => void;
 }) {
     const setPopup = useStore((store) => store.setPopup);
+    const setHoverSection = useStore((store) => store.setHoverSection);
+    const hoverSection = useStore((store) => store.hoverSection);
     const renderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
@@ -266,7 +263,12 @@ const Card = memo(function Card(props: {
     return (
         <div
             className={classNames(Css.slice, {
-                [Css.hover]: sectionCode === props.hoverSection,
+                [Css.hover]:
+                    hoverSection !== null &&
+                    APIv4.compareSectionIdentifier(
+                        hoverSection,
+                        props.card.section.identifier,
+                    ),
                 [Css.highlight]:
                     expandKey &&
                     sectionCode === APIv4.stringifySectionCodeLong(expandKey),
@@ -289,8 +291,10 @@ const Card = memo(function Card(props: {
                     section: props.card.section,
                 });
             }}
-            onPointerEnter={() => props.setHoverSection(sectionCode)}
-            onPointerLeave={() => props.setHoverSection(null)}
+            onPointerEnter={() =>
+                setHoverSection(props.card.section.identifier)
+            }
+            onPointerLeave={() => setHoverSection(null)}
         ></div>
     );
 });
