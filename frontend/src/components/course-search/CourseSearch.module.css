@@ -37,10 +37,42 @@
 
 .end {
     padding-top: 1rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     text-align: center;
     color: var(--fg-1);
     display: block;
     left: 0;
     right: 0;
+}
+
+.multiTermsSearchMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-top: 0.125rem dotted;
+    padding: 1rem 0 0 0;
+
+    & .element {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        justify-items: start;
+        gap: 0.25em 0.5em;
+        padding-top: 0.5rem;
+    }
+
+    & .warning {
+        color: var(--palette-orange);
+        font-weight: 500;
+    }
+}
+
+.multiTermsSearchResults {
+    text-align: center;
+    margin: 0.5rem;
+
+    & h4 {
+        padding: 1rem;
+        margin: 0;
+    }
 }

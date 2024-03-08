@@ -292,7 +292,7 @@ const SectionEntry = memo(function SectionEntry(props: {
                 onClick={() => {
                     setPopup({
                         option: PopupOption.SectionDetail,
-                        section: props.entry.section,
+                        section: section ?? undefined,
                     });
                 }}
             >

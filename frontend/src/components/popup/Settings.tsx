@@ -2,17 +2,17 @@ import Css from "./Settings.module.css";
 import AppCss from "@components/App.module.css";
 import Slider from "@components/common/Slider";
 import useStore from "@hooks/store";
+import { useUserStore } from "@hooks/store/user";
 import {
     AUTH_COOKIE_DOMAIN,
     DATA_VIEWER_PATH,
     GITHUB_LINK,
 } from "@lib/constants";
 import { AUTH_TOKEN_COOKIE_NAME } from "hyperschedule-shared/api/constants";
+import { schoolCodeToName } from "hyperschedule-shared/api/v4";
 import * as Feather from "react-feather";
 import classNames from "classnames";
-import { useUserStore } from "@hooks/store/user";
 import Cookies from "js-cookie";
-import { schoolCodeToName } from "hyperschedule-shared/api/v4";
 import { useState } from "react";
 import { memo } from "react";
 

@@ -107,7 +107,7 @@ export function sectionColorStyle(
     const colorOut = randomColor({
         hue: "random",
         luminosity: "light",
-        seed: md5(APIv4.stringifySectionCode(section)),
+        seed: md5(APIv4.stringifySectionCodeLong(section)),
         format: "hsvArray",
     }) as unknown as Color;
 

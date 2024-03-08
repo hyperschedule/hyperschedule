@@ -21,14 +21,14 @@ export type Store = WithSetters<{
     searchText: string;
     searchFilters: StoreFilter[];
     hideConflictingSections: boolean;
-    conflictingSectionsOptions: ConflictingSectionsOptions;
     expandKey: APIv4.SectionIdentifier | null;
     expandHeight: number;
+    popup: Popup;
 
     appearanceOptions: AppearanceOptions;
-    popup: Popup;
     scheduleRenderingOptions: ScheduleRenderingOptions;
-
+    conflictingSectionsOptions: ConflictingSectionsOptions;
+    multiTermsSearchOptions: MultiTermsSearchOptions;
     hoverSection: APIv4.SectionIdentifier | null;
 }> & {
     theme: Theme;
@@ -64,6 +64,11 @@ export type AppearanceOptions = {
 export type ConflictingSectionsOptions = {
     skipSectionsOfSelectedCourse: boolean;
     hideAsyncSections: boolean;
+};
+
+export type MultiTermsSearchOptions = {
+    enable: boolean;
+    range: number;
 };
 
 const initStore: Zustand.StateCreator<Store> = (set, get) => {
@@ -149,6 +154,13 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         },
         setConflictingSectionsOptions: (options) =>
             set({ conflictingSectionsOptions: options }),
+
+        multiTermsSearchOptions: {
+            enable: false,
+            range: 4,
+        },
+        setMultiTermsSearchOptions: (options) =>
+            set({ multiTermsSearchOptions: options }),
 
         hoverSection: null,
         setHoverSection: (hoverSection) => set({ hoverSection }),

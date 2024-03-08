@@ -17,7 +17,7 @@ export type Popup =
       }
     | {
           option: PopupOption.SectionDetail;
-          section: APIv4.SectionIdentifier;
+          section: APIv4.Section | undefined;
       }
     | {
           option: PopupOption.Settings;

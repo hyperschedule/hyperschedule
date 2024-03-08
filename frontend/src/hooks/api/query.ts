@@ -5,6 +5,7 @@ import {
     getSectionsForTerm,
     getCourseAreaDescription,
     getOfferingHistory,
+    getSectionsForTerms,
 } from "@hooks/api/fetch";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import * as ReactQuery from "@tanstack/react-query";
@@ -42,6 +43,21 @@ export function useSectionsQuery(
     });
 }
 
+export function useSectionsForTermsQuery(
+    enabled: boolean,
+    terms: APIv4.TermIdentifier[],
+): UseQueryResult<APIv4.Section[]> {
+    let timeout = terms.length * 30 * 1000;
+
+    return useQuery({
+        queryKey: ["sections", "historical", terms] as const,
+        queryFn: (ctx) => getSectionsForTerms(ctx.queryKey[2]!),
+        staleTime: timeout,
+        refetchInterval: timeout,
+        enabled: enabled,
+    });
+}
+
 export function useCourseAreaDescription(): UseQueryResult<
     Map<string, string>
 > {
@@ -54,10 +70,10 @@ export function useCourseAreaDescription(): UseQueryResult<
 }
 
 export function useOfferingHistory(
-    term: APIv4.TermIdentifier,
+    terms: APIv4.TermIdentifier[],
 ): UseQueryResult<APIv4.OfferingHistory[]> {
     return useQuery({
-        queryKey: ["last offered", term] as const,
+        queryKey: ["offering history", terms] as const,
         queryFn: (ctx) => getOfferingHistory(ctx.queryKey[1]!),
         staleTime: 24 * 60 * 60 * 1000, // 1 day
         gcTime: 24 * 60 * 60 * 1000,

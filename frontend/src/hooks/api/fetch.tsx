@@ -145,6 +145,16 @@ export async function getSectionsForTerm(
     return sections;
 }
 
+export async function getSectionsForTerms(
+    terms: APIv4.TermIdentifier[],
+): Promise<APIv4.Section[]> {
+    let sections: APIv4.Section[] = [];
+    for (const term of terms) {
+        Array.prototype.push.apply(sections, await getSectionsForTerm(term));
+    }
+    return sections;
+}
+
 export async function getCourseAreaDescription(): Promise<Map<string, string>> {
     const data = await getData(
         `${__API_URL__}/v4/course-areas`,
@@ -160,13 +170,17 @@ export async function getCourseAreaDescription(): Promise<Map<string, string>> {
 }
 
 export async function getOfferingHistory(
-    term: APIv4.TermIdentifier,
+    terms: APIv4.TermIdentifier[],
 ): Promise<APIv4.OfferingHistory[]> {
-    const termString = APIv4.stringifyTermIdentifier(term);
-
-    return getData(
-        `${__API_URL__}/v4/offering-history/${termString}`,
-        APIv4.OfferingHistory.array(),
-        `course offering histories for ${termString}`,
-    );
+    let offeringHistory: APIv4.OfferingHistory[] = [];
+    for (const term of terms) {
+        const termString = APIv4.stringifyTermIdentifier(term);
+        const additionalHistory = await getData(
+            `${__API_URL__}/v4/offering-history/${termString}`,
+            APIv4.OfferingHistory.array(),
+            `course offering histories for ${termString}`,
+        );
+        Array.prototype.push.apply(offeringHistory, additionalHistory);
+    }
+    return offeringHistory;
 }

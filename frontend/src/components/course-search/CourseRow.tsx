@@ -24,6 +24,7 @@ import { memo } from "react";
 export default memo(function CourseRow(props: {
     section: APIv4.Section;
     expand: boolean;
+    fromOtherTerm?: boolean;
     onClick?: () => void;
     updateDetailsSize?: (height: number) => void;
 }) {
@@ -37,10 +38,46 @@ export default memo(function CourseRow(props: {
         props.updateDetailsSize(detailsBounds.height);
     }, [detailsBounds?.height, props.updateDetailsSize, props.expand]);
 
+    if (props.fromOtherTerm) {
+        return (
+            <div className={Css.padder}>
+                <div
+                    className={classNames(Css.box)}
+                    style={sectionColorStyle(
+                        props.section.identifier,
+                        theme,
+                        false,
+                    )}
+                >
+                    <div className={Css.titlebar} onClick={props.onClick}>
+                        <Feather.Archive className={Css.archive} size={14} />
+                        <span className={Css.summary}>
+                            <span className={Css.courseNumber}>
+                                {APIv4.stringifySectionCode(
+                                    props.section.identifier,
+                                )}
+                            </span>
+                            <span className={Css.title}>
+                                {props.section.course.title}
+                            </span>
+                        </span>
+
+                        <span className={Css.term}>
+                            {props.section.identifier.term}
+                            {props.section.identifier.year}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className={Css.padder}>
             <div
-                className={classNames(Css.box, { [Css.expand!]: props.expand })}
+                className={classNames(Css.box, {
+                    [Css.expand!]: props.expand,
+                })}
                 style={sectionColorStyle(
                     props.section.identifier,
                     theme,

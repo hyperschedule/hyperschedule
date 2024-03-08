@@ -4,7 +4,14 @@ import { useMeasure } from "@react-hookz/web";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { useCourseAreaDescription } from "@hooks/api/query";
+import Slider from "@components/common/Slider";
+import Dropdown from "@components/common/Dropdown";
+
+import {
+    useCourseAreaDescription,
+    useSectionsForTermsQuery,
+} from "@hooks/api/query";
+import { useAllTerms } from "@hooks/term";
 import useStore from "@hooks/store";
 import { useActiveSchedule } from "@hooks/schedule";
 import {
@@ -12,12 +19,14 @@ import {
     useActiveSectionsQuery,
 } from "@hooks/section";
 import * as Search from "@lib/search";
+import { PopupOption } from "@lib/popup";
 
 import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
 
 import Css from "./CourseSearch.module.css";
 import { memo, useCallback } from "react";
+import { useUserStore } from "@hooks/store/user";
 
 export default memo(function CourseSearch() {
     const sections: APIv4.Section[] | undefined = useActiveSectionsQuery();
@@ -87,23 +96,58 @@ export default memo(function CourseSearch() {
         conflictingSectionsOptions,
     ]);
 
+    const { enable, range } = useStore(
+        (store) => store.multiTermsSearchOptions,
+    );
+    const allTerms = useAllTerms() ?? [];
+    const multiTermsSections = useSectionsForTermsQuery(
+        enable,
+        allTerms.slice(0, range),
+    ).data;
+
+    const matchingMultiTermsSections: APIv4.Section[] | undefined =
+        React.useMemo(() => {
+            if (!enable || !multiTermsSections) {
+                return undefined;
+            }
+
+            const filteredMultiTermsSections =
+                searchFilters.length === 0
+                    ? multiTermsSections
+                    : multiTermsSections.filter((s) =>
+                          Search.filterSection(
+                              s,
+                              searchFilters.map((s) => s.filter),
+                          ),
+                      );
+
+            if (searchText === "") return filteredMultiTermsSections;
+
+            let res: [number, APIv4.Section][] = [];
+            for (const s of filteredMultiTermsSections) {
+                const score = Search.matchesText(searchText, s, areas);
+                if (score !== null) {
+                    res.push([score, s]);
+                }
+            }
+            const sorted = res.sort((a, b) => b[0] - a[0]);
+            return sorted.map((a) => a[1]);
+        }, [multiTermsSections, searchText, searchFilters, enable, range]);
+
     return (
         <div className={Css.container}>
             <SearchControls />
             {sectionsToShow !== undefined ? (
                 <CourseSearchResults
                     sections={sectionsToShow}
-                    searchKey={btoa(searchText)}
+                    multiTermsSearchEnabled={enable}
+                    multiTermsSections={matchingMultiTermsSections}
                 />
             ) : (
                 <CourseSearchEnd text="loading courses..." />
             )}
         </div>
     );
-});
-
-const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
-    return <div className={Css.end}>({props.text})</div>;
 });
 
 function computeIndices(state: {
@@ -133,7 +177,8 @@ function computeIndices(state: {
 
 const CourseSearchResults = memo(function CourseSearchResults(props: {
     sections: APIv4.Section[];
-    searchKey: string;
+    multiTermsSearchEnabled: boolean;
+    multiTermsSections: APIv4.Section[] | undefined;
 }) {
     // https://github.com/streamich/react-use/issues/1264#issuecomment-721645100
     const [rowBounds, rowMeasureRef] = useMeasure<HTMLDivElement>();
@@ -191,13 +236,26 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
     //    });
 
     if (props.sections.length === 0)
-        return <CourseSearchEnd text="no courses found" />;
+        return (
+            <div>
+                <CourseSearchEnd text="no courses in active term found" />
+                <MultiTermsSearchMenu />
+
+                {props.multiTermsSearchEnabled ? (
+                    <MultiTermsSearchResults
+                        multiTermsSections={props.multiTermsSections}
+                    />
+                ) : (
+                    <></>
+                )}
+            </div>
+        );
 
     return (
         <>
             <div
-                ref={viewportRef}
                 className={Css.resultsContainer}
+                ref={viewportRef}
                 onScroll={(ev) => setScroll(ev.currentTarget.scrollTop)}
             >
                 {viewportBounds && rowBounds && (
@@ -226,7 +284,16 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                             ))}
                         </div>
                         <CourseSearchEnd text="end of search results" />
+                        <MultiTermsSearchMenu />
                     </>
+                )}
+
+                {props.multiTermsSearchEnabled ? (
+                    <MultiTermsSearchResults
+                        multiTermsSections={props.multiTermsSections}
+                    />
+                ) : (
+                    <></>
                 )}
             </div>
             <div className={Css.hiddenMeasureContainer}>
@@ -276,5 +343,125 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
                 updateDetailsSize={expand ? setExpandHeight : undefined}
             />
         </div>
+    );
+});
+
+const CourseSearchEnd = memo(function CourseSearchEnd(props: { text: string }) {
+    return <div className={Css.end}>({props.text})</div>;
+});
+
+const MultiTermsSearchMenu = memo(function MultiTermsSearchMenu() {
+    const multiTermsSearchOptions = useStore(
+        (store) => store.multiTermsSearchOptions,
+    );
+    const setMultiTermsSearchOptions = useStore(
+        (store) => store.setMultiTermsSearchOptions,
+    );
+
+    const allTerms = useAllTerms() ?? [];
+    function createPossibleRanges(numTerms: number): number[] {
+        let results = [];
+        for (let i = 0; i < Math.log2(numTerms); i++) {
+            if (i !== 0) {
+                results.push(2 ** i);
+            }
+        }
+        results.push(numTerms);
+        return results;
+    }
+    const rangeOptions = createPossibleRanges(allTerms.length);
+
+    return (
+        <div className={Css.multiTermsSearchMenu}>
+            <div className={Css.element}>
+                <span>Search for courses from other recent semesters</span>
+                <Slider
+                    value={multiTermsSearchOptions.enable}
+                    onToggle={() => {
+                        setMultiTermsSearchOptions({
+                            ...multiTermsSearchOptions,
+                            enable: !multiTermsSearchOptions.enable,
+                        });
+                    }}
+                    text=""
+                />
+            </div>
+            {multiTermsSearchOptions.enable ? (
+                <div className={Css.element}>
+                    <span>
+                        How many recent semesters do you want to search?{" "}
+                        <span className={Css.warning}>
+                            {" "}
+                            (this may affect performance!)
+                        </span>
+                    </span>
+                    <Dropdown
+                        choices={rangeOptions.map((range) => range.toString())}
+                        selected={multiTermsSearchOptions.range.toString()}
+                        onSelect={(index) => {
+                            const selectedRange = rangeOptions[index] ?? 4;
+                            setMultiTermsSearchOptions({
+                                ...multiTermsSearchOptions,
+                                range: selectedRange,
+                            });
+                        }}
+                        emptyPlaceholder={"none selected"}
+                    />
+                </div>
+            ) : (
+                <></>
+            )}
+        </div>
+    );
+});
+
+const MultiTermsSearchResults = memo(function MultiTermsSearchResults(props: {
+    multiTermsSections: APIv4.Section[] | undefined;
+}) {
+    const activeTerm = useUserStore((user) => user.activeTerm);
+    const setPopup = useStore((store) => store.setPopup);
+
+    const sections = props.multiTermsSections?.filter((section) => {
+        return !(
+            section.identifier.term === activeTerm.term &&
+            section.identifier.year === activeTerm.year
+        );
+    });
+
+    if (sections === undefined) {
+        return (
+            <div className={Css.end}>
+                (loading courses from other semesters...)
+            </div>
+        );
+    }
+
+    return (
+        <>
+            <div className={Css.multiTermsSearchResults}>
+                {sections.map((section) => (
+                    <CourseRow
+                        key={APIv4.stringifySectionCodeLong(section.identifier)}
+                        section={section}
+                        expand={false}
+                        fromOtherTerm={true}
+                        onClick={() => {
+                            setPopup({
+                                option: PopupOption.SectionDetail,
+                                section: section,
+                            });
+                        }}
+                    />
+                ))}
+            </div>
+
+            <CourseSearchEnd
+                text={
+                    sections.length === 0
+                        ? "no recent records of courses found"
+                        : "end of recent semesters search results"
+                }
+            />
+        </>
     );
 });
