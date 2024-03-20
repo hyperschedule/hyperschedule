@@ -61,6 +61,10 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
         name: "Credits (HMC)",
         example: ["<=1", "=3", "1-2", ">=2"],
     },
+    [Search.FilterKey.Half]: {
+        name: "Half semester",
+        example: ["1", "2"],
+    },
 };
 
 export default memo(function Filter() {

@@ -38,6 +38,7 @@ const FilterBubbleInput: {
     [Search.FilterKey.CourseArea]: CourseAreaBubble,
     [Search.FilterKey.Campus]: CampusBubble,
     [Search.FilterKey.Number]: CourseNumberFilterBubble,
+    [Search.FilterKey.Half]: TextInputBubble,
 };
 
 // non-interactive example bubble used in the filter popup
