@@ -62,6 +62,18 @@ switch (env) {
                         destination: 1, // STDOUT
                     },
                 },
+                ...(process.env.DISCORD_WEBHOOK_URL
+                    ? [
+                          {
+                              target: "./discordTransport.mjs",
+                              level: "error",
+                              options: {
+                                  webhookUrl: process.env.DISCORD_WEBHOOK_URL,
+                                  webhookType: 1,
+                              },
+                          },
+                      ]
+                    : []),
             ],
         });
         rootLogger = pino({ level: "trace" }, transport);
