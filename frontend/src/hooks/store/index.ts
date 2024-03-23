@@ -7,6 +7,8 @@ import type { Popup } from "@lib/popup";
 import type { WithSetters } from "@lib/store";
 import { pick } from "@lib/store";
 import { MAIN_STORE_NAME } from "@lib/constants";
+import type { AnnouncementID } from "@lib/announcements";
+import { produce } from "immer";
 
 // we need this so we can correctly render filters with immutable keys.
 // without this there are subtle bugs with filter deletions
@@ -33,11 +35,14 @@ export type Store = WithSetters<{
 }> & {
     theme: Theme;
     toggleTheme: () => void;
+    // this is an array instead of a set because JS sets aren't serializable
+    announcementsRead: AnnouncementID[];
 
     clearExpand: () => void;
     addSearchFilter: (filter: Search.Filter) => void;
     setSearchFilter: (index: number, filter: Search.Filter) => void;
     removeSearchFilter: (index: number) => void;
+    markAnnouncementAsRead: (id: AnnouncementID) => void;
 };
 
 export const enum MainTab {
@@ -164,6 +169,19 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
 
         hoverSection: null,
         setHoverSection: (hoverSection) => set({ hoverSection }),
+
+        announcementsRead: [],
+        markAnnouncementAsRead: (id: AnnouncementID) => {
+            // we need to do this here because all states are pure. in the
+            // user store we have the update function because we need it
+            // frequently, but here we only use it once. you can learn all these
+            // cool stuff from CS131 (PLs)
+            set(
+                produce((store: Store) => {
+                    store.announcementsRead.push(id);
+                }),
+            );
+        },
     };
 };
 
@@ -177,6 +195,7 @@ const useStore = Zustand.create<Store>()(
                 "theme",
                 "appearanceOptions",
                 "conflictingSectionsOptions",
+                "announcementsRead",
             ),
         }),
     ),
