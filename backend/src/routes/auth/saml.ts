@@ -86,7 +86,7 @@ samlApp
                 .location(
                     process.env.NODE_ENV === "development"
                         ? "http://localhost:5000/"
-                        : "https://beta.hyperschedule.io/",
+                        : "https://hyperschedule.io/",
                 )
                 .end();
         } catch (e) {
