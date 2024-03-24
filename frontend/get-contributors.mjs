@@ -69,7 +69,7 @@ async function treeFetch(start, getName) {
 
 const masterSHA = await (
     await fetch(
-        "https://api.github.com/repos/hyperschedule/hyperschedule/commits/master",
+        "https://api.github.com/repos/hyperschedule/hyperschedule/commits/legacy",
         {
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
