@@ -12,7 +12,6 @@ import { toast } from "react-toastify";
 import PopupAlternativeLine from "./PopupAlternativeLine";
 import PopupScheduleSelector from "@components/popup/PopupScheduleSelector";
 import { memo } from "react";
-import { importFromLegacy } from "@lib/legacy-import";
 
 export default function ManageSchedules() {
     const activeScheduleId = useUserStore((store) => store.activeScheduleId);
@@ -45,14 +44,6 @@ const CreateSchedule = memo(function CreateSchedule(props: {
     setSelectedScheduleId: (val: string) => void;
 }) {
     const addSchedule = useUserStore((store) => store.addSchedule);
-
-    // ---- stuff only needed for import legacy
-    const setActiveScheduleId = useUserStore(
-        (store) => store.setActiveScheduleId,
-    );
-    const getUser = useUserStore((store) => store.getUser);
-    const server = useUserStore((store) => store.server);
-    // ------
 
     const allTerms = (useAllTerms() ?? []).map(APIv4.stringifyTermIdentifier);
     const [selectedTerm, setSelectedTerm] = useState<string>(
@@ -111,33 +102,6 @@ const CreateSchedule = memo(function CreateSchedule(props: {
             >
                 <Feather.FilePlus className={AppCss.defaultButtonIcon} /> create
                 schedule
-            </button>
-            <button
-                className={classNames(AppCss.defaultButton)}
-                onClick={() => {
-                    if (server === null) {
-                        toast.error("You have to log in first");
-                        return;
-                    }
-
-                    (async () => {
-                        const { scheduleId } = await importFromLegacy();
-                        const toastId = toast.success(
-                            "Successfully imported, loading new data",
-                        );
-                        await getUser();
-                        setActiveScheduleId(scheduleId);
-                        props.setSelectedScheduleId(scheduleId);
-                        toast.dismiss(toastId);
-                        toast.success("Legacy import completed successfully");
-                    })().catch(() =>
-                        toast.error(
-                            "Failed to import data and it's unlikely to succeed if you try again",
-                        ),
-                    );
-                }}
-            >
-                (beta only) import from legacy
             </button>
         </div>
     );
