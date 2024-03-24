@@ -395,18 +395,22 @@ const MultiTermsSearchMenu = memo(function MultiTermsSearchMenu() {
                             (this may affect performance!)
                         </span>
                     </span>
-                    <Dropdown
-                        choices={rangeOptions.map((range) => range.toString())}
-                        selected={multiTermsSearchOptions.range.toString()}
-                        onSelect={(index) => {
-                            const selectedRange = rangeOptions[index] ?? 4;
-                            setMultiTermsSearchOptions({
-                                ...multiTermsSearchOptions,
-                                range: selectedRange,
-                            });
-                        }}
-                        emptyPlaceholder={"none selected"}
-                    />
+                    <span>
+                        <Dropdown
+                            choices={rangeOptions.map((range) =>
+                                range.toString(),
+                            )}
+                            selected={multiTermsSearchOptions.range.toString()}
+                            onSelect={(index) => {
+                                const selectedRange = rangeOptions[index] ?? 4;
+                                setMultiTermsSearchOptions({
+                                    ...multiTermsSearchOptions,
+                                    range: selectedRange,
+                                });
+                            }}
+                            emptyPlaceholder={"none selected"}
+                        />
+                    </span>
                 </div>
             ) : (
                 <></>

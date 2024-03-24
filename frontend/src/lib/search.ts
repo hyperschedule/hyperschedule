@@ -154,6 +154,7 @@ export enum FilterKey {
     MeetingTime = "time",
     Location = "loc",
     Credits = "cred",
+    Half = "half",
 }
 
 export const filterKeyRegexp = RegExp(
@@ -188,6 +189,8 @@ export type FilterData = {
     [FilterKey.Campus]: CampusFilter;
     [FilterKey.Credits]: RangeFilter;
     [FilterKey.Number]: RangeFilter;
+    // we can technically use a range filter for half but probably shouldn't
+    [FilterKey.Half]: TextFilter;
 };
 
 export type Filter = {
@@ -340,6 +343,14 @@ export function filterSection(
                 if (
                     filter.data.end &&
                     filter.data.end < section.identifier.courseNumber
+                )
+                    return false;
+                break;
+            case FilterKey.Half:
+                if (section.identifier.half === null) return false;
+                if (
+                    filter.data.text !==
+                    section.identifier.half.number.toString()
                 )
                     return false;
         }
