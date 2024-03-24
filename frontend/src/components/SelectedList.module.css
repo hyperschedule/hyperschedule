@@ -43,6 +43,16 @@
     border-radius: 0.125em;
     box-sizing: content-box;
 
+    &.hover:not(.unselected) {
+        border-color: var(--section-highlight);
+        /* we use 75% transparency here because highlighted background might make text hard to read */
+        background-color: color-mix(
+            in srgb,
+            var(--section-color) 75%,
+            transparent
+        );
+    }
+
     &.unselected {
         background-color: transparent;
         color: var(--fg-1);
@@ -50,11 +60,22 @@
         & .badge {
             filter: saturate(50%);
         }
-    }
 
-    &.hover {
-        background-color: var(--section-highlight);
-        border-color: var(--section-highlight);
+        &.hover {
+            /*
+            this creates a 45 deg angled color strip with  25% opacity of section-color
+            of 0.25em width, separated by 1em of transparent strips.
+            the reason why both transparent and the color-mix thing are specified twice
+            is to make it not a gradient but colored strips
+            */
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 1em,
+                color-mix(in srgb, var(--section-color) 50%, transparent) 1em,
+                color-mix(in srgb, var(--section-color) 50%, transparent) 1.25em
+            );
+        }
     }
 
     & .sectionInfo {

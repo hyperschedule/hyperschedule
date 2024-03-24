@@ -260,12 +260,10 @@ const SectionEntry = memo(function SectionEntry(props: {
             {...sortable.attributes}
             {...sortable.listeners}
             onPointerEnter={() => {
-                if (props.entry.attrs.selected) {
-                    setHoverSection(props.entry.section);
-                }
+                setHoverSection(props.entry.section);
             }}
             onPointerLeave={() => {
-                setHoverSection(null); // Edge Case: If all courses are deselected then the hovered section will stay highlighted until cursor leaves
+                setHoverSection(null);
             }}
         >
             <button
