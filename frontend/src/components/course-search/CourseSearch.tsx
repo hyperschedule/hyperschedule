@@ -359,6 +359,7 @@ const MultiTermsSearchMenu = memo(function MultiTermsSearchMenu() {
     );
 
     const allTerms = useAllTerms() ?? [];
+
     function createPossibleRanges(numTerms: number): number[] {
         let results = [];
         for (let i = 0; i < Math.log2(numTerms); i++) {
@@ -369,6 +370,7 @@ const MultiTermsSearchMenu = memo(function MultiTermsSearchMenu() {
         results.push(numTerms);
         return results;
     }
+
     const rangeOptions = createPossibleRanges(allTerms.length);
 
     return (
@@ -389,13 +391,13 @@ const MultiTermsSearchMenu = memo(function MultiTermsSearchMenu() {
             {multiTermsSearchOptions.enable ? (
                 <div className={Css.element}>
                     <span>
-                        How many recent semesters do you want to search?{" "}
+                        Number of recent semesters to search{" "}
                         <span className={Css.warning}>
                             {" "}
-                            (this may affect performance!)
+                            (may impact performance)
                         </span>
                     </span>
-                    <span>
+                    <span className={Css.dropdownContainer}>
                         <Dropdown
                             choices={rangeOptions.map((range) =>
                                 range.toString(),

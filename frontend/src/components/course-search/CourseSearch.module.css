@@ -51,28 +51,34 @@
     align-items: center;
 
     border-top: 0.125rem dotted;
-    padding: 1rem 0 0 0;
+    padding: 1em 1.5em 0 1.5em;
+    gap: 0.5em;
 
     & .element {
-        display: grid;
+        display: flex;
         grid-template-columns: auto 1fr;
         justify-items: start;
-        gap: 0.25em 0.5em;
-        padding-top: 0.5rem;
+        gap: 0.5em;
+        min-height: 1.5em;
     }
 
     & .warning {
         color: var(--palette-orange);
         font-weight: 500;
     }
+
+    & .dropdownContainer {
+        display: flex;
+        min-width: 3em;
+    }
 }
 
 .multiTermsSearchResults {
     text-align: center;
-    margin: 0.5rem;
+    margin: 0.5em;
 
     & h4 {
-        padding: 1rem;
+        padding: 1em;
         margin: 0;
     }
 }
