@@ -61,10 +61,11 @@ export default memo(function CourseRow(props: {
                                 {props.section.course.title}
                             </span>
                         </span>
-
-                        <span className={Css.term}>
-                            {props.section.identifier.term}
-                            {props.section.identifier.year}
+                        <span className={Css.status}>
+                            <span className={Css.term}>
+                                {props.section.identifier.term}
+                                {props.section.identifier.year}
+                            </span>
                         </span>
                     </div>
                 </div>

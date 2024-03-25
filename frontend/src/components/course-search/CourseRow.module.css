@@ -139,6 +139,7 @@
             font-size: 0.875em;
             opacity: 0.875;
             min-width: 8.5em;
+            text-align: left;
         }
 
         & .affiliation {
@@ -158,6 +159,7 @@
             font-weight: 500;
             overflow-x: hidden;
             text-overflow: ellipsis;
+            text-align: left;
         }
     }
 
@@ -181,6 +183,15 @@
             visibility: hidden;
         }
     }
+
+    .term {
+        font-size: 0.875em;
+        font-weight: 500;
+        background-color: var(--bg-2);
+        padding: 0.125em 0.5em;
+        border-radius: 0.25em;
+        transition: background-color var(--theme-transition-duration);
+    }
 }
 
 .expander {
@@ -191,14 +202,4 @@
 .details {
     padding: 0.5rem 1rem;
     line-height: 1.5em;
-}
-
-.term {
-    font-size: 0.875em;
-    font-weight: 500;
-    background-color: var(--bg-2);
-    padding: 0.125em 0.5em;
-    border-radius: 0.25em;
-    margin: 0 0.125rem;
-    transition: background-color var(--theme-transition-duration);
 }

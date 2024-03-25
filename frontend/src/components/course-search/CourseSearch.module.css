@@ -51,13 +51,14 @@
     align-items: center;
 
     border-top: 0.125rem dotted;
-    padding: 1em 1.5em 0 1.5em;
+    padding: 1em 1.5em 0.5em 1.5em;
     gap: 0.5em;
 
     & .element {
         display: flex;
         grid-template-columns: auto 1fr;
         justify-items: start;
+        align-items: center;
         gap: 0.5em;
         min-height: 1.5em;
     }
@@ -75,7 +76,6 @@
 
 .multiTermsSearchResults {
     text-align: center;
-    margin: 0.5em;
 
     & h4 {
         padding: 1em;
