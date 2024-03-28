@@ -104,6 +104,7 @@ export default function App() {
                 transition={Slide}
                 pauseOnHover={true}
                 pauseOnFocusLoss={true}
+                className={Css.toast}
             />
         </div>
     );

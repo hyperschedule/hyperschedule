@@ -10,7 +10,7 @@ export const announcements: Announcement[] = [
         id: 1710969267,
         message: (
             <>
-                The previous version of Hyperschedule is being moved to{" "}
+                The previous version of Hyperschedule has been moved to{" "}
                 <a href="https://legacy.hyperschedule.io">
                     legacy.hyperschedule.io
                 </a>{" "}
@@ -19,6 +19,21 @@ export const announcements: Announcement[] = [
         ),
         // one day after add deadline for fall 2024
         expires: new Date(2024, 8, 10, 0, 0, 0),
+    },
+    {
+        id: 1711657525,
+        message: (
+            <>
+                Hyperschedule is now licensed under the{" "}
+                <a href="https://spdx.org/licenses/BSD-3-Clause-No-Military-License.html">
+                    BSD 3-Clause No Military
+                </a>{" "}
+                License . By continuing using this program, you acknowledge that
+                you are not involved in the design, construction, operation,
+                maintenance, or training of any military facility.
+            </>
+        ),
+        expires: null,
     },
 ];
 

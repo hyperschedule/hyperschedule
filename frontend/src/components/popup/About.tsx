@@ -76,6 +76,16 @@ export default memo(function About() {
                     />
                 ))}
             </div>
+            <h3>License</h3>
+            <p>
+                Hyperschedule is licensed under{" "}
+                <a href="https://spdx.org/licenses/BSD-3-Clause-No-Military-License.html">
+                    BSD 3-Clause No Military License
+                </a>
+                . By using this program, you acknowledge that you are not
+                involved in the design, construction, operation, maintenance, or
+                training of any military facility.
+            </p>
         </div>
     );
 });

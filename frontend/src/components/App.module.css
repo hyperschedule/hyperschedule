@@ -186,3 +186,23 @@
         background-color: var(--hbg-2);
     }
 }
+
+.toast {
+    --toastify-text-color-light: var(--fg-1);
+    --toastify-text-color-dark: var(--fg-1);
+
+    a,
+    a:visited {
+        color: var(--fg-1);
+        text-decoration: underline 0.125em dashed var(--fg-1);
+
+        display: inline;
+        gap: 0.25em;
+        align-items: center;
+
+        & svg {
+            width: 0.75em;
+            height: 0.75em;
+        }
+    }
+}
