@@ -194,7 +194,7 @@ export default memo(function SelectedList() {
                     </DndCore.DndContext>
                     {scheduleRenderingOptions.showConflicting ||
                     activeSchedule.sections.length === 0 ? (
-                        <></>
+                        <div className={Css.textContainer}></div>
                     ) : (
                         <div className={Css.textContainer}>
                             <span>(drag sections to change priorities)</span>
