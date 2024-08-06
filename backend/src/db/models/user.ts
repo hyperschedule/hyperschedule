@@ -84,6 +84,21 @@ export async function getUser(userId: string): Promise<APIv4.ServerUser> {
     return user;
 }
 
+export async function updateUser(
+    userId: string,
+    updateFields: Record<string, any>,
+): Promise<void> {
+    if (Object.keys(updateFields).length > 0) {
+        await collections.users.updateOne(
+            { _id: userId },
+            { $set: updateFields },
+        );
+        logger.info(`Updated user ${userId} with fields: ${updateFields}`);
+    } else {
+        logger.warn(`No fields to update for user ${userId}`);
+    }
+}
+
 export async function addSchedule(
     userId: APIv4.UserId,
     term: APIv4.TermIdentifier,

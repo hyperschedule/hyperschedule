@@ -67,7 +67,8 @@ samlApp
             }
 
             const user = await getOrCreateUser(
-                (data.data.attributes.eppn ?? data.data.attributes[EPPN_URN])!,
+                (data.data.attributes.eppn ??
+                    data.data.attributes[EPPN_URN])!.toLowerCase(), //? make eppn case insensitive
                 data.data.attributes.orgName,
             );
 

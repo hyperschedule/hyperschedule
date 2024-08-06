@@ -11,7 +11,9 @@ import {
     renameSchedule,
     setSectionAttrs,
     getOrCreateUser,
+    updateUser,
 } from "../../src/db/models/user";
+import exp from "node:constants";
 
 setupDbHooks();
 
@@ -287,5 +289,23 @@ describe("db/models/user", () => {
         expect(user2.schedules[sid]!.sections[0]!.attrs).toStrictEqual({
             selected: false,
         } satisfies APIv4.UserSectionAttrs);
+    });
+
+    test("replace capital letters with lowercase in saml", async () => {
+        const uid1 = await getOrCreateUser("First Test User", "");
+        const uid2 = await getOrCreateUser("Second Test User", "");
+        const uid3 = await getOrCreateUser("third test user", "");
+
+        const query = { eppn: { $regex: /[A-Z]/ } };
+        const users = await collections.users.find(query).toArray();
+        expect(users.length).toStrictEqual(2);
+        for (const user of users) {
+            updateUser(user._id, { eppn: user.eppn.toLowerCase() });
+        }
+
+        const user1 = await getUser(uid1);
+        const user2 = await getUser(uid2);
+        expect(user1!.eppn).toStrictEqual("first test user");
+        expect(user2!.eppn).toStrictEqual("second test user");
     });
 });
