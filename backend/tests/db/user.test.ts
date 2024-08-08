@@ -13,7 +13,6 @@ import {
     getOrCreateUser,
     updateUser,
 } from "../../src/db/models/user";
-import exp from "node:constants";
 
 setupDbHooks();
 
