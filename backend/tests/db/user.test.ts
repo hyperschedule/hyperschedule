@@ -295,17 +295,25 @@ describe("db/models/user", () => {
         const uid1 = await getOrCreateUser("First Test User", "");
         const uid2 = await getOrCreateUser("Second Test User", "");
         const uid3 = await getOrCreateUser("third test user", "");
+        const issuerId = await getOrCreateUser(
+            "JBao00@cmc.edu",
+            "Claremont McKenna College",
+        ); // the issuer of this problem
 
         const query = { eppn: { $regex: /[A-Z]/ } };
-        const users = await collections.users.find(query).toArray();
-        expect(users.length).toStrictEqual(2);
-        for (const user of users) {
-            updateUser(user._id, { eppn: user.eppn.toLowerCase() });
+        const users_before = await collections.users.find(query).toArray();
+        expect(users_before.length).toStrictEqual(3);
+        for (const user of users_before) {
+            await updateUser(user._id, { eppn: user.eppn.toLowerCase() });
         }
+        const users_after = await collections.users.find(query).toArray();
+        expect(users_after).toStrictEqual([]);
 
         const user1 = await getUser(uid1);
         const user2 = await getUser(uid2);
+        const issuer = await getUser(issuerId);
         expect(user1!.eppn).toStrictEqual("first test user");
         expect(user2!.eppn).toStrictEqual("second test user");
+        expect(issuer!.eppn).toStrictEqual("jbao00@cmc.edu");
     });
 });

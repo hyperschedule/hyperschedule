@@ -85,15 +85,25 @@ export async function getUser(userId: string): Promise<APIv4.ServerUser> {
 }
 
 export async function updateUser(
-    userId: string,
+    userId: APIv4.UserId,
     updateFields: Record<string, any>,
 ): Promise<void> {
+    const lookup = await collections.users.findOne({ _id: userId });
+
+    if (lookup === null) {
+        throw new Error(`User with ID ${userId} not found`);
+    }
+
     if (Object.keys(updateFields).length > 0) {
         await collections.users.updateOne(
             { _id: userId },
             { $set: updateFields },
         );
-        logger.info(`Updated user ${userId} with fields: ${updateFields}`);
+        logger.info(
+            `Updated user ${userId} with fields: ${JSON.stringify(
+                updateFields,
+            )}`,
+        );
     } else {
         logger.warn(`No fields to update for user ${userId}`);
     }
