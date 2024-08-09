@@ -12,6 +12,7 @@ import {
     setSectionAttrs,
     getOrCreateUser,
     updateUser,
+    findDuplicatesWith,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -291,13 +292,15 @@ describe("db/models/user", () => {
     });
 
     test("replace capital letters with lowercase in saml", async () => {
+        // Note that if we get an eppn containing capital letters from CAS, we make them lowercase before passing them as arguments to getOrCreateUser.
+        // So the users in the db that have capital letters in their eppn are due to legacy code.
         const uid1 = await getOrCreateUser("First Test User", "");
         const uid2 = await getOrCreateUser("Second Test User", "");
         const uid3 = await getOrCreateUser("third test user", "");
-        const issuerId = await getOrCreateUser(
-            "JBao00@cmc.edu",
-            "Claremont McKenna College",
-        ); // the issuer of this problem
+        const uid4 = await getOrCreateUser(
+            "IniLast2026@hmc.edu",
+            "Harvey Mudd College",
+        );
 
         const query = { eppn: { $regex: /[A-Z]/ } };
         const users_before = await collections.users.find(query).toArray();
@@ -310,9 +313,35 @@ describe("db/models/user", () => {
 
         const user1 = await getUser(uid1);
         const user2 = await getUser(uid2);
-        const issuer = await getUser(issuerId);
+        const user4 = await getUser(uid4);
         expect(user1!.eppn).toStrictEqual("first test user");
         expect(user2!.eppn).toStrictEqual("second test user");
-        expect(issuer!.eppn).toStrictEqual("jbao00@cmc.edu");
+        expect(user4!.eppn).toStrictEqual("inilast2026@hmc.edu");
+    });
+
+    test("find duplicate users with key", async () => {
+        const uid1 = await getOrCreateUser("test user 1", "");
+        const uid2 = await getOrCreateUser("Test user 1", "");
+        const uid3 = await getOrCreateUser("test user 2", "");
+        const uid4 = await getOrCreateUser("Test user 2", "");
+        const uid5 = await getOrCreateUser("unique user", "");
+
+        const query = { eppn: { $regex: /[A-Z]/ } };
+        const users_before = await collections.users.find(query).toArray();
+        for (const user of users_before) {
+            await updateUser(user._id, { eppn: user.eppn.toLowerCase() });
+        }
+
+        const user1 = await getUser(uid1);
+        const user2 = await getUser(uid2);
+        const user3 = await getUser(uid3);
+        const user4 = await getUser(uid4);
+        const duplicatesArray = await findDuplicatesWith("eppn");
+        expect(duplicatesArray).toEqual(
+            expect.arrayContaining([
+                expect.arrayContaining([user1, user2]), // user group 1
+                expect.arrayContaining([user3, user4]), // user group 2
+            ]),
+        );
     });
 });

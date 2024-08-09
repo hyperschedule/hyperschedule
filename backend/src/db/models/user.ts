@@ -86,7 +86,7 @@ export async function getUser(userId: string): Promise<APIv4.ServerUser> {
 
 export async function updateUser(
     userId: APIv4.UserId,
-    updateFields: Record<string, any>,
+    updateFields: Partial<APIv4.ServerUser>,
 ): Promise<void> {
     const lookup = await collections.users.findOne({ _id: userId });
 
@@ -451,4 +451,33 @@ export async function setSectionAttrs(
         )} in ${scheduleId} for ${userId} completed`,
         attrs,
     );
+}
+
+export async function findDuplicatesWith<K extends keyof APIv4.ServerUser>(
+    key: K,
+): Promise<APIv4.ServerUser[][]> {
+    const result = await collections.users
+        .aggregate([
+            {
+                $group: {
+                    _id: `$${key}`, // Group by the key value
+                    count: { $sum: 1 },
+                    users: { $push: "$$ROOT" }, // Collect users with the same key value
+                },
+            },
+            {
+                $match: {
+                    count: { $gt: 1 }, // Only groups with more than 1 document
+                },
+            },
+            {
+                $project: {
+                    _id: 0, // Remove the _id field from the result
+                    users: 1, // Only return the array of users
+                },
+            },
+        ])
+        .toArray();
+
+    return result.map((group) => group.users);
 }
