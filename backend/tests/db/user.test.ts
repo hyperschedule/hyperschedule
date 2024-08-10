@@ -314,11 +314,20 @@ describe("db/models/user", () => {
     });
 
     test("find duplicate users with key", async () => {
-        const uid1 = await getOrCreateUser("test user 1", "");
-        const uid2 = await getOrCreateUser("Test user 1", "");
-        const uid3 = await getOrCreateUser("test user 2", "");
-        const uid4 = await getOrCreateUser("Test user 2", "");
-        const uid5 = await getOrCreateUser("unique user", "");
+        const uid1 = await getOrCreateUser(
+            "test user 1",
+            "Harvey Mudd College",
+        );
+        const uid2 = await getOrCreateUser(
+            "Test user 1",
+            "Claremont McKenna College",
+        );
+        const uid3 = await getOrCreateUser(
+            "test user 2",
+            "Claremont McKenna College",
+        );
+        const uid4 = await getOrCreateUser("Test user 2", "Pomona College");
+        const uid5 = await getOrCreateUser("unique user", "Pomona College");
 
         await makeAllEPPNLowercase();
 
@@ -326,12 +335,25 @@ describe("db/models/user", () => {
         const user2 = await getUser(uid2);
         const user3 = await getUser(uid3);
         const user4 = await getUser(uid4);
-        const duplicatesArray = await findDuplicatesWith("eppn");
-        expect(duplicatesArray).toEqual(
+        const user5 = await getUser(uid5);
+
+        const duplicatesArray1 = await findDuplicatesWith("eppn");
+        expect(duplicatesArray1).toEqual(
             expect.arrayContaining([
-                expect.arrayContaining([user1, user2]), // user group 1
-                expect.arrayContaining([user3, user4]), // user group 2
+                expect.arrayContaining([user1, user2]),
+                expect.arrayContaining([user3, user4]),
             ]),
         );
+
+        const duplicatesArray2 = await findDuplicatesWith("school");
+        expect(duplicatesArray2).toEqual(
+            expect.arrayContaining([
+                expect.arrayContaining([user2, user3]),
+                expect.arrayContaining([user4, user5]),
+            ]),
+        );
+
+        const duplicatesArray3 = await findDuplicatesWith("_id");
+        expect(duplicatesArray3).toEqual([]);
     });
 });
