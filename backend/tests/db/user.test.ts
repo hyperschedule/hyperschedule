@@ -13,6 +13,7 @@ import {
     getOrCreateUser,
     updateUser,
     findDuplicatesWith,
+    makeAllEPPNLowercase,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -302,14 +303,7 @@ describe("db/models/user", () => {
             "Harvey Mudd College",
         );
 
-        const query = { eppn: { $regex: /[A-Z]/ } };
-        const users_before = await collections.users.find(query).toArray();
-        expect(users_before.length).toStrictEqual(3);
-        for (const user of users_before) {
-            await updateUser(user._id, { eppn: user.eppn.toLowerCase() });
-        }
-        const users_after = await collections.users.find(query).toArray();
-        expect(users_after).toStrictEqual([]);
+        await makeAllEPPNLowercase();
 
         const user1 = await getUser(uid1);
         const user2 = await getUser(uid2);
@@ -326,11 +320,7 @@ describe("db/models/user", () => {
         const uid4 = await getOrCreateUser("Test user 2", "");
         const uid5 = await getOrCreateUser("unique user", "");
 
-        const query = { eppn: { $regex: /[A-Z]/ } };
-        const users_before = await collections.users.find(query).toArray();
-        for (const user of users_before) {
-            await updateUser(user._id, { eppn: user.eppn.toLowerCase() });
-        }
+        await makeAllEPPNLowercase();
 
         const user1 = await getUser(uid1);
         const user2 = await getUser(uid2);

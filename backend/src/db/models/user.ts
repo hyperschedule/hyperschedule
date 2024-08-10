@@ -467,7 +467,7 @@ export async function findDuplicatesWith<K extends keyof APIv4.ServerUser>(
             },
             {
                 $match: {
-                    count: { $gt: 1 }, // Only groups with more than 1 document
+                    count: { $gt: 1 },
                 },
             },
             {
@@ -480,4 +480,14 @@ export async function findDuplicatesWith<K extends keyof APIv4.ServerUser>(
         .toArray();
 
     return result.map((group) => group.users);
+}
+
+export async function makeAllEPPNLowercase(): Promise<void> {
+    await collections.users.updateMany({ eppn: { $regex: /[A-Z]/ } }, [
+        {
+            $set: {
+                eppn: { $toLower: "$eppn" },
+            },
+        },
+    ]);
 }
