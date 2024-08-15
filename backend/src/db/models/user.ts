@@ -491,3 +491,26 @@ export async function makeAllEPPNLowercase(): Promise<void> {
         },
     ]);
 }
+
+export async function copySchedules(
+    fromUserId: APIv4.UserId,
+    toUserId: APIv4.UserId,
+): Promise<void> {
+    const fromUserSchedules = (await getUser(fromUserId)).schedules;
+    const toUserSchedules = (await getUser(toUserId)).schedules;
+
+    for (const [scheduleId, schedule] of Object.entries(fromUserSchedules)) {
+        if (!toUserSchedules[scheduleId]) {
+            toUserSchedules[scheduleId] = schedule;
+        }
+    }
+
+    await collections.users.updateOne(
+        { _id: toUserId },
+        {
+            $set: {
+                schedules: toUserSchedules,
+            },
+        },
+    );
+}

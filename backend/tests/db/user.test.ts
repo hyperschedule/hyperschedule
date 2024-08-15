@@ -14,6 +14,7 @@ import {
     updateUser,
     findDuplicatesWith,
     makeAllEPPNLowercase,
+    copySchedules,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -355,5 +356,53 @@ describe("db/models/user", () => {
 
         const duplicatesArray3 = await findDuplicatesWith("_id");
         expect(duplicatesArray3).toEqual([]);
+    });
+
+    test("copy schedule using uid", async () => {
+        const uid1 = await getOrCreateUser("test user1", "");
+        const uid2 = await getOrCreateUser("test user2", "");
+
+        const user1_pre = await getUser(uid1);
+        const user2_pre = await getUser(uid2);
+        expect(Object.keys(user1_pre.schedules).length).toStrictEqual(1);
+        expect(Object.keys(user2_pre.schedules).length).toStrictEqual(1);
+
+        const sid1 = await addSchedule(
+            uid1,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 1",
+        );
+        const sid2 = await addSchedule(
+            uid1,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 2",
+        );
+        const sid3 = await addSchedule(
+            uid2,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 3",
+        );
+
+        await addSection(uid2, sid3, {
+            department: "CSCI",
+            courseNumber: 131,
+            suffix: "",
+            affiliation: "HM",
+            sectionNumber: 1,
+            term: APIv4.Term.spring,
+            year: 2023,
+            half: null,
+        });
+
+        const user1_int = await getUser(uid1);
+        const user2_int = await getUser(uid2);
+        expect(Object.keys(user1_int.schedules).length).toStrictEqual(3);
+        expect(Object.keys(user2_int.schedules).length).toStrictEqual(2);
+
+        await copySchedules(uid2, uid1);
+        const user1_post = await getUser(uid1);
+        const user2_post = await getUser(uid2);
+        expect(Object.keys(user1_post.schedules).length).toStrictEqual(5);
+        expect(Object.keys(user2_post.schedules).length).toStrictEqual(2);
     });
 });
