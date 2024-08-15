@@ -47,7 +47,8 @@ const AccountSettings = memo(function AccountSettings() {
 
     const [showAccountDetails, setShowAccountDetails] =
         useState<boolean>(false);
-    const [copyUserId, setCopyUserId] = useState<string>("");
+    // TODO: Implement copySchedules
+    // const [copyUserId, setCopyUserId] = useState<string>("");
 
     return (
         <div className={Css.account}>
@@ -68,7 +69,6 @@ const AccountSettings = memo(function AccountSettings() {
             ) : (
                 <>
                     <p>You are currently logged in.</p>
-
                     <div
                         className={classNames(Css.accountDetails, {
                             [Css.show]: showAccountDetails,
@@ -91,8 +91,8 @@ const AccountSettings = memo(function AccountSettings() {
                             {schoolCodeToName(serverData.school)}
                         </span>
                     </div>
-
-                    <div className={Css.copySchedules}>
+                    // TODO: Implement copySchedules
+                    {/* <div className={Css.copySchedules}>
                         <input
                             className={Css.copySchedulesInput}
                             type="text"
@@ -114,7 +114,7 @@ const AccountSettings = memo(function AccountSettings() {
                         >
                             Copy
                         </button>
-                    </div>
+                    </div> */}
                 </>
             )}
             <span className={Css.buttons}>
