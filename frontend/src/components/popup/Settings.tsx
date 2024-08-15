@@ -47,8 +47,6 @@ const AccountSettings = memo(function AccountSettings() {
 
     const [showAccountDetails, setShowAccountDetails] =
         useState<boolean>(false);
-    // TODO: Implement copySchedules
-    // const [copyUserId, setCopyUserId] = useState<string>("");
 
     return (
         <div className={Css.account}>
@@ -91,30 +89,6 @@ const AccountSettings = memo(function AccountSettings() {
                             {schoolCodeToName(serverData.school)}
                         </span>
                     </div>
-                    // TODO: Implement copySchedules
-                    {/* <div className={Css.copySchedules}>
-                        <input
-                            className={Css.copySchedulesInput}
-                            type="text"
-                            placeholder="Another user's ID"
-                            value={copyUserId}
-                            onChange={(ev) => setCopyUserId(ev.target.value)}
-                            onKeyDown={(ev) => {
-                                if (ev.code === "Enter") {
-                                    // copySchedules(copyUserId, serverData._id)
-                                }
-                            }}
-                        />
-                        <button
-                            className={classNames(
-                                AppCss.defaultButton,
-                                Css.button,
-                            )}
-                            // onClick={ copySchedules(copyUserId, serverData._id) }
-                        >
-                            Copy
-                        </button>
-                    </div> */}
                 </>
             )}
             <span className={Css.buttons}>

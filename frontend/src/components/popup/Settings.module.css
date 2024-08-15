@@ -73,18 +73,6 @@
             }
         }
 
-        & .copySchedules {
-            /* TODO: to be finalized */
-            display: flex;
-            gap: 0.5em;
-            align-items: center;
-
-            & .copySchedulesInput {
-                /* TODO: to be finalized */
-                display: flex;
-            }
-        }
-
         & .buttons {
             display: flex;
             gap: 0.5em;
