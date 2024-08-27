@@ -193,7 +193,7 @@ function createRRule(endDate: APIv4.CourseDate, days: APIv4.Weekday[]): string {
     const daysString = days.map(weekdayToRRuleDay).join(",");
     const monthString = String(endDate.month).padStart(2, "0");
     const dayString = String(endDate.day).padStart(2, "0");
-    const endString = `${endDate.year}${monthString}${dayString}T000000`;
+    const endString = `${endDate.year}${monthString}${dayString}T235959`;
     return (
         `FREQ=WEEKLY;` +
         `INTERVAL=1;` +
