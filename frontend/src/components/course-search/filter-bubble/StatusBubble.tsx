@@ -6,7 +6,6 @@ import { memo } from "react";
 export default memo(function StatusBubble(
     props: FilterBubbleComponentProps<Search.StatusFilter>,
 ) {
-
     const statusOptions = Object.values(Search.StatusFilterOptions);
 
     return (

@@ -370,12 +370,14 @@ export function filterSection(
                 switch (filter.data.status) {
                     // Open filter is both open and reopened
                     case StatusFilterOptions.open:
-                        console.log(section.status == APIv4.SectionStatus.open);
-                        return section.status == APIv4.SectionStatus.open || section.status == APIv4.SectionStatus.reopened;
+                        return (
+                            section.status === APIv4.SectionStatus.open ||
+                            section.status === APIv4.SectionStatus.reopened
+                        );
                     case StatusFilterOptions.closed:
-                        return section.status == APIv4.SectionStatus.closed;
+                        return section.status === APIv4.SectionStatus.closed;
                     case StatusFilterOptions.unknown:
-                        return section.status == APIv4.SectionStatus.unknown;
+                        return section.status === APIv4.SectionStatus.unknown;
                 }
         }
     }
