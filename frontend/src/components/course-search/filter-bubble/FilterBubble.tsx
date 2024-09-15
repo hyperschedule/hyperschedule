@@ -13,6 +13,7 @@ import {
     CreditFilterBubble,
     CourseNumberFilterBubble,
 } from "./RangeFilter";
+import StatusBubble from "./StatusBubble";
 
 export type FilterBubbleComponentProps<Data> = {
     onChange: (data: Data | null) => void;
@@ -39,6 +40,7 @@ const FilterBubbleInput: {
     [Search.FilterKey.Campus]: CampusBubble,
     [Search.FilterKey.Number]: CourseNumberFilterBubble,
     [Search.FilterKey.Half]: TextInputBubble,
+    [Search.FilterKey.Status]: StatusBubble,
 };
 
 // non-interactive example bubble used in the filter popup

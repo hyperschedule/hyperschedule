@@ -155,6 +155,7 @@ export enum FilterKey {
     Location = "loc",
     Credits = "cred",
     Half = "half",
+    Status = "status",
 }
 
 export const filterKeyRegexp = RegExp(
@@ -176,6 +177,16 @@ export type RangeFilter = {
     end: number | null;
 };
 
+// TODO: Rename
+export enum StatusFilterOptions {
+    open = "(Re)Open", // Open or reopened
+    closed = "Closed",
+    unknown = "Unknown",
+}
+export type StatusFilter = {
+    status: StatusFilterOptions;
+};
+
 export type FilterData = {
     [FilterKey.Department]: TextFilter;
     [FilterKey.Instructor]: TextFilter;
@@ -191,6 +202,7 @@ export type FilterData = {
     [FilterKey.Number]: RangeFilter;
     // we can technically use a range filter for half but probably shouldn't
     [FilterKey.Half]: TextFilter;
+    [FilterKey.Status]: StatusFilter;
 };
 
 export type Filter = {
@@ -353,6 +365,18 @@ export function filterSection(
                     section.identifier.half.number.toString()
                 )
                     return false;
+                break;
+            case FilterKey.Status:
+                switch (filter.data.status) {
+                    // Open filter is both open and reopened
+                    case StatusFilterOptions.open:
+                        console.log(section.status == APIv4.SectionStatus.open);
+                        return section.status == APIv4.SectionStatus.open || section.status == APIv4.SectionStatus.reopened;
+                    case StatusFilterOptions.closed:
+                        return section.status == APIv4.SectionStatus.closed;
+                    case StatusFilterOptions.unknown:
+                        return section.status == APIv4.SectionStatus.unknown;
+                }
         }
     }
     return true;
