@@ -67,7 +67,7 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
     },
     [Search.FilterKey.Status]: {
         name: "Status",
-        example: ["(Re)Open", "Closed"],
+        example: ["Open", "Reopened", "Closed"],
     },
 };
 

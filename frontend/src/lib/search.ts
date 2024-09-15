@@ -177,14 +177,8 @@ export type RangeFilter = {
     end: number | null;
 };
 
-// TODO: Rename
-export enum StatusFilterOptions {
-    open = "(Re)Open", // Open or reopened
-    closed = "Closed",
-    unknown = "Unknown",
-}
 export type StatusFilter = {
-    status: StatusFilterOptions;
+    status: APIv4.SectionStatus;
 };
 
 export type FilterData = {
@@ -367,18 +361,7 @@ export function filterSection(
                     return false;
                 break;
             case FilterKey.Status:
-                switch (filter.data.status) {
-                    // Open filter is both open and reopened
-                    case StatusFilterOptions.open:
-                        return (
-                            section.status === APIv4.SectionStatus.open ||
-                            section.status === APIv4.SectionStatus.reopened
-                        );
-                    case StatusFilterOptions.closed:
-                        return section.status === APIv4.SectionStatus.closed;
-                    case StatusFilterOptions.unknown:
-                        return section.status === APIv4.SectionStatus.unknown;
-                }
+                return section.status === filter.data.status;
         }
     }
     return true;
