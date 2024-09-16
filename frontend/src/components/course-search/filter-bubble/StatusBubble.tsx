@@ -14,24 +14,22 @@ const StringToSectionStatusMap: Record<string, APIv4.SectionStatus> = {
 export default memo(function StatusBubble(
     props: FilterBubbleComponentProps<Search.StatusFilter>,
 ) {
-    const statusOptions = Object.keys(StringToSectionStatusMap);
+    const statusOptionStrings = Object.keys(StringToSectionStatusMap);
+    const statusOptionValues = Object.values(StringToSectionStatusMap);
 
     return (
         <AutoComplete
             onSelect={(index) => {
-                const statusName = statusOptions[index];
-                if (statusName !== undefined) {
-                    const status = StringToSectionStatusMap[statusName];
-                    if (status !== undefined) {
-                        props.onChange({ status });
-                        props.focusNext();
-                    }
+                const status = statusOptionValues[index];
+                if (status !== undefined) {
+                    props.onChange({ status });
+                    props.focusNext();
                 }
             }}
             onKeyDown={props.onKeyDown}
-            choices={statusOptions}
+            choices={statusOptionStrings}
             render={({ index }) => {
-                return <span>{statusOptions[index]}</span>;
+                return <span>{statusOptionStrings[index]}</span>;
             }}
         />
     );
