@@ -67,7 +67,6 @@ const AccountSettings = memo(function AccountSettings() {
             ) : (
                 <>
                     <p>You are currently logged in.</p>
-
                     <div
                         className={classNames(Css.accountDetails, {
                             [Css.show]: showAccountDetails,

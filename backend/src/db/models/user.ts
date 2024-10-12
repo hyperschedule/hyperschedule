@@ -84,6 +84,31 @@ export async function getUser(userId: string): Promise<APIv4.ServerUser> {
     return user;
 }
 
+export async function updateUser(
+    userId: APIv4.UserId,
+    updateFields: Partial<APIv4.ServerUser>,
+): Promise<void> {
+    const lookup = await collections.users.findOne({ _id: userId });
+
+    if (lookup === null) {
+        throw new Error(`User with ID ${userId} not found`);
+    }
+
+    if (Object.keys(updateFields).length > 0) {
+        await collections.users.updateOne(
+            { _id: userId },
+            { $set: updateFields },
+        );
+        logger.info(
+            `Updated user ${userId} with fields: ${JSON.stringify(
+                updateFields,
+            )}`,
+        );
+    } else {
+        logger.warn(`No fields to update for user ${userId}`);
+    }
+}
+
 export async function addSchedule(
     userId: APIv4.UserId,
     term: APIv4.TermIdentifier,
@@ -425,5 +450,67 @@ export async function setSectionAttrs(
             sectionId,
         )} in ${scheduleId} for ${userId} completed`,
         attrs,
+    );
+}
+
+export async function findDuplicatesWith<K extends keyof APIv4.ServerUser>(
+    key: K,
+): Promise<APIv4.ServerUser[][]> {
+    const result = await collections.users
+        .aggregate([
+            {
+                $group: {
+                    _id: `$${key}`, // Group by the key value
+                    count: { $sum: 1 },
+                    users: { $push: "$$ROOT" }, // Collect users with the same key value
+                },
+            },
+            {
+                $match: {
+                    count: { $gt: 1 },
+                },
+            },
+            {
+                $project: {
+                    _id: 0, // Remove the _id field from the result
+                    users: 1, // Only return the array of users
+                },
+            },
+        ])
+        .toArray();
+
+    return result.map((group) => group.users);
+}
+
+export async function makeAllEPPNLowercase(): Promise<void> {
+    await collections.users.updateMany({ eppn: { $regex: /[A-Z]/ } }, [
+        {
+            $set: {
+                eppn: { $toLower: "$eppn" },
+            },
+        },
+    ]);
+}
+
+export async function copySchedules(
+    fromUserId: APIv4.UserId,
+    toUserId: APIv4.UserId,
+): Promise<void> {
+    const fromUserSchedules = (await getUser(fromUserId)).schedules;
+    const toUserSchedules = (await getUser(toUserId)).schedules;
+
+    for (const [scheduleId, schedule] of Object.entries(fromUserSchedules)) {
+        if (!toUserSchedules[scheduleId]) {
+            toUserSchedules[scheduleId] = schedule;
+        }
+    }
+
+    await collections.users.updateOne(
+        { _id: toUserId },
+        {
+            $set: {
+                schedules: toUserSchedules,
+            },
+        },
     );
 }

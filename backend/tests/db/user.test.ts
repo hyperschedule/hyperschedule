@@ -11,6 +11,10 @@ import {
     renameSchedule,
     setSectionAttrs,
     getOrCreateUser,
+    updateUser,
+    findDuplicatesWith,
+    makeAllEPPNLowercase,
+    copySchedules,
 } from "../../src/db/models/user";
 
 setupDbHooks();
@@ -287,5 +291,118 @@ describe("db/models/user", () => {
         expect(user2.schedules[sid]!.sections[0]!.attrs).toStrictEqual({
             selected: false,
         } satisfies APIv4.UserSectionAttrs);
+    });
+
+    test("replace capital letters with lowercase in saml", async () => {
+        // Note that if we get an eppn containing capital letters from CAS, we make them lowercase before passing them as arguments to getOrCreateUser.
+        // So the users in the db that have capital letters in their eppn are due to legacy code.
+        const uid1 = await getOrCreateUser("First Test User", "");
+        const uid2 = await getOrCreateUser("Second Test User", "");
+        const uid3 = await getOrCreateUser("third test user", "");
+        const uid4 = await getOrCreateUser(
+            "IniLast2026@hmc.edu",
+            "Harvey Mudd College",
+        );
+
+        await makeAllEPPNLowercase();
+
+        const user1 = await getUser(uid1);
+        const user2 = await getUser(uid2);
+        const user4 = await getUser(uid4);
+        expect(user1!.eppn).toStrictEqual("first test user");
+        expect(user2!.eppn).toStrictEqual("second test user");
+        expect(user4!.eppn).toStrictEqual("inilast2026@hmc.edu");
+    });
+
+    test("find duplicate users with key", async () => {
+        const uid1 = await getOrCreateUser(
+            "test user 1",
+            "Harvey Mudd College",
+        );
+        const uid2 = await getOrCreateUser(
+            "Test user 1",
+            "Claremont McKenna College",
+        );
+        const uid3 = await getOrCreateUser(
+            "test user 2",
+            "Claremont McKenna College",
+        );
+        const uid4 = await getOrCreateUser("Test user 2", "Pomona College");
+        const uid5 = await getOrCreateUser("unique user", "Pomona College");
+
+        await makeAllEPPNLowercase();
+
+        const user1 = await getUser(uid1);
+        const user2 = await getUser(uid2);
+        const user3 = await getUser(uid3);
+        const user4 = await getUser(uid4);
+        const user5 = await getUser(uid5);
+
+        const duplicatesArray1 = await findDuplicatesWith("eppn");
+        expect(duplicatesArray1).toEqual(
+            expect.arrayContaining([
+                expect.arrayContaining([user1, user2]),
+                expect.arrayContaining([user3, user4]),
+            ]),
+        );
+
+        const duplicatesArray2 = await findDuplicatesWith("school");
+        expect(duplicatesArray2).toEqual(
+            expect.arrayContaining([
+                expect.arrayContaining([user2, user3]),
+                expect.arrayContaining([user4, user5]),
+            ]),
+        );
+
+        const duplicatesArray3 = await findDuplicatesWith("_id");
+        expect(duplicatesArray3).toEqual([]);
+    });
+
+    test("copy schedule using uid", async () => {
+        const uid1 = await getOrCreateUser("test user1", "");
+        const uid2 = await getOrCreateUser("test user2", "");
+
+        const user1_pre = await getUser(uid1);
+        const user2_pre = await getUser(uid2);
+        expect(Object.keys(user1_pre.schedules).length).toStrictEqual(1);
+        expect(Object.keys(user2_pre.schedules).length).toStrictEqual(1);
+
+        const sid1 = await addSchedule(
+            uid1,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 1",
+        );
+        const sid2 = await addSchedule(
+            uid1,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 2",
+        );
+        const sid3 = await addSchedule(
+            uid2,
+            { year: 2023, term: APIv4.Term.spring },
+            "test schedule 3",
+        );
+
+        await addSection(uid2, sid3, {
+            department: "CSCI",
+            courseNumber: 131,
+            suffix: "",
+            affiliation: "HM",
+            sectionNumber: 1,
+            term: APIv4.Term.spring,
+            year: 2023,
+            half: null,
+        });
+
+        const user1_int = await getUser(uid1);
+        const user2_int = await getUser(uid2);
+        expect(Object.keys(user1_int.schedules).length).toStrictEqual(3);
+        expect(Object.keys(user2_int.schedules).length).toStrictEqual(2);
+
+        await copySchedules(uid2, uid1);
+        const user1_post = await getUser(uid1);
+        const user2_post = await getUser(uid2);
+        expect(Object.keys(user1_post.schedules).length).toStrictEqual(5);
+        expect(Object.keys(user2_post.schedules).length).toStrictEqual(2);
     });
 });
