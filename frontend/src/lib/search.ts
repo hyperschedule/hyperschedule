@@ -361,7 +361,9 @@ export function filterSection(
                     return false;
                 break;
             case FilterKey.Status:
-                return section.status === filter.data.status;
+                if (section.status !== filter.data.status) {
+                    return false;
+                }
         }
     }
     return true;

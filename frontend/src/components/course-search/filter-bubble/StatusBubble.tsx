@@ -8,7 +8,6 @@ const StringToSectionStatusMap: Record<string, APIv4.SectionStatus> = {
     Open: APIv4.SectionStatus.open,
     Closed: APIv4.SectionStatus.closed,
     Reopened: APIv4.SectionStatus.reopened,
-    Unknown: APIv4.SectionStatus.unknown,
 };
 
 export default memo(function StatusBubble(
