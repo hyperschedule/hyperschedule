@@ -99,11 +99,23 @@ export default memo(function CourseSearch() {
     const { enable, range } = useStore(
         (store) => store.multiTermsSearchOptions,
     );
+    const setMultiTermsSearchOptions = useStore(
+        (store) => store.setMultiTermsSearchOptions,
+    );
     const allTerms = useAllTerms() ?? [];
     const multiTermsSections = useSectionsForTermsQuery(
         enable,
         allTerms.slice(0, range),
     ).data;
+
+    React.useEffect(() => {
+        if (enable) {
+            setMultiTermsSearchOptions({
+                range: range,
+                enable: false,
+            });
+        }
+    }, [searchText]);
 
     const matchingMultiTermsSections: APIv4.Section[] | undefined =
         React.useMemo(() => {
