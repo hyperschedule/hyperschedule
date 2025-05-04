@@ -50,7 +50,7 @@
     "ci:lint": "eslint . --quiet"
   },
   "engines": {
-    "node": "^18"
+    "node": "^22"
   },
   "packageManager": "yarn@3.2.3",
   "workspaces": [

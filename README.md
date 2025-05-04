@@ -7,7 +7,7 @@ Hyperschedule is a fast course scheduler for the Claremont Colleges. Currently l
 
 To run the code, you need to have at least one of these installed on your computer:
 
-- [NodeJS 18](https://nodejs.org/en) and [Yarn](https://yarnpkg.com/getting-started/install)
+- [NodeJS 22](https://nodejs.org/en) and [Yarn](https://yarnpkg.com/getting-started/install)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
 
 ## If you use Windows
