@@ -23,6 +23,11 @@ jobs:
         with:
           node-version: 18
           cache: "yarn"
+      - name: Install libcrypto.so.1.1 for MongoDB
+        if: matrix.command == 'test'
+        run: |
+          wget https://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
       - name: Install dependencies
         run: yarn install --immutable
       - name: Run ${{matrix.command}}
