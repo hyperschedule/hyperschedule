@@ -48,7 +48,7 @@
     "jsonwebtoken": "^9.0.2",
     "milliparsec": "^2.3.0",
     "mongodb": "^5.9.0",
-    "mongodb-memory-server": "^10.1.4",
+    "mongodb-memory-server": "^8.15.1",
     "pino": "^8.15.1",
     "pino-pretty": "^10.2.0",
     "samlify": "^2.8.10",
