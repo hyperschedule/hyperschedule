@@ -21,19 +21,6 @@ export const announcements: Announcement[] = [
         ),
         expires: null,
     },
-    {
-        id: 1711657526,
-        message: (
-            <>
-                Hyperschedule is looking for new maintainers. If you are
-                interested, please contact us via{" "}
-                <a href="mailto:hyperschedule@g.hmc.edu">
-                    hyperschedule@g.hmc.edu
-                </a>
-            </>
-        ),
-        expires: new Date(2025, 9, 0, 0, 0, 0),
-    },
 ];
 
 if (window.location.host === "nightly.hyperschedule.io")
