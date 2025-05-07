@@ -29,8 +29,7 @@ async function treeFetch(start, getName) {
         last;
     let completed = false;
     do {
-        if (next === last) completed = true;
-
+        // We'll set completed = true when there's no next link
         let resp = await fetch(next, {
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
@@ -43,18 +42,26 @@ async function treeFetch(start, getName) {
             throw Error(resp.statusText);
         }
 
-        const links = resp.headers.get("Link").toLocaleLowerCase().split(",");
-        const rel = new Map(
-            links.map((l) =>
-                l
-                    .match(/<(.+?)>; rel="(.+?)"/)
-                    .slice(1, 3)
-                    .reverse(),
-            ),
-        );
-
-        next = rel.get("next");
-        last = rel.get("last");
+        // Add null check for Link header
+        const linkHeader = resp.headers.get("Link");
+        if (!linkHeader) {
+            // No Link header means no more pages
+            completed = true;
+            contents.push(resp.json());
+            continue;
+        }
+        
+        // Parse the Link header
+        const links = linkHeader.split(",");
+        const nextLink = links.find(link => link.toLowerCase().includes('rel="next"'));
+        if (!nextLink) {
+            completed = true;
+            contents.push(resp.json());
+            continue;
+        }
+        
+        const nextMatch = nextLink.match(/<([^>]+)>/);
+        next = nextMatch ? nextMatch[1] : null;
 
         contents.push(resp.json());
     } while (!completed);
