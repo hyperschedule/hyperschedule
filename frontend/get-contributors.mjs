@@ -50,7 +50,7 @@ async function treeFetch(start, getName) {
             contents.push(resp.json());
             continue;
         }
-        
+
         // Parse the Link header
         const links = linkHeader.split(",");
         const nextLink = links.find(link => link.toLowerCase().includes('rel="next"'));
@@ -59,7 +59,7 @@ async function treeFetch(start, getName) {
             contents.push(resp.json());
             continue;
         }
-        
+
         const nextMatch = nextLink.match(/<([^>]+)>/);
         next = nextMatch ? nextMatch[1] : null;
 
