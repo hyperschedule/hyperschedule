@@ -70,8 +70,9 @@ userApp.get("/", async function (request: Request, response: Response) {
     return response.header("Content-Type", "application/json").send(user);
 });
 
-const scheduleApp = userApp.route("/schedule").use(jsonParser());
+const scheduleApp = userApp.route("/schedule");
 scheduleApp
+    .use(jsonParser()) // we need to add this so it can parse json requests
     .post(async function (request: Request, response: Response) {
         if (request.userToken === null) return response.status(401).end();
 
