@@ -11,6 +11,12 @@ export const ScheduleId = z.string().regex(/s~[A-Za-z0-9\-_]{22}/);
 export type UserId = z.infer<typeof UserId>;
 export type ScheduleId = z.infer<typeof ScheduleId>;
 
+export const SharedScheduleId = z
+    .string()
+    .regex(/h~[A-Za-z0-9\-_]{22}/)
+    .optional();
+export type SharedScheduleId = z.infer<typeof SharedScheduleId>;
+
 export const UserSectionAttrs = z.object({
     selected: z.boolean(),
 });
@@ -26,6 +32,7 @@ export const UserSchedule = z.object({
     term: TermIdentifier,
     name: z.string(),
     sections: UserSection.array(),
+    sharedId: SharedScheduleId,
 });
 export type UserSchedule = z.infer<typeof UserSchedule>;
 
@@ -120,3 +127,26 @@ export const DuplicateScheduleRequest = z.object({
 export type DuplicateScheduleRequest = z.infer<typeof DuplicateScheduleRequest>;
 export const DuplicateScheduleResponse = AddScheduleResponse;
 export type DuplicateScheduleResponse = AddScheduleResponse;
+
+export const ShareScheduleRequest = z.object({
+    scheduleId: ScheduleId,
+});
+export type ShareScheduleRequest = z.infer<typeof ShareScheduleRequest>;
+export const ShareScheduleResponse = z.object({
+    sharedId: SharedScheduleId,
+});
+export type ShareScheduleResponse = z.infer<typeof ShareScheduleResponse>;
+
+export const UnshareScheduleRequest = ShareScheduleRequest;
+export type UnshareScheduleRequest = ShareScheduleRequest;
+
+export const GetSharedScheduleRequest = z.object({
+    sharedId: SharedScheduleId,
+});
+export type GetSharedScheduleRequest = z.infer<typeof GetSharedScheduleRequest>;
+export const GetSharedScheduleResponse = z.object({
+    schedule: UserSchedule,
+});
+export type GetSharedScheduleResponse = z.infer<
+    typeof GetSharedScheduleResponse
+>;

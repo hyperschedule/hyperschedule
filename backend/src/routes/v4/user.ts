@@ -10,6 +10,9 @@ import {
     replaceSections,
     setSectionAttrs,
     duplicateSchedule,
+    getSharedSchedule,
+    shareSchedule,
+    unshareSchedule,
 } from "../../db/models/user";
 import { createLogger } from "../../logger";
 import { json as jsonParser } from "milliparsec";
@@ -67,9 +70,8 @@ userApp.get("/", async function (request: Request, response: Response) {
     return response.header("Content-Type", "application/json").send(user);
 });
 
-userApp
-    .route("/schedule")
-    .use(jsonParser()) // we need to add this so it can parse json requests
+const scheduleApp = userApp.route("/schedule").use(jsonParser());
+scheduleApp
     .post(async function (request: Request, response: Response) {
         if (request.userToken === null) return response.status(401).end();
 
@@ -86,7 +88,7 @@ userApp
             input.data.name,
         );
 
-        response
+        return response
             .header("Content-Type", "application/json")
             .send({ scheduleId } satisfies APIv4.AddScheduleResponse);
     })
@@ -138,6 +140,54 @@ userApp
         return response
             .header("Content-Type", "application/json")
             .send({ scheduleId } satisfies APIv4.DuplicateScheduleResponse);
+    });
+
+scheduleApp
+    .route("/share")
+    .use(jsonParser()) // we need to add this so it can parse json requests
+    .get(async function (request: Request, response: Response) {
+        const input = APIv4.GetSharedScheduleRequest.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        const schedule = await getSharedSchedule(input.data.sharedId);
+
+        return response
+            .header("Content-Type", "application/json")
+            .send({ schedule } satisfies APIv4.GetSharedScheduleResponse);
+    })
+    .post(async function (request: Request, response: Response) {
+        if (request.userToken === null) return response.status(401).end();
+        const input = APIv4.ShareScheduleRequest.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        const sharedId = await shareSchedule(
+            request.userToken.uuid,
+            input.data.scheduleId,
+        );
+
+        return response
+            .header("Content-Type", "application/json")
+            .send({ sharedId } satisfies APIv4.ShareScheduleResponse);
+    })
+    .delete(async function (request: Request, response: Response) {
+        if (request.userToken === null) return response.status(401).end();
+        const input = APIv4.UnshareScheduleRequest.safeParse(request.body);
+        if (!input.success)
+            return response
+                .status(400)
+                .header("Content-Type", "application/json")
+                .send(input.error);
+
+        await unshareSchedule(request.userToken.uuid, input.data.scheduleId);
+        return response.status(204).end();
     });
 
 userApp
