@@ -140,10 +140,6 @@ export type ShareScheduleResponse = z.infer<typeof ShareScheduleResponse>;
 export const UnshareScheduleRequest = ShareScheduleRequest;
 export type UnshareScheduleRequest = ShareScheduleRequest;
 
-export const GetSharedScheduleRequest = z.object({
-    sharedId: SharedScheduleId,
-});
-export type GetSharedScheduleRequest = z.infer<typeof GetSharedScheduleRequest>;
 export const GetSharedScheduleResponse = z.object({
     schedule: UserSchedule,
 });
