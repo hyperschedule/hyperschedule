@@ -2,7 +2,7 @@ import Css from "./Schedule.module.css";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
-import { useActiveScheduleResolved } from "@hooks/schedule";
+import { type ResolvedSchedule } from "@hooks/schedule";
 import { useActiveSectionsLookup } from "@hooks/section";
 
 import { sectionColorStyle } from "@lib/color";
@@ -28,9 +28,11 @@ import { PopupOption } from "@lib/popup";
 import { SCHEDULE_CONTAINER_ID } from "@lib/constants";
 import type { CSSProperties } from "react";
 
-export default memo(function Schedule(props: ScheduleRenderingOptions) {
-    const { cards, startHour, endHour, unconflicting } =
-        useActiveScheduleResolved();
+export default memo(function Schedule(props: {
+    resolvedSchedule: ResolvedSchedule;
+    options: ScheduleRenderingOptions;
+}) {
+    const { cards, startHour, endHour, unconflicting } = props.resolvedSchedule;
 
     const weekend = hasWeekend(cards);
     const byDay = groupCardsByDay(cards);
@@ -54,7 +56,9 @@ export default memo(function Schedule(props: ScheduleRenderingOptions) {
             <div className={Css.viewport}>
                 <div
                     className={Css.grid}
-                    data-show-conflict={props.showConflicting || undefined}
+                    data-show-conflict={
+                        props.options.showConflicting || undefined
+                    }
                 >
                     <GridBackgroundColumns />
                     <GridBackgroundRows />
@@ -152,6 +156,7 @@ const Card = memo(function Card(props: {
     const setPopup = useStore((store) => store.setPopup);
     const setHoverSection = useStore((store) => store.setHoverSection);
     const hoverSection = useStore((store) => store.hoverSection);
+    // TODODODODO
     const sectionsLookup = useActiveSectionsLookup();
 
     const section = sectionsLookup.get(

@@ -10,9 +10,10 @@ export function useActiveSectionsQuery(): APIv4.Section[] | undefined {
     return useSectionsQuery(activeTerm).data;
 }
 
-// returns a map of section identifier strings to sections
-export function useActiveSectionsLookup(): Map<string, APIv4.Section> {
-    const sectionsQuery = useActiveSectionsQuery();
+export function useSectionsLookup(
+    term: APIv4.TermIdentifier,
+): Map<string, APIv4.Section> {
+    const sectionsQuery = useSectionsQuery(term).data;
 
     return useMemo(() => {
         const lookup = new Map<string, APIv4.Section>();
@@ -26,4 +27,9 @@ export function useActiveSectionsLookup(): Map<string, APIv4.Section> {
 
         return lookup;
     }, [sectionsQuery]);
+}
+
+// returns a map of section identifier strings to sections
+export function useActiveSectionsLookup(): Map<string, APIv4.Section> {
+    return useSectionsLookup(useUserStore((store) => store.activeTerm));
 }
