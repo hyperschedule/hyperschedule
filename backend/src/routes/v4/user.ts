@@ -145,7 +145,6 @@ scheduleApp
 
 scheduleApp
     .route("/share")
-    .use(jsonParser()) // we need to add this so it can parse json requests
     .get("/:shareId", async function (request: Request, response: Response) {
         const input = APIv4.SharedScheduleId.safeParse(request.params.shareId);
         if (!input.success)

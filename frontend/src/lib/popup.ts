@@ -7,6 +7,7 @@ export const enum PopupOption {
     Filter = "filter",
     ManageSchedules = "manage-schedules",
     ExportCalendar = "export-calendar",
+    ShareSchedule = "share-schedule",
     About = "about",
 }
 
@@ -27,5 +28,6 @@ export type Popup =
       }
     | { option: PopupOption.ManageSchedules }
     | { option: PopupOption.ExportCalendar }
+    | { option: PopupOption.ShareSchedule }
     | { option: PopupOption.About }
     | null;

@@ -11,10 +11,11 @@ export const ScheduleId = z.string().regex(/s~[A-Za-z0-9\-_]{22}/);
 export type UserId = z.infer<typeof UserId>;
 export type ScheduleId = z.infer<typeof ScheduleId>;
 
+// use nullish because mongoose makes null/undefined interchangeable
 export const SharedScheduleId = z
     .string()
     .regex(/h~[A-Za-z0-9\-_]{22}/)
-    .optional();
+    .nullish();
 export type SharedScheduleId = z.infer<typeof SharedScheduleId>;
 
 export const UserSectionAttrs = z.object({
