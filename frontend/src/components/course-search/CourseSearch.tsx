@@ -19,7 +19,6 @@ import {
     useActiveSectionsQuery,
 } from "@hooks/section";
 import * as Search from "@lib/search";
-import { PopupOption } from "@lib/popup";
 
 import SearchControls from "@components/course-search/SearchControls";
 import CourseRow from "@components/course-search/CourseRow";
@@ -65,37 +64,6 @@ export default memo(function CourseSearch() {
               );
     }, [searchFilters, sections]);
 
-    const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
-        if (searchText === "" && !hideConflictingSections)
-            return filteredSections;
-        if (filteredSections === undefined) return undefined;
-
-        let res: [number, APIv4.Section][] = [];
-        for (const s of filteredSections) {
-            const score = Search.matchesText(searchText, s, areas);
-            if (score !== null) {
-                res.push([score, s]);
-            }
-        }
-        const sorted = res.sort((a, b) => b[0] - a[0]);
-        const sortedSections = sorted.map((a) => a[1]);
-
-        return hideConflictingSections
-            ? Search.getNonConflictingSections(
-                  sortedSections,
-                  selectedSections,
-                  conflictingSectionsOptions,
-              )
-            : sortedSections;
-    }, [
-        sections,
-        searchText,
-        searchFilters,
-        selectedSections,
-        hideConflictingSections,
-        conflictingSectionsOptions,
-    ]);
-
     const { enable, range } = useStore(
         (store) => store.multiTermsSearchOptions,
     );
@@ -134,14 +102,69 @@ export default memo(function CourseSearch() {
             return sorted.map((a) => a[1]);
         }, [multiTermsSections, searchText, searchFilters, enable, range]);
 
+    const activeTerm = useUserStore((user) => user.activeTerm);
+
+    const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
+        if (filteredSections === undefined) return undefined;
+
+        let regularSections: APIv4.Section[] = [];
+
+        // Process regular sections
+        if (searchText === "" && !hideConflictingSections) {
+            regularSections = filteredSections;
+        } else {
+            let res: [number, APIv4.Section][] = [];
+            for (const s of filteredSections) {
+                const score = Search.matchesText(searchText, s, areas);
+                if (score !== null) {
+                    res.push([score, s]);
+                }
+            }
+            const sorted = res.sort((a, b) => b[0] - a[0]);
+            const sortedSections = sorted.map((a) => a[1]);
+
+            regularSections = hideConflictingSections
+                ? Search.getNonConflictingSections(
+                      sortedSections,
+                      selectedSections,
+                      conflictingSectionsOptions,
+                  ) ?? []
+                : sortedSections;
+        }
+
+        // Add multi-term sections if enabled
+        if (enable && matchingMultiTermsSections) {
+            const otherTermSections = matchingMultiTermsSections.filter(
+                (section) => {
+                    return !(
+                        section.identifier.term === activeTerm.term &&
+                        section.identifier.year === activeTerm.year
+                    );
+                },
+            );
+            regularSections = [...regularSections, ...otherTermSections];
+        }
+
+        return regularSections;
+    }, [
+        sections,
+        searchText,
+        searchFilters,
+        selectedSections,
+        hideConflictingSections,
+        conflictingSectionsOptions,
+        enable,
+        matchingMultiTermsSections,
+        activeTerm,
+    ]);
+
     return (
         <div className={Css.container}>
             <SearchControls />
             {sectionsToShow !== undefined ? (
                 <CourseSearchResults
                     sections={sectionsToShow}
-                    multiTermsSearchEnabled={enable}
-                    multiTermsSections={matchingMultiTermsSections}
+                    activeTerm={activeTerm}
                 />
             ) : (
                 <CourseSearchEnd text="loading courses..." />
@@ -177,8 +200,7 @@ function computeIndices(state: {
 
 const CourseSearchResults = memo(function CourseSearchResults(props: {
     sections: APIv4.Section[];
-    multiTermsSearchEnabled: boolean;
-    multiTermsSections: APIv4.Section[] | undefined;
+    activeTerm: APIv4.TermIdentifier;
 }) {
     // https://github.com/streamich/react-use/issues/1264#issuecomment-721645100
     const [rowBounds, rowMeasureRef] = useMeasure<HTMLDivElement>();
@@ -235,19 +257,19 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
     //        section: props.sections[expandIndex]!,
     //    });
 
+    const enable = useStore((store) => store.multiTermsSearchOptions.enable);
+
     if (props.sections.length === 0)
         return (
             <div className={Css.resultsContainer}>
-                <CourseSearchEnd text="no courses in active term found" />
+                <CourseSearchEnd
+                    text={
+                        enable
+                            ? "no courses found"
+                            : "no courses in active term found"
+                    }
+                />
                 <MultiTermsSearchMenu />
-
-                {props.multiTermsSearchEnabled ? (
-                    <MultiTermsSearchResults
-                        multiTermsSections={props.multiTermsSections}
-                    />
-                ) : (
-                    <></>
-                )}
             </div>
         );
 
@@ -280,20 +302,13 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                                     scroll={scroll}
                                     rowHeight={rowBounds.height}
                                     viewportHeight={viewportBounds.height}
+                                    activeTerm={props.activeTerm}
                                 />
                             ))}
                         </div>
                         <CourseSearchEnd text="end of search results" />
                         <MultiTermsSearchMenu />
                     </>
-                )}
-
-                {props.multiTermsSearchEnabled ? (
-                    <MultiTermsSearchResults
-                        multiTermsSections={props.multiTermsSections}
-                    />
-                ) : (
-                    <></>
                 )}
             </div>
             <div className={Css.hiddenMeasureContainer}>
@@ -312,6 +327,7 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
     rowHeight: number;
     viewportHeight: number;
     expandIndex: number | null;
+    activeTerm: APIv4.TermIdentifier;
 }): JSX.Element | null {
     const setExpandKey = useStore((store) => store.setExpandKey);
     const setExpandHeight = useStore((store) => store.setExpandHeight);
@@ -325,6 +341,10 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
             : 0);
 
     const expand = props.index === props.expandIndex;
+    const isFromOtherTerm = !(
+        props.section.identifier.term === props.activeTerm.term &&
+        props.section.identifier.year === props.activeTerm.year
+    );
 
     const onClick = useCallback(
         () => (expand ? clearExpand() : setExpandKey(props.section.identifier)),
@@ -341,6 +361,7 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
                 expand={expand}
                 onClick={onClick}
                 updateDetailsSize={expand ? setExpandHeight : undefined}
+                fromOtherTerm={isFromOtherTerm}
             />
         </div>
     );
@@ -418,56 +439,5 @@ const MultiTermsSearchMenu = memo(function MultiTermsSearchMenu() {
                 <></>
             )}
         </div>
-    );
-});
-
-const MultiTermsSearchResults = memo(function MultiTermsSearchResults(props: {
-    multiTermsSections: APIv4.Section[] | undefined;
-}) {
-    const activeTerm = useUserStore((user) => user.activeTerm);
-    const setPopup = useStore((store) => store.setPopup);
-
-    const sections = props.multiTermsSections?.filter((section) => {
-        return !(
-            section.identifier.term === activeTerm.term &&
-            section.identifier.year === activeTerm.year
-        );
-    });
-
-    if (sections === undefined) {
-        return (
-            <div className={Css.end}>
-                (loading courses from other semesters...)
-            </div>
-        );
-    }
-
-    return (
-        <>
-            <div className={Css.multiTermsSearchResults}>
-                {sections.map((section) => (
-                    <CourseRow
-                        key={APIv4.stringifySectionCodeLong(section.identifier)}
-                        section={section}
-                        expand={false}
-                        fromOtherTerm={true}
-                        onClick={() => {
-                            setPopup({
-                                option: PopupOption.SectionDetail,
-                                section: section,
-                            });
-                        }}
-                    />
-                ))}
-            </div>
-
-            <CourseSearchEnd
-                text={
-                    sections.length === 0
-                        ? "no recent records of courses found"
-                        : "end of recent semesters search results"
-                }
-            />
-        </>
     );
 });
