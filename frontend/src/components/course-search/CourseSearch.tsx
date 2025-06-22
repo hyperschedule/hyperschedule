@@ -255,7 +255,7 @@ const CourseSearchResults = memo(function CourseSearchResults(props: {
                 ref={viewportRef}
                 onScroll={(ev) => setScroll(ev.currentTarget.scrollTop)}
             >
-                {viewportBounds && rowBounds && (
+                {viewportBounds && rowBounds && rowBounds.height > 0 && (
                     <>
                         <div
                             style={{
@@ -453,31 +453,34 @@ const VirtualizedCourseList = memo(function VirtualizedCourseList(props: {
                 ref={viewportRef}
                 onScroll={(ev) => setScroll(ev.currentTarget.scrollTop)}
             >
-                {props.sections.length > 0 && viewportBounds && rowBounds && (
-                    <div
-                        style={{
-                            height: `${
-                                props.sections.length * rowBounds.height
-                            }px`,
-                            position: "relative",
-                        }}
-                    >
-                        {visibleSections.map(({ index, section }) => (
-                            <div
-                                key={APIv4.stringifySectionCodeLong(
-                                    section.identifier,
-                                )}
-                                style={{
-                                    position: "absolute",
-                                    top: `${index * rowBounds.height}px`,
-                                    width: "100%",
-                                }}
-                            >
-                                {props.renderRow(section)}
-                            </div>
-                        ))}
-                    </div>
-                )}
+                {props.sections.length > 0 &&
+                    viewportBounds &&
+                    rowBounds &&
+                    rowBounds.height > 0 && (
+                        <div
+                            style={{
+                                height: `${
+                                    props.sections.length * rowBounds.height
+                                }px`,
+                                position: "relative",
+                            }}
+                        >
+                            {visibleSections.map(({ index, section }) => (
+                                <div
+                                    key={APIv4.stringifySectionCodeLong(
+                                        section.identifier,
+                                    )}
+                                    style={{
+                                        position: "absolute",
+                                        top: `${index * rowBounds.height}px`,
+                                        width: "100%",
+                                    }}
+                                >
+                                    {props.renderRow(section)}
+                                </div>
+                            ))}
+                        </div>
+                    )}
             </div>
             <div
                 style={{
