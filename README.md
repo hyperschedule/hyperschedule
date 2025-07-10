@@ -3,6 +3,19 @@
 Hyperschedule is a fast course scheduler for the Claremont Colleges. Currently live at [https://hyperschedule.io/](https://hyperschedule.io/).
 ![](docs/demo.gif)
 
+## Getting Started
+
+To clone this repository, you'll need Git LFS installed first since this repository uses LFS for large data files:
+
+```shell
+# Install Git LFS if you haven't already
+git lfs install
+
+# Clone the repository
+git clone https://github.com/MuddCreates/hyperschedule.git
+cd hyperschedule
+```
+
 ## Basic Dependencies
 
 To run the code, you need to have at least one of these installed on your computer:
