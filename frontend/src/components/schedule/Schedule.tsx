@@ -3,7 +3,6 @@ import Css from "./Schedule.module.css";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import { type ResolvedSchedule } from "@hooks/schedule";
-import { useActiveSectionsLookup } from "@hooks/section";
 
 import { sectionColorStyle } from "@lib/color";
 
@@ -156,15 +155,6 @@ const Card = memo(function Card(props: {
     const setPopup = useStore((store) => store.setPopup);
     const setHoverSection = useStore((store) => store.setHoverSection);
     const hoverSection = useStore((store) => store.hoverSection);
-    // TODODODODO
-    const sectionsLookup = useActiveSectionsLookup();
-
-    const section = sectionsLookup.get(
-        APIv4.stringifySectionCodeLong(props.card.section.identifier),
-    );
-    if (section === undefined) {
-        return <>Error</>;
-    }
 
     return (
         <div
@@ -212,7 +202,7 @@ const Card = memo(function Card(props: {
                 {APIv4.stringifySectionCode(props.card.section.identifier)}
             </div>
 
-            <div className={Css.title}>{section.course.title}</div>
+            <div className={Css.title}>{props.card.section.course.title}</div>
 
             <div className={Css.location}>
                 {combineLocations(props.card.locations).join(", ")}
