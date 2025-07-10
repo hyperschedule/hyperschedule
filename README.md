@@ -12,7 +12,7 @@ To clone this repository, you'll need Git LFS installed first since this reposit
 git lfs install
 
 # Clone the repository
-git clone https://github.com/MuddCreates/hyperschedule.git
+git clone https://github.com/hyperschedule/hyperschedule.git
 cd hyperschedule
 ```
 
