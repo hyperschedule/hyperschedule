@@ -18,6 +18,10 @@ jobs:
         command: ["typecheck", "test", "lint", "format"]
     steps:
       - uses: actions/checkout@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.13.1
       - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
@@ -28,10 +32,6 @@ jobs:
         run: |
           wget https://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
           sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10.13.1
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run ${{matrix.command}}
