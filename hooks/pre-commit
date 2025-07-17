@@ -3,9 +3,9 @@
 set -euo pipefail
 
 function run-script {
-  local cmd="yarn $1"
+  local cmd="pnpm $1"
   echo $'\e[95mRunning '"${cmd@Q}"$'\e[m'
-  if ! yarn "$1"; then
+  if ! pnpm "$1"; then
     echo $'\e[91mCommand '"${cmd@Q}"$' failed, commit aborted.\e[m'
     return 1
   fi

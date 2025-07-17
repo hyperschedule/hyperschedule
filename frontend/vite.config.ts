@@ -28,7 +28,7 @@ try {
     contributors = JSON.stringify([
         {
             username: "",
-            name: "Contributor placeholder (run `yarn get-contributor` then restart frontend)",
+            name: "Contributor placeholder (run `pnpm get-contributor` then restart frontend)",
         },
     ]);
 }

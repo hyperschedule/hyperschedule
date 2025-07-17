@@ -20,12 +20,12 @@ cd hyperschedule
 
 To run the code, you need to have at least one of these installed on your computer:
 
-- [NodeJS 18](https://nodejs.org/en) and [Yarn](https://yarnpkg.com/getting-started/install)
+- [NodeJS 18](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
 
 ## If you use Windows
 
-Please install both `yarn` and `node` inside WSL2. Choose Debian Bullseyes if you aren't sure which distro to use, 
+Please install both `pnpm` and `node` inside WSL2. Choose Debian Bullseyes if you aren't sure which distro to use, 
 but other distros should be fine
 
 ## If you use MacOS
@@ -46,12 +46,12 @@ was released back in 2006. Please download a slightly more modern bash (as of No
 
 **First time setup:**
 
-At project root, run `yarn install`. Then, run `docker compose build`. Lastly, run `yarn docker` then `yarn docker-load-db` to load
+At project root, run `pnpm install`. Then, run `docker compose build`. Lastly, run `pnpm docker` then `pnpm docker-load-db` to load
 test data. 
 
 **After:**
 
-Every you restarted your computer or Docker desktop, you need to run `yarn docker` again to start the stack.
+Every you restarted your computer or Docker desktop, you need to run `pnpm docker` again to start the stack.
 Then go to `http://localhost:5000` in your browser. 
 
 ## Git hooks
@@ -68,7 +68,7 @@ ln -s "../../hooks/post-checkout" .git/hooks/post-checkout
 
 ## Manual Installations (No Docker)
 
-Not a fan of Docker or dev containers? Good news, you don't have to use either. At project root, run `yarn install` to
+Not a fan of Docker or dev containers? Good news, you don't have to use either. At project root, run `pnpm install` to
 install all the JavaScript dependencies.
 
 Then, you need to install You also need to
@@ -94,4 +94,4 @@ If you are not running Linux, you might have to compile nginx from the source. Y
 the nginx configuration file and the self-signed certificate we use at the [data/nginx](./data/nginx)
 folder.
 
-Lastly, run `yarn frontend` and `yarn backend` in two different terminals to start everything. 
+Lastly, run `pnpm frontend` and `pnpm backend` in two different terminals to start everything. 

@@ -11,6 +11,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext"],
+    "types": ["node"],
     "sourceRoot": ".",
     "baseUrl": ".",
     "rootDir": "."

@@ -10,14 +10,14 @@ Then, delete all the data with
 docker compose down --volumes --remove-orphans
 ```
 
-At this point, run `yarn docker` and load frontend to confirm there is no more data (empty term selector). Run
+At this point, run `pnpm docker` and load frontend to confirm there is no more data (empty term selector). Run
 
 ```
-docker compose exec -T backend sh -c "yarn dev-node src/load-current-term.ts"
+docker compose exec -T backend sh -c "pnpm dev-node src/load-current-term.ts"
 ```
 
-Restart the service by running `yarn docker` again and confirm in the browser that the new term data is loaded (you may
-need to clear browser cache in dev tool). Run `yarn docker-dump-db` to get a new database dump file. Then, add the files
+Restart the service by running `pnpm docker` again and confirm in the browser that the new term data is loaded (you may
+need to clear browser cache in dev tool). Run `pnpm docker-dump-db` to get a new database dump file. Then, add the files
 to git and delete the old data files with (e.g. if we want to add data for FA2024)
 
 ```

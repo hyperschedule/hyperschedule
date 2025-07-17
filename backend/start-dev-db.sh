@@ -20,7 +20,7 @@ else
   echo $'\e[95mWaiting 5 seconds for database to start\e[m'
   sleep 5
 
-  yarn load-db
+  pnpm load-db
 fi
 
 echo $'\e[95mDone\e[m'
