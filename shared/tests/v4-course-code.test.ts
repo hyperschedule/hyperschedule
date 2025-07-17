@@ -334,12 +334,8 @@ describe("course code serialization", () => {
             },
         } as APIv4.SectionIdentifier);
 
-        expect(() =>
-            parseSectionCodeLong("CHEM110BLPO-01 SP2023"),
-        ).toThrow();
-        expect(() =>
-            parseSectionCodeLong("BIOL131  KS-01 SP2023"),
-        ).toThrow();
+        expect(() => parseSectionCodeLong("CHEM110BLPO-01 SP2023")).toThrow();
+        expect(() => parseSectionCodeLong("BIOL131  KS-01 SP2023")).toThrow();
     });
 
     test("section code serialization reversible", () => {

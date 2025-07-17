@@ -45,7 +45,7 @@
     "format": "prettier --write --log-level warn --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html' '*/src/**/*.css'",
     "format-check": "prettier --check --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html' '*/src/**/*.css'",
     "ci:test": "pnpm -r --parallel run ci:test",
-    "ci:format": "prettier --loglevel warn --list-different --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html'",
+    "ci:format": "prettier --log-level warn --list-different --no-error-on-unmatched-pattern '**/*.ts' '*/src/**/*.json' '*/src/**/*.tsx' '*/src/**/*.html'",
     "ci:typecheck": "pnpm -r --parallel run typecheck",
     "ci:lint": "eslint . --quiet"
   },
