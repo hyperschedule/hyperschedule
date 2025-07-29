@@ -1,4 +1,4 @@
-FROM node:22-bullseye
+FROM node:22-bookworm
 
 # Install pnpm
 RUN npm install -g pnpm@10.13.1
