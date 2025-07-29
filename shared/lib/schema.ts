@@ -84,8 +84,8 @@ export type MethodFetch<Schema extends MethodSchemaAny> =
     Schema extends MethodSchemaPostAny
         ? MethodFetchPost<Schema>
         : Schema extends MethodSchemaGetAny
-        ? MethodFetchGet<Schema>
-        : never;
+          ? MethodFetchGet<Schema>
+          : never;
 
 export type RouteFetch<
     Schema extends RouteSchemaAny,

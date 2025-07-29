@@ -64,7 +64,7 @@ export default memo(function AutoComplete(props: {
                     value={
                         hasFocus || !valid
                             ? text
-                            : filteredChoices[selectIndex]?.choice ?? text
+                            : (filteredChoices[selectIndex]?.choice ?? text)
                     }
                     onChange={(ev) => {
                         setText(ev.target.value);
