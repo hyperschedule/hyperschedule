@@ -60,7 +60,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "utf-8-validate": "^6.0.5",
-    "uuid": "^9.0.1"
+    "uuid": "^11.1.0"
   },
   "scripts": {
     "dev-node": "NODE_ENV=development DOTENV_CONFIG_PATH=.env.development node -r dotenv/config --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm",
