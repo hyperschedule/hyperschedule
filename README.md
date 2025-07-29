@@ -20,7 +20,7 @@ cd hyperschedule
 
 To run the code, you need to have at least one of these installed on your computer:
 
-- [NodeJS 18](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
+- [NodeJS 22](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
 
 ## If you use Windows
