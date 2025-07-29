@@ -13,7 +13,6 @@ import useStore, { MainTab } from "@hooks/store";
 import Sidebar from "./Sidebar";
 import { announcements } from "../announcements";
 
-
 export default function App() {
     const theme = useStore((store) => store.theme);
     const mainTab = useStore((store) => store.mainTab);
