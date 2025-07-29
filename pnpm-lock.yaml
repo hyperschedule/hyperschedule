@@ -63,12 +63,6 @@ importers:
       '@types/utf-8-validate':
         specifier: ^5.0.2
         version: 5.0.2
-      '@types/uuid':
-        specifier: ^9.0.8
-        version: 9.0.8
-      dotenv:
-        specifier: ^16.0.3
-        version: 16.6.1
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
@@ -1610,9 +1604,6 @@ packages:
 
   '@types/utf-8-validate@5.0.2':
     resolution: {integrity: sha512-ta7cOkEiNr0RGKARljNBaI7E1GBIr3VwS9RrSoQRmbdv1RVq7Q6VhjSGmQHYNt3nHn051qZBKKrpnw7cnEMDuQ==}
-
-  '@types/uuid@9.0.8':
-    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
 
   '@types/webidl-conversions@7.0.0':
     resolution: {integrity: sha512-xTE1E+YF4aWPJJeUzaZI5DRntlkY3+BCVJi0axFptnjGmAoWxkyREIh/XMrfxVLejwQxMCfDXdICo0VLxThrog==}
@@ -6069,8 +6060,6 @@ snapshots:
   '@types/utf-8-validate@5.0.2':
     dependencies:
       '@types/node': 20.19.9
-
-  '@types/uuid@9.0.8': {}
 
   '@types/webidl-conversions@7.0.0': {}
 
