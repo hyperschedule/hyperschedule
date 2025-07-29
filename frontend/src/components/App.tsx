@@ -13,7 +13,6 @@ import useStore, { MainTab } from "@hooks/store";
 import Sidebar from "./Sidebar";
 import { announcements } from "../announcements";
 
-import "react-toastify/dist/ReactToastify.min.css";
 
 export default function App() {
     const theme = useStore((store) => store.theme);
