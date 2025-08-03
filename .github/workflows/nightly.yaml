@@ -31,18 +31,21 @@ jobs:
               with:
                   submodules: true
 
+            - name: Install pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 10.13.1
             - name: Use Node.js 18
               uses: actions/setup-node@v4
               with:
                   node-version: 18
-            - name: Cache NPM packages
-              uses: actions/cache@v3
+                  cache: "pnpm"
             - name: Install dependencies
-              run: yarn install --immutable
+              run: pnpm install --frozen-lockfile
             - name: Fetch Contributors
-              run: yarn workspace hyperschedule-frontend get-contributors ${{ secrets.GITHUB_TOKEN }}
+              run: pnpm --filter hyperschedule-frontend get-contributors ${{ secrets.GITHUB_TOKEN }}
             - name: Build production
-              run: yarn workspace hyperschedule-frontend prod
+              run: pnpm --filter hyperschedule-frontend prod
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: Upload artifact

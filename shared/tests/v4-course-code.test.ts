@@ -1,12 +1,12 @@
 import { describe, expect, test } from "@jest/globals";
-import type * as APIv4 from "hyperschedule-shared/api/v4";
+import type * as APIv4 from "../api/v4/index";
 import {
     compareCourseCode,
     compareSectionIdentifier,
     parseTermIdentifier,
     stringifyTermIdentifier,
     Term,
-} from "hyperschedule-shared/api/v4";
+} from "../api/v4/index";
 import {
     parseCourseCode,
     parseCXCourseCode,
@@ -334,12 +334,8 @@ describe("course code serialization", () => {
             },
         } as APIv4.SectionIdentifier);
 
-        expect(() =>
-            parseSectionCodeLong("CHEM110BLPO-01 SP2023"),
-        ).toThrowError();
-        expect(() =>
-            parseSectionCodeLong("BIOL131  KS-01 SP2023"),
-        ).toThrowError();
+        expect(() => parseSectionCodeLong("CHEM110BLPO-01 SP2023")).toThrow();
+        expect(() => parseSectionCodeLong("BIOL131  KS-01 SP2023")).toThrow();
     });
 
     test("section code serialization reversible", () => {

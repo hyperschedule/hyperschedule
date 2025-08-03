@@ -12,8 +12,8 @@
  * hyperscheule users may plan something that can't possibly be registered and giving
  * false hope.
  */
-import type { TermIdentifier } from "hyperschedule-shared/api/v4";
-import { Term } from "hyperschedule-shared/api/v4";
+import type { TermIdentifier } from "./v4/index";
+import { Term } from "./v4/index";
 
 export const CURRENT_TERM: Readonly<TermIdentifier> = {
     year: 2025,

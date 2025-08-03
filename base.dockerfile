@@ -1,9 +1,7 @@
 FROM node:18-bullseye
 
-# install the linux version of all dependencies
-RUN apt update && apt install -y git
-COPY . /hyperschedule/
+# Install pnpm
+RUN npm install -g pnpm@10.13.1
 
-WORKDIR /srv
-RUN git clone /hyperschedule
+COPY . /srv/hyperschedule/
 WORKDIR /srv/hyperschedule/

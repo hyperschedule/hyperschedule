@@ -1,4 +1,4 @@
-import * as APIv4 from "hyperschedule-shared/api/v4";
+import * as APIv4 from "./index";
 
 export const CxCourseCodeRegex = RegExp(
     "^" +

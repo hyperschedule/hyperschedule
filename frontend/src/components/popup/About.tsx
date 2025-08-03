@@ -61,7 +61,7 @@ const GitHubLink = memo(function (props: {
 
 function createMaintainerRow(m: Maintainer) {
     return (
-        <p>
+        <p key={m.githubName}>
             <GitHubLink name={m.name} username={m.githubName} />, {m.classYear}
         </p>
     );

@@ -6,12 +6,13 @@ services:
             dockerfile: base.dockerfile
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
-            - ./yarn.lock:/srv/hyperschedule/yarn.lock:ro
+            - ./pnpm-lock.yaml:/srv/hyperschedule/pnpm-lock.yaml:ro
+            - ./pnpm-workspace.yaml:/srv/hyperschedule/pnpm-workspace.yaml:ro
             - ./package.json:/srv/hyperschedule/package.json:ro
             - ./frontend/package.json:/srv/hyperschedule/frontend/package.json:ro
             - ./backend/package.json:/srv/hyperschedule/backend/package.json:ro
             - ./shared/package.json:/srv/hyperschedule/shared/package.json:ro
-        command: yarn install --immutable
+        command: pnpm install --frozen-lockfile
 
     db:
         image: mongo:7
@@ -39,7 +40,7 @@ services:
             - ./shared:/srv/hyperschedule/shared:ro
             - ./data:/srv/hyperschedule/data:ro
         working_dir: /srv/hyperschedule/frontend
-        command: yarn serve
+        command: pnpm serve
 
 
     backend:
@@ -60,7 +61,7 @@ services:
             - ./data:/srv/hyperschedule/data:ro
 
         working_dir: /srv/hyperschedule/backend
-        command: yarn serve
+        command: pnpm serve
         environment:
             DB_URL: mongodb://hyperschedule:local_dev@db
 
@@ -68,8 +69,8 @@ services:
         image: nginx:1.24.0
         depends_on: *base
         ports:
-            - 80:80
-            - 443:443
+            - 8080:80
+            - 8443:443
         networks:
             - backend
         volumes:
