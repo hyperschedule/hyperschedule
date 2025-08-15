@@ -120,8 +120,8 @@ const courseSectionScheduleInput = z.object({
     courseSectionId: CxSectionIdentifierString,
     classBeginningTime: IntString,
     classEndingTime: IntString,
-    classMeetingDays: z.string().nonempty(),
-    instructionSiteName: z.string().nonempty(),
+    classMeetingDays: z.string().min(1),
+    instructionSiteName: z.string().min(1),
 });
 
 const courseSectionScheduleOutput = z
@@ -274,12 +274,12 @@ const altStaffInput = z.object({
     cxId: IntString,
     firstName: z.string().optional(),
     lastName: z.string().optional(),
-    altName: z.string().nonempty(),
+    altName: z.string().min(1),
 });
 const altStaffOutput = z
     .object({
         cxId: IntString,
-        altName: z.string().nonempty().nullable(),
+        altName: z.string().min(1).nullable(),
     })
     .strict();
 export type AltStaffOutput = z.infer<typeof altStaffOutput>[];
@@ -430,13 +430,13 @@ export function parseSectionInstructor(data: string): SectionInstructorOutput {
 const courseAreaInput = z.object({
     course_code: CxCourseCodeString,
     catalog: z.string().regex(/^UG[0-9]{2}$/),
-    course_areas: z.string().nonempty().array(),
+    course_areas: z.string().min(1).array(),
 });
 const courseAreaOutput = z
     .object({
         courseCode: CourseCode,
         catalog: z.string().regex(/^UG[0-9]{2}$/),
-        courseAreas: z.string().nonempty().array(),
+        courseAreas: z.string().min(1).array(),
     })
     .strict();
 export type CourseAreaOutput = z.infer<typeof courseAreaOutput>[];

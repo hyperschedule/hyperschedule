@@ -21,7 +21,7 @@ export enum EnrollmentStatus {
     reopened = "reopened",
     unknown = "unknown",
 }
-export const EnrollmentStatusEnum = z.nativeEnum(EnrollmentStatus);
+export const EnrollmentStatusEnum = z.enum(EnrollmentStatus);
 export type EnrollmentStatusEnum = z.infer<typeof EnrollmentStatusEnum>;
 
 export const Course = z.object({

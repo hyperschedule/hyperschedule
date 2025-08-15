@@ -18,8 +18,8 @@ const SamlResponseFormat = z
     .object({
         audience: z.literal("https://hyperschedule.io/"),
         attributes: z.object({
-            eppn: z.string().email().optional(),
-            [EPPN_URN]: z.string().email().optional(),
+            eppn: z.email().optional(),
+            [EPPN_URN]: z.email().optional(),
             orgName: z.string(),
             displayName: z.string().optional(),
         }),

@@ -72,15 +72,11 @@ type Data = Record<string, unknown>;
  * @param outValidator the zod object for the output
  * @param transform an mapping of key to transform functions to transform and rename the data
  */
-export function parseJSONItem<
-    Input extends Data,
-    Output extends Data,
-    ZodShape extends z.ZodRawShape,
->(
+export function parseJSONItem<Input extends Data, Output extends Data>(
     data: Input,
-    outValidator: z.ZodType<Output, z.ZodObjectDef<ZodShape, "strict">>,
+    outValidator: z.ZodType<Output>,
     transform: JSONTransform<Input, Output>,
-): z.SafeParseReturnType<Output, Output> {
+): { success: true; data: Output } | { success: false; error: z.ZodError } {
     const result: Partial<Output> = {};
     for (const inKey of Object.keys(transform) as (keyof Input)[]) {
         const transformObj = transform[inKey];
@@ -110,13 +106,9 @@ export function parseJSONItem<
     return outValidator.safeParse(result);
 }
 
-export function parseJSON<
-    Input extends Data,
-    Output extends Data,
-    ZodShape extends z.ZodRawShape,
->(
+export function parseJSON<Input extends Data, Output extends Data>(
     data: Input[],
-    outValidator: z.ZodType<Output, z.ZodObjectDef<ZodShape, "strict">>,
+    outValidator: z.ZodType<Output>,
     transform: JSONTransform<Input, Output>,
 ): Output[] {
     const result: Output[] = [];

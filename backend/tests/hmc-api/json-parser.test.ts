@@ -6,7 +6,7 @@ import {
     Remove,
     renameTo,
 } from "../../src/hmc-api/parser/json";
-import type { SafeParseSuccess } from "zod";
+import type { ZodSafeParseSuccess } from "zod";
 import { z } from "zod";
 
 describe("hmc-api/parser/json.ts", () => {
@@ -30,7 +30,7 @@ describe("hmc-api/parser/json.ts", () => {
             },
         );
         expect(out2.success).toBeTruthy();
-        expect((out2 as SafeParseSuccess<unknown>).data).toStrictEqual({
+        expect((out2 as ZodSafeParseSuccess<unknown>).data).toStrictEqual({
             a: 1,
             b: 2,
         });
@@ -63,7 +63,7 @@ describe("hmc-api/parser/json.ts", () => {
             },
         );
         expect(out.success).toBeTruthy();
-        expect((out as SafeParseSuccess<unknown>).data).toStrictEqual({
+        expect((out as ZodSafeParseSuccess<unknown>).data).toStrictEqual({
             a: 1,
             b: "2",
         });
@@ -84,7 +84,7 @@ describe("hmc-api/parser/json.ts", () => {
             },
         );
         expect(out.success).toBeTruthy();
-        expect((out as SafeParseSuccess<unknown>).data).toStrictEqual({
+        expect((out as ZodSafeParseSuccess<unknown>).data).toStrictEqual({
             a: 1,
             c: "2",
         });
@@ -173,7 +173,6 @@ describe("hmc-api/parser/json.ts", () => {
     test("zod validator has to be strict", () => {
         const result = parseJSONItem(
             { a: 1, b: 2 },
-            // @ts-expect-error z.object is not in strict mode
             z.object({ a: z.number() }),
             {
                 a: Remove,

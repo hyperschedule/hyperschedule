@@ -29,7 +29,7 @@ export enum School {
     Unknown = "UN",
 }
 
-export const SchoolEnum = z.nativeEnum(School);
+export const SchoolEnum = z.enum(School);
 export type SchoolEnum = z.infer<typeof SchoolEnum>;
 
 export enum Term {
@@ -38,7 +38,7 @@ export enum Term {
     summer = "SU",
 }
 
-export const TermEnum = z.nativeEnum(Term);
+export const TermEnum = z.enum(Term);
 export type TermEnum = z.infer<typeof TermEnum>;
 
 export enum SectionStatus {
@@ -48,7 +48,7 @@ export enum SectionStatus {
     unknown = "U",
 }
 
-export const SectionStatusEnum = z.nativeEnum(SectionStatus);
+export const SectionStatusEnum = z.enum(SectionStatus);
 export type SectionStatusEnum = z.infer<typeof SectionStatusEnum>;
 
 export enum Weekday {
@@ -61,7 +61,7 @@ export enum Weekday {
     sunday = "U",
 }
 
-export const WeekdayEnum = z.nativeEnum(Weekday);
+export const WeekdayEnum = z.enum(Weekday);
 export type WeekdayEnum = z.infer<typeof WeekdayEnum>;
 
 export const TermIdentifier = z.object({
