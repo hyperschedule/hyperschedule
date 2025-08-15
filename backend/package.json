@@ -40,7 +40,7 @@
     "@tinyhttp/app": "^2.0.29",
     "@tinyhttp/cookie-parser": "^2.0.6",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^20.19.9",
+    "@types/node": "^22.17.1",
     "@types/supertest": "^2.0.16",
     "@types/utf-8-validate": "^5.0.2",
     "iconv-lite": "^0.6.3",
