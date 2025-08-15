@@ -4,7 +4,7 @@ export default function Slider(props: {
     value: boolean;
     onToggle: () => void;
     text: string;
-}): JSX.Element {
+}): React.JSX.Element {
     return (
         <div className={Css.container}>
             <span>{props.text}</span>

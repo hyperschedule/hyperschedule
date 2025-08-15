@@ -13,7 +13,7 @@ function DataViewer() {
         Record<string, unknown> | string | undefined | null
     >(undefined);
 
-    let error: JSX.Element;
+    let error: React.JSX.Element;
 
     if (window.location.hash !== "") {
         const data = JSON.parse(atob(window.location.hash.slice(1)));

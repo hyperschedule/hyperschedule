@@ -4,7 +4,7 @@ import type * as APIv4 from "hyperschedule-shared/api/v4";
 
 export default function SectionBox(props: {
     section: APIv4.SectionIdentifier;
-    children: JSX.Element;
+    children: React.JSX.Element;
 }) {
     const theme = useStore((store) => store.theme);
 
