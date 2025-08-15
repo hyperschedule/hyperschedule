@@ -1,0 +1,11 @@
+export default {
+  plugins: {
+    autoprefixer: {},
+    'postcss-mixins': {},
+    'postcss-nesting': {},
+    '@csstools/postcss-global-data': {
+      files: ['src/css/media.css']
+    },
+    'postcss-custom-media': {}
+  }
+}

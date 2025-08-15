@@ -100,6 +100,7 @@ export default defineConfig(({ command, mode }) => {
         },
         ssr: { external: ["@babel/runtime"] },
         build: {
+            target: "baseline-widely-available",
             emptyOutDir: true,
             rollupOptions: {
                 input: {
