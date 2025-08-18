@@ -140,6 +140,21 @@
             opacity: 0.875;
             min-width: 8.5em;
             text-align: left;
+            cursor: pointer;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            transition:
+                background-color 200ms,
+                opacity 200ms;
+
+            &:hover {
+                opacity: 1;
+                background-color: #0001;
+            }
+
+            &:active {
+                background-color: #0002;
+            }
         }
 
         & .affiliation {

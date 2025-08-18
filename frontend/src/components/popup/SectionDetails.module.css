@@ -1,5 +1,17 @@
 .content {
     & .sectionTitle {
         margin: 0.5em 0;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+        transition: background-color 200ms;
+
+        &:hover {
+            background-color: #0001;
+        }
+
+        &:active {
+            background-color: #0002;
+        }
     }
 }

@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { PopupOption } from "@lib/popup";
 import { pick } from "@lib/store";
 import { DEFAULT_LOCAL_SCHEDULE_ID } from "@lib/constants";
+import { copyBasicCourseCode, formatCourseCodeForPortal } from "@lib/clipboard";
 import { memo } from "react";
 
 export default memo(function CourseRow(props: {
@@ -52,11 +53,7 @@ export default memo(function CourseRow(props: {
                     <div className={Css.titlebar} onClick={props.onClick}>
                         <Feather.Archive className={Css.archive} size={14} />
                         <span className={Css.summary}>
-                            <span className={Css.courseNumber}>
-                                {APIv4.stringifySectionCode(
-                                    props.section.identifier,
-                                )}
-                            </span>
+                            <CopyCodeSpan section={props.section.identifier} />
                             <span className={Css.title}>
                                 {props.section.course.title}
                             </span>
@@ -94,11 +91,7 @@ export default memo(function CourseRow(props: {
                 <div className={Css.titlebar} onClick={props.onClick}>
                     <Feather.ChevronRight className={Css.arrow} size={14} />
                     <span className={Css.summary}>
-                        <span className={Css.courseNumber}>
-                            {APIv4.stringifySectionCode(
-                                props.section.identifier,
-                            )}
-                        </span>
+                        <CopyCodeSpan section={props.section.identifier} />
                         <span className={Css.title}>
                             {props.section.course.title}
                         </span>
@@ -224,5 +217,24 @@ const ToggleButton = memo(function ToggleButton(props: {
         >
             {inSchedule ? <Feather.X size={14} /> : <Feather.Plus size={14} />}
         </button>
+    );
+});
+
+const CopyCodeSpan = memo(function CopyCodeSpan(props: {
+    section: APIv4.SectionIdentifier;
+}) {
+    const handleCopy = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        copyBasicCourseCode(props.section);
+    };
+
+    return (
+        <span
+            className={Css.courseNumber}
+            onClick={handleCopy}
+            title={`Click to copy: ${formatCourseCodeForPortal(props.section)}`}
+        >
+            {APIv4.stringifySectionCode(props.section)}
+        </span>
     );
 });
