@@ -40,6 +40,10 @@
         display: grid;
         grid-template-areas: "code" "title";
         align-items: center;
+
+        & .title {
+            padding: 0 0.25rem;
+        }
     }
 
     & .status {
@@ -60,6 +64,10 @@
         & .summary {
             grid-template-areas: "code title";
             justify-content: left;
+
+            & .title {
+                padding: 0;
+            }
         }
 
         & .status {
@@ -133,12 +141,17 @@
             width: 5.5ex;
         }
 
+        & .courseNumberContainer {
+            display: flex;
+            min-width: 8.5em;
+            justify-content: space-between;
+        }
+
         & .courseNumber {
             margin-right: 0.5em;
             font-weight: 700;
             font-size: 0.875em;
             opacity: 0.875;
-            min-width: 8.5em;
             text-align: left;
             cursor: pointer;
             padding: 0.125rem 0.25rem;
