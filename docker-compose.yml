@@ -69,8 +69,8 @@ services:
         image: nginx:1.24.0
         depends_on: *base
         ports:
-            - 8080:80
-            - 8443:443
+            - 80:80
+            - 443:443
         networks:
             - backend
         volumes:

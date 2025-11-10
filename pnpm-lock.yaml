@@ -66,6 +66,9 @@ importers:
       '@types/uuid':
         specifier: ^9.0.0
         version: 9.0.1
+      dotenv:
+        specifier: ^16.0.3
+        version: 16.0.3
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
@@ -101,7 +104,7 @@ importers:
         version: 6.3.3
       ts-jest:
         specifier: ^29.1.1
-        version: 29.1.1(@babel/core@7.28.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0))(jest@29.7.0(@types/node@20.8.9)(ts-node@10.9.1(@types/node@20.8.9)(typescript@5.2.2)))(typescript@5.2.2)
+        version: 29.1.1(@babel/core@7.21.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.21.0))(jest@29.7.0(@types/node@20.8.9)(ts-node@10.9.1(@types/node@20.8.9)(typescript@5.2.2)))(typescript@5.2.2)
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.8.9)(typescript@5.2.2)
@@ -272,7 +275,7 @@ importers:
         version: 29.7.0(@types/node@20.8.9)(ts-node@10.9.1(@types/node@20.8.9)(typescript@5.2.2))
       ts-jest:
         specifier: ^29.1.1
-        version: 29.1.1(@babel/core@7.21.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.21.0))(jest@29.7.0(@types/node@20.8.9)(ts-node@10.9.1(@types/node@20.8.9)(typescript@5.2.2)))(typescript@5.2.2)
+        version: 29.1.1(@babel/core@7.28.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0))(jest@29.7.0(@types/node@20.8.9)(ts-node@10.9.1(@types/node@20.8.9)(typescript@5.2.2)))(typescript@5.2.2)
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.8.9)(typescript@5.2.2)
@@ -1239,7 +1242,7 @@ packages:
 
   '@react-hookz/deep-equal@1.0.4':
     resolution: {integrity: sha512-N56fTrAPUDz/R423pag+n6TXWbvlBZDtTehaGFjK0InmN+V2OFWLE/WmORhmn6Ce7dlwH5+tQN1LJFw3ngTJVg==}
-    deprecated: Package is deprecated and will be deleted soon. Use @ver0/deep-equal instead.
+    deprecated: PACKAGE IS DEPRECATED AND WILL BE DETED SOON, USE @ver0/deep-equal INSTEAD
 
   '@react-hookz/web@20.1.0':
     resolution: {integrity: sha512-60H9KAQ8QF4lEEY2VujTaDTEb5tzHFVQ+pq4kV5zPHMzDVoaBQbiWcZrCKpFaVHzBP/nPvDEfXICZzga0aIIzg==}
