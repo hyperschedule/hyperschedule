@@ -229,12 +229,16 @@ const CopyCodeSpan = memo(function CopyCodeSpan(props: {
     };
 
     return (
-        <span
-            className={Css.courseNumber}
-            onClick={handleCopy}
-            title={`Click to copy: ${formatCourseCodeForPortal(props.section)}`}
-        >
-            {APIv4.stringifySectionCode(props.section)}
+        <span className={Css.courseNumberContainer}>
+            <span
+                className={Css.courseNumber}
+                onClick={handleCopy}
+                title={`Click to copy: ${formatCourseCodeForPortal(
+                    props.section,
+                )}`}
+            >
+                {APIv4.stringifySectionCode(props.section)}
+            </span>
         </span>
     );
 });
