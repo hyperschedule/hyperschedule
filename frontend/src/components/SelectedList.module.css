@@ -94,6 +94,20 @@
         grid-template-columns: 1fr 1em 5.5em;
         gap: 0.5em;
 
+        & .title {
+            grid-area: title;
+            justify-self: self-start;
+
+            overflow: clip;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            position: absolute;
+            width: 100%;
+
+            padding: 0 0.25rem;
+        }
+
         @media (--viewport-large) {
             grid-template-areas: "code title conflict badge seats";
             /* sections with 3 digits enrollments (e.g. colloquiums) are about 3.3em wide */
@@ -107,6 +121,10 @@
 
             & .seats {
                 justify-self: self-end;
+            }
+
+            & .title {
+                padding: 0;
             }
         }
 
@@ -149,18 +167,6 @@
             &:active {
                 background-color: #0002;
             }
-        }
-
-        & .title {
-            grid-area: title;
-            justify-self: self-start;
-
-            overflow: clip;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            position: absolute;
-            width: 100%;
         }
     }
 

@@ -17,16 +17,22 @@ export default memo(function SectionDetails(props: {
         activeTerm.year === props.section.identifier.year;
     return (
         <div className={Css.content}>
-            <h3
-                className={Css.sectionTitle}
-                onClick={() => copyBasicCourseCode(props.section!.identifier)}
-                title={`Click to copy: ${formatCourseCodeForPortal(
-                    props.section!.identifier,
-                )}`}
-            >
-                {(fromActiveTerm
-                    ? APIv4.stringifySectionCode
-                    : APIv4.stringifySectionCodeLong)(props.section.identifier)}
+            <h3 className={Css.sectionTitle}>
+                <span
+                    className={Css.sectionCode}
+                    onClick={() =>
+                        copyBasicCourseCode(props.section!.identifier)
+                    }
+                    title={`Click to copy: ${formatCourseCodeForPortal(
+                        props.section!.identifier,
+                    )}`}
+                >
+                    {(fromActiveTerm
+                        ? APIv4.stringifySectionCode
+                        : APIv4.stringifySectionCodeLong)(
+                        props.section.identifier,
+                    )}
+                </span>
                 : {props.section.course.title}
             </h3>
 

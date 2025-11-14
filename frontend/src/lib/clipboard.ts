@@ -7,8 +7,9 @@ import { toast } from "react-toastify";
 export const formatCourseCodeForPortal = (
     section: APIv4.SectionIdentifier,
 ): string => {
+    const paddedDepartment = section.department.padEnd(4, " ");
     const paddedNumber = section.courseNumber.toString().padStart(3, "0");
-    return `${section.department}${paddedNumber}`;
+    return `${paddedDepartment}${paddedNumber}${section.suffix}`;
 };
 
 /**
