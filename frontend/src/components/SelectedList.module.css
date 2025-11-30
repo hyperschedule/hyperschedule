@@ -151,22 +151,6 @@
         & .code {
             grid-area: code;
             justify-self: self-start;
-
-            font-weight: bold;
-            min-width: 8.5em;
-            font-size: 0.875em;
-            cursor: pointer;
-            padding: 0.125rem 0.25rem;
-            border-radius: 0.25rem;
-            transition: background-color 200ms;
-
-            &:hover {
-                background-color: #0001;
-            }
-
-            &:active {
-                background-color: #0002;
-            }
         }
     }
 

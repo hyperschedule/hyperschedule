@@ -1,0 +1,28 @@
+.copyCodeSpan {
+    display: flex;
+    min-width: 8.5em;
+    justify-content: space-between;
+
+    & .courseNumber {
+        margin-right: 0.5em;
+        font-weight: 700;
+        font-size: 0.875em;
+        opacity: 0.875;
+        text-align: left;
+        cursor: pointer;
+        padding: 0.125rem 0.25rem;
+        border-radius: 0.25rem;
+        transition:
+            background-color 200ms,
+            opacity 200ms;
+
+        &:hover {
+            opacity: 1;
+            background-color: #0001;
+        }
+
+        &:active {
+            background-color: #0002;
+        }
+    }
+}

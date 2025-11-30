@@ -8,6 +8,7 @@ import Css from "./CourseRow.module.css";
 
 import * as Feather from "react-feather";
 
+import CopyCodeSpan from "@components/common/CopyCodeSpan";
 import CourseDescriptionBox from "@components/course-search/CourseDescriptionBox";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 
@@ -19,7 +20,6 @@ import { toast } from "react-toastify";
 import { PopupOption } from "@lib/popup";
 import { pick } from "@lib/store";
 import { DEFAULT_LOCAL_SCHEDULE_ID } from "@lib/constants";
-import { copyBasicCourseCode, formatCourseCodeForPortal } from "@lib/clipboard";
 import { memo } from "react";
 
 export default memo(function CourseRow(props: {
@@ -217,28 +217,5 @@ const ToggleButton = memo(function ToggleButton(props: {
         >
             {inSchedule ? <Feather.X size={14} /> : <Feather.Plus size={14} />}
         </button>
-    );
-});
-
-const CopyCodeSpan = memo(function CopyCodeSpan(props: {
-    section: APIv4.SectionIdentifier;
-}) {
-    const handleCopy = (event: React.MouseEvent) => {
-        event.stopPropagation();
-        copyBasicCourseCode(props.section);
-    };
-
-    return (
-        <span className={Css.courseNumberContainer}>
-            <span
-                className={Css.courseNumber}
-                onClick={handleCopy}
-                title={`Click to copy: ${formatCourseCodeForPortal(
-                    props.section,
-                )}`}
-            >
-                {APIv4.stringifySectionCode(props.section)}
-            </span>
-        </span>
     );
 });

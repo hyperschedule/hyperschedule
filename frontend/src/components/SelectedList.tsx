@@ -17,8 +17,8 @@ import * as Feather from "react-feather";
 import { useUserStore } from "@hooks/store/user";
 import Css from "./SelectedList.module.css";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
+import CopyCodeSpan from "@components/common/CopyCodeSpan";
 import { toast } from "react-toastify";
-import { copyBasicCourseCode, formatCourseCodeForPortal } from "@lib/clipboard";
 
 import * as Schedule from "@lib/schedule";
 import classNames from "classnames";
@@ -295,17 +295,8 @@ const SectionEntry = memo(function SectionEntry(props: {
                     });
                 }}
             >
-                <span
-                    className={Css.code}
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        copyBasicCourseCode(props.entry.section);
-                    }}
-                    title={`Click to copy: ${formatCourseCodeForPortal(
-                        props.entry.section,
-                    )}`}
-                >
-                    {APIv4.stringifySectionCode(props.entry.section)}{" "}
+                <span className={Css.code}>
+                    <CopyCodeSpan section={props.entry.section} />
                 </span>
                 <span className={Css.title}>
                     {section?.course.title ?? "(section no longer exists)"}
