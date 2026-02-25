@@ -37,7 +37,7 @@
   "devDependencies": {
     "@authenio/samlify-node-xmllint": "2.0.0",
     "@jest/globals": "^30.2.0",
-    "@tinyhttp/app": "2.0.29",
+    "@tinyhttp/app": "^3.0.6",
     "@tinyhttp/cookie-parser": "^2.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.19.11",
@@ -47,7 +47,7 @@
     "ics": "^3.8.1",
     "jest": "^30.2.0",
     "jsonwebtoken": "^9.0.3",
-    "milliparsec": "^2.3.0",
+    "milliparsec": "^5.1.1",
     "mongodb": "^7.1.0",
     "mongodb-memory-server": "^11.0.1",
     "pino": "^10.3.1",
@@ -58,7 +58,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "utf-8-validate": "^6.0.6",
-    "uuid": "^11.1.0"
+    "uuid": "^13.0.0"
   },
   "scripts": {
     "dev-node": "NODE_ENV=development DOTENV_CONFIG_PATH=.env.development node -r dotenv/config --no-warnings --enable-source-maps --experimental-specifier-resolution=node --loader ts-node/esm",

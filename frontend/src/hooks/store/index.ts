@@ -1,5 +1,6 @@
-import * as Zustand from "zustand";
-import * as ZustandMiddleware from "zustand/middleware";
+import { create } from "zustand";
+import type { StateCreator } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 import type * as Search from "@lib/search";
 import type * as APIv4 from "hyperschedule-shared/api/v4";
@@ -81,7 +82,7 @@ export type MultiTermsSearchOptions = {
     range: number;
 };
 
-const initStore: Zustand.StateCreator<Store> = (set, get) => {
+const initStore: StateCreator<Store> = (set, get) => {
     window.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") {
             void useStore.persist.rehydrate();
@@ -195,9 +196,9 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
     };
 };
 
-const useStore = Zustand.create<Store>()(
-    ZustandMiddleware.devtools(
-        ZustandMiddleware.persist(initStore, {
+const useStore = create<Store>()(
+    devtools(
+        persist(initStore, {
             name: MAIN_STORE_NAME,
             partialize: pick(
                 "mainTab",
