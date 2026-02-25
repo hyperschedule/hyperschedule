@@ -49,6 +49,11 @@
     "ci:typecheck": "pnpm -r --parallel run typecheck",
     "ci:lint": "eslint . --quiet"
   },
+  "pnpm": {
+    "overrides": {
+      "fast-xml-parser": ">=5.3.6"
+    }
+  },
   "engines": {
     "node": "^22"
   },
