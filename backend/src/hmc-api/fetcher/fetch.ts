@@ -97,7 +97,6 @@ export async function loadAllForTerm(
         /* TODO: rewrite this using promise.all instead. this should be low impact
          *       because this function is only used during tests or server-startup
          */
-        // eslint-disable-next-line no-await-in-loop
         files[key] = await loadStatic(e, term);
     }
     return HmcApiFiles.parse(files);

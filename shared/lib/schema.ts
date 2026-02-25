@@ -1,4 +1,4 @@
-import * as Z from "zod";
+import type * as Z from "zod";
 
 type JsonValue =
     | boolean
@@ -9,12 +9,14 @@ type JsonValue =
     | { [_: string]: JsonValue };
 
 export type MethodSchemaGetAny = {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- ZodVoid outputs void, not undefined
     readonly return: Z.ZodType<JsonValue | void>;
     readonly status: number;
 };
 
 export type MethodSchemaPost<_ extends "post" | "patch" | "delete" | "put"> = {
     readonly body: Z.ZodType<JsonValue>;
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- ZodVoid outputs void, not undefined
     readonly return: Z.ZodType<JsonValue | void>;
     readonly status: number;
 };

@@ -51,7 +51,7 @@ userApp.get("/", async function (request: Request, response: Response) {
     let user: APIv4.ServerUser;
     try {
         user = await getUser(request.userToken.uuid);
-    } catch (e) {
+    } catch (_e) {
         logger.error(
             "Cannot find user %s with a valid server signature",
             request.userToken.uuid,

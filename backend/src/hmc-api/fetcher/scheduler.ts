@@ -52,7 +52,7 @@ export async function runScheduler(prefix: string): Promise<void> {
         );
         await setTimeout(e.interval * 1000);
 
-        /* eslint-disable no-await-in-loop, @typescript-eslint/no-unnecessary-condition */
+        /* eslint-disable @typescript-eslint/no-unnecessary-condition */
         while (true) {
             try {
                 logger.info("Fetching for %s", e.saveAs);

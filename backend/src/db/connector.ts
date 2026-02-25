@@ -43,17 +43,11 @@ export async function closeDb(): Promise<void> {
     logger.info("Closing database");
     await connector.client.close();
 
-    /* eslint-disable
-    @typescript-eslint/no-unsafe-assignment,
-    @typescript-eslint/no-unsafe-member-access */
-
     let tmp = connector as any;
 
     tmp.connected = false;
     delete tmp.db;
     delete tmp.client;
-
-    /* eslint-enable */
 
     logger.info("Database closed");
 }

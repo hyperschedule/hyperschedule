@@ -13,7 +13,6 @@ import {
     CxCourseCodeRegex,
     CxSectionIdRegex,
 } from "./course-code";
-import * as APIv4 from "./course-code";
 
 /**
  * All school codes are three letters for consistency. According to portal

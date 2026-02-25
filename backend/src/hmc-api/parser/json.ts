@@ -93,7 +93,7 @@ export function parseJSONItem<Input extends Data, Output extends Data>(
                 // transformFunc might throw error
                 const { name, value } = transformObj(data[inKey]);
                 result[name] = value;
-            } catch (e) {
+            } catch (_e) {
                 // this error will propagate because the output will be missing a field
                 logger.warn(
                     "Cannot apply transform function to object %O on field %s",

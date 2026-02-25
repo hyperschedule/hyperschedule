@@ -500,9 +500,7 @@ export async function copySchedules(
     const toUserSchedules = (await getUser(toUserId)).schedules;
 
     for (const [scheduleId, schedule] of Object.entries(fromUserSchedules)) {
-        if (!toUserSchedules[scheduleId]) {
-            toUserSchedules[scheduleId] = schedule;
-        }
+        toUserSchedules[scheduleId] ??= schedule;
     }
 
     await collections.users.updateOne(

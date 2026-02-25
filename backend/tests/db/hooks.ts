@@ -2,7 +2,7 @@ import { afterEach, beforeEach } from "@jest/globals";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { closeDb, connectToDb } from "../../src/db/connector";
 
-export function setupDbHooks() {
+export function setupDbHooks(): void {
     let mongod: MongoMemoryServer;
 
     beforeEach(async () => {
