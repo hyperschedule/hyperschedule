@@ -176,14 +176,17 @@ export function parseCourseBoomi(data: string): CourseOutput[] {
     );
 
     if (!result.ok) {
-        logger.error(result.error, "Cannot parse Boomi database dump");
+        logger.error(
+            { error: result.error },
+            "Cannot parse Boomi database dump",
+        );
         throw Error(
             "Cannot parse Boomi database dump: " + JSON.stringify(result.error),
         );
     }
 
     for (const warning of result.warnings) {
-        logger.warn(warning, "Warning parsing Boomi database dump");
+        logger.warn({ warning }, "Warning parsing Boomi database dump");
     }
     return result.records;
 }

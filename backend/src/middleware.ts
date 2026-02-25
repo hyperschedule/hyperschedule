@@ -82,7 +82,6 @@ export function middleware(
             "[%d] Completed %d",
             reqId,
             res.statusCode,
-            res,
         ),
     );
 }

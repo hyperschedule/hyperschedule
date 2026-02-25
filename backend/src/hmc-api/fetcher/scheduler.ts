@@ -72,7 +72,7 @@ export async function runScheduler(prefix: string): Promise<void> {
                 } finally {
                     dbWriteInProcess--;
                 }
-                logger.info("Database updated", e.saveAs);
+                logger.info("Database updated: %s", e.saveAs);
 
                 logger.info(
                     "Scheduler flow completed for %s, running again in %ds",
