@@ -6,6 +6,7 @@ import { PopupOption } from "@lib/popup";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { sectionColorStyle } from "@lib/color";
 
+import { useShallow } from "zustand/react/shallow";
 import { pick } from "@lib/store";
 
 import * as DndCore from "@dnd-kit/core";
@@ -236,7 +237,7 @@ const SectionEntry = memo(function SectionEntry(props: {
     });
 
     const { scheduleDeleteSection, scheduleSetSectionAttrs } = useUserStore(
-        pick("scheduleDeleteSection", "scheduleSetSectionAttrs"),
+        useShallow(pick("scheduleDeleteSection", "scheduleSetSectionAttrs")),
     );
 
     const section = sectionsLookup.get(

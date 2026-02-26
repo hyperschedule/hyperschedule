@@ -72,6 +72,9 @@ importers:
       '@types/utf-8-validate':
         specifier: ^5.0.2
         version: 5.0.2
+      dotenv:
+        specifier: ^16.6.1
+        version: 16.6.1
       iconv-lite:
         specifier: ^0.7.2
         version: 0.7.2

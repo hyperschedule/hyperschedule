@@ -32,6 +32,7 @@ export function middleware(
     );
     req.id = reqId;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access -- req.cookies is untyped in tinyhttp
     const token: string | undefined = req.cookies[AUTH_TOKEN_COOKIE_NAME];
 
     if (token !== undefined) {

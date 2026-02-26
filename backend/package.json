@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@authenio/samlify-node-xmllint": "2.0.0",
+    "dotenv": "^16.6.1",
     "@jest/globals": "^30.2.0",
     "@tinyhttp/app": "^3.0.6",
     "@tinyhttp/cookie-parser": "^2.0.6",

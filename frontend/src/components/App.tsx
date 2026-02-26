@@ -100,6 +100,7 @@ export default function App() {
                 // hideProgressBar
                 theme={theme}
                 transition={Slide}
+                closeOnClick
                 pauseOnHover={true}
                 pauseOnFocusLoss={true}
                 className={Css.toast}

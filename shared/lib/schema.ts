@@ -71,16 +71,16 @@ export function route<
     return { path, methods };
 }
 
-export type MethodReturn<Schema extends MethodSchemaAny> = Z.TypeOf<
+export type MethodReturn<Schema extends MethodSchemaAny> = Z.infer<
     Schema["return"]
 >;
 
 export type MethodFetchGet<Schema extends MethodSchemaGetAny> = () => Promise<
-    Z.TypeOf<Schema["return"]>
+    Z.infer<Schema["return"]>
 >;
 export type MethodFetchPost<Schema extends MethodSchemaPostAny> = (
-    body: Z.TypeOf<Schema["body"]>,
-) => Promise<Z.TypeOf<Schema["return"]>>;
+    body: Z.infer<Schema["body"]>,
+) => Promise<Z.infer<Schema["return"]>>;
 
 export type MethodFetch<Schema extends MethodSchemaAny> =
     Schema extends MethodSchemaPostAny

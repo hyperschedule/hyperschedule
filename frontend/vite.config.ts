@@ -1,7 +1,7 @@
 import * as path from "node:path";
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 
 // list of usernames to exclude from contributors
 const maintainerGithubUsernames: string[] = [
@@ -16,7 +16,7 @@ const maintainerGithubUsernames: string[] = [
 let contributors: string;
 try {
     const fileData = JSON.parse(
-        readFileSync(path.resolve(__dirname, "contributors.json"), {
+        readFileSync(path.resolve(import.meta.dirname, "contributors.json"), {
             encoding: "utf-8",
         }),
     );
@@ -32,18 +32,6 @@ try {
             name: "Contributor placeholder (run `pnpm get-contributor` then restart frontend)",
         },
     ]);
-}
-
-// fix the weird thing with use-sync-external-store, imported by both zustand and react-query
-// this is only needed for production build. this module doesn't even matter because we are
-// already using react 18
-let useSyncExternalStoreFix = {};
-if (process.env.NODE_ENV === "production") {
-    useSyncExternalStoreFix = {
-        "use-sync-external-store/shim": path.dirname(
-            require.resolve("use-sync-external-store"),
-        ),
-    };
 }
 
 const allocatedCssNumbers = new Map<string, number>();
@@ -67,13 +55,18 @@ function generateCssClassName(classname: string, filename: string) {
     return s;
 }
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), "");
     return {
         root: "src",
-        envDir: __dirname,
-        publicDir: path.resolve(__dirname, "dist"),
-        cacheDir: path.resolve(__dirname, "..", "node_modules", ".vite"),
+        envDir: import.meta.dirname,
+        publicDir: path.resolve(import.meta.dirname, "dist"),
+        cacheDir: path.resolve(
+            import.meta.dirname,
+            "..",
+            "node_modules",
+            ".vite",
+        ),
         plugins: [react()],
         define: {
             // we need to use JSON.stringify to quote them because this is basically text replacement
@@ -83,11 +76,10 @@ export default defineConfig(({ command, mode }) => {
         resolve: {
             extensions: [".ts", ".tsx"],
             alias: {
-                "@components": path.join(__dirname, "src/components"),
-                "@lib": path.join(__dirname, "src/lib"),
-                "@hooks": path.join(__dirname, "src/hooks"),
-                "@css": path.join(__dirname, "src/css"),
-                ...useSyncExternalStoreFix,
+                "@components": path.join(import.meta.dirname, "src/components"),
+                "@lib": path.join(import.meta.dirname, "src/lib"),
+                "@hooks": path.join(import.meta.dirname, "src/hooks"),
+                "@css": path.join(import.meta.dirname, "src/css"),
             },
         },
         css: {
@@ -98,7 +90,6 @@ export default defineConfig(({ command, mode }) => {
                         : generateCssClassName,
             },
         },
-        ssr: { external: ["@babel/runtime"] },
         build: {
             target: "baseline-widely-available",
             emptyOutDir: true,
@@ -114,7 +105,7 @@ export default defineConfig(({ command, mode }) => {
                 },
             },
             copyPublicDir: false,
-            outDir: path.resolve(__dirname, "dist"),
+            outDir: path.resolve(import.meta.dirname, "dist"),
             sourcemap: true,
         },
         server: {

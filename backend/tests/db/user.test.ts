@@ -101,13 +101,13 @@ describe("db/models/user", () => {
             half: null,
         };
 
-        const uid = await await getOrCreateUser("test user", "");
+        const uid = await getOrCreateUser("test user", "");
 
         await deleteSchedule(
             uid,
             Object.keys((await getUser(uid)).schedules)[0]!,
         );
-        const uid2 = await await getOrCreateUser("test user 2", "");
+        const uid2 = await getOrCreateUser("test user 2", "");
         const sid = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
@@ -156,7 +156,7 @@ describe("db/models/user", () => {
     });
 
     test("delete schedule from user", async () => {
-        const uid = await await getOrCreateUser("test user", "");
+        const uid = await getOrCreateUser("test user", "");
         const user = await getUser(uid);
         expect(Object.keys(user.schedules).length).toStrictEqual(1);
         await deleteSchedule(uid, Object.keys(user.schedules)[0]!);

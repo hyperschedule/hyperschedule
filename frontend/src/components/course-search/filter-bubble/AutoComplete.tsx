@@ -6,7 +6,7 @@ export default memo(function AutoComplete(props: {
     onSelect: (index: number) => void;
     onKeyDown: (ev: React.KeyboardEvent<HTMLInputElement>) => void;
     choices: string[];
-    render: React.FC<{ index: number }>;
+    render: (props: { index: number }) => React.ReactNode;
 }) {
     const [text, setText] = React.useState("");
     const [hasFocus, setHasFocus] = React.useState(false);

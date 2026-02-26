@@ -9,7 +9,6 @@ export default defineConfig([
     "**/*.config.ts",
     "**/*.esm",
     "**/*.js",
-    "**/*.test.ts",
   ]),
 
   {
@@ -100,35 +99,26 @@ export default defineConfig([
     },
   },
 
-  // Override: disable unsafe rules for *.ts files in */src/ directories
-  {
-    files: ["*/src/**/*.ts"],
-    rules: {
-      "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/no-unsafe-member-access": "off",
-      "@typescript-eslint/no-unsafe-argument": "off",
-      "@typescript-eslint/no-unsafe-call": "off",
-      "@typescript-eslint/no-unsafe-return": "off",
-    },
-  },
-
-  // Override: disable unsafe rules for *.tsx files
-  {
-    files: ["**/*.tsx"],
-    rules: {
-      "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/no-unsafe-member-access": "off",
-      "@typescript-eslint/no-unsafe-argument": "off",
-      "@typescript-eslint/no-unsafe-call": "off",
-      "@typescript-eslint/no-unsafe-return": "off",
-    },
-  },
-
   // Override: disable explicit-function-return-type for *.tsx files
   {
     files: ["**/*.tsx"],
     rules: {
       "@typescript-eslint/explicit-function-return-type": "off",
+    },
+  },
+
+  // Relaxed rules for test files
+  {
+    files: ["**/*.test.ts"],
+    rules: {
+      "no-console": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-floating-promises": "off",
     },
   },
 ]);
