@@ -104,6 +104,10 @@ function parseWeekdays(weekdays: string): APIv4.Weekday[] {
  * if any field is missing, there should still be a space
  */
 function parseBuildingCode(code: string): string {
+    if (code.trim() === "") {
+        return "Unknown location";
+    }
+
     const [campus, location, room] = code.split(" ");
     if (campus === undefined || location === undefined || room === undefined) {
         // if we cannot parse the code, just return it as-is because humans might be able to
@@ -341,7 +345,9 @@ function processSectionInstructor(
             if (!section.instructors!.map((i) => i.name).includes(staff.name)) {
                 section.instructors!.push(staff);
             } else {
-                logger.warn(`Duplicate staff ${staff.name}`);
+                logger.trace(
+                    `Duplicate staff ${staff.name} (${staffId}) in section ${sectionIdentifierString}`,
+                );
             }
         }
     }

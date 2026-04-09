@@ -17,11 +17,11 @@ import { Term } from "hyperschedule-shared/api/v4";
 // Define an array of terms to load data for
 const TERMS_TO_LOAD: Readonly<APIv4.TermIdentifier[]> = [
     {
-        year: 2025,
+        year: 2026,
         term: Term.fall,
     },
     {
-        year: 2025,
+        year: 2026,
         term: Term.spring,
     },
     // Add more terms as needed

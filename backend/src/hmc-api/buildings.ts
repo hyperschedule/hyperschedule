@@ -126,6 +126,7 @@ export const buildings: Record<string, Record<string, string>> = {
         HD: "Honnold/Mudd Library",
         KSII: "Keck Science Complex II",
         MS: "McAlister Religious Ctr",
+        NS: "Nucleus",
     },
     CGU: {
         TBA: "To Be Announced",
@@ -418,6 +419,7 @@ export const buildings: Record<string, Record<string, string>> = {
         RPAV: "Roberts Pavilion",
         PRTZ: "Pritzlaf Field",
         "681": "Apartment Bldg #681",
+        RDSC: "Robert Day Sciences Ctr",
     },
     MAIN: {
         AD: "Archduke Dave Hall",
