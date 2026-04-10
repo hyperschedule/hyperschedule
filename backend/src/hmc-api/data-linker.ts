@@ -460,9 +460,20 @@ function processSectionSchedule(
             continue;
         }
 
-        const startTime = parseTime(schedule.beginTime);
-        const endTime = parseTime(schedule.endTime);
-        const weekdays = parseWeekdays(schedule.meetingDays);
+        let startTime, endTime, weekdays;
+        try {
+            startTime = parseTime(schedule.beginTime);
+            endTime = parseTime(schedule.endTime);
+            weekdays = parseWeekdays(schedule.meetingDays);
+        } catch (e) {
+            logger.warn(
+                `Malformed schedule for section ${sectionIdString}, skipping...`,
+                e,
+            );
+            section.potentialError = true;
+            continue;
+        }
+
         const location = parseBuildingCode(schedule.location);
 
         let merged: boolean = false;
