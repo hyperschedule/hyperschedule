@@ -460,15 +460,22 @@ function processSectionSchedule(
             continue;
         }
 
-        let startTime, endTime, weekdays;
+        let startTime: number, endTime: number, weekdays: APIv4.Weekday[];
         try {
             startTime = parseTime(schedule.beginTime);
             endTime = parseTime(schedule.endTime);
             weekdays = parseWeekdays(schedule.meetingDays);
         } catch (e) {
             logger.warn(
+                {
+                    err: e,
+                    sectionIdString,
+                    beginTime: schedule.beginTime,
+                    endTime: schedule.endTime,
+                    meetingDays: schedule.meetingDays,
+                    location: schedule.location,
+                },
                 `Malformed schedule for section ${sectionIdString}, skipping...`,
-                e,
             );
             section.potentialError = true;
             continue;
