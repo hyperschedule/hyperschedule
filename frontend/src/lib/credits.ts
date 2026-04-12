@@ -10,17 +10,21 @@ export function computeMuddCredits(section: APIv4.Section): number {
     return section.credits * 3;
 }
 
-export function computeNonMuddCredits(section: APIv4.Section): number {
-    // Convert from to non-mudd credits
-    // https://catalog.scrippscollege.edu/content.php?catoid=33&navoid=4220#:~:text=Harvey%20Mudd%3A%20Courses%20listed%20as,Mudd%20credit%20%3D%200.0%20Scripps%20credit.
+// https://catalog.scrippscollege.edu/content.php?catoid=33&navoid=4220#:~:text=Harvey%20Mudd%3A%20Courses%20listed%20as,Mudd%20credit%20%3D%200.0%20Scripps%20credit.
+const HMC_TO_NON_HMC_CREDITS: Record<number, number> = {
+    4: 1,
+    3: 1,
+    2: 0.5,
+    1.5: 0.5,
+    1: 0.25,
+    0.5: 0,
+};
 
+export function computeNonMuddCredits(section: APIv4.Section): number {
     if (section.course.primaryAssociation !== APIv4.School.HMC)
         return section.credits;
 
-    // 3 and 4 credit courses are 1 credit, this just makes it so the one bio research course thats 6 credits is 2 credits (which I don't know if is correct, but it seems reasonable)
-    if (section.credits >= 3) return Math.floor(section.credits / 3);
-    if (section.credits >= 1.5) return 0.5;
-    if (section.credits >= 1) return 0.25;
-    // 0.5 hmc credit courses
-    return 0;
+    const nonMuddCredits = HMC_TO_NON_HMC_CREDITS[section.credits];
+
+    return nonMuddCredits ?? section.credits / 3;
 }

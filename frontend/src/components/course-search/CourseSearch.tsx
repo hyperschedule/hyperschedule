@@ -96,6 +96,7 @@ export default memo(function CourseSearch() {
         selectedSections,
         hideConflictingSections,
         conflictingSectionsOptions,
+        creditOptions,
     ]);
 
     const { enable, range } = useStore(
