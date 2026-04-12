@@ -19,7 +19,8 @@ export function computeNonMuddCredits(section: APIv4.Section): number {
 
     // 3 and 4 credit courses are 1 credit, this just makes it so the one bio research course thats 6 credits is 2 credits (which I don't know if is correct, but it seems reasonable)
     if (section.credits >= 3) return Math.floor(section.credits / 3);
-    if (section.credits <= 0.5) return 0;
-
-    return section.credits / 4;
+    if (section.credits >= 1.5) return 0.5;
+    if (section.credits >= 1) return 0.25;
+    // 0.5 hmc credit courses
+    return 0;
 }

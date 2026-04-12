@@ -73,7 +73,7 @@ export type ConflictingSectionsOptions = {
 };
 
 export type CreditOptions = {
-    displayNonHMCCredits: boolean;
+    useNonHMCCredits: boolean;
 };
 
 export type MultiTermsSearchOptions = {
@@ -166,7 +166,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
             set({ conflictingSectionsOptions: options }),
 
         creditOptions: {
-            displayNonHMCCredits: false,
+            useNonHMCCredits: false,
         },
         setCreditOptions: (options) => set({ creditOptions: options }),
 

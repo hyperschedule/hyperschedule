@@ -235,14 +235,13 @@ const CreditsSettings = memo(function CreditsSettings() {
     return (
         <div className={Css.credits}>
             <h3 className={Css.title}>Credits</h3>
-            <span>Display non-HMC credits</span>
+            <span>Use non-HMC credits</span>
             <Slider
-                value={creditOptions.displayNonHMCCredits}
+                value={creditOptions.useNonHMCCredits}
                 onToggle={() => {
                     setCreditOptions({
                         ...creditOptions,
-                        displayNonHMCCredits:
-                            !creditOptions.displayNonHMCCredits,
+                        useNonHMCCredits: !creditOptions.useNonHMCCredits,
                     });
                 }}
                 text=""

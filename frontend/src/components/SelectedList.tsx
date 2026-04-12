@@ -142,7 +142,7 @@ export default memo(function SelectedList() {
                     <span>
                         {selectedSections
                             .map(
-                                creditOptions.displayNonHMCCredits
+                                creditOptions.useNonHMCCredits
                                     ? computeNonMuddCredits
                                     : computeMuddCredits,
                             )
@@ -153,7 +153,7 @@ export default memo(function SelectedList() {
                     <span>
                         {unconflictingSections
                             .map(
-                                creditOptions.displayNonHMCCredits
+                                creditOptions.useNonHMCCredits
                                     ? computeNonMuddCredits
                                     : computeMuddCredits,
                             )

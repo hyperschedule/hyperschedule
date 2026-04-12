@@ -51,6 +51,7 @@ export default memo(function CourseSearch() {
     const conflictingSectionsOptions = useStore(
         (store) => store.conflictingSectionsOptions,
     );
+    const creditOptions = useStore((store) => store.creditOptions);
 
     const filteredSections: APIv4.Section[] | undefined = React.useMemo(() => {
         if (sections === undefined) return undefined;
@@ -61,9 +62,10 @@ export default memo(function CourseSearch() {
                   Search.filterSection(
                       s,
                       searchFilters.map((s) => s.filter),
+                      creditOptions.useNonHMCCredits,
                   ),
               );
-    }, [searchFilters, sections]);
+    }, [searchFilters, sections, creditOptions]);
 
     const sectionsToShow: APIv4.Section[] | undefined = React.useMemo(() => {
         if (searchText === "" && !hideConflictingSections)
@@ -118,6 +120,7 @@ export default memo(function CourseSearch() {
                           Search.filterSection(
                               s,
                               searchFilters.map((s) => s.filter),
+                              creditOptions.useNonHMCCredits,
                           ),
                       );
 
@@ -132,7 +135,14 @@ export default memo(function CourseSearch() {
             }
             const sorted = res.sort((a, b) => b[0] - a[0]);
             return sorted.map((a) => a[1]);
-        }, [multiTermsSections, searchText, searchFilters, enable, range]);
+        }, [
+            multiTermsSections,
+            searchText,
+            searchFilters,
+            enable,
+            range,
+            creditOptions,
+        ]);
 
     return (
         <div className={Css.container}>
