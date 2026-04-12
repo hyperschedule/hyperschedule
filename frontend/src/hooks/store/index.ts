@@ -30,6 +30,7 @@ export type Store = WithSetters<{
     appearanceOptions: AppearanceOptions;
     scheduleRenderingOptions: ScheduleRenderingOptions;
     conflictingSectionsOptions: ConflictingSectionsOptions;
+    creditOptions: CreditOptions;
     multiTermsSearchOptions: MultiTermsSearchOptions;
     hoverSection: APIv4.SectionIdentifier | null;
 }> & {
@@ -69,6 +70,10 @@ export type AppearanceOptions = {
 export type ConflictingSectionsOptions = {
     skipSectionsOfSelectedCourse: boolean;
     hideAsyncSections: boolean;
+};
+
+export type CreditOptions = {
+    displayNonHMCCredits: boolean;
 };
 
 export type MultiTermsSearchOptions = {
@@ -160,6 +165,11 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
         setConflictingSectionsOptions: (options) =>
             set({ conflictingSectionsOptions: options }),
 
+        creditOptions: {
+            displayNonHMCCredits: false,
+        },
+        setCreditOptions: (options) => set({ creditOptions: options }),
+
         multiTermsSearchOptions: {
             enable: false,
             range: 4,
@@ -195,6 +205,7 @@ const useStore = Zustand.create<Store>()(
                 "theme",
                 "appearanceOptions",
                 "conflictingSectionsOptions",
+                "creditOptions",
                 "announcementsRead",
             ),
         }),
