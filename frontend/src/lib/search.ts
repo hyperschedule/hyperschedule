@@ -1,5 +1,5 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { computeMuddCredits } from "@lib/credits";
+import { computeMuddCredits, computeNonMuddCredits } from "@lib/credits";
 import { sectionsConflict } from "@lib/schedule";
 import { type ConflictingSectionsOptions } from "@hooks/store";
 
@@ -209,6 +209,7 @@ export type Filter = {
 export function filterSection(
     section: APIv4.Section,
     filters: Filter[],
+    useNonHMCCredits: boolean,
 ): boolean {
     // a section is a match iff all filters match
     for (const filter of filters) {
@@ -316,7 +317,9 @@ export function filterSection(
                 }
                 break;
             case FilterKey.Credits:
-                const credits = computeMuddCredits(section);
+                const credits = useNonHMCCredits
+                    ? computeNonMuddCredits(section)
+                    : computeMuddCredits(section);
                 if (filter.data.start && credits < filter.data.start)
                     return false;
                 if (filter.data.end && credits > filter.data.end) return false;

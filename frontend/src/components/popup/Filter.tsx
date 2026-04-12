@@ -58,7 +58,7 @@ const filterSpecs: { [k in Search.FilterKey]: FilterSpec } = {
         example: [">10am", "<6:30pm", "8am-3:45pm", ">=17:05", "<=13"],
     },
     [Search.FilterKey.Credits]: {
-        name: "Credits (HMC)",
+        name: "Credits",
         example: ["<=1", "=3", "1-2", ">=2"],
     },
     [Search.FilterKey.Half]: {

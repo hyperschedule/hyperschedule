@@ -22,13 +22,15 @@ import { toast } from "react-toastify";
 
 import * as Schedule from "@lib/schedule";
 import classNames from "classnames";
-import { computeMuddCredits } from "@lib/credits";
+import { computeMuddCredits, computeNonMuddCredits } from "@lib/credits";
 import { memo, startTransition, useState } from "react";
 
 export default memo(function SelectedList() {
     const scheduleRenderingOptions = useStore(
         (store) => store.scheduleRenderingOptions,
     );
+
+    const creditOptions = useStore((store) => store.creditOptions);
 
     const activeSchedule = useActiveSchedule();
     const activeScheduleId = useUserStore((store) => store.activeScheduleId);
@@ -139,14 +141,22 @@ export default memo(function SelectedList() {
                 {scheduleRenderingOptions.showConflicting ? (
                     <span>
                         {selectedSections
-                            .map(computeMuddCredits)
+                            .map(
+                                creditOptions.useNonHMCCredits
+                                    ? computeNonMuddCredits
+                                    : computeMuddCredits,
+                            )
                             .reduce((a, b) => a + b, 0)}{" "}
                         credits selected
                     </span>
                 ) : (
                     <span>
                         {unconflictingSections
-                            .map(computeMuddCredits)
+                            .map(
+                                creditOptions.useNonHMCCredits
+                                    ? computeNonMuddCredits
+                                    : computeMuddCredits,
+                            )
                             .reduce((a, b) => a + b, 0)}{" "}
                         credits displayed
                     </span>

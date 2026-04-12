@@ -22,6 +22,7 @@ export const Settings = memo(function Settings() {
             <h2 className={Css.title}>Settings</h2>
             <AppearanceSettings />
             <SectionConflictSettings />
+            <CreditsSettings />
             <AccountSettings />
             <DataViewer />
             <ReportIssues />
@@ -219,6 +220,28 @@ const SectionConflictSettings = memo(function SectionConflictSettings() {
                         ...conflictingSectionsOptions,
                         hideAsyncSections:
                             !conflictingSectionsOptions.hideAsyncSections,
+                    });
+                }}
+                text=""
+            />
+        </div>
+    );
+});
+
+const CreditsSettings = memo(function CreditsSettings() {
+    const creditOptions = useStore((store) => store.creditOptions);
+    const setCreditOptions = useStore((store) => store.setCreditOptions);
+
+    return (
+        <div className={Css.credits}>
+            <h3 className={Css.title}>Credits</h3>
+            <span>Use non-HMC credits</span>
+            <Slider
+                value={creditOptions.useNonHMCCredits}
+                onToggle={() => {
+                    setCreditOptions({
+                        ...creditOptions,
+                        useNonHMCCredits: !creditOptions.useNonHMCCredits,
                     });
                 }}
                 text=""

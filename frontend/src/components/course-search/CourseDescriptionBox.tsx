@@ -7,7 +7,7 @@ import { memo } from "react";
 import Css from "./CourseDescriptionBox.module.css";
 import * as Feather from "react-feather";
 import { combineLocations } from "@lib/schedule";
-import { computeMuddCredits } from "@lib/credits";
+import { computeNonMuddCredits, computeMuddCredits } from "@lib/credits";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 import { useState } from "react";
 import { useAllTerms } from "@hooks/term";
@@ -109,25 +109,19 @@ export default memo(function CourseDescriptionBox(props: {
             </p>
             <section className={Css.credits}>
                 <h3>
-                    HMC Credit{computeMuddCredits(props.section) > 1 ? "s" : ""}
+                    HMC Credit
+                    {computeMuddCredits(props.section) !== 1 ? "s" : ""}
                 </h3>
                 <div>{computeMuddCredits(props.section)}</div>
             </section>
 
-            {props.section.course.primaryAssociation === APIv4.School.HMC ? (
-                <></>
-            ) : (
-                <section className={Css.credits}>
-                    <h3>
-                        {" "}
-                        {APIv4.schoolCodeToName(
-                            props.section.course.primaryAssociation,
-                        )}{" "}
-                        Credit{props.section.credits > 1 ? "s" : ""}
-                    </h3>
-                    <div>{props.section.credits}</div>
-                </section>
-            )}
+            <section className={Css.credits}>
+                <h3>
+                    Non-HMC Credit
+                    {computeNonMuddCredits(props.section) !== 1 ? "s" : ""}
+                </h3>
+                <div>{computeNonMuddCredits(props.section)}</div>
+            </section>
 
             <section className={Css.instructors}>
                 <h3>Instructor{instructors.length > 1 ? "s" : ""}</h3>
