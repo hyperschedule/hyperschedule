@@ -51,7 +51,7 @@ test data.
 
 **After:**
 
-Every you restarted your computer or Docker desktop, you need to run `pnpm docker` again to start the stack.
+Every time you restart your computer or Docker desktop, you need to run `pnpm docker` again to start the stack.
 Then go to `http://localhost:5000` in your browser. 
 
 ## Git hooks
@@ -71,9 +71,7 @@ ln -s "../../hooks/post-checkout" .git/hooks/post-checkout
 Not a fan of Docker or dev containers? Good news, you don't have to use either. At project root, run `pnpm install` to
 install all the JavaScript dependencies.
 
-Then, you need to install You also need to
-install [MongoDB](https://www.mongodb.com/docs/manual/installation/) and set it up according to your OS. Make sure its
-listening to port `27017` with username `hyperschedule` and password `local_dev`. Alternatively, you can set it up some
+Then, you need to install [MongoDB](https://www.mongodb.com/docs/manual/installation/) and set it up according to your OS. Make sure it's listening to port `27017` with username `hyperschedule` and password `local_dev`. Alternatively, you can set it up some
 other way and modify the MongoDB connection string in [backend/.env.development](./backend/.env.development). After you
 set it up, you can load the test data with this command (and modify the username and password if you used something
 different):
