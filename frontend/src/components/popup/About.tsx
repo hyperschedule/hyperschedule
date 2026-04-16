@@ -27,6 +27,11 @@ const currentMaintainers: Maintainer[] = [
         classYear: "HM '27",
         githubName: "stuxf",
     },
+    {
+        name: "Oliver Howe",
+        classYear: "HM '28",
+        githubName: "ohowe1",
+    },
 ];
 
 const previousMaintainers: Maintainer[] = [
