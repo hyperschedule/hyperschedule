@@ -320,9 +320,10 @@ export function filterSection(
                 const credits = useNonHMCCredits
                     ? computeNonMuddCredits(section)
                     : computeMuddCredits(section);
-                if (filter.data.start && credits < filter.data.start)
+                if (filter.data.start !== null && credits < filter.data.start)
                     return false;
-                if (filter.data.end && credits > filter.data.end) return false;
+                if (filter.data.end !== null && credits > filter.data.end)
+                    return false;
                 break;
             case FilterKey.Title:
                 if (
@@ -345,12 +346,12 @@ export function filterSection(
                 break;
             case FilterKey.Number:
                 if (
-                    filter.data.start &&
+                    filter.data.start !== null &&
                     filter.data.start > section.identifier.courseNumber
                 )
                     return false;
                 if (
-                    filter.data.end &&
+                    filter.data.end !== null &&
                     filter.data.end < section.identifier.courseNumber
                 )
                     return false;
