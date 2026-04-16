@@ -346,12 +346,12 @@ export function filterSection(
                 break;
             case FilterKey.Number:
                 if (
-                    filter.data.start &&
+                    filter.data.start !== null &&
                     filter.data.start > section.identifier.courseNumber
                 )
                     return false;
                 if (
-                    filter.data.end &&
+                    filter.data.end !== null &&
                     filter.data.end < section.identifier.courseNumber
                 )
                     return false;
