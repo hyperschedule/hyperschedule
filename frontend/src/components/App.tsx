@@ -4,7 +4,6 @@ import Css from "./App.module.css";
 import classNames from "classnames";
 
 import CourseSearch from "./course-search/CourseSearch";
-import Schedule from "./schedule/Schedule";
 import MainSelector from "./MainSelector";
 import Popup from "@components/popup/Popup";
 import { Slide, ToastContainer, toast } from "react-toastify";
@@ -14,6 +13,7 @@ import Sidebar from "./Sidebar";
 import { announcements } from "../announcements";
 
 import "react-toastify/dist/ReactToastify.min.css";
+import ActiveSchedule from "./schedule/ActiveSchedule";
 
 export default function App() {
     const theme = useStore((store) => store.theme);
@@ -93,7 +93,7 @@ export default function App() {
                         [Css.hidden]: !onSearchTab,
                     })}
                 >
-                    <Schedule {...scheduleRenderingOptions} />
+                    <ActiveSchedule {...scheduleRenderingOptions} />
                 </div>
             </div>
             <Sidebar />

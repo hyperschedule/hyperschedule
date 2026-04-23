@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 //import { useUserQuery } from "@hooks/api/user";
 import { useUserStore } from "@hooks/store/user";
-import { useActiveSectionsLookup } from "@hooks/section";
+import { useSectionsLookup } from "@hooks/section";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 
 import * as Lib from "@lib/schedule";
@@ -17,9 +17,14 @@ export function useActiveSchedule(): APIv4.UserSchedule | undefined {
     return schedules[activeScheduleId];
 }
 
-export function useActiveScheduleEntries(): APIv4.UserSection[] {
-    const schedule = useActiveSchedule();
+export function scheduleEntries(
+    schedule: APIv4.UserSchedule | undefined,
+): APIv4.UserSection[] {
     return schedule?.sections ?? [];
+}
+
+export function useActiveScheduleEntries(): APIv4.UserSection[] {
+    return scheduleEntries(useActiveSchedule());
 }
 
 export function useActiveScheduleLookup(): Map<string, APIv4.UserSection> {
@@ -32,8 +37,7 @@ export function useActiveScheduleLookup(): Map<string, APIv4.UserSection> {
     }, [entries]);
 }
 
-// TODO: split this function up
-export function useActiveScheduleResolved(): {
+export type ResolvedSchedule = {
     sections: Readonly<APIv4.Section>[];
     cards: Lib.Card[];
     expandCards: Lib.Card[];
@@ -41,11 +45,17 @@ export function useActiveScheduleResolved(): {
     startHour: number;
     endHour: number;
     unconflicting: Set<Readonly<APIv4.Section>>;
-} {
-    const entries = useActiveScheduleEntries();
-    const lookup = useActiveSectionsLookup();
+};
 
-    const expandKey = useStore((store) => store.expandKey);
+// TODO: split this function up
+// TODO: term is in the schedule, refactor to just use that?
+export function useScheduleResolved(
+    schedule: APIv4.UserSchedule | undefined,
+    term: APIv4.TermIdentifier,
+    expandKey: APIv4.SectionIdentifier | null,
+): ResolvedSchedule {
+    const entries = scheduleEntries(schedule);
+    const lookup = useSectionsLookup(term);
 
     const main = useMemo(() => {
         const sections: Readonly<APIv4.Section>[] = [];
@@ -95,4 +105,12 @@ export function useActiveScheduleResolved(): {
         endHour: Math.ceil(bounds.endTime / 3600),
         unconflicting,
     };
+}
+
+export function useActiveScheduleResolved(): ResolvedSchedule {
+    return useScheduleResolved(
+        useActiveSchedule(),
+        useUserStore((user) => user.activeTerm),
+        useStore((store) => store.expandKey),
+    );
 }

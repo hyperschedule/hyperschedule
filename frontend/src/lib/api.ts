@@ -30,6 +30,22 @@ export const schema = {
             status: 200,
         },
     }),
+    shareSchedule: Schema.route("/v4/user/schedule/share", {
+        get: {
+            return: APIv4.GetSharedScheduleResponse,
+            status: 200,
+        },
+        post: {
+            body: APIv4.ShareScheduleRequest,
+            return: APIv4.ShareScheduleResponse,
+            status: 200,
+        },
+        delete: {
+            body: APIv4.UnshareScheduleRequest,
+            return: z.void(),
+            status: 204,
+        },
+    }),
     section: Schema.route("/v4/user/section", {
         post: {
             body: APIv4.AddSectionRequest,
@@ -134,6 +150,8 @@ export const apiFetch = {
     deleteSchedule: schemaFetch(schema.schedule, "delete"),
     renameSchedule: schemaFetch(schema.schedule, "patch"),
     duplicateSchedule: schemaFetch(schema.schedule, "put"),
+    shareSchedule: schemaFetch(schema.shareSchedule, "post"),
+    unshareSchedule: schemaFetch(schema.shareSchedule, "delete"),
     addSection: schemaFetch(schema.section, "post"),
     deleteSection: schemaFetch(schema.section, "delete"),
     setSectionAttrs: schemaFetch(schema.section, "patch"),

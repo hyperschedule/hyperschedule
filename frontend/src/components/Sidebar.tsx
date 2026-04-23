@@ -114,6 +114,8 @@ const ScheduleSelect = memo(function ScheduleSelect() {
     const userSchedules = useUserStore((store) => store.schedules);
     const setPopup = useStore((store) => store.setPopup);
 
+    const loggedIn = useUserStore((user) => user.server) !== null;
+
     const sortedSchedules = APIv4.getSchedulesSorted(userSchedules);
     const scheduleChoices = sortedSchedules.map((s) =>
         scheduleDisplayName(s[1]),
@@ -150,6 +152,21 @@ const ScheduleSelect = memo(function ScheduleSelect() {
                 <Feather.Edit className={AppCss.defaultButtonIcon} />
                 Edit
             </button>
+
+            {loggedIn && (
+                <button
+                    className={classNames(
+                        AppCss.defaultButton,
+                        Css.editScheduleButton,
+                    )}
+                    onClick={() =>
+                        setPopup({ option: PopupOption.ShareSchedule })
+                    }
+                >
+                    <Feather.Share2 className={AppCss.defaultButtonIcon} />
+                    Share
+                </button>
+            )}
         </div>
     );
 });
