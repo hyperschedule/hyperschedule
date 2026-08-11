@@ -1,4 +1,4 @@
-FROM node:25-bookworm
+FROM node:26-bookworm
 
 # Install pnpm
 RUN npm install -g pnpm@10.13.1

@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "lib": ["esnext", "dom"],
     "sourceRoot": "src",
-    "baseUrl": "src",
     "rootDir": "src",
     "plugins": [
       {
@@ -24,9 +23,9 @@
     ],
     "types": ["vite/client"],
     "paths": {
-      "@components/*": ["components/*"],
-      "@lib/*": ["lib/*"],
-      "@hooks/*": ["hooks/*"]
+      "@components/*": ["./src/components/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.module.css", "src/**/*"]

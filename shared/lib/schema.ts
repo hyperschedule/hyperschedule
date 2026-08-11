@@ -1,12 +1,7 @@
 import type * as Z from "zod";
 
 type JsonValue =
-    | boolean
-    | number
-    | string
-    | null
-    | JsonValue[]
-    | { [_: string]: JsonValue };
+    boolean | number | string | null | JsonValue[] | { [_: string]: JsonValue };
 
 export type MethodSchemaGetAny = {
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- ZodVoid outputs void, not undefined

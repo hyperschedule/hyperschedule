@@ -118,7 +118,7 @@ export default memo(function CourseDescriptionBox(props: {
             <section className={Css.credits}>
                 <h3>
                     Non-HMC Credit
-                    {computeNonMuddCredits(props.section) !== 1 ? "s" : ""}
+                    {computeNonMuddCredits(props.section) > 1 ? "s" : ""}
                 </h3>
                 <div>{computeNonMuddCredits(props.section)}</div>
             </section>
