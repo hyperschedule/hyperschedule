@@ -9,13 +9,13 @@ export const announcements: Announcement[] = [
     {
         id: 1711657525,
         message: (
-            <>
+            <div>
                 Hyperschedule is licensed under the{" "}
                 <a href="https://spdx.org/licenses/BSD-3-Clause-No-Military-License.html">
                     BSD 3-Clause No Military
                 </a>{" "}
                 License.
-            </>
+            </div>
         ),
         expires: null,
     },
