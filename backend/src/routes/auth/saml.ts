@@ -45,7 +45,7 @@ samlApp
     .post("/saml", async function (request, response) {
         try {
             const result = await sp.parseLoginResponse(idp, "post", {
-                body: request.body,
+                body: request.body as Record<string, string>,
             });
             logger.info(result.extract, "SAML request completed");
             const data = SamlResponseFormat.safeParse(result.extract);

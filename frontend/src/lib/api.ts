@@ -70,7 +70,7 @@ function validateResponse<Schema extends Schema.MethodSchemaAny>(
         if (response.status === 204 || response.status === 201) {
             return;
         }
-        const json = await response.json();
+        const json: unknown = await response.json();
         const result = schema.return.safeParse(json);
         if (!result.success) {
             if (showToastOnError)

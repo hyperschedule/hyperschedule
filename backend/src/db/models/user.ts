@@ -457,7 +457,7 @@ export async function findDuplicatesWith<K extends keyof APIv4.ServerUser>(
     key: K,
 ): Promise<APIv4.ServerUser[][]> {
     const result = await collections.users
-        .aggregate([
+        .aggregate<{ users: APIv4.ServerUser[] }>([
             {
                 $group: {
                     _id: `$${key}`, // Group by the key value

@@ -11,7 +11,6 @@ import {
     renameSchedule,
     setSectionAttrs,
     getOrCreateUser,
-    updateUser,
     findDuplicatesWith,
     makeAllEPPNLowercase,
     copySchedules,
@@ -298,7 +297,7 @@ describe("db/models/user", () => {
         // So the users in the db that have capital letters in their eppn are due to legacy code.
         const uid1 = await getOrCreateUser("First Test User", "");
         const uid2 = await getOrCreateUser("Second Test User", "");
-        const uid3 = await getOrCreateUser("third test user", "");
+        const _uid3 = await getOrCreateUser("third test user", "");
         const uid4 = await getOrCreateUser(
             "IniLast2026@hmc.edu",
             "Harvey Mudd College",
@@ -367,12 +366,12 @@ describe("db/models/user", () => {
         expect(Object.keys(user1_pre.schedules).length).toStrictEqual(1);
         expect(Object.keys(user2_pre.schedules).length).toStrictEqual(1);
 
-        const sid1 = await addSchedule(
+        const _sid1 = await addSchedule(
             uid1,
             { year: 2023, term: APIv4.Term.spring },
             "test schedule 1",
         );
-        const sid2 = await addSchedule(
+        const _sid2 = await addSchedule(
             uid1,
             { year: 2023, term: APIv4.Term.spring },
             "test schedule 2",

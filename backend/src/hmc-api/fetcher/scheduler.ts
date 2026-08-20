@@ -24,8 +24,13 @@ export async function runScheduler(prefix: string): Promise<void> {
     try {
         logger.info("Initializing memory file store");
         inMemoryFiles = await loadAllForTerm(CURRENT_TERM);
-    } catch (e: any) {
-        if (e.code === "ENOENT") {
+    } catch (e: unknown) {
+        if (
+            typeof e === "object" &&
+            e !== null &&
+            "code" in e &&
+            e.code === "ENOENT"
+        ) {
             logger.info("No initial files found, fetching all...");
             await fetchAllForTerm(prefix, CURRENT_TERM);
             inMemoryFiles = await loadAllForTerm(CURRENT_TERM);

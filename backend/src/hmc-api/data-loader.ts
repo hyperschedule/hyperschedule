@@ -33,13 +33,13 @@ function preprocessDataFromString<T>(
         return [];
     }
 
-    const obj = JSON.parse(cleanedData);
+    const obj: unknown = JSON.parse(cleanedData);
     if (!Array.isArray(obj)) {
         logger.error(`Input data for ${inputFileName} is not an array`);
         return [];
     }
 
-    for (const item of obj) {
+    for (const item of obj as unknown[]) {
         const r = inputValidator.safeParse(item);
         if (r.success) {
             result.push(r.data);
@@ -47,7 +47,7 @@ function preprocessDataFromString<T>(
             logger.trace(
                 "Unable to pre-process data item for %s. Data is %O. Errors: %O",
                 inputFileName,
-                item,
+                item as object,
                 r.error,
             );
         }

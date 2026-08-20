@@ -84,7 +84,7 @@ async function getData<T extends z.ZodType>(
 
         throw Error(resp.statusText);
     }
-    const json = await resp.json();
+    const json: unknown = await resp.json();
     const result = type.safeParse(json);
     if (!result.success) {
         toast.error(

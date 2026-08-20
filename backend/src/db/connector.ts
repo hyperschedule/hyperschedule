@@ -40,14 +40,9 @@ export async function closeDb(): Promise<void> {
     // if it's not connected do nothing
     if (!connector.connected) return;
 
-    logger.info("Closing database");
-    await connector.client.close();
-
-    let tmp = connector as any;
-
-    tmp.connected = false;
-    delete tmp.db;
-    delete tmp.client;
+    const client = connector.client;
+    connector = { connected: false };
+    await client.close();
 
     logger.info("Database closed");
 }

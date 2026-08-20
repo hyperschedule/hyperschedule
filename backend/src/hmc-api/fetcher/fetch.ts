@@ -82,7 +82,9 @@ export async function fetchAllForTerm(
 
     // we don't want to log the actual return value (all the data) if fulfilled
     logger.info(
-        results.map((r) => (r.status === "fulfilled" ? "fulfilled" : r.reason)),
+        results.map((r) =>
+            r.status === "fulfilled" ? "fulfilled" : (r.reason as unknown),
+        ),
     );
 }
 
