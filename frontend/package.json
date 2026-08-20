@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "A fast scheduler for the Claremont colleges (frontend)",
   "main": "index.js",
+  "type": "module",
   "repository": "git@github.com:MuddCreates/hyperschedule.git",
   "author": "Mia Celeste <mia@miaceleste.dev>",
   "contributors": [
@@ -54,15 +55,16 @@
     "react-feather": "^2.0.10",
     "react-toastify": "^11.0.5",
     "react18-json-view": "^0.2.9",
-    "typescript-plugin-css-modules": "^5.2.0",
+    "typed-css-modules": "^0.9.1",
     "vite": "^7.3.1"
   },
   "scripts": {
     "get-contributors": "node get-contributors.mjs",
-    "serve": "vite",
+    "gen:css": "tcm src",
+    "serve": "tcm src && vite",
     "test": ":",
-    "typecheck": "tsc --noEmit",
-    "prod": "vite build",
+    "typecheck": "tcm src && tsc --noEmit",
+    "prod": "tcm src && vite build",
     "ci:test": ":"
   },
   "dependencies": {

@@ -8,19 +8,6 @@
     "lib": ["esnext", "dom"],
     "sourceRoot": "src",
     "rootDir": "src",
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules",
-        "options": {
-          "postcssOptions": {
-            "useConfig": true
-          },
-          "namedExports": false,
-          "goToDefinitions": true,
-          "allowUnknownClassnames": false
-        }
-      }
-    ],
     "types": ["vite/client"],
     "paths": {
       "@components/*": ["./src/components/*"],
