@@ -109,7 +109,7 @@ export default defineConfig(({ mode }) => {
             sourcemap: true,
         },
         server: {
-            port: 5000,
+            port: 3000,
             host: true,
         },
     };

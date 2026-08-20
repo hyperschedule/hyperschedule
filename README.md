@@ -20,7 +20,7 @@ cd hyperschedule
 
 To run the code, you need to have at least one of these installed on your computer:
 
-- [NodeJS 22](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
+- [NodeJS 26](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
 
 ## If you use Windows
@@ -28,18 +28,16 @@ To run the code, you need to have at least one of these installed on your comput
 Please install both `pnpm` and `node` inside WSL2. Choose Debian Bullseyes if you aren't sure which distro to use, 
 but other distros should be fine
 
-## If you use MacOS
+## If you use macOS
 
-1. To run frontend properly, you need to [disable your Airplay Receiver](https://apple.stackexchange.com/a/431164) 
-because there is a port conflict.
-2. The `bash` that came with your macOS is likely still on version 3.2 (if you aren't sure, run `bash --version`), which
+1. The `bash` that came with your macOS is likely still on version 3.2 (if you aren't sure, run `bash --version`), which
 was released back in 2006. Please download a slightly more modern bash (as of Nov 2023, the latest version is 5.2.21).  
 
 ## Docker Compose Stack
 
 **Services:**
 
-- Frontend (port 5000)
+- Frontend (port 3000)
 - Backend (port 8080)
 - Database (mongoDB)
 - Web Server (nginx, port 80, only needed for SAML flow) 
@@ -52,7 +50,7 @@ test data.
 **After:**
 
 Every time you restart your computer or Docker desktop, you need to run `pnpm docker` again to start the stack.
-Then go to `http://localhost:5000` in your browser. 
+Then go to `http://localhost:3000` in your browser. 
 
 ## Git hooks
 
