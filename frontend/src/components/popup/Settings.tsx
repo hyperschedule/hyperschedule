@@ -142,6 +142,27 @@ const AppearanceSettings = memo(function AppearanceSettings() {
     return (
         <div className={Css.appearance}>
             <h3 className={Css.title}>Appearance</h3>
+            <span>Color Theme</span>
+            <div className={Css.colorThemes}>
+                {Array.from(colorThemes).map(([id, label]) => (
+                    <button
+                        key={id}
+                        className={`${Css.button} ${
+                            options.colorTheme === id ? Css.selected : ""
+                        }`}
+                        data-theme={id}
+                        onClick={() =>
+                            setOptions({
+                                ...options,
+                                colorTheme: id,
+                            })
+                        }
+                        aria-label={`Use ${label} color theme`}
+                        aria-pressed={options.colorTheme === id}
+                        title={label}
+                    />
+                ))}
+            </div>
             <span>Disable Shadows</span>
             <Slider
                 value={options.disableShadows}
@@ -186,26 +207,6 @@ const AppearanceSettings = memo(function AppearanceSettings() {
                 }
                 text=""
             />
-            <span>Color Theme: {colorThemes.get(options.colorTheme)}</span>
-            <div className={Css.colorThemes}>
-                {Array.from(colorThemes).map(([id, label]) => (
-                    <button
-                        key={id}
-                        className={`${Css.button} ${
-                            options.colorTheme === id ? Css.selected : ""
-                        }`}
-                        data-theme={id}
-                        onClick={() =>
-                            setOptions({
-                                ...options,
-                                colorTheme: id,
-                            })
-                        }
-                        aria-label={`Use ${label} color theme`}
-                        aria-pressed={options.colorTheme === id}
-                    />
-                ))}
-            </div>
         </div>
     );
 });

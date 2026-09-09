@@ -93,6 +93,7 @@
         align-content: center;
         align-items: center;
         gap: 0.5em;
+        height: 24px;
 
         & .button {
             width: 20px;
@@ -114,7 +115,7 @@
         }
 
         & .button[data-theme="pastel"] {
-            --theme-color: hsl(291, 21%, 76%);
+            --theme-color: hsl(289, 43%, 78%);
         }
 
         & .button[data-theme="warm"] {

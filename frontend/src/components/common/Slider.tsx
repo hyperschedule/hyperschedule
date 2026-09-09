@@ -7,7 +7,7 @@ export default function Slider(props: {
 }): JSX.Element {
     return (
         <div className={Css.container}>
-            <span>{props.text}</span>
+            {props.text && <span>{props.text}</span>}
             <label className={Css.label}>
                 <input
                     type="checkbox"
