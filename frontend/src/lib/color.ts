@@ -3,6 +3,15 @@ import randomColor from "randomcolor";
 import md5 from "md5";
 import { Theme } from "@hooks/store";
 
+export type ColorTheme = "default" | "pastel" | "warm" | "cool";
+
+export const colorThemes = new Map<ColorTheme, string>([
+    ["default", "Default"],
+    ["pastel", "Pastel"],
+    ["warm", "Warm"],
+    ["cool", "Cool"],
+]);
+
 interface SectionCSSProperties extends React.CSSProperties {
     "--section-color": string;
     "--section-highlight": string;
@@ -97,9 +106,22 @@ function computeStrongHighlightColor(c: Color, theme: Theme): Color {
     return [h, strongHighlight(s), invStrongHighlight(v)];
 }
 
+function mapHue(hue: number, ranges: [number, number][]): number {
+    const segmentSize = 360 / ranges.length;
+
+    const index = Math.min(Math.floor(hue / segmentSize), ranges.length - 1);
+
+    const position = (hue % segmentSize) / segmentSize;
+
+    const [min, max] = ranges[index] ?? [0, 0];
+
+    return min + position * (max - min);
+}
+
 export function sectionColorStyle(
     section: APIv4.SectionIdentifier,
     theme: Theme,
+    colorTheme: ColorTheme,
     strongHighlight: boolean,
 ): SectionCSSProperties {
     // the types published for this package is wrong,
@@ -112,10 +134,47 @@ export function sectionColorStyle(
     }) as unknown as Color;
 
     let color: Color;
+    switch (colorTheme) {
+        case "pastel":
+            color = [colorOut[0], colorOut[1] * 0.7, colorOut[2] * 1.05];
+            break;
+
+        case "warm":
+            color = [
+                mapHue(colorOut[0], [
+                    [0, 15], // red
+                    [15, 45], // orange
+                    [45, 60], // yellow
+                    [320, 360], // pink
+                ]),
+                colorOut[1],
+                colorOut[2],
+            ];
+            break;
+
+        case "cool":
+            color = [
+                mapHue(colorOut[0], [
+                    [80, 160], // green
+                    [160, 260], // blue
+                    [260, 300], // purple
+                ]),
+                colorOut[1],
+                colorOut[2],
+            ];
+            break;
+
+        case "default":
+        default:
+            color = [colorOut[0], colorOut[1], colorOut[2]];
+            break;
+    }
+    const [h, s, v] = color;
+
     if (theme === Theme.Light) {
-        color = [colorOut[0], colorOut[1] / 100, colorOut[2] / 100];
+        color = [h, s / 100, v / 100];
     } else {
-        color = [colorOut[0], colorOut[1] / 100, (colorOut[2] / 100) * 0.6];
+        color = [h, s / 100, (v / 100) * 0.6];
     }
     return {
         "--section-color": hslArrayToCssString(hsvToHsl(color)),

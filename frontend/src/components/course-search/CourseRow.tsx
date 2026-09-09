@@ -32,6 +32,7 @@ export default memo(function CourseRow(props: {
     const [detailsBounds, detailsRef] = useMeasure<HTMLDivElement>();
     const height = detailsBounds?.height ?? 0;
     const theme = useStore((store) => store.theme);
+    const colorTheme = useStore((store) => store.appearanceOptions.colorTheme);
     const setHoverSection = useStore((store) => store.setHoverSection);
 
     useEffect(() => {
@@ -47,6 +48,7 @@ export default memo(function CourseRow(props: {
                     style={sectionColorStyle(
                         props.section.identifier,
                         theme,
+                        colorTheme,
                         false,
                     )}
                 >
@@ -79,6 +81,7 @@ export default memo(function CourseRow(props: {
                 style={sectionColorStyle(
                     props.section.identifier,
                     theme,
+                    colorTheme,
                     false,
                 )}
                 onPointerEnter={() => {

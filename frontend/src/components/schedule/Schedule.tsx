@@ -149,6 +149,7 @@ const Card = memo(function Card(props: {
     conflict: boolean;
 }) {
     const theme = useStore((store) => store.theme);
+    const colorTheme = useStore((store) => store.appearanceOptions.colorTheme);
     const setPopup = useStore((store) => store.setPopup);
     const setHoverSection = useStore((store) => store.setHoverSection);
     const hoverSection = useStore((store) => store.hoverSection);
@@ -186,6 +187,7 @@ const Card = memo(function Card(props: {
                     ...sectionColorStyle(
                         props.card.section.identifier,
                         theme,
+                        colorTheme,
                         false,
                     ),
                 } as React.CSSProperties

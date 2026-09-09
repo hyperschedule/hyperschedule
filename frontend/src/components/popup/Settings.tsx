@@ -15,6 +15,7 @@ import classNames from "classnames";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { memo } from "react";
+import { colorThemes } from "@lib/color";
 
 export const Settings = memo(function Settings() {
     return (
@@ -185,6 +186,26 @@ const AppearanceSettings = memo(function AppearanceSettings() {
                 }
                 text=""
             />
+            <span>Color Theme: {colorThemes.get(options.colorTheme)}</span>
+            <div className={Css.colorThemes}>
+                {Array.from(colorThemes).map(([id, label]) => (
+                    <button
+                        key={id}
+                        className={`${Css.button} ${
+                            options.colorTheme === id ? Css.selected : ""
+                        }`}
+                        data-theme={id}
+                        onClick={() =>
+                            setOptions({
+                                ...options,
+                                colorTheme: id,
+                            })
+                        }
+                        aria-label={`Use ${label} color theme`}
+                        aria-pressed={options.colorTheme === id}
+                    />
+                ))}
+            </div>
         </div>
     );
 });

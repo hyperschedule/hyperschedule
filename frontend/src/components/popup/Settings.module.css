@@ -87,6 +87,53 @@
         }
     }
 
+    & .colorThemes {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        gap: 0.5em;
+
+        & .button {
+            width: 20px;
+            height: 20px;
+            padding: 0;
+
+            border: 2px solid transparent;
+            border-radius: 50%;
+
+            background-color: var(--theme-color);
+
+            cursor: pointer;
+        }
+
+        /* Theme colors */
+
+        & .button[data-theme="default"] {
+            --theme-color: hsl(125, 59%, 54%);
+        }
+
+        & .button[data-theme="pastel"] {
+            --theme-color: hsl(291, 21%, 76%);
+        }
+
+        & .button[data-theme="warm"] {
+            --theme-color: hsl(8, 65%, 59%);
+        }
+
+        & .button[data-theme="cool"] {
+            --theme-color: hsl(210, 75%, 55%);
+        }
+
+        /* Selected state */
+
+        & .button.selected {
+            border-color: var(--theme-color);
+            outline: 2px solid var(--background-color, white);
+            box-shadow: 0 0 0 3px var(--theme-color);
+        }
+    }
+
     .issues {
         & a,
         & a:visited {
