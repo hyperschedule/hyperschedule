@@ -3,13 +3,14 @@ import randomColor from "randomcolor";
 import md5 from "md5";
 import { Theme } from "@hooks/store";
 
-export type ColorTheme = "default" | "pastel" | "warm" | "cool";
+export type ColorTheme = "default" | "pastel" | "sunset" | "cool" | "earthy";
 
 export const colorThemes = new Map<ColorTheme, string>([
     ["default", "Default"],
     ["pastel", "Pastel"],
-    ["warm", "Warm"],
+    ["sunset", "Sunset"],
     ["cool", "Cool"],
+    ["earthy", "Earthy"],
 ]);
 
 interface SectionCSSProperties extends React.CSSProperties {
@@ -118,6 +119,12 @@ function mapHue(hue: number, ranges: [number, number][]): number {
     return min + position * (max - min);
 }
 
+function mapRange(value: number, range: [number, number]): number {
+    const [min, max] = range;
+
+    return min + (value / 100) * (max - min);
+}
+
 export function sectionColorStyle(
     section: APIv4.SectionIdentifier,
     theme: Theme,
@@ -136,31 +143,56 @@ export function sectionColorStyle(
     let color: Color;
     switch (colorTheme) {
         case "pastel":
-            color = [colorOut[0], colorOut[1] * 0.7, colorOut[2] * 1.05];
+            color = [
+                colorOut[0],
+                mapRange(colorOut[1], [20, 35]),
+                mapRange(colorOut[2], [70, 88]),
+            ];
             break;
 
-        case "warm":
+        case "sunset":
             color = [
                 mapHue(colorOut[0], [
-                    [0, 15], // red
-                    [15, 45], // orange
-                    [45, 60], // yellow
-                    [320, 360], // pink
+                    [0, 18], // warm
+                    [18, 38], // peach
+                    [38, 55], // coral
+                    [345, 360], // rose
+                    [320, 360], // warm lavender
                 ]),
-                colorOut[1],
-                colorOut[2],
+                mapRange(colorOut[1], [20, 65]),
+                mapRange(colorOut[2], [60, 88]),
             ];
             break;
 
         case "cool":
             color = [
                 mapHue(colorOut[0], [
-                    [80, 160], // green
-                    [160, 260], // blue
-                    [260, 300], // purple
+                    [205, 225], // blue
+                    [220, 245], // blue
+                    [245, 270], // blue-purple
+                    [150, 175], // green
+                    [315, 335], // pink
+                    [270, 295], // purple
                 ]),
-                colorOut[1],
-                colorOut[2],
+                mapRange(colorOut[1], [20, 45]),
+                mapRange(colorOut[2], [60, 88]),
+            ];
+            break;
+
+        case "earthy":
+            color = [
+                mapHue(colorOut[0], [
+                    [28, 42], // warm beige / tan
+                    [42, 55], // sand / caramel
+                    [55, 68], // honey / golden tan
+                    [68, 82], // khaki / olive tan
+                    [82, 98], // olive
+                    [98, 115], // olive green
+                    [115, 130], // moss
+                    [130, 145], // earthy green
+                ]),
+                mapRange(colorOut[1], [25, 33]),
+                mapRange(colorOut[2], [74, 83]),
             ];
             break;
 

@@ -115,15 +115,19 @@
         }
 
         & .button[data-theme="pastel"] {
-            --theme-color: hsl(289, 43%, 78%);
+            --theme-color: hsl(329, 38%, 75%);
         }
 
-        & .button[data-theme="warm"] {
-            --theme-color: hsl(8, 65%, 59%);
+        & .button[data-theme="sunset"] {
+            --theme-color: hsl(340, 65%, 59%);
         }
 
         & .button[data-theme="cool"] {
-            --theme-color: hsl(210, 75%, 55%);
+            --theme-color: hsl(210, 70%, 63%);
+        }
+
+        & .button[data-theme="earthy"] {
+            --theme-color: hsl(133, 29%, 37%);
         }
 
         /* Selected state */
