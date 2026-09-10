@@ -3,15 +3,20 @@ import randomColor from "randomcolor";
 import md5 from "md5";
 import { Theme } from "@hooks/store";
 
-export type ColorTheme = "default" | "pastel" | "sunset" | "cool" | "earthy";
+export type CourseColorTheme =
+    | "default"
+    | "pastel"
+    | "sunset"
+    | "cool"
+    | "earthy";
 
-export const colorThemes = new Map<ColorTheme, string>([
-    ["default", "Default"],
-    ["pastel", "Pastel"],
-    ["sunset", "Sunset"],
-    ["cool", "Cool"],
-    ["earthy", "Earthy"],
-]);
+export const courseColorThemes: { id: CourseColorTheme; label: string }[] = [
+    { id: "default", label: "Default" },
+    { id: "pastel", label: "Pastel" },
+    { id: "sunset", label: "Sunset" },
+    { id: "cool", label: "Cool" },
+    { id: "earthy", label: "Earthy" },
+];
 
 interface SectionCSSProperties extends React.CSSProperties {
     "--section-color": string;
@@ -128,7 +133,7 @@ function mapRange(value: number, range: [number, number]): number {
 export function sectionColorStyle(
     section: APIv4.SectionIdentifier,
     theme: Theme,
-    colorTheme: ColorTheme,
+    courseColorTheme: CourseColorTheme,
     strongHighlight: boolean,
 ): SectionCSSProperties {
     // the types published for this package is wrong,
@@ -141,7 +146,7 @@ export function sectionColorStyle(
     }) as unknown as Color;
 
     let color: Color;
-    switch (colorTheme) {
+    switch (courseColorTheme) {
         case "pastel":
             color = [
                 colorOut[0],
@@ -185,14 +190,18 @@ export function sectionColorStyle(
                     [28, 42], // warm beige / tan
                     [42, 55], // sand / caramel
                     [55, 68], // honey / golden tan
-                    [68, 82], // khaki / olive tan
+                    [70, 75],
+                    [61, 82], // khaki / olive tan
                     [82, 98], // olive
                     [98, 115], // olive green
                     [115, 130], // moss
                     [130, 145], // earthy green
+                    [140, 160],
+                    [200, 240],
+                    [230, 250],
                 ]),
-                mapRange(colorOut[1], [25, 33]),
-                mapRange(colorOut[2], [74, 83]),
+                mapRange(colorOut[1], [25, 53]),
+                mapRange(colorOut[2], [64, 83]),
             ];
             break;
 

@@ -9,7 +9,7 @@ import { pick } from "@lib/store";
 import { MAIN_STORE_NAME } from "@lib/constants";
 import type { AnnouncementID } from "@lib/announcements";
 import { produce } from "immer";
-import type { ColorTheme } from "@lib/color";
+import type { CourseColorTheme } from "@lib/color";
 
 // we need this so we can correctly render filters with immutable keys.
 // without this there are subtle bugs with filter deletions
@@ -66,7 +66,7 @@ export type AppearanceOptions = {
     disableTransparency: boolean;
     disableRoundedCorners: boolean;
     disableAnimations: boolean;
-    colorTheme: ColorTheme;
+    courseColorTheme: CourseColorTheme;
 };
 
 export type ConflictingSectionsOptions = {
@@ -106,7 +106,7 @@ const initStore: Zustand.StateCreator<Store> = (set, get) => {
             disableShadows: false,
             disableTransparency: false,
             disableAnimations: false,
-            colorTheme: "default",
+            courseColorTheme: "default",
         },
         setAppearanceOptions: (options) => set({ appearanceOptions: options }),
 

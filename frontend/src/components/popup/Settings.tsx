@@ -15,7 +15,7 @@ import classNames from "classnames";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { memo } from "react";
-import { colorThemes } from "@lib/color";
+import { courseColorThemes } from "@lib/color";
 
 export const Settings = memo(function Settings() {
     return (
@@ -143,23 +143,25 @@ const AppearanceSettings = memo(function AppearanceSettings() {
         <div className={Css.appearance}>
             <h3 className={Css.title}>Appearance</h3>
             <span>Color Theme</span>
-            <div className={Css.colorThemes}>
-                {Array.from(colorThemes).map(([id, label]) => (
+            <div className={Css.courseColorThemes}>
+                {courseColorThemes.map((color) => (
                     <button
-                        key={id}
+                        key={color.id}
                         className={`${Css.button} ${
-                            options.colorTheme === id ? Css.selected : ""
+                            options.courseColorTheme === color.id
+                                ? Css.selected
+                                : ""
                         }`}
-                        data-theme={id}
+                        data-theme={color.id}
                         onClick={() =>
                             setOptions({
                                 ...options,
-                                colorTheme: id,
+                                courseColorTheme: color.id,
                             })
                         }
-                        aria-label={`Use ${label} color theme`}
-                        aria-pressed={options.colorTheme === id}
-                        title={label}
+                        aria-label={`Use ${color.label} color theme`}
+                        aria-pressed={options.courseColorTheme === color.id}
+                        title={color.label}
                     />
                 ))}
             </div>
