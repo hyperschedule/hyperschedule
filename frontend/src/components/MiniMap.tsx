@@ -31,6 +31,9 @@ export default memo(function MiniMap() {
     const { bounds, cards, expandCards, startHour, endHour, unconflicting } =
         useActiveScheduleResolved();
     const theme = useStore((store) => store.theme);
+    const courseColorTheme = useStore(
+        (store) => store.appearanceOptions.courseColorTheme,
+    );
     const expandKey = useStore((store) => store.expandKey);
 
     const renderingOptions = useStore(
@@ -166,6 +169,7 @@ export default memo(function MiniMap() {
                                         ...sectionColorStyle(
                                             card.section.identifier,
                                             theme,
+                                            courseColorTheme,
                                             true,
                                         ),
                                     }}
@@ -225,6 +229,9 @@ const Card = memo(function Card(props: {
     );
 
     const theme = useStore((store) => store.theme);
+    const colorTheme = useStore(
+        (store) => store.appearanceOptions.courseColorTheme,
+    );
     const expandKey = useStore((store) => store.expandKey);
 
     const sectionCode = APIv4.stringifySectionCodeLong(
@@ -282,6 +289,7 @@ const Card = memo(function Card(props: {
                 ...sectionColorStyle(
                     props.card.section.identifier,
                     theme,
+                    colorTheme,
                     true,
                 ),
             }}

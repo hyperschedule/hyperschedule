@@ -3,6 +3,21 @@ import randomColor from "randomcolor";
 import md5 from "md5";
 import { Theme } from "@hooks/store";
 
+export type CourseColorTheme =
+    | "default"
+    | "pastel"
+    | "sunset"
+    | "cool"
+    | "earthy";
+
+export const courseColorThemes: { id: CourseColorTheme; label: string }[] = [
+    { id: "default", label: "Default" },
+    { id: "pastel", label: "Pastel" },
+    { id: "sunset", label: "Sunset" },
+    { id: "cool", label: "Cool" },
+    { id: "earthy", label: "Earthy" },
+];
+
 interface SectionCSSProperties extends React.CSSProperties {
     "--section-color": string;
     "--section-highlight": string;
@@ -97,9 +112,28 @@ function computeStrongHighlightColor(c: Color, theme: Theme): Color {
     return [h, strongHighlight(s), invStrongHighlight(v)];
 }
 
+function mapHue(hue: number, ranges: [number, number][]): number {
+    const segmentSize = 360 / ranges.length;
+
+    const index = Math.min(Math.floor(hue / segmentSize), ranges.length - 1);
+
+    const position = (hue % segmentSize) / segmentSize;
+
+    const [min, max] = ranges[index] ?? [0, 0];
+
+    return min + position * (max - min);
+}
+
+function mapRange(value: number, range: [number, number]): number {
+    const [min, max] = range;
+
+    return min + (value / 100) * (max - min);
+}
+
 export function sectionColorStyle(
     section: APIv4.SectionIdentifier,
     theme: Theme,
+    courseColorTheme: CourseColorTheme,
     strongHighlight: boolean,
 ): SectionCSSProperties {
     // the types published for this package is wrong,
@@ -112,10 +146,76 @@ export function sectionColorStyle(
     }) as unknown as Color;
 
     let color: Color;
+    switch (courseColorTheme) {
+        case "pastel":
+            color = [
+                colorOut[0],
+                mapRange(colorOut[1], [20, 35]),
+                mapRange(colorOut[2], [70, 88]),
+            ];
+            break;
+
+        case "sunset":
+            color = [
+                mapHue(colorOut[0], [
+                    [0, 18], // warm
+                    [18, 38], // peach
+                    [38, 55], // coral
+                    [345, 360], // rose
+                    [320, 360], // warm lavender
+                ]),
+                mapRange(colorOut[1], [20, 65]),
+                mapRange(colorOut[2], [60, 88]),
+            ];
+            break;
+
+        case "cool":
+            color = [
+                mapHue(colorOut[0], [
+                    [205, 225], // blue
+                    [220, 245], // blue
+                    [245, 270], // blue-purple
+                    [150, 175], // green
+                    [315, 335], // pink
+                    [270, 295], // purple
+                ]),
+                mapRange(colorOut[1], [20, 45]),
+                mapRange(colorOut[2], [60, 88]),
+            ];
+            break;
+
+        case "earthy":
+            color = [
+                mapHue(colorOut[0], [
+                    [28, 42], // warm beige / tan
+                    [42, 55], // sand / caramel
+                    [55, 68], // honey / golden tan
+                    [70, 75],
+                    [61, 82], // khaki / olive tan
+                    [82, 98], // olive
+                    [98, 115], // olive green
+                    [115, 130], // moss
+                    [130, 145], // earthy green
+                    [140, 160],
+                    [200, 240],
+                    [230, 250],
+                ]),
+                mapRange(colorOut[1], [25, 53]),
+                mapRange(colorOut[2], [64, 83]),
+            ];
+            break;
+
+        case "default":
+        default:
+            color = [colorOut[0], colorOut[1], colorOut[2]];
+            break;
+    }
+    const [h, s, v] = color;
+
     if (theme === Theme.Light) {
-        color = [colorOut[0], colorOut[1] / 100, colorOut[2] / 100];
+        color = [h, s / 100, v / 100];
     } else {
-        color = [colorOut[0], colorOut[1] / 100, (colorOut[2] / 100) * 0.6];
+        color = [h, s / 100, (v / 100) * 0.6];
     }
     return {
         "--section-color": hslArrayToCssString(hsvToHsl(color)),

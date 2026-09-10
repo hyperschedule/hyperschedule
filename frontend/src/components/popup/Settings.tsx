@@ -15,6 +15,7 @@ import classNames from "classnames";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { memo } from "react";
+import { courseColorThemes } from "@lib/color";
 
 export const Settings = memo(function Settings() {
     return (
@@ -141,6 +142,29 @@ const AppearanceSettings = memo(function AppearanceSettings() {
     return (
         <div className={Css.appearance}>
             <h3 className={Css.title}>Appearance</h3>
+            <span>Color Theme</span>
+            <div className={Css.courseColorThemes}>
+                {courseColorThemes.map((color) => (
+                    <button
+                        key={color.id}
+                        className={`${Css.button} ${
+                            options.courseColorTheme === color.id
+                                ? Css.selected
+                                : ""
+                        }`}
+                        data-theme={color.id}
+                        onClick={() =>
+                            setOptions({
+                                ...options,
+                                courseColorTheme: color.id,
+                            })
+                        }
+                        aria-label={`Use ${color.label} color theme`}
+                        aria-pressed={options.courseColorTheme === color.id}
+                        title={color.label}
+                    />
+                ))}
+            </div>
             <span>Disable Shadows</span>
             <Slider
                 value={options.disableShadows}
