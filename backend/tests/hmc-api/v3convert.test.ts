@@ -24,6 +24,8 @@ const v4Section: APIv4.Section = APIv4.Section.parse({
     },
     status: "R",
     credits: 3,
+    HMCCredits: 3,
+    nonHMCCredits: 1,
     courseAreas: ["1A5", "CSCI"],
     instructors: [
         {

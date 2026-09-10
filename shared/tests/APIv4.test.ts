@@ -31,6 +31,8 @@ describe("APIv4 type definition", () => {
                 },
             } as APIv4.SectionIdentifier,
             credits: 1,
+            HMCCredits: 3,
+            nonHMCCredits: 1,
             status: "O" as APIv4.SectionStatus,
             // TEST001 PZ-01 is a real class listed on portal in term FA/2022
             // under course area TNDY "Transdisplinary"

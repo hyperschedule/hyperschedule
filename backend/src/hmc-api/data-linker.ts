@@ -25,6 +25,7 @@ import {
 } from "./data-loader";
 
 import { buildings } from "./buildings";
+import { convertToHMCCredits, convertToNonHMCCredits } from "./credits";
 import { createLogger } from "../logger";
 import { fixEncoding, replaceQuotes } from "./encoding";
 import type { HmcApiFiles } from "./fetcher/types";
@@ -265,6 +266,17 @@ function processCourseSection(
 
         const courseAreas: string[] = courseAreaMap.get(courseCodeString) ?? [];
 
+        const HMCCredits = convertToHMCCredits(
+            section.credits,
+            course.primaryAssociation,
+            sectionIdentifierString,
+        );
+        const nonHMCCredits = convertToNonHMCCredits(
+            section.credits,
+            course.primaryAssociation,
+            sectionIdentifierString,
+        );
+
         let potentialError: boolean = courseSectionMap.has(
             sectionIdentifierString,
         );
@@ -307,6 +319,8 @@ function processCourseSection(
             instructors: [],
             schedules: [],
             credits: section.credits,
+            HMCCredits: HMCCredits,
+            nonHMCCredits: nonHMCCredits,
             identifier: section.sectionId,
             seatsTotal: section.seatsTotal,
             seatsFilled: section.seatsFilled,
