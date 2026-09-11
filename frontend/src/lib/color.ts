@@ -22,14 +22,11 @@ export const courseColorThemes: { id: CourseColorTheme; label: string }[] = [
 
 const affiliationColors: Record<string, string> = {
     PO: "blue", // Pomona
-    HM: "pink", // Harvey Mudd
+    HM: "yellow", // Harvey Mudd
     PZ: "orange", // Pitzer
     CM: "red", // Claremont McKenna
     SC: "green", // Scripps
     CG: "purple", // Claremont Graduate
-    KS: "green", // Keck Science Center
-    JP: "pink", // Joint Programs
-    Random: "random", // Random
 };
 
 interface SectionCSSProperties extends React.CSSProperties {
@@ -224,6 +221,10 @@ export function sectionColorStyle(
                 mapRange(colorOut[1], [25, 53]),
                 mapRange(colorOut[2], [64, 83]),
             ];
+            break;
+
+        case "campus":
+            color = [colorOut[0], colorOut[1], colorOut[2]];
             break;
 
         case "default":

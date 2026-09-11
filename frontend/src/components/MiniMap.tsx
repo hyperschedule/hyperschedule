@@ -170,8 +170,7 @@ export default memo(function MiniMap() {
                                             card.section.identifier,
                                             theme,
                                             courseColorTheme,
-                                            card.section.course.code
-                                                .affiliation,
+                                            card.section.course.primaryAssociation,
                                             true,
                                         ),
                                     }}
@@ -292,7 +291,7 @@ const Card = memo(function Card(props: {
                     props.card.section.identifier,
                     theme,
                     colorTheme,
-                    props.card.section.course.code.affiliation,
+                    props.card.section.course.primaryAssociation,
                     true,
                 ),
             }}

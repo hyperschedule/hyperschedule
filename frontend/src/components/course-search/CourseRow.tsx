@@ -51,7 +51,7 @@ export default memo(function CourseRow(props: {
                         props.section.identifier,
                         theme,
                         courseColorTheme,
-                        props.section.identifier.affiliation,
+                        props.section.course.primaryAssociation,
                         false,
                     )}
                 >
@@ -85,7 +85,7 @@ export default memo(function CourseRow(props: {
                     props.section.identifier,
                     theme,
                     courseColorTheme,
-                    props.section.course.code.affiliation,
+                    props.section.course.primaryAssociation,
                     false,
                 )}
                 onPointerEnter={() => {

@@ -131,7 +131,7 @@
         }
 
         & .button[data-theme="campus"] {
-            --theme-color: hsla(0, 0%, 0%, 0%);
+            --theme-color: #ff6b6b;
             background: radial-gradient(circle, #feca57 0%, #ff6b6b 100%);
         }
 

@@ -190,7 +190,7 @@ const Card = memo(function Card(props: {
                         props.card.section.identifier,
                         theme,
                         courseColorTheme,
-                        props.card.section.course.code.affiliation,
+                        props.card.section.course.primaryAssociation,
                         false,
                     ),
                 } as React.CSSProperties
