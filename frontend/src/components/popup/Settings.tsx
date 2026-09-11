@@ -159,7 +159,7 @@ const AppearanceSettings = memo(function AppearanceSettings() {
                                 courseColorTheme: color.id,
                             })
                         }
-                        aria-label={`Use ${color.label} color theme`}
+                        aria-label={`Use ${color.label} theme`}
                         aria-pressed={options.courseColorTheme === color.id}
                         title={color.label}
                     />

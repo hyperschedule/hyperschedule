@@ -8,7 +8,8 @@ export type CourseColorTheme =
     | "pastel"
     | "sunset"
     | "cool"
-    | "earthy";
+    | "earthy"
+    | "campus";
 
 export const courseColorThemes: { id: CourseColorTheme; label: string }[] = [
     { id: "default", label: "Default" },
@@ -16,7 +17,20 @@ export const courseColorThemes: { id: CourseColorTheme; label: string }[] = [
     { id: "sunset", label: "Sunset" },
     { id: "cool", label: "Cool" },
     { id: "earthy", label: "Earthy" },
+    { id: "campus", label: "Per Campus Colors" },
 ];
+
+const affiliationColors: Record<string, string> = {
+    PO: "blue", // Pomona
+    HM: "pink", // Harvey Mudd
+    PZ: "orange", // Pitzer
+    CM: "red", // Claremont McKenna
+    SC: "green", // Scripps
+    CG: "purple", // Claremont Graduate
+    KS: "green", // Keck Science Center
+    JP: "pink", // Joint Programs
+    Random: "random", // Random
+};
 
 interface SectionCSSProperties extends React.CSSProperties {
     "--section-color": string;
@@ -134,12 +148,19 @@ export function sectionColorStyle(
     section: APIv4.SectionIdentifier,
     theme: Theme,
     courseColorTheme: CourseColorTheme,
+    affiliation: string,
     strongHighlight: boolean,
 ): SectionCSSProperties {
     // the types published for this package is wrong,
     // actual output is formatted as [H (0-360), S (0-100), V (0-100)]
+
+    let hue =
+        courseColorTheme === "campus"
+            ? affiliationColors[affiliation] ?? "monochrome"
+            : "random";
+
     const colorOut = randomColor({
-        hue: "random",
+        hue: hue,
         luminosity: "light",
         seed: md5(APIv4.stringifySectionCodeLong(section)),
         format: "hsvArray",
@@ -206,7 +227,7 @@ export function sectionColorStyle(
             break;
 
         case "default":
-        default:
+        default: // Handles campus scheme as well
             color = [colorOut[0], colorOut[1], colorOut[2]];
             break;
     }

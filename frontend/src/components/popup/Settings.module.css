@@ -130,6 +130,11 @@
             --theme-color: hsl(133, 29%, 37%);
         }
 
+        & .button[data-theme="campus"] {
+            --theme-color: hsla(0, 0%, 0%, 0%);
+            background: radial-gradient(circle, #feca57 0%, #ff6b6b 100%);
+        }
+
         /* Selected state */
 
         & .button.selected {

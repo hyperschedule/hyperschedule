@@ -268,6 +268,7 @@ const SectionEntry = memo(function SectionEntry(props: {
                     props.entry.section,
                     theme,
                     courseColorTheme,
+                    props.entry.section.affiliation,
                     true,
                 ),
                 transform: DndUtil.CSS.Transform.toString(sortable.transform),

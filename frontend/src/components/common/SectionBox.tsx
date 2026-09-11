@@ -17,6 +17,7 @@ export default function SectionBox(props: {
                 props.section,
                 theme,
                 courseColorTheme,
+                props.section.affiliation,
                 false,
             )}
         >
