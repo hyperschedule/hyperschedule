@@ -42,15 +42,21 @@ export async function updateSections(
     }).delete();
     logger.info(`Bulk operation compiled, executing...`);
     const result = await bulk.execute();
-    const { nInserted, nMatched, nModified, nRemoved, nUpserted } = result;
+    const {
+        insertedCount,
+        matchedCount,
+        modifiedCount,
+        deletedCount,
+        upsertedCount,
+    } = result;
     logger.info(`Bulk operation completed`);
     logger.info("Bulk operation result: %o", {
         ok: result.isOk(),
-        nInserted,
-        nMatched,
-        nModified,
-        nRemoved,
-        nUpserted,
+        insertedCount,
+        matchedCount,
+        modifiedCount,
+        deletedCount,
+        upsertedCount,
     });
     if (!result.isOk()) {
         logger.error(result);

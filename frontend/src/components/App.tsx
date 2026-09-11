@@ -13,8 +13,6 @@ import useStore, { MainTab } from "@hooks/store";
 import Sidebar from "./Sidebar";
 import { announcements } from "../announcements";
 
-import "react-toastify/dist/ReactToastify.min.css";
-
 export default function App() {
     const theme = useStore((store) => store.theme);
     const mainTab = useStore((store) => store.mainTab);
@@ -102,6 +100,7 @@ export default function App() {
                 // hideProgressBar
                 theme={theme}
                 transition={Slide}
+                closeOnClick
                 pauseOnHover={true}
                 pauseOnFocusLoss={true}
                 className={Css.toast}

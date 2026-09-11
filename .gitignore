@@ -125,3 +125,9 @@ dist
 
 .netlify/
 .svelte-kit/
+
+# Generated CSS module type definitions
+*.css.d.ts
+*.module.css.d.ts
+
+

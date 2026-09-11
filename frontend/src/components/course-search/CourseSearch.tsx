@@ -323,7 +323,7 @@ const CourseSearchRow = memo(function CourseSearchRow(props: {
     rowHeight: number;
     viewportHeight: number;
     expandIndex: number | null;
-}): JSX.Element | null {
+}): React.JSX.Element | null {
     const setExpandKey = useStore((store) => store.setExpandKey);
     const setExpandHeight = useStore((store) => store.setExpandHeight);
     const expandHeight = useStore((store) => store.expandHeight);

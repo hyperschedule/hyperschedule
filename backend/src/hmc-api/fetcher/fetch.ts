@@ -82,7 +82,9 @@ export async function fetchAllForTerm(
 
     // we don't want to log the actual return value (all the data) if fulfilled
     logger.info(
-        results.map((r) => (r.status === "fulfilled" ? "fulfilled" : r.reason)),
+        results.map((r) =>
+            r.status === "fulfilled" ? "fulfilled" : (r.reason as unknown),
+        ),
     );
 }
 
@@ -97,7 +99,6 @@ export async function loadAllForTerm(
         /* TODO: rewrite this using promise.all instead. this should be low impact
          *       because this function is only used during tests or server-startup
          */
-        // eslint-disable-next-line no-await-in-loop
         files[key] = await loadStatic(e, term);
     }
     return HmcApiFiles.parse(files);

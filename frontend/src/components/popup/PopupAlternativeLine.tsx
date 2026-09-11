@@ -2,8 +2,8 @@ import Css from "./PopupAlternativeLine.module.css";
 import classNames from "classnames";
 
 export default function PopupAlternativeLine(props: {
-    left: JSX.Element;
-    right: JSX.Element;
+    left: React.JSX.Element;
+    right: React.JSX.Element;
     className?: string;
 }) {
     return (

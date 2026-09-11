@@ -1,8 +1,8 @@
-import type * as Zustand from "zustand";
+import type { StoreApi } from "zustand";
 
 export type StoreInit<Store> = (
-    setState: Zustand.StoreApi<Store>["setState"],
-    getState: Zustand.StoreApi<Store>["getState"],
+    setState: StoreApi<Store>["setState"],
+    getState: StoreApi<Store>["getState"],
 ) => void;
 
 export type WithSetters<Shape> = { [K in keyof Shape]: Shape[K] } & {

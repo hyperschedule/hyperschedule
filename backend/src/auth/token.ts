@@ -45,8 +45,11 @@ export function safeVerifyUser(
             return { valid: false, reason: "invalid payload" };
 
         return { valid: true, token: { uuid: payload.uuid as string } };
-    } catch (e: any) {
-        return { valid: false, reason: e.message };
+    } catch (e) {
+        return {
+            valid: false,
+            reason: e instanceof Error ? e.message : String(e),
+        };
     }
 }
 

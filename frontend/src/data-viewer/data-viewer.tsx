@@ -13,14 +13,14 @@ function DataViewer() {
         Record<string, unknown> | string | undefined | null
     >(undefined);
 
-    let error: JSX.Element;
+    let error: React.JSX.Element;
 
     if (window.location.hash !== "") {
-        const data = JSON.parse(atob(window.location.hash.slice(1)));
+        const data: unknown = JSON.parse(atob(window.location.hash.slice(1)));
         error = (
             <>
                 <h3>Error detail</h3>{" "}
-                <JsonView src={data} displaySize="collapsed" />
+                <JsonView src={data as object} displaySize="collapsed" />
             </>
         );
     } else {
@@ -38,10 +38,17 @@ function DataViewer() {
             } else if (!headers.ok) {
                 setCloudData("Network error");
             } else {
-                setCloudData(await headers.json());
+                setCloudData((await headers.json()) as Record<string, unknown>);
             }
         })().catch(() => setCloudData("Failed"));
     }
+
+    const mainStoreData: unknown = JSON.parse(
+        localStorage.getItem(MAIN_STORE_NAME) ?? "{}",
+    );
+    const userStoreData: unknown = JSON.parse(
+        localStorage.getItem(USER_STORE_NAME) ?? "{}",
+    );
 
     return (
         <div>
@@ -58,16 +65,10 @@ function DataViewer() {
             )}
 
             <h3>Persistent interface data (local)</h3>
-            <JsonView
-                src={JSON.parse(localStorage.getItem(MAIN_STORE_NAME) ?? "{}")}
-                displaySize="collapsed"
-            />
+            <JsonView src={mainStoreData as object} displaySize="collapsed" />
 
             <h3>Persistent user data (local)</h3>
-            <JsonView
-                src={JSON.parse(localStorage.getItem(USER_STORE_NAME) ?? "{}")}
-                displaySize="collapsed"
-            />
+            <JsonView src={userStoreData as object} displaySize="collapsed" />
         </div>
     );
 }

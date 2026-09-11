@@ -11,7 +11,6 @@ import {
     renameSchedule,
     setSectionAttrs,
     getOrCreateUser,
-    updateUser,
     findDuplicatesWith,
     makeAllEPPNLowercase,
     copySchedules,
@@ -101,13 +100,13 @@ describe("db/models/user", () => {
             half: null,
         };
 
-        const uid = await await getOrCreateUser("test user", "");
+        const uid = await getOrCreateUser("test user", "");
 
         await deleteSchedule(
             uid,
             Object.keys((await getUser(uid)).schedules)[0]!,
         );
-        const uid2 = await await getOrCreateUser("test user 2", "");
+        const uid2 = await getOrCreateUser("test user 2", "");
         const sid = await addSchedule(
             uid,
             { year: 2023, term: APIv4.Term.spring },
@@ -156,7 +155,7 @@ describe("db/models/user", () => {
     });
 
     test("delete schedule from user", async () => {
-        const uid = await await getOrCreateUser("test user", "");
+        const uid = await getOrCreateUser("test user", "");
         const user = await getUser(uid);
         expect(Object.keys(user.schedules).length).toStrictEqual(1);
         await deleteSchedule(uid, Object.keys(user.schedules)[0]!);
@@ -298,7 +297,7 @@ describe("db/models/user", () => {
         // So the users in the db that have capital letters in their eppn are due to legacy code.
         const uid1 = await getOrCreateUser("First Test User", "");
         const uid2 = await getOrCreateUser("Second Test User", "");
-        const uid3 = await getOrCreateUser("third test user", "");
+        const _uid3 = await getOrCreateUser("third test user", "");
         const uid4 = await getOrCreateUser(
             "IniLast2026@hmc.edu",
             "Harvey Mudd College",
@@ -367,12 +366,12 @@ describe("db/models/user", () => {
         expect(Object.keys(user1_pre.schedules).length).toStrictEqual(1);
         expect(Object.keys(user2_pre.schedules).length).toStrictEqual(1);
 
-        const sid1 = await addSchedule(
+        const _sid1 = await addSchedule(
             uid1,
             { year: 2023, term: APIv4.Term.spring },
             "test schedule 1",
         );
-        const sid2 = await addSchedule(
+        const _sid2 = await addSchedule(
             uid1,
             { year: 2023, term: APIv4.Term.spring },
             "test schedule 2",

@@ -18,6 +18,7 @@ import useStore from "@hooks/store";
 import { sectionColorStyle } from "@lib/color";
 import { toast } from "react-toastify";
 import { PopupOption } from "@lib/popup";
+import { useShallow } from "zustand/react/shallow";
 import { pick } from "@lib/store";
 import { DEFAULT_LOCAL_SCHEDULE_ID } from "@lib/constants";
 import { memo } from "react";
@@ -169,12 +170,14 @@ const ToggleButton = memo(function ToggleButton(props: {
     section: APIv4.SectionIdentifier;
 }) {
     const user = useUserStore(
-        pick(
-            "server",
-            "hasConfirmedGuest",
-            "scheduleAddSection",
-            "scheduleDeleteSection",
-            "addSchedule",
+        useShallow(
+            pick(
+                "server",
+                "hasConfirmedGuest",
+                "scheduleAddSection",
+                "scheduleDeleteSection",
+                "addSchedule",
+            ),
         ),
     );
     const activeScheduleLookup = useActiveScheduleLookup();

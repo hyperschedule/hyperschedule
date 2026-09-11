@@ -1,5 +1,9 @@
 import * as APIv4 from "hyperschedule-shared/api/v4";
-import { computeOfferingHistory, getAllSections } from "../../db/models/course";
+import {
+    computeAllTerms,
+    computeOfferingHistory,
+    getAllSections,
+} from "../../db/models/course";
 import { App } from "@tinyhttp/app";
 import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 import { loadStatic } from "../../hmc-api/fetcher/utils";
@@ -45,25 +49,32 @@ courseApp.get("/sections/:term", async (request, response) => {
 });
 
 courseApp.get("/course-areas", async function (request, reply) {
-    try {
-        const file = await loadStatic(
-            endpoints.courseAreaDescription,
-            // course area files are the same for every semester
-            CURRENT_TERM,
-        );
-
-        return reply
-            .header("Content-Type", "application/json")
-            .header(
-                "Cache-Control",
-                // we have s shorter s-max-age because we can manually purge
-                // those cache
-                "public,s-max-age=3600,max-age=1800,stale-while-revalidate=3600,stale-if-error=86400",
-            )
-            .send(file);
-    } catch {
-        return reply.status(404).end();
+    // course area files are the same for every semester, so try CURRENT_TERM
+    // first, then fall back to any available term from the DB
+    const termsToTry = [CURRENT_TERM];
+    for (const term of termsToTry) {
+        try {
+            const file = await loadStatic(
+                endpoints.courseAreaDescription,
+                term,
+            );
+            return reply
+                .header("Content-Type", "application/json")
+                .header(
+                    "Cache-Control",
+                    "public,s-max-age=3600,max-age=1800,stale-while-revalidate=3600,stale-if-error=86400",
+                )
+                .send(file);
+        } catch {
+            // on first failure, lazily populate fallback terms
+            if (termsToTry.length === 1) {
+                try {
+                    termsToTry.push(...(await computeAllTerms()));
+                } catch {}
+            }
+        }
     }
+    return reply.status(404).end();
 });
 
 courseApp.get("/offering-history/:term", async (request, response) => {

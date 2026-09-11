@@ -33,7 +33,7 @@ services:
             base:
                 condition: service_completed_successfully
         ports:
-            - 5000:5000
+            - 3000:3000
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
             - ./frontend:/srv/hyperschedule/frontend:ro
@@ -50,8 +50,6 @@ services:
             db:
                 condition:
                     service_started
-        ports:
-            - 8080:8080
         networks:
             - backend
         volumes:
