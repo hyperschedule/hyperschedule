@@ -224,9 +224,6 @@ export function sectionColorStyle(
             break;
 
         case "campus":
-            color = [colorOut[0], colorOut[1], colorOut[2]];
-            break;
-
         case "default":
         default: // Handles campus scheme as well
             color = [colorOut[0], colorOut[1], colorOut[2]];
