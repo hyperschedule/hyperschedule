@@ -170,7 +170,8 @@ export default memo(function MiniMap() {
                                             card.section.identifier,
                                             theme,
                                             courseColorTheme,
-                                            card.section.course.primaryAssociation,
+                                            card.section.course
+                                                .primaryAssociation,
                                             true,
                                         ),
                                     }}

@@ -3,7 +3,6 @@ import { sectionColorStyle } from "@lib/color";
 import * as APIv4 from "hyperschedule-shared/api/v4";
 import { useActiveSectionsLookup } from "@hooks/section";
 
-
 export default function SectionBox(props: {
     section: APIv4.SectionIdentifier;
     children: JSX.Element;
@@ -15,8 +14,8 @@ export default function SectionBox(props: {
 
     const sectionsLookup = useActiveSectionsLookup();
     const section = sectionsLookup.get(
-            APIv4.stringifySectionCodeLong(props.section),
-        );
+        APIv4.stringifySectionCodeLong(props.section),
+    );
 
     return (
         <div
