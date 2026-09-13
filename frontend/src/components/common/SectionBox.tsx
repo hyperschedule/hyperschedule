@@ -1,6 +1,7 @@
 import useStore from "@hooks/store";
 import { sectionColorStyle } from "@lib/color";
-import type * as APIv4 from "hyperschedule-shared/api/v4";
+import * as APIv4 from "hyperschedule-shared/api/v4";
+import { useActiveSectionsLookup } from "@hooks/section";
 
 export default function SectionBox(props: {
     section: APIv4.SectionIdentifier;
@@ -11,12 +12,18 @@ export default function SectionBox(props: {
         (store) => store.appearanceOptions.courseColorTheme,
     );
 
+    const sectionsLookup = useActiveSectionsLookup();
+    const section = sectionsLookup.get(
+        APIv4.stringifySectionCodeLong(props.section),
+    );
+
     return (
         <div
             style={sectionColorStyle(
                 props.section,
                 theme,
                 courseColorTheme,
+                section?.course.primaryAssociation ?? "monochrome",
                 false,
             )}
         >
