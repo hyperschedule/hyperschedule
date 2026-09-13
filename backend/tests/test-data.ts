@@ -17,6 +17,8 @@ export const testSectionV4: APIv4.Section = {
     },
     status: "R",
     credits: 3,
+    HMCCredits: 3,
+    nonHMCCredits: 1,
     courseAreas: [],
     instructors: [
         {
