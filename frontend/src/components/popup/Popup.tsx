@@ -13,9 +13,9 @@ import About from "@components/popup/About";
 import { memo } from "react";
 
 function PopupBox(props: {
-    children: JSX.Element;
+    children: React.JSX.Element;
     inactive?: true;
-}): JSX.Element {
+}): React.JSX.Element {
     const setPopup = useStore((store) => store.setPopup);
 
     function dismissPopup() {

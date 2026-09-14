@@ -29,5 +29,5 @@ export function useOfferingHistoryLookup(): Map<
                 entry.terms.filter((t) => APIv4.termIsBefore(t, activeTerm)),
             ]),
         );
-    }, [offeringHistory.data]);
+    }, [offeringHistory.data, activeTerm]);
 }

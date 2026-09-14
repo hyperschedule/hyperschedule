@@ -21,12 +21,19 @@ const logger = createLogger("server.route.user");
 
 const userApp = new App({
     settings: { xPoweredBy: false },
-    onError(err: any, req, res) {
+    onError(err: unknown, req, res) {
         // apparently tinyhttp will throw an object {code: 404} when the route doesn't match anything
-        if (Object.hasOwn(err, "code")) return res.status(err.code).end();
+        if (
+            typeof err === "object" &&
+            err !== null &&
+            "code" in err &&
+            typeof err.code === "number"
+        ) {
+            return res.status(err.code).end();
+        }
         // a lot of database methods can throw errors, and we don't
         // want 500 status
-        logger.info("User error: %o", err);
+        logger.info("User error: %o", err as object);
         return res.status(400).send(`${err}`);
     },
 }).use((req: Request, res: Response, next: NextFunction) => {
@@ -51,7 +58,7 @@ userApp.get("/", async function (request: Request, response: Response) {
     let user: APIv4.ServerUser;
     try {
         user = await getUser(request.userToken.uuid);
-    } catch (e) {
+    } catch (_e) {
         logger.error(
             "Cannot find user %s with a valid server signature",
             request.userToken.uuid,

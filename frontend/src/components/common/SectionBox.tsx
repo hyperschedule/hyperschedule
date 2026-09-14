@@ -5,7 +5,7 @@ import { useActiveSectionsLookup } from "@hooks/section";
 
 export default function SectionBox(props: {
     section: APIv4.SectionIdentifier;
-    children: JSX.Element;
+    children: React.JSX.Element;
 }) {
     const theme = useStore((store) => store.theme);
     const courseColorTheme = useStore(

@@ -20,9 +20,9 @@ export type FilterBubbleComponentProps<Data> = {
     onKeyDown: (ev: React.KeyboardEvent<HTMLInputElement>) => void;
     focusNext: () => void;
 };
-export type FilterBubbleComponent<K extends Search.FilterKey> = React.FC<
-    FilterBubbleComponentProps<Search.FilterData[K]>
->;
+export type FilterBubbleComponent<K extends Search.FilterKey> = (
+    props: FilterBubbleComponentProps<Search.FilterData[K]>,
+) => React.ReactNode;
 
 const FilterBubbleInput: {
     [K in Search.FilterKey]: FilterBubbleComponent<K>;

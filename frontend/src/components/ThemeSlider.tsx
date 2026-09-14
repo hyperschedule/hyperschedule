@@ -3,7 +3,7 @@ import * as Feather from "react-feather";
 import { memo } from "react";
 import useStore, { Theme } from "@hooks/store";
 
-export default memo(function ThemeSlider(): JSX.Element {
+export default memo(function ThemeSlider(): React.JSX.Element {
     const theme = useStore((store) => store.theme);
     const toggleTheme = useStore((store) => store.toggleTheme);
 

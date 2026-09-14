@@ -58,7 +58,7 @@ export default memo(function MiniMap() {
             <div
                 className={Css.minimapLabelTime}
                 style={{
-                    gridTemplateRows: [...Array(24)]
+                    gridTemplateRows: Array.from({ length: 24 })
                         .map((_, i) => {
                             // this loop looks very funny but is necessary for the time label animation.
                             // modification to grid-column is not animatable, only change in grid-template-column

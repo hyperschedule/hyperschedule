@@ -157,8 +157,8 @@ export async function addSchedule(
         ],
     );
 
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
     logger.info(
@@ -187,8 +187,8 @@ export async function renameSchedule(
         } as UpdateFilter<APIv4.ServerUser>,
     );
 
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
 }
@@ -237,8 +237,8 @@ export async function addSection(
         },
     );
 
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
     logger.info(
@@ -273,8 +273,8 @@ export async function deleteSchedule(
         },
     );
 
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
     logger.info(
@@ -304,8 +304,8 @@ export async function replaceSections(
         } as UpdateFilter<APIv4.ServerUser>,
     );
 
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
     logger.info(`Replacing sections for ${userId} completed`);
@@ -357,8 +357,8 @@ export async function batchAddSectionsToNewSchedule(
         } as UpdateFilter<APIv4.ServerUser>,
     );
 
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
     logger.info(`Batch-importing sections for user ${userId} completed`);
@@ -394,8 +394,8 @@ export async function deleteSection(
             },
         },
     );
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
     logger.info(
@@ -441,8 +441,8 @@ export async function setSectionAttrs(
         } as UpdateFilter<APIv4.ServerUser>,
     );
 
-    if (!result.ok || result.value === null) {
-        logger.warn(`Operation failed`, result);
+    if (result === null) {
+        logger.warn(`Operation failed - document not found or not updated`);
         throw Error("Database operation failed");
     }
     logger.info(
@@ -457,7 +457,7 @@ export async function findDuplicatesWith<K extends keyof APIv4.ServerUser>(
     key: K,
 ): Promise<APIv4.ServerUser[][]> {
     const result = await collections.users
-        .aggregate([
+        .aggregate<{ users: APIv4.ServerUser[] }>([
             {
                 $group: {
                     _id: `$${key}`, // Group by the key value
@@ -500,9 +500,7 @@ export async function copySchedules(
     const toUserSchedules = (await getUser(toUserId)).schedules;
 
     for (const [scheduleId, schedule] of Object.entries(fromUserSchedules)) {
-        if (!toUserSchedules[scheduleId]) {
-            toUserSchedules[scheduleId] = schedule;
-        }
+        toUserSchedules[scheduleId] ??= schedule;
     }
 
     await collections.users.updateOne(

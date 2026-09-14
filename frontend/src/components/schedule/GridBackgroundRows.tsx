@@ -2,7 +2,7 @@ import Css from "./GridBackgroundRows.module.css";
 import { memo } from "react";
 
 export default memo(function GridBackgroundRows() {
-    const gridLines: JSX.Element[] = [];
+    const gridLines: React.JSX.Element[] = [];
     for (let i = 0; i < 24; ++i)
         gridLines.push(
             <div

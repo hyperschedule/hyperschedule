@@ -1,5 +1,6 @@
-import * as Zustand from "zustand";
-import * as ZustandMiddleware from "zustand/middleware";
+import { create } from "zustand";
+import type { StateCreator } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 import { produce } from "immer";
 
 import * as APIv4 from "hyperschedule-shared/api/v4";
@@ -55,7 +56,7 @@ function generateOfflineScheduleId(): APIv4.ScheduleId {
     return `s~${window.crypto.randomUUID()}`;
 }
 
-const init: Zustand.StateCreator<Store> = (set, get) => {
+const init: StateCreator<Store> = (set, get) => {
     function update(f: (store: Store) => void): void {
         set(produce(f));
     }
@@ -307,9 +308,9 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
     };
 };
 
-export const useUserStore = Zustand.create<Store>()(
-    ZustandMiddleware.devtools(
-        ZustandMiddleware.persist(init, {
+export const useUserStore = create<Store>()(
+    devtools(
+        persist(init, {
             name: USER_STORE_NAME,
             partialize: pick(
                 "schedules",

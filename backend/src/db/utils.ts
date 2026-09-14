@@ -13,7 +13,7 @@ export function dbToSection(s: DBSection): APIv4.Section {
 }
 
 export function uuid4(prefix: string = ""): string {
-    const arr: number[] = [];
+    const arr = new Uint8Array(16);
     v4({}, arr);
     const encoded = Buffer.from(arr).toString("base64url");
     if (prefix)

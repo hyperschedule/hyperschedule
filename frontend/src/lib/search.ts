@@ -43,8 +43,8 @@ export function matchesText(
     const areas: (string | undefined)[] =
         courseAreaMap === undefined
             ? []
-            : section.courseAreas.map(
-                  (area) => courseAreaMap.get(area)?.toLocaleLowerCase(),
+            : section.courseAreas.map((area) =>
+                  courseAreaMap.get(area)?.toLocaleLowerCase(),
               );
 
     let scoreAccumulator = 1;

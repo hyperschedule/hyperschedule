@@ -191,6 +191,16 @@
     --toastify-text-color-light: var(--fg-1);
     --toastify-text-color-dark: var(--fg-1);
 
+    /* Fix close button overlapping text in react-toastify v11 (#1204) */
+    /* https://github.com/fkhadra/react-toastify/issues/1204 */
+    :global(.Toastify__toast) {
+        padding-inline-end: 2rem;
+    }
+
+    :global(.Toastify__close-button) {
+        color: var(--fg-1);
+    }
+
     a,
     a:visited {
         color: var(--fg-1);

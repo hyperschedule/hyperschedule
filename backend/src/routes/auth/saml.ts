@@ -18,8 +18,8 @@ const SamlResponseFormat = z
     .object({
         audience: z.literal("https://hyperschedule.io/"),
         attributes: z.object({
-            eppn: z.string().email().optional(),
-            [EPPN_URN]: z.string().email().optional(),
+            eppn: z.email().optional(),
+            [EPPN_URN]: z.email().optional(),
             orgName: z.string(),
             displayName: z.string().optional(),
         }),
@@ -45,7 +45,7 @@ samlApp
     .post("/saml", async function (request, response) {
         try {
             const result = await sp.parseLoginResponse(idp, "post", {
-                body: request.body,
+                body: request.body as Record<string, string>,
             });
             logger.info(result.extract, "SAML request completed");
             const data = SamlResponseFormat.safeParse(result.extract);
@@ -86,7 +86,7 @@ samlApp
                 .status(302)
                 .location(
                     process.env.NODE_ENV === "development"
-                        ? "http://localhost:5000/"
+                        ? "http://localhost:3000/"
                         : "https://hyperschedule.io/",
                 )
                 .end();

@@ -1,20 +1,17 @@
-import * as Z from "zod";
+import type * as Z from "zod";
 
 type JsonValue =
-    | boolean
-    | number
-    | string
-    | null
-    | JsonValue[]
-    | { [_: string]: JsonValue };
+    boolean | number | string | null | JsonValue[] | { [_: string]: JsonValue };
 
 export type MethodSchemaGetAny = {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- ZodVoid outputs void, not undefined
     readonly return: Z.ZodType<JsonValue | void>;
     readonly status: number;
 };
 
 export type MethodSchemaPost<_ extends "post" | "patch" | "delete" | "put"> = {
     readonly body: Z.ZodType<JsonValue>;
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- ZodVoid outputs void, not undefined
     readonly return: Z.ZodType<JsonValue | void>;
     readonly status: number;
 };
@@ -69,23 +66,23 @@ export function route<
     return { path, methods };
 }
 
-export type MethodReturn<Schema extends MethodSchemaAny> = Z.TypeOf<
+export type MethodReturn<Schema extends MethodSchemaAny> = Z.infer<
     Schema["return"]
 >;
 
 export type MethodFetchGet<Schema extends MethodSchemaGetAny> = () => Promise<
-    Z.TypeOf<Schema["return"]>
+    Z.infer<Schema["return"]>
 >;
 export type MethodFetchPost<Schema extends MethodSchemaPostAny> = (
-    body: Z.TypeOf<Schema["body"]>,
-) => Promise<Z.TypeOf<Schema["return"]>>;
+    body: Z.infer<Schema["body"]>,
+) => Promise<Z.infer<Schema["return"]>>;
 
 export type MethodFetch<Schema extends MethodSchemaAny> =
     Schema extends MethodSchemaPostAny
         ? MethodFetchPost<Schema>
         : Schema extends MethodSchemaGetAny
-        ? MethodFetchGet<Schema>
-        : never;
+          ? MethodFetchGet<Schema>
+          : never;
 
 export type RouteFetch<
     Schema extends RouteSchemaAny,

@@ -72,32 +72,27 @@ type Data = Record<string, unknown>;
  * @param outValidator the zod object for the output
  * @param transform an mapping of key to transform functions to transform and rename the data
  */
-export function parseJSONItem<
-    Input extends Data,
-    Output extends Data,
-    ZodShape extends z.ZodRawShape,
->(
+export function parseJSONItem<Input extends Data, Output extends Data>(
     data: Input,
-    outValidator: z.ZodType<Output, z.ZodObjectDef<ZodShape, "strict">>,
+    outValidator: z.ZodType<Output>,
     transform: JSONTransform<Input, Output>,
-): z.SafeParseReturnType<Output, Output> {
+): { success: true; data: Output } | { success: false; error: z.ZodError } {
     const result: Partial<Output> = {};
     for (const inKey of Object.keys(transform) as (keyof Input)[]) {
         const transformObj = transform[inKey];
         if (transformObj === NoTransform) {
-            // casting as any is fine because we also sanitize the data with zod before returning it
-            (result as any)[inKey] = data[inKey];
+            (result as Record<string, unknown>)[inKey as string] = data[inKey];
         } else if (transformObj === Remove) {
             // do nothing
         } else if (isRename<Output>(transformObj)) {
-            // same as above, casting as any is safe
-            (result as any)[transformObj.to] = data[inKey];
+            (result as Record<string, unknown>)[transformObj.to as string] =
+                data[inKey];
         } else {
             try {
                 // transformFunc might throw error
                 const { name, value } = transformObj(data[inKey]);
                 result[name] = value;
-            } catch (e) {
+            } catch (_e) {
                 // this error will propagate because the output will be missing a field
                 logger.warn(
                     "Cannot apply transform function to object %O on field %s",
@@ -110,13 +105,9 @@ export function parseJSONItem<
     return outValidator.safeParse(result);
 }
 
-export function parseJSON<
-    Input extends Data,
-    Output extends Data,
-    ZodShape extends z.ZodRawShape,
->(
+export function parseJSON<Input extends Data, Output extends Data>(
     data: Input[],
-    outValidator: z.ZodType<Output, z.ZodObjectDef<ZodShape, "strict">>,
+    outValidator: z.ZodType<Output>,
     transform: JSONTransform<Input, Output>,
 ): Output[] {
     const result: Output[] = [];
