@@ -26,10 +26,13 @@ import {
 
 import { buildings } from "./buildings";
 import { createLogger } from "../logger";
+import { discordReporter, SeverityLevel } from "../reporter";
 import { fixEncoding, replaceQuotes } from "./encoding";
 import type { HmcApiFiles } from "./fetcher/types";
+import { error } from "console";
 
 const logger = createLogger("parser.hmc.link");
+const reporter = new discordReporter("parser.hmc.link");
 
 const dateRegex = /^(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})$/;
 
@@ -163,7 +166,10 @@ function processCourse(
         try {
             courseCode = APIv4.parseCXCourseCode(c.code);
         } catch (e) {
-            logger.trace(`Malformed course code ${c.code}`);
+            const errorMessage = `Malformed course code ${c.code}`;
+
+            logger.trace(errorMessage);
+            void reporter.log(SeverityLevel.Warn, errorMessage);
             continue;
         }
 
@@ -178,9 +184,10 @@ function processCourse(
             ) {
                 potentialError = false;
             } else {
-                logger.warn(
-                    `Duplicate course key ${c.code} with differences, overwriting existing data`,
-                );
+                const errorMessage = `Duplicate course key ${c.code} with differences, overwriting existing data`;
+
+                logger.warn(errorMessage);
+                void reporter.log(SeverityLevel.Warn, errorMessage);
             }
         }
 
@@ -244,10 +251,10 @@ function processCourseSection(
 
         const course = courseMap.get(courseCodeString);
         if (course === undefined) {
-            logger.trace(
-                "Course section without course, skipping... %o",
-                section,
-            );
+            const errorMessage = `Course section without course, skipping... ${section}`;
+
+            logger.trace(errorMessage);
+            void reporter.log(SeverityLevel.Warn, errorMessage);
             continue;
         }
 
@@ -327,18 +334,22 @@ function processSectionInstructor(
         const section = courseSectionMap.get(sectionIdentifierString);
 
         if (section === undefined) {
-            logger.trace(
-                `Nonexistent section ${sectionIdentifierString} in section-instructor.json`,
-            );
+            const errorMessage = `Nonexistent section ${sectionIdentifierString} in section-instructor.json`;
+
+            logger.trace(errorMessage);
+            void reporter.log(SeverityLevel.Warn, errorMessage);
+
             continue;
         }
 
         for (const staffId of sectionInstructor.staff) {
             const staff = staffMap.get(staffId);
             if (staff === undefined) {
-                logger.trace(
-                    `Nonexistent instructor ${staffId} for ${sectionIdentifierString}`,
-                );
+                const errorMessage = `Nonexistent instructor ${staffId} for ${sectionIdentifierString}`;
+
+                logger.trace(errorMessage);
+                void reporter.log(SeverityLevel.Warn, errorMessage);
+
                 section.potentialError = true;
                 continue;
             }
@@ -363,9 +374,11 @@ function processPermCount(
         );
         const section = courseSectionMap.get(sectionIdentifierString);
         if (section === undefined) {
-            logger.trace(
-                `Nonexistent section ${sectionIdentifierString} in perm-count.json`,
-            );
+            const errorMessage = `Nonexistent section ${sectionIdentifierString} in perm-count.json`;
+
+            logger.trace(errorMessage);
+            void reporter.log(SeverityLevel.Warn, errorMessage);
+
             continue;
         }
         section.permCount = perm.permCount;
@@ -399,9 +412,11 @@ function processCalendar(
         );
         const section = courseSectionMap.get(sectionIdentifierString);
         if (section === undefined) {
-            logger.trace(
-                `Nonexistent section ID ${sectionIdentifierString} in calendar-session-section.json`,
-            );
+            const errorMessage = `Nonexistent section ID ${sectionIdentifierString} in calendar-session-section.json`;
+
+            logger.trace(errorMessage);
+            void reporter.log(SeverityLevel.Warn, errorMessage);
+
             continue;
         }
 
@@ -440,7 +455,10 @@ function processCalendar(
             }
         }
     } else {
-        logger.warn("Cannot get default calendar session for %O", term);
+        const errorMessage = `Cannot get default calendar session for ${term}`;
+
+        logger.warn(errorMessage);
+        void reporter.log(SeverityLevel.Warn, errorMessage);
     }
 }
 
@@ -466,7 +484,7 @@ function processSectionSchedule(
             endTime = parseTime(schedule.endTime);
             weekdays = parseWeekdays(schedule.meetingDays);
         } catch (e) {
-            logger.warn(
+            const errorMessage = [
                 {
                     err: e,
                     sectionIdString,
@@ -476,7 +494,11 @@ function processSectionSchedule(
                     location: schedule.location,
                 },
                 `Malformed schedule for section ${sectionIdString}, skipping...`,
-            );
+            ];
+
+            logger.warn(errorMessage);
+            void reporter.log(SeverityLevel.Warn, errorMessage);
+
             section.potentialError = true;
             continue;
         }
@@ -492,9 +514,11 @@ function processSectionSchedule(
                 s.days.toString() === weekdays.toString()
             ) {
                 if (s.locations.includes(location)) {
-                    logger.trace(
-                        `Duplicate location in ${sectionIdString} section schedule`,
-                    );
+                    const errorMessage = `Duplicate location in ${sectionIdString} section schedule`;
+
+                    logger.trace(errorMessage);
+                    void reporter.log(SeverityLevel.Warn, errorMessage);
+
                     section.potentialError = true;
                 } else s.locations.push(location);
                 merged = true;
@@ -611,18 +635,16 @@ export function linkCourseData(
             )
                 res.push(entry);
         } else {
-            if (process.env.NODE_ENV === "production")
-                logger.warn(
-                    "invalid section %o, reason %o",
-                    section,
-                    validatedResult.error,
-                );
-            else {
-                logger.error(
-                    "invalid section %o, reason %o",
-                    section,
-                    validatedResult.error,
-                );
+            if (process.env.NODE_ENV === "production") {
+                const errorMessage = `invalid section ${section}, reason ${validatedResult.error}`;
+
+                logger.warn(errorMessage);
+                void reporter.log(SeverityLevel.Warn, errorMessage);
+            } else {
+                const errorMessage = `invalid section ${section}, reason ${validatedResult.error}`;
+
+                logger.warn(errorMessage);
+                void reporter.log(SeverityLevel.Warn, errorMessage);
                 throw Error(
                     `Invalid section ${APIv4.stringifySectionCodeLong(
                         (section as APIv4.Section).identifier,
