@@ -12,6 +12,8 @@ const maintainerGithubUsernames: string[] = [
     "kwshi",
     "raxod502",
     "ohowe1",
+    "jasmineeliu",
+    "InventBoss",
 ];
 let contributors: string;
 try {
