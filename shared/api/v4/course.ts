@@ -165,6 +165,8 @@ export const Section = z.object({
     // credit as in the campus it was taught, normally 0 to 1 for non-hmc
     // and 1-3 for hmc courses. The highest observed is BIOL 195 HM with 6 credits.
     credits: z.number().min(0).max(10),
+    HMCCredits: z.number().min(0).max(10),
+    nonHMCCredits: z.number().min(0).max(10),
     permCount: z.number().nonnegative(),
     seatsTotal: z.number().nonnegative(),
     seatsFilled: z.number().nonnegative(),

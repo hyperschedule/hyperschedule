@@ -153,6 +153,8 @@ describe("src/hmc-api/data-linker.ts", () => {
                     },
                 ],
                 credits: 3,
+                HMCCredits: 3,
+                nonHMCCredits: 1,
                 identifier: {
                     department: "CSCI",
                     courseNumber: 105,
@@ -195,6 +197,8 @@ describe("src/hmc-api/data-linker.ts", () => {
                     },
                 ],
                 credits: 1.5,
+                HMCCredits: 1.5,
+                nonHMCCredits: 0.5,
                 identifier: {
                     department: "ENGR",
                     courseNumber: 85,
