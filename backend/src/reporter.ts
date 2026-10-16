@@ -4,18 +4,19 @@ import * as Discord from "discord.js";
 const discordKey = process.env.DISCORD_KEY;
 const channelId = String(process.env.CHANNEL_ID);
 
-// Check if env variables are populated
-if (!discordKey || !channelId) {
-    throw Error(
-        "discordKey and/or channelId not populated in backend env variables",
-    );
-}
+// Check if our channel and key is filled out
+let enableDiscord = discordKey && channelId ? true : false;
 
-// Create our reporting Discord client
-const client = new Discord.Client({
-    intents: [Discord.GatewayIntentBits.Guilds],
-});
-void client.login(discordKey);
+// Create our reporting Discord client if enableDiscord is enabled
+const client = enableDiscord
+    ? new Discord.Client({
+          intents: [Discord.GatewayIntentBits.Guilds],
+      })
+    : undefined;
+
+if (typeof client !== "undefined") {
+    void client.login(discordKey);
+}
 
 export enum SeverityLevel {
     Trace = ":pen_ballpoint: Trace",
@@ -32,35 +33,35 @@ const levelColors: Record<SeverityLevel, [number, number, number]> = {
     ":skull: Error": [209, 73, 91],
 };
 
-export class discordReporter {
-    module: string;
-
-    constructor(module: string) {
-        this.module = module;
+export async function logDiscord(
+    level: SeverityLevel,
+    module: string,
+    content: unknown,
+): Promise<void> {
+    if (typeof client === "undefined") {
+        return;
     }
 
-    async log(level: SeverityLevel, content: unknown): Promise<void> {
-        // Wait for client to initialize before messaging
-        if (!client.isReady()) {
-            await new Promise<void>((resolve) => {
-                client.once(Discord.Events.ClientReady, () => resolve());
-            });
-        }
+    // Wait for client to initialize before messaging
+    if (!client.isReady()) {
+        await new Promise<void>((resolve) => {
+            client.once(Discord.Events.ClientReady, () => resolve());
+        });
+    }
 
-        const channel = await client.channels.fetch(channelId);
+    const channel = await client.channels.fetch(channelId);
 
-        if (typeof content === "object" && content !== null) {
-            content = JSON.stringify(content, null, 4);
-        }
-        const messageEmbed = new Discord.EmbedBuilder()
-            .setColor(levelColors[level])
-            .setFooter({ text: this.module })
-            .setTitle(level)
-            .setDescription(`\`\`\`${String(content)}\`\`\``)
-            .setTimestamp();
+    if (typeof content === "object" && content !== null) {
+        content = JSON.stringify(content, null, 4);
+    }
+    const messageEmbed = new Discord.EmbedBuilder()
+        .setColor(levelColors[level])
+        .setFooter({ text: module })
+        .setTitle(level)
+        .setDescription(`\`\`\`${String(content)}\`\`\``)
+        .setTimestamp();
 
-        if (channel?.type === Discord.ChannelType.GuildText) {
-            await channel.send({ embeds: [messageEmbed] });
-        }
+    if (channel?.type === Discord.ChannelType.GuildText) {
+        await channel.send({ embeds: [messageEmbed] });
     }
 }

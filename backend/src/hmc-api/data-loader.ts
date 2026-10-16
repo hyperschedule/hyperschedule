@@ -1,6 +1,5 @@
 import { NoTransform, parseBoomi, parseJSON, Remove, renameTo } from "./parser";
 import { createLogger } from "../logger";
-import { discordReporter, SeverityLevel } from "../reporter";
 import { z } from "zod";
 import {
     CourseCode,
@@ -15,7 +14,6 @@ import {
 import { DecimalString, IntString } from "./fetcher/types";
 
 const logger = createLogger("parser.hmc.data-loader");
-const reporter = new discordReporter("parser.hmc.data-loader");
 
 /**
  * pre-process and validate the input data against the validator. skip entry if it's bad.
@@ -31,19 +29,13 @@ function preprocessDataFromString<T>(
 
     // Handle empty data
     if (!cleanedData) {
-        const errorMessage = `Input data for ${inputFileName} is empty`;
-
-        logger.warn(errorMessage);
-        void reporter.log(SeverityLevel.Warn, errorMessage);
+        logger.parserWarn(`Input data for ${inputFileName} is empty`);
         return [];
     }
 
     const obj = JSON.parse(cleanedData);
     if (!Array.isArray(obj)) {
-        const errorMessage = `Input data for ${inputFileName} is not an array`;
-
-        logger.error(errorMessage);
-        void reporter.log(SeverityLevel.Error, errorMessage);
+        logger.parserWarn(`Input data for ${inputFileName} is not an array`);
         return [];
     }
 
@@ -52,10 +44,9 @@ function preprocessDataFromString<T>(
         if (r.success) {
             result.push(r.data);
         } else {
-            const errorMessage = `Unable to pre-process data item for ${inputFileName}. Data is ${item}. Errors: ${r.error}`;
-
-            logger.trace(errorMessage);
-            void reporter.log(SeverityLevel.Trace, errorMessage);
+            logger.parserWarn(
+                `Unable to pre-process data item for ${inputFileName}. Data is ${item}. Errors: ${r.error}`,
+            );
         }
     }
     return result;
@@ -189,12 +180,9 @@ export function parseCourseBoomi(data: string): CourseOutput[] {
     }
 
     for (const warning of result.warnings) {
-        const errorMessage = `${String(
-            warning,
-        )} Warning parsing Boomi database dump`;
-
-        logger.warn(errorMessage);
-        void reporter.log(SeverityLevel.Warn, errorMessage);
+        logger.parserWarn(
+            `${String(warning)} Warning parsing Boomi database dump`,
+        );
     }
     return result.records;
 }
@@ -311,10 +299,7 @@ export function parseAltStaff(data: string): AltStaffOutput {
                 .split(",")
                 .map((s) => s.trim().replace("\\", ""));
             if (nameArr.length !== 2) {
-                const errorMessage = `Malformed alt staff name ${v}`;
-
-                logger.trace(errorMessage);
-                void reporter.log(SeverityLevel.Trace, errorMessage);
+                logger.parserWarn(`Malformed alt staff name ${v}`);
 
                 return {
                     name: "altName",
@@ -322,10 +307,7 @@ export function parseAltStaff(data: string): AltStaffOutput {
                 };
             }
             if (nameArr[0] === "" || nameArr[1] === "") {
-                const errorMessage = `Staff altname contains empty string ${v}`;
-
-                logger.trace(errorMessage);
-                void reporter.log(SeverityLevel.Trace, errorMessage);
+                logger.trace(`Staff altname contains empty string ${v}`);
 
                 return {
                     name: "altName",
