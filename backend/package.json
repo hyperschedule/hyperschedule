@@ -30,6 +30,7 @@
     "typescript": "*"
   },
   "dependencies": {
+    "discord.js": "^14.27.0",
     "hyperschedule-data": "workspace:^",
     "hyperschedule-shared": "workspace:^",
     "zod": "^3.22.2"

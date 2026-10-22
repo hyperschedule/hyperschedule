@@ -29,13 +29,13 @@ function preprocessDataFromString<T>(
 
     // Handle empty data
     if (!cleanedData) {
-        logger.warn(`Input data for ${inputFileName} is empty`);
+        logger.parserWarn(`Input data for ${inputFileName} is empty`);
         return [];
     }
 
     const obj = JSON.parse(cleanedData);
     if (!Array.isArray(obj)) {
-        logger.error(`Input data for ${inputFileName} is not an array`);
+        logger.parserWarn(`Input data for ${inputFileName} is not an array`);
         return [];
     }
 
@@ -44,11 +44,8 @@ function preprocessDataFromString<T>(
         if (r.success) {
             result.push(r.data);
         } else {
-            logger.trace(
-                "Unable to pre-process data item for %s. Data is %O. Errors: %O",
-                inputFileName,
-                item,
-                r.error,
+            logger.parserWarn(
+                `Unable to pre-process data item for ${inputFileName}. Data is ${item}. Errors: ${r.error}`,
             );
         }
     }
@@ -183,7 +180,9 @@ export function parseCourseBoomi(data: string): CourseOutput[] {
     }
 
     for (const warning of result.warnings) {
-        logger.warn(warning, "Warning parsing Boomi database dump");
+        logger.parserWarn(
+            `${String(warning)} Warning parsing Boomi database dump`,
+        );
     }
     return result.records;
 }
@@ -300,7 +299,8 @@ export function parseAltStaff(data: string): AltStaffOutput {
                 .split(",")
                 .map((s) => s.trim().replace("\\", ""));
             if (nameArr.length !== 2) {
-                logger.trace(`Malformed alt staff name ${v}`);
+                logger.parserWarn(`Malformed alt staff name ${v}`);
+
                 return {
                     name: "altName",
                     value: null,
@@ -308,6 +308,7 @@ export function parseAltStaff(data: string): AltStaffOutput {
             }
             if (nameArr[0] === "" || nameArr[1] === "") {
                 logger.trace(`Staff altname contains empty string ${v}`);
+
                 return {
                     name: "altName",
                     value: null,

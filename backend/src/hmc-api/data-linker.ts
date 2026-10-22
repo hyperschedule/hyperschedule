@@ -163,7 +163,7 @@ function processCourse(
         try {
             courseCode = APIv4.parseCXCourseCode(c.code);
         } catch (e) {
-            logger.trace(`Malformed course code ${c.code}`);
+            logger.parserWarn(`Malformed course code ${c.code}`);
             continue;
         }
 
@@ -245,8 +245,7 @@ function processCourseSection(
         const course = courseMap.get(courseCodeString);
         if (course === undefined) {
             logger.trace(
-                "Course section without course, skipping... %o",
-                section,
+                `Course section without course, skipping... ${section}`,
             );
             continue;
         }
@@ -327,19 +326,21 @@ function processSectionInstructor(
         const section = courseSectionMap.get(sectionIdentifierString);
 
         if (section === undefined) {
-            logger.trace(
+            logger.parserWarn(
                 `Nonexistent section ${sectionIdentifierString} in section-instructor.json`,
             );
+
             continue;
         }
 
         for (const staffId of sectionInstructor.staff) {
             const staff = staffMap.get(staffId);
             if (staff === undefined) {
-                logger.trace(
+                logger.parserWarn(
                     `Nonexistent instructor ${staffId} for ${sectionIdentifierString}`,
                 );
                 section.potentialError = true;
+
                 continue;
             }
             if (!section.instructors!.map((i) => i.name).includes(staff.name)) {
@@ -363,9 +364,10 @@ function processPermCount(
         );
         const section = courseSectionMap.get(sectionIdentifierString);
         if (section === undefined) {
-            logger.trace(
+            logger.parserWarn(
                 `Nonexistent section ${sectionIdentifierString} in perm-count.json`,
             );
+
             continue;
         }
         section.permCount = perm.permCount;
@@ -399,9 +401,10 @@ function processCalendar(
         );
         const section = courseSectionMap.get(sectionIdentifierString);
         if (section === undefined) {
-            logger.trace(
+            logger.parserWarn(
                 `Nonexistent section ID ${sectionIdentifierString} in calendar-session-section.json`,
             );
+
             continue;
         }
 
@@ -440,7 +443,7 @@ function processCalendar(
             }
         }
     } else {
-        logger.warn("Cannot get default calendar session for %O", term);
+        logger.parserWarn(`Cannot get default calendar session for ${term}`);
     }
 }
 
@@ -466,7 +469,7 @@ function processSectionSchedule(
             endTime = parseTime(schedule.endTime);
             weekdays = parseWeekdays(schedule.meetingDays);
         } catch (e) {
-            logger.warn(
+            logger.parserWarn(
                 {
                     err: e,
                     sectionIdString,
@@ -478,6 +481,7 @@ function processSectionSchedule(
                 `Malformed schedule for section ${sectionIdString}, skipping...`,
             );
             section.potentialError = true;
+
             continue;
         }
 
@@ -492,9 +496,10 @@ function processSectionSchedule(
                 s.days.toString() === weekdays.toString()
             ) {
                 if (s.locations.includes(location)) {
-                    logger.trace(
+                    logger.parserWarn(
                         `Duplicate location in ${sectionIdString} section schedule`,
                     );
+
                     section.potentialError = true;
                 } else s.locations.push(location);
                 merged = true;
@@ -611,18 +616,15 @@ export function linkCourseData(
             )
                 res.push(entry);
         } else {
-            if (process.env.NODE_ENV === "production")
-                logger.warn(
-                    "invalid section %o, reason %o",
-                    section,
-                    validatedResult.error,
+            if (process.env.NODE_ENV === "production") {
+                logger.parserWarn(
+                    `invalid section ${section}, reason ${validatedResult.error}`,
                 );
-            else {
-                logger.error(
-                    "invalid section %o, reason %o",
-                    section,
-                    validatedResult.error,
+            } else {
+                logger.parserWarn(
+                    `invalid section ${section}, reason ${validatedResult.error}`,
                 );
+
                 throw Error(
                     `Invalid section ${APIv4.stringifySectionCodeLong(
                         (section as APIv4.Section).identifier,
