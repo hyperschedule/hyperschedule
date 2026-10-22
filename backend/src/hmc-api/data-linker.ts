@@ -28,7 +28,6 @@ import { buildings } from "./buildings";
 import { createLogger } from "../logger";
 import { fixEncoding, replaceQuotes } from "./encoding";
 import type { HmcApiFiles } from "./fetcher/types";
-import { error } from "console";
 
 const logger = createLogger("parser.hmc.link");
 
