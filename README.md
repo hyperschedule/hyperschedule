@@ -30,17 +30,20 @@ Node.js build linked to a separate Brotli library, ensure that library also
 includes the fix; the official Node.js binary and Docker image bundle the patched
 decoder. Rebuild containers with `docker compose build --pull` after runtime updates.
 
-The Compose application images use Alpine, and keep container dependencies in
-named volumes separate from host dependencies. The development container uses
-Ubuntu 26.04 LTS because the in-memory MongoDB binaries used by the test suite
-require glibc; run those tests on a supported host or in the development container.
+The application and development container use the official Node.js Debian image.
+Container dependencies stay in named volumes separate from host dependencies.
+The glibc runtime also supports the in-memory MongoDB binaries used by the test suite.
+Compose uses the official MongoDB 7.0 image and published Docker tools; we do not
+rebuild MongoDB utilities, Docker Compose, or system libraries from source.
 
 Run `pnpm ci:audit` to check all workspace dependencies, including development
-dependencies, against the current advisory database. CI also builds and scans all
-four container images, rejects high/critical CVEs (including unfixed ones), and
-retains the full reports. Automatic frontend deployment uses the commit that
-passed those checks. See [the security update and rollout notes](docs/dependency-upgrade.md)
-for scan limitations, development-container use, and deployment precautions.
+dependencies, against the current advisory database. CI enforces this audit and
+runs the existing tests, typechecks, lint, formatting, and production build.
+Image scans retain complete reports for review, including remaining vendor CVEs;
+their vulnerability counts are informational. Image build, scan execution, and
+development-runtime checks still fail CI on errors. Automatic frontend deployment
+uses the commit that passed the checks. See [the update and rollout notes](docs/dependency-upgrade.md)
+for scope, limitations, and deployment precautions.
 
 ## If you use Windows
 

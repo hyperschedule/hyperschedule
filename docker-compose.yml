@@ -26,10 +26,7 @@ services:
             CI: "true"
 
     db:
-        image: hyperschedule-dev-mongo:7.0.45
-        build:
-            context: .
-            dockerfile: mongo.dockerfile
+        image: mongo:7.0.45
         networks:
             - backend
         expose:
