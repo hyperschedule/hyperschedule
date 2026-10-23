@@ -14,8 +14,7 @@
  * get "\x92". Now if we decode "\x92" with windows-1252, we can get the quote back.
  */
 
-// this module is written in C, will crash node interpreter if ran without argument
-import validateUtf8 from "utf-8-validate";
+import { isUtf8 as validateUtf8 } from "node:buffer";
 import iconv from "iconv-lite";
 
 import { createLogger } from "../logger";

@@ -20,8 +20,24 @@ cd hyperschedule
 
 To run the code, you need to have at least one of these installed on your computer:
 
-- [NodeJS 26](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
+- [Node.js 26.12.1 or newer in the 26.x release line](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
+
+The Node.js version in `.node-version` and `base.dockerfile` includes the
+[October 2026 security fixes](https://nodejs.org/en/blog/release/v26.12.1/), including
+the Brotli decoder RCE fix (CVE-2026-111497). If your operating system supplies a
+Node.js build linked to a separate Brotli library, ensure that library also
+includes the fix; the official Node.js binary and Docker image bundle the patched
+decoder. Rebuild containers with `docker compose build --pull` after runtime updates.
+
+The Compose application images use Alpine, and keep container dependencies in
+named volumes separate from host dependencies. The development container stays
+on Debian because the in-memory MongoDB binaries used by the test suite require
+glibc; run those tests on a supported host or in the development container.
+
+Run `pnpm ci:audit` to check all workspace dependencies, including development
+dependencies, against the current advisory database. CI also runs this check and
+builds the production frontend before a successful checks run can deploy it.
 
 ## If you use Windows
 
@@ -69,7 +85,7 @@ ln -s "../../hooks/post-checkout" .git/hooks/post-checkout
 Not a fan of Docker or dev containers? Good news, you don't have to use either. At project root, run `pnpm install` to
 install all the JavaScript dependencies.
 
-Then, you need to install [MongoDB](https://www.mongodb.com/docs/manual/installation/) and set it up according to your OS. Make sure it's listening to port `27017` with username `hyperschedule` and password `local_dev`. Alternatively, you can set it up some
+Then, you need to install [MongoDB 7.0.45 or a later patched 7.0 release](https://www.mongodb.com/docs/manual/installation/) and set it up according to your OS. Make sure it's listening to port `27017` with username `hyperschedule` and password `local_dev`. Alternatively, you can set it up some
 other way and modify the MongoDB connection string in [backend/.env.development](./backend/.env.development). After you
 set it up, you can load the test data with this command (and modify the username and password if you used something
 different):
@@ -85,7 +101,7 @@ mongorestore \
     < 'data/db_dump'
 ```
 
-Then, install [nginx](https://nginx.org/en/docs/njs/install.html) on your computer.
+Then, install [nginx 1.30.6 or a later patched stable release](https://nginx.org/en/download.html) on your computer.
 If you are not running Linux, you might have to compile nginx from the source. You can find
 the nginx configuration file and the self-signed certificate we use at the [data/nginx](./data/nginx)
 folder.

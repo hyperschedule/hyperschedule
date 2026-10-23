@@ -6,16 +6,26 @@ services:
             dockerfile: base.dockerfile
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
+            - frontend_node_modules:/srv/hyperschedule/frontend/node_modules
+            - backend_node_modules:/srv/hyperschedule/backend/node_modules
+            - shared_node_modules:/srv/hyperschedule/shared/node_modules
+            - data_node_modules:/srv/hyperschedule/data/node_modules
             - ./pnpm-lock.yaml:/srv/hyperschedule/pnpm-lock.yaml:ro
             - ./pnpm-workspace.yaml:/srv/hyperschedule/pnpm-workspace.yaml:ro
+            - ./.npmrc:/srv/hyperschedule/.npmrc:ro
+            - ./patches:/srv/hyperschedule/patches:ro
             - ./package.json:/srv/hyperschedule/package.json:ro
             - ./frontend/package.json:/srv/hyperschedule/frontend/package.json:ro
             - ./backend/package.json:/srv/hyperschedule/backend/package.json:ro
             - ./shared/package.json:/srv/hyperschedule/shared/package.json:ro
+            - ./data/package.json:/srv/hyperschedule/data/package.json:ro
         command: pnpm install --frozen-lockfile
 
     db:
-        image: mongo:7
+        image: hyperschedule-dev-mongo:7.0.45
+        build:
+            context: .
+            dockerfile: mongo.dockerfile
         networks:
             - backend
         expose:
@@ -36,15 +46,21 @@ services:
             - 3000:3000
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
-            - ./frontend:/srv/hyperschedule/frontend:ro
+            # typed-css-modules generates declarations next to the CSS sources.
+            - ./frontend:/srv/hyperschedule/frontend
+            - frontend_node_modules:/srv/hyperschedule/frontend/node_modules
             - ./shared:/srv/hyperschedule/shared:ro
+            - shared_node_modules:/srv/hyperschedule/shared/node_modules:ro
             - ./data:/srv/hyperschedule/data:ro
+            - data_node_modules:/srv/hyperschedule/data/node_modules:ro
         working_dir: /srv/hyperschedule/frontend
         command: pnpm serve
 
 
     backend:
         image: hyperschedule-dev-base
+        ports:
+            - 127.0.0.1:8080:8080
         depends_on:
             <<: *base
             db:
@@ -55,8 +71,11 @@ services:
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
             - ./backend:/srv/hyperschedule/backend:ro
+            - backend_node_modules:/srv/hyperschedule/backend/node_modules:ro
             - ./shared:/srv/hyperschedule/shared:ro
+            - shared_node_modules:/srv/hyperschedule/shared/node_modules:ro
             - ./data:/srv/hyperschedule/data:ro
+            - data_node_modules:/srv/hyperschedule/data/node_modules:ro
 
         working_dir: /srv/hyperschedule/backend
         command: pnpm serve
@@ -64,7 +83,10 @@ services:
             DB_URL: mongodb://hyperschedule:local_dev@db
 
     nginx:
-        image: nginx:1.24.0
+        image: hyperschedule-dev-nginx:1.30.6
+        build:
+            context: .
+            dockerfile: nginx.dockerfile
         depends_on: *base
         ports:
             - 80:80
@@ -80,4 +102,8 @@ networks:
 
 volumes:
     node_modules:
+    frontend_node_modules:
+    backend_node_modules:
+    shared_node_modules:
+    data_node_modules:
     db-data:

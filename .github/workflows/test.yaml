@@ -13,19 +13,22 @@ jobs:
   run:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         # we use matrix so we can run those in parallel
-        command: ["typecheck", "test", "lint", "format"]
+        command: ["typecheck", "test", "lint", "format", "audit", "build"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
+        with:
+          lfs: true
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v6
         with:
-          version: 10.13.1
-      - name: Use Node.js 26
-        uses: actions/setup-node@v4
+          version: 10.34.8
+      - name: Use patched Node.js 26
+        uses: actions/setup-node@v7
         with:
-          node-version: 26
+          node-version-file: .node-version
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

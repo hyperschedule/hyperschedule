@@ -26,14 +26,12 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
-    "@types/node": "^22.19.11",
-    "jest": "^30.2.0",
-    "ts-jest": "^29.4.6",
-    "ts-node": "^10.9.2"
-  },
-  "peerDependencies": {
-    "typescript": "*"
+    "@jest/globals": "^30.5.2",
+    "@types/node": "^26.0.0",
+    "jest": "^30.5.2",
+    "ts-jest": "^29.4.15",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "test": "jest --onlyChanged",
@@ -41,6 +39,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "^4.3.6"
+    "zod": "^4.6.7"
   }
 }
