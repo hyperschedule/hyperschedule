@@ -226,6 +226,9 @@ const SectionEntry = memo(function SectionEntry(props: {
     const sectionsLookup = useActiveSectionsLookup();
     //const attrsMutation = useScheduleSectionAttrsMutation();
     const theme = useStore((store) => store.theme);
+    const courseColorTheme = useStore(
+        (store) => store.appearanceOptions.courseColorTheme,
+    );
     const setPopup = useStore((store) => store.setPopup);
     const setHoverSection = useStore((store) => store.setHoverSection);
     const hoverSection = useStore((store) => store.hoverSection);
@@ -262,7 +265,13 @@ const SectionEntry = memo(function SectionEntry(props: {
                     ),
             })}
             style={{
-                ...sectionColorStyle(props.entry.section, theme, true),
+                ...sectionColorStyle(
+                    props.entry.section,
+                    theme,
+                    courseColorTheme,
+                    section?.course.primaryAssociation ?? "monochrome",
+                    true,
+                ),
                 transform: DndUtil.CSS.Transform.toString(sortable.transform),
                 transition: sortable.transition,
             }}

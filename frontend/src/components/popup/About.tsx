@@ -13,6 +13,29 @@ type Maintainer = {
 // frontend/vite.config.ts
 const currentMaintainers: Maintainer[] = [
     {
+        name: "Oliver Howe",
+        classYear: "HM '28",
+        githubName: "ohowe1",
+    },
+    {
+        name: "Jasmine Liu",
+        classYear: "HM '28",
+        githubName: "jasmineeliu",
+    },
+    {
+        name: "Marlow Lichty",
+        classYear: "HM '30",
+        githubName: "InventBoss",
+    },
+];
+
+const previousMaintainers: Maintainer[] = [
+    {
+        name: "Stephen Xu",
+        classYear: "HM '27",
+        githubName: "stuxf",
+    },
+    {
         name: "Next Ongarjvaja",
         classYear: "HM '26",
         githubName: "NextZtepS",
@@ -22,19 +45,6 @@ const currentMaintainers: Maintainer[] = [
         classYear: "HM '26",
         githubName: "edonson2016",
     },
-    {
-        name: "Stephen Xu",
-        classYear: "HM '27",
-        githubName: "stuxf",
-    },
-    {
-        name: "Oliver Howe",
-        classYear: "HM '28",
-        githubName: "ohowe1",
-    },
-];
-
-const previousMaintainers: Maintainer[] = [
     {
         name: "Mia Celeste",
         classYear: "HM '24",
