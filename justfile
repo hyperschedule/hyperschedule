@@ -7,7 +7,7 @@ start-db:
     --publish 27017:27017 \
     --env MONGO_INITDB_ROOT_USERNAME=hyperschedule \
     --env MONGO_INITDB_ROOT_PASSWORD=local_dev \
-    mongo
+    docker.io/library/mongo:7.0.45
 
 init-db:
   cd 'backend' \
@@ -15,8 +15,7 @@ init-db:
       --enable-source-maps \
       --no-warnings \
       --require='dotenv/config' \
-      --experimental-specifier-resolution='node' \
-      --loader='ts-node/esm' \
+      --import='tsx' \
       'src/db/init-db.ts'
 
 load-db:

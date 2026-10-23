@@ -30,7 +30,8 @@ export const UserSchedule = z.object({
 export type UserSchedule = z.infer<typeof UserSchedule>;
 
 export const LocalUser = z.object({
-    _id: z.undefined(),
+    // JSON persistence omits this key for guests.
+    _id: z.undefined().optional(),
     schedules: z.record(ScheduleId, UserSchedule),
 });
 export type LocalUser = z.infer<typeof LocalUser>;

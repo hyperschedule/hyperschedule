@@ -3,7 +3,7 @@
     "composite": true,
     "target": "es2021",
     "module": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "jsx": "react-jsx",

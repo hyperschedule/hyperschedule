@@ -3,3 +3,5 @@ packages:
   - 'frontend'
   - 'shared'
   - 'data'
+patchedDependencies:
+  thread-stream@4.2.0: patches/thread-stream@4.2.0.patch

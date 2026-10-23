@@ -38,7 +38,10 @@ calendarApp.get(
     async function (request: Request, response: Response) {
         const userId = APIv4.UserId.safeParse(request.params.userId);
         if (!userId.success) {
-            logger.info("Error parsing user id %o", request.params.userId);
+            logger.info(
+                "Error parsing user id %o",
+                request.params.userId ?? null,
+            );
             return response
                 .status(400)
                 .header("Content-Type", "application/json")
@@ -50,7 +53,7 @@ calendarApp.get(
         if (!scheduleId.success) {
             logger.info(
                 "Error parsing schedule id %o",
-                request.params.scheduleId,
+                request.params.scheduleId ?? null,
             );
             return response
                 .status(400)
@@ -80,7 +83,10 @@ calendarApp.get(
 
         const calendar = await createCalendar(schedule);
         if ((calendar.error as Error | null) !== null) {
-            logger.error("Error creating iCal calendar: %o", calendar.error);
+            logger.error(
+                "Error creating iCal calendar: %o",
+                calendar.error ?? null,
+            );
             return response
                 .status(500)
                 .header("Content-Type", "text/plain")

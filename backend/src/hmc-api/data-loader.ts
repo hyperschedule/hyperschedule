@@ -33,13 +33,13 @@ function preprocessDataFromString<T>(
         return [];
     }
 
-    const obj = JSON.parse(cleanedData);
+    const obj: unknown = JSON.parse(cleanedData);
     if (!Array.isArray(obj)) {
         logger.error(`Input data for ${inputFileName} is not an array`);
         return [];
     }
 
-    for (const item of obj) {
+    for (const item of obj as unknown[]) {
         const r = inputValidator.safeParse(item);
         if (r.success) {
             result.push(r.data);
@@ -47,7 +47,7 @@ function preprocessDataFromString<T>(
             logger.trace(
                 "Unable to pre-process data item for %s. Data is %O. Errors: %O",
                 inputFileName,
-                item,
+                item as object,
                 r.error,
             );
         }
@@ -120,8 +120,8 @@ const courseSectionScheduleInput = z.object({
     courseSectionId: CxSectionIdentifierString,
     classBeginningTime: IntString,
     classEndingTime: IntString,
-    classMeetingDays: z.string().nonempty(),
-    instructionSiteName: z.string().nonempty(),
+    classMeetingDays: z.string().min(1),
+    instructionSiteName: z.string().min(1),
 });
 
 const courseSectionScheduleOutput = z
@@ -176,14 +176,17 @@ export function parseCourseBoomi(data: string): CourseOutput[] {
     );
 
     if (!result.ok) {
-        logger.error(result.error, "Cannot parse Boomi database dump");
+        logger.error(
+            { error: result.error },
+            "Cannot parse Boomi database dump",
+        );
         throw Error(
             "Cannot parse Boomi database dump: " + JSON.stringify(result.error),
         );
     }
 
     for (const warning of result.warnings) {
-        logger.warn(warning, "Warning parsing Boomi database dump");
+        logger.warn({ warning }, "Warning parsing Boomi database dump");
     }
     return result.records;
 }
@@ -274,12 +277,12 @@ const altStaffInput = z.object({
     cxId: IntString,
     firstName: z.string().optional(),
     lastName: z.string().optional(),
-    altName: z.string().nonempty(),
+    altName: z.string().min(1),
 });
 const altStaffOutput = z
     .object({
         cxId: IntString,
-        altName: z.string().nonempty().nullable(),
+        altName: z.string().min(1).nullable(),
     })
     .strict();
 export type AltStaffOutput = z.infer<typeof altStaffOutput>[];
@@ -430,13 +433,13 @@ export function parseSectionInstructor(data: string): SectionInstructorOutput {
 const courseAreaInput = z.object({
     course_code: CxCourseCodeString,
     catalog: z.string().regex(/^UG[0-9]{2}$/),
-    course_areas: z.string().nonempty().array(),
+    course_areas: z.string().min(1).array(),
 });
 const courseAreaOutput = z
     .object({
         courseCode: CourseCode,
         catalog: z.string().regex(/^UG[0-9]{2}$/),
-        courseAreas: z.string().nonempty().array(),
+        courseAreas: z.string().min(1).array(),
     })
     .strict();
 export type CourseAreaOutput = z.infer<typeof courseAreaOutput>[];

@@ -7,7 +7,7 @@ import { memo } from "react";
 
 export default memo(function SectionDetails(props: {
     section: APIv4.Section | undefined;
-}): JSX.Element {
+}): React.JSX.Element {
     const activeTerm = useUserStore((store) => store.activeTerm);
 
     if (props.section === undefined) return <>Section data not found 😔</>;

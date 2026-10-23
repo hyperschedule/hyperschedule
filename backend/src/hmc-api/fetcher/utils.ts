@@ -85,7 +85,6 @@ export async function loadCourseFiles(
         keyof Endpoints,
         Endpoint,
     ][]) {
-        // eslint-disable-next-line no-await-in-loop
         obj[name] = await readFile(computeFilePath(endpoint, term), {
             encoding: "utf-8",
         });

@@ -1,0 +1,6 @@
+diff --git a/index.d.ts b/index.d.ts
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -96 +96 @@
+-  emit(eventName: 'message', message: any, transferList?: workerThreads.TransferListItem[]): boolean
++  emit(eventName: 'message', message: any, transferList?: Parameters<workerThreads.Worker['postMessage']>[1]): boolean

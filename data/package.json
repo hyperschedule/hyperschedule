@@ -20,13 +20,11 @@
     }
   ],
   "license": "MIT",
-  "peerDependencies": {
-    "typescript": "^4.7.4"
-  },
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@types/node": "^20.8.9"
+    "@types/node": "^26.0.0",
+    "typescript": "^5.9.3"
   }
 }

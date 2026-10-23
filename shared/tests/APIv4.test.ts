@@ -1,6 +1,5 @@
 import * as APIv4 from "../api/v4";
-import { describe, test, expect } from "@jest/globals";
-import * as console from "console";
+import { describe, test } from "@jest/globals";
 describe("APIv4 type definition", () => {
     test("course instantiation", () => {
         const section: APIv4.Section = {

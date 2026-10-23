@@ -15,7 +15,7 @@ import { linkCourseData } from "./hmc-api/data-linker";
 import { Term } from "hyperschedule-shared/api/v4";
 
 // Define an array of terms to load data for
-const TERMS_TO_LOAD: Readonly<APIv4.TermIdentifier[]> = [
+const TERMS_TO_LOAD: readonly APIv4.TermIdentifier[] = [
     {
         year: 2026,
         term: Term.fall,

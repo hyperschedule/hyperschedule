@@ -152,8 +152,10 @@ export interface CourseWithAreas extends PomApiCourseAreaCourse {
     courseAreas: string[];
 }
 
-export interface MergedPomApiCourse
-    extends Omit<CourseWithAreas, "PermCount" | "SeatsFilled" | "SeatsTotal"> {
+export interface MergedPomApiCourse extends Omit<
+    CourseWithAreas,
+    "PermCount" | "SeatsFilled" | "SeatsTotal"
+> {
     PermCount: number;
     SeatsFilled: number;
     SeatsTotal: number;
