@@ -65,6 +65,9 @@ Additional isolated checks covered:
   identity-provider login after staging.
 - MongoDB authentication, original-volume reuse, restart, gzip dump/restore with
   indexes and Unicode data, trusted TLS acceptance and untrusted TLS rejection.
+- Compose startup with dependency volumes populated by the old frozen lockfile:
+  the noninteractive install replaces old pnpm/driver/Zod dependencies, and all
+  4,249 restored sections and exact member JSON survive the upgrade and restart.
 - Live public API responses: 2,192 sections, 32 terms, and the current term all
   validate against the upgraded schemas.
 

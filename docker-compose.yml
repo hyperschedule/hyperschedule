@@ -20,6 +20,10 @@ services:
             - ./shared/package.json:/srv/hyperschedule/shared/package.json:ro
             - ./data/package.json:/srv/hyperschedule/data/package.json:ro
         command: pnpm install --frozen-lockfile
+        environment:
+            # Existing volumes may contain modules created by an older pnpm.
+            # Allow their replacement without an interactive confirmation prompt.
+            CI: "true"
 
     db:
         image: hyperschedule-dev-mongo:7.0.45
