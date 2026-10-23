@@ -21,7 +21,11 @@ concurrency:
 jobs:
     # Single deploy job since we're just deploying
     deploy:
-        if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+        if: >-
+            github.event_name == 'workflow_dispatch' ||
+            (github.event.workflow_run.conclusion == 'success' &&
+             github.event.workflow_run.event == 'push' &&
+             github.event.workflow_run.head_repository.full_name == github.repository)
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
@@ -30,6 +34,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v7
               with:
+                  ref: ${{ github.event.workflow_run.head_sha || github.sha }}
                   submodules: true
                   lfs: true
 
@@ -53,7 +58,7 @@ jobs:
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: 'frontend/dist'
+                  path: "frontend/dist"
             - name: Deploy to GitHub Pages
               id: deployment
               uses: actions/deploy-pages@v4

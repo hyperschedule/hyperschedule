@@ -32,10 +32,22 @@ services:
             - 27017
         environment:
             MONGO_INITDB_ROOT_USERNAME: hyperschedule
-            MONGO_INITDB_ROOT_PASSWORD:
-                local_dev
+            MONGO_INITDB_ROOT_PASSWORD: local_dev
         volumes:
             - db-data:/data/db
+        healthcheck:
+            test:
+                - CMD-SHELL
+                - >-
+                    mongosh --quiet
+                    --username "$${MONGO_INITDB_ROOT_USERNAME}"
+                    --password "$${MONGO_INITDB_ROOT_PASSWORD}"
+                    --authenticationDatabase admin
+                    --eval 'if (!db.adminCommand({ping: 1}).ok) quit(1)'
+            interval: 10s
+            timeout: 5s
+            retries: 12
+            start_period: 20s
 
     frontend:
         image: hyperschedule-dev-base
@@ -55,7 +67,17 @@ services:
             - data_node_modules:/srv/hyperschedule/data/node_modules:ro
         working_dir: /srv/hyperschedule/frontend
         command: pnpm serve
-
+        healthcheck:
+            test:
+                - CMD
+                - node
+                - --input-type=module
+                - --eval
+                - "const r = await fetch('http://127.0.0.1:3000/', {signal: AbortSignal.timeout(3000)}); if (!r.ok) process.exit(1)"
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 30s
 
     backend:
         image: hyperschedule-dev-base
@@ -64,8 +86,7 @@ services:
         depends_on:
             <<: *base
             db:
-                condition:
-                    service_started
+                condition: service_healthy
         networks:
             - backend
         volumes:
@@ -81,13 +102,27 @@ services:
         command: pnpm serve
         environment:
             DB_URL: mongodb://hyperschedule:local_dev@db
+        healthcheck:
+            test:
+                - CMD
+                - node
+                - --input-type=module
+                - --eval
+                - "const r = await fetch('http://127.0.0.1:8080/v4/term/all', {signal: AbortSignal.timeout(3000)}); if (!r.ok || !Array.isArray(await r.json())) process.exit(1)"
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 10s
 
     nginx:
         image: hyperschedule-dev-nginx:1.30.6
         build:
             context: .
             dockerfile: nginx.dockerfile
-        depends_on: *base
+        depends_on:
+            <<: *base
+            backend:
+                condition: service_healthy
         ports:
             - 80:80
             - 443:443

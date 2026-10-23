@@ -1,0 +1,33 @@
+--- a/go.mod
++++ b/go.mod
+@@ -53,2 +53,2 @@
+-	golang.org/x/sync v0.23.0
+-	golang.org/x/sys v0.48.0
++	golang.org/x/sync v0.24.0
++	golang.org/x/sys v0.49.0
+@@ -121,3 +121,3 @@
+-	golang.org/x/crypto v0.56.0 // indirect
+-	golang.org/x/net v0.58.0 // indirect
+-	golang.org/x/text v0.41.0 // indirect
++	golang.org/x/crypto v0.58.0 // indirect
++	golang.org/x/net v0.61.0 // indirect
++	golang.org/x/text v0.43.0 // indirect
+--- a/go.sum
++++ b/go.sum
+@@ -299,0 +300,2 @@
++golang.org/x/crypto v0.58.0 h1:COkYLr4k7nDI4r6QtMML2AfzeIswWHAJthLS6K/M/54=
++golang.org/x/crypto v0.58.0/go.mod h1:Xh+kl5A+M0gMiWDytH2Hhr5Z7WbNCpv/eB/EFgfSk+w=
+@@ -303,0 +306,2 @@
++golang.org/x/net v0.61.0 h1:RR+6j/BTBCrggOLugxa+66R8FvoN6MHlzDlZIbN9YFw=
++golang.org/x/net v0.61.0/go.mod h1:WgDCOTH8iwtB66T4/GfI94AHo/hhdb7Hah9NDseQfiI=
+@@ -305,0 +310,2 @@
++golang.org/x/sync v0.24.0 h1:iqiDrGoDgyuvAKrhLQthUEzU/R378N78gXbBjxed7oA=
++golang.org/x/sync v0.24.0/go.mod h1:sUUOizhqBxiL6pEWpqNLUiaJn1ShEbZ6BBqskPbjZm0=
+@@ -311,0 +318,2 @@
++golang.org/x/sys v0.49.0 h1:XbzkgYJHdqh/8m2Uu0W/dQv8nktxx4BFHp1M0gROTXA=
++golang.org/x/sys v0.49.0/go.mod h1:hNLxWAXmnKAxqDtdwIYC4bM9oQPEecfsnNMuSxOs3og=
+@@ -313,0 +322 @@
++golang.org/x/term v0.47.0 h1:cpyOwQkr2Nzxe2p6KnrTG7Ei2wtzjsuSjhpXXepZ/BM=
+@@ -315,0 +325,2 @@
++golang.org/x/text v0.43.0 h1:1QivrlhwAsnMOcqgOdl9my7s9OyZl8O5/UGUTJVXoWc=
++golang.org/x/text v0.43.0/go.mod h1:hbSIYA/amXcRXTFSZqh8tWHEoqRvvbKPJ2uz/KU+a+s=

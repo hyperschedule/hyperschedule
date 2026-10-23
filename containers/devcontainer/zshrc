@@ -1,0 +1,13 @@
+export LANG=C.UTF-8
+export ZSH=/opt/ohmyzsh
+ZSH_THEME=robbyrussell
+plugins=(git zsh-autosuggestions)
+zstyle ':omz:update' mode disabled
+fpath=(/opt/pure $fpath)
+source "$ZSH/oh-my-zsh.sh"
+autoload -U promptinit
+promptinit
+prompt pure
+PURE_GIT_PULL=0
+export TERM=xterm-256color
+export PATH="/srv/hyperschedule/node_modules/.bin:$PATH"
