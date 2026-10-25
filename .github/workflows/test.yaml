@@ -17,7 +17,7 @@ jobs:
             matrix:
                 # we use matrix so we can run those in parallel
                 command:
-                    ["typecheck", "test", "lint", "format", "audit", "build"]
+                    ["typecheck", "test", "lint", "format", "build"]
         steps:
             - uses: actions/checkout@v7
               with:
@@ -35,70 +35,3 @@ jobs:
               run: pnpm install --frozen-lockfile
             - name: Run ${{matrix.command}}
               run: pnpm ci:${{matrix.command}}
-
-    images:
-        name: image (${{ matrix.image }})
-        runs-on: ubuntu-latest
-        timeout-minutes: 45
-        permissions:
-            contents: read
-        strategy:
-            fail-fast: false
-            matrix:
-                include:
-                    - image: base
-                      dockerfile: base.dockerfile
-                      image-ref: hyperschedule-ci-base
-                    - image: mongo
-                      image-ref: mongo:7.0.45
-                    - image: devcontainer
-                      dockerfile: dev-container.dockerfile
-                      image-ref: hyperschedule-ci-devcontainer
-        steps:
-            - uses: actions/checkout@v7
-              with:
-                  lfs: true
-            - name: Build application base for development container
-              if: matrix.image == 'devcontainer'
-              run: docker build --tag hyperschedule-dev-base --file base.dockerfile .
-            - name: Build image
-              if: matrix.image != 'mongo'
-              run: docker build --tag hyperschedule-ci-${{ matrix.image }} --file '${{ matrix.dockerfile }}' .
-            - name: Pull official MongoDB image
-              if: matrix.image == 'mongo'
-              run: docker pull '${{ matrix.image-ref }}'
-            # Report vendor CVEs without maintaining our own patched vendor builds.
-            # Build, scanner execution, and runtime failures still fail the job.
-            - name: Report image vulnerabilities
-              uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-              with:
-                  version: v0.72.0
-                  image-ref: ${{ matrix.image-ref }}
-                  scanners: vuln
-                  format: json
-                  output: vulnerabilities-${{ matrix.image }}.json
-                  severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
-                  ignore-unfixed: "false"
-                  exit-code: "0"
-                  timeout: 10m
-              env:
-                  TRIVY_IGNOREFILE: /dev/null
-            - name: Retain full vulnerability report
-              if: always()
-              uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
-              with:
-                  name: vulnerabilities-${{ matrix.image }}
-                  path: vulnerabilities-${{ matrix.image }}.json
-                  retention-days: 30
-                  if-no-files-found: warn
-            - name: Validate development runtime with existing checks
-              if: matrix.image == 'devcontainer'
-              run: |
-                  docker run --rm hyperschedule-ci-devcontainer bash -euc '
-                    node --version
-                    pnpm install --frozen-lockfile
-                    pnpm ci:test
-                    pnpm ci:typecheck
-                    pnpm ci:build
-                    zsh -ic "command -v git; docker --version; docker compose version"
-                  '

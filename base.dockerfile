@@ -2,8 +2,7 @@
 FROM node:26.12.1-bookworm-slim
 
 # Install pnpm
-RUN npm install -g pnpm@10.34.8 \
-    && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
+RUN npm install -g pnpm@10.34.8
 
 COPY . /srv/hyperschedule/
 WORKDIR /srv/hyperschedule/
