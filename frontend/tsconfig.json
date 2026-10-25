@@ -7,26 +7,12 @@
     "skipLibCheck": true,
     "lib": ["esnext", "dom"],
     "sourceRoot": "src",
-    "baseUrl": "src",
     "rootDir": "src",
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules",
-        "options": {
-          "postcssOptions": {
-            "useConfig": true
-          },
-          "namedExports": false,
-          "goToDefinitions": true,
-          "allowUnknownClassnames": false
-        }
-      }
-    ],
     "types": ["vite/client"],
     "paths": {
-      "@components/*": ["components/*"],
-      "@lib/*": ["lib/*"],
-      "@hooks/*": ["hooks/*"]
+      "@components/*": ["./src/components/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.module.css", "src/**/*"]

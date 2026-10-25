@@ -24,8 +24,13 @@ export async function runScheduler(prefix: string): Promise<void> {
     try {
         logger.info("Initializing memory file store");
         inMemoryFiles = await loadAllForTerm(CURRENT_TERM);
-    } catch (e: any) {
-        if (e.code === "ENOENT") {
+    } catch (e: unknown) {
+        if (
+            typeof e === "object" &&
+            e !== null &&
+            "code" in e &&
+            e.code === "ENOENT"
+        ) {
             logger.info("No initial files found, fetching all...");
             await fetchAllForTerm(prefix, CURRENT_TERM);
             inMemoryFiles = await loadAllForTerm(CURRENT_TERM);
@@ -52,7 +57,7 @@ export async function runScheduler(prefix: string): Promise<void> {
         );
         await setTimeout(e.interval * 1000);
 
-        /* eslint-disable no-await-in-loop, @typescript-eslint/no-unnecessary-condition */
+        /* eslint-disable @typescript-eslint/no-unnecessary-condition */
         while (true) {
             try {
                 logger.info("Fetching for %s", e.saveAs);
@@ -72,7 +77,7 @@ export async function runScheduler(prefix: string): Promise<void> {
                 } finally {
                     dbWriteInProcess--;
                 }
-                logger.info("Database updated", e.saveAs);
+                logger.info("Database updated: %s", e.saveAs);
 
                 logger.info(
                     "Scheduler flow completed for %s, running again in %ds",

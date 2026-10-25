@@ -89,7 +89,7 @@ const TimeLabels = memo(function TimeLabels(props: {
     startHour: number;
     endHour: number;
 }) {
-    const labels: JSX.Element[] = [];
+    const labels: React.JSX.Element[] = [];
     for (let h = 0; h < 24; ++h)
         labels.push(
             <div

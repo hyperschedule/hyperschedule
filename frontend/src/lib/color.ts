@@ -4,12 +4,7 @@ import md5 from "md5";
 import { Theme } from "@hooks/store";
 
 export type CourseColorTheme =
-    | "default"
-    | "pastel"
-    | "sunset"
-    | "cool"
-    | "earthy"
-    | "campus";
+    "default" | "pastel" | "sunset" | "cool" | "earthy" | "campus";
 
 export const courseColorThemes: { id: CourseColorTheme; label: string }[] = [
     { id: "default", label: "Default" },
@@ -153,7 +148,7 @@ export function sectionColorStyle(
 
     let hue =
         courseColorTheme === "campus"
-            ? affiliationColors[affiliation] ?? "monochrome"
+            ? (affiliationColors[affiliation] ?? "monochrome")
             : "random";
 
     const colorOut = randomColor({

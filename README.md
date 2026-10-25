@@ -20,39 +20,37 @@ cd hyperschedule
 
 To run the code, you need to have at least one of these installed on your computer:
 
-- [NodeJS 18](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
+- [Node.js 26.12.1 or newer in the 26.x release line](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
 
 ## If you use Windows
 
-Please install both `pnpm` and `node` inside WSL2. Choose Debian Bullseyes if you aren't sure which distro to use, 
+Please install both `pnpm` and `node` inside WSL2. Choose Debian Bullseyes if you aren't sure which distro to use,
 but other distros should be fine
 
-## If you use MacOS
+## If you use macOS
 
-1. To run frontend properly, you need to [disable your Airplay Receiver](https://apple.stackexchange.com/a/431164) 
-because there is a port conflict.
-2. The `bash` that came with your macOS is likely still on version 3.2 (if you aren't sure, run `bash --version`), which
-was released back in 2006. Please download a slightly more modern bash (as of Nov 2023, the latest version is 5.2.21).  
+1. The `bash` that came with your macOS is likely still on version 3.2 (if you aren't sure, run `bash --version`), which
+   was released back in 2006. Please download a slightly more modern bash (as of Nov 2023, the latest version is 5.2.21).
 
 ## Docker Compose Stack
 
 **Services:**
 
-- Frontend (port 5000)
+- Frontend (port 3000)
 - Backend (port 8080)
 - Database (mongoDB)
-- Web Server (nginx, port 80, only needed for SAML flow) 
+- Web Server (nginx, port 80, only needed for SAML flow)
 
 **First time setup:**
 
 At project root, run `pnpm install`. Then, run `docker compose build`. Lastly, run `pnpm docker` then `pnpm docker-load-db` to load
-test data. 
+test data.
 
 **After:**
 
 Every time you restart your computer or Docker desktop, you need to run `pnpm docker` again to start the stack.
-Then go to `http://localhost:5000` in your browser. 
+Then go to `http://localhost:3000` in your browser.
 
 ## Git hooks
 
@@ -71,12 +69,12 @@ ln -s "../../hooks/post-checkout" .git/hooks/post-checkout
 Not a fan of Docker or dev containers? Good news, you don't have to use either. At project root, run `pnpm install` to
 install all the JavaScript dependencies.
 
-Then, you need to install [MongoDB](https://www.mongodb.com/docs/manual/installation/) and set it up according to your OS. Make sure it's listening to port `27017` with username `hyperschedule` and password `local_dev`. Alternatively, you can set it up some
+Then, you need to install [MongoDB 7.0.45 or a later patched 7.0 release](https://www.mongodb.com/docs/manual/installation/) and set it up according to your OS. Make sure it's listening to port `27017` with username `hyperschedule` and password `local_dev`. Alternatively, you can set it up some
 other way and modify the MongoDB connection string in [backend/.env.development](./backend/.env.development). After you
 set it up, you can load the test data with this command (and modify the username and password if you used something
 different):
 
-``` 
+```
 mongorestore \
     --username 'hyperschedule' \
     --password 'local_dev' \
@@ -87,9 +85,9 @@ mongorestore \
     < 'data/db_dump'
 ```
 
-Then, install [nginx](https://nginx.org/en/docs/njs/install.html) on your computer.
+Then, install [nginx 1.30.6 or a later patched stable release](https://nginx.org/en/download.html) on your computer.
 If you are not running Linux, you might have to compile nginx from the source. You can find
 the nginx configuration file and the self-signed certificate we use at the [data/nginx](./data/nginx)
 folder.
 
-Lastly, run `pnpm frontend` and `pnpm backend` in two different terminals to start everything. 
+Lastly, run `pnpm frontend` and `pnpm backend` in two different terminals to start everything.

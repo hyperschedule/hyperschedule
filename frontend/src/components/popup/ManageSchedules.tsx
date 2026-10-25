@@ -46,8 +46,11 @@ const CreateSchedule = memo(function CreateSchedule(props: {
     const addSchedule = useUserStore((store) => store.addSchedule);
 
     const allTerms = (useAllTerms() ?? []).map(APIv4.stringifyTermIdentifier);
+    const currentTermStr = APIv4.stringifyTermIdentifier(CURRENT_TERM);
     const [selectedTerm, setSelectedTerm] = useState<string>(
-        APIv4.stringifyTermIdentifier(CURRENT_TERM),
+        allTerms.includes(currentTermStr)
+            ? currentTermStr
+            : (allTerms[0] ?? currentTermStr),
     );
     const [newScheduleName, setNewScheduleName] = useState<string>("");
 

@@ -1,6 +1,9 @@
 import { describe, test, expect } from "@jest/globals";
 
-import { parseCourseBoomi, CourseOutput } from "../../src/hmc-api/data-loader";
+import {
+    parseCourseBoomi,
+    type CourseOutput,
+} from "../../src/hmc-api/data-loader";
 
 const BOOMI_DB_SAMPLE = `
 DBSTART|85ba3f56-d039-43dd-ad22-913c0e2b42b8|2|@|BEGIN|2|@|OUT_START|3|@|SMPL010A EX|^|Example Class|^|SAFR|^||^|SC|^|Example Description
