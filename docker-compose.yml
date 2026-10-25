@@ -12,8 +12,6 @@ services:
             - data_node_modules:/srv/hyperschedule/data/node_modules
             - ./pnpm-lock.yaml:/srv/hyperschedule/pnpm-lock.yaml:ro
             - ./pnpm-workspace.yaml:/srv/hyperschedule/pnpm-workspace.yaml:ro
-            - ./.npmrc:/srv/hyperschedule/.npmrc:ro
-            - ./patches:/srv/hyperschedule/patches:ro
             - ./package.json:/srv/hyperschedule/package.json:ro
             - ./frontend/package.json:/srv/hyperschedule/frontend/package.json:ro
             - ./backend/package.json:/srv/hyperschedule/backend/package.json:ro
@@ -116,10 +114,7 @@ services:
             start_period: 10s
 
     nginx:
-        image: hyperschedule-dev-nginx:1.30.6
-        build:
-            context: .
-            dockerfile: nginx.dockerfile
+        image: nginx:1.30.6
         depends_on:
             <<: *base
             backend:

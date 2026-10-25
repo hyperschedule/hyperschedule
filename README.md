@@ -23,28 +23,6 @@ To run the code, you need to have at least one of these installed on your comput
 - [Node.js 26.12.1 or newer in the 26.x release line](https://nodejs.org/en) and [pnpm](https://pnpm.io/installation)
 - [Docker](https://docs.docker.com/get-docker/) (and if necessary, Docker Desktop)
 
-The Node.js version in `.node-version` and `base.dockerfile` includes the
-[October 2026 security fixes](https://nodejs.org/en/blog/release/v26.12.1/), including
-the Brotli decoder RCE fix (CVE-2026-111497). If your operating system supplies a
-Node.js build linked to a separate Brotli library, ensure that library also
-includes the fix; the official Node.js binary and Docker image bundle the patched
-decoder. Rebuild containers with `docker compose build --pull` after runtime updates.
-
-The application and development container use the official Node.js Debian image.
-Container dependencies stay in named volumes separate from host dependencies.
-The glibc runtime also supports the in-memory MongoDB binaries used by the test suite.
-Compose uses the official MongoDB 7.0 image and published Docker tools; we do not
-rebuild MongoDB utilities, Docker Compose, or system libraries from source.
-
-Run `pnpm ci:audit` to check all workspace dependencies, including development
-dependencies, against the current advisory database. CI enforces this audit and
-runs the existing tests, typechecks, lint, formatting, and production build.
-Image scans retain complete reports for review, including remaining vendor CVEs;
-their vulnerability counts are informational. Image build, scan execution, and
-development-runtime checks still fail CI on errors. Automatic frontend deployment
-uses the commit that passed the checks. See [the update and rollout notes](docs/dependency-upgrade.md)
-for scope, limitations, and deployment precautions.
-
 ## If you use Windows
 
 Please install both `pnpm` and `node` inside WSL2. Choose Debian Bullseyes if you aren't sure which distro to use,

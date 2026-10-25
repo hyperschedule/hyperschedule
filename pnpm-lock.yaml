@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  thread-stream@4.2.0:
-    hash: 2edc8d4de706ca21b68944ae23b6d0976092f5da9c5c06d2aa37168baed287fb
-    path: patches/thread-stream@4.2.0.patch
-
 importers:
 
   .:
@@ -6768,7 +6763,7 @@ snapshots:
       real-require: 1.0.0
       safe-stable-stringify: 2.5.0
       sonic-boom: 4.2.1
-      thread-stream: 4.2.0(patch_hash=2edc8d4de706ca21b68944ae23b6d0976092f5da9c5c06d2aa37168baed287fb)
+      thread-stream: 4.2.0
 
   pirates@4.0.7: {}
 
@@ -7276,7 +7271,7 @@ snapshots:
     dependencies:
       utrie: 1.0.2
 
-  thread-stream@4.2.0(patch_hash=2edc8d4de706ca21b68944ae23b6d0976092f5da9c5c06d2aa37168baed287fb):
+  thread-stream@4.2.0:
     dependencies:
       real-require: 1.0.0
 
