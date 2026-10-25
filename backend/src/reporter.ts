@@ -1,22 +1,6 @@
-// Setup discord bot for logging error messages
-import * as Discord from "discord.js";
-
-const discordKey = process.env.DISCORD_KEY;
-const channelId = String(process.env.CHANNEL_ID);
-
-// Check if our channel and key is filled out
-let enableDiscord = discordKey && channelId ? true : false;
-
-// Create our reporting Discord client if enableDiscord is enabled
-const client = enableDiscord
-    ? new Discord.Client({
-          intents: [Discord.GatewayIntentBits.Guilds],
-      })
-    : undefined;
-
-if (typeof client !== "undefined") {
-    void client.login(discordKey);
-}
+// Setup webhook if it exists
+const WEBHOOK_URL = process.env.DISCORD_ERROR_WEBHOOK;
+let enableDiscord = WEBHOOK_URL ? true : false;
 
 export enum SeverityLevel {
     Trace = ":pen_ballpoint: Trace",
@@ -25,43 +9,45 @@ export enum SeverityLevel {
     Error = ":skull: Error",
 }
 
-// Embed colors for respective SeverityLevel values
-const levelColors: Record<SeverityLevel, [number, number, number]> = {
-    ":pen_ballpoint: Trace": [172, 189, 186],
-    ":information_source: Info": [0, 121, 140],
-    ":scream: Warn": [237, 174, 73],
-    ":skull: Error": [209, 73, 91],
+// Embed hex colors for respective SeverityLevel values
+const levelColors: Record<SeverityLevel, string> = {
+    ":pen_ballpoint: Trace": "acbdba",
+    ":information_source: Info": "00798c",
+    ":scream: Warn": "edae49",
+    ":skull: Error": "d1495b",
 };
 
+// Send fancy embed error messages at specified error level
+// with module in footer and content in code block
 export async function logDiscord(
     level: SeverityLevel,
     module: string,
     content: unknown,
 ): Promise<void> {
-    if (typeof client === "undefined") {
+    if (!enableDiscord) {
         return;
     }
-
-    // Wait for client to initialize before messaging
-    if (!client.isReady()) {
-        await new Promise<void>((resolve) => {
-            client.once(Discord.Events.ClientReady, () => resolve());
-        });
-    }
-
-    const channel = await client.channels.fetch(channelId);
 
     if (typeof content === "object" && content !== null) {
         content = JSON.stringify(content, null, 4);
     }
-    const messageEmbed = new Discord.EmbedBuilder()
-        .setColor(levelColors[level])
-        .setFooter({ text: module })
-        .setTitle(level)
-        .setDescription(`\`\`\`${String(content)}\`\`\``)
-        .setTimestamp();
 
-    if (channel?.type === Discord.ChannelType.GuildText) {
-        await channel.send({ embeds: [messageEmbed] });
-    }
+    const embed = {
+        title: level,
+        description: `\`\`\`${String(content)}\`\`\``,
+        // Colors need to be converted from hex to decimal
+        color: parseInt(levelColors[level], 16),
+        footer: {
+            text: module,
+        },
+        timestamp: new Date().toISOString(),
+    };
+
+    await fetch(WEBHOOK_URL!, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ embeds: [embed] }),
+    });
 }
