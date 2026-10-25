@@ -514,3 +514,106 @@ export async function copySchedules(
         },
     );
 }
+
+export async function shareSchedule(
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
+): Promise<APIv4.SharedScheduleId> {
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
+    if (user === null) {
+        throw Error("User with this schedule not found");
+    }
+
+    async function generateUniqueSharedId(): Promise<APIv4.SharedScheduleId> {
+        const candidateId = uuid4("h");
+
+        // check all users to see if it already exists
+        const existingUser = await collections.users.findOne({
+            "schedules.$[].sharedId": candidateId,
+        });
+
+        if (existingUser) {
+            // if it does, try again
+            return generateUniqueSharedId();
+        }
+
+        return candidateId;
+    }
+    const sharedScheduleId = await generateUniqueSharedId();
+
+    logger.info(
+        `Sharing schedule ${scheduleId} for user ${userId} to id "${sharedScheduleId}"`,
+    );
+
+    const result = await collections.users.findOneAndUpdate(
+        filterUserWithSchedule(userId, scheduleId),
+        {
+            $set: {
+                [`schedules.${scheduleId}.sharedId`]: sharedScheduleId,
+            },
+        } as UpdateFilter<APIv4.ServerUser>,
+    );
+
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
+    }
+
+    return sharedScheduleId;
+}
+
+export async function unshareSchedule(
+    userId: APIv4.UserId,
+    scheduleId: APIv4.ScheduleId,
+): Promise<void> {
+    const user = await collections.users.findOne(
+        filterUserWithSchedule(userId, scheduleId),
+    );
+    if (user === null) {
+        throw Error("User with this schedule not found");
+    }
+    logger.info(`Unsharing ${scheduleId} for user ${userId}`);
+
+    const result = await collections.users.findOneAndUpdate(
+        filterUserWithSchedule(userId, scheduleId),
+        {
+            $set: {
+                [`schedules.${scheduleId}.sharedId`]: undefined,
+            },
+        } as UpdateFilter<APIv4.ServerUser>,
+    );
+
+    if (!result.ok || result.value === null) {
+        logger.warn(`Operation failed`, result);
+        throw Error("Database operation failed");
+    }
+}
+
+export async function getSharedSchedule(
+    sharedScheduleId: APIv4.SharedScheduleId,
+): Promise<APIv4.UserSchedule> {
+    if (!sharedScheduleId) {
+        throw Error("No shared schedule id provided");
+    }
+
+    const schedule = await collections.users
+        .aggregate<APIv4.UserSchedule>([
+            // into (k, v) array
+            { $project: { schedules: { $objectToArray: "$schedules" } } },
+            // flatten the array
+            { $unwind: "$schedules" },
+            // filter by shared id
+            { $match: { "schedules.v.sharedId": sharedScheduleId } },
+            // replace the root with the userschedule
+            { $replaceRoot: { newRoot: "$schedules.v" } },
+            { $limit: 1 },
+        ])
+        .next();
+
+    if (schedule === null) {
+        throw Error("Shared schedule not found");
+    }
+    return schedule;
+}

@@ -11,6 +11,7 @@ import { Settings } from "./Settings";
 import ExportCalendar from "@components/popup/ExportCalendar";
 import About from "@components/popup/About";
 import { memo } from "react";
+import ShareSchedule from "./ShareSchedule";
 
 function PopupBox(props: {
     children: JSX.Element;
@@ -85,6 +86,12 @@ export default memo(function Popup() {
             return (
                 <PopupBox>
                     <ExportCalendar />
+                </PopupBox>
+            );
+        case PopupOption.ShareSchedule:
+            return (
+                <PopupBox>
+                    <ShareSchedule />
                 </PopupBox>
             );
         case PopupOption.About:

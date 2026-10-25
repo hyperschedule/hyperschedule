@@ -40,6 +40,10 @@ export type Store = {
     ) => Promise<APIv4.ScheduleId>;
     setActiveTerm: (term: APIv4.TermIdentifier) => void;
     setActiveScheduleId: (scheduleId: APIv4.ScheduleId) => void;
+    shareSchedule: (
+        request: APIv4.ShareScheduleRequest,
+    ) => Promise<APIv4.SharedScheduleId>;
+    unshareSchedule: (request: APIv4.UnshareScheduleRequest) => Promise<void>;
 };
 
 function firstValidScheduleId(
@@ -303,6 +307,33 @@ const init: Zustand.StateCreator<Store> = (set, get) => {
             });
 
             return id;
+        },
+        shareSchedule: async (request) => {
+            if (!get().server) {
+                toast.error("Failed to connect to server to share schedule,");
+                return;
+            }
+
+            const { sharedId } = await apiFetch.shareSchedule(request);
+            update((store) => {
+                const schedule = store.schedules[request.scheduleId]!;
+                schedule.sharedId = sharedId;
+            });
+
+            return sharedId;
+        },
+        unshareSchedule: async (request) => {
+            if (!get().server) {
+                toast.error("Failed to connect to server to unshare schedule,");
+                return;
+            }
+
+            // ensure success before updating user side store
+            await apiFetch.unshareSchedule(request);
+            update((store) => {
+                const schedule = store.schedules[request.scheduleId]!;
+                schedule.sharedId = undefined;
+            });
         },
     };
 };

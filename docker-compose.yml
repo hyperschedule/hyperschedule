@@ -50,8 +50,6 @@ services:
             db:
                 condition:
                     service_started
-        ports:
-            - 8080:8080
         networks:
             - backend
         volumes:

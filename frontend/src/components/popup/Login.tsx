@@ -84,6 +84,10 @@ export default function Login(props: { continuation?: () => void }) {
                     </div>
                 }
             />
+
+            {import.meta.env.DEV && (
+                <a href={`${__API_URL__}/auth/dev-user`}>Dev User</a>
+            )}
         </div>
     );
 }

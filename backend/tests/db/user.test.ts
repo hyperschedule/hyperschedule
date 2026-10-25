@@ -15,7 +15,11 @@ import {
     findDuplicatesWith,
     makeAllEPPNLowercase,
     copySchedules,
+    shareSchedule,
+    getSharedSchedule,
+    unshareSchedule,
 } from "../../src/db/models/user";
+import { uuid4 } from "../../src/db/utils";
 
 setupDbHooks();
 
@@ -404,5 +408,52 @@ describe("db/models/user", () => {
         const user2_post = await getUser(uid2);
         expect(Object.keys(user1_post.schedules).length).toStrictEqual(5);
         expect(Object.keys(user2_post.schedules).length).toStrictEqual(2);
+    });
+
+    test("share schedule", async () => {
+        const uid = await getOrCreateUser("test user", "");
+        await deleteSchedule(
+            uid,
+            Object.keys((await getUser(uid)).schedules)[0]!,
+        );
+        const sid = await addSchedule(
+            uid,
+            { year: 2025, term: APIv4.Term.fall },
+            "test schedule 0",
+        );
+
+        const sharedId = await shareSchedule(uid, sid);
+
+        // check that sharedId is defined and the user's schedule has the same id
+        expect(sharedId).toBeDefined();
+        const schedule = (await getUser(uid)).schedules[sid]!;
+        expect(schedule.sharedId).toStrictEqual(sharedId);
+
+        const sharedSchedule = await getSharedSchedule(sharedId);
+        expect(sharedSchedule).toEqual(schedule);
+
+        // test that getting some random schedule is not found
+        await expect(getSharedSchedule(uuid4("h"))).rejects.toThrow(
+            "not found",
+        );
+    });
+
+    test("unshare schedule", async () => {
+        const uid = await getOrCreateUser("test user", "");
+        await deleteSchedule(
+            uid,
+            Object.keys((await getUser(uid)).schedules)[0]!,
+        );
+        const sid = await addSchedule(
+            uid,
+            { year: 2025, term: APIv4.Term.fall },
+            "test schedule 0",
+        );
+
+        const sharedId = await shareSchedule(uid, sid);
+        await unshareSchedule(uid, sid);
+
+        // expect it to not return the schedule that has been unshared
+        await expect(getSharedSchedule(sharedId)).rejects.toThrow("not found");
     });
 });
