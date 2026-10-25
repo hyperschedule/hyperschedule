@@ -51,9 +51,6 @@ jobs:
                       image-ref: hyperschedule-ci-base
                     - image: mongo
                       image-ref: mongo:7.0.45
-                    - image: nginx
-                      dockerfile: nginx.dockerfile
-                      image-ref: hyperschedule-ci-nginx
                     - image: devcontainer
                       dockerfile: dev-container.dockerfile
                       image-ref: hyperschedule-ci-devcontainer
