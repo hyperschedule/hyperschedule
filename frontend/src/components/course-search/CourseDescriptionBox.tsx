@@ -16,7 +16,7 @@ import { CURRENT_TERM } from "hyperschedule-shared/api/current-term";
 // certain course descriptions contain links, such as PE 095B
 const linkHtmlMatcher = /<a +href="?([A-Za-z0-9:\/.%_-]+)"?.*>(.*)<\/a>/;
 
-function processDescription(description: string): JSX.Element {
+function processDescription(description: string): React.JSX.Element {
     const match = linkHtmlMatcher.exec(description);
 
     if (match !== null) {
@@ -68,7 +68,7 @@ export default memo(function CourseDescriptionBox(props: {
 
     const [renderAllHistory, setRenderAllHistory] = useState<boolean>(false);
 
-    let pastOfferings: JSX.Element | JSX.Element[];
+    let pastOfferings: React.JSX.Element | React.JSX.Element[];
     if (historyEntry === undefined || historyEntry.length === 0) {
         pastOfferings = <li className={Css.none}>(none since {minYear})</li>;
     } else {

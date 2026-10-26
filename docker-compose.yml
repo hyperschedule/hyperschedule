@@ -6,26 +6,47 @@ services:
             dockerfile: base.dockerfile
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
+            - frontend_node_modules:/srv/hyperschedule/frontend/node_modules
+            - backend_node_modules:/srv/hyperschedule/backend/node_modules
+            - shared_node_modules:/srv/hyperschedule/shared/node_modules
+            - data_node_modules:/srv/hyperschedule/data/node_modules
             - ./pnpm-lock.yaml:/srv/hyperschedule/pnpm-lock.yaml:ro
             - ./pnpm-workspace.yaml:/srv/hyperschedule/pnpm-workspace.yaml:ro
             - ./package.json:/srv/hyperschedule/package.json:ro
             - ./frontend/package.json:/srv/hyperschedule/frontend/package.json:ro
             - ./backend/package.json:/srv/hyperschedule/backend/package.json:ro
             - ./shared/package.json:/srv/hyperschedule/shared/package.json:ro
+            - ./data/package.json:/srv/hyperschedule/data/package.json:ro
         command: pnpm install --frozen-lockfile
+        environment:
+            # Existing volumes may contain modules created by an older pnpm.
+            # Allow their replacement without an interactive confirmation prompt.
+            CI: "true"
 
     db:
-        image: mongo:7
+        image: mongo:7.0.45
         networks:
             - backend
         expose:
             - 27017
         environment:
             MONGO_INITDB_ROOT_USERNAME: hyperschedule
-            MONGO_INITDB_ROOT_PASSWORD:
-                local_dev
+            MONGO_INITDB_ROOT_PASSWORD: local_dev
         volumes:
             - db-data:/data/db
+        healthcheck:
+            test:
+                - CMD-SHELL
+                - >-
+                    mongosh --quiet
+                    --username "$${MONGO_INITDB_ROOT_USERNAME}"
+                    --password "$${MONGO_INITDB_ROOT_PASSWORD}"
+                    --authenticationDatabase admin
+                    --eval 'if (!db.adminCommand({ping: 1}).ok) quit(1)'
+            interval: 10s
+            timeout: 5s
+            retries: 12
+            start_period: 20s
 
     frontend:
         image: hyperschedule-dev-base
@@ -33,41 +54,71 @@ services:
             base:
                 condition: service_completed_successfully
         ports:
-            - 5000:5000
+            - 3000:3000
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
-            - ./frontend:/srv/hyperschedule/frontend:ro
+            # typed-css-modules generates declarations next to the CSS sources.
+            - ./frontend:/srv/hyperschedule/frontend
+            - frontend_node_modules:/srv/hyperschedule/frontend/node_modules
             - ./shared:/srv/hyperschedule/shared:ro
+            - shared_node_modules:/srv/hyperschedule/shared/node_modules:ro
             - ./data:/srv/hyperschedule/data:ro
+            - data_node_modules:/srv/hyperschedule/data/node_modules:ro
         working_dir: /srv/hyperschedule/frontend
         command: pnpm serve
-
+        healthcheck:
+            test:
+                - CMD
+                - node
+                - --input-type=module
+                - --eval
+                - "const r = await fetch('http://127.0.0.1:3000/', {signal: AbortSignal.timeout(3000)}); if (!r.ok) process.exit(1)"
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 30s
 
     backend:
         image: hyperschedule-dev-base
+        ports:
+            - 127.0.0.1:8080:8080
         depends_on:
             <<: *base
             db:
-                condition:
-                    service_started
-        ports:
-            - 8080:8080
+                condition: service_healthy
         networks:
             - backend
         volumes:
             - node_modules:/srv/hyperschedule/node_modules
             - ./backend:/srv/hyperschedule/backend:ro
+            - backend_node_modules:/srv/hyperschedule/backend/node_modules:ro
             - ./shared:/srv/hyperschedule/shared:ro
+            - shared_node_modules:/srv/hyperschedule/shared/node_modules:ro
             - ./data:/srv/hyperschedule/data:ro
+            - data_node_modules:/srv/hyperschedule/data/node_modules:ro
 
         working_dir: /srv/hyperschedule/backend
         command: pnpm serve
         environment:
             DB_URL: mongodb://hyperschedule:local_dev@db
+        healthcheck:
+            test:
+                - CMD
+                - node
+                - --input-type=module
+                - --eval
+                - "const r = await fetch('http://127.0.0.1:8080/v4/term/all', {signal: AbortSignal.timeout(3000)}); if (!r.ok || !Array.isArray(await r.json())) process.exit(1)"
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 10s
 
     nginx:
-        image: nginx:1.24.0
-        depends_on: *base
+        image: nginx:1.30.6
+        depends_on:
+            <<: *base
+            backend:
+                condition: service_healthy
         ports:
             - 80:80
             - 443:443
@@ -82,4 +133,8 @@ networks:
 
 volumes:
     node_modules:
+    frontend_node_modules:
+    backend_node_modules:
+    shared_node_modules:
+    data_node_modules:
     db-data:
