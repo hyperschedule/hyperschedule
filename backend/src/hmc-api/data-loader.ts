@@ -45,7 +45,7 @@ function preprocessDataFromString<T>(
             result.push(r.data);
         } else {
             logger.parserWarn(
-                `Unable to pre-process data item for ${inputFileName}. Data is ${item}. Errors: ${r.error}`,
+                `Unable to pre-process data item for ${inputFileName}. Data is ${JSON.stringify(item)}. Errors: ${r.error}`,
             );
         }
     }
