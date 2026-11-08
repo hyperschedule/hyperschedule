@@ -18,17 +18,24 @@ if (env === undefined) {
     env = "development";
 }
 
+type CustomLevels = pino.Level | "parserWarn";
 const levels = {
-    parserWarn: 55, // between error (50) and fatal (60)
-};
+    ...pino.levels.values,
+    parserWarn: 55,
+} as { [level in CustomLevels]: number };
 
 // eslint-disable-next-line
 function buildLogger(stream?: pino.DestinationStream) {
-    return pino(
+    return pino<CustomLevels>(
         {
-            customLevels: levels,
-            // useOnlyCustomLevels: true,
             level: "trace",
+            customLevels: levels,
+            timestamp: pino.stdTimeFunctions.isoTime,
+            formatters: {
+                level: (label) => {
+                    return { level: label.toUpperCase() };
+                },
+            },
             hooks: {
                 logMethod(inputArgs, method, level) {
                     if (level === levels.parserWarn) {
@@ -40,7 +47,7 @@ function buildLogger(stream?: pino.DestinationStream) {
                 },
             },
         },
-        stream!,
+        stream,
     );
 }
 
@@ -48,55 +55,64 @@ function buildLogger(stream?: pino.DestinationStream) {
 function createRootLogger() {
     switch (env) {
         case "development":
+            // Shared options between stdout and stderr logs
+            let prettyOptions = {
+                sync: true,
+                ignore: "pid,hostname",
+                customLevels: levels,
+                colorize: true,
+                customColors: { parserwarn: "red" }, // Uppercase title converted to lowercase
+                useOnlyCustomProps: false,
+            };
+
             return buildLogger(
-                pretty({
-                    sync: true,
-                    ignore: "pid,hostname",
-                }),
-            );
-        case "test":
-            return buildLogger(
-                pino.transport({
-                    target: "pino/file",
-                    options: { destination: "/dev/null", level: "error" },
-                }),
-            );
-        case "production":
-            return buildLogger(
-                pino.transport({
-                    levels, // Add in our custom level value
-                    targets: [
+                pino.multistream(
+                    [
                         {
-                            target: "pino/file",
+                            // Everything above this error level is sent to stdout
                             level: "trace",
-                            options: {
-                                destination: `/var/log/hyperschedule/${processName}.log`,
-                                mkdir: true,
-                            },
+                            stream: pretty({
+                                ...prettyOptions,
+                                destination: 1,
+                            }),
                         },
                         {
-                            target: "pino/file",
-                            level: "error",
-                            options: {
-                                destination: `/var/log/hyperschedule/${processName}.error.log`,
-                                mkdir: true,
-                            },
-                        },
-                        {
-                            target: "pino/file",
-                            level: "parserWarn",
-                            options: {
-                                destination: `/var/log/hyperschedule/${processName}.error.log`,
-                                mkdir: true,
-                            },
-                        },
-                        {
-                            target: "pino/file",
-                            level: "info",
-                            options: { destination: 1 }, // STDOUT
+                            // Everything above this error level is sent to stderr
+                            level: "warn",
+                            stream: pretty({
+                                ...prettyOptions,
+                                destination: 2,
+                            }),
                         },
                     ],
-                }),
+                    {
+                        levels,
+                        dedupe: true,
+                    },
+                ),
+            );
+        case "test":
+            return buildLogger({ write() {} });
+        case "production":
+            return buildLogger(
+                pino.multistream(
+                    [
+                        {
+                            // Everything above this error level is sent to stdout
+                            level: "trace",
+                            stream: process.stdout,
+                        },
+                        {
+                            // Everything above this error level is sent to stderr
+                            level: "warn",
+                            stream: process.stderr,
+                        },
+                    ],
+                    {
+                        levels,
+                        dedupe: true,
+                    },
+                ),
             );
         default:
             return buildLogger();
