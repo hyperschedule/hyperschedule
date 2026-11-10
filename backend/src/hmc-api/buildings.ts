@@ -421,7 +421,7 @@ export const buildings: Record<string, Record<string, string>> = {
         PRTZ: "Pritzlaf Field",
         "681": "Apartment Bldg #681",
         RDSC: "Robert Day Sciences Ctr",
-        RBSW: "Roberts Sports Bowl",
+        RSBW: "Roberts Sports Bowl",
     },
     MAIN: {
         AD: "Archduke Dave Hall",
