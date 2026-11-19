@@ -13,7 +13,7 @@ docker compose down --volumes --remove-orphans
 At this point, run `pnpm docker` and load frontend to confirm there is no more data (empty term selector). Run
 
 ```
-docker compose exec -T backend sh -c "pnpm dev-node src/load-current-term.ts"
+docker compose exec -T backend sh -c "pnpm dev-node src/load-multiple-terms.ts"
 ```
 
 Restart the service by running `pnpm docker` again and confirm in the browser that the new term data is loaded (you may
