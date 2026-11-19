@@ -21,7 +21,7 @@ const TERMS_TO_LOAD: readonly APIv4.TermIdentifier[] = [
         term: Term.fall,
     },
     {
-        year: 2026,
+        year: 2027,
         term: Term.spring,
     },
     // Add more terms as needed
