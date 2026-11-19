@@ -23,8 +23,7 @@ import { toast } from "react-toastify";
 
 import * as Schedule from "@lib/schedule";
 import classNames from "classnames";
-import { computeMuddCredits, computeNonMuddCredits } from "@lib/credits";
-import { memo, startTransition, useState } from "react";
+import { memo, startTransition, useCallback, useState } from "react";
 
 export default memo(function SelectedList() {
     const scheduleRenderingOptions = useStore(
@@ -40,6 +39,17 @@ export default memo(function SelectedList() {
     );
     const sectionsLookup = useActiveSectionsLookup();
     const [isDragging, setIsDragging] = useState<boolean>(false);
+
+    const getPreferredSectionCredits = useCallback(
+        (section: APIv4.Section): number => {
+            if (creditOptions.useNonHMCCredits) {
+                return section.nonHMCCredits;
+            } else {
+                return section.HMCCredits;
+            }
+        },
+        [creditOptions],
+    );
 
     const em = parseFloat(
         window.getComputedStyle(document.body).getPropertyValue("font-size"),
@@ -142,22 +152,14 @@ export default memo(function SelectedList() {
                 {scheduleRenderingOptions.showConflicting ? (
                     <span>
                         {selectedSections
-                            .map(
-                                creditOptions.useNonHMCCredits
-                                    ? computeNonMuddCredits
-                                    : computeMuddCredits,
-                            )
+                            .map(getPreferredSectionCredits)
                             .reduce((a, b) => a + b, 0)}{" "}
                         credits selected
                     </span>
                 ) : (
                     <span>
                         {unconflictingSections
-                            .map(
-                                creditOptions.useNonHMCCredits
-                                    ? computeNonMuddCredits
-                                    : computeMuddCredits,
-                            )
+                            .map(getPreferredSectionCredits)
                             .reduce((a, b) => a + b, 0)}{" "}
                         credits displayed
                     </span>

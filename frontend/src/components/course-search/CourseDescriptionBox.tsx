@@ -7,7 +7,6 @@ import { memo } from "react";
 import Css from "./CourseDescriptionBox.module.css";
 import * as Feather from "react-feather";
 import { combineLocations } from "@lib/schedule";
-import { computeNonMuddCredits, computeMuddCredits } from "@lib/credits";
 import SectionStatusBadge from "@components/common/SectionStatusBadge";
 import { useState } from "react";
 import { useAllTerms } from "@hooks/term";
@@ -110,17 +109,17 @@ export default memo(function CourseDescriptionBox(props: {
             <section className={Css.credits}>
                 <h3>
                     HMC Credit
-                    {computeMuddCredits(props.section) !== 1 ? "s" : ""}
+                    {props.section.HMCCredits !== 1 ? "s" : ""}
                 </h3>
-                <div>{computeMuddCredits(props.section)}</div>
+                <div>{props.section.HMCCredits}</div>
             </section>
 
             <section className={Css.credits}>
                 <h3>
                     Non-HMC Credit
-                    {computeNonMuddCredits(props.section) !== 1 ? "s" : ""}
+                    {props.section.nonHMCCredits !== 1 ? "s" : ""}
                 </h3>
-                <div>{computeNonMuddCredits(props.section)}</div>
+                <div>{props.section.nonHMCCredits}</div>
             </section>
 
             <section className={Css.instructors}>
