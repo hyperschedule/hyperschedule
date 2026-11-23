@@ -10,7 +10,7 @@ import classNames from "classnames";
 import { Settings } from "./Settings";
 import ExportCalendar from "@components/popup/ExportCalendar";
 import About from "@components/popup/About";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 function PopupBox(props: {
     children: React.JSX.Element;
@@ -21,6 +21,19 @@ function PopupBox(props: {
     function dismissPopup() {
         setPopup(null);
     }
+
+    useEffect(() => {
+        if (props.inactive) return;
+
+        function onKeyDown(ev: KeyboardEvent) {
+            if (ev.key === "Escape") {
+                setPopup(null);
+            }
+        }
+
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [props.inactive, setPopup]);
 
     return (
         <div
