@@ -165,9 +165,10 @@ const init: StateCreator<Store> = (set, get) => {
                     toast.error(
                         "Attempting to add section to a non-existent schedule",
                     );
+                    return;
                 } else if (
                     schedule.term.term !== request.section.term ||
-                    schedule.term.year !== schedule.term.year
+                    schedule.term.year !== request.section.year
                 ) {
                     toast.error(
                         `Cannot add section ${APIv4.stringifySectionCodeLong(
@@ -177,6 +178,7 @@ const init: StateCreator<Store> = (set, get) => {
                         )}`,
                     );
                     store.activeScheduleId = null;
+                    return;
                 }
                 store.schedules[request.scheduleId]!.sections.push({
                     section: request.section,
